@@ -3,7 +3,7 @@
 
 # # How to make a FGDC taxonomy in python
 
-# ### Step 1 use ITIS to get a list of species identiviers (TSNs) 
+# ### Step 1 use ITIS to get a list of species identifiers (TSNs) 
 # pytaxize makes this easy
 
 # In[1]:
@@ -144,13 +144,6 @@ print(life)
 
 
 # # Now we just need to convert this to fgdc xml 
-
-# In[34]:
-
-c.tsn
-df = pytaxize.itis.getcommonnamesfromtsn(c.tsn)
-df.query('lang =="English"').comname.iloc[0]
-
 
 # In[35]:
 
