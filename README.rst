@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/ColinTalbert/pymdwizard.svg?branch=master
-   :target: https://travis-ci.org/ColinTalbert/pymdwizard
+.. image:: https://travis-ci.org/talbertc-usgs/pymdwizard.svg?branch=master
+   :target: https://travis-ci.org/talbertc-usgs/pymdwizard
 
 Experimental conversion of MDWizard application to a pure open source Python implementation
 TODO: add full content
