@@ -14,5 +14,12 @@ before_install:
     - source activate TEST
     - travis_retry conda install --yes pytest
 
+install:
+  - "pip install coveralls>=1.1"
+
 script:
     - py.test --verbose --ignore setup.py
+    - py.test --cov pymdwizard --cov-report term-missing
+
+after_success:
+  - coveralls || echo "!! intermittent coveralls failure"
