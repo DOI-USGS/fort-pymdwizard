@@ -520,7 +520,7 @@ def merge_taxons(tsns):
 
 def gen_fgdc_taxonomy(tsns, include_common_names=False):
     taxon = merge_taxons(tsns)
-    return _gen_fgdc_taxonomy_section(taxon)
+    return _gen_fgdc_taxonomy_section(taxon, include_common_names)
 
 
 def _gen_fgdc_taxonomy_section(taxon, include_common_names=False):
