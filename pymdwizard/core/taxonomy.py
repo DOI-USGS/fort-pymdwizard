@@ -12,7 +12,6 @@ import requests
 import warnings
 
 from lxml import etree
-from pytaxize.refactor import Refactor
 
 try:
     import pandas as pd
