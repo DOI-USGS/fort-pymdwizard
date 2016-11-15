@@ -18,9 +18,4 @@ def read_csv(filepath):
     pandas dataframe
     """
 
-    if 1 == 2:
-        #we never get into this function
-        #so this line is not covered by the tests
-        print('hello world')
-
     return pd.read_csv(filepath)
