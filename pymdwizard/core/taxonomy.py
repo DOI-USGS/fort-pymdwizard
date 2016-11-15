@@ -1,12 +1,11 @@
 """Methods for querying the ITIS webservice
-and formatting the results into XML formated FGDC taxonomy sections.
+and formatting the results into XML formatted FGDC taxonomy sections.
 
 Attributes
 ----------
-itis_base_url : str
+ITIS_BASE_URL : str
     ITIS service base url
 """
-import sys
 import collections
 import requests
 import warnings
@@ -19,9 +18,9 @@ except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
 
-itis_base = 'http://www.itis.gov/ITISWebService/services/ITISService/'
-ns21 = {'ax21': 'http://data.itis_service.itis.usgs.gov/xsd'}
-ns23 = {'ax23': 'http://metadata.itis_service.itis.usgs.gov/xsd'}
+ITIS_BASE_URL = 'http://www.itis.gov/ITISWebService/services/ITISService/'
+NS21 = {'ax21': 'http://data.itis_service.itis.usgs.gov/xsd'}
+NS23 = {'ax23': 'http://metadata.itis_service.itis.usgs.gov/xsd'}
 
 domain_lookup = {'Animalia': 'Eukaryota',
                  'Chromista': 'Eukaryote',
@@ -50,10 +49,10 @@ def search_by_common_name(common_name, as_dataframe=True, **kwargs):
     -------
         pandas dataframe or list of dictionaries with common names and tsns
     """
-    results = _get_xml(itis_base + 'searchByCommonName',
+    results = _get_xml(ITIS_BASE_URL + 'searchByCommonName',
                        payload={'srchKey': common_name})
-    common_names = results.xpath('//ax21:commonNames', namespaces=ns21)
-    if as_dataframe:
+    common_names = results.xpath('//ax21:commonNames', namespaces=NS21)
+    if as_dataframe and pd:
         return _results_to_df(common_names)
     else:
         return _results_to_list(common_names)
@@ -77,10 +76,10 @@ def search_by_scientific_name(scientific_name, as_dataframe=True, **kwargs):
     -------
         pandas dataframe or list of dictionaries with scientific_names and tsns
     """
-    results = _get_xml(itis_base + 'searchByScientificName',
+    results = _get_xml(ITIS_BASE_URL + 'searchByScientificName',
                        payload={'srchKey': scientific_name})
-    scientific_names = results.xpath('//ax21:scientificNames', namespaces=ns21)
-    if as_dataframe:
+    scientific_names = results.xpath('//ax21:scientificNames', namespaces=NS21)
+    if as_dataframe and pd:
         return _results_to_df(scientific_names)
     else:
         return _results_to_list(scientific_names)
@@ -105,10 +104,10 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
     -------
         pandas dataframe or list of dictionaries with common names and tsns
     """
-    results = _get_xml(itis_base + 'getFullHierarchyFromTSN',
+    results = _get_xml(ITIS_BASE_URL + 'getFullHierarchyFromTSN',
                        payload={'tsn': tsn})
-    hierarchy = results.xpath('//ax21:hierarchyList', namespaces=ns21)
-    if as_dataframe:
+    hierarchy = results.xpath('//ax21:hierarchyList', namespaces=NS21)
+    if as_dataframe and pd:
         df = _results_to_df(hierarchy)
         if not include_children:
             df = df[df.parentTsn!=str(tsn)]
@@ -138,10 +137,10 @@ def get_common_names_tsn(tsn, as_dataframe=True, **kwargs):
     -------
         pandas dataframe or list of dictionaries with common names and tsns
     """
-    results = _get_xml(itis_base + 'getCommonNamesFromTSN',
+    results = _get_xml(ITIS_BASE_URL + 'getCommonNamesFromTSN',
                        payload={'tsn': tsn})
-    commmon_names = results.xpath('//ax21:commonNames', namespaces=ns21)
-    if as_dataframe:
+    commmon_names = results.xpath('//ax21:commonNames', namespaces=NS21)
+    if as_dataframe and pd:
         return _results_to_df(commmon_names)
     else:
         return _results_to_list(commmon_names)
@@ -163,11 +162,11 @@ def get_rank_names(as_dataframe=True, **kwargs):
     -------
 
     """
-    results = _get_xml(itis_base + 'getRankNames',
+    results = _get_xml(ITIS_BASE_URL + 'getRankNames',
                        payload={})
 
-    rank_names = results.xpath('//ax23:rankNames', namespaces=ns23)
-    if as_dataframe:
+    rank_names = results.xpath('//ax23:rankNames', namespaces=NS23)
+    if as_dataframe and pd:
         return _results_to_df(rank_names)
     else:
         return _results_to_list(rank_names)
@@ -191,9 +190,9 @@ def get_currency_from_tsn(tsn, as_dataframe=True, **kwargs):
     -------
         pandas dataframe or list of dictionaries with common names and tsns
     """
-    results = _get_xml(itis_base + 'getCurrencyFromTSN',
+    results = _get_xml(ITIS_BASE_URL + 'getCurrencyFromTSN',
                        payload={'tsn': tsn})
-    if as_dataframe:
+    if as_dataframe and pd:
         return _results_to_df(results)
     else:
         return _results_to_list(results)
@@ -218,7 +217,7 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
         pandas dataframe or list of dictionaries with common names and tsns
     """
 
-    results = _get_xml(itis_base + 'getFullRecordFromTSN',
+    results = _get_xml(ITIS_BASE_URL + 'getFullRecordFromTSN',
                        payload={'tsn': tsn}).getchildren()[0]
     if as_dataframe:
         dfs = collections.OrderedDict()
