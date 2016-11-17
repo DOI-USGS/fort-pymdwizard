@@ -22,13 +22,13 @@ ITIS_BASE_URL = 'http://www.itis.gov/ITISWebService/services/ITISService/'
 NS21 = {'ax21': 'http://data.itis_service.itis.usgs.gov/xsd'}
 NS23 = {'ax23': 'http://metadata.itis_service.itis.usgs.gov/xsd'}
 
-domain_lookup = {'Animalia': 'Eukaryota',
-                 'Chromista': 'Eukaryote',
-                 'Protozoa': 'Eukaryote',
-                 'Fungi': 'Eukaryota',
-                 'Bacteria': 'Bacteria',
-                 'Plantae': 'Eukaryota',
-                 'Archaea': 'Archaea'}
+kingdom_lookup = {'Animalia': 202423,
+                 'Chromista': 630578,
+                 'Protozoa': 630577,
+                 'Fungi': 555705,
+                 'Bacteria': 50,
+                 'Plantae': 202422,
+                 'Archaea': 935939}
 
 
 def search_by_common_name(common_name, as_dataframe=True, **kwargs):
@@ -446,7 +446,7 @@ class Taxon(object):
             If no match is found returns None
             else returns taxon object which matches the given tsn
         """
-        if self.tsn == tsn:
+        if str(self.tsn) == str(tsn):
             return self
         else:
             for child in self.children:
@@ -466,6 +466,7 @@ def get_kingdom(heirarchy):
 def get_taxon_root(kingdoms):
     eukaryota = ['Animalia', 'Chromista', 'Protozoa', 'Fungi', 'Plantae']
     if len(kingdoms) > 1:
+        tsn = None
         if set(eukaryota).issuperset(set(kingdoms)):
             root_name = 'Domain'
             root_value = 'Eukaryota'
@@ -475,8 +476,9 @@ def get_taxon_root(kingdoms):
     else:
         root_name = 'Kingdom'
         root_value = kingdoms[0]
+        tsn = kingdom_lookup[root_value]
 
-    return Taxon(taxon_name=root_name, taxon_value=root_value, tsn=None)
+    return Taxon(taxon_name=root_name, taxon_value=root_value, tsn=tsn)
 
 
 def merge_taxons(tsns):
@@ -509,7 +511,6 @@ def merge_taxons(tsns):
                 child_taxon = Taxon(taxon_name=row.rankName,
                                     taxon_value=row.taxonName,
                                     tsn=row.tsn)
-
                 parent = root_taxon.find_child_by_tsn(row.parentTsn)
                 parent.add_child(child_taxon)
 
