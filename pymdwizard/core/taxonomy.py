@@ -536,10 +536,10 @@ def _gen_fgdc_taxonomy_section(taxon, include_common_names=False):
         try:
             df = get_common_names_tsn(taxon.tsn)
             if 'language' in df.columns:
-                common_name = df.query('language == "English"').commonName.iloc[0]
-                applicable_common_name = etree.Element("common")
-                applicable_common_name.text = common_name
-                taxonomicclassification.append(applicable_common_name)
+                for common_name in df.query('language == "English"').commonName:
+                    applicable_common_name = etree.Element("common")
+                    applicable_common_name.text = common_name
+                    taxonomicclassification.append(applicable_common_name)
         except (ValueError, IndexError):
             pass
 
