@@ -28,7 +28,8 @@ kingdom_lookup = {'Animalia': 202423,
                  'Fungi': 555705,
                  'Bacteria': 50,
                  'Plantae': 202422,
-                 'Archaea': 935939}
+                 'Archaea': 935939,
+                 None: None}
 
 
 def search_by_common_name(common_name, as_dataframe=True, **kwargs):
@@ -460,8 +461,10 @@ class Taxon(object):
 
 
 def get_kingdom(heirarchy):
-    return str(heirarchy[heirarchy.rankName == 'Kingdom']['taxonName'][0])
-
+    try:
+        return str(heirarchy[heirarchy.rankName == 'Kingdom']['taxonName'][0])
+    except IndexError:
+        return None
 
 def get_taxon_root(kingdoms):
     eukaryota = ['Animalia', 'Chromista', 'Protozoa', 'Fungi', 'Plantae']
