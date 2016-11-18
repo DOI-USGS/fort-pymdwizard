@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
+
+from lxml import etree
+
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 Qt = QtCore.Qt
+from PyQt4.QtCore import pyqtSlot as Slot, pyqtSignal as Signal
 
 import pandas as pd
 
@@ -19,75 +23,173 @@ class ItisMainForm(QtGui.QWidget):
 
         self.ui = itis_search.Ui_ItisSearchWidget()
         self.ui.setupUi(self)
+        self.ui.splitter.setSizes([300, 100])
 
-        self.ui.search_itis_button.clicked.connect(self.search_itis)
-        self.ui.tableView.doubleClicked.connect(self.add_tsn)
-        self.ui.gen_fgdc_button.clicked.connect(self.generate_fgdc)
+        # connect buttons and events
+        self.ui.button_search.clicked.connect(self.search_itis)
         self.ui.search_term.returnPressed.connect(self.search_itis)
+        self.ui.table_results.doubleClicked.connect(self.add_tsn)
+        self.ui.button_add_taxon.clicked.connect(self.add_tsn)
+        self.ui.button_gen_fgdc.clicked.connect(self.generate_fgdc)
+        self.ui.button_remove_selected.clicked.connect(self.remove_selected)
+        self.ui.table_include.doubleClicked.connect(self.remove_selected)
 
-        self.selected_items = []
+
+        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
+        self.selected_model = PandasModel(self.selected_items_df)
+        self.ui.table_include.setModel(self.selected_model)
 
     def search_itis(self):
 
-        if str(self.ui.comboBox.currentText()) == 'Scientific name':
+        if str(self.ui.combo_search_type.currentText()) == 'Scientific name':
             results = taxonomy.search_by_scientific_name(str(self.ui.search_term.text()))
         else:
             results = taxonomy.search_by_common_name(str(self.ui.search_term.text()))
 
         model = PandasModel(results)
-        self.ui.tableView.setModel(model)
+        self.ui.table_results.setModel(model)
 
     def add_tsn(self, index):
-        df = self.ui.tableView.model()._data
-        if str(self.ui.comboBox.currentText()) == 'Scientific name':
-            item_name = df['combinedName'][index.row()]
+        indexes = self.ui.table_results.selectionModel().selectedRows()
+        selected_indices = [int(index.row()) for index in list(indexes)]
+        df = self.ui.table_results.model().dataframe()
+        indexes = df.index[selected_indices]
+
+        index = selected_indices[0]
+
+        if 'combinedName' in df.columns:
+            item_name = df.iloc[index]['combinedName']
         else:
-            item_name = str(df['commonName'][index.row()])
+            item_name = str(df.iloc[index]['commonName'])
 
-        item = {'tsn': df['tsn'][index.row()],
-                'item': str(item_name)}
+        tsn = df.iloc[index]['tsn']
+        i = self.selected_items_df.index.max()+1
+        if pd.isnull(i):
+            i = 0
+        self.selected_items_df.loc[i] = [str(item_name), tsn]
+        self.selected_model = PandasModel(self.selected_items_df)
+        self.ui.table_include.setModel(self.selected_model)
 
-        self.selected_items.append(item)
-
-        model = PandasModel(pd.DataFrame.from_dict(self.selected_items))
-        self.ui.SpeciesToInclude.setModel(model)
+    def remove_selected(self, index):
+        indexes = self.ui.table_include.selectionModel().selectedRows()
+        selected_indices = [int(index.row()) for index in list(indexes)]
+        index = self.selected_items_df.index[selected_indices]
+        self.selected_items_df.drop(index, inplace=True)
+        self.ui.table_include.model().layoutChanged.emit()
 
     def generate_fgdc(self):
-        fgdc_taxonomy = taxonomy.gen_fgdc_taxonomy(list(self.ui.SpeciesToInclude.model()._data.tsn))
+        self.w = MyPopup()
+        self.w.setWindowTitle('FGDC Taxonomy Section')
+        self.w.setGeometry(QRect(100, 100, 400, 200))
+
+        df = self.ui.table_include.model().dataframe()
+        include_common = self.ui.check_include_common.isChecked()
+
+        fgdc_taxonomy = taxonomy.gen_fgdc_taxonomy(list(df.tsn),
+                                                   include_common)
         msg = QtGui.QMessageBox()
         msg.setIcon(QtGui.QMessageBox.Information)
+        self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
+        # msg.setText()
+        # msg.resize(1000, 500)
+        # retval = msg.exec_()
+        self.w.show()
 
-        from lxml import etree
 
-        msg.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
-        msg.resize(1000, 400)
-        retval = msg.exec_()
+class MyPopup(QtGui.QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        layout = QtGui.QVBoxLayout()
 
+
+        self.textEdit = QtGui.QTextEdit()
+
+        layout.addWidget(self.textEdit)
+
+        self.setLayout(layout)
+
+
+
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, Qt, QPoint
+from PyQt4.QtGui import QStyleOptionHeader, QHeaderView, QPainter, QWidget, QStyle, QMatrix, QFont, QFontMetrics, QPalette, QBrush, QColor
+import pandas as pd
+import datetime
 
 class PandasModel(QtCore.QAbstractTableModel):
     """
     Class to populate a table view with a pandas dataframe
     """
-    def __init__(self, data, parent=None):
+    options = {"striped": True, "stripesColor": "#fafafa", "na_values": "least",
+               "tooltip_min_len": 21}
+
+    def __init__(self, dataframe, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
-        self._data = data
+        self.setDataFrame(dataframe if dataframe is not None else pd.DataFrame())
+
+    def setDataFrame(self, dataframe):
+        self.df = dataframe
+        #        self.df_full = self.df
+        self.layoutChanged.emit()
 
     def rowCount(self, parent=None):
-        return len(self._data.values)
+        return len(self.df.values)
 
     def columnCount(self, parent=None):
-        return self._data.columns.size
+        return self.df.columns.size
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
-        if index.isValid():
-            if role == QtCore.Qt.DisplayRole:
-                return str(self._data.values[index.row()][index.column()])
+
+        row, col = index.row(), index.column()
+        if role in (Qt.DisplayRole, Qt.ToolTipRole):
+            ret = self.df.iat[row, col]
+            if ret is not None and ret==ret: #convert to str except for None, NaN, NaT
+                if isinstance(ret, float):
+                    ret = "{:n}".format(ret)
+                elif isinstance(ret, datetime.date):
+                    #FIXME: show microseconds optionally
+                    ret = ret.strftime(("%x", "%c")[isinstance(ret, datetime.datetime)])
+                else: ret = str(ret)
+                if role == Qt.ToolTipRole:
+                    if len(ret)<self.options["tooltip_min_len"]: ret = ""
+                return ret
+        elif role == Qt.BackgroundRole:
+            if self.options["striped"] and row%2:
+                return QBrush(QColor(self.options["stripesColor"]))
+
         return None
 
-    def headerData(self, col, orientation, role):
-        if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-            return self._data.columns[col]
-        return None
+    def dataframe(self):
+        return self.df
+
+    def reorder(self, oldIndex, newIndex, orientation):
+        "Reorder columns / rows"
+        horizontal = orientation==Qt.Horizontal
+        cols = list(self.df.columns if horizontal else self.df.index)
+        cols.insert(newIndex, cols.pop(oldIndex))
+        self.df = self.df[cols] if horizontal else self.df.T[cols].T
+        return True
+
+    #    def filter(self, filt=None):
+    #        self.df = self.df_full if filt is None else self.df[filt]
+    #        self.layoutChanged.emit()
+
+    def headerData(self, section, orientation, role):
+        if role != Qt.DisplayRole: return
+        label = getattr(self.df, ("columns", "index")[orientation!=Qt.Horizontal])[section]
+        #        return label if type(label) is tuple else label
+        return ("\n", " | ")[orientation!=Qt.Horizontal].join(str(i) for i in label) if type(label) is tuple else str(label)
+
+    def dataFrame(self):
+        return self.df
+
+    def sort(self, column, order):
+        if len(self.df):
+            asc = order==Qt.AscendingOrder
+            na_pos = 'first' if (self.options["na_values"]=="least")==asc else 'last'
+            self.df.sort_values(self.df.columns[column], ascending=asc,
+                                inplace=True, na_position=na_pos)
+            self.layoutChanged.emit()
 
 
 def main():
@@ -98,6 +200,9 @@ def main():
 
     myapp = ItisMainForm()
     myapp.resize(1000, 400)
+    myapp.setContentsMargins(0,0,0,0)
+    myapp.layout().setContentsMargins(0,0,0,0)
+
 
     myapp.show()
     sys.exit(app.exec_())
