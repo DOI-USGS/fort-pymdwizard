@@ -34,7 +34,6 @@ class ItisMainForm(QtGui.QWidget):
         self.ui.button_remove_selected.clicked.connect(self.remove_selected)
         self.ui.table_include.doubleClicked.connect(self.remove_selected)
 
-
         self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
         self.selected_model = PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
@@ -85,8 +84,9 @@ class ItisMainForm(QtGui.QWidget):
         df = self.ui.table_include.model().dataframe()
         include_common = self.ui.check_include_common.isChecked()
 
-        fgdc_taxonomy = taxonomy.gen_fgdc_taxonomy(list(df.tsn),
-                                                   include_common)
+        fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
+                                                      tsns=list(df.tsn),
+                                                      include_common_names=include_common)
         msg = QtGui.QMessageBox()
         msg.setIcon(QtGui.QMessageBox.Information)
         self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
@@ -115,6 +115,7 @@ from PyQt4.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, Qt, QPoi
 from PyQt4.QtGui import QStyleOptionHeader, QHeaderView, QPainter, QWidget, QStyle, QMatrix, QFont, QFontMetrics, QPalette, QBrush, QColor
 import pandas as pd
 import datetime
+
 
 class PandasModel(QtCore.QAbstractTableModel):
     """
@@ -186,7 +187,7 @@ class PandasModel(QtCore.QAbstractTableModel):
     def sort(self, column, order):
         if len(self.df):
             asc = order==Qt.AscendingOrder
-            na_pos = 'first' if (self.options["na_values"]=="least")==asc else 'last'
+            na_pos = 'first' if (self.options["na_values"]=="least") == asc else 'last'
             self.df.sort_values(self.df.columns[column], ascending=asc,
                                 inplace=True, na_position=na_pos)
             self.layoutChanged.emit()
