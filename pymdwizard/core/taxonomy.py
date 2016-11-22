@@ -520,7 +520,25 @@ def merge_taxons(tsns):
     return root_taxon
 
 
-def gen_fgdc_taxonomy(tsns, include_common_names=False):
+def gen_taxonomy_section(keywords, tsns, include_common_names=False):
+    taxonomy = etree.Element("taxonomy")
+    keywtax = etree.Element("keywtax")
+    taxonkt = etree.Element("taxonkt")
+    taxonkt.text = 'None'
+    keywtax.append(taxonkt)
+
+    for keyword in keywords:
+        taxonkey = etree.Element("taxonkey")
+        taxonkey.text = keyword
+        keywtax.append(taxonkey)
+
+    taxonomy.append(keywtax)
+
+    taxoncl = gen_fgdc_taxoncl(tsns, include_common_names)
+    taxonomy.append(taxoncl)
+    return taxonomy
+
+def gen_fgdc_taxoncl(tsns, include_common_names=False):
     taxon = merge_taxons(tsns)
     return _gen_fgdc_taxonomy_section(taxon, include_common_names)
 
@@ -551,3 +569,4 @@ def _gen_fgdc_taxonomy_section(taxon, include_common_names=False):
         taxonomicclassification.append(child_node)
 
     return taxonomicclassification
+
