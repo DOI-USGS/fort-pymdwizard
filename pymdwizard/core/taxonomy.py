@@ -538,6 +538,7 @@ def gen_taxonomy_section(keywords, tsns, include_common_names=False):
     taxonomy.append(taxoncl)
     return taxonomy
 
+
 def gen_fgdc_taxoncl(tsns, include_common_names=False):
     taxon = merge_taxons(tsns)
     return _gen_fgdc_taxonomy_section(taxon, include_common_names)
