@@ -233,7 +233,7 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
             dfs[xml_utils._parse_tag(child.tag)] = df
         return dfs
     else:
-        return xml_utils.elements_to_nested_dict(results)
+        return xml_utils.node_to_dict(results)
 
     return _fullrecord("getFullRecordFromTSN", {'tsn': tsn}, **kwargs)
 

@@ -98,20 +98,3 @@ def element_to_df(results):
     """
     results_list = element_to_list(results)
     return pd.DataFrame.from_dict(results_list)
-
-
-def elements_to_nested_dict(results):
-    """
-    Returns the results (etree) formatted into a nested dictionary.
-    This is intended to be used hierarchical data structures.
-
-    Parameters
-    ----------
-    results : list of lxml nodes
-        This list would could be returned from an xpath query for example
-
-    Returns
-    -------
-    pandas dataframe
-    """
-    return node_to_dict(results)
