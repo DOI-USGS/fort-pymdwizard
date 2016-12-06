@@ -45,6 +45,16 @@ def test_full_hierarchy_from_tsn():
     results = taxonomy.get_full_hierarchy_from_tsn(180694, as_dataframe=False)
     assert results[0]['taxonName'] == 'Animalia'
 
+    no_species = taxonomy.get_full_hierarchy_from_tsn(180694,
+                                                      as_dataframe=False,
+                                                      include_children=False)
+    assert no_species[-1]['rankName'] == 'Genus'
+
+    has_species = taxonomy.get_full_hierarchy_from_tsn(180694,
+                                                       as_dataframe=False,
+                                                       include_children=True)
+    assert has_species[-1]['rankName'] == 'Species'
+
     df = taxonomy.get_full_hierarchy_from_tsn(180694, include_children=False)
     assert df[df.rankName == 'Species'].empty
 

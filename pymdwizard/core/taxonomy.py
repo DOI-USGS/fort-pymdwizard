@@ -104,6 +104,9 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
     as_dataframe : bool
         if True return pandas dataframe, if False return list of dictionaries
 
+    include_children : bool
+        flag to optionally return the child taxonomies of the given taxon
+
     Returns
     -------
         pandas dataframe or list of dictionaries with common names and tsns
@@ -120,7 +123,7 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
         d = xml_utils.element_to_list(hierarchy)
         if not include_children:
             d = [r for r in d if r['parentTsn'] != str(tsn)]
-        return xml_utils.element_to_list(hierarchy)
+        return d
 
 
 def get_common_names_tsn(tsn, as_dataframe=True, **kwargs):
