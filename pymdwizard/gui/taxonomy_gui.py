@@ -8,9 +8,6 @@ from lxml import etree
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 Qt = QtCore.Qt
-from PyQt4.QtCore import pyqtSlot as Slot, pyqtSignal as Signal
-
-import pandas as pd
 
 from pymdwizard.core import taxonomy
 
