@@ -19,6 +19,7 @@ class ContactInfoWidget(WizardWidget):
     WIDGET_WIDTH = 805
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
+    drag_label = "Contact Information <cntinfo>"
 
     def build_ui(self):
         """

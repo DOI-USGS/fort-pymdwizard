@@ -133,7 +133,7 @@ class WizardWidget(QtGui.QWidget):
 
         # let's make it fancy. we'll show a "ghost" of the button as we drag
         # grab the button to a pixmap
-        pixmap = QtGui.QPixmap.grabWidget(self.ui.groupBox)
+        pixmap = QtGui.QPixmap.grabWidget(self)
         size = pixmap.size()*.65
         half_pixmap = pixmap.scaled(size, QtCore.Qt.KeepAspectRatio,
                                     transformMode=QtCore.Qt.SmoothTransformation)
@@ -151,9 +151,8 @@ class WizardWidget(QtGui.QWidget):
         painter.setFont(font)
 
         painter.setPen(QtCore.Qt.red)
-        painter.drawText( half_pixmap.rect(),
-                          QtCore.Qt.AlignCenter,
-                          "Contact Information (cntinfo)", )
+        painter.drawText(half_pixmap.rect(), QtCore.Qt.AlignCenter,
+                         self.drag_label)
 
         painter.end()
 
@@ -177,7 +176,7 @@ class WizardWidget(QtGui.QWidget):
 
         None
         """
-        if not isinstance(widget, QtGui.QLineEdit):
+        if not isinstance(widget, (QtGui.QLineEdit, QtGui.QTableView)):
             try:
 
                 widget.setMouseTracking(True)
