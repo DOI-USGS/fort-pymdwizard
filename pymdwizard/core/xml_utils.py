@@ -17,7 +17,7 @@ except ImportError:
     pd = None
 
 
-def _node_to_dict(node):
+def node_to_dict(node):
     """
 
     Parameters
@@ -38,7 +38,7 @@ def _node_to_dict(node):
         for child in node.getchildren():
             tag = _parse_tag(child.tag)
             if len(child.getchildren()) > 0:
-                content = _node_to_dict(child)
+                content = node_to_dict(child)
             else:
                 content = child.text
             node_dict[tag] = content
@@ -77,7 +77,7 @@ def element_to_list(results):
     List of dictionaries. Each dictionary in this list is the result of
     the _node_to_dict function
     """
-    return [_node_to_dict(item) for item in results]
+    return [node_to_dict(item) for item in results]
 
 
 def element_to_df(results):
@@ -114,4 +114,4 @@ def elements_to_nested_dict(results):
     -------
     pandas dataframe
     """
-    return _node_to_dict(results)
+    return node_to_dict(results)
