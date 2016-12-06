@@ -11,18 +11,43 @@ Qt = QtCore.Qt
 
 from pymdwizard.core import taxonomy
 
+from pymdwizard.gui.wiz_widget import WizardWidget
+
 from ui_files import itis_search
 
 
-class ItisMainForm(QtGui.QWidget):
-    def __init__(self, parent=None):
-        QtGui.QMainWindow.__init__(self, parent)
+class ItisMainForm(WizardWidget):
 
+    drag_label = "Taxonomy"
+
+    def __init__(self, parent=None):
+        # QtGui.QMainWindow.__init__(self, parent)
+        super(self.__class__, self).__init__()
+
+        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
+        self.selected_model = PandasModel(self.selected_items_df)
+        self.ui.table_include.setModel(self.selected_model)
+
+    def build_ui(self):
+        """
+        Build and modify this widget's GUI
+
+        Returns
+        -------
+        None
+        """
         self.ui = itis_search.Ui_ItisSearchWidget()
         self.ui.setupUi(self)
         self.ui.splitter.setSizes([300, 100])
 
-        # connect buttons and events
+    def connect_events(self):
+        """
+        Connect the appropriate GUI components with the corresponding functions
+
+        Returns
+        -------
+        None
+        """
         self.ui.button_search.clicked.connect(self.search_itis)
         self.ui.search_term.returnPressed.connect(self.search_itis)
         self.ui.table_results.doubleClicked.connect(self.add_tsn)
@@ -31,9 +56,6 @@ class ItisMainForm(QtGui.QWidget):
         self.ui.button_remove_selected.clicked.connect(self.remove_selected)
         self.ui.table_include.doubleClicked.connect(self.remove_selected)
 
-        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
-        self.selected_model = PandasModel(self.selected_items_df)
-        self.ui.table_include.setModel(self.selected_model)
 
     def search_itis(self):
 
@@ -78,14 +100,26 @@ class ItisMainForm(QtGui.QWidget):
         self.w.setWindowTitle('FGDC Taxonomy Section')
         self.w.setGeometry(QRect(100, 100, 400, 200))
 
+        fgdc_taxonomy = self._to_xml()
+
+        self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
+        self.w.show()
+
+    def _to_xml(self):
+
         df = self.ui.table_include.model().dataframe()
         include_common = self.ui.check_include_common.isChecked()
 
         fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
                                                       tsns=list(df.tsn),
-                                                      include_common_names=include_common)
-        self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
-        self.w.show()
+                                           include_common_names=include_common)
+
+        return fgdc_taxonomy
+
+    def _from_xml(self, contact_information):
+        pass
+        # contact_dict = xml_utils.node_to_dict(contact_information)
+        # utils.populate_widget(self, contact_dict)
 
 
 class MyPopup(QtGui.QWidget):
