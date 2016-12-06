@@ -8,26 +8,30 @@ from PyQt4 import QtCore
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
+from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import contact_info
 from pymdwizard.gui.ui_files import contact_info_main
 from pymdwizard.gui.ui_files import usgs_contact_importer
 
 
-class ContactInfoWidget(QtGui.QWidget):
+class ContactInfoWidget(WizardWidget):
 
     WIDGET_WIDTH = 805
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
 
-    def __init__(self, parent=None):
+    def build_ui(self):
+        """
+        Build and modify this widget's GUI
 
-        if __name__ == "__main__":
-            QtGui.QMainWindow.__init__(self, parent)
-
+        Returns
+        -------
+        None
+        """
         self.ui = contact_info_main.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
 
-        self.ui.rbtn_yes.toggled.connect(self.contact_used_change)
+
         self.ui.mouseMoveEvent = self.mouseMoveEvent
 
         self.contact_info_widget = QtGui.QWidget(self)
@@ -39,9 +43,16 @@ class ContactInfoWidget(QtGui.QWidget):
         self.collapsed_size = QtCore.QSize(self.WIDGET_WIDTH, self.COLLAPSED_HEIGHT)
         self.expanded_size = QtCore.QSize(self.WIDGET_WIDTH, self.EXPANDED_HEIGHT)
 
+    def connect_events(self):
+        """
+        Connect the appropriate GUI components with the corresponding functions
+
+        Returns
+        -------
+        None
+        """
+        self.ui.rbtn_yes.toggled.connect(self.contact_used_change)
         self.contact_info_ui.btn_import_contact.clicked.connect(self.usgs_contact)
-        self.setMouseTracking(True)
-        self.setup_dragdrop(self)
 
     def usgs_contact(self):
         self.usgs_contact = QtGui.QDialog(self)
@@ -63,9 +74,10 @@ class ContactInfoWidget(QtGui.QWidget):
             # strip off the @usgs.gov if they entered one
             username = username.split("@")[0]
 
-            contact_information = utils.get_usgs_contact_info(username)
-            if contact_information['cntperp']['cntper'].strip():
-                self._from_xml(contact_information)
+            cntperp = utils.get_usgs_contact_info(username,
+                                                  as_dictionary=False)
+            if cntperp.getchildren()[0].getchildren()[0].text.strip():
+                self._from_xml(cntperp)
                 self.usgs_contact.deleteLater()
             else:
                 QtGui.QMessageBox.warning(self.usgs_contact, "Name Not Found", "The Metadata Wizard was unable to locate the provided user name in the USGS directory")
@@ -119,44 +131,8 @@ class ContactInfoWidget(QtGui.QWidget):
         return cntinfo
 
     def _from_xml(self, contact_information):
-        utils.populate_widget(self, contact_information)
-
-    def dropEvent(self, e):
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(e.mimeData().text(), parser=parser)
-        contact_dict = xml_utils.node_to_dict(element)
-        self._from_xml(contact_dict)
-
-    def dragEnterEvent(self, e):
-        e.accept()
-
-    def mouseMoveEvent(self, e):
-        if e.buttons() != QtCore.Qt.LeftButton:
-            return
-
-        mimeData = QtCore.QMimeData()
-        mimeData.setText(etree.tostring(self._to_xml(), pretty_print=True).decode())
-
-        drag = QtGui.QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
-
-        dropAction = drag.start(QtCore.Qt.MoveAction)
-
-    def setup_dragdrop(self, widget):
-
-        # QtGui.QWidget.setMouseTracking(widget, True)
-
-        try:
-            widget.setMouseTracking(True)
-            widget.setAcceptDrops(True)
-            widget.mouseMoveEvent = self.mouseMoveEvent
-            widget.setDragEnabled(True)
-        except:
-            pass
-
-        for child in widget.findChildren(QtCore.QObject):
-            self.setup_dragdrop(child)
+        contact_dict = xml_utils.node_to_dict(contact_information)
+        utils.populate_widget(self, contact_dict)
 
 
 if __name__ == "__main__":
