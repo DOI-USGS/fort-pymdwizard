@@ -141,7 +141,7 @@ class WizardWidget(QtGui.QWidget):
         # below makes the pixmap half transparent
         painter = QtGui.QPainter(half_pixmap)
         painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
-        painter.fillRect(half_pixmap.rect(), QtGui.QColor(0, 0, 0, 75))
+        painter.fillRect(half_pixmap.rect(), QtGui.QColor(0, 0, 0, 127))
 
         font = QtGui.QFont()
         font.setFamily('Arial')
@@ -177,13 +177,15 @@ class WizardWidget(QtGui.QWidget):
 
         None
         """
-        try:
-            widget.setMouseTracking(True)
-            widget.setAcceptDrops(True)
-            widget.mouseMoveEvent = self.mouseMoveEvent
-            widget.setDragEnabled(True)
-        except:
-            pass
+        if not isinstance(widget, QtGui.QLineEdit):
+            try:
+
+                widget.setMouseTracking(True)
+                widget.setAcceptDrops(True)
+                widget.mouseMoveEvent = self.mouseMoveEvent
+                widget.setDragEnabled(True)
+            except:
+                pass
 
         for child in widget.findChildren(QtCore.QObject):
             self.setup_dragdrop(child)
