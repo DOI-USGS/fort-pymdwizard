@@ -18,6 +18,9 @@ except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
 
+# internal package imports
+from pymdwizard.core import xml_utils
+
 ITIS_BASE_URL = 'http://www.itis.gov/ITISWebService/services/ITISService/'
 NS21 = {'ax21': 'http://data.itis_service.itis.usgs.gov/xsd'}
 NS23 = {'ax23': 'http://metadata.itis_service.itis.usgs.gov/xsd'}
@@ -54,9 +57,9 @@ def search_by_common_name(common_name, as_dataframe=True, **kwargs):
                        payload={'srchKey': common_name})
     common_names = results.xpath('//ax21:commonNames', namespaces=NS21)
     if as_dataframe and pd:
-        return _results_to_df(common_names)
+        return xml_utils.element_to_df(common_names)
     else:
-        return _results_to_list(common_names)
+        return xml_utils.element_to_list(common_names)
 
 
 def search_by_scientific_name(scientific_name, as_dataframe=True, **kwargs):
@@ -81,9 +84,9 @@ def search_by_scientific_name(scientific_name, as_dataframe=True, **kwargs):
                        payload={'srchKey': scientific_name})
     scientific_names = results.xpath('//ax21:scientificNames', namespaces=NS21)
     if as_dataframe and pd:
-        return _results_to_df(scientific_names)
+        return xml_utils.element_to_df(scientific_names)
     else:
-        return _results_to_list(scientific_names)
+        return xml_utils.element_to_list(scientific_names)
 
 
 def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
@@ -109,15 +112,15 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
                        payload={'tsn': tsn})
     hierarchy = results.xpath('//ax21:hierarchyList', namespaces=NS21)
     if as_dataframe and pd:
-        df = _results_to_df(hierarchy)
+        df = xml_utils.element_to_df(hierarchy)
         if not include_children:
             df = df[df.parentTsn!=str(tsn)]
         return df
     else:
-        d = _results_to_list(hierarchy)
+        d = xml_utils.element_to_list(hierarchy)
         if not include_children:
             d = [r for r in d if r['parentTsn'] != str(tsn)]
-        return _results_to_list(hierarchy)
+        return xml_utils.element_to_list(hierarchy)
 
 
 def get_common_names_tsn(tsn, as_dataframe=True, **kwargs):
@@ -142,9 +145,9 @@ def get_common_names_tsn(tsn, as_dataframe=True, **kwargs):
                        payload={'tsn': tsn})
     commmon_names = results.xpath('//ax21:commonNames', namespaces=NS21)
     if as_dataframe and pd:
-        return _results_to_df(commmon_names)
+        return xml_utils.element_to_df(commmon_names)
     else:
-        return _results_to_list(commmon_names)
+        return xml_utils.element_to_list(commmon_names)
 
 
 def get_rank_names(as_dataframe=True, **kwargs):
@@ -168,9 +171,9 @@ def get_rank_names(as_dataframe=True, **kwargs):
 
     rank_names = results.xpath('//ax23:rankNames', namespaces=NS23)
     if as_dataframe and pd:
-        return _results_to_df(rank_names)
+        return xml_utils.element_to_df(rank_names)
     else:
-        return _results_to_list(rank_names)
+        return xml_utils.element_to_list(rank_names)
 
 
 def get_currency_from_tsn(tsn, as_dataframe=True, **kwargs):
@@ -194,9 +197,9 @@ def get_currency_from_tsn(tsn, as_dataframe=True, **kwargs):
     results = _get_xml(ITIS_BASE_URL + 'getCurrencyFromTSN',
                        payload={'tsn': tsn})
     if as_dataframe and pd:
-        return _results_to_df(results)
+        return xml_utils.element_to_df(results)
     else:
-        return _results_to_list(results)
+        return xml_utils.element_to_list(results)
 
 
 def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
@@ -223,10 +226,11 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
     if as_dataframe:
         dfs = collections.OrderedDict()
         for child in results.getchildren():
-            dfs[_parse_tag(child.tag)] = _results_to_df([child]).dropna()
+            df = xml_utils.element_to_df([child]).dropna()
+            dfs[xml_utils._parse_tag(child.tag)] = df
         return dfs
     else:
-        return _results_to_nested_dict(results)
+        return xml_utils.elements_to_nested_dict(results)
 
     return _fullrecord("getFullRecordFromTSN", {'tsn': tsn}, **kwargs)
 
@@ -253,108 +257,6 @@ def _to_lower(items):
         The list of items all converted to lower case.
     """
     return [item.lower() for item in items]
-
-
-def _node_to_dict(node):
-    """
-
-    Parameters
-    ----------
-    node : lxml element
-
-    Returns
-    -------
-        dictionary contain a key value pair for each child item in the node
-        where the key is the item's tag and the value is the item's text
-    """
-    node_dict = collections.OrderedDict()
-
-    if len(node.getchildren()) == 0:
-        tag = _parse_tag(node.tag)
-        node_dict[tag] = node.text
-    else:
-        for child in node.getchildren():
-            tag = _parse_tag(child.tag)
-            if len(child.getchildren()) > 0:
-                content = _node_to_dict(child)
-            else:
-                content = child.text
-            node_dict[tag] = content
-    return node_dict
-
-
-def _parse_tag(tag):
-    """
-    strips namespace declaration from xml tag string
-
-    Parameters
-    ----------
-    tag : str
-
-    Returns
-    -------
-    formatted tag
-
-    """
-    return tag[tag.find("}")+1:]
-
-
-def _results_to_list(results):
-    """
-    Returns the results(etree) formatted into a list of dictionaries.
-    This is useful for flat data structures, e.g. homogeneous results that
-    could be thought of and converted to a dataframe.
-
-    Parameters
-    ----------
-    results : list of lxml nodes
-        This list would could be returned from an xpath query for example
-
-    Returns
-    -------
-    List of dictionaries. Each dictionary in this list is the result of
-    the _node_to_dict function
-    """
-    return [_node_to_dict(item) for item in results]
-
-
-def _results_to_df(results):
-    """
-    Returns the results (etree) formatted into a pandas dataframe.
-    This only intended to be used on flat data structures, e.g. a list of
-    homogeneous elements.
-    For nested or hierarchical data structures this result will be awkward.
-
-    Parameters
-    ----------
-    results : list of lxml nodes
-        This list would could be returned from an xpath query for example
-
-    Returns : pandas dataframe
-
-    -------
-
-    """
-    results_list = _results_to_list(results)
-    return pd.DataFrame.from_dict(results_list)
-
-
-def _results_to_nested_dict(results):
-    """
-    Returns the results (etree) formatted into a nested dictionary.
-    This is intended to be used hierarchical data structures.
-
-    Parameters
-    ----------
-    results : list of lxml nodes
-        This list would could be returned from an xpath query for example
-
-    Returns : pandas dataframe
-
-    -------
-
-    """
-    return _node_to_dict(results)
 
 
 class Taxon(object):
