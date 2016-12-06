@@ -16,9 +16,6 @@ except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
 
-# internal package imports
-from pymdwizard.core import xml_utils
-
 
 def _node_to_dict(node):
     """
@@ -95,10 +92,9 @@ def element_to_df(results):
     results : list of lxml nodes
         This list would could be returned from an xpath query for example
 
-    Returns : pandas dataframe
-
+    Returns
     -------
-
+    pandas dataframe
     """
     results_list = element_to_list(results)
     return pd.DataFrame.from_dict(results_list)
@@ -114,9 +110,8 @@ def elements_to_nested_dict(results):
     results : list of lxml nodes
         This list would could be returned from an xpath query for example
 
-    Returns : pandas dataframe
-
+    Returns
     -------
-
+    pandas dataframe
     """
     return _node_to_dict(results)
