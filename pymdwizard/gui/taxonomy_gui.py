@@ -84,12 +84,7 @@ class ItisMainForm(QtGui.QWidget):
         fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
                                                       tsns=list(df.tsn),
                                                       include_common_names=include_common)
-        msg = QtGui.QMessageBox()
-        msg.setIcon(QtGui.QMessageBox.Information)
         self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
-        # msg.setText()
-        # msg.resize(1000, 500)
-        # retval = msg.exec_()
         self.w.show()
 
 
