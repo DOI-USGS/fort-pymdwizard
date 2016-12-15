@@ -6,9 +6,10 @@ from lxml import etree
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 
+
 class WizardWidget(QtGui.QWidget):
 
-    # Prefered widget size constants
+    # Preferred widget size constants
     # if widget doesn't collapse use -1 for COLLAPSED_HEIGHT
     WIDGET_WIDTH = 805
     COLLAPSED_HEIGHT = 75
@@ -40,7 +41,9 @@ class WizardWidget(QtGui.QWidget):
         -------
         None
         """
-        print("build_ui method Must be overridden in subclass")
+        self.ui = self.ui_class()
+        self.ui.setupUi(self)
+        # or override if a more complex build is required
 
     def connect_events(self):
         """
@@ -80,6 +83,23 @@ class WizardWidget(QtGui.QWidget):
         """
         # Update self.xml appropriately (probably a full replace)
         print("_from_xml method Must be overridden in subclass")
+
+    def get_widget(self, xpath):
+        """
+        returns the widget (QLineEdit, QComboBox, etc) that corresponds to
+        a given xpath
+
+        Parameters
+        ----------
+        xpath : str
+
+        Returns
+        -------
+        pyqt widget
+        """
+
+        return self.findChildren(QtGui.QLineEdit)
+
 
     def dropEvent(self, e):
         """
