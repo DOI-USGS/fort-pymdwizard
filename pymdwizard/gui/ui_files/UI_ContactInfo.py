@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'contact_info_simple.ui'
+# Form implementation generated from reading ui file 'ContactInfo.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_USGSContactInfoWidget(object):
     def setupUi(self, USGSContactInfoWidget):
         USGSContactInfoWidget.setObjectName(_fromUtf8("USGSContactInfoWidget"))
-        USGSContactInfoWidget.resize(528, 312)
+        USGSContactInfoWidget.resize(528, 315)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Arial"))
         USGSContactInfoWidget.setFont(font)
@@ -660,12 +660,6 @@ class Ui_USGSContactInfoWidget(object):
         self.horizontalLayout_14.addWidget(self.groupBox_3)
         self.verticalLayout_7.addLayout(self.horizontalLayout_14)
         self.verticalLayout_11.addLayout(self.verticalLayout_7)
-        self.label_27.raise_()
-        self.state.raise_()
-        self.label_28.raise_()
-        self.postal.raise_()
-        self.label_29.raise_()
-        self.label_30.raise_()
 
         self.retranslateUi(USGSContactInfoWidget)
         QtCore.QMetaObject.connectSlotsByName(USGSContactInfoWidget)
@@ -740,16 +734,14 @@ class Ui_USGSContactInfoWidget(object):
         self.state.setToolTip(_translate("USGSContactInfoWidget", "State or Province -- the state or province of the address.\n"
 "Type: text\n"
 "Domain: free text\n"
-"Short Name: state\n"
-"", None))
+"Short Name: state", None))
         self.label_28.setToolTip(_translate("USGSContactInfoWidget", "Required", None))
         self.label_28.setText(_translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>", None))
         self.label_30.setText(_translate("USGSContactInfoWidget", "Zipcode", None))
         self.postal.setToolTip(_translate("USGSContactInfoWidget", "Postal Code -- the ZIP or other postal code of the address.\n"
 "Type: text\n"
 "Domain: free text\n"
-"Short Name: postal\n"
-"", None))
+"Short Name: postal", None))
         self.label_29.setToolTip(_translate("USGSContactInfoWidget", "Required", None))
         self.label_29.setText(_translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>", None))
         self.label_31.setText(_translate("USGSContactInfoWidget", "Country", None))
@@ -761,8 +753,7 @@ class Ui_USGSContactInfoWidget(object):
         self.addrtype.setToolTip(_translate("USGSContactInfoWidget", "Address Type -- the information provided by the address.\n"
 "Type: text\n"
 "Domain: \"mailing\" \"physical\" \"mailing and physical\", free text\n"
-"Short Name: addrtype\n"
-"", None))
+"Short Name: addrtype", None))
         self.addrtype.setItemText(0, _translate("USGSContactInfoWidget", "Mailing", None))
         self.addrtype.setItemText(1, _translate("USGSContactInfoWidget", "Physical", None))
         self.addrtype.setItemText(2, _translate("USGSContactInfoWidget", "Mailing and Physical", None))

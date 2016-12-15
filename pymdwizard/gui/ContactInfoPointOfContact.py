@@ -9,17 +9,35 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import contact_info
-from pymdwizard.gui.ui_files import contact_info_main
-from pymdwizard.gui.ui_files import usgs_contact_importer
+from pymdwizard.gui.ui_files import UI_ContactInfo
+from pymdwizard.gui.ui_files import UI_ContactInfoPointOfContact
+from pymdwizard.gui.ui_files import UI_USGSContactImporter
 
 
-class ContactInfoWidget(WizardWidget):
+class ContactInfoPointOfContact(WizardWidget):
 
     WIDGET_WIDTH = 805
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Contact Information <cntinfo>"
+
+    # This dictionary provides a mechanism for crosswalking between
+    # gui elements (pyqt widgets) and the xml document
+    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
+                    'cntorg': 'cntinfo/cntperp/cntorg',
+                    'cntpos': 'cntinfo/cntpos',
+                    'address': 'cntinfo/cntaddr/address',
+                    'address2': 'cntinfo/cntaddr/address[2]',
+                    'address3': 'cntinfo/cntaddr/address[3]',
+                    'city': 'cntinfo/cntaddr/city',
+                    'state': 'cntinfo/cntaddr/state',
+                    'postal': 'cntinfo/cntaddr/postal',
+                    'state': 'cntinfo/cntaddr/state',
+                    'country': 'cntinfo/cntaddr/country',
+                    'addrtype': 'cntinfo/cntaddr/addrtype',
+                    'cntvoice': 'cntinfo/cntvoice',
+                    'cntfax': 'cntinfo/cntfax',
+                    'cntemail': 'cntinfo/cntemail'}
 
     def build_ui(self):
         """
@@ -29,16 +47,16 @@ class ContactInfoWidget(WizardWidget):
         -------
         None
         """
-        self.ui = contact_info_main.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_ContactInfoPointOfContact.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
-
 
         self.ui.mouseMoveEvent = self.mouseMoveEvent
 
         self.contact_info_widget = QtGui.QWidget(self)
-        self.contact_info_ui = contact_info.Ui_USGSContactInfoWidget()
+        self.contact_info_ui = UI_ContactInfo.Ui_USGSContactInfoWidget()
         self.contact_info_ui.setupUi(self.contact_info_widget)
-        self.contact_info_widget.setSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.contact_info_widget.setSizePolicy(QtGui.QSizePolicy.Minimum,
+                                               QtGui.QSizePolicy.Minimum)
         self.ui.main_layout.addWidget(self.contact_info_widget)
 
         self.collapsed_size = QtCore.QSize(self.WIDGET_WIDTH, self.COLLAPSED_HEIGHT)
@@ -57,7 +75,7 @@ class ContactInfoWidget(WizardWidget):
 
     def usgs_contact(self):
         self.usgs_contact = QtGui.QDialog(self)
-        self.usgs_contact_ui = usgs_contact_importer.Ui_ImportUsgsUser()
+        self.usgs_contact_ui = UI_USGSContactImporter.Ui_ImportUsgsUser()
         self.usgs_contact_ui.setupUi(self.usgs_contact)
         self.usgs_contact_ui.buttonBox.clicked.connect(self.button_pressed)
         self.usgs_contact_ui.le_usgs_ad_name.returnPressed.connect(self.add_contact)
@@ -95,7 +113,10 @@ class ContactInfoWidget(WizardWidget):
 
     def _to_xml(self):
 
+        pntcontact = etree.Element('ptcontac')
+
         cntinfo = etree.Element("cntinfo")
+        pntcontact.append(cntinfo)
 
         cntperp = etree.Element("cntperp")
         cntper = etree.Element("cntper")
@@ -129,7 +150,7 @@ class ContactInfoWidget(WizardWidget):
 
         cntinfo.append(cntaddr)
 
-        return cntinfo
+        return pntcontact
 
     def _from_xml(self, contact_information):
         contact_dict = xml_utils.node_to_dict(contact_information)
@@ -137,9 +158,10 @@ class ContactInfoWidget(WizardWidget):
 
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
-    app.setApplicationName('myApp')
-    dialog = ContactInfoWidget()
+    app = QtGui.QApplication([])
+    app.title = 'test'
+    dialog = ContactInfoPointOfContact()
+    dialog.setWindowTitle("cntinfo")
     dialog.resize(dialog.collapsed_size)
     dialog.show()
     sys.exit(app.exec_())
