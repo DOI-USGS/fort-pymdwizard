@@ -137,14 +137,14 @@ class ContactInfoPointOfContact(WizardWidget):
         cntaddr.append(addrtype)
 
         for label in ['address', 'address2', 'address3', 'city', 'state',
-                      'postal', 'country']:
+                      'postal', 'country', 'cntvoice', 'cntfax', 'cntemail']:
             widget = self.findChild(QtGui.QLineEdit, label)
             try:
 
-                if widget.text().strip():
-                    node = etree.Element(label)
-                    node.text = widget.text()
-                    cntaddr.append(node)
+                # if widget.text().strip():
+                node = etree.Element(label)
+                node.text = widget.text()
+                cntaddr.append(node)
             except:
                 pass
 
