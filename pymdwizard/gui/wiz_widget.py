@@ -26,12 +26,10 @@ class WizardWidget(QtGui.QWidget):
 
         self.build_ui()
         self.connect_events()
-        if self.xml:
+        if xml:
             self._from_xml(self.xml)
 
-        # setup the drag and drop functionality
-        self.setMouseTracking(True)
-        self.setup_dragdrop(self)
+
 
     def build_ui(self):
         """
@@ -44,6 +42,10 @@ class WizardWidget(QtGui.QWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
         # or override if a more complex build is required
+
+        # setup the drag and drop functionality
+        self.setMouseTracking(True)
+
 
     def connect_events(self):
         """
