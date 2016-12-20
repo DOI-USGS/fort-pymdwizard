@@ -26,6 +26,11 @@ class Ui_USGSContactInfoWidget(object):
     def setupUi(self, USGSContactInfoWidget):
         USGSContactInfoWidget.setObjectName(_fromUtf8("USGSContactInfoWidget"))
         USGSContactInfoWidget.resize(528, 315)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(USGSContactInfoWidget.sizePolicy().hasHeightForWidth())
+        USGSContactInfoWidget.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Arial"))
         USGSContactInfoWidget.setFont(font)

@@ -14,7 +14,7 @@ from pymdwizard.core import taxonomy
 from pymdwizard.gui.wiz_widget import WizardWidget
 
 from pymdwizard.gui.ui_files import UI_MainWindow
-
+from pymdwizard.gui.IDInfo import IdInfo
 
 class PyMdWizardMainForm(QtGui.QMainWindow):
 
@@ -37,6 +37,11 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
         """
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.setup_dragdrop(self)
+
+        self.idinfo = IdInfo()
+        self.ui.page_idinfo.setLayout(self.idinfo.layout())
 
     def connect_events(self):
         """
@@ -81,33 +86,143 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(new_index)
 
     def _to_xml(self):
+        metadata_node = etree.Element('metadata')
+        idinfo = self.idinfo._to_xml()
+        metadata_node.append(idinfo)
 
-        df = self.ui.table_include.model().dataframe()
-        include_common = self.ui.check_include_common.isChecked()
+        return metadata_node
 
-        fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
-                                                      tsns=list(df.tsn),
-                                                      include_common_names=include_common)
-
-        return fgdc_taxonomy
 
     def _from_xml(self, contact_information):
-        pass
+        return "testing"
         # contact_dict = xml_utils.node_to_dict(contact_information)
         # utils.populate_widget(self, contact_dict)
 
+    def get_widget(self, xpath):
+        """
+        returns the widget (QLineEdit, QComboBox, etc) that corresponds to
+        a given xpath
 
-class MyPopup(QtGui.QWidget):
-    def __init__(self):
-        QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        Parameters
+        ----------
+        xpath : str
+
+        Returns
+        -------
+        pyqt widget
+        """
+
+        return self.findChildren(QtGui.QLineEdit)
 
 
-        self.textEdit = QtGui.QTextEdit()
+    def dropEvent(self, e):
+        """
+        Updates the form with the
 
-        layout.addWidget(self.textEdit)
+        Parameters
+        ----------
+        e : qt event
 
-        self.setLayout(layout)
+        Returns
+        -------
+        None
+        """
+        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        element = etree.fromstring(e.mimeData().text(), parser=parser)
+
+        self._from_xml(element)
+
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        # should this always be accepted?
+        e.accept()
+
+    def mouseMoveEvent(self, e):
+        """
+        Handles the snippet capture and drag drop initialization
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+        None
+        """
+        if e.buttons() != QtCore.Qt.LeftButton:
+            return
+
+        mime_data = QtCore.QMimeData()
+        pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
+        mime_data.setText(pretty_xml)
+
+        # let's make it fancy. we'll show a "ghost" of the button as we drag
+        # grab the button to a pixmap
+        pixmap = QtGui.QPixmap.grabWidget(self)
+        size = pixmap.size()*.65
+        half_pixmap = pixmap.scaled(size, QtCore.Qt.KeepAspectRatio,
+                                    transformMode=QtCore.Qt.SmoothTransformation)
+
+        # below makes the pixmap half transparent
+        painter = QtGui.QPainter(half_pixmap)
+        painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
+        painter.fillRect(half_pixmap.rect(), QtGui.QColor(0, 0, 0, 127))
+
+        font = QtGui.QFont()
+        font.setFamily('Arial')
+        # font.setFixedPitch(True)
+        font.setPointSize(15)
+        # font.setBold(True)
+        painter.setFont(font)
+
+        painter.setPen(QtCore.Qt.red)
+        painter.drawText(half_pixmap.rect(), QtCore.Qt.AlignCenter,
+                         self.drag_label)
+
+        painter.end()
+
+        drag = QtGui.QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.setPixmap(half_pixmap)
+        drag.setHotSpot(e.pos() - self.rect().topLeft())
+
+        dropAction = drag.start(QtCore.Qt.MoveAction)
+
+    def setup_dragdrop(self, widget):
+        """
+        Sets up mouse tracking and drag drop on child widgets
+
+        Parameters
+        ----------
+        widget : QObject
+
+        Returns
+        -------
+
+        None
+        """
+        if not isinstance(widget, (QtGui.QLineEdit, QtGui.QTableView)):
+            try:
+
+                widget.setMouseTracking(True)
+                widget.setAcceptDrops(True)
+                widget.mouseMoveEvent = self.mouseMoveEvent
+                widget.setDragEnabled(True)
+            except:
+                pass
+
+        for child in widget.findChildren(QtCore.QObject):
+            self.setup_dragdrop(child)
+
 
 
 class FaderWidget(QtGui.QWidget):
@@ -123,7 +238,7 @@ class FaderWidget(QtGui.QWidget):
         self.timeline = QtCore.QTimeLine()
         self.timeline.valueChanged.connect(self.animate)
         self.timeline.finished.connect(self.close)
-        self.timeline.setDuration(650)
+        self.timeline.setDuration(450)
         self.timeline.start()
 
         self.resize(new_widget.size())

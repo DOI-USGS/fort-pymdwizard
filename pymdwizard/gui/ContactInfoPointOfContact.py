@@ -16,10 +16,10 @@ from pymdwizard.gui.ui_files import UI_USGSContactImporter
 
 class ContactInfoPointOfContact(WizardWidget):
 
-    WIDGET_WIDTH = 805
+    WIDGET_WIDTH = 500
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
-    drag_label = "Contact Information <cntinfo>"
+    drag_label = "Point of Contact <ptcontac>"
 
     # This dictionary provides a mechanism for crosswalking between
     # gui elements (pyqt widgets) and the xml document
@@ -47,8 +47,11 @@ class ContactInfoPointOfContact(WizardWidget):
         -------
         None
         """
+        self._height = 100
         self.ui = UI_ContactInfoPointOfContact.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
+        self.setSizePolicy(QtGui.QSizePolicy.Minimum,
+                              QtGui.QSizePolicy.Fixed)
 
         self.ui.mouseMoveEvent = self.mouseMoveEvent
 
@@ -59,8 +62,11 @@ class ContactInfoPointOfContact(WizardWidget):
                                                QtGui.QSizePolicy.Minimum)
         self.ui.main_layout.addWidget(self.contact_info_widget)
 
-        self.collapsed_size = QtCore.QSize(self.WIDGET_WIDTH, self.COLLAPSED_HEIGHT)
-        self.expanded_size = QtCore.QSize(self.WIDGET_WIDTH, self.EXPANDED_HEIGHT)
+        self.collaped_size = QtCore.QSize(self.WIDGET_WIDTH,
+                                          self.COLLAPSED_HEIGHT)
+        self.resize(self.collaped_size)
+        self.setup_dragdrop(self)
+
 
     def connect_events(self):
         """
@@ -102,14 +108,40 @@ class ContactInfoPointOfContact(WizardWidget):
                 QtGui.QMessageBox.warning(self.usgs_contact, "Name Not Found", "The Metadata Wizard was unable to locate the provided user name in the USGS directory")
 
     def contact_used_change(self, b):
-        self.animation = QtCore.QPropertyAnimation(self, "size")
-        self.animation.setDuration(250)
+        # # self.set
+        # self.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        #
+        # self.animation = QtCore.QPropertyAnimation(self.contact_info_widget, "size")
+        # self.animation.setDuration(500)
+        #
+        # new_width = self.width()
+        # self.new_height = None
         if b:
-            self.animation.setEndValue(self.expanded_size)
-            self.animation.start()
+            self.contact_info_widget.show()
+            # self.contact_info_widget.setHidden(False)
+            # self.new_height = self.EXPANDED_HEIGHT
         else:
-            self.animation.setEndValue(self.collapsed_size)
-            self.animation.start()
+            self.contact_info_widget.hide()
+            # self.contact_info_widget.setHidden(True)
+            # self.new_height = self.COLLAPSED_HEIGHT
+        #
+        # self.new_size = QtCore.QSize(new_width, self.new_height)
+        # self.animation.setEndValue(self.new_size)
+        #
+        # # self.animation.finished.connect(self._resize_finished)
+        # self.animation.start()
+
+    def _resize_finished(self):
+        self.sizePolicy().setVerticalPolicy(QtGui.QSizePolicy.Fixed)
+        # self.setFixedHeight(self.new_height)
+        # self.sizeHint()
+        # self._width = self.width()
+        self.setMaximumHeight(self.new_height)
+    #
+    # def sizeHint(self):
+    #     print(self.height(), self.width())
+    #     # self.setMaximumHeight(self._height)
+    #     # return QtCore.QSize(self.width(), self._height)
 
     def _to_xml(self):
 
@@ -162,7 +194,8 @@ if __name__ == "__main__":
     app.title = 'test'
     dialog = ContactInfoPointOfContact()
     dialog.setWindowTitle("cntinfo")
-    dialog.resize(dialog.collapsed_size)
+    # # init_size
+    # dialog.resize(dialog.collapsed_size)
     dialog.show()
     sys.exit(app.exec_())
 

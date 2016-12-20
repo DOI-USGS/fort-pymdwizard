@@ -25,7 +25,13 @@ except AttributeError:
 class Ui_USGSContactInfoWidgetMain(object):
     def setupUi(self, USGSContactInfoWidgetMain):
         USGSContactInfoWidgetMain.setObjectName(_fromUtf8("USGSContactInfoWidgetMain"))
-        USGSContactInfoWidgetMain.resize(530, 368)
+        USGSContactInfoWidgetMain.resize(530, 90)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(USGSContactInfoWidgetMain.sizePolicy().hasHeightForWidth())
+        USGSContactInfoWidgetMain.setSizePolicy(sizePolicy)
+        USGSContactInfoWidgetMain.setMaximumSize(QtCore.QSize(16777215, 16777215))
         USGSContactInfoWidgetMain.setAcceptDrops(True)
         USGSContactInfoWidgetMain.setStyleSheet(_fromUtf8("font: 9pt \"Arial\";\n"
 "color: rgb(60, 60, 60);"))
@@ -89,7 +95,7 @@ class Ui_USGSContactInfoWidgetMain(object):
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.main_layout.addLayout(self.horizontalLayout_3)
-        spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem3 = QtGui.QSpacerItem(20, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.MinimumExpanding)
         self.main_layout.addItem(spacerItem3)
         self.verticalLayout_3.addLayout(self.main_layout)
         self.verticalLayout_2.addWidget(self.groupBox)
