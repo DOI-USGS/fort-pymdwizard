@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Jay Diffendorfer</origin>
+        <origin>Roger Compton</origin>
+        <origin>Louisa Kramer</origin>
+        <origin>Zach Ancona</origin>
+        <origin>Donna Norton</origin>
+        <pubdate>201402</pubdate>
+        <title>Onshore Industrial Wind Turbine Locations for the United States through July 2013</title>
+        <geoform>Maps and Data - vector digital data</geoform>
+        <pubinfo>
+          <pubplace>Denver, CO</pubplace>
+          <publish>United States Geological Survey (USGS)</publish>
+        </pubinfo>
+        <onlink>http://dx.doi.org/10.3133/ds817 and http://eerscmap.er.usgs.gov/windfarm/</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This data set provides industrial-scale onshore wind turbine locations in the United States through July 22, 2013, corresponding facility information, and turbine technical specifications. The database has more than 47,000 wind turbine records that have been collected, digitized, locationally verified, and internally quality controlled. Turbines from the Federal Aviation Administration Digital Obstacle File, through product release date July 22, 2013, were used as the primary source of turbine data points. Verification of the turbine positions was done by visual interpretation using high-resolution aerial imagery in ESRI ArcGIS Desktop. Turbines without Federal Aviation Administration Obstacle Repository System numbers were visually identified and point locations were added to the collection. We estimated a locational error of plus or minus 10 meters for turbine locations. Wind farm facility names were identified from publically available facility data sets. Facility names were then used in a web search of additional industry publications and press releases to attribute additional turbine information (such as manufacturer, model, and technical specifications of wind turbines). Wind farm facility location data from various wind and energy industry sources were used to search for and digitize turbines not in existing databases. Technical specifications for turbines were assigned based on the wind turbine make and model as described in literature, specifications listed in the Federal Aviation Administration Digital Obstacle File, and information on the turbine manufacturer’s website. Some facility and turbine information on make and model did not exist or was difficult to obtain. Thus, uncertainty may exist for certain turbine specifications. That uncertainty was rated and a confidence was recorded for both location and attribution data quality.</abstract>
+      <purpose>The purpose of this information is to provide a publicly available spatially-referenced, national dataset of onshore industrial wind turbine locations and their technical specifications.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>1981</begdate>
+          <enddate>2013</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>complete</progress>
+      <update>none planned</update>
+    </status>
+    <spdom>
+      <descgeog>onshore, United States of America, including Alaska and Hawaii</descgeog>
+      <bounding>
+        <westbc>-180.000000</westbc>
+        <eastbc>180.000000</eastbc>
+        <northbc>79.972399</northbc>
+        <southbc>10.273857</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>utilitiesCommunications</themekey>
+        <themekey>structure</themekey>
+      </theme>
+      <theme>
+        <themekt>none</themekt>
+        <themekey>turbine</themekey>
+        <themekey>wind</themekey>
+        <themekey>shapefile</themekey>
+        <themekey>dataset</themekey>
+        <themekey>wind farm</themekey>
+        <themekey>windfarm</themekey>
+        <themekey>wind facility</themekey>
+        <themekey>geospatial datasets</themekey>
+        <themekey>energy</themekey>
+        <themekey>GIS</themekey>
+        <themekey>renewable</themekey>
+      </theme>
+      <place>
+        <placekt>none</placekt>
+        <placekey>Alabama</placekey>
+        <placekey>Alaska</placekey>
+        <placekey>Arizona</placekey>
+        <placekey>Arkansas</placekey>
+        <placekey>California</placekey>
+        <placekey>Colorado</placekey>
+        <placekey>Connecticut</placekey>
+        <placekey>Delaware</placekey>
+        <placekey>District of Columbia</placekey>
+        <placekey>Florida</placekey>
+        <placekey>Georgia</placekey>
+        <placekey>Hawaii</placekey>
+        <placekey>Idaho</placekey>
+        <placekey>Illinois</placekey>
+        <placekey>Indiana</placekey>
+        <placekey>Iowa</placekey>
+        <placekey>Kansas</placekey>
+        <placekey>Kentucky</placekey>
+        <placekey>Louisiana</placekey>
+        <placekey>Maine</placekey>
+        <placekey>Maryland</placekey>
+        <placekey>Massachusetts</placekey>
+        <placekey>Michigan</placekey>
+        <placekey>Minnesota</placekey>
+        <placekey>Mississippi</placekey>
+        <placekey>Missouri</placekey>
+        <placekey>Montana</placekey>
+        <placekey>Nebraska</placekey>
+        <placekey>Nevada</placekey>
+        <placekey>New Hampshire</placekey>
+        <placekey>New Jersey</placekey>
+        <placekey>New Mexico</placekey>
+        <placekey>New York</placekey>
+        <placekey>North Carolina</placekey>
+        <placekey>North Dakota</placekey>
+        <placekey>Ohio</placekey>
+        <placekey>Oklahoma</placekey>
+        <placekey>Oregon</placekey>
+        <placekey>Pennsylvania</placekey>
+        <placekey>Rhode Island</placekey>
+        <placekey>South Carolina</placekey>
+        <placekey>South Dakota</placekey>
+        <placekey>Tennessee</placekey>
+        <placekey>Texas</placekey>
+        <placekey>Utah</placekey>
+        <placekey>Vermont</placekey>
+        <placekey>Virginia</placekey>
+        <placekey>Virgin Islands</placekey>
+        <placekey>Washington</placekey>
+        <placekey>West Virginia</placekey>
+        <placekey>Wisconsin</placekey>
+        <placekey>Wyoming</placekey>
+      </place>
+    </keywords>
+    <accconst>none</accconst>
+    <useconst>none</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Jay Diffendorfer</cntper>
+          <cntorg>Geosciences and Environmental Change Science Center, USGS</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 25</address>
+          <address>Box 25046, Mail Stop 980</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+        </cntaddr>
+        <cntvoice>303-236-5369</cntvoice>
+        <cntemail>jediffendorfer@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>Federal Aviation Administration (FAA) Digital Obstacle File;  wind turbines from FAA were used as a base digital file http://tod.faa.gov/tod/public/TOD_DOF.html </datacred>
+    <native>Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; ESRI ArcGIS 10.0.5.4400</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Turbine data points were spatially verified to confirm or edit their correct position. The map scale used while verifying and digitizing turbines depended on location, need, and availability of imagery. Authors used aerial imagery with a typical assessment map scale of 1:2,000 to 1:3,000, then zoomed to a larger map scale of 1:500 to 1:1,000 for point adjustment; none of the spatial verification was done at a map scale smaller than 1:5,000. Turbine locations were initially located and then independently verified and independently verified and checked for Quality Assurance/Quality Control (QA/QC) by a different team member. The attribute fields were also independently verified and checked for QA/QC by a team member other than the original attribute author. Uncertainty may exist for certain turbine locations as indicated in confidence turbine location (conf_loc). 
+A visual comparison of state and county fields were performed against state and county shapefiles. 
+The FAA_ORS field was sorted and checked for duplicates. The type_tower field was verified based on a combination of visual identification, turbine spacing, and industry specifications. 
+The image_year field was checked for completeness; National Aerial Imagery Program (NAIP) (year) was used where authors collected images directly from United States Department of Agriculture (USDA)/NAIP from Orthorectified County Mosaics; Bing Maps Aerial were usually the most current imagery posted to the source (Bing Maps) and metadata was not recovered for the scenes; Digital Globe's most current imagery from a National Geospatial Intelligence Agency contract under NextView License was used in cases where the most recent imagery was needed and metadata was not recovered for those scenes; USGS EDC Seamless Data Distribution System (SDDS) images were used in early checks of the data, available to the public through the USGS/EROS Data Center, and metadata was not recovered for those images. 
+The facility and turbine technical specification attribute fields have been checked for QA/QC and are included in this data. Turbine and facility attributes may have some erroneous information, given the unknown quality of the information sources. Additionally, the reported turbine technical specifications were not field verified nor validated with the source. Confidence in facility and turbine attributes was included in confidence attributes (conf_attr).
+</attraccr>
+    </attracc>
+    <logic>not applicable</logic>
+    <complete>All states are represented, although some states do not include wind turbines. States that do not have known turbines are: Alabama, Arkansas, Connecticut, Florida, Georgia, Kentucky, Louisiana, Mississippi, North Carolina, South Carolina, and Virginia. 
+Potential missing turbines include those not represented in Federal Aviation Administration (FAA) Digital Obstacle File or not found in our visual aerial image search. Possible causes of unrepresented turbines include low turbine height (less than 200 feet), turbines built previous to the FAA reporting process, or turbines not submitted for review to the FAA. 
+Groups of turbines were attributed to a facility by comparing the following attributes across datasets: facility names, turbine counts, proximity to facility locations, and installation dates using temporal imagery or publication dates. When possible, turbines were grouped and attributed to a common wind farm (site_name). In some cases, particularly with older turbines or locations where individual facilities overlapped, it was not possible to attribute individual turbines to distinct facilities. In these cases, a simple naming convention of the general geographic location used within the community of wind energy practitioner, or a county name and a numerical value beginning with 1 was used. For example (unknown County #) (unknown Facility Area #).</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>The windmills found in the FAA Digital Obstacle File and other turbines digitized were horizontally verified with aerial imagery and moved, as needed, to a positional accuracy within plus or minus 10 meters to the base of the turbine. NAIP provides 1 meters ground sample distance orthoimagery to within plus or minus 6 meters to true ground at a 95-percent confidence level. SDDS imagery is NAIP orthoimagery stitched together and compressed. The Bing Maps Aerial basemaps have a variable resolution and accuracy based on image source and location. A sample of project wind turbine data points, in various parts of the United States, were checked on Bing Maps Aerial base maps and compared to the NAIP imagery and found to be as accurate as, or better than, NAIP. Our visual interpretation was based on NAIP, Bing, Digital Globe, or SDDS orthoimagery, which all have some registrations errors and internal inaccuracies. Even with those issues, plus an additional 4 meters for human error of digitizing and visual verification, the position of the data points should still fall within plus or minus 10 meters accuracy. If any points are not within plus or minus 10 meters accuracy, it would be caused by errors in the imagery used for verification. Map scale used while verifying and digitizing turbines depended on location, need, and availability of imagery. Authors used aerial imagery with a typical assessment map scale of 1:2,000 to 1:3,000, then zooming to a larger map scale of 1:500 to 1:1,000 for point adjustment; none of the analysis was done at a map scale smaller than 1:5,000.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <method>
+        <methtype>lab</methtype>
+        <methdesc>Visual interpretation of high resolution aerial orthoimagery was done in Arc Map 10.0 for both verification of known FAA ORS points and digitization of newly located wind turbine locations. Sources for wind turbine facilities and turbine specification attribution were numerous and often found in a web search of industry publications and press releases. The list, on a state basis, is available upon request. 
+        Sources used: 
+        Bing Maps Aerial from ESRI Arc Map Base Maps-updated continually; County Boundaries 2001, http://nationalatlas.gov/atlasftp.html#countyp; 
+        Digital Globe most current imagery-Rapid Delivery of Online Geospatial-Intelligence (RDOG) from a National Geospatial Intelligence Agency contract under NextView License-updated continually, https://rdog.digitalglobe.com/myDigitalGlobe/RegistrationRequest.html ; 
+        Energy Information Administration (EIA), EIA-860 dataset. http://www.eia.gov; 
+        FAA-Digital Obstacle File-https://nfdc.faa.gov/tod/public/TOD_DOF.html-through product release date July 22, 2013; Federal Information Processing Standards-http://www.itl.nist.gov/fipspubs/fip5-2.htm 
+        Homeland Security Infrastructure Program (HSIP) 2012 release: https://www.hifldwg.org/public/HSIP%20Gold%20Freedom%20One%20Pager_July%202012.pdf; Industry Press Releases from a web search for turbine and facility information; 
+        Industry Turbine Model Specifications from manufacturer found in publicly available website searches; 
+        Local Government Permitting Agencies-publicly available website searches, often published environmental site assessments or other permitting for turbines and facilities; 
+        National Atlas-http://nationalatlas.gov/atlasftp.html#statep0; 
+        Software used:
+        ESRI ArcMap 10.0 and 10.1-http://www.esri.com/; USDA NAIP county mosaic orthoimagery from http://datagateway.nrcs.usda.gov/; USGS SDDS orthoimagery from internal USGS EROS data Center Server from http://viewer.nationalmap.gov/example/services.html.  http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSImageryOnly/MapServer - updated continually; Wind Energy Data and Information (WENDI) from Oak Ridge National Laboratory. No longer funded, no longer available, facility data collected through 2012 just prior to de-funding
+</methdesc>
+      </method>
+      <procstep>
+        <procdesc>Prior to steps listed below, turbine locations were mapped using USDA/National Resources Conservation Service (NRCS)/NAIP orthoimagery as part of an earlier wind facility land transformation (disturbance) mapping project. Turbine points collected as part of this mapping were identified and mapped across different parts of the United States while searching for wind power facilities. For this data set: 
+        1. Wind turbine data was acquired from FAA Digital Obstacle File (DOF); windmills were filtered, and a shapefile of FAA windmills points was created from industry provided coordinates (including FAA fields:FAA_ORS and FAA_AGL). 
+        2. Previously digitized turbine locations developed for the disturbance mapping that coincided with FAA points (duplicate locations) were removed, and remaining disturbance mapping points were merged with FAA points as a shapefile. 
+        3. Wind farm facility data were acquired from EIA and WENDI and combined with the merged turbine-points data into a single Arc Map 10.0 project. 
+        4. Supplemental layers of state and county boundaries, as well as HSIP cultural, landform, hydro points, cities, towns, and villages were added to the ARC Map project to allow for comparisons across data types while matching turbines to facilities. HSIP data were only used internally for data search and attributing and are not part of this final product. 
+        5. Turbine points were selected by state, saved as an individual turbine file for each state, and distributed to authors for editing. 
+        6. A basemap image of Bing Maps Aerial, or other maps, was added to the Arc Map project file. If Bing Maps Aerial did not show a turbine installation, additional USGS/EROS SDDS orthoimagery from the Eros Data center, USDA/NAIP County Mosaic Orthoimagery, or Digital Globe imagery was added. 
+        7. Turbine points were visually verified and edited/moved to the base of the turbine as needed. If the turbine data point was not seen on an image, the conf_loc was entered as 0. If the turbine point was in partial construction or with other doubts, the conf_loc was entered as 1. If clearly seen on image and found the conf_loc was entered as 2. 
+        8. A search for unrepresented turbines was done. Searches were performed near known turbines and near facility locations found in the EIA and WENDI data. Any newly identified turbines were digitized. 
+        9. State, county, image_name, image_year, and type_tower were attributed for each turbine. 
+        10. Groups of turbines were attributed to a facility by comparing the following attributes across datasets: facility names, turbine counts, proximity to facility locations, and installation dates using temporal imagery or publication dates. When possible, turbines were grouped and attributed to a common wind farm (site_name). In some cases, particularly with older turbines or locations where individual facilities overlapped, it was not possible to attribute individual turbines to distinct facilities. In these cases, a simple naming convention of the general geographic location used within the community of wind energy practitioners, or a county name and a numerical scale beginning at 1 was used. For example (unknown County #) (unknown Facility Area #). 
+        11. Facility names (site_name) were then used in a web search of additional industry publications and press releases to identify manufacturer, model, and technical specifications of turbines for attributing. If no information was found or major discrepancies were found in the information, a confidence of 0 was entered under the conf_attr field. If some discrepancies were found or some uncertainty existed (usually described in comments), a confidence of 1 was entered. If the identification was clear and easily confirmed, a confidence of 2 was entered. 
+        12. QA/QC was conducted for spatial accuracy and attribution by a peer or a supervisor other than the author that initially completed the work.
+        13. Edited wind turbine files for each state were merged into one shapefile, and an overview for consistency, correctness, and positional accuracy was performed again by peers and supervisors as a national dataset. 
+        14. Non-turbine points that had been assigned FAA Obstacle Repository System (ORS) numbers or were digitized in the process such as communications towers, meteorological towers, water windmills, power transmission towers, etc., were removed.
+</procdesc>
+        <procdate>2008 thru 2013</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Jay Diffendorfer</cntper>
+              <cntorg>Geosciences and Environmental Change Science Center, USGS</cntorg>
+            </cntperp>
+            <cntpos>Research Ecologist</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>Denver Federal Center, Building 25</address>
+              <address>Box 25046, Mail Stop 980</address>
+              <city>Denver</city>
+              <state>CO</state>
+              <postal>80225</postal>
+            </cntaddr>
+            <cntvoice>303-236-5369</cntvoice>
+            <cntemail>jediffendorfer@usgs.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>Albers Conical Equal Area</mapprojn>
+          <albers>
+            <stdparll>20.0</stdparll>
+            <stdparll>60.0</stdparll>
+            <longcm>-96.0</longcm>
+            <latprjo>40.0</latprjo>
+            <feast>0.0</feast>
+            <fnorth>0.0</fnorth>
+          </albers>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.0000000037055025714494162</absres>
+            <ordres>0.0000000037055025714494162</ordres>
+          </coordrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D North American 1983</horizdn>
+        <ellips>GRS 1980</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>
+          <title>USGS_windturbines_201307</title>
+        </enttypl>
+        <enttypd>
+          <title>Onshore Industrial Wind Turbine Locations for the United States through July 2013 </title>
+        </enttypd>
+        <enttypds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>FID</attrlabl>
+        <attrdef>feature number, automatically generated ID by Arc Map</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>sequential automatically generated number</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>data type of geometry, automatically generated by Arc Map</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>data type of geometry</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>unique_id</attrlabl>
+        <attrdef>unique, stable object number for cross-reference</attrdef>
+        <attrdefs>USGS </attrdefs>
+        <attrdomv>
+          <udom>object unique identification number</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>site_name</attrlabl>
+        <attrdef>name of wind energy generation facility</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <udom>name of wind energy generation facility, USGS derived the name based on common usage in EIA and WENDI facilities dataset, as well as other publications available in a web search  </udom>
+          <udom>unknown, unknown County #, or unknown General Area name,  indicates that the author was unable to determine a facility name from any of the above sources, or where individual facilities overlapped and it was not possible to attribute individual turbines to distinct facilities</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>on_year</attrlabl>
+        <attrdef>online year</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <udom>year the facility began generating, based on information from press releases and facilities shapefiles; multiple years indicate the project spanned multiple years or contained multiple phases of development, or become online within that timeframe, formatted as (year1)_(year2)_(year3)</udom>
+          <udom>unknown value indicates the author was unable to determine the year</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>manufac</attrlabl>
+        <attrdef> name of the turbine manufacturer for each turbine point</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>name of the manufacturer</edomv>
+            <edomvd>AAER, Acciona, Aeronautica, Alstrom, Atlantic Orient, AWE, Bergey Energy, BHD, Boeing, Bonus, China Creative Wind, Clipper, Danwin, DeWind, ECO, Elecon, Emergya Wind Technologies, Endurance, Enertech, Enron, Entegrity, Evance, EWT, Flowind, Fuhrlander, Gamesa, GE, Goldwind, Howden, Hyundai Heavy Industries, HZ Windpower, Kenersys, Kenetech, Leitwind, Mitsubishi, NEG Micon, Nordex, Nordic, Nordtank, Northern Power Systems, Polenko, PowerWind, REpower, Samsung, Sany, Seaforth Energy, Siemens, Silver Eagle, Sinovel, Skystream, Suzlon, Tacke, Turbowind, UMPI, Unison, unknown, Vensys, Vestas, W.E.G., Westinghouse, Wind Energy Solutions, Wind World, Windmaster, Windmatic, Windspire Energy, Zond</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>no information found, no facility site determination</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>model</attrlabl>
+        <attrdef> manufacturer's model name of each turbine, for example 1.5SLE, V100_1.8, Z50, etc., as collected from publications, may vary based on source </attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>name of the model</edomv>
+            <edomvd>1.5, 86, 1.0SLE, 1.2_64,1.5_74, 1.5_77, 1.5_82, 1.5S,1.5SE, 1.5SL, 1.5SLE,1.5XLE, 1.6_100, 1.6_82.5, 1.7_100, 1.85_87, 2.3_100, 2.5MW,23_160, 250KW,33M_VS, 52_900, 54_900, 56_100,65KW,72C1500, A1500, AOC15_65, AOC50, ATS_5, AW1500_77, AW1500_82, AW3000_109, AW3000_116, AW47_750, AW54_750, B62_1300, C100, C89, C93, C96,C99, D8.2, D9.2, DW52_900, DW54_900, E15, ECO100, ECO86, EW50, EWT900, FL1000, FL1500_70, FL2500_90, G52, G58, G80, G83, G87, G90, G97, GW77, GW82, GW87, H93, HMZ_Windmaster, HQ1650_77, HQ2000_86,HWP33, K100, KVS33, LTW77, M700_225, Micon108, MK1, MK2, MM92, MM92CCV, MOD-2, MS2, MWT100_2.4, MWT1000, MWT1000A, MWT102_2.4, MWT600, MWT92_2.4, MWT95_2.4, N100, N1000, N117, N43, N54, N60, N90, NM44 ,NM48_600, NM48_700, NM48_750, NM52, NM54, NM72_1500, NM72_1650, NM82_1500, NM82_1650, NTK65, NW100, NW100_19, PW56, S64, S88, S95, S97, SE8720, SE9320, SL1500, SWT1.3_62, SWT2.3_101, SWT2.3_108, SWT2.3_93, SWT3.0_101, T400, T600_48 ,TW 600e, U57, unknown, V100_1.8, V112_3.0, V15, V27, V39, V42, V44, V47, V66, V80_1.8, V80_2.0, V82, V90_1.8, V90_3.0, W2320, W3000, WES18, WES30, WM15S, WM17S, WWG0600, XL50, Z40, Z48, Z50</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>no information found, no facility site determination</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>type_tower</attrlabl>
+        <attrdef>tower feature as visually verified; structural characteristics of the tower</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>monopole</edomv>
+            <edomvd>monopole tower, single tubular column structure with nacelle and blades</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>trestle</edomv>
+            <edomvd>trestle tower, lattice type tower structure with nacelle and blades</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>pad only</edomv>
+            <edomvd>pad only, no tower present, probable new installation turbine pads</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>decommissioned</edomv>
+            <edomvd>includes both image verified removed turbines and ones not removed, ones not removed were marked decommissioned based on web publications that indicated decommissioned or removed</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>small monopole</edomv>
+            <edomvd>small monopole turbine, as visually identified in imagery by turbine spacing/structure, FAA_AGL less than 100 feet or 30.5 meters, or FAA_AGL height missing (not documented by FAA)</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>small trestle</edomv>
+            <edomvd>small trestle turbine, as visually identified in imagery by turbine spacing/structure,  FAA _AGL less than 100 feet or 30.5 meters, or FAA_ AGL height missing (not documented by FAA)</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>small generator</edomv>
+            <edomvd>building mounted small wind energy generators -  generally at an airport or business</edomvd>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>unidentified or unseen on imagery, or unknown turbine spec</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>MW_turbine</attrlabl>
+        <attrdef>power generation capacity of each individual turbine in Megawatts based on industry turbine technical model specifications or other sources (press releases or permitting agencies)</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.002</rdommin>
+            <rdommax>3.6</rdommax>
+            <attrunit>megawatts </attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>no information found, no facility site determination</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>total_ht</attrlabl>
+        <attrdef>height of entire wind turbine from ground to tip of a vertically extended blade above the tower, including hub (if available), based on industry technical specifications, in meters</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>12</rdommin>
+            <rdommax>178</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>unknown (make/model, or cluster counts unknown/not found) or research did not provide conclusive results for attributing</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>tower_h</attrlabl>
+        <attrdef>height of the tower only, based on industry technical specifications of the turbine model</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>18</rdommin>
+            <rdommax>120</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>unknown (make/model, or cluster counts unknown/not found) or research did not provide conclusive results for attributing</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>blade_l</attrlabl>
+        <attrdef>length of the blade from industry specifications when provided or one half of the diameter when unprovided</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.5</rdommin>
+            <rdommax>58</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>unknown (make/model, or cluster counts unknown/not found) or research did not provide conclusive results for attributing</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>rotor_dia</attrlabl>
+        <attrdef>rotor diameter, based on industry technical specifications of the turbine model</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.5</rdommin>
+            <rdommax>117</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>unknown (make/model, or cluster counts unknown/not found) or research did not provide conclusive results for attributing</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>rotor_s_a</attrlabl>
+        <attrdef>rotor swept area in square meters: Pi*r squared, calculated as 3.14159 (([rotor_dia] /2)*([rotor_dia] /2))</attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>23.76</rdommin>
+            <rdommax>10751.31</rdommax>
+            <attrunit>square meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>unknown (make/model, or cluster counts unknown/not found) or research did not provide conclusive results for attributing</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>lat_DD</attrlabl>
+        <attrdef>the current latitude of the turbine point, in decimal degrees calculated in Arc Map</attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>18.9674</rdommin>
+            <rdommax>66.8399</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>long_DD</attrlabl>
+        <attrdef>the current longitude of the turbine point, in decimal degrees calculated in Arc Map</attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>-170.4983</rdommin>
+            <rdommax>-67.807</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>state</attrlabl>
+        <attrdef>state in which the turbine is located, 2 letter standard state postal abbreviation</attrdef>
+        <attrdefs>Producer-Defined by the USGS using the National Atlas shapefile </attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>FIPS US state codes / US postal codes (this field uses the standard postal codes, which is a two-letter
+              abbreviation for the state or province)</codesetn>
+            <codesets>http://www.itl.nist.gov/fipspubs/fip5-2.htm</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>county</attrlabl>
+        <attrdef>county where the turbine is located, no abbreviations</attrdef>
+        <attrdefs>Producer-Defined by the USGS using the National Atlas County shapefile </attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>county name from the National Atlas</codesetn>
+            <codesets>Producer-Defined by the USGS using the National Atlas State shapefile </codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>conf_attr</attrlabl>
+        <attrdef>confidence in turbine attributes; Facility names (site_name) were used in a web search of industry publications and press releases to identify manufacturer, model, and technical specifications of turbines for attributing. Please note that turbines were not field verified.  </attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>0 = no confidence</edomv>
+            <edomvd>no facility data, no name, nothing in publications </edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>1 = partial confidence </edomv>
+            <edomvd>incomplete information or discrepancies across data sources or other discrepancies found, usually explained in comments field</edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>2 = full confidence</edomv>
+            <edomvd>consistent information across multiple data sources (note: nothing field verified)</edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>conf_loc</attrlabl>
+        <attrdef>confidence in turbine location; Turbine points from FAA were visually verified using aerial imagery.  In some cases, the imagery was taken prior to final turbine installation, so the analyst only saw the turbine pad or tower.  In other cases, imagery was not yet available for new facilities and we used the FAA turbine locations with no visual validation.  </attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>0 = no confidence</edomv>
+            <edomvd>nothing on image, never built,  been decommissioned, or tower location needs newer imagery; for example, turbine built in 2013 but latest available imagery is 2011   </edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>1 = visual interpretation partial confidence </edomv>
+            <edomvd>image shows a developed pad with concrete base and/or turbine parts on the ground</edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>2 = visual interpretation full confidence </edomv>
+            <edomvd>image shows an installed turbine or a tower with or without blades, the tower is at least partially installed, crane and other equipment may be present </edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>WENDI_name</attrlabl>
+        <attrdef>facility name based on WENDI (Wind Energy Data and Information) data  </attrdef>
+        <attrdefs>USGS derived from the no longer funded nor available WENDI</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>name</edomv>
+            <edomvd>facility name from WENDI data</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>no facility data from WENDI</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>EIA_name</attrlabl>
+        <attrdef>facility name based on EIA (Energy Information Administration) data; wind facility data was parsed from the database in Sept 2012</attrdef>
+        <attrdefs>USGS derived from EIA-860 dataset,  http://www.eia.gov</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>name</edomv>
+            <edomvd>facility name from EIA data</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>no facility data from EIA</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>FAA_jdate</attrlabl>
+        <attrdef>FAA Julian date, date of notification/permit, USGS removed any alpha characters</attrdef>
+        <attrdefs>FAA Digital Obstacle File https://nfdc.faa.gov/tod/public/TOD_DOF.html - through product release date July 22, 2013</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1993214</rdommin>
+            <rdommax>2013200</rdommax>
+            <attrunit>year day (for example 2013200 - the year is 2013 and the 200 is the two hundredth day of the year)</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>no data found from FAA</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>FAA_AGL</attrlabl>
+        <attrdef>FAA height of turbine tower and extent of rotor, from FAA DOF, AGL = Above Ground Level elevation; provided from FAA in feet, USGS converted to meters by dividing the feet by 3.28</attrdef>
+        <attrdefs>FAA Digital Obstacle File https://nfdc.faa.gov/tod/public/TOD_DOF.html - through product release date July 22, 2013</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>3.66</rdommin>
+            <rdommax>178</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+          <edom>
+            <edomv>-99999</edomv>
+            <edomvd>no data found from FAA</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>FAA_ORS</attrlabl>
+        <attrdef>FAA unique identifier for each turbine from FAA Digital Obstacle Files (FAA/DOF); identifier with the first two digits indicating a state, a dash, and sequential numbers; 'unknown' records are not part of the FAA/DOF; 'unknown' records are USGS turbine add-in features</attrdef>
+        <attrdefs>FAA Digital Obstacle File https://nfdc.faa.gov/tod/public/TOD_DOF.html - through product release date July 22, 2013</attrdefs>
+        <attrdomv>
+          <udom>FAA's unique identifier for turbines or 'unknown'</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_name</attrlabl>
+        <attrdef>source of temporal imagery used for visual analysis.</attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NAIP</edomv>
+            <edomvd>USDA/NRCS/datagateway - http://datagateway.nrcs.usda.gov/</edomvd>
+            <edomvds>Data Gateway, USDA</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>DigitalGlobe</edomv>
+            <edomvd>Digital Globe server - https://EVWHS.digitalglobe.com</edomvd>
+            <edomvds>Digial Globe</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>Bing Maps Aerial</edomv>
+            <edomvd>ESRI ArcMap Base maps, available from ESRI ArcMap 10.0</edomvd>
+            <edomvds>Microsoft Bing Maps</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>USGS EDC SDDS </edomv>
+            <edomvd>Ortho Imagery from EROS data center server</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_year</attrlabl>
+        <attrdef>image year (if available) used to positionally verify turbines; year of National Aerial Imagery Program (NAIP) ortho images (http://datagateway.nrcs.usda.gov/), DigitalGlobe current imagery available from (https://EVWHS.digitalglobe.com, or other source of imagery used in analysis </attrdef>
+        <attrdefs>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>year available for NAIP and DigitalGlobe imagery</edomv>
+            <edomvd>National Aerial Imagery Program (NAIP); county based aerial imagery orthophoto mosaics from USDA/NRCS/NAIP, http://datagateway.nrcs.usda.gov/</edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>unknown</edomv>
+            <edomvd>ESRI Arc Map Base maps, most recent scene available (image metadata not readily available). USGS_EDC_SDDS, available through WMS server at EROS Data Center in Sioux Falls, South Dakota (image metadata not available, server current imagery not readily available). Bing Maps Aerial, map server available through ESRI Arc Map (image metadata not readily available, server current imagery available) </edomvd>
+            <edomvds>Producer-Defined, by the USGS. Please see Source under Methods and Process Description in the Data Quality section</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>comments</attrlabl>
+        <attrdef>data developer comments to aid in attribution or further explanations </attrdef>
+        <attrdefs>Author</attrdefs>
+        <attrdomv>
+          <udom>data developer comments to aid in attribution or further explanations;such as: small turbine, not visible, seen only on Google Earth, not identified, facility phase undetermined, multiple phases, catastrophic failure, equipment on ground, no turbine, no development, or unsure of facility, etc.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <metainfo>
+    <metd>20130905</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Jay Diffendorfer</cntper>
+          <cntorg>Geosciences and Environmental Change Science Center, U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Research Ecologist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 25</address>
+          <address>Box 25046, Mail Stop 980</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+        </cntaddr>
+        <cntvoice>303-236-5369</cntvoice>
+        <cntemail>jediffendorfer@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001.1-1999</metstdv>
+  </metainfo>
+</metadata>
