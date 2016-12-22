@@ -1,6 +1,48 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 """
-Contains the baseclass that all pymdwizard GUI baseclasses inherit from
+License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
+                    http://creativecommons.org/licenses/by/4.0/
+
+PURPOSE
+------------------------------------------------------------------------------
+Provide a pyqt base class for all the widgets that that make up the Wizard GUI
+
+Provides standardized functionality to enable input and output of xml content
+drop and drop functionality for xml content, xpath navigation cross walking,
+and widget collapse/expand.
+
+
+SCRIPT DEPENDENCIES
+------------------------------------------------------------------------------
+    None
+
+
+U.S. GEOLOGICAL SURVEY DISCLAIMER
+------------------------------------------------------------------------------
+Any use of trade, product or firm names is for descriptive purposes only and
+does not imply endorsement by the U.S. Geological Survey.
+
+Although this information product, for the most part, is in the public domain,
+it also contains copyrighted material as noted in the text. Permission to
+reproduce copyrighted items for other than personal use must be secured from
+the copyright owner.
+
+Although these data have been processed successfully on a computer system at
+the U.S. Geological Survey, no warranty, expressed or implied is made
+regarding the display or utility of the data on any other system, or for
+general or scientific purposes, nor shall the act of distribution constitute
+any such warranty. The U.S. Geological Survey shall not be held liable for
+improper or incorrect use of the data described and/or contained herein.
+
+Although this program has been used by the U.S. Geological Survey (USGS), no
+warranty, expressed or implied, is made by the USGS or the U.S. Government as
+to the accuracy and functioning of the program and related program material
+nor shall the fact of distribution constitute any such warranty, and no
+responsibility is assumed by the USGS in connection therewith.
+------------------------------------------------------------------------------
 """
+
 from lxml import etree
 
 from PyQt4 import QtGui
@@ -8,12 +50,31 @@ from PyQt4 import QtCore
 
 
 class WizardWidget(QtGui.QWidget):
+    """
+    The base class all pymdwizard GUI components should inherit from.
+
+    Parameters
+    ----------
+
+    xml : lxml node
+          The original in memory xml node being displayed by the widget.
+          This node can contain content that does not get displayed in which
+          case care should be taken to ensure that the _from_xml and _to_xml
+          functions do not erase or overwrite this content.
+
+    parent : PyQt4 QWidget
+
+    original_xml : lxml node
+                   The original xml node contents before any changes were made.
+                   Note: This is not currently implemented
+    """
+
 
     # Preferred widget size constants
     # if widget doesn't collapse use -1 for COLLAPSED_HEIGHT
     WIDGET_WIDTH = 805
     COLLAPSED_HEIGHT = 75
-    EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
+    EXPANDED_HEIGHT = 385
 
     def __init__(self, xml=None, parent=None):
         QtGui.QWidget.__init__(self, parent=parent)
@@ -22,14 +83,13 @@ class WizardWidget(QtGui.QWidget):
         if __name__ == "__main__":
             QtGui.QMainWindow.__init__(self, parent)
 
-        self.xml = xml
+        self.original_xml = xml
 
         self.build_ui()
         self.connect_events()
         if xml:
+            self.original_xml = xml
             self._from_xml(self.xml)
-
-
 
     def build_ui(self):
         """
@@ -41,11 +101,19 @@ class WizardWidget(QtGui.QWidget):
         """
         self.ui = self.ui_class()
         self.ui.setupUi(self)
-        # or override if a more complex build is required
 
-        # setup the drag and drop functionality
-        self.setMouseTracking(True)
+        # this is where more complex build information would go such as
+        # instantiating child widgets, inserting them into the layout,
+        # tweaking the layout or individual widget properties, etc.
+        # If you are using this base class as intended this should not
+        # include extensive widget building from scratch.
 
+        # setup drag-drop functionality for this widget and all it's children.
+        self.setup_dragdrop(self)
+
+        # Any child widgets that have a separate drag-drop interactivity
+        # need to be added to this widget after running self.setup_dragdrop
+        # function so as not to override their individual drag-drop functions.
 
     def connect_events(self):
         """
@@ -89,7 +157,10 @@ class WizardWidget(QtGui.QWidget):
     def get_widget(self, xpath):
         """
         returns the widget (QLineEdit, QComboBox, etc) that corresponds to
-        a given xpath
+        a given xpath.
+
+        TODO: finalize general implementation details, although there's
+        no reason that these couldn't be unique for different widgets.
 
         Parameters
         ----------
@@ -101,7 +172,6 @@ class WizardWidget(QtGui.QWidget):
         """
 
         return self.findChildren(QtGui.QLineEdit)
-
 
     def dropEvent(self, e):
         """
@@ -187,7 +257,8 @@ class WizardWidget(QtGui.QWidget):
 
     def setup_dragdrop(self, widget):
         """
-        Sets up mouse tracking and drag drop on child widgets
+        Sets up mouse tracking and drag drop on child widgets.
+        This works recursively on all the child widgets and their children...
 
         Parameters
         ----------
@@ -198,6 +269,9 @@ class WizardWidget(QtGui.QWidget):
 
         None
         """
+
+        # Dragging from QLineEdits and QTableViews has awkward side effects,
+        # such as not being able to select text in the line edit.
         if not isinstance(widget, (QtGui.QLineEdit, QtGui.QTableView)):
             try:
 
