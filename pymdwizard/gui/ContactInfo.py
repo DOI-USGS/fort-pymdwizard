@@ -95,8 +95,8 @@ class ContactInfo(WizardWidget):
         self.usgs_contact = QDialog(self)
         self.usgs_contact_ui = UI_USGSContactImporter.Ui_ImportUsgsUser()
         self.usgs_contact_ui.setupUi(self.usgs_contact)
-        self.usgs_contact_ui.buttonBox.clicked.connect(self.button_pressed)
-        self.usgs_contact_ui.le_usgs_ad_name.returnPressed.connect(self.add_contact)
+        self.usgs_contact_ui.btn_OK.clicked.connect(self.add_contact)
+        self.usgs_contact_ui.btn_cancel.clicked.connect(self.cancel)
 
         self.usgs_contact.show()
 
@@ -111,13 +111,16 @@ class ContactInfo(WizardWidget):
             self._from_xml(cntperp)
             self.usgs_contact.deleteLater()
         else:
-            QMessageBox.warning(self.usgs_contact, "Name Not Found", "The Metadata Wizard was unable to locate the provided user name in the USGS directory")
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("'{}' Not Found".format(username))
+            msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
+            msg.setWindowTitle("Name Not Found")
+            msg.setStandardButtons(QMessageBox.Retry)
+            msg.exec_()
 
-    def button_pressed(self, button):
-        if button.text() == 'OK':
-            self.add_contact()
-        elif button.text() == 'Cancel':
-            self.usgs_contact.deleteLater()
+    def cancel(self):
+        self.usgs_contact.deleteLater()
 
     def _to_xml(self):
 
