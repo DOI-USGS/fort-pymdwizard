@@ -7,12 +7,12 @@ import sys
 from pytestqt import qtbot
 from lxml import etree
 
-from PyQt4 import QtGui
+from PyQt5.QtWidgets import QWidget, QLineEdit
 
-from pymdwizard.gui import ContactInfoPointOfContact
+from pymdwizard.gui import ContactInfo
 
-def test_contactinfo_gui(qtbot):
-    widget = ContactInfoPointOfContact.ContactInfoPointOfContact()
+def test_contactinfo__from_xml(qtbot):
+    widget = ContactInfo.ContactInfo()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
@@ -20,9 +20,9 @@ def test_contactinfo_gui(qtbot):
     contact = test_record.xpath("idinfo/ptcontac/cntinfo")[0]
 
     widget._from_xml(contact)
-    assert widget.findChild(QtGui.QLineEdit, 'cntper').text() == "Jay Diffendorfer"
-    assert widget.findChild(QtGui.QLineEdit, 'cntpos').text() == ""
-    assert widget.findChild(QtGui.QLineEdit, 'cntvoice').text() == "303-236-5369"
-    assert widget.findChild(QtGui.QLineEdit, 'cntemail').text() == "jediffendorfer@usgs.gov"
-    assert widget.findChild(QtGui.QLineEdit, 'postal').text() == "80225"
+    assert widget.findChild(QLineEdit, 'cntper').text() == "Jay Diffendorfer"
+    assert widget.findChild(QLineEdit, 'cntpos').text() == ""
+    assert widget.findChild(QLineEdit, 'cntvoice').text() == "303-236-5369"
+    assert widget.findChild(QLineEdit, 'cntemail').text() == "jediffendorfer@usgs.gov"
+    assert widget.findChild(QLineEdit, 'postal').text() == "80225"
 

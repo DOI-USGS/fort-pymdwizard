@@ -1,13 +1,54 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+"""
+License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
+                    http://creativecommons.org/licenses/by/4.0/
 
+PURPOSE
+------------------------------------------------------------------------------
+Provide a pyqt application for the main pymdwizard application
+
+
+SCRIPT DEPENDENCIES
+------------------------------------------------------------------------------
+    None
+
+
+U.S. GEOLOGICAL SURVEY DISCLAIMER
+------------------------------------------------------------------------------
+Any use of trade, product or firm names is for descriptive purposes only and
+does not imply endorsement by the U.S. Geological Survey.
+
+Although this information product, for the most part, is in the public domain,
+it also contains copyrighted material as noted in the text. Permission to
+reproduce copyrighted items for other than personal use must be secured from
+the copyright owner.
+
+Although these data have been processed successfully on a computer system at
+the U.S. Geological Survey, no warranty, expressed or implied is made
+regarding the display or utility of the data on any other system, or for
+general or scientific purposes, nor shall the act of distribution constitute
+any such warranty. The U.S. Geological Survey shall not be held liable for
+improper or incorrect use of the data described and/or contained herein.
+
+Although this program has been used by the U.S. Geological Survey (USGS), no
+warranty, expressed or implied, is made by the USGS or the U.S. Government as
+to the accuracy and functioning of the program and related program material
+nor shall the fact of distribution constitute any such warranty, and no
+responsibility is assumed by the USGS in connection therewith.
+------------------------------------------------------------------------------
+"""
 import sys
 
 from lxml import etree
 
-from PyQt4 import QtGui
-from PyQt4 import QtCore
-Qt = QtCore.Qt
+
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
+from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag
 
 from pymdwizard.core import taxonomy
 
@@ -16,7 +57,8 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.IDInfo import IdInfo
 
-class PyMdWizardMainForm(QtGui.QMainWindow):
+
+class PyMdWizardMainForm(QMainWindow):
 
     drag_label = "metadata"
 
@@ -112,7 +154,7 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
         pyqt widget
         """
 
-        return self.findChildren(QtGui.QLineEdit)
+        return self.findChildren(QLineEdit)
 
 
     def dropEvent(self, e):
@@ -158,44 +200,44 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
         -------
         None
         """
-        if e.buttons() != QtCore.Qt.LeftButton:
+        if e.buttons() != Qt.LeftButton:
             return
 
-        mime_data = QtCore.QMimeData()
+        mime_data = QMimeData()
         pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
         mime_data.setText(pretty_xml)
 
         # let's make it fancy. we'll show a "ghost" of the button as we drag
         # grab the button to a pixmap
-        pixmap = QtGui.QPixmap.grabWidget(self)
+        pixmap = QPixmap.grabWidget(self)
         size = pixmap.size()*.65
-        half_pixmap = pixmap.scaled(size, QtCore.Qt.KeepAspectRatio,
-                                    transformMode=QtCore.Qt.SmoothTransformation)
+        half_pixmap = pixmap.scaled(size, Qt.KeepAspectRatio,
+                                    transformMode=Qt.SmoothTransformation)
 
         # below makes the pixmap half transparent
-        painter = QtGui.QPainter(half_pixmap)
+        painter = QPainter(half_pixmap)
         painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
-        painter.fillRect(half_pixmap.rect(), QtGui.QColor(0, 0, 0, 127))
+        painter.fillRect(half_pixmap.rect(), QColor(0, 0, 0, 127))
 
-        font = QtGui.QFont()
+        font = QFont()
         font.setFamily('Arial')
         # font.setFixedPitch(True)
         font.setPointSize(15)
         # font.setBold(True)
         painter.setFont(font)
 
-        painter.setPen(QtCore.Qt.red)
-        painter.drawText(half_pixmap.rect(), QtCore.Qt.AlignCenter,
+        painter.setPen(Qt.red)
+        painter.drawText(half_pixmap.rect(), Qt.AlignCenter,
                          self.drag_label)
 
         painter.end()
 
-        drag = QtGui.QDrag(self)
+        drag = QDrag(self)
         drag.setMimeData(mime_data)
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.start(QtCore.Qt.MoveAction)
+        dropAction = drag.start(Qt.MoveAction)
 
     def setup_dragdrop(self, widget):
         """
@@ -210,7 +252,7 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
 
         None
         """
-        if not isinstance(widget, (QtGui.QLineEdit, QtGui.QTableView)):
+        if not isinstance(widget, (QLineEdit, QTableView)):
             try:
 
                 widget.setMouseTracking(True)
@@ -220,22 +262,21 @@ class PyMdWizardMainForm(QtGui.QMainWindow):
             except:
                 pass
 
-        for child in widget.findChildren(QtCore.QObject):
+        for child in widget.findChildren(QObject):
             self.setup_dragdrop(child)
 
 
-
-class FaderWidget(QtGui.QWidget):
+class FaderWidget(QWidget):
 
     def __init__(self, old_widget, new_widget):
 
         QWidget.__init__(self, new_widget)
 
-        self.old_pixmap = QtGui.QPixmap(new_widget.size())
+        self.old_pixmap = QPixmap(new_widget.size())
         old_widget.render(self.old_pixmap)
         self.pixmap_opacity = 1.0
 
-        self.timeline = QtCore.QTimeLine()
+        self.timeline = QTimeLine()
         self.timeline.valueChanged.connect(self.animate)
         self.timeline.finished.connect(self.close)
         self.timeline.setDuration(450)
@@ -258,25 +299,12 @@ class FaderWidget(QtGui.QWidget):
         self.repaint()
 
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, Qt, QPoint
-from PyQt4.QtGui import QStyleOptionHeader, QHeaderView, QPainter, QWidget, QStyle, QMatrix, QFont, QFontMetrics, QPalette, QBrush, QColor
-
-
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
-    # layout = QtGui.QVBoxLayout()
-    # layout.addWidget()
-
-    myapp = PyMdWizardMainForm()
-    # myapp.resize(1186, 561)
-    # myapp.setContentsMargins(0,0,0,0)
-    # myapp.layout().setContentsMargins(0,0,0,0)
-
-
-    myapp.show()
-    sys.exit(app.exec_())
+    mdwiz = PyMdWizardMainForm()
+    mdwiz.show()
+    app.exec_()
 
 
 if __name__ == '__main__':

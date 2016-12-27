@@ -1,4 +1,4 @@
-"""Unittests for core.data_io"""
+"""Unittests for taxonomy module"""
 
 
 import pytest

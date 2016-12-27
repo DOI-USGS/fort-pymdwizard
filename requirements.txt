@@ -2,3 +2,4 @@ requests
 lxml
 pandas
 jupyter
+# PyQt >= 5.0

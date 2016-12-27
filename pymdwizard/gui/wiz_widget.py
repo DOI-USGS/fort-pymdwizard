@@ -42,14 +42,18 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
+import sys
 from lxml import etree
 
-from PyQt4 import QtGui
-from PyQt4 import QtCore
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
+from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush
+from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
+from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray
 
 
-class WizardWidget(QtGui.QWidget):
+
+class WizardWidget(QWidget):
     """
     The base class all pymdwizard GUI components should inherit from.
 
@@ -68,8 +72,6 @@ class WizardWidget(QtGui.QWidget):
                    The original xml node contents before any changes were made.
                    Note: This is not currently implemented
     """
-
-
     # Preferred widget size constants
     # if widget doesn't collapse use -1 for COLLAPSED_HEIGHT
     WIDGET_WIDTH = 805
@@ -77,11 +79,11 @@ class WizardWidget(QtGui.QWidget):
     EXPANDED_HEIGHT = 385
 
     def __init__(self, xml=None, parent=None):
-        QtGui.QWidget.__init__(self, parent=parent)
+        QWidget.__init__(self, parent=parent)
 
         # for standalone testing and debugging
         if __name__ == "__main__":
-            QtGui.QMainWindow.__init__(self, parent)
+            QMainWindow.__init__(self, parent)
 
         self.original_xml = xml
 
@@ -151,7 +153,7 @@ class WizardWidget(QtGui.QWidget):
         -------
             None
         """
-        # Update self.xml appropriately (probably a full replace)
+        # Update self.xml appropriately (probably a full reace)
         print("_from_xml method Must be overridden in subclass")
 
     def get_widget(self, xpath):
@@ -171,11 +173,11 @@ class WizardWidget(QtGui.QWidget):
         pyqt widget
         """
 
-        return self.findChildren(QtGui.QLineEdit)
+        return self.findChildren(QLineEdit)
 
     def dropEvent(self, e):
         """
-        Updates the form with the
+        Updates the form with the contents of an xml node dropped onto it.
 
         Parameters
         ----------
@@ -185,10 +187,17 @@ class WizardWidget(QtGui.QWidget):
         -------
         None
         """
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(e.mimeData().text(), parser=parser)
+        try:
+            e.setDropAction(Qt.CopyAction)
+            e.accept()
+            mime_data = e.mimeData()
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
 
-        self._from_xml(element)
+            self._from_xml(element)
+        except:
+            e = sys.exc_info()[0]
+            print('problem drop', e)
 
     def dragEnterEvent(self, e):
         """
@@ -201,12 +210,16 @@ class WizardWidget(QtGui.QWidget):
         -------
 
         """
-        # should this always be accepted?
-        e.accept()
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            e.accept()
+        else:
+            e.ignore()
 
     def mouseMoveEvent(self, e):
         """
         Handles the snippet capture and drag drop initialization
+        based off of: http://stackoverflow.com/questions/28258050/drag-n-drop-button-and-drop-down-menu-pyqt-qt-designer
 
         Parameters
         ----------
@@ -216,44 +229,48 @@ class WizardWidget(QtGui.QWidget):
         -------
         None
         """
-        if e.buttons() != QtCore.Qt.LeftButton:
+        if e.buttons() != Qt.LeftButton:
             return
 
-        mime_data = QtCore.QMimeData()
+        mime_data = QMimeData()
         pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
         mime_data.setText(pretty_xml)
+        # mime_data.setData('application/x-qt-windows-mime;value="XML"',
+        #                   QByteArray(pretty_xml.encode()))
+        # mime_data.setData('application/x-qt-windows-mime;value="XmlNotepad.TreeData"',
+        #                   QByteArray(pretty_xml.encode()))
+
 
         # let's make it fancy. we'll show a "ghost" of the button as we drag
         # grab the button to a pixmap
-        pixmap = QtGui.QPixmap.grabWidget(self)
+        pixmap = self.grab()
         size = pixmap.size()*.65
-        half_pixmap = pixmap.scaled(size, QtCore.Qt.KeepAspectRatio,
-                                    transformMode=QtCore.Qt.SmoothTransformation)
+        half_pixmap = pixmap.scaled(size, Qt.KeepAspectRatio,
+                                    transformMode=Qt.SmoothTransformation)
 
         # below makes the pixmap half transparent
-        painter = QtGui.QPainter(half_pixmap)
+        painter = QPainter(half_pixmap)
         painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
-        painter.fillRect(half_pixmap.rect(), QtGui.QColor(0, 0, 0, 127))
+        painter.fillRect(half_pixmap.rect(), QColor(0, 0, 0, 127))
 
-        font = QtGui.QFont()
+        font = QFont()
         font.setFamily('Arial')
-        # font.setFixedPitch(True)
         font.setPointSize(15)
         # font.setBold(True)
         painter.setFont(font)
 
-        painter.setPen(QtCore.Qt.red)
-        painter.drawText(half_pixmap.rect(), QtCore.Qt.AlignCenter,
+        painter.setPen(Qt.red)
+        painter.drawText(half_pixmap.rect(), Qt.AlignCenter,
                          self.drag_label)
 
         painter.end()
 
-        drag = QtGui.QDrag(self)
+        drag = QDrag(self)
         drag.setMimeData(mime_data)
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.start(QtCore.Qt.MoveAction)
+        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction, Qt.CopyAction)
 
     def setup_dragdrop(self, widget):
         """
@@ -272,7 +289,7 @@ class WizardWidget(QtGui.QWidget):
 
         # Dragging from QLineEdits and QTableViews has awkward side effects,
         # such as not being able to select text in the line edit.
-        if not isinstance(widget, (QtGui.QLineEdit, QtGui.QTableView)):
+        if not isinstance(widget, (QLineEdit, QTableView)):
             try:
 
                 widget.setMouseTracking(True)
@@ -282,5 +299,5 @@ class WizardWidget(QtGui.QWidget):
             except:
                 pass
 
-        for child in widget.findChildren(QtCore.QObject):
+        for child in widget.findChildren(QObject):
             self.setup_dragdrop(child)
