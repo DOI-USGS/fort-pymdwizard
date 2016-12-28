@@ -45,7 +45,7 @@ from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
@@ -90,6 +90,7 @@ class ContactInfo(WizardWidget):
         None
         """
         self.ui.btn_import_contact.clicked.connect(self.find_usgs_contact)
+        self.ui.rbtn_perp.toggled.connect(self.switch_primary)
 
     def find_usgs_contact(self):
         self.usgs_contact = QDialog(self)
@@ -121,6 +122,26 @@ class ContactInfo(WizardWidget):
 
     def cancel(self):
         self.usgs_contact.deleteLater()
+
+    def switch_primary(self):
+        """
+        Switches form to reflect either organization or person primary
+
+        Returns
+        -------
+        None
+        """
+        if self.ui.rbtn_perp.isChecked():
+            self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntper)
+            self.ui.required_horizontal_layout.insertWidget(0, self.ui.cntper)
+            self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntorg)
+            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.cntorg)
+        else:
+            self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntorg)
+            self.ui.required_horizontal_layout.insertWidget(0, self.ui.cntorg)
+            self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntper)
+            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.cntper)
+
 
     def _to_xml(self):
 
@@ -163,14 +184,27 @@ class ContactInfo(WizardWidget):
         utils.populate_widget(self, contact_dict)
 
         addrtype_widget = self.findChild(QComboBox, 'addrtype')
+
+
+        if 'cntinfo' in contact_dict:
+            contact_dict = contact_dict['cntinfo']
+
         try:
-            if 'cntinfo' in contact_dict:
-                addrtype = contact_dict['cntinfo']['cntaddr']['addrtype']
-            else:
-                addrtype = contact_dict['cntaddr']['addrtype']
+            addrtype = contact_dict['cntaddr']['addrtype']
             addrtype_widget.setEditText(addrtype)
         except KeyError:
             pass
+
+        try:
+            if 'cntorgp' in contact_dict:
+                rbtn_orgp = self.findChild(QRadioButton, 'rbtn_orgp')
+                rbtn_orgp.setChecked(True)
+            elif 'cntperp' in contact_dict:
+                rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
+                rbtn_perp.setChecked(True)
+        except KeyError:
+            pass
+
 
 if __name__ == "__main__":
     app = QApplication([])

@@ -94,8 +94,6 @@ class ContactInfoPointOfContact(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.ui.mouseMoveEvent = self.mouseMoveEvent
-
         self.contact_info_widget = ContactInfo.ContactInfo()
         self.ui.main_layout.addWidget(self.contact_info_widget)
 
@@ -133,13 +131,14 @@ class ContactInfoPointOfContact(WizardWidget):
         return pntcontact
 
     def _from_xml(self, contact_information):
-        contact_dict = xml_utils.node_to_dict(contact_information)
-        utils.populate_widget(self, contact_dict)
+
+        continfo = contact_information.xpath('cntinfo')[0]
+        self.contact_info_widget._from_xml(continfo)
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStartDragDistance(8)
+    app.setStartDragDistance(28)
     app.title = 'testing pntcontac'
 
     dialog = ContactInfoPointOfContact()

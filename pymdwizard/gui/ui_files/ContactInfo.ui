@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>528</width>
-    <height>315</height>
+    <height>316</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -79,6 +79,26 @@ color: rgb(50, 50, 50);
        <property name="sizeConstraint">
         <enum>QLayout::SetNoConstraint</enum>
        </property>
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <item>
+        <widget class="QRadioButton" name="rbtn_orgp">
+         <property name="text">
+          <string>Organization</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="rbtn_perp">
+         <property name="text">
+          <string>Person</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <spacer name="horizontalSpacer_11">
          <property name="sizePolicy">
@@ -164,12 +184,12 @@ color: rgb(50, 50, 50);
            <number>6</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
+           <layout class="QVBoxLayout" name="left_vertical_layout">
             <property name="spacing">
              <number>2</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel" name="lbl_cntper">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                 <horstretch>0</horstretch>
@@ -221,7 +241,7 @@ color: rgb(50, 50, 50);
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QHBoxLayout" name="required_horizontal_layout">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -235,7 +255,7 @@ color: rgb(50, 50, 50);
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>217</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -311,7 +331,7 @@ Short Name: cntper</string>
              </layout>
             </item>
             <item>
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel" name="lbl_cntorg">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                 <horstretch>0</horstretch>
@@ -339,7 +359,7 @@ Short Name: cntper</string>
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <layout class="QHBoxLayout" name="optional_horizontal_layout">
               <property name="spacing">
                <number>0</number>
               </property>
