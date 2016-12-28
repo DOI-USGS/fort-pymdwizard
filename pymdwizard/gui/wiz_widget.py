@@ -216,6 +216,9 @@ class WizardWidget(QWidget):
         else:
             e.ignore()
 
+    def mousePressEvent(self, e):
+        self.drag_start_pos = e.pos()
+
     def mouseMoveEvent(self, e):
         """
         Handles the snippet capture and drag drop initialization
@@ -231,14 +234,15 @@ class WizardWidget(QWidget):
         """
         if e.buttons() != Qt.LeftButton:
             return
+        if not (e.pos() - self.drag_start_pos).manhattanLength() > 35:
+            return
+
 
         mime_data = QMimeData()
         pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
         mime_data.setText(pretty_xml)
-        # mime_data.setData('application/x-qt-windows-mime;value="XML"',
-        #                   QByteArray(pretty_xml.encode()))
-        # mime_data.setData('application/x-qt-windows-mime;value="XmlNotepad.TreeData"',
-        #                   QByteArray(pretty_xml.encode()))
+        mime_data.setData('application/x-qt-windows-mime;value="XML"',
+                          QByteArray(pretty_xml.encode()))
 
 
         # let's make it fancy. we'll show a "ghost" of the button as we drag
@@ -256,13 +260,12 @@ class WizardWidget(QWidget):
         font = QFont()
         font.setFamily('Arial')
         font.setPointSize(15)
-        # font.setBold(True)
+        font.setBold(True)
         painter.setFont(font)
 
         painter.setPen(Qt.red)
         painter.drawText(half_pixmap.rect(), Qt.AlignCenter,
                          self.drag_label)
-
         painter.end()
 
         drag = QDrag(self)
@@ -270,9 +273,9 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction, Qt.CopyAction)
+        dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction, Qt.CopyAction)
 
-    def setup_dragdrop(self, widget):
+    def setup_dragdrop(self, widget, enable=True):
         """
         Sets up mouse tracking and drag drop on child widgets.
         This works recursively on all the child widgets and their children...
@@ -289,15 +292,16 @@ class WizardWidget(QWidget):
 
         # Dragging from QLineEdits and QTableViews has awkward side effects,
         # such as not being able to select text in the line edit.
-        if not isinstance(widget, (QLineEdit, QTableView)):
+        if not isinstance(widget, (QLineEdit, QTableView, QToolButton)):
             try:
 
-                widget.setMouseTracking(True)
-                widget.setAcceptDrops(True)
+                widget.setMouseTracking(enable)
+                widget.setAcceptDrops(enable)
                 widget.mouseMoveEvent = self.mouseMoveEvent
-                widget.setDragEnabled(True)
+                widget.mousePressEvent = self.mousePressEvent
+                widget.setDragEnabled(enable)
             except:
                 pass
 
         for child in widget.findChildren(QObject):
-            self.setup_dragdrop(child)
+            self.setup_dragdrop(child, enable=enable)
