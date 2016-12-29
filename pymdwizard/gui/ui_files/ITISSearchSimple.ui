@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1010</width>
-    <height>608</height>
+    <width>543</width>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
         </sizepolicy>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
@@ -54,6 +54,12 @@
            </property>
            <item>
             <widget class="QLabel" name="label_search_term">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Search Term:</string>
              </property>
@@ -75,6 +81,22 @@
               <string>Seach ITIS</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>25</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QLabel" name="label_search_type">
@@ -120,7 +142,8 @@
             <widget class="QLabel" name="label_search_results">
              <property name="font">
               <font>
-               <pointsize>12</pointsize>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="toolTip">
@@ -151,8 +174,11 @@
            <property name="lineWidth">
             <number>1</number>
            </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
            <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
+            <enum>QAbstractItemView::ExtendedSelection</enum>
            </property>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
@@ -181,12 +207,38 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="button_add_taxon">
+            <widget class="QPushButton" name="btn_add_taxon">
              <property name="toolTip">
               <string>Add the selected item above to the list of include species (right)</string>
              </property>
              <property name="text">
               <string>Add Selection</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>25</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_close">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="text">
+              <string>Close</string>
              </property>
             </widget>
            </item>
@@ -207,124 +259,6 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="horizontalLayoutWidget">
-        <layout class="QVBoxLayout" name="layout_include">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QFrame" name="frame_include">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <property name="leftMargin">
-             <number>2</number>
-            </property>
-            <property name="topMargin">
-             <number>2</number>
-            </property>
-            <property name="rightMargin">
-             <number>2</number>
-            </property>
-            <property name="bottomMargin">
-             <number>2</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="layout_include2">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_include_item">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="toolTip">
-                 <string>List of taxons to include in the taxonomy section</string>
-                </property>
-                <property name="text">
-                 <string>Items to include:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTableView" name="table_include">
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::MultiSelection</enum>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <property name="sortingEnabled">
-                 <bool>true</bool>
-                </property>
-                <attribute name="verticalHeaderVisible">
-                 <bool>false</bool>
-                </attribute>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
-                <item>
-                 <spacer name="horizontalSpacer_6">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_remove_selected">
-                  <property name="toolTip">
-                   <string>Remove selected items from list above</string>
-                  </property>
-                  <property name="text">
-                   <string>Remove Selection</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_7">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
       </widget>
      </item>
      <item>
@@ -332,39 +266,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="button_gen_fgdc">
-         <property name="toolTip">
-          <string>Create a FGDC taxonomy section with the items in the above list</string>
-         </property>
-         <property name="text">
-          <string>Generate Taxonomy Section</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="check_include_common">
-         <property name="toolTip">
-          <string>Include common names in FGDC taxonomy section (optional elements)</string>
-         </property>
-         <property name="text">
-          <string>Include Common Names</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>

@@ -371,9 +371,14 @@ def get_kingdom(heirarchy):
     except IndexError:
         return None
 
+
 def get_taxon_root(kingdoms):
     eukaryota = ['Animalia', 'Chromista', 'Protozoa', 'Fungi', 'Plantae']
-    if len(kingdoms) > 1:
+    if len(kingdoms) == 0:
+        root_name = 'Life'
+        root_value = 'Life'
+        tsn = None
+    elif len(kingdoms) > 1:
         tsn = None
         if set(eukaryota).issuperset(set(kingdoms)):
             root_name = 'Domain'
@@ -439,17 +444,18 @@ def gen_taxonomy_section(keywords, tsns, include_common_names=False):
 
     taxonomy.append(keywtax)
 
-    taxoncl = gen_fgdc_taxoncl(tsns, include_common_names)
+    taxoncl = gen_fgdc_taxoncl(tsns, include_common_names, include_tsns=tsns)
     taxonomy.append(taxoncl)
     return taxonomy
 
 
-def gen_fgdc_taxoncl(tsns, include_common_names=False):
+def gen_fgdc_taxoncl(tsns, include_common_names=False, include_tsns=[]):
     taxon = merge_taxons(tsns)
-    return _gen_fgdc_taxonomy_section(taxon, include_common_names)
+    return _gen_fgdc_taxonomy_section(taxon, include_common_names, include_tsns)
 
 
-def _gen_fgdc_taxonomy_section(taxon, include_common_names=False):
+def _gen_fgdc_taxonomy_section(taxon, include_common_names=False,
+                               include_tsns=[]):
     taxonomicclassification = etree.Element("taxoncl")
     taxrankname = etree.Element("taxonrn")
     taxrankname.text = taxon.taxon_name
@@ -470,8 +476,14 @@ def _gen_fgdc_taxonomy_section(taxon, include_common_names=False):
         except (ValueError, IndexError):
             pass
 
+    if str(taxon.tsn) in include_tsns:
+        tsn_common_name = etree.Element("common")
+        tsn_common_name.text = "TSN: {}".format(taxon.tsn)
+        taxonomicclassification.append(tsn_common_name)
+
     for child in taxon.children:
-        child_node = _gen_fgdc_taxonomy_section(child, include_common_names)
+        child_node = _gen_fgdc_taxonomy_section(child, include_common_names,
+                                                include_tsns=include_tsns)
         taxonomicclassification.append(child_node)
 
     return taxonomicclassification

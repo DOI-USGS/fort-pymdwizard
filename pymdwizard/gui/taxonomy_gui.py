@@ -2,18 +2,27 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import datetime
 
 from lxml import etree
+import pandas as pd
 
-from PyQt4 import QtGui
-from PyQt4 import QtCore
-Qt = QtCore.Qt
+
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView, QTextEdit
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
+
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
+from PyQt5.QtGui import QMouseEvent
 
 from pymdwizard.core import taxonomy
+from pymdwizard.core import utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-
-from ui_files import itis_search
+from pymdwizard.gui.ui_files import UI_ITISSearch
 
 
 class ItisMainForm(WizardWidget):
@@ -25,7 +34,7 @@ class ItisMainForm(WizardWidget):
         super(self.__class__, self).__init__()
 
         self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
-        self.selected_model = PandasModel(self.selected_items_df)
+        self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
 
     def build_ui(self):
@@ -36,9 +45,10 @@ class ItisMainForm(WizardWidget):
         -------
         None
         """
-        self.ui = itis_search.Ui_ItisSearchWidget()
+        self.ui = UI_ITISSearch.Ui_ItisSearchWidget()
         self.ui.setupUi(self)
         self.ui.splitter.setSizes([300, 100])
+        self.setup_dragdrop(self)
 
     def connect_events(self):
         """
@@ -64,7 +74,7 @@ class ItisMainForm(WizardWidget):
         else:
             results = taxonomy.search_by_common_name(str(self.ui.search_term.text()))
 
-        model = PandasModel(results)
+        model = utils.PandasModel(results)
         self.ui.table_results.setModel(model)
 
     def add_tsn(self, index):
@@ -85,7 +95,7 @@ class ItisMainForm(WizardWidget):
         if pd.isnull(i):
             i = 0
         self.selected_items_df.loc[i] = [str(item_name), tsn]
-        self.selected_model = PandasModel(self.selected_items_df)
+        self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
 
     def remove_selected(self, index):
@@ -105,6 +115,27 @@ class ItisMainForm(WizardWidget):
         self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
         self.w.show()
 
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        print("pc drag enter")
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element.tag == 'taxonomy':
+                e.accept()
+        else:
+            e.ignore()
+
     def _to_xml(self):
 
         df = self.ui.table_include.model().dataframe()
@@ -116,19 +147,26 @@ class ItisMainForm(WizardWidget):
 
         return fgdc_taxonomy
 
-    def _from_xml(self, contact_information):
-        pass
-        # contact_dict = xml_utils.node_to_dict(contact_information)
-        # utils.populate_widget(self, contact_dict)
+    def _from_xml(self, taxonomy_element):
+        i = 0
+        for common_node in taxonomy_element.findall('.//common'):
+            if common_node.text.startswith('TSN: '):
+                tsn = common_node.text[5:]
+                scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
+                self.selected_items_df.loc[i] = [scientific_name, tsn]
+                i += 1
+
+        self.selected_model = utils.PandasModel(self.selected_items_df)
+        self.ui.table_include.setModel(self.selected_model)
 
 
-class MyPopup(QtGui.QWidget):
+class MyPopup(QWidget):
     def __init__(self):
         QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
 
 
-        self.textEdit = QtGui.QTextEdit()
+        self.textEdit = QTextEdit()
 
         layout.addWidget(self.textEdit)
 
@@ -136,104 +174,5 @@ class MyPopup(QtGui.QWidget):
 
 
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, Qt, QPoint
-from PyQt4.QtGui import QStyleOptionHeader, QHeaderView, QPainter, QWidget, QStyle, QMatrix, QFont, QFontMetrics, QPalette, QBrush, QColor
-import pandas as pd
-import datetime
-
-
-class PandasModel(QtCore.QAbstractTableModel):
-    """
-    Class to populate a table view with a pandas dataframe
-    """
-    options = {"striped": True, "stripesColor": "#fafafa", "na_values": "least",
-               "tooltip_min_len": 21}
-
-    def __init__(self, dataframe, parent=None):
-        QtCore.QAbstractTableModel.__init__(self, parent)
-        self.setDataFrame(dataframe if dataframe is not None else pd.DataFrame())
-
-    def setDataFrame(self, dataframe):
-        self.df = dataframe
-        #        self.df_full = self.df
-        self.layoutChanged.emit()
-
-    def rowCount(self, parent=None):
-        return len(self.df.values)
-
-    def columnCount(self, parent=None):
-        return self.df.columns.size
-
-    def data(self, index, role=QtCore.Qt.DisplayRole):
-
-        row, col = index.row(), index.column()
-        if role in (Qt.DisplayRole, Qt.ToolTipRole):
-            ret = self.df.iat[row, col]
-            if ret is not None and ret==ret: #convert to str except for None, NaN, NaT
-                if isinstance(ret, float):
-                    ret = "{:n}".format(ret)
-                elif isinstance(ret, datetime.date):
-                    #FIXME: show microseconds optionally
-                    ret = ret.strftime(("%x", "%c")[isinstance(ret, datetime.datetime)])
-                else: ret = str(ret)
-                if role == Qt.ToolTipRole:
-                    if len(ret)<self.options["tooltip_min_len"]: ret = ""
-                return ret
-        elif role == Qt.BackgroundRole:
-            if self.options["striped"] and row%2:
-                return QBrush(QColor(self.options["stripesColor"]))
-
-        return None
-
-    def dataframe(self):
-        return self.df
-
-    def reorder(self, oldIndex, newIndex, orientation):
-        "Reorder columns / rows"
-        horizontal = orientation==Qt.Horizontal
-        cols = list(self.df.columns if horizontal else self.df.index)
-        cols.insert(newIndex, cols.pop(oldIndex))
-        self.df = self.df[cols] if horizontal else self.df.T[cols].T
-        return True
-
-    #    def filter(self, filt=None):
-    #        self.df = self.df_full if filt is None else self.df[filt]
-    #        self.layoutChanged.emit()
-
-    def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole: return
-        label = getattr(self.df, ("columns", "index")[orientation!=Qt.Horizontal])[section]
-        #        return label if type(label) is tuple else label
-        return ("\n", " | ")[orientation!=Qt.Horizontal].join(str(i) for i in label) if type(label) is tuple else str(label)
-
-    def dataFrame(self):
-        return self.df
-
-    def sort(self, column, order):
-        if len(self.df):
-            asc = order==Qt.AscendingOrder
-            na_pos = 'first' if (self.options["na_values"]=="least") == asc else 'last'
-            self.df.sort_values(self.df.columns[column], ascending=asc,
-                                inplace=True, na_position=na_pos)
-            self.layoutChanged.emit()
-
-
-def main():
-    app = QtGui.QApplication(sys.argv)
-
-    # layout = QtGui.QVBoxLayout()
-    # layout.addWidget()
-
-    myapp = ItisMainForm()
-    myapp.resize(1000, 400)
-    myapp.setContentsMargins(0,0,0,0)
-    myapp.layout().setContentsMargins(0,0,0,0)
-
-
-    myapp.show()
-    sys.exit(app.exec_())
-
-
 if __name__ == '__main__':
-    main()
+    utils.launch_widget(ItisMainForm, "Itis testing")
