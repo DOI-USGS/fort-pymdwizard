@@ -51,7 +51,7 @@ from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
 from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag
 
 
-from pymdwizard.gui.ui_files import Ui_main_window
+from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 
 
@@ -73,7 +73,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        self.ui = Ui_main_window.Ui_MainWindow()
+        self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.metadata_root = MetadataRoot()

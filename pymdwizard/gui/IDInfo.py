@@ -83,10 +83,12 @@ class IdInfo(WizardWidget):
         section1.setObjectName("ContactInfoHBox")
         section1.addWidget(self.ptcontac)
 
+        self.taxonomy = Taxonomy()
+        section1.addWidget(self.taxonomy)
+
         self.main_layout.addLayout(section1)
 
-        self.taxonomy = Taxonomy()
-        self.main_layout.addWidget(self.taxonomy)
+
 
     def dragEnterEvent(self, e):
         """

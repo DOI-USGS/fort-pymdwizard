@@ -255,7 +255,7 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction)
+        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):
