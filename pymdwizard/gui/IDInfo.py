@@ -98,10 +98,4 @@ class IdInfo(WizardWidget):
         utils.populate_widget(self, idinfo_dict)
 
 if __name__ == "__main__":
-    app = QApplication([])
-    app.title = 'test'
-    dialog = IdInfo()
-    dialog.setWindowTitle("WidgetName")
-    # dialog.resize(dialog.collapsed_size)
-    dialog.show()
-    sys.exit(app.exec_())
+    utils.launch_widget(IdInfo, "IdInfo testing")

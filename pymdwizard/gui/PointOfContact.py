@@ -137,14 +137,6 @@ class ContactInfoPointOfContact(WizardWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setStartDragDistance(28)
-    app.title = 'testing pntcontac'
-
-    dialog = ContactInfoPointOfContact()
-    dialog.setWindowTitle("testing pntcontac")
-    dialog.resize(dialog.expanded_size)
-    dialog.show()
-
-    sys.exit(app.exec_())
+    utils.launch_widget(ContactInfoPointOfContact,
+                        "ContactInfoPointOfContact testing")
 

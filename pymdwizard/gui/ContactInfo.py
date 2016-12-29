@@ -207,10 +207,4 @@ class ContactInfo(WizardWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication([])
-    app.title = 'testing cntinfo'
-    dialog = ContactInfo()
-    dialog.setWindowTitle("testing cntinfo")
-    # dialog.resize(dialog.collapsed_size)
-    dialog.show()
-    sys.exit(app.exec_())
+    utils.launch_widget(ContactInfo)
