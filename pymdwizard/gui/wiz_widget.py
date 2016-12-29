@@ -46,10 +46,11 @@ import sys
 from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush
+from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComboBox, QToolButton, QCheckBox, QSpacerItem, QLabel, QGroupBox, QFrame
+from PyQt5.QtWidgets import QTableView
+from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
 from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
-from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray
+from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp
 
 
 
@@ -199,26 +200,6 @@ class WizardWidget(QWidget):
             e = sys.exc_info()[0]
             print('problem drop', e)
 
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            e.accept()
-        else:
-            e.ignore()
-
-    def mousePressEvent(self, e):
-        self.drag_start_pos = e.pos()
-
     def mouseMoveEvent(self, e):
         """
         Handles the snippet capture and drag drop initialization
@@ -234,7 +215,8 @@ class WizardWidget(QWidget):
         """
         if e.buttons() != Qt.LeftButton:
             return
-        if not (e.pos() - self.drag_start_pos).manhattanLength() > 35:
+        if hasattr(self, 'drag_start_pos') and \
+                not (e.pos() - self.drag_start_pos).manhattanLength() > 75:
             return
 
 
@@ -273,9 +255,10 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction, Qt.CopyAction)
+        dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction)
+        e.ignore()
 
-    def setup_dragdrop(self, widget, enable=True):
+    def setup_dragdrop(self, widget, enable=True, parent=None):
         """
         Sets up mouse tracking and drag drop on child widgets.
         This works recursively on all the child widgets and their children...
@@ -289,19 +272,36 @@ class WizardWidget(QWidget):
 
         None
         """
+        self.setAcceptDrops(enable)
 
-        # Dragging from QLineEdits and QTableViews has awkward side effects,
-        # such as not being able to select text in the line edit.
-        if not isinstance(widget, (QLineEdit, QTableView, QToolButton)):
-            try:
+        drag_types = [QLabel, QSpacerItem, QToolButton]
 
+        for drag_type in drag_types:
+            widgets = self.findChildren(drag_type, QRegExp(r'.*'))
+            for widget in widgets:
+                widget.installEventFilter(self)
                 widget.setMouseTracking(enable)
                 widget.setAcceptDrops(enable)
-                widget.mouseMoveEvent = self.mouseMoveEvent
-                widget.mousePressEvent = self.mousePressEvent
-                widget.setDragEnabled(enable)
-            except:
-                pass
 
-        for child in widget.findChildren(QObject):
-            self.setup_dragdrop(child, enable=enable)
+    def eventFilter(self, obj, event):
+        # you could be doing different groups of actions
+        # for different types of widgets and either filtering
+        # the event or not.
+        # Here we just check if its one of the layout widget
+        if event.type() == event.MouseButtonPress:
+            print(event.pos())
+            self.drag_start_pos = event.pos()
+        elif event.type() == event.MouseMove:
+            self.mouseMoveEvent(event)
+        elif event.type() == event.MouseButtonRelease:
+            # print('event filter mouse release')
+            self.mouseMoveEvent(event)
+        # elif event.type() == event.DragLeave:
+        #     print ('event dragleave')
+        # elif event.type() == event.DragLeave:
+        #     print ('NonClientAreaMouseButtonRelease')
+        # else:
+        #     pass
+
+        # regardless, just do the default
+        return super(WizardWidget, self).eventFilter(obj, event)
