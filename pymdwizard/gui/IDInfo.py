@@ -52,8 +52,9 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_idinfo
+from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
+from pymdwizard.gui.Taxonomy import Taxonomy
 
 
 class IdInfo(WizardWidget):
@@ -66,11 +67,11 @@ class IdInfo(WizardWidget):
                         'cntorg': 'cntinfo/cntperp/cntorg',
                         'cntpos': 'cntinfo/cntpos',}
 
-    ui_class = UI_idinfo.Ui_idinfo
+    ui_class = UI_IdInfo.Ui_idinfo
 
     def build_ui(self):
 
-        self.ui = UI_idinfo.Ui_idinfo()
+        self.ui = UI_IdInfo.Ui_idinfo()
         self.ui.setupUi(self)
 
         self.main_layout = self.ui.main_layout
@@ -78,11 +79,35 @@ class IdInfo(WizardWidget):
 
         self.ptcontac = ContactInfoPointOfContact(parent=self)
 
-
         section1 = QHBoxLayout()
         section1.setObjectName("ContactInfoHBox")
         section1.addWidget(self.ptcontac)
+
         self.main_layout.addLayout(section1)
+
+        self.taxonomy = Taxonomy()
+        self.main_layout.addWidget(self.taxonomy)
+
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        print("idinfo drag enter")
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element.tag == 'idinfo':
+                e.accept()
+        else:
+            e.ignore()
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
@@ -91,11 +116,15 @@ class IdInfo(WizardWidget):
         ptcontac = self.ptcontac._to_xml()
         idinfo_node.append(ptcontac)
 
+        taxonomy = self.taxonomy._to_xml()
+        idinfo_node.append(taxonomy)
+
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
-        idinfo_dict = xml_utils.node_to_dict(xml_idinfo)
-        utils.populate_widget(self, idinfo_dict)
+        ptcontac = xml_idinfo.xpath('ptcontac')[0]
+        self.ptcontac._from_xml(ptcontac)
+
 
 if __name__ == "__main__":
     utils.launch_widget(IdInfo, "IdInfo testing")

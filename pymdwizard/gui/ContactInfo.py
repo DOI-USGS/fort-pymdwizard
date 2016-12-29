@@ -142,19 +142,47 @@ class ContactInfo(WizardWidget):
             self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntper)
             self.ui.optional_horizontal_layout.insertWidget(0, self.ui.cntper)
 
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        print("cinfo drag enter")
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element.tag == 'ptcontac' or element.tag == 'cntinfo':
+                e.accept()
+        else:
+            e.ignore()
 
     def _to_xml(self):
 
         cntinfo = etree.Element("cntinfo")
 
-        cntperp = etree.Element("cntperp")
         cntper = etree.Element("cntper")
         cntper.text = self.findChild(QLineEdit, "cntper").text()
         cntorg = etree.Element("cntorg")
         cntorg.text = self.findChild(QLineEdit, "cntorg").text()
-        cntperp.append(cntper)
-        cntperp.append(cntorg)
-        cntinfo.append(cntperp)
+
+        rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
+        if rbtn_perp.isChecked():
+            cntperp = etree.Element("cntperp")
+            cntperp.append(cntper)
+            cntperp.append(cntorg)
+            cntinfo.append(cntperp)
+        else:
+            cntorgp = etree.Element("cntorgp")
+            cntorgp.append(cntorg)
+            cntorgp.append(cntper)
+            cntinfo.append(cntorgp)
 
         cntpos = etree.Element("cntpos")
         cntpos.text = self.findChild(QLineEdit, "cntpos").text()
@@ -166,7 +194,7 @@ class ContactInfo(WizardWidget):
         cntaddr.append(addrtype)
 
         for label in ['address', 'address2', 'address3', 'city', 'state',
-                      'postal', 'country', 'cntvoice', 'cntfax', 'cntemail']:
+                      'postal', 'country']:
             widget = self.findChild(QLineEdit, label)
             try:
                 node = etree.Element(label)
@@ -176,6 +204,15 @@ class ContactInfo(WizardWidget):
                 pass
 
         cntinfo.append(cntaddr)
+
+        for label in ['cntvoice', 'cntfax', 'cntemail']:
+            widget = self.findChild(QLineEdit, label)
+            try:
+                node = etree.Element(label)
+                node.text = widget.text()
+                cntinfo.append(node)
+            except:
+                pass
 
         return cntinfo
 

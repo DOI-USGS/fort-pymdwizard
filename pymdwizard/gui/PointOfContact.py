@@ -94,8 +94,8 @@ class ContactInfoPointOfContact(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.contact_info_widget = ContactInfo.ContactInfo()
-        self.ui.main_layout.addWidget(self.contact_info_widget)
+        self.cntinfo = ContactInfo.ContactInfo()
+        self.ui.main_layout.addWidget(self.cntinfo)
 
         self.collaped_size = QSize(self.WIDGET_WIDTH,
                                           self.COLLAPSED_HEIGHT)
@@ -118,22 +118,46 @@ class ContactInfoPointOfContact(WizardWidget):
 
     def contact_used_change(self, b):
         if b:
-            self.contact_info_widget.show()
+            self.cntinfo.show()
         else:
-            self.contact_info_widget.hide()
+            self.cntinfo.hide()
+
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        print("pc drag enter")
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element.tag == 'ptcontac' or element.tag == 'cntinfo':
+                e.accept()
+        else:
+            e.ignore()
 
     def _to_xml(self):
         pntcontact = etree.Element('ptcontac')
 
-        cntinfo = self.contact_info_widget._to_xml()
+        cntinfo = self.cntinfo._to_xml()
         pntcontact.append(cntinfo)
 
         return pntcontact
 
     def _from_xml(self, contact_information):
 
-        continfo = contact_information.xpath('cntinfo')[0]
-        self.contact_info_widget._from_xml(continfo)
+        if contact_information.tag == 'cntinfo':
+            cntinfo_node = contact_information
+        else:
+            cntinfo_node = contact_information.xpath('cntinfo')[0]
+        self.cntinfo._from_xml(cntinfo_node)
 
 
 if __name__ == "__main__":
