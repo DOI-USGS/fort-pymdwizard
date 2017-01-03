@@ -1,0 +1,2883 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" blockDefault="#all">
+  <!--
+	======================================================================
+	 FGDC Metadata XML Schema 1.0.0 20030801
+
+	 This is the XML Schema for formal metadata, metadata conforming to
+	 the Content Standards for Digital Geospatial Metadata of the Federal
+	 Geographic Data Committee.  This schema corresponds to the June,
+	 1998 version of the standard, FGDC-STD-001-1998.
+
+	 This file is the primary XML Schema and loads the definitions for
+	 sections 1-10 of the standard from separate schema modules.
+
+	 Element names:
+	     Element names are a maximum of 8-characters long, to coincide
+	     with the Reference Concrete Syntax.
+
+	 Element ordering:
+	     Generally the order of elements is now significant.  XML makes
+	     it difficult to write a DTD that allows elements to be in any
+	     order.  Although XML Schemas do not have this restriction, it
+	     was decided to keep the significance of element order in order
+	     not to break the DTD validity of XML-encoded metadata files.
+
+	 Authors:
+	     Richard E. Rathmann (PSGS/NOAA Coastal Services Center,
+	     Charleston, SC) with assistance from Mike Moeller (PSGS/NOAA
+	     CSC) and Doug Nebert (Federal Geographic Data Committee).
+
+	 Revisions:
+	     20020826 (RER) Locally scoped the definition of "onlink" in
+	                      Section 7 (7.11.1) within "metextns" (7.11)
+	                      rather than referencing "onlink" definition in
+	                      Section 8 (8.10).
+	     20030801 (RER) Removed 'xml:space="preserve"' from all
+	                      'xsd:documentation' elements.  I originally put
+	                      this in to say "whitespace is significant", but
+	                      both XML Spy and IBM's  Schema Quality Checker
+	                      complain about them.
+	     20030801 (RER) Corrected the second regular expression pattern
+	                      for the "FGDCtime" simple type in this schema
+	                      module.  The "-" in the "[+-]" character class
+	                      for the sign character needed to be escaped, as
+	                      in "[+\-]".
+	     20030801 (RER) Changed types of "srcused" (2.5.2.2) and "srcprod"
+	                      (2.5.2.5) in Section 2 to reference the type
+	                      defined for "srccitea" (2.5.1.5) to comply with
+	                      XML Schema constraint that key/keyref field
+	                      value pairs be of the same type.
+
+
+	======================================================================
+-->
+  <!--
+	======================================================================
+	 Modified by Colin Talbert on 12/30/2016
+
+        XSD content from separate file were merged into a single file to
+        avoid problems arising from relative/absolute paths to
+        original individual section XSD files.
+	======================================================================
+-->
+  <xsd:element name="metadata" type="metadataType">
+    <xsd:annotation>
+      <xsd:documentation>This is the root of the entire metadata document.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="metadataType">
+    <xsd:sequence>
+      <xsd:element ref="idinfo"></xsd:element>
+      <xsd:element ref="dataqual" minOccurs="0" />
+      <xsd:element ref="spdoinfo" minOccurs="0" />
+      <xsd:element ref="spref" minOccurs="0" />
+      <xsd:element ref="eainfo" minOccurs="0" />
+      <xsd:element ref="distinfo" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="metainfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="FGDCdate">
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="\d{4}(\d{2}(\d{2})?)?" />
+      <xsd:pattern value="bc\d{4}(\d{2}(\d{2})?)?" />
+      <xsd:pattern value="cc\d{5,}" />
+      <xsd:pattern value="cd\d{5,}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FGDCtime">
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="\d{2}(\d{2}(\d{2,})?)?" />
+      <xsd:pattern value="\d{2}(\d{2}(\d{2,})?)?[+\-]\d{4}" />
+      <xsd:pattern value="\d{2}(\d{2}(\d{2,})?)?Z" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FGDCstring">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\s*\S(.|\n|\r)*" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FGDClatitude">
+    <xsd:restriction base="xsd:double">
+      <xsd:minInclusive value="-90.0" />
+      <xsd:maxInclusive value="90.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FGDClongitude">
+    <xsd:restriction base="xsd:double">
+      <xsd:minInclusive value="-180.0" />
+      <xsd:maxInclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--BDPfgdc-std-001-1998-sect01.xsd content-->
+  <xsd:element name="idinfo" type="idinfoType"></xsd:element>
+  <xsd:complexType name="idinfoType">
+    <xsd:sequence>
+      <xsd:element ref="citation">
+        <xsd:annotation>
+          <xsd:documentation>1.1  Citation -- information to be used to reference the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="descript">
+        <xsd:annotation>
+          <xsd:documentation>1.2  Description -- a characterization of the data set, including its intended use and limitations.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="timeperd">
+        <xsd:annotation>
+          <xsd:documentation>1.3  Time Period of Content -- time period(s) for which the data set corresponds to the currentness reference.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="status">
+        <xsd:annotation>
+          <xsd:documentation>1.4  Status -- the state of and maintenance information for the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="spdom" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>1.5  Spatial Domain -- the geographic areal domain of the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="keywords">
+        <xsd:annotation>
+          <xsd:documentation>1.6  Keywords -- words or phrases summarizing an aspect of the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="taxonomy" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>BDP1.7 Taxonomy Information--on the taxa (1 or more) included in the data set, including keywords, taxonomic system and coverage information, and taxonomic classification system.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="accconst">
+        <xsd:annotation>
+          <xsd:documentation>1.7  Access Constraints -- restrictions and legal prerequisites for accessing the data set.  These include any access constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on obtaining the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="useconst">
+        <xsd:annotation>
+          <xsd:documentation>1.8  Use Constraints -- restrictions and legal prerequisites for using the data set after access is granted.  These include any use constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="ptcontac" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>1.9  Point of Contact -- contact information for an individual or organization that is knowledgeable about the data set. ------------------------------------------------------------------------------------------------------------------------------------------------What is the difference between the "Originator" in compound element "Citation" (1.1) and the "Point of Contact" element?
+The "Originator" is the person(s) and organization(s) that developed the data set. The "Point of Contact" is the person(s) and organization(s) that can be contacted if questions arise about the data set. The "Originator" and the "Point of Contact" may be the same.
+------------------------------------------------------------------------------------------------------------------------------------------------
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="browse" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>1.10  Browse Graphic -- a graphic that provides an illustration of the data set.  The graphic should include         a legend for interpreting the graphic.  ------------------------------------------------------------------------------------------------------------------------------------------------
+FAQ:	What is the purpose of a browse graphic?
+
+A browse graphic is an image of the data set. The image allows prospective users to move beyond textual descriptions and see what the data set looks like. The image might show a simple display of the data set, the results of an application that used the data set, different aspects of the quality of the data set, or other information.  Examples: 
+
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="datacred" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>1.11  Data Set Credit -- recognition of those who contributed to the data set.  ------------------------------------------------------------------------------------------------------------------------------------------------
+FAQ:	What is the purpose of the "Data Set Credit" data element?
+
+The "Data Set Credit" data element was provided to allow the originator to recognize other person(s), organization(s), or events that made the data set possible. These might include sponsors, sources of funds, reviewers, dedications, etc.
+------------------------------------------------------------------------------------------------------------------------------------------------
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="secinfo" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>1.12  Security Information -- handling restrictions imposed on the data set because of national security, privacy, or other concerns.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="native" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>1.13  Native Data Set Environment -- a description of the data set in the producer's processing environment, including items such as the name of the software (including version), the computer operating system, file name (including host-, path-, and filenames), and the data set size.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="crossref" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>1.14  Cross Reference -- information about other, related data sets that are likely to be of interest.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="tool" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>BDP1.15. Analytical Tool--Tools, models, or statistical procedures that the data set is intrinsically bound to and are available for use in analyzing the data set.  Examples include reconstructions of phylogenies, population viability analyses, community ordinations, most atmospheric and hydrological transport analyses, and inferences on the effects of climate change on forest composition and productivity. Enough information should be included such that a potential data user can easily determine why they might wish to acquire the analytical tool, and the methodology to acquire it.  Repeat as needed.  </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="citation" type="citationType">
+    <xsd:annotation>
+      <xsd:documentation>Citation -- information to be used to reference the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="citationType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="descript" type="descriptType">
+    <xsd:annotation>
+      <xsd:documentation>Description -- a characterization of the data set, including its intended use and limitations.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="descriptType">
+    <xsd:sequence>
+      <xsd:element ref="abstract" />
+      <xsd:element ref="purpose" />
+      <xsd:element ref="supplinf" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="abstract" type="abstractType">
+    <xsd:annotation>
+      <xsd:documentation>Abstract -- a brief narrative summary of the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="abstractType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="purpose" type="purposeType">
+    <xsd:annotation>
+      <xsd:documentation>Purpose -- a summary of the intentions with which the data set was developed.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="purposeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="supplinf" type="supplinfType">
+    <xsd:annotation>
+      <xsd:documentation>Supplemental Information -- other descriptive information about the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="supplinfType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="timeperd" type="timeperdType">
+    <xsd:annotation>
+      <xsd:documentation>Time Period of Content -- time period(s) for which the data set corresponds to the currentness reference.
+</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="timeperdType">
+    <xsd:sequence>
+      <xsd:element ref="timeinfo" />
+      <xsd:element ref="current" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="current" type="currentType">
+    <xsd:annotation>
+      <xsd:documentation>Currentness Reference -- the basis on which the time period of content information is determined.          
+
+FAQ:	What does the “currentness reference” mean?
+
+Information about the currentness of a data set (that is, information about how “up-to-date” is a data set) is important to many, if not most, potential users. Most users are interested in the currentness of a data set related to the “ground condition” (that is, when the “real world” looked the way it s described in the data set). Unfortunately, sometimes only the time that the information was recorded or published is known. The Currentness Reference element requires the producer to identify if the Time Period of Content dates and times refer to the ground condition, or some later time when the information was recorded, published, etc.
+------------------------------------------------------------------------------------------------------------------------------------------------
+FAQ: What is the information recorded in the Currentness Reference element?   
+
+This element is used to clarify how the calendric date(s) provided in Time Period of Content were generated.  If "June, July, and August" were derived from "Summer", or calendric dates were generated from the radio isotopic (e.g. carbon) dating of samples, or some other interpretation was made to generate the calendric date, the original information before interpretation, and an explanation of the interpretation or derivation should be included in this element.  In the case of calendar dates derived from radiocarbon dating, the radiocarbon age (B.P.), its standard deviation, and the isotope fractionation (if done), along with the calibration scheme used, should be included.
+------------------------------------------------------------------------------------------------------------------------------------------------FAQ:	What is the difference between  “ground condition” and “observed”?
+
+“Ground condition” is the date the site was visited.  “Observed” does not require physical presence; the information may be collected by instrument or other tool.  If your data set content is derived from photographs (aerial), designate in the Time Period of Content Date Explanation the data time period is “photo date” and provide the dates(s) of the photographs.
+</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="currentType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="ground condition" />
+          <xsd:enumeration value="publication date" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="status" type="statusType">
+    <xsd:annotation>
+      <xsd:documentation>Status -- the state of and maintenance information for the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="statusType">
+    <xsd:sequence>
+      <xsd:element ref="progress" />
+      <xsd:element ref="update" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="progress" type="progressType">
+    <xsd:annotation>
+      <xsd:documentation>Progress -- the state of the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="progressType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Complete" />
+      <xsd:enumeration value="In work" />
+      <xsd:enumeration value="Planned" />
+      <xsd:enumeration value="In Work" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="update" type="updateType">
+    <xsd:annotation>
+      <xsd:documentation>1.4.2  Maintenance and Update Frequency -- the frequency with which changes and additions are made to the data set after the initial data set is completed.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="updateType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Continually" />
+          <xsd:enumeration value="Daily" />
+          <xsd:enumeration value="Weekly" />
+          <xsd:enumeration value="Monthly" />
+          <xsd:enumeration value="Annually" />
+          <xsd:enumeration value="Unknown" />
+          <xsd:enumeration value="As Needed" />
+          <xsd:enumeration value="Irregular" />
+          <xsd:enumeration value="None planned" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="spdom" type="spdomType">
+    <xsd:annotation>
+      <xsd:documentation>1.5  Spatial Domain -- the geographic areal domain of the data set.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="spdomType">
+    <xsd:sequence>
+      <xsd:element ref="descgeog" />
+      <xsd:element ref="bounding" />
+      <xsd:element ref="dsgpoly" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="descgeog" type="descgeogType">
+    <xsd:annotation>
+      <xsd:documentation>BDP1.5.1  Description of Geographic Extent-- Short description of the geographic areal domain of the data set.
+	 Examples include, "Manistee River watershed", "extent of 7 « minute quads containing any property 
+	belonging to Yellowstone National Park", or "ponds and reservoirs larger than 2 acres in Jefferson County, 
+	Colorado".  This is especially important when the extent of the data set is not well described by the 
+	"Bounding Rectangle Coordinates".
+</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="descgeogType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="bounding" type="boundingType">
+    <xsd:annotation>
+      <xsd:documentation>1.5.1  Bounding Coordinates-- the limits of coverage of a data set expressed by latitude and longitude values in the order western-most, eastern-most, northern-most, and southern-most.  For data sets that include a complete band of latitude around the earth, the West Bounding Coordinate shall be assigned the value -180.0, and the East Bounding</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="boundingType">
+    <xsd:sequence>
+      <xsd:element ref="westbc" />
+      <xsd:element ref="eastbc" />
+      <xsd:element ref="northbc" />
+      <xsd:element ref="southbc" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="westbc" type="westbcType">
+    <xsd:annotation>
+      <xsd:documentation>1.5.1.1  West Bounding Coordinate -- western-most coordinate of the limit of coverage expressed in longitude.
+	Type:  real
+	Domain:  -180.0 &lt;= West Bounding Coordinate &lt; 180.0
+</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="westbcType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="eastbc" type="eastbcType" />
+  <xsd:simpleType name="eastbcType">
+    <xsd:restriction base="FGDClongitude" />
+  </xsd:simpleType>
+  <xsd:element name="northbc" type="northbcType" />
+  <xsd:simpleType name="northbcType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="southbc" type="southbcType" />
+  <xsd:simpleType name="southbcType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="dsgpoly" type="dsgpolyType" />
+  <xsd:complexType name="dsgpolyType">
+    <xsd:sequence>
+      <xsd:element ref="dsgpolyo" />
+      <xsd:element ref="dsgpolyx" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="dsgpolyo" type="dsgpolyoType" />
+  <xsd:complexType name="dsgpolyoType">
+    <xsd:choice>
+      <xsd:element ref="grngpoin" minOccurs="4" maxOccurs="unbounded" />
+      <xsd:element ref="gring" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="grngpoin" type="grngpoinType" />
+  <xsd:complexType name="grngpoinType">
+    <xsd:sequence>
+      <xsd:element ref="gringlat" />
+      <xsd:element ref="gringlon" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="gringlat" type="gringlatType" />
+  <xsd:simpleType name="gringlatType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="gringlon" type="gringlonType" />
+  <xsd:simpleType name="gringlonType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="gring" type="gringType" />
+  <xsd:simpleType name="gringType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="dsgpolyx" type="dsgpolyxType" />
+  <xsd:complexType name="dsgpolyxType">
+    <xsd:choice>
+      <xsd:element ref="grngpoin" minOccurs="4" maxOccurs="unbounded" />
+      <xsd:element ref="gring" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="keywords" type="keywordsType" />
+  <xsd:complexType name="keywordsType">
+    <xsd:sequence>
+      <xsd:element ref="theme" maxOccurs="unbounded" />
+      <xsd:element ref="place" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="stratum" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="temporal" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="theme" type="themeType" />
+  <xsd:complexType name="themeType">
+    <xsd:sequence>
+      <xsd:element ref="themekt" />
+      <xsd:element ref="themekey" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="themekt" type="themektType" />
+  <xsd:simpleType name="themektType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+          <xsd:enumeration value="ISO 19115 Topic Category" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="themekey" type="themekeyType" />
+  <xsd:simpleType name="themekeyType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="farming" />
+          <xsd:enumeration value="biota" />
+          <xsd:enumeration value="boundaries" />
+          <xsd:enumeration value="climatologyMeteorologyAtmosphere" />
+          <xsd:enumeration value="economy" />
+          <xsd:enumeration value="elevation" />
+          <xsd:enumeration value="environment" />
+          <xsd:enumeration value="geoscientificinformation" />
+          <xsd:enumeration value="health" />
+          <xsd:enumeration value="imageryBaseMapsEarthCover" />
+          <xsd:enumeration value="intelligenceMilitary" />
+          <xsd:enumeration value="inlandWaters" />
+          <xsd:enumeration value="location" />
+          <xsd:enumeration value="oceans" />
+          <xsd:enumeration value="planningCadastre" />
+          <xsd:enumeration value="society" />
+          <xsd:enumeration value="structure" />
+          <xsd:enumeration value="transportation" />
+          <xsd:enumeration value="utilitiesCommunications" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="place" type="placeType" />
+  <xsd:complexType name="placeType">
+    <xsd:sequence>
+      <xsd:element ref="placekt" />
+      <xsd:element ref="placekey" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="placekt" type="placektType" />
+  <xsd:simpleType name="placektType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="placekey" type="placekeyType" />
+  <xsd:simpleType name="placekeyType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="stratum" type="stratumType" />
+  <xsd:complexType name="stratumType">
+    <xsd:sequence>
+      <xsd:element ref="stratkt" />
+      <xsd:element ref="stratkey" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="stratkt" type="stratktType" />
+  <xsd:simpleType name="stratktType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="stratkey" type="stratkeyType" />
+  <xsd:simpleType name="stratkeyType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="temporal" type="temporalType" />
+  <xsd:complexType name="temporalType">
+    <xsd:sequence>
+      <xsd:element ref="tempkt" />
+      <xsd:element ref="tempkey" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="tempkt" type="tempktType" />
+  <xsd:simpleType name="tempktType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="tempkey" type="tempkeyType" />
+  <xsd:simpleType name="tempkeyType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="taxonomy" type="taxonomyType" />
+  <xsd:complexType name="taxonomyType">
+    <xsd:sequence>
+      <xsd:sequence>
+        <xsd:element ref="keywtax" maxOccurs="unbounded" />
+        <xsd:element ref="taxonsys" minOccurs="0"></xsd:element>
+        <xsd:element ref="taxongen" minOccurs="0"></xsd:element>
+        <xsd:element ref="taxoncl" maxOccurs="unbounded">
+          <!--Taxon Classification-->
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="keywtax" type="keywtaxType" />
+  <xsd:complexType name="keywtaxType">
+    <xsd:sequence>
+      <xsd:element ref="taxonkt" />
+      <xsd:element ref="taxonkey" maxOccurs="unbounded"></xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="taxonkt" type="taxonktType"></xsd:element>
+  <xsd:simpleType name="taxonktType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="taxonkey" type="taxonkeyType"></xsd:element>
+  <xsd:simpleType name="taxonkeyType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="taxonsys" type="taxonsysType"></xsd:element>
+  <xsd:complexType name="taxonsysType">
+    <xsd:sequence>
+      <xsd:element ref="classsys" maxOccurs="unbounded"></xsd:element>
+      <xsd:element ref="idref" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      <xsd:element ref="ider" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      <xsd:element ref="taxonpro"></xsd:element>
+      <xsd:element ref="taxoncom" minOccurs="0"></xsd:element>
+      <xsd:element ref="vouchers" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="classsys" type="classsysType"></xsd:element>
+  <xsd:complexType name="classsysType">
+    <xsd:sequence>
+      <xsd:element ref="classcit" maxOccurs="unbounded" />
+      <xsd:element ref="classmod" minOccurs="0"></xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="classcit" type="classcitType"></xsd:element>
+  <xsd:complexType name="classcitType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="classmod" type="classmodType"></xsd:element>
+  <xsd:simpleType name="classmodType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="idref" type="idrefType"></xsd:element>
+  <xsd:complexType name="idrefType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="ider" type="iderType"></xsd:element>
+  <xsd:complexType name="iderType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="taxonpro" type="taxonproType"></xsd:element>
+  <xsd:simpleType name="taxonproType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="taxoncom" type="taxoncomType"></xsd:element>
+  <xsd:simpleType name="taxoncomType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="vouchers" type="vouchersType"></xsd:element>
+  <xsd:complexType name="vouchersType">
+    <xsd:sequence>
+      <xsd:element ref="specimens" />
+      <xsd:element ref="reposit"></xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="specimens" type="specimensType"></xsd:element>
+  <xsd:simpleType name="specimensType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="reposit" type="repositType"></xsd:element>
+  <xsd:complexType name="repositType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="taxongen" type="taxongenType"></xsd:element>
+  <xsd:simpleType name="taxongenType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="taxoncl" type="taxonclType"></xsd:element>
+  <xsd:complexType name="taxonclType">
+    <xsd:sequence>
+      <xsd:element ref="taxonrn" />
+      <xsd:element ref="taxonrv"></xsd:element>
+      <xsd:element ref="common" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      <xsd:element ref="taxoncl" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="taxonrn" type="taxonrnType"></xsd:element>
+  <xsd:simpleType name="taxonrnType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="taxonrv" type="taxonrvType"></xsd:element>
+  <xsd:simpleType name="taxonrvType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="common" type="commonType"></xsd:element>
+  <xsd:simpleType name="commonType">
+    <xsd:restriction base="FGDCstring"></xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="accconst" type="accconstType"></xsd:element>
+  <xsd:simpleType name="accconstType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="useconst" type="useconstType" />
+  <xsd:simpleType name="useconstType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="ptcontac" type="ptcontacType" />
+  <xsd:complexType name="ptcontacType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="browse" type="browseType" />
+  <xsd:complexType name="browseType">
+    <xsd:sequence>
+      <xsd:element ref="browsen" />
+      <xsd:element ref="browsed" />
+      <xsd:element ref="browset" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="browsen" type="browsenType" />
+  <xsd:simpleType name="browsenType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="browsed" type="browsedType" />
+  <xsd:simpleType name="browsedType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="browset" type="browsetType" />
+  <xsd:simpleType name="browsetType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="datacred" type="datacredType" />
+  <xsd:simpleType name="datacredType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="secinfo" type="secinfoType" />
+  <xsd:complexType name="secinfoType">
+    <xsd:sequence>
+      <xsd:element ref="secsys" />
+      <xsd:element ref="secclass" />
+      <xsd:element ref="sechandl" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="secsys" type="secsysType" />
+  <xsd:simpleType name="secsysType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="secclass" type="secclassType" />
+  <xsd:simpleType name="secclassType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="sechandl" type="sechandlType" />
+  <xsd:simpleType name="sechandlType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="native" type="nativeType" />
+  <xsd:simpleType name="nativeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="crossref" type="crossrefType" />
+  <xsd:complexType name="crossrefType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="tool" type="toolType"></xsd:element>
+  <xsd:complexType name="toolType">
+    <xsd:sequence>
+      <xsd:element ref="tooldesc" />
+      <xsd:element ref="toolacc" />
+      <xsd:element ref="toolcont" minOccurs="0" />
+      <xsd:element ref="toolcite" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="tooldesc" type="tooldescType"></xsd:element>
+  <xsd:simpleType name="tooldescType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="toolacc" type="toolaccType"></xsd:element>
+  <xsd:complexType name="toolaccType">
+    <xsd:sequence>
+      <xsd:element ref="onlink" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="toolinst" />
+      <xsd:element ref="toolcomp" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="toolinst" type="toolinstType"></xsd:element>
+  <xsd:simpleType name="toolinstType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="toolcomp" type="toolcompType"></xsd:element>
+  <xsd:simpleType name="toolcompType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="toolcont" type="toolcontType"></xsd:element>
+  <xsd:complexType name="toolcontType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="toolcite" type="toolciteType"></xsd:element>
+  <xsd:complexType name="toolciteType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--BDPfgdc-std-001-1998-sect02.xsd content-->
+  <xsd:element name="dataqual" type="dataqualType" />
+  <xsd:complexType name="dataqualType">
+    <xsd:sequence>
+      <xsd:element ref="attracc" minOccurs="0" />
+      <xsd:element ref="logic" />
+      <xsd:element ref="complete" />
+      <xsd:element ref="posacc" minOccurs="0" />
+      <xsd:element ref="lineage" />
+      <xsd:element ref="cloud" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="attracc" type="attraccType" />
+  <xsd:complexType name="attraccType">
+    <xsd:sequence>
+      <xsd:element ref="attraccr" />
+      <xsd:element ref="qattracc" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="attraccr" type="attraccrType" />
+  <xsd:simpleType name="attraccrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="qattracc" type="qattraccType" />
+  <xsd:complexType name="qattraccType">
+    <xsd:sequence>
+      <xsd:element ref="attraccv" />
+      <xsd:element ref="attracce" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="attraccv" type="attraccvType" />
+  <xsd:simpleType name="attraccvType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attracce" type="attracceType" />
+  <xsd:simpleType name="attracceType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="logic" type="logicType" />
+  <xsd:simpleType name="logicType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="complete" type="completeType" />
+  <xsd:simpleType name="completeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="posacc" type="posaccType" />
+  <xsd:complexType name="posaccType">
+    <xsd:sequence>
+      <xsd:element ref="horizpa" minOccurs="0" />
+      <xsd:element ref="vertacc" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="horizpa" type="horizpaType" />
+  <xsd:complexType name="horizpaType">
+    <xsd:sequence>
+      <xsd:element ref="horizpar" />
+      <xsd:element ref="qhorizpa" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="horizpar" type="horizparType" />
+  <xsd:simpleType name="horizparType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="qhorizpa" type="qhorizpaType" />
+  <xsd:complexType name="qhorizpaType">
+    <xsd:sequence>
+      <xsd:element ref="horizpav" />
+      <xsd:element ref="horizpae" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="horizpav" type="horizpavType" />
+  <xsd:simpleType name="horizpavType">
+    <xsd:restriction base="xsd:double" />
+  </xsd:simpleType>
+  <xsd:element name="horizpae" type="horizpaeType" />
+  <xsd:simpleType name="horizpaeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="vertacc" type="vertaccType" />
+  <xsd:complexType name="vertaccType">
+    <xsd:sequence>
+      <xsd:element ref="vertaccr" />
+      <xsd:element ref="qvertpa" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="vertaccr" type="vertaccrType" />
+  <xsd:simpleType name="vertaccrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="qvertpa" type="qvertpaType" />
+  <xsd:complexType name="qvertpaType">
+    <xsd:sequence>
+      <xsd:element ref="vertaccv" />
+      <xsd:element ref="vertacce" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="vertaccv" type="vertaccvType" />
+  <xsd:simpleType name="vertaccvType">
+    <xsd:restriction base="xsd:double" />
+  </xsd:simpleType>
+  <xsd:element name="vertacce" type="vertacceType" />
+  <xsd:simpleType name="vertacceType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="lineage" type="lineageType">
+    <xsd:key name="srcciteaKey">
+      <xsd:selector xpath="srcinfo" />
+      <xsd:field xpath="srccitea" />
+    </xsd:key>
+    <xsd:keyref name="srcusedKeyRef" refer="srcciteaKey">
+      <xsd:selector xpath="procstep/srcused" />
+      <xsd:field xpath="." />
+    </xsd:keyref>
+    <xsd:keyref name="srcprodKeyRef" refer="srcciteaKey">
+      <xsd:selector xpath="procstep/srcprod" />
+      <xsd:field xpath="." />
+    </xsd:keyref>
+  </xsd:element>
+  <xsd:complexType name="lineageType">
+    <xsd:sequence>
+      <xsd:element ref="method" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="srcinfo" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="procstep" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="method" type="methodType" />
+  <xsd:complexType name="methodType">
+    <xsd:sequence>
+      <xsd:element ref="methtype" />
+      <xsd:element ref="methodid" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="methdesc" />
+      <xsd:element ref="methcite" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="methtype" type="methtypeType"></xsd:element>
+  <xsd:simpleType name="methtypeType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Field" />
+          <xsd:enumeration value="Lab" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="methodid" type="methodidType"></xsd:element>
+  <xsd:complexType name="methodidType">
+    <xsd:sequence>
+      <xsd:element ref="methkt" />
+      <xsd:element ref="methkey" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="methkt" type="methktType"></xsd:element>
+  <xsd:simpleType name="methktType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="methkey" type="methkeyType"></xsd:element>
+  <xsd:simpleType name="methkeyType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="methdesc" type="methdescType"></xsd:element>
+  <xsd:simpleType name="methdescType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="methcite" type="methciteType"></xsd:element>
+  <xsd:complexType name="methciteType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="srcinfo" type="srcinfoType"></xsd:element>
+  <xsd:complexType name="srcinfoType">
+    <xsd:sequence>
+      <xsd:element ref="srccite" />
+      <xsd:element ref="srcscale" minOccurs="0" />
+      <xsd:element ref="typesrc" />
+      <xsd:element ref="srctime" />
+      <xsd:element ref="srccitea" />
+      <xsd:element ref="srccontr" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="srccite" type="srcciteType" />
+  <xsd:complexType name="srcciteType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="srcscale" type="srcscaleType" />
+  <xsd:simpleType name="srcscaleType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minExclusive value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="typesrc" type="typesrcType" />
+  <xsd:simpleType name="typesrcType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="srctime" type="srctimeType" />
+  <xsd:complexType name="srctimeType">
+    <xsd:sequence>
+      <xsd:element ref="timeinfo" />
+      <xsd:element ref="srccurr" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="srccurr" type="srccurrType" />
+  <xsd:simpleType name="srccurrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="srccitea" type="srcciteaType" />
+  <xsd:simpleType name="srcciteaType">
+    <xsd:restriction base="xsd:token" />
+  </xsd:simpleType>
+  <xsd:element name="srccontr" type="srccontrType" />
+  <xsd:simpleType name="srccontrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="procstep" type="procstepType" />
+  <xsd:complexType name="procstepType">
+    <xsd:sequence>
+      <xsd:element ref="procdesc" />
+      <xsd:element ref="srcused" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="procdate" />
+      <xsd:element ref="proctime" minOccurs="0" />
+      <xsd:element ref="srcprod" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="proccont" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="procdesc" type="procdescType" />
+  <xsd:simpleType name="procdescType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="srcused" type="srcciteaType" />
+  <!--
+<xsd:simpleType name="srcusedType">
+	<xsd:restriction base="xsd:token"/>
+</xsd:simpleType>
+-->
+  <xsd:element name="procdate" type="procdateType" />
+  <xsd:simpleType name="procdateType">
+    <xsd:union memberTypes="FGDCdate">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+          <xsd:enumeration value="Not complete" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="proctime" type="proctimeType" />
+  <xsd:simpleType name="proctimeType">
+    <xsd:restriction base="FGDCtime" />
+  </xsd:simpleType>
+  <xsd:element name="srcprod" type="srcciteaType" />
+  <!--
+<xsd:simpleType name="srcprodType">
+	<xsd:restriction base="xsd:token"/>
+</xsd:simpleType>
+-->
+  <xsd:element name="proccont" type="proccontType" />
+  <xsd:complexType name="proccontType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="cloud" type="cloudType" />
+  <xsd:simpleType name="cloudType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:integer">
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect03.xsd content-->
+  <xsd:element name="spdoinfo" type="spdoinfoType" />
+  <xsd:complexType name="spdoinfoType">
+    <xsd:sequence>
+      <xsd:element ref="indspref" minOccurs="0" />
+      <xsd:sequence minOccurs="0">
+        <xsd:element ref="direct" />
+        <xsd:choice minOccurs="0">
+          <xsd:element ref="ptvctinf" />
+          <xsd:element ref="rastinfo" />
+        </xsd:choice>
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="indspref" type="indsprefType" />
+  <xsd:simpleType name="indsprefType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="direct" type="directType" />
+  <xsd:simpleType name="directType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Point" />
+      <xsd:enumeration value="Vector" />
+      <xsd:enumeration value="Raster" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="ptvctinf" type="ptvctinfType" />
+  <xsd:complexType name="ptvctinfType">
+    <xsd:choice>
+      <xsd:element ref="sdtsterm" maxOccurs="unbounded" />
+      <xsd:element ref="vpfterm" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="sdtsterm" type="sdtstermType" />
+  <xsd:complexType name="sdtstermType">
+    <xsd:sequence>
+      <xsd:element ref="sdtstype" />
+      <xsd:element ref="ptvctcnt" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="sdtstype" type="sdtstypeType" />
+  <xsd:simpleType name="sdtstypeType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Point" />
+      <xsd:enumeration value="Entity point" />
+      <xsd:enumeration value="Label point" />
+      <xsd:enumeration value="Area point" />
+      <xsd:enumeration value="Node, planar graph" />
+      <xsd:enumeration value="Node, network" />
+      <xsd:enumeration value="String" />
+      <xsd:enumeration value="Link" />
+      <xsd:enumeration value="Complete chain" />
+      <xsd:enumeration value="Area chain" />
+      <xsd:enumeration value="Network chain, planar graph" />
+      <xsd:enumeration value="Network chain, nonplanar graph" />
+      <xsd:enumeration value="Circular arc, three point center" />
+      <xsd:enumeration value="Elliptical arc" />
+      <xsd:enumeration value="Uniform B-spline" />
+      <xsd:enumeration value="Piecewise Bezier" />
+      <xsd:enumeration value="Ring with mixed composition" />
+      <xsd:enumeration value="Ring composed of strings" />
+      <xsd:enumeration value="Ring composed of chains" />
+      <xsd:enumeration value="Ring composed of arcs" />
+      <xsd:enumeration value="G-polygon" />
+      <xsd:enumeration value="GT-polygon composed of rings" />
+      <xsd:enumeration value="GT-polygon composed of chains" />
+      <xsd:enumeration value="Universe polygon composed of rings" />
+      <xsd:enumeration value="Universe polygon composed of chains" />
+      <xsd:enumeration value="Void polygon composed of rings" />
+      <xsd:enumeration value="Void polygon composed of chains" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="ptvctcnt" type="ptvctcntType" />
+  <xsd:simpleType name="ptvctcntType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minExclusive value="0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="vpfterm" type="vpftermType" />
+  <xsd:complexType name="vpftermType">
+    <xsd:sequence>
+      <xsd:element ref="vpflevel" />
+      <xsd:element ref="vpfinfo" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="vpflevel" type="vpflevelType" />
+  <xsd:simpleType name="vpflevelType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0" />
+      <xsd:maxInclusive value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="vpfinfo" type="vpfinfoType" />
+  <xsd:complexType name="vpfinfoType">
+    <xsd:sequence>
+      <xsd:element ref="vpftype" />
+      <xsd:element ref="ptvctcnt" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="vpftype" type="vpftypeType" />
+  <xsd:simpleType name="vpftypeType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Node" />
+      <xsd:enumeration value="Edge" />
+      <xsd:enumeration value="Face" />
+      <xsd:enumeration value="Text" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="rastinfo" type="rastinfoType" />
+  <xsd:complexType name="rastinfoType">
+    <xsd:sequence>
+      <xsd:element ref="rasttype" />
+      <xsd:sequence minOccurs="0">
+        <xsd:element ref="rowcount" />
+        <xsd:element ref="colcount" />
+        <xsd:element ref="vrtcount" minOccurs="0" />
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="rasttype" type="rasttypeType" />
+  <xsd:simpleType name="rasttypeType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Point" />
+      <xsd:enumeration value="Pixel" />
+      <xsd:enumeration value="Grid Cell" />
+      <xsd:enumeration value="Voxel" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="rowcount" type="rowcountType" />
+  <xsd:simpleType name="rowcountType">
+    <xsd:restriction base="xsd:positiveInteger" />
+  </xsd:simpleType>
+  <xsd:element name="colcount" type="colcountType" />
+  <xsd:simpleType name="colcountType">
+    <xsd:restriction base="xsd:positiveInteger" />
+  </xsd:simpleType>
+  <xsd:element name="vrtcount" type="vrtcountType" />
+  <xsd:simpleType name="vrtcountType">
+    <xsd:restriction base="xsd:positiveInteger" />
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect04.xsd content-->
+  <xsd:element name="spref" type="sprefType" />
+  <xsd:complexType name="sprefType">
+    <xsd:sequence>
+      <xsd:element ref="horizsys" minOccurs="0" />
+      <xsd:element ref="vertdef" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="horizsys" type="horizsysType" />
+  <xsd:complexType name="horizsysType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="geograph" />
+        <xsd:element ref="planar" maxOccurs="unbounded" />
+        <xsd:element ref="local" />
+      </xsd:choice>
+      <xsd:element ref="geodetic" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="geograph" type="geographType" />
+  <xsd:complexType name="geographType">
+    <xsd:sequence>
+      <xsd:element ref="latres" />
+      <xsd:element ref="longres" />
+      <xsd:element ref="geogunit" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="latres" type="latresType" />
+  <xsd:simpleType name="latresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="longres" type="longresType" />
+  <xsd:simpleType name="longresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="geogunit" type="geogunitType" />
+  <xsd:simpleType name="geogunitType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Decimal degrees" />
+      <xsd:enumeration value="Decimal minutes" />
+      <xsd:enumeration value="Decimal seconds" />
+      <xsd:enumeration value="Degrees and decimal minutes" />
+      <xsd:enumeration value="Degrees, minutes, and decimal seconds" />
+      <xsd:enumeration value="Radians" />
+      <xsd:enumeration value="Grads" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="planar" type="planarType" />
+  <xsd:complexType name="planarType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="mapproj" />
+        <xsd:element ref="gridsys" />
+        <xsd:element ref="localp" />
+      </xsd:choice>
+      <xsd:element ref="planci" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="mapproj" type="mapprojType" />
+  <xsd:complexType name="mapprojType">
+    <xsd:sequence>
+      <xsd:element ref="mapprojn" />
+      <xsd:choice>
+        <xsd:element ref="albers" />
+        <xsd:element ref="azimequi" />
+        <xsd:element ref="equicon" />
+        <xsd:element ref="equirect" />
+        <xsd:element ref="gvnsp" />
+        <xsd:element ref="gnomonic" />
+        <xsd:element ref="lamberta" />
+        <xsd:element ref="lambertc" />
+        <xsd:element ref="mercator" />
+        <xsd:element ref="modsak" />
+        <xsd:element ref="miller" />
+        <xsd:element ref="obqmerc" />
+        <xsd:element ref="orthogr" />
+        <xsd:element ref="polarst" />
+        <xsd:element ref="polycon" />
+        <xsd:element ref="robinson" />
+        <xsd:element ref="sinusoid" />
+        <xsd:element ref="spaceobq" />
+        <xsd:element ref="stereo" />
+        <xsd:element ref="transmer" />
+        <xsd:element ref="vdgrin" />
+        <xsd:element ref="mapprojp" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="mapprojn" type="mapprojnType" />
+  <xsd:simpleType name="mapprojnType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="albers" type="albersType" />
+  <xsd:complexType name="albersType">
+    <xsd:sequence>
+      <xsd:element ref="stdparll" maxOccurs="2" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="azimequi" type="azimequiType" />
+  <xsd:complexType name="azimequiType">
+    <xsd:sequence>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="equicon" type="equiconType" />
+  <xsd:complexType name="equiconType">
+    <xsd:sequence>
+      <xsd:element ref="stdparll" maxOccurs="2" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="equirect" type="equirectType" />
+  <xsd:complexType name="equirectType">
+    <xsd:sequence>
+      <xsd:element ref="stdparll" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="gvnsp" type="gvnspType" />
+  <xsd:complexType name="gvnspType">
+    <xsd:sequence>
+      <xsd:element ref="heightpt" />
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="gnomonic" type="gnomonicType" />
+  <xsd:complexType name="gnomonicType">
+    <xsd:sequence>
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="lamberta" type="lambertaType" />
+  <xsd:complexType name="lambertaType">
+    <xsd:sequence>
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="lambertc" type="lambertcType" />
+  <xsd:complexType name="lambertcType">
+    <xsd:sequence>
+      <xsd:element ref="stdparll" maxOccurs="2" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="mercator" type="mercatorType" />
+  <xsd:complexType name="mercatorType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="stdparll" />
+        <xsd:element ref="sfequat" />
+      </xsd:choice>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="modsak" type="modsakType" />
+  <xsd:complexType name="modsakType">
+    <xsd:sequence>
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="miller" type="millerType" />
+  <xsd:complexType name="millerType">
+    <xsd:sequence>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="obqmerc" type="obqmercType" />
+  <xsd:complexType name="obqmercType">
+    <xsd:sequence>
+      <xsd:element ref="sfctrlin" />
+      <xsd:choice>
+        <xsd:element ref="obqlazim" />
+        <xsd:element ref="obqlpt" />
+      </xsd:choice>
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="orthogr" type="orthogrType" />
+  <xsd:complexType name="orthogrType">
+    <xsd:sequence>
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="polarst" type="polarstType" />
+  <xsd:complexType name="polarstType">
+    <xsd:sequence>
+      <xsd:element ref="svlong" />
+      <xsd:choice>
+        <xsd:element ref="stdparll" />
+        <xsd:element ref="sfprjorg" />
+      </xsd:choice>
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="polycon" type="polyconType" />
+  <xsd:complexType name="polyconType">
+    <xsd:sequence>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="robinson" type="robinsonType" />
+  <xsd:complexType name="robinsonType">
+    <xsd:sequence>
+      <xsd:element ref="longpc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="sinusoid" type="sinusoidType" />
+  <xsd:complexType name="sinusoidType">
+    <xsd:sequence>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="spaceobq" type="spaceobqType" />
+  <xsd:complexType name="spaceobqType">
+    <xsd:sequence>
+      <xsd:element ref="landsat" />
+      <xsd:element ref="pathnum" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="stereo" type="stereoType" />
+  <xsd:complexType name="stereoType">
+    <xsd:sequence>
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="transmer" type="transmerType" />
+  <xsd:complexType name="transmerType">
+    <xsd:sequence>
+      <xsd:element ref="sfctrmer" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="vdgrin" type="vdgrinType" />
+  <xsd:complexType name="vdgrinType">
+    <xsd:sequence>
+      <xsd:element ref="longcm" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="mapprojp" type="mapprojpType" />
+  <xsd:complexType name="mapprojpType">
+    <xsd:choice maxOccurs="6">
+      <xsd:element ref="stdparll" />
+      <xsd:element ref="longcm" />
+      <xsd:element ref="latprjo" />
+      <xsd:element ref="feast" />
+      <xsd:element ref="fnorth" />
+      <xsd:element ref="sfequat" />
+      <xsd:element ref="heightpt" />
+      <xsd:element ref="longpc" />
+      <xsd:element ref="latprjc" />
+      <xsd:element ref="sfctrlin" />
+      <xsd:element ref="obqlazim" />
+      <xsd:element ref="obqlpt" />
+      <xsd:element ref="svlong" />
+      <xsd:element ref="sfprjorg" />
+      <xsd:element ref="landsat" />
+      <xsd:element ref="pathnum" />
+      <xsd:element ref="sfctrmer" />
+      <xsd:element ref="otherprj" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="stdparll" type="stdparllType" />
+  <xsd:simpleType name="stdparllType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="longcm" type="longcmType" />
+  <xsd:simpleType name="longcmType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="latprjo" type="latprjoType" />
+  <xsd:simpleType name="latprjoType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="feast" type="feastType" />
+  <xsd:simpleType name="feastType">
+    <xsd:restriction base="xsd:double" />
+  </xsd:simpleType>
+  <xsd:element name="fnorth" type="fnorthType" />
+  <xsd:simpleType name="fnorthType">
+    <xsd:restriction base="xsd:double" />
+  </xsd:simpleType>
+  <xsd:element name="sfequat" type="sfequatType" />
+  <xsd:simpleType name="sfequatType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="heightpt" type="heightptType" />
+  <xsd:simpleType name="heightptType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="longpc" type="longpcType" />
+  <xsd:simpleType name="longpcType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="latprjc" type="latprjcType" />
+  <xsd:simpleType name="latprjcType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="sfctrlin" type="sfctrlinType" />
+  <xsd:simpleType name="sfctrlinType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="obqlazim" type="obqlazimType" />
+  <xsd:complexType name="obqlazimType">
+    <xsd:sequence>
+      <xsd:element ref="azimangl" />
+      <xsd:element ref="azimptl" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="azimangl" type="azimanglType" />
+  <xsd:simpleType name="azimanglType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minInclusive value="0.0" />
+      <xsd:maxExclusive value="360.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="azimptl" type="azimptlType" />
+  <xsd:simpleType name="azimptlType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="obqlpt" type="obqlptType" />
+  <xsd:complexType name="obqlptType">
+    <xsd:sequence minOccurs="2" maxOccurs="2">
+      <xsd:element ref="obqllat" />
+      <xsd:element ref="obqllong" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="obqllat" type="obqllatType" />
+  <xsd:simpleType name="obqllatType">
+    <xsd:restriction base="FGDClatitude" />
+  </xsd:simpleType>
+  <xsd:element name="obqllong" type="obqllongType" />
+  <xsd:simpleType name="obqllongType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="svlong" type="svlongType" />
+  <xsd:simpleType name="svlongType">
+    <xsd:restriction base="FGDClongitude">
+      <xsd:maxExclusive value="180.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="sfprjorg" type="sfprjorgType" />
+  <xsd:simpleType name="sfprjorgType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="landsat" type="landsatType" />
+  <xsd:simpleType name="landsatType">
+    <xsd:restriction base="xsd:positiveInteger" />
+  </xsd:simpleType>
+  <xsd:element name="pathnum" type="pathnumType" />
+  <xsd:simpleType name="pathnumType">
+    <xsd:restriction base="xsd:positiveInteger" />
+  </xsd:simpleType>
+  <xsd:element name="sfctrmer" type="sfctrmerType" />
+  <xsd:simpleType name="sfctrmerType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="otherprj" type="otherprjType" />
+  <xsd:simpleType name="otherprjType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="gridsys" type="gridsysType" />
+  <xsd:complexType name="gridsysType">
+    <xsd:sequence>
+      <xsd:element ref="gridsysn" />
+      <xsd:choice>
+        <xsd:element ref="utm" />
+        <xsd:element ref="ups" />
+        <xsd:element ref="spcs" />
+        <xsd:element ref="arcsys" />
+        <xsd:element ref="othergrd" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="gridsysn" type="gridsysnType" />
+  <xsd:simpleType name="gridsysnType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Universal Transverse Mercator" />
+      <xsd:enumeration value="Universal Polar Stereographic" />
+      <xsd:enumeration value="State Plane Coordinate System 1927" />
+      <xsd:enumeration value="State Plane Coordinate System 1983" />
+      <xsd:enumeration value="ARC Coordinate System" />
+      <xsd:enumeration value="other grid system" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="utm" type="utmType" />
+  <xsd:complexType name="utmType">
+    <xsd:sequence>
+      <xsd:element ref="utmzone" />
+      <xsd:element ref="transmer" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="utmzone" type="utmzoneType" />
+  <xsd:simpleType name="utmzoneType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:integer">
+          <xsd:minInclusive value="-60" />
+          <xsd:maxInclusive value="-1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:integer">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="ups" type="upsType" />
+  <xsd:complexType name="upsType">
+    <xsd:sequence>
+      <xsd:element ref="upszone" />
+      <xsd:element ref="polarst" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="upszone" type="upszoneType" />
+  <xsd:simpleType name="upszoneType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="A" />
+      <xsd:enumeration value="B" />
+      <xsd:enumeration value="Y" />
+      <xsd:enumeration value="Z" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="spcs" type="spcsType" />
+  <xsd:complexType name="spcsType">
+    <xsd:sequence>
+      <xsd:element ref="spcszone" />
+      <xsd:choice>
+        <xsd:element ref="lambertc" />
+        <xsd:element ref="transmer" />
+        <xsd:element ref="obqmerc" />
+        <xsd:element ref="polycon" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="spcszone" type="spcszoneType" />
+  <xsd:simpleType name="spcszoneType">
+    <xsd:restriction base="FGDCstring">
+      <xsd:pattern value="\d{4}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="arcsys" type="arcsysType" />
+  <xsd:complexType name="arcsysType">
+    <xsd:sequence>
+      <xsd:element ref="arczone" />
+      <xsd:choice>
+        <xsd:element ref="equirect" />
+        <xsd:element ref="azimequi" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="arczone" type="arczoneType" />
+  <xsd:simpleType name="arczoneType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="1" />
+      <xsd:maxInclusive value="18" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="othergrd" type="othergrdType" />
+  <xsd:simpleType name="othergrdType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="localp" type="localpType" />
+  <xsd:complexType name="localpType">
+    <xsd:sequence>
+      <xsd:element ref="localpd" />
+      <xsd:element ref="localpgi" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="localpd" type="localpdType" />
+  <xsd:simpleType name="localpdType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="localpgi" type="localpgiType" />
+  <xsd:simpleType name="localpgiType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="planci" type="planciType" />
+  <xsd:complexType name="planciType">
+    <xsd:sequence>
+      <xsd:element ref="plance" />
+      <xsd:choice>
+        <xsd:element ref="coordrep" />
+        <xsd:element ref="distbrep" />
+      </xsd:choice>
+      <xsd:element ref="plandu" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="plance" type="planceType" />
+  <xsd:simpleType name="planceType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="coordinate pair" />
+      <xsd:enumeration value="distance and bearing" />
+      <xsd:enumeration value="row and column" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="coordrep" type="coordrepType" />
+  <xsd:complexType name="coordrepType">
+    <xsd:sequence>
+      <xsd:element ref="absres" />
+      <xsd:element ref="ordres" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="absres" type="absresType" />
+  <xsd:simpleType name="absresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="ordres" type="ordresType" />
+  <xsd:simpleType name="ordresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="distbrep" type="distbrepType" />
+  <xsd:complexType name="distbrepType">
+    <xsd:sequence>
+      <xsd:element ref="distres" />
+      <xsd:element ref="bearres" />
+      <xsd:element ref="bearunit" />
+      <xsd:element ref="bearrefd" />
+      <xsd:element ref="bearrefm" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="distres" type="distresType" />
+  <xsd:simpleType name="distresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="bearres" type="bearresType" />
+  <xsd:simpleType name="bearresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="bearunit" type="bearunitType" />
+  <xsd:simpleType name="bearunitType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Decimal degrees" />
+      <xsd:enumeration value="Decimal minutes" />
+      <xsd:enumeration value="Decimal seconds" />
+      <xsd:enumeration value="Degrees and decimal minutes" />
+      <xsd:enumeration value="Degrees, minutes, and decimal seconds" />
+      <xsd:enumeration value="Radians" />
+      <xsd:enumeration value="Grads" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="bearrefd" type="bearrefdType" />
+  <xsd:simpleType name="bearrefdType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="North" />
+      <xsd:enumeration value="South" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="bearrefm" type="bearrefmType" />
+  <xsd:simpleType name="bearrefmType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Assumed" />
+      <xsd:enumeration value="Grid" />
+      <xsd:enumeration value="Magnetic" />
+      <xsd:enumeration value="Astronomic" />
+      <xsd:enumeration value="Geodetic" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="plandu" type="planduType" />
+  <xsd:simpleType name="planduType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="local" type="localType" />
+  <xsd:complexType name="localType">
+    <xsd:sequence>
+      <xsd:element ref="localdes" />
+      <xsd:element ref="localgeo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="localdes" type="localdesType" />
+  <xsd:simpleType name="localdesType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="localgeo" type="localgeoType" />
+  <xsd:simpleType name="localgeoType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="geodetic" type="geodeticType" />
+  <xsd:complexType name="geodeticType">
+    <xsd:sequence>
+      <xsd:element ref="horizdn" minOccurs="0" />
+      <xsd:element ref="ellips" />
+      <xsd:element ref="semiaxis" />
+      <xsd:element ref="denflat" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="horizdn" type="horizdnType" />
+  <xsd:simpleType name="horizdnType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="ellips" type="ellipsType" />
+  <xsd:simpleType name="ellipsType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="semiaxis" type="semiaxisType" />
+  <xsd:simpleType name="semiaxisType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="denflat" type="denflatType" />
+  <xsd:simpleType name="denflatType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="vertdef" type="vertdefType" />
+  <xsd:complexType name="vertdefType">
+    <xsd:sequence>
+      <xsd:element ref="altsys" minOccurs="0" />
+      <xsd:element ref="depthsys" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="altsys" type="altsysType" />
+  <xsd:complexType name="altsysType">
+    <xsd:sequence>
+      <xsd:element ref="altdatum" />
+      <xsd:element ref="altres" maxOccurs="unbounded" />
+      <xsd:element ref="altunits" />
+      <xsd:element ref="altenc" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="altdatum" type="altdatumType" />
+  <xsd:simpleType name="altdatumType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="altres" type="altresType" />
+  <xsd:simpleType name="altresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="altunits" type="altunitsType" />
+  <xsd:simpleType name="altunitsType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="altenc" type="altencType" />
+  <xsd:simpleType name="altencType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Explicit elevation coordinate included with horizontal coordinates" />
+      <xsd:enumeration value="Implicit coordinate" />
+      <xsd:enumeration value="Attribute values" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="depthsys" type="depthsysType" />
+  <xsd:complexType name="depthsysType">
+    <xsd:sequence>
+      <xsd:element ref="depthdn" />
+      <xsd:element ref="depthres" maxOccurs="unbounded" />
+      <xsd:element ref="depthdu" />
+      <xsd:element ref="depthem" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="depthdn" type="depthdnType" />
+  <xsd:simpleType name="depthdnType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="depthres" type="depthresType" />
+  <xsd:simpleType name="depthresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="depthdu" type="depthduType" />
+  <xsd:simpleType name="depthduType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="depthem" type="depthemType" />
+  <xsd:simpleType name="depthemType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Explicit depth coordinate included with horizontal coordinates" />
+      <xsd:enumeration value="Implicit coordinate" />
+      <xsd:enumeration value="Attribute values" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect05.xsd content-->
+  <xsd:element name="eainfo" type="eainfoType" />
+  <xsd:complexType name="eainfoType">
+    <xsd:choice>
+      <xsd:sequence>
+        <xsd:element ref="detailed" maxOccurs="unbounded" />
+        <xsd:element ref="overview" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:element ref="overview" maxOccurs="unbounded" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="detailed" type="detailedType" />
+  <xsd:complexType name="detailedType">
+    <xsd:sequence>
+      <xsd:element ref="enttyp" />
+      <xsd:element ref="attr" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="enttyp" type="enttypType" />
+  <xsd:complexType name="enttypType">
+    <xsd:sequence>
+      <xsd:element ref="enttypl" />
+      <xsd:element ref="enttypd" />
+      <xsd:element ref="enttypds" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="enttypl" type="enttyplType" />
+  <xsd:simpleType name="enttyplType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="enttypd" type="enttypdType" />
+  <xsd:simpleType name="enttypdType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="enttypds" type="enttypdsType" />
+  <xsd:simpleType name="enttypdsType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Producer defined" />
+          <xsd:enumeration value="Database administrator" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="attr" type="attrType" />
+  <xsd:complexType name="attrType">
+    <xsd:sequence>
+      <xsd:element ref="attrlabl" />
+      <xsd:element ref="attrdef" />
+      <xsd:element ref="attrdefs" />
+      <xsd:element ref="attrdomv" maxOccurs="unbounded" />
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="begdatea" />
+        <xsd:element ref="enddatea" minOccurs="0" />
+      </xsd:sequence>
+      <xsd:element ref="attrvai" minOccurs="0" />
+      <xsd:element ref="attrmfrq" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="attrlabl" type="attrlablType" />
+  <xsd:simpleType name="attrlablType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attrdef" type="attrdefType" />
+  <xsd:simpleType name="attrdefType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attrdefs" type="attrdefsType" />
+  <xsd:simpleType name="attrdefsType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Producer defined" />
+          <xsd:enumeration value="Database administrator" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="attrdomv" type="attrdomvType" />
+  <xsd:complexType name="attrdomvType">
+    <xsd:choice>
+      <xsd:element ref="edom" maxOccurs="unbounded" />
+      <xsd:element ref="rdom" />
+      <xsd:element ref="codesetd" />
+      <xsd:element ref="udom" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="edom" type="edomType" />
+  <xsd:complexType name="edomType">
+    <xsd:sequence>
+      <xsd:element ref="edomv" />
+      <xsd:element ref="edomvd" />
+      <xsd:element ref="edomvds" />
+      <xsd:element ref="attr" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="edomv" type="edomvType" />
+  <xsd:simpleType name="edomvType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="edomvd" type="edomvdType" />
+  <xsd:simpleType name="edomvdType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="edomvds" type="edomvdsType" />
+  <xsd:simpleType name="edomvdsType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Producer defined" />
+          <xsd:enumeration value="Database administrator" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="rdom" type="rdomType" />
+  <xsd:complexType name="rdomType">
+    <xsd:sequence>
+      <xsd:element ref="rdommin" />
+      <xsd:element ref="rdommax" />
+      <xsd:element ref="attrunit" minOccurs="0" />
+      <xsd:element ref="attrmres" minOccurs="0" />
+      <xsd:element ref="attr" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="rdommin" type="rdomminType" />
+  <xsd:simpleType name="rdomminType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="rdommax" type="rdommaxType" />
+  <xsd:simpleType name="rdommaxType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attrunit" type="attrunitType" />
+  <xsd:simpleType name="attrunitType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attrmres" type="attrmresType" />
+  <xsd:simpleType name="attrmresType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="codesetd" type="codesetdType" />
+  <xsd:complexType name="codesetdType">
+    <xsd:sequence>
+      <xsd:element ref="codesetn" />
+      <xsd:element ref="codesets" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="codesetn" type="codesetnType" />
+  <xsd:simpleType name="codesetnType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="codesets" type="codesetsType" />
+  <xsd:simpleType name="codesetsType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="udom" type="udomType" />
+  <xsd:simpleType name="udomType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="begdatea" type="begdateaType" />
+  <xsd:simpleType name="begdateaType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="enddatea" type="enddateaType" />
+  <xsd:simpleType name="enddateaType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="attrvai" type="attrvaiType" />
+  <xsd:complexType name="attrvaiType">
+    <xsd:sequence>
+      <xsd:element ref="attrva" />
+      <xsd:element ref="attrvae" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="attrva" type="attrvaType" />
+  <xsd:simpleType name="attrvaType">
+    <xsd:restriction base="xsd:double" />
+  </xsd:simpleType>
+  <xsd:element name="attrvae" type="attrvaeType" />
+  <xsd:simpleType name="attrvaeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="attrmfrq" type="attrmfrqType" />
+  <xsd:simpleType name="attrmfrqType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="overview" type="overviewType" />
+  <xsd:complexType name="overviewType">
+    <xsd:sequence>
+      <xsd:element ref="eaover" />
+      <xsd:element ref="eadetcit" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="eaover" type="eaoverType" />
+  <xsd:simpleType name="eaoverType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="eadetcit" type="eadetcitType" />
+  <xsd:simpleType name="eadetcitType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect06.xsd content-->
+  <xsd:element name="distinfo" type="distinfoType" />
+  <xsd:complexType name="distinfoType">
+    <xsd:sequence>
+      <xsd:element ref="distrib" />
+      <xsd:sequence>
+        <xsd:element ref="resdesc" minOccurs="0" />
+        <xsd:element ref="distliab" />
+        <xsd:element ref="stdorder" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="custom" minOccurs="0" />
+        <xsd:element ref="techpreq" minOccurs="0" />
+        <xsd:element ref="availabl" minOccurs="0" />
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="distrib" type="distribType" />
+  <xsd:complexType name="distribType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="resdesc" type="resdescType" />
+  <xsd:simpleType name="resdescType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="distliab" type="distliabType" />
+  <xsd:simpleType name="distliabType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="stdorder" type="stdorderType" />
+  <xsd:complexType name="stdorderType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="nondig" />
+        <xsd:element ref="digform" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:element ref="fees" />
+      <xsd:element ref="ordering" minOccurs="0" />
+      <xsd:element ref="turnarnd" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="nondig" type="nondigType" />
+  <xsd:simpleType name="nondigType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="digform" type="digformType" />
+  <xsd:complexType name="digformType">
+    <xsd:sequence>
+      <xsd:element ref="digtinfo" />
+      <xsd:element ref="digtopt" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="digtinfo" type="digtinfoType" />
+  <xsd:complexType name="digtinfoType">
+    <xsd:sequence>
+      <xsd:element ref="formname" />
+      <xsd:sequence minOccurs="0">
+        <xsd:choice>
+          <xsd:element ref="formvern" />
+          <xsd:element ref="formverd" />
+        </xsd:choice>
+        <xsd:element ref="formspec" minOccurs="0" />
+      </xsd:sequence>
+      <xsd:element ref="formcont" minOccurs="0" />
+      <xsd:element ref="filedec" minOccurs="0" />
+      <xsd:element ref="transize" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="formname" type="formnameType" />
+  <xsd:simpleType name="formnameType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="formvern" type="formvernType" />
+  <xsd:simpleType name="formvernType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="formverd" type="formverdType" />
+  <xsd:simpleType name="formverdType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="formspec" type="formspecType" />
+  <xsd:simpleType name="formspecType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="formcont" type="formcontType" />
+  <xsd:simpleType name="formcontType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="filedec" type="filedecType" />
+  <xsd:simpleType name="filedecType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="transize" type="transizeType" />
+  <xsd:simpleType name="transizeType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="digtopt" type="digtoptType" />
+  <xsd:complexType name="digtoptType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element ref="onlinopt" />
+      <xsd:element ref="offoptn" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="onlinopt" type="onlinoptType" />
+  <xsd:complexType name="onlinoptType">
+    <xsd:sequence>
+      <xsd:element ref="computer" maxOccurs="unbounded" />
+      <xsd:element ref="accinstr" minOccurs="0" />
+      <xsd:element ref="oncomp" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="computer" type="computerType" />
+  <xsd:complexType name="computerType">
+    <xsd:choice>
+      <xsd:element ref="networka" />
+      <xsd:element ref="dialinst" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="networka" type="networkaType" />
+  <xsd:complexType name="networkaType">
+    <xsd:sequence>
+      <xsd:element ref="networkr" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="networkr" type="networkrType" />
+  <xsd:simpleType name="networkrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="dialinst" type="dialinstType" />
+  <xsd:complexType name="dialinstType">
+    <xsd:sequence>
+      <xsd:element ref="lowbps" />
+      <xsd:element ref="highbps" minOccurs="0" />
+      <xsd:element ref="numdata" />
+      <xsd:element ref="numstop" />
+      <xsd:element ref="parity" />
+      <xsd:element ref="compress" minOccurs="0" />
+      <xsd:element ref="dialtel" maxOccurs="unbounded" />
+      <xsd:element ref="dialfile" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="bpsType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="110" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="lowbps" type="lowbpsType" />
+  <xsd:simpleType name="lowbpsType">
+    <xsd:restriction base="bpsType" />
+  </xsd:simpleType>
+  <xsd:element name="highbps" type="highbpsType" />
+  <xsd:simpleType name="highbpsType">
+    <xsd:restriction base="bpsType" />
+  </xsd:simpleType>
+  <xsd:element name="numdata" type="numdataType" />
+  <xsd:simpleType name="numdataType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="7" />
+      <xsd:maxInclusive value="8" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="numstop" type="numstopType" />
+  <xsd:simpleType name="numstopType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="1" />
+      <xsd:maxInclusive value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="parity" type="parityType" />
+  <xsd:simpleType name="parityType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="None" />
+      <xsd:enumeration value="Odd" />
+      <xsd:enumeration value="Even" />
+      <xsd:enumeration value="Mark" />
+      <xsd:enumeration value="Space" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="compress" type="compressType" />
+  <xsd:simpleType name="compressType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="dialtel" type="dialtelType" />
+  <xsd:simpleType name="dialtelType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="dialfile" type="dialfileType" />
+  <xsd:simpleType name="dialfileType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="accinstr" type="accinstrType" />
+  <xsd:simpleType name="accinstrType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="oncomp" type="oncompType" />
+  <xsd:simpleType name="oncompType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="offoptn" type="offoptnType" />
+  <xsd:complexType name="offoptnType">
+    <xsd:sequence>
+      <xsd:element ref="offmedia" />
+      <xsd:element ref="reccap" minOccurs="0" />
+      <xsd:element ref="recfmt" maxOccurs="unbounded" />
+      <xsd:element ref="compat" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="offmedia" type="offmediaType" />
+  <xsd:simpleType name="offmediaType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="reccap" type="reccapType" />
+  <xsd:complexType name="reccapType">
+    <xsd:sequence>
+      <xsd:element ref="recden" maxOccurs="unbounded" />
+      <xsd:element ref="recdenu" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="recden" type="recdenType" />
+  <xsd:simpleType name="recdenType">
+    <xsd:restriction base="xsd:double">
+      <xsd:minExclusive value="0.0" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="recdenu" type="recdenuType" />
+  <xsd:simpleType name="recdenuType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="recfmt" type="recfmtType" />
+  <xsd:simpleType name="recfmtType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="compat" type="compatType" />
+  <xsd:simpleType name="compatType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="fees" type="feesType" />
+  <xsd:simpleType name="feesType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="ordering" type="orderingType" />
+  <xsd:simpleType name="orderingType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="turnarnd" type="turnarndType" />
+  <xsd:simpleType name="turnarndType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="custom" type="customType" />
+  <xsd:simpleType name="customType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="techpreq" type="techpreqType" />
+  <xsd:simpleType name="techpreqType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="availabl" type="availablType" />
+  <xsd:complexType name="availablType">
+    <xsd:sequence>
+      <xsd:element ref="timeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--fgdc-std-001-1998-sect07.xsd content-->
+  <xsd:element name="metainfo" type="metainfoType" />
+  <xsd:complexType name="metainfoType">
+    <xsd:sequence>
+      <xsd:element ref="metd" />
+      <xsd:element ref="metrd" minOccurs="0" />
+      <xsd:element ref="metfrd" minOccurs="0" />
+      <xsd:element ref="metc" />
+      <xsd:element ref="metstdn" />
+      <xsd:element ref="metstdv" />
+      <xsd:element ref="mettc" minOccurs="0" />
+      <xsd:element ref="metac" minOccurs="0" />
+      <xsd:element ref="metuc" minOccurs="0" />
+      <xsd:element ref="metsi" minOccurs="0" />
+      <xsd:element ref="metextns" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="metd" type="metdType" />
+  <xsd:simpleType name="metdType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="metrd" type="metrdType" />
+  <xsd:simpleType name="metrdType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="metfrd" type="metfrdType" />
+  <xsd:simpleType name="metfrdType">
+    <xsd:restriction base="FGDCdate" />
+  </xsd:simpleType>
+  <xsd:element name="metc" type="metcType" />
+  <xsd:complexType name="metcType">
+    <xsd:sequence>
+      <xsd:element ref="cntinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="metstdn" type="metstdnType" />
+  <xsd:simpleType name="metstdnType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metstdv" type="metstdvType" />
+  <xsd:simpleType name="metstdvType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="mettc" type="mettcType" />
+  <xsd:simpleType name="mettcType">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="local time" />
+      <xsd:enumeration value="local time with time differential factor" />
+      <xsd:enumeration value="universal time" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="metac" type="metacType" />
+  <xsd:simpleType name="metacType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metuc" type="metucType" />
+  <xsd:simpleType name="metucType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metsi" type="metsiType" />
+  <xsd:complexType name="metsiType">
+    <xsd:sequence>
+      <xsd:element ref="metscs" />
+      <xsd:element ref="metsc" />
+      <xsd:element ref="metshd" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="metscs" type="metscsType" />
+  <xsd:simpleType name="metscsType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metsc" type="metscType" />
+  <xsd:simpleType name="metscType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metshd" type="metshdType" />
+  <xsd:simpleType name="metshdType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="metextns" type="metextnsType" />
+  <xsd:complexType name="metextnsType">
+    <xsd:sequence>
+      <xsd:element name="onlink" minOccurs="0" maxOccurs="unbounded">
+        <xsd:simpleType>
+          <xsd:restriction base="FGDCstring" />
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element ref="metprof" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="metprof" type="metprofType" />
+  <xsd:simpleType name="metprofType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect08.xsd content-->
+  <xsd:element name="citeinfo" type="citeinfoType" />
+  <xsd:complexType name="citeinfoType">
+    <xsd:sequence>
+      <xsd:element ref="origin" maxOccurs="unbounded" />
+      <xsd:element ref="pubdate" />
+      <xsd:element ref="pubtime" minOccurs="0" />
+      <xsd:element ref="title" />
+      <xsd:element ref="edition" minOccurs="0" />
+      <xsd:element ref="geoform" />
+      <xsd:element ref="serinfo" minOccurs="0" />
+      <xsd:element ref="pubinfo" minOccurs="0" />
+      <xsd:element ref="othercit" minOccurs="0" />
+      <xsd:element ref="onlink" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="lworkcit" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="origin" type="originType" />
+  <xsd:simpleType name="originType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="pubdate" type="pubdateType" />
+  <xsd:simpleType name="pubdateType">
+    <xsd:union memberTypes="FGDCdate">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+          <xsd:enumeration value="Unpublished material" />
+          <xsd:enumeration value="Unpublished Material" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="pubtime" type="pubtimeType" />
+  <xsd:simpleType name="pubtimeType">
+    <xsd:union memberTypes="FGDCtime">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="title" type="titleType" />
+  <xsd:simpleType name="titleType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="edition" type="editionType" />
+  <xsd:simpleType name="editionType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="geoform" type="geoformType" />
+  <xsd:simpleType name="geoformType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="FGDCstring"></xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="None" />
+          <xsd:enumeration value="Maps Data"></xsd:enumeration>
+          <xsd:enumeration value="Tools Software" />
+          <xsd:enumeration value="Publication" />
+          <xsd:enumeration value="Project" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="serinfo" type="serinfoType" />
+  <xsd:complexType name="serinfoType">
+    <xsd:sequence>
+      <xsd:element ref="sername" />
+      <xsd:element ref="issue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="sername" type="sernameType" />
+  <xsd:simpleType name="sernameType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="issue" type="issueType" />
+  <xsd:simpleType name="issueType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="pubinfo" type="pubinfoType" />
+  <xsd:complexType name="pubinfoType">
+    <xsd:sequence>
+      <xsd:element ref="pubplace" />
+      <xsd:element ref="publish" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="pubplace" type="pubplaceType" />
+  <xsd:simpleType name="pubplaceType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="publish" type="publishType" />
+  <xsd:simpleType name="publishType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="othercit" type="othercitType" />
+  <xsd:simpleType name="othercitType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="onlink" type="onlinkType" />
+  <xsd:simpleType name="onlinkType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="lworkcit" type="lworkcitType" />
+  <xsd:complexType name="lworkcitType">
+    <xsd:sequence>
+      <xsd:element ref="citeinfo" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--fgdc-std-001-1998-sect09.xsd content-->
+  <xsd:element name="timeinfo" type="timeinfoType" />
+  <xsd:complexType name="timeinfoType">
+    <xsd:choice>
+      <xsd:element ref="sngdate" />
+      <xsd:element ref="mdattim" />
+      <xsd:element ref="rngdates" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="sngdate" type="sngdateType" />
+  <xsd:complexType name="sngdateType">
+    <xsd:sequence>
+      <xsd:element ref="caldate" />
+      <xsd:element ref="time" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="caldate" type="caldateType" />
+  <xsd:simpleType name="caldateType">
+    <xsd:union memberTypes="FGDCdate">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="time" type="timeType" />
+  <xsd:simpleType name="timeType">
+    <xsd:union memberTypes="FGDCtime">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="mdattim" type="mdattimType" />
+  <xsd:complexType name="mdattimType">
+    <xsd:sequence>
+      <xsd:element ref="sngdate" minOccurs="2" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="rngdates" type="rngdatesType" />
+  <xsd:complexType name="rngdatesType">
+    <xsd:sequence>
+      <xsd:element ref="begdate" />
+      <xsd:element ref="begtime" minOccurs="0" />
+      <xsd:element ref="enddate" />
+      <xsd:element ref="endtime" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="begdate" type="begdateType" />
+  <xsd:simpleType name="begdateType">
+    <xsd:union memberTypes="FGDCdate">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="begtime" type="begtimeType" />
+  <xsd:simpleType name="begtimeType">
+    <xsd:union memberTypes="FGDCtime">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="enddate" type="enddateType" />
+  <xsd:simpleType name="enddateType">
+    <xsd:union memberTypes="FGDCdate">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+          <xsd:enumeration value="Present" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <xsd:element name="endtime" type="endtimeType" />
+  <xsd:simpleType name="endtimeType">
+    <xsd:union memberTypes="FGDCtime">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!--fgdc-std-001-1998-sect10.xsd content-->
+  <xsd:element name="cntinfo" type="cntinfoType" />
+  <xsd:complexType name="cntinfoType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="cntperp" />
+        <xsd:element ref="cntorgp" />
+      </xsd:choice>
+      <xsd:element ref="cntpos" minOccurs="0" />
+      <xsd:element ref="cntaddr" maxOccurs="unbounded" />
+      <xsd:element ref="cntvoice" maxOccurs="unbounded" />
+      <xsd:element ref="cnttdd" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="cntfax" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="cntemail" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="hours" minOccurs="0" />
+      <xsd:element ref="cntinst" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="cntperp" type="cntperpType" />
+  <xsd:complexType name="cntperpType">
+    <xsd:sequence>
+      <xsd:element ref="cntper" />
+      <xsd:element ref="cntorg" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="cntper" type="cntperType" />
+  <xsd:simpleType name="cntperType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntorg" type="cntorgType" />
+  <xsd:simpleType name="cntorgType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntorgp" type="cntorgpType" />
+  <xsd:complexType name="cntorgpType">
+    <xsd:sequence>
+      <xsd:element ref="cntorg" />
+      <xsd:element ref="cntper" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="cntpos" type="cntposType" />
+  <xsd:simpleType name="cntposType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntaddr" type="cntaddrType" />
+  <xsd:complexType name="cntaddrType">
+    <xsd:sequence>
+      <xsd:element ref="addrtype" />
+      <xsd:element ref="address" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="city" />
+      <xsd:element ref="state" />
+      <xsd:element ref="postal" />
+      <xsd:element ref="country" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="addrtype" type="addrtypeType" />
+  <xsd:simpleType name="addrtypeType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="address" type="addressType" />
+  <xsd:simpleType name="addressType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="city" type="cityType" />
+  <xsd:simpleType name="cityType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="state" type="stateType" />
+  <xsd:simpleType name="stateType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="postal" type="postalType" />
+  <xsd:simpleType name="postalType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="country" type="countryType" />
+  <xsd:simpleType name="countryType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntvoice" type="cntvoiceType" />
+  <xsd:simpleType name="cntvoiceType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cnttdd" type="cnttddType" />
+  <xsd:simpleType name="cnttddType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntfax" type="cntfaxType" />
+  <xsd:simpleType name="cntfaxType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntemail" type="cntemailType" />
+  <xsd:simpleType name="cntemailType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="hours" type="hoursType" />
+  <xsd:simpleType name="hoursType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+  <xsd:element name="cntinst" type="cntinstType" />
+  <xsd:simpleType name="cntinstType">
+    <xsd:restriction base="FGDCstring" />
+  </xsd:simpleType>
+</xsd:schema>
