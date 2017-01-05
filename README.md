@@ -15,7 +15,7 @@ and arcpy code.  This limits the usage to Windows computers with ArcGIS installe
 
 This project aims to recreate and extend the current functionality using an
 open-source Python based architecture which will allow for use by people who do
-not have an installation of ArcMap on their computer.  Additonally we hope to extend current functionality by allowing for direct access to CSVs, and Excel workbooks, automated ITIS Taxonomy generation, and Copy-Paste (or Drag-Drop) of complete sections between different instances of the Wizard as well as between the Wizard and XML Notepad or Notepad++.
+not have an installation of ArcMap on their computer.  Additonally we hope to extend current functionality by allowing for direct access to CSVs, and Excel workbooks, automated ITIS Taxonomy generation, and Copy-Paste (or Drag-Drop) of complete sections between different instances of the Wizard as well as between the Wizard and XML Notepad or Notepad++, and automatic navigation in the Wizard to the location of parsing errors.
 
 
 
