@@ -145,16 +145,15 @@ class AccessConstraints(WizardWidget): #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'acconst':
-                print "element", element.text
-                print "parser", parser
-                print mime_data.text()
-                e.accept(element.text)
+                #print "element", element.text
+                #print "parser", parser
+                #print mime_data.text()
+                e.accept()
             else:
                 e.ignore()
 
     def _to_xml(self):
         acconst = etree.Element('acconst')
-
         acconst.text = self.findChild(QPlainTextEdit, "acconst").toPlainText()
         print "ok"
 
