@@ -33,10 +33,10 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(Form)
-        self.plainTextEdit.setOverwriteMode(True)
-        self.plainTextEdit.setObjectName("plainTextEdit")
-        self.gridLayout.addWidget(self.plainTextEdit, 2, 0, 1, 1)
+        self.acconst = QtWidgets.QPlainTextEdit(Form)
+        self.acconst.setOverwriteMode(True)
+        self.acconst.setObjectName("acconst")
+        self.gridLayout.addWidget(self.acconst, 2, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -46,7 +46,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_4.setText(_translate("Form", "Data Access Constraints"))
         self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites forACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set."))
-        self.plainTextEdit.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
+        self.acconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
 
 
 if __name__ == "__main__":

@@ -50,7 +50,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QPlainTextEdit" name="plainTextEdit">
+    <widget class="QPlainTextEdit" name="acconst">
      <property name="plainText">
       <string>None.  Please see 'Distribution Info' for details.</string>
      </property>
