@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Access Constraints <acconst> section
+Provide a pyqt widget for a Access Constraints <accconst> section
 
 
 SCRIPT DEPENDENCIES
@@ -59,7 +59,7 @@ from pymdwizard.gui.ui_files import UI_AccessConstraints #
 
 class AccessConstraints(WizardWidget): #
 
-    drag_label = "Access Constraints <acconst>"
+    drag_label = "Access Constraints <accconst>"
 
 
     def build_ui(self):
@@ -93,7 +93,7 @@ class AccessConstraints(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'acconst':
+            if element.tag == 'accconst':
 #                print "element", element.text
 #                print "tag", element.tag
                 #mime_data.setText(element.text)
@@ -107,19 +107,19 @@ class AccessConstraints(WizardWidget): #
          
                 
     def _to_xml(self):
-        acconst = etree.Element('acconst')
-        acconst.text = self.findChild(QPlainTextEdit, "acconst").toPlainText()
+        accconst = etree.Element('accconst')
+        accconst.text = self.findChild(QPlainTextEdit, "accconst").toPlainText()
         print "ok"
 
-        return acconst
+        return accconst
 
     def _from_xml(self, access_constraints):
        try:
-           if access_constraints.tag == 'acconst':
-               accost_box = self.findChild(QPlainTextEdit, "acconst")
+           if access_constraints.tag == 'accconst':
+               accost_box = self.findChild(QPlainTextEdit, "accconst")
                accost_box.setPlainText(access_constraints.text)
            else:
-               print "The tag is not acconst"
+               print "The tag is not accconst"
        except KeyError:
            pass
 
