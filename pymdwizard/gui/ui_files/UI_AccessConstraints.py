@@ -34,6 +34,7 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         self.acconst = QtWidgets.QPlainTextEdit(Form)
+        self.acconst.setAcceptDrops(False)
         self.acconst.setOverwriteMode(True)
         self.acconst.setObjectName("acconst")
         self.gridLayout.addWidget(self.acconst, 2, 0, 1, 1)
@@ -47,14 +48,4 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "Data Access Constraints"))
         self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites forACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set."))
         self.acconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
 

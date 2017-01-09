@@ -51,6 +51,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QPlainTextEdit" name="acconst">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
      <property name="plainText">
       <string>None.  Please see 'Distribution Info' for details.</string>
      </property>

@@ -38,7 +38,6 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-#import sys #
 
 from lxml import etree
 
@@ -49,7 +48,6 @@ from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
-#sys.path.append('C:/Users/mhannon/dev_mdwizard/pymdwizard') #
 
 
 from pymdwizard.core import utils
@@ -57,34 +55,12 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_AccessConstraints #
-#from pymdwizard.gui import AccessConstraints #
 
 
 class AccessConstraints(WizardWidget): #
 
-    #WIDGET_WIDTH = 500
-    #COLLAPSED_HEIGHT = 75
-    #EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Access Constraints <acconst>"
 
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    #xpath_lookup = {'acconst': 'acconst'}
-#    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-#                    'cntorg': 'cntinfo/cntperp/cntorg',
-#                    'cntpos': 'cntinfo/cntpos',
-#                    'address': 'cntinfo/cntaddr/address',
-#                    'address2': 'cntinfo/cntaddr/address[2]',
-#                    'address3': 'cntinfo/cntaddr/address[3]',
-#                    'city': 'cntinfo/cntaddr/city',
-#                    'state': 'cntinfo/cntaddr/state',
-#                    'postal': 'cntinfo/cntaddr/postal',
-#                    'state': 'cntinfo/cntaddr/state',
-#                    'country': 'cntinfo/cntaddr/country',
-#                    'addrtype': 'cntinfo/cntaddr/addrtype',
-#                    'cntvoice': 'cntinfo/cntvoice',
-#                    'cntfax': 'cntinfo/cntfax',
-#                    'cntemail': 'cntinfo/cntemail'}
 
     def build_ui(self):
         """
@@ -94,39 +70,11 @@ class AccessConstraints(WizardWidget): #
         -------
         None
         """
-        #print "here"
         self.ui = UI_AccessConstraints.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-        
-
-        #####self.acconst = AccessConstraints.AccessConstraints()#
-        #####self.ui.main_layout.addWidget(self.acconst)
-
-       # self.collaped_size = QSize(self.WIDGET_WIDTH,
-       #                                   self.COLLAPSED_HEIGHT)
-        #self.expanded_size = QSize(self.WIDGET_WIDTH,
-       #                            self.EXPANDED_HEIGHT)
-       # self.resize(self.collaped_size)
 
 
-        #self.setObjectName("acconst")
-
-#    def connect_events(self):
-#        """
-#        Connect the appropriate GUI components with the corresponding functions
-#
-#        Returns
-#        -------
-#        None
-#        """
-#        self.ui.rbtn_yes.toggled.connect(self.access_constraints_change)
-#
-#    def access_constraints_change(self, b):
-#        if b:
-#            self.acconst.show()
-#        else:
-#            self.acconst.hide()
 
     def dragEnterEvent(self, e):
         """
@@ -137,6 +85,7 @@ class AccessConstraints(WizardWidget): #
 
         Returns
         -------
+
 
         """
         print("pc drag enter")
@@ -153,19 +102,8 @@ class AccessConstraints(WizardWidget): #
                 e.accept()
         else:
             e.ignore()
-                
-                
-#==============================================================================
-#     def dropEvent(self, e):
-#         accost_box = self.findChild(QPlainTextEdit, "acconst")
-#         if e.tag == 'accost':
-#             
-#             print e.text
-#             accost_box.setPlainText(e.text)
-#==============================================================================
-#        print "dropevent"
-#        print e.mimeData().text()
-#        mime_data.setText(element.text)
+
+
          
                 
     def _to_xml(self):
@@ -175,17 +113,15 @@ class AccessConstraints(WizardWidget): #
 
         return acconst
 
-#    def _from_xml(self, access_constraints):
-#        try:
-#            if access_constraints.tag == 'acconst':
-#                print "This", access_constraints
-#                acconst_node = access_constraints
-#            else:
-#                print "why", "/?"
-#                acconst_node = access_constraints.xpath('acconst')[0]
-#            self.acconst._from_xml(acconst_node)
-#        except KeyError:
-#            pass
+    def _from_xml(self, access_constraints):
+       try:
+           if access_constraints.tag == 'acconst':
+               accost_box = self.findChild(QPlainTextEdit, "acconst")
+               accost_box.setPlainText(access_constraints.text)
+           else:
+               print "The tag is not acconst"
+       except KeyError:
+           pass
 
 if __name__ == "__main__":
     utils.launch_widget(AccessConstraints,
