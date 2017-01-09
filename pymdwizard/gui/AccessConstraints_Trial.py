@@ -145,13 +145,27 @@ class AccessConstraints(WizardWidget): #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'acconst':
-                #print "element", element.text
-                #print "parser", parser
+                print "element", element.text
+                print "tag", element.tag
+                #mime_data.setText(element.text)
                 #print mime_data.text()
-                e.accept()
-            else:
-                e.ignore()
-
+                #self.Q.setPlainText(_translate("Form", element.text))
+            e.accept()
+        else:
+            e.ignore()
+                
+                
+#==============================================================================
+#     def dropEvent(self, e):
+#         accost_box = self.findChild(QPlainTextEdit, "acconst")
+#         print element.text
+#         accost_box.setPlainText(element.text)
+#==============================================================================
+#        print "dropevent"
+#        print e.mimeData().text()
+#        mime_data.setText(element.text)
+         
+                
     def _to_xml(self):
         acconst = etree.Element('acconst')
         acconst.text = self.findChild(QPlainTextEdit, "acconst").toPlainText()
