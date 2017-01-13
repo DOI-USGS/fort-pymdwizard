@@ -58,6 +58,7 @@ from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
 from pymdwizard.gui.Taxonomy import Taxonomy
 from pymdwizard.gui.UseConstraints import UseConstraints
+from pymdwizard.gui.AccessConstraints import AccessConstraints
 
 class IdInfo(WizardWidget):
 
@@ -92,6 +93,9 @@ class IdInfo(WizardWidget):
         section2 = QHBoxLayout()
         section2.setObjectName("OtherHBox")
         section2.addWidget(self.usecontraints)
+
+        self.accessconstraints = AccessConstraints(parent=self)
+        section2.addWidget(self.accessconstraints)
 
         self.main_layout.addLayout(section1)
         self.main_layout.addLayout(section2)
@@ -130,6 +134,10 @@ class IdInfo(WizardWidget):
 
         useconstraints = self.usecontraints._to_xml()
         idinfo_node.append(useconstraints)
+
+        accessconstraints = self.accessconstraints._to_xml()
+        idinfo_node.append(accessconstraints)
+
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
@@ -138,6 +146,9 @@ class IdInfo(WizardWidget):
 
         useconstraints = xml_idinfo.xpath('useconst')[0]
         self.usecontraints._from_xml(useconstraints)
+
+        accessconstraints = xml_idinfo.xpath('accconst')[0]
+        self.accesscontraints._from_xml(accessconstraints)
 
 
 if __name__ == "__main__":
