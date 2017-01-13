@@ -53,9 +53,11 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
+
+#import the sub widgets on this widget
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
 from pymdwizard.gui.Taxonomy import Taxonomy
-
+from pymdwizard.gui.UseConstraints import UseConstraints
 
 class IdInfo(WizardWidget):
 
@@ -83,11 +85,16 @@ class IdInfo(WizardWidget):
         section1.setObjectName("ContactInfoHBox")
         section1.addWidget(self.ptcontac)
 
-        self.taxonomy = Taxonomy()
+        self.taxonomy = Taxonomy(parent=self)
         section1.addWidget(self.taxonomy)
 
-        self.main_layout.addLayout(section1)
+        self.usecontraints = UseConstraints(parent=self)
+        section2 = QHBoxLayout()
+        section2.setObjectName("OtherHBox")
+        section2.addWidget(self.usecontraints)
 
+        self.main_layout.addLayout(section1)
+        self.main_layout.addLayout(section2)
 
 
     def dragEnterEvent(self, e):
@@ -121,11 +128,16 @@ class IdInfo(WizardWidget):
         taxonomy = self.taxonomy._to_xml()
         idinfo_node.append(taxonomy)
 
+        useconstraints = self.usecontraints._to_xml()
+        idinfo_node.append(useconstraints)
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
         ptcontac = xml_idinfo.xpath('ptcontac')[0]
         self.ptcontac._from_xml(ptcontac)
+
+        useconstraints = xml_idinfo.xpath('useconst')[0]
+        self.usecontraints._from_xml(useconstraints)
 
 
 if __name__ == "__main__":
