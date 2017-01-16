@@ -101,13 +101,13 @@ class IdInfo(WizardWidget):
         self.status = Status(parent=self)
         section3 = QGridLayout()
         section3.setObjectName("OtherVBox")
-        section2.addWidget(self.status)
+        section3.addWidget(self.status)
 
         section4 = QVBoxLayout()
         section4.setObjectName("TrialVBox")
-        section4.addLayout(section3)
-        section4.addLayout(section2)
         section4.addLayout(section1)
+        section4.addLayout(section2)
+        section4.addLayout(section3)
 
         self.main_layout.addLayout(section4)
         #self.main_layout.addLayout(section2)
