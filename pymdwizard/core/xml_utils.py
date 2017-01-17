@@ -43,7 +43,7 @@ import collections
 import warnings
 
 # external library imports
-import lxml
+from lxml import etree
 
 try:
     import pandas as pd
@@ -133,3 +133,20 @@ def element_to_df(results):
     """
     results_list = element_to_list(results)
     return pd.DataFrame.from_dict(results_list)
+
+def node_to_string(node):
+    """
+
+    Parameters
+    ----------
+    node : lxml note
+
+    Returns
+    -------
+
+    str :
+    Pretty string representation of node
+    """
+    return etree.tostring(node, pretty_print=True).decode()
+
+
