@@ -89,11 +89,11 @@ class Status(WizardWidget):  #
         status = etree.Element('status')
         progress = etree.Element('progress')
         # print "progress", progress
-        progress.text = self.findChild(QComboBox, 'progress').currentText()
+        progress.text = self.findChild(QComboBox, 'fgdc_progress').currentText()
         print progress.text
         status.append(progress)
         update = etree.Element('update')
-        update.text = self.findChild(QComboBox, 'update').currentText()
+        update.text = self.findChild(QComboBox, 'fgdc_update').currentText()
         status.append(update)
 
         # useconst.text = self.findChild(QPlainTextEdit, "useconst").toPlainText()
@@ -102,17 +102,17 @@ class Status(WizardWidget):  #
         return status
 
     def _from_xml(self, status):
-        # print "Status", status.tag
-        # print "text", status.find('progress').text
+        #print "Status", status.tag
+        #print "text", status.find('progress').text
         try:
             if status.tag == 'status':
-                progress_box = self.findChild(QComboBox, 'progress')
+                progress_box = self.findChild(QComboBox, 'fgdc_progress')
                 progress_text = status.find('progress').text
-                print progress_text
+                #print progress_text
                 progress_box.setCurrentText(progress_text)
-                update_box = self.findChild(QComboBox, 'update')
+                update_box = self.findChild(QComboBox, 'fgdc_update')
                 update_text = status.find('update').text
-                print update_text
+                #print update_text
                 update_box.setCurrentText(update_text)
             else:
                 print "The tag is not status"
