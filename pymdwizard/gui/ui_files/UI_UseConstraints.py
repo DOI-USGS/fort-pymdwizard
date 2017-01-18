@@ -33,11 +33,11 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.useconst = QtWidgets.QPlainTextEdit(Form)
-        self.useconst.setAcceptDrops(False)
-        self.useconst.setOverwriteMode(True)
-        self.useconst.setObjectName("useconst")
-        self.gridLayout.addWidget(self.useconst, 2, 0, 1, 1)
+        self.fgdc_useconst = QtWidgets.QPlainTextEdit(Form)
+        self.fgdc_useconst.setAcceptDrops(False)
+        self.fgdc_useconst.setOverwriteMode(True)
+        self.fgdc_useconst.setObjectName("fgdc_useconst")
+        self.gridLayout.addWidget(self.fgdc_useconst, 2, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -47,7 +47,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_4.setText(_translate("Form", "Data Use Constraints"))
         self.label.setText(_translate("Form", "Describe any restrictions or legal prerequisites for USING the data set.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set."))
-        self.useconst.setPlainText(_translate("Form", "None.  Users are advised to read the data set\'s metadata thoroughly to understand appropriate use and data limitations."))
+        self.fgdc_useconst.setPlainText(_translate("Form", "None.  Users are advised to read the data set\'s metadata thoroughly to understand appropriate use and data limitations."))
 
 
 if __name__ == "__main__":

@@ -108,7 +108,7 @@ class UseConstraints(WizardWidget): #
                 
     def _to_xml(self):
         useconst = etree.Element('useconst')
-        useconst.text = self.findChild(QPlainTextEdit, "useconst").toPlainText()
+        useconst.text = self.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
         print "ok"
 
         return useconst
@@ -116,7 +116,7 @@ class UseConstraints(WizardWidget): #
     def _from_xml(self, use_constraints):
        try:
            if use_constraints.tag == 'useconst':
-               accost_box = self.findChild(QPlainTextEdit, "useconst")
+               accost_box = self.findChild(QPlainTextEdit, "fgdc_useconst")
                accost_box.setPlainText(use_constraints.text)
            else:
                print "The tag is not useconst"
