@@ -33,11 +33,11 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.accconst = QtWidgets.QPlainTextEdit(Form)
-        self.accconst.setAcceptDrops(False)
-        self.accconst.setOverwriteMode(True)
-        self.accconst.setObjectName("accconst")
-        self.gridLayout.addWidget(self.accconst, 2, 0, 1, 1)
+        self.fgdc_accconst = QtWidgets.QPlainTextEdit(Form)
+        self.fgdc_accconst.setAcceptDrops(False)
+        self.fgdc_accconst.setOverwriteMode(True)
+        self.fgdc_accconst.setObjectName("fgdc_accconst")
+        self.gridLayout.addWidget(self.fgdc_accconst, 2, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -47,7 +47,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_4.setText(_translate("Form", "Data Access Constraints"))
         self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites forACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set."))
-        self.accconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
+        self.fgdc_accconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
 
 
 if __name__ == "__main__":

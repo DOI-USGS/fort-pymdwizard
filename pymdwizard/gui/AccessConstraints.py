@@ -114,7 +114,7 @@ class AccessConstraints(WizardWidget): #
 
         """
         accconst = etree.Element('accconst')
-        accconst.text = self.findChild(QPlainTextEdit, "accconst").toPlainText()
+        accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
         print "ok"
 
         return accconst
@@ -122,7 +122,7 @@ class AccessConstraints(WizardWidget): #
     def _from_xml(self, access_constraints):
        try:
            if access_constraints.tag == 'accconst':
-               accost_box = self.findChild(QPlainTextEdit, "accconst")
+               accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
                accost_box.setPlainText(access_constraints.text)
            else:
                print "The tag is not accconst"
