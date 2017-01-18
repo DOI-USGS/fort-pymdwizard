@@ -9,15 +9,16 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QWidget, QPlainTextEdit
 
-from pymdwizard.gui import AccessConstraints
+from pymdwizard.gui import Status
 
-def test_accessconstraints__from_xml(qtbot):
-    widget = AccessConstraints.AccessConstraints()
+def test_status__from_xml(qtbot):
+    widget = Status.Status()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
     test_record = etree.parse(test_record_fname)
-    acc_const = test_record.xpath("idinfo/accconst")[0]
+    status = test_record.xpath("idinfo/status")[0]
 
-    widget._from_xml(acc_const)
-    assert widget.findChild(QPlainTextEdit, "accconst").text() == 'none'
+    widget._from_xml(status)
+    assert widget.findChild(QPlainTextEdit, "progress").text() == 'complete'
+    assert widget.findChild(QPlainTextEdit, "update").text() == 'none planned'
