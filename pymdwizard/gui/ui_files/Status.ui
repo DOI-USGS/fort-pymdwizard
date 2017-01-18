@@ -46,6 +46,9 @@
         <pointsize>9</pointsize>
        </font>
       </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
       <item>
        <property name="text">
         <string>Continually</string>
@@ -108,7 +111,7 @@
        </font>
       </property>
       <property name="editable">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="currentText">
        <string>Complete</string>
