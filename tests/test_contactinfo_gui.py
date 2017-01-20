@@ -25,4 +25,3 @@ def test_contactinfo__from_xml(qtbot):
     assert widget.findChild(QLineEdit, 'cntvoice').text() == "303-236-5369"
     assert widget.findChild(QLineEdit, 'cntemail').text() == "jediffendorfer@usgs.gov"
     assert widget.findChild(QLineEdit, 'postal').text() == "80225"
-
