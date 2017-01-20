@@ -78,7 +78,8 @@ class AccessConstraints(WizardWidget): #
 
     def dragEnterEvent(self, e):
         """
-
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called 'accconst'
         Parameters
         ----------
         e : qt event
@@ -108,10 +109,11 @@ class AccessConstraints(WizardWidget): #
                 
     def _to_xml(self):
         """
+        encapsulates the QPlainTextEdit text in an element tag
 
         Returns
         -------
-
+        accconst element tag in xml tree
         """
         accconst = etree.Element('accconst')
         accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
@@ -120,6 +122,17 @@ class AccessConstraints(WizardWidget): #
         return accconst
 
     def _from_xml(self, access_constraints):
+        """
+        parses the xml code into the relevant accconst elements
+
+        Parameters
+        ----------
+        access_constraints - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
        try:
            if access_constraints.tag == 'accconst':
                accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")

@@ -64,6 +64,8 @@ class Status(WizardWidget):  #
 
     def dragEnterEvent(self, e):
         """
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called 'status'
         Parameters
         ----------
         e : qt event
@@ -86,6 +88,13 @@ class Status(WizardWidget):  #
             e.ignore()
 
     def _to_xml(self):
+        """
+        encapsulates the two QComboBox's text into two separate element tags
+
+        Returns
+        -------
+        status element tag in xml tree
+        """
         status = etree.Element('status')
         progress = etree.Element('progress')
         #print "progress", type(progress)
@@ -102,6 +111,17 @@ class Status(WizardWidget):  #
         return status
 
     def _from_xml(self, status):
+        """
+        parses the xml code into the relevant status elements
+
+        Parameters
+        ----------
+        status - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
         #print "Status", status.tag
         #print "text", status.find('progress').text
         try:

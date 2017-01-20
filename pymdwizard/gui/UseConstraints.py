@@ -78,14 +78,15 @@ class UseConstraints(WizardWidget): #
 
     def dragEnterEvent(self, e):
         """
-
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called 'useconst'
         Parameters
         ----------
         e : qt event
 
         Returns
         -------
-
+        None
 
         """
         print("pc drag enter")
@@ -107,6 +108,13 @@ class UseConstraints(WizardWidget): #
          
                 
     def _to_xml(self):
+        """
+        encapsulates the QPlainTextEdit text in an element tag
+
+        Returns
+        -------
+        useconst element tag in xml tree
+        """
         useconst = etree.Element('useconst')
         useconst.text = self.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
         print "ok"
@@ -114,6 +122,17 @@ class UseConstraints(WizardWidget): #
         return useconst
 
     def _from_xml(self, use_constraints):
+        """
+        parses the xml code into the relevant useconst elements
+
+        Parameters
+        ----------
+        use_constraints - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
        try:
            if use_constraints.tag == 'useconst':
                accost_box = self.findChild(QPlainTextEdit, "fgdc_useconst")
