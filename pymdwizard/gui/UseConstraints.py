@@ -142,6 +142,7 @@ class UseConstraints(WizardWidget): #
         except KeyError:
             pass
 
+
 if __name__ == "__main__":
     utils.launch_widget(UseConstraints,
                         "Use Constraints testing")
