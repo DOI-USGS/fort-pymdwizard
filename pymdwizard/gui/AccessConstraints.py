@@ -117,7 +117,7 @@ class AccessConstraints(WizardWidget): #
         """
         accconst = etree.Element('accconst')
         accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
-        print "ok"
+        #print "ok"
 
         return accconst
 
@@ -138,7 +138,7 @@ class AccessConstraints(WizardWidget): #
                accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
                accost_box.setPlainText(access_constraints.text)
            else:
-               print "The tag is not accconst"
+               print ("The tag is not accconst")
        except KeyError:
            pass
 

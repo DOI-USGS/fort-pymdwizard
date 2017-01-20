@@ -117,7 +117,7 @@ class UseConstraints(WizardWidget): #
         """
         useconst = etree.Element('useconst')
         useconst.text = self.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
-        print "ok"
+        #print "ok"
 
         return useconst
 
@@ -138,7 +138,7 @@ class UseConstraints(WizardWidget): #
                accost_box = self.findChild(QPlainTextEdit, "fgdc_useconst")
                accost_box.setPlainText(use_constraints.text)
            else:
-               print "The tag is not useconst"
+               print ("The tag is not useconst")
        except KeyError:
            pass
 

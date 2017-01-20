@@ -72,7 +72,7 @@ class Status(WizardWidget):  #
         Returns
         -------
         """
-        print("pc drag enter")
+        #print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
@@ -99,14 +99,14 @@ class Status(WizardWidget):  #
         progress = etree.Element('progress')
         #print "progress", type(progress)
         progress.text = self.findChild(QComboBox, 'fgdc_progress').currentText()
-        print progress.text
+        #print progress.text
         status.append(progress)
         update = etree.Element('update')
         update.text = self.findChild(QComboBox, 'fgdc_update').currentText()
         status.append(update)
 
         # useconst.text = self.findChild(QPlainTextEdit, "useconst").toPlainText()
-        print "ok"
+        #print "ok"
 
         return status
 
@@ -135,7 +135,7 @@ class Status(WizardWidget):  #
                 #print update_text
                 update_box.setCurrentText(update_text)
             else:
-                print "The tag is not status"
+                #print "The tag is not status"
         except KeyError:
             pass
 
