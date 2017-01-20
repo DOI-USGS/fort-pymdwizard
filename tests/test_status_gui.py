@@ -15,10 +15,10 @@ def test_status__from_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
-    test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
+    test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
     test_record = etree.parse(test_record_fname)
     status = test_record.xpath("idinfo/status")[0]
 
     widget._from_xml(status)
-    assert widget.findChild(QPlainTextEdit, "progress").text() == 'complete'
-    assert widget.findChild(QPlainTextEdit, "update").text() == 'none planned'
+    assert widget.findChild(QPlainTextEdit, "fgdc_progress").text() == 'complete'
+    assert widget.findChild(QPlainTextEdit, "fgdc_update").text() == 'none planned'
