@@ -135,7 +135,7 @@ class Status(WizardWidget):  #
                 #print update_text
                 update_box.setCurrentText(update_text)
             else:
-                #print "The tag is not status"
+                print ("The tag is not status")
         except KeyError:
             pass
 
