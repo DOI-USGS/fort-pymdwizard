@@ -133,14 +133,14 @@ class AccessConstraints(WizardWidget): #
         -------
         None
         """
-       try:
-           if access_constraints.tag == 'accconst':
+        try:
+            if access_constraints.tag == 'accconst':
                accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
                accost_box.setPlainText(access_constraints.text)
-           else:
+            else:
                print ("The tag is not accconst")
-       except KeyError:
-           pass
+        except KeyError:
+            pass
 
 if __name__ == "__main__":
     utils.launch_widget(AccessConstraints,
