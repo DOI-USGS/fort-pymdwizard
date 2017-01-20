@@ -112,47 +112,28 @@ class MetadataRoot(WizardWidget):
         button_name = self.sender().objectName()
         old_widget = self.ui.stackedWidget.currentWidget()
 
-        if button_name == 'idinfo_button':
-            new_index = 0
-            self._to_xml = self.idinfo._to_xml
-            self.drag_label = self.idinfo.drag_label
-        else:
 
-            index_lookup = {'idinfo_button': 0,
-                            'dataquality_button': 1,
-                            'spatial_button': 2,
-                            'eainfo_button': 3,
-                            'distinfo_button': 4,
-                            'metainfo_button': 5,
-                            'validation_button': 6}
+        index_lookup = {'idinfo_button': 0,
+                        'dataquality_button': 1,
+                        'spatial_button': 2,
+                        'eainfo_button': 3,
+                        'distinfo_button': 4,
+                        'metainfo_button': 5,
+                        'validation_button': 6}
 
-            new_index = index_lookup[button_name]
-            self._to_xml = self._to_full_xml
-            self.drag_label = MetadataRoot.drag_label
+        new_index = index_lookup[button_name]
 
         new_widget = self.ui.stackedWidget.widget(new_index)
 
         fader_widget = FaderWidget(old_widget, new_widget)
         self.ui.stackedWidget.setCurrentIndex(new_index)
 
-    def _to_full_xml(self):
+    def _to_xml(self):
         metadata_node = etree.Element('metadata')
         idinfo = self.idinfo._to_xml()
         metadata_node.append(idinfo)
 
         return metadata_node
-
-    def _to_xml(self):
-        metadata_node = etree.Element('metadata')
-
-        if self.ui.idinfo_button.isChecked():
-            return self.idinfo._to_xml()
-        else:
-            metadata_node = etree.Element('metadata')
-            idinfo = self.idinfo._to_xml()
-            metadata_node.append(idinfo)
-
-            return metadata_node
 
 
     def _from_xml(self, metadata_element):

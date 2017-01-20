@@ -267,14 +267,6 @@ class Taxon(object):
         Allows for a nested hierarchical model by specifying optional
         children Taxons, and a single parent Taxon"""
 
-    _rank_names = get_rank_names()
-    _rank_names.drop_duplicates(inplace=True)
-    del(_rank_names['kingdomName'])
-    _rank_names['rankId'] = pd.to_numeric(_rank_names['rankId'])
-    _rank_names = _rank_names.append(pd.DataFrame([{"rankName": "Life", "rankId":1}]))
-    _rank_names = _rank_names.append(pd.DataFrame([{"rankName": "Domain", "rankId":5}]))
-
-    _indent_lookup = dict(zip(_rank_names.rankName, _rank_names.rankId))
 
     def __init__(self, taxon_name=None, taxon_value=None,
                  tsn=None, children=None, parent=None):
@@ -299,6 +291,8 @@ class Taxon(object):
         self.taxon_value = taxon_value
         self.tsn = tsn
 
+        self.populate_ranknames()
+
         if not taxon_name and not taxon_value and tsn:
             self.load_from_tsn()
 
@@ -308,6 +302,21 @@ class Taxon(object):
             self.children = []
         self.parent = parent
         self.indent = "  "*int(int(self._indent_lookup[taxon_name]) / 10)
+
+    def populate_ranknames(self):
+        try:
+            self._rank_names = get_rank_names()
+
+            self._rank_names.drop_duplicates(inplace=True)
+            del(self._rank_names['kingdomName'])
+            self._rank_names['rankId'] = pd.to_numeric(self._rank_names['rankId'])
+            self. _rank_names = self._rank_names.append(pd.DataFrame([{"rankName": "Life", "rankId":1}]))
+            self._rank_names = self._rank_names.append(pd.DataFrame([{"rankName": "Domain", "rankId":5}]))
+
+            self._indent_lookup = dict(zip(self._rank_names.rankName, self._rank_names.rankId))
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+            self._rank_names = []
+            self._indent_lookup = []
 
     def __eq__(self, other):
         return self.taxon_name == other.taxon_name and \
