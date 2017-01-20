@@ -1,11 +1,34 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 10 15:12:08 2017
+from __future__ import print_function
 
-@author: mhannon
-"""
+import sys
+sys.path.append(r"../..")
 
-import unittest
-from PyQt5 import QtTest
+import sys
+from pytestqt import qtbot
+from lxml import etree
 
-from AccessConstraints import _to_xml, _from_xml
+from PyQt5.QtWidgets import QWidget, QPlainTextEdit
+
+from pymdwizard.gui import AccessConstraints
+
+def test_accessconstraints__from_xml(qtbot):
+    widget = AccessConstraints.AccessConstraints()
+    qtbot.addWidget(widget)
+
+    test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
+    test_record = etree.parse(test_record_fname)
+    acc_const = test_record.xpath("idinfo/accconst")[0]
+
+    widget._from_xml(acc_const)
+    assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == 'none'
+
+def test_accessconstraints__to_xml(qtbot):
+    widget = AccessConstraints.AccessConstraints()
+    qtbot.addWidget(widget)
+
+    #test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
+    #test_record = etree.parse(test_record_fname)
+    #use_const = test_record.xpath("idinfo/useconst")[0]
+
+    widget._to_xml#(use_const)
+    assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == "None.  Please see 'Distribution Info' for details."

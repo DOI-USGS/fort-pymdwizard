@@ -88,7 +88,7 @@ class Status(WizardWidget):  #
     def _to_xml(self):
         status = etree.Element('status')
         progress = etree.Element('progress')
-        # print "progress", progress
+        #print "progress", type(progress)
         progress.text = self.findChild(QComboBox, 'fgdc_progress').currentText()
         print progress.text
         status.append(progress)
