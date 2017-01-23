@@ -173,8 +173,25 @@ class WizardWidget(QWidget):
         -------
         pyqt widget
         """
+        xpath_items = xpath.split('/')
 
-        return self.findChildren(QLineEdit)
+        cur_item = self
+        for item_string in xpath_items:
+            cur_item = self.find_descendant(cur_item, item_string)
+            if not cur_item:
+                cur_item = self
+        return cur_item
+
+    def find_descendant(self, search_widget, search_name):
+
+        for widget in search_widget.children():
+            if widget.objectName() == 'fgdc_' + search_name:
+                return widget
+            else:
+                result = self.find_descendant(widget, search_name)
+                if result:
+                    return result
+        return None
 
     def dropEvent(self, e):
         """
