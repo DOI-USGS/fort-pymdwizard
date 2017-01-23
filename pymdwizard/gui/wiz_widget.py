@@ -50,7 +50,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComb
 from PyQt5.QtWidgets import QTableView
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
 from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
-from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp
+from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 
 
@@ -164,7 +164,6 @@ class WizardWidget(QWidget):
 
         TODO: finalize general implementation details, although there's
         no reason that these couldn't be unique for different widgets.
-
         Parameters
         ----------
         xpath : str
@@ -300,7 +299,35 @@ class WizardWidget(QWidget):
                 widget.setMouseTracking(enable)
                 widget.setAcceptDrops(enable)
 
+        self.populate_tooltips()
+
+    def populate_tooltips(self):
+        import json
+        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+            annotation_lookup= json.loads(data_file.read())
+
+
+        widgets = self.findChildren(QObject, QRegExp(r'.*'))
+        for widget in widgets:
+            if widget.objectName().startswith('fgdc_'):
+                shortname = widget.objectName().replace('fgdc_', '')
+                if shortname[-1].isdigit():
+                    shortname = shortname[:-1]
+                widget.setToolTip(annotation_lookup[shortname]['annotation'])
+
     def eventFilter(self, obj, event):
+        """
+
+        Parameters
+        ----------
+        obj
+        event
+
+        Returns
+        -------
+
+        """
         # you could be doing different groups of actions
         # for different types of widgets and either filtering
         # the event or not.
@@ -321,4 +348,7 @@ class WizardWidget(QWidget):
         #     pass
 
         # regardless, just do the default
+        elif event.type() == QEvent.ToolTip:
+            pass
         return super(WizardWidget, self).eventFilter(obj, event)
+
