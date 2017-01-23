@@ -52,6 +52,7 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
+from pymdwizard.core.xml_utils import xml_node
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_ContactInfo
@@ -133,14 +134,14 @@ class ContactInfo(WizardWidget):
         """
         if self.ui.rbtn_perp.isChecked():
             self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntper)
-            self.ui.required_horizontal_layout.insertWidget(0, self.ui.cntper)
+            self.ui.required_horizontal_layout.insertWidget(0, self.ui.fgdc_cntper)
             self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntorg)
-            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.cntorg)
+            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.fgdc_cntorg)
         else:
             self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntorg)
-            self.ui.required_horizontal_layout.insertWidget(0, self.ui.cntorg)
+            self.ui.required_horizontal_layout.insertWidget(0, self.ui.fgdc_cntorg)
             self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntper)
-            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.cntper)
+            self.ui.optional_horizontal_layout.insertWidget(0, self.ui.fgdc_cntper)
 
     def dragEnterEvent(self, e):
         """
@@ -165,52 +166,47 @@ class ContactInfo(WizardWidget):
 
     def _to_xml(self):
 
-        cntinfo = etree.Element("cntinfo")
+        cntinfo = xml_node("cntinfo")
 
-        cntper = etree.Element("cntper")
-        cntper.text = self.findChild(QLineEdit, "cntper").text()
-        cntorg = etree.Element("cntorg")
-        cntorg.text = self.findChild(QLineEdit, "cntorg").text()
+        cntper_str = self.findChild(QLineEdit, "fgdc_cntper").text()
+        cntorg_str = self.findChild(QLineEdit, "fgdc_cntorg").text()
 
         rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
         if rbtn_perp.isChecked():
-            cntperp = etree.Element("cntperp")
-            cntperp.append(cntper)
-            cntperp.append(cntorg)
-            cntinfo.append(cntperp)
+            cntperp = xml_node("cntperp", parent_node=cntinfo)
+            cntper = xml_node("cntper", cntper_str, cntperp)
+            if cntorg_str:
+                cntorg = xml_node("cntorg", cntorg_str, cntperp)
         else:
-            cntorgp = etree.Element("cntorgp")
-            cntorgp.append(cntorg)
-            cntorgp.append(cntper)
-            cntinfo.append(cntorgp)
+            cntorgp = xml_node("cntorgp", parent_node=cntinfo)
+            cntper = xml_node("cntorg", cntorg_str, cntorgp)
+            if cntper_str:
+                cntper = xml_node("cntper", cntper_str, cntorgp)
 
-        cntpos = etree.Element("cntpos")
-        cntpos.text = self.findChild(QLineEdit, "cntpos").text()
-        cntinfo.append(cntpos)
+        cntpos_str = self.findChild(QLineEdit, "fgdc_cntpos").text()
+        if cntpos_str:
+            cntpos = xml_node("cntpos", cntpos_str, cntinfo)
 
-        cntaddr = etree.Element("cntaddr")
-        addrtype = etree.Element("addrtype")
-        addrtype.text = self.findChild(QComboBox, "addrtype").currentText()
-        cntaddr.append(addrtype)
+        cntaddr = xml_node("cntaddr", parent_node=cntinfo)
+
+
+        addrtype_str = self.findChild(QComboBox, "fgdc_addrtype").currentText()
+        addrtype = xml_node("addrtype", addrtype_str, cntaddr)
 
         for label in ['address', 'address2', 'address3', 'city', 'state',
                       'postal', 'country']:
-            widget = self.findChild(QLineEdit, label)
+            widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                node = etree.Element(label)
-                node.text = widget.text()
-                cntaddr.append(node)
+                if label[-1].isdigit():
+                    label = label[:-1]
+                node = xml_node(label, widget_str, cntaddr)
             except:
                 pass
 
-        cntinfo.append(cntaddr)
-
         for label in ['cntvoice', 'cntfax', 'cntemail']:
-            widget = self.findChild(QLineEdit, label)
+            widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                node = etree.Element(label)
-                node.text = widget.text()
-                cntinfo.append(node)
+                node = xml_node(label, widget_str, cntinfo)
             except:
                 pass
 
@@ -220,7 +216,7 @@ class ContactInfo(WizardWidget):
         contact_dict = xml_utils.node_to_dict(contact_information)
         utils.populate_widget(self, contact_dict)
 
-        addrtype_widget = self.findChild(QComboBox, 'addrtype')
+        addrtype_widget = self.findChild(QComboBox, 'fgdc_addrtype')
 
 
         if 'cntinfo' in contact_dict:
@@ -233,10 +229,10 @@ class ContactInfo(WizardWidget):
             pass
 
         try:
-            if 'cntorgp' in contact_dict:
+            if 'fgdc_cntorgp' in contact_dict:
                 rbtn_orgp = self.findChild(QRadioButton, 'rbtn_orgp')
                 rbtn_orgp.setChecked(True)
-            elif 'cntperp' in contact_dict:
+            elif 'fgdc_cntperp' in contact_dict:
                 rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
                 rbtn_perp.setChecked(True)
         except KeyError:

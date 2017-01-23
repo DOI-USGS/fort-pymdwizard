@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ThemeKeywords</class>
- <widget class="QWidget" name="ThemeKeywords">
+ <class>fgdc_keywords</class>
+ <widget class="QWidget" name="fgdc_keywords">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -335,7 +335,7 @@ border-radius: 2px;
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="fgdc_theme">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
          <horstretch>0</horstretch>

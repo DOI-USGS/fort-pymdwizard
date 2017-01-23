@@ -80,7 +80,7 @@ class ThemeKeywords(WizardWidget):
                     'cntfax': 'cntfax',
                     'cntemail': 'cntemail'}
 
-    ui_class = UI_ThemeKeywords.Ui_ThemeKeywords
+    ui_class = UI_ThemeKeywords.Ui_fgdc_keywords
 
     def build_ui(self):
         self.ui = self.ui_class()

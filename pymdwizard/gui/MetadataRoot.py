@@ -110,7 +110,7 @@ class MetadataRoot(WizardWidget):
     def section_changed(self):
 
         button_name = self.sender().objectName()
-        old_widget = self.ui.stackedWidget.currentWidget()
+        old_widget = self.ui.fgdc_metadata.currentWidget()
 
 
         index_lookup = {'idinfo_button': 0,
@@ -123,10 +123,10 @@ class MetadataRoot(WizardWidget):
 
         new_index = index_lookup[button_name]
 
-        new_widget = self.ui.stackedWidget.widget(new_index)
+        new_widget = self.ui.fgdc_metadata.widget(new_index)
 
         fader_widget = FaderWidget(old_widget, new_widget)
-        self.ui.stackedWidget.setCurrentIndex(new_index)
+        self.ui.fgdc_metadata.setCurrentIndex(new_index)
 
     def _to_xml(self):
         metadata_node = etree.Element('metadata')

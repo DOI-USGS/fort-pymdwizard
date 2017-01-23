@@ -90,7 +90,7 @@ class Taxonomy(WizardWidget):
         -------
         None
         """
-        self.ui = UI_Taxonomy.Ui_Form()
+        self.ui = UI_Taxonomy.Ui_Taxonomy()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -116,7 +116,7 @@ class Taxonomy(WizardWidget):
 
         # self.ITIS_Search = QDialog(self)
         self.ITIS_Search = ITISSearch.ItisSearch(table=self.ui.table_include,
-                                    selected_items_df=self.selected_items_df,
+                                                 selected_items_df=self.selected_items_df,
                                                  parent=self)
         fg = self.frameGeometry()
         self.ITIS_Search.move(fg.topRight() - QPoint(150, -25))

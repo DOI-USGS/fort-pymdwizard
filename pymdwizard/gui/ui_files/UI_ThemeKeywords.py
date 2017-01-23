@@ -8,11 +8,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_ThemeKeywords(object):
-    def setupUi(self, ThemeKeywords):
-        ThemeKeywords.setObjectName("ThemeKeywords")
-        ThemeKeywords.resize(770, 472)
-        ThemeKeywords.setStyleSheet("QLabel{\n"
+class Ui_fgdc_keywords(object):
+    def setupUi(self, fgdc_keywords):
+        fgdc_keywords.setObjectName("fgdc_keywords")
+        fgdc_keywords.resize(770, 472)
+        fgdc_keywords.setStyleSheet("QLabel{\n"
 "font: 9pt \"Arial\";\n"
 "color: rgb(90, 90, 90);\n"
 "}\n"
@@ -21,12 +21,12 @@ class Ui_ThemeKeywords(object):
 "font: 9pt \"Arial\";\n"
 "color: rgb(50, 50, 50);\n"
 "}")
-        self.verticalLayout_8 = QtWidgets.QVBoxLayout(ThemeKeywords)
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(fgdc_keywords)
         self.verticalLayout_8.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.groupBox_2 = QtWidgets.QGroupBox(ThemeKeywords)
+        self.groupBox_2 = QtWidgets.QGroupBox(fgdc_keywords)
         self.groupBox_2.setStyleSheet("QGroupBox{ \n"
 "font: 75 12pt \"Arial\";\n"
 "border: 1px solid black;\n"
@@ -151,17 +151,17 @@ class Ui_ThemeKeywords(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
         self.verticalLayout_6.addLayout(self.verticalLayout_5)
         self.verticalLayout_7.addWidget(self.groupBox_2)
-        self.groupBox = QtWidgets.QGroupBox(ThemeKeywords)
+        self.fgdc_theme = QtWidgets.QGroupBox(fgdc_keywords)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy)
-        self.groupBox.setStyleSheet("QGroupBox{ font: 11pt } ")
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox)
+        sizePolicy.setHeightForWidth(self.fgdc_theme.sizePolicy().hasHeightForWidth())
+        self.fgdc_theme.setSizePolicy(sizePolicy)
+        self.fgdc_theme.setStyleSheet("QGroupBox{ font: 11pt } ")
+        self.fgdc_theme.setObjectName("fgdc_theme")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.fgdc_theme)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.theme = QtWidgets.QTreeView(self.groupBox)
+        self.theme = QtWidgets.QTreeView(self.fgdc_theme)
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.theme.setFont(font)
@@ -193,34 +193,34 @@ class Ui_ThemeKeywords(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem5)
-        self.btn_remove_keywords = QtWidgets.QPushButton(self.groupBox)
+        self.btn_remove_keywords = QtWidgets.QPushButton(self.fgdc_theme)
         self.btn_remove_keywords.setObjectName("btn_remove_keywords")
         self.horizontalLayout.addWidget(self.btn_remove_keywords)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
-        self.verticalLayout_7.addWidget(self.groupBox)
+        self.verticalLayout_7.addWidget(self.fgdc_theme)
         self.verticalLayout_8.addLayout(self.verticalLayout_7)
 
-        self.retranslateUi(ThemeKeywords)
-        QtCore.QMetaObject.connectSlotsByName(ThemeKeywords)
+        self.retranslateUi(fgdc_keywords)
+        QtCore.QMetaObject.connectSlotsByName(fgdc_keywords)
 
-    def retranslateUi(self, ThemeKeywords):
+    def retranslateUi(self, fgdc_keywords):
         _translate = QtCore.QCoreApplication.translate
-        ThemeKeywords.setWindowTitle(_translate("ThemeKeywords", "ITIS Search"))
-        self.groupBox_2.setTitle(_translate("ThemeKeywords", "Tools for adding Theme Keywords:"))
-        self.label_search_term_5.setText(_translate("ThemeKeywords", "<html><head/><body><p><span style=\" font-style:italic;\">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>"))
-        self.btn_search_controlled.setToolTip(_translate("ThemeKeywords", "Perform search of USGS Controlled Vocabularies"))
-        self.btn_search_controlled.setText(_translate("ThemeKeywords", "Search Controlled Vocabularies"))
-        self.label_search_term_3.setText(_translate("ThemeKeywords", "<html><head/><body><p><span style=\" font-style:italic;\">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>"))
-        self.btn_browse_iso.setToolTip(_translate("ThemeKeywords", "Add ISO 19115 keywords"))
-        self.btn_browse_iso.setText(_translate("ThemeKeywords", "Browse ISO 19115"))
-        self.label_search_term_6.setText(_translate("ThemeKeywords", "<html><head/><body><p><span style=\" font-style:italic;\">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>"))
-        self.label_search_term_4.setText(_translate("ThemeKeywords", "Theme Keyword Thesaurus:"))
-        self.themekt.setToolTip(_translate("ThemeKeywords", "terms to search ITIS for"))
-        self.themekt.setText(_translate("ThemeKeywords", "None"))
-        self.label_search_term.setText(_translate("ThemeKeywords", "Add Free-Text Theme Keyword:"))
-        self.themekey.setToolTip(_translate("ThemeKeywords", "terms to search ITIS for"))
-        self.btn_add_custom.setToolTip(_translate("ThemeKeywords", "Add Custom Keyword"))
-        self.btn_add_custom.setText(_translate("ThemeKeywords", "Add Custom Keyword"))
-        self.groupBox.setTitle(_translate("ThemeKeywords", "Theme Keywords (Grouped by Thesaurus):  "))
-        self.btn_remove_keywords.setText(_translate("ThemeKeywords", "Remove Selected Keywords"))
+        fgdc_keywords.setWindowTitle(_translate("fgdc_keywords", "ITIS Search"))
+        self.groupBox_2.setTitle(_translate("fgdc_keywords", "Tools for adding Theme Keywords:"))
+        self.label_search_term_5.setText(_translate("fgdc_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>"))
+        self.btn_search_controlled.setToolTip(_translate("fgdc_keywords", "Perform search of USGS Controlled Vocabularies"))
+        self.btn_search_controlled.setText(_translate("fgdc_keywords", "Search Controlled Vocabularies"))
+        self.label_search_term_3.setText(_translate("fgdc_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>"))
+        self.btn_browse_iso.setToolTip(_translate("fgdc_keywords", "Add ISO 19115 keywords"))
+        self.btn_browse_iso.setText(_translate("fgdc_keywords", "Browse ISO 19115"))
+        self.label_search_term_6.setText(_translate("fgdc_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>"))
+        self.label_search_term_4.setText(_translate("fgdc_keywords", "Theme Keyword Thesaurus:"))
+        self.themekt.setToolTip(_translate("fgdc_keywords", "terms to search ITIS for"))
+        self.themekt.setText(_translate("fgdc_keywords", "None"))
+        self.label_search_term.setText(_translate("fgdc_keywords", "Add Free-Text Theme Keyword:"))
+        self.themekey.setToolTip(_translate("fgdc_keywords", "terms to search ITIS for"))
+        self.btn_add_custom.setToolTip(_translate("fgdc_keywords", "Add Custom Keyword"))
+        self.btn_add_custom.setText(_translate("fgdc_keywords", "Add Custom Keyword"))
+        self.fgdc_theme.setTitle(_translate("fgdc_keywords", "Theme Keywords (Grouped by Thesaurus):  "))
+        self.btn_remove_keywords.setText(_translate("fgdc_keywords", "Remove Selected Keywords"))
 

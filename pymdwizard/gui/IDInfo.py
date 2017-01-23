@@ -44,22 +44,18 @@ from lxml import etree
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
-
-#import the sub widgets on this widget
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
 from pymdwizard.gui.Taxonomy import Taxonomy
-from pymdwizard.gui.UseConstraints import UseConstraints
-from pymdwizard.gui.AccessConstraints import AccessConstraints
-from pymdwizard.gui.Status import Status
+from pymdwizard.gui.ThemeKeywords import ThemeKeywords
 
 class IdInfo(WizardWidget):
 
@@ -71,11 +67,11 @@ class IdInfo(WizardWidget):
                         'cntorg': 'cntinfo/cntperp/cntorg',
                         'cntpos': 'cntinfo/cntpos',}
 
-    ui_class = UI_IdInfo.Ui_idinfo
+    ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
     def build_ui(self):
 
-        self.ui = UI_IdInfo.Ui_idinfo()
+        self.ui = self.ui_class()
         self.ui.setupUi(self)
 
         self.main_layout = self.ui.main_layout
@@ -87,31 +83,13 @@ class IdInfo(WizardWidget):
         section1.setObjectName("ContactInfoHBox")
         section1.addWidget(self.ptcontac)
 
-        self.taxonomy = Taxonomy(parent=self)
+        self.taxonomy = Taxonomy()
         section1.addWidget(self.taxonomy)
 
-        self.usecontraints = UseConstraints(parent=self)
-        section2 = QGridLayout()
-        section2.setObjectName("OtherHBox")
-        section2.addWidget(self.usecontraints)
+        self.main_layout.addLayout(section1)
 
-        self.accessconstraints = AccessConstraints(parent=self)
-        section2.addWidget(self.accessconstraints)
-
-        self.status = Status(parent=self)
-        section3 = QGridLayout()
-        section3.setObjectName("OtherVBox")
-        section3.addWidget(self.status)
-
-        section4 = QVBoxLayout()
-        section4.setObjectName("TrialVBox")
-        section4.addLayout(section1)
-        section4.addLayout(section2)
-        section4.addLayout(section3)
-
-        self.main_layout.addLayout(section4)
-        #self.main_layout.addLayout(section2)
-        #self.main_layout.addLayout(section3)
+        self.keywords = ThemeKeywords(parent=self)
+        self.main_layout.addWidget(self.keywords)
 
 
     def dragEnterEvent(self, e):
@@ -139,35 +117,52 @@ class IdInfo(WizardWidget):
         # add code here to translate the form into xml representation
         idinfo_node = etree.Element('idinfo')
 
+        citation_node = etree.Element('citation')
+        idinfo_node.append(citation_node)
+
+        descript_node = etree.Element('descript')
+        idinfo_node.append(descript_node)
+
+        timeperd_node = etree.Element('timeperd')
+        idinfo_node.append(timeperd_node)
+
+        status_node = etree.Element('status')
+        idinfo_node.append(status_node)
+
+        keywords = self.keywords._to_xml()
+        idinfo_node.append(keywords)
+
+        accconst_node = etree.Element('accconst')
+        idinfo_node.append(accconst_node)
+
+        useconst_node = etree.Element('useconst')
+        idinfo_node.append(useconst_node)
+
         ptcontac = self.ptcontac._to_xml()
         idinfo_node.append(ptcontac)
 
-        taxonomy = self.taxonomy._to_xml()
-        idinfo_node.append(taxonomy)
 
-        useconstraints = self.usecontraints._to_xml()
-        idinfo_node.append(useconstraints)
 
-        accessconstraints = self.accessconstraints._to_xml()
-        idinfo_node.append(accessconstraints)
+        if self.taxonomy.ui.rbtn_yes.isChecked():
+            taxonomy = self.taxonomy._to_xml()
+            idinfo_node.append(taxonomy)
 
-        status = self.status._to_xml()
-        idinfo_node.append(status)
+
 
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
-        ptcontac = xml_idinfo.xpath('ptcontac')[0]
-        self.ptcontac._from_xml(ptcontac)
+        try:
+            ptcontac = xml_idinfo.xpath('ptcontac')[0]
+            self.ptcontac._from_xml(ptcontac)
+        except IndexError:
+            pass
 
-        useconstraints = xml_idinfo.xpath('useconst')[0]
-        self.usecontraints._from_xml(useconstraints)
-
-        accessconstraints = xml_idinfo.xpath('accconst')[0]
-        self.accesscontraints._from_xml(accessconstraints)
-
-        status = xml_idinfo.spath('status')[0]
-        self.status._from_xml(status)
+        try:
+            keywords = xml_idinfo.xpath('keywords')[0]
+            self.keywords._from_xml(keywords)
+        except IndexError:
+            pass
 
 
 if __name__ == "__main__":

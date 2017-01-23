@@ -65,6 +65,7 @@ class PyMdWizardMainForm(QMainWindow):
         super(self.__class__, self).__init__()
 
         self.recent_file_actions = []
+        self.error_widgets = []
 
         self.build_ui()
         self.connect_events()
@@ -81,7 +82,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.setupUi(self)
 
         self.metadata_root = MetadataRoot()
-        self.ui.centralwidget.setLayout(self.metadata_root.layout())
+        self.ui.centralwidget.layout().addWidget(self.metadata_root)
 
         for i in range(PyMdWizardMainForm.max_recent_files):
             self.recent_file_actions.append(
@@ -101,6 +102,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.open_file)
         self.ui.actionSave.triggered.connect(self.save_file)
         self.ui.actionSave_as.triggered.connect(self.save_as)
+        self.ui.actionRun_Validation.triggered.connect(self.validate)
 
     def open_recent_file(self):
         """
@@ -246,11 +248,95 @@ class PyMdWizardMainForm(QMainWindow):
         return QFileInfo(full_fname).fileName()
 
 
+    def validate(self):
+        xsl_fname = r"X:\FORT-wide Resources\DataManagement\Metadata\Tools\XMLNotepad\BDPfgdc-std-001-1998-annotated.xsd"
+        from pymdwizard.core import fgdc_utils
+        errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
+
+
+        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+            annotation_lookup= json.loads(data_file.read())
+        for widget in self.error_widgets:
+            widget.setStyleSheet("""""")
+            shortname = widget.objectName().replace('fgdc_', '')
+            if shortname[-1].isdigit():
+                shortname = shortname[:-1]
+            widget.setToolTip(annotation_lookup[shortname]['annotation'])
+
+        self.error_widgets = []
+
+        for error in errors:
+            xpath, error_msg, line_num = error
+            widget = self.metadata_root.get_widget(xpath)
+            self.error_widgets.append(widget)
+            if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+                widget.setStyleSheet("""* {     background-color: rgb(255,76,77);
+                                    border-color: red;
+                                    border-width: 3px;
+                                    border-style: solid;
+                                    padding: 3px;
+                                    font: bold;
+                                    border-radius: 3px;
+                                    opacity: 75;}
+
+                                        QToolTip {
+                                    background-color: rgb(255,76,77);
+                                    border-color: red;
+                                    border-width: 1px;
+                                    border-style: solid;
+                                    padding: 3px;
+                                    font: bold;
+                                    border-radius: 3px;
+                                    opacity: 255;
+                                }""")
+                widget.setToolTip(error_msg)
+
+
 def main():
     app = QApplication(sys.argv)
 
+    import time
+    start = time.time()
+    # splash_pix = QPixmap(r"N:\Metadata\MetadataWizard\testing\pymdwizard3\Lib\site-packages\nbconvert\tests\files\containerized_deployments.jpeg")
+    #
+    # # below makes the pixmap half transparent
+    # painter = QPainter(splash_pix)
+    # painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
+    #
+    # painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 127))
+    #
+    # font = QFont()
+    # font.setFamily('Arial')
+    # font.setPointSize(40)
+    # font.setBold(True)
+    # painter.setFont(font)
+    #
+    # painter.setPen(Qt.white)
+    # painter.drawText(splash_pix.rect(), Qt.AlignCenter,
+    #              "Metadata Wizard")
+    #
+    # font = QFont()
+    # font.setFamily('Arial')
+    # font.setPointSize(19)
+    # font.setBold(True)
+    # painter.setFont(font)
+    #
+    # painter.setPen(Qt.red)
+    # painter.drawText(splash_pix.rect(), Qt.AlignBottom,
+    #                  "TODO: add a respectable picture...")
+    # painter.end()
+    #
+    #
+    # splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    # splash.show()
+    # app.processEvents()
+    # time.sleep(2)
+
+    app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
+    # splash.finish(mdwiz)
     app.exec_()
 
 

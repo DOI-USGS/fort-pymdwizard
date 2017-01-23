@@ -26,7 +26,38 @@
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextOnly</enum>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="MainLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -54,7 +85,23 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuValidate">
+    <property name="title">
+     <string>Validation</string>
+    </property>
+    <addaction name="actionRun_Validation"/>
+    <addaction name="actionClear_validation"/>
+    <addaction name="separator"/>
+    <addaction name="actionErrors"/>
+   </widget>
+   <widget class="QMenu" name="menuPreview">
+    <property name="title">
+     <string>Preview</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuValidate"/>
+   <addaction name="menuPreview"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -129,6 +176,21 @@
   <action name="actionItem_10">
    <property name="text">
     <string>item 10</string>
+   </property>
+  </action>
+  <action name="actionRun_Validation">
+   <property name="text">
+    <string>Run Validation</string>
+   </property>
+  </action>
+  <action name="actionErrors">
+   <property name="text">
+    <string>Errors:</string>
+   </property>
+  </action>
+  <action name="actionClear_validation">
+   <property name="text">
+    <string>Clear validation</string>
    </property>
   </action>
  </widget>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'idinfo.ui'
+# Form implementation generated from reading ui file 'Idinfo.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -8,11 +8,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_idinfo(object):
-    def setupUi(self, idinfo):
-        idinfo.setObjectName("idinfo")
-        idinfo.resize(710, 845)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(idinfo)
+class Ui_fgdc_idinfo(object):
+    def setupUi(self, fgdc_idinfo):
+        fgdc_idinfo.setObjectName("fgdc_idinfo")
+        fgdc_idinfo.resize(710, 845)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_idinfo)
         self.verticalLayout_2.setContentsMargins(2, 2, 2, 2)
         self.verticalLayout_2.setSpacing(2)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -24,7 +24,7 @@ class Ui_idinfo(object):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.frame = QtWidgets.QFrame(idinfo)
+        self.frame = QtWidgets.QFrame(fgdc_idinfo)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -69,14 +69,14 @@ class Ui_idinfo(object):
         self.groupBox.setMinimumSize(QtCore.QSize(100, 0))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
-        self.widget = QtWidgets.QWidget(self.groupBox)
-        self.widget.setGeometry(QtCore.QRect(3, 1, 110, 22))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget)
+        self.layoutWidget = QtWidgets.QWidget(self.groupBox)
+        self.layoutWidget.setGeometry(QtCore.QRect(3, 1, 110, 22))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.layoutWidget)
         self.horizontalLayout_3.setContentsMargins(5, 0, 5, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_4 = QtWidgets.QLabel(self.widget)
+        self.label_4 = QtWidgets.QLabel(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -97,7 +97,7 @@ class Ui_idinfo(object):
         self.label_4.setIndent(0)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
-        self.label_3 = QtWidgets.QLabel(self.widget)
+        self.label_3 = QtWidgets.QLabel(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -120,11 +120,11 @@ class Ui_idinfo(object):
         self.horizontalLayout_3.addWidget(self.label_3)
         self.horizontalLayout.addWidget(self.groupBox)
         self.verticalLayout.addWidget(self.frame)
-        self.idinfo_scroll_area = QtWidgets.QScrollArea(idinfo)
+        self.idinfo_scroll_area = QtWidgets.QScrollArea(fgdc_idinfo)
         self.idinfo_scroll_area.setWidgetResizable(True)
         self.idinfo_scroll_area.setObjectName("idinfo_scroll_area")
         self.idinfo_main_widget = QtWidgets.QWidget()
-        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 702, 802))
+        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 702, 804))
         self.idinfo_main_widget.setObjectName("idinfo_main_widget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.idinfo_main_widget)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -138,16 +138,16 @@ class Ui_idinfo(object):
         self.verticalLayout.addWidget(self.idinfo_scroll_area)
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
-        self.retranslateUi(idinfo)
-        QtCore.QMetaObject.connectSlotsByName(idinfo)
+        self.retranslateUi(fgdc_idinfo)
+        QtCore.QMetaObject.connectSlotsByName(fgdc_idinfo)
 
-    def retranslateUi(self, idinfo):
+    def retranslateUi(self, fgdc_idinfo):
         _translate = QtCore.QCoreApplication.translate
-        idinfo.setWindowTitle(_translate("idinfo", "Form"))
-        self.label_5.setToolTip(_translate("idinfo", "Required"))
-        self.label_5.setText(_translate("idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">Provide general Information about the data set.</span></p></body></html>"))
-        self.label_4.setToolTip(_translate("idinfo", "Required"))
-        self.label_4.setText(_translate("idinfo", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_3.setToolTip(_translate("idinfo", "Required"))
-        self.label_3.setText(_translate("idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
+        fgdc_idinfo.setWindowTitle(_translate("fgdc_idinfo", "Form"))
+        self.label_5.setToolTip(_translate("fgdc_idinfo", "Required"))
+        self.label_5.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">Provide general Information about the data set.</span></p></body></html>"))
+        self.label_4.setToolTip(_translate("fgdc_idinfo", "Required"))
+        self.label_4.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_3.setToolTip(_translate("fgdc_idinfo", "Required"))
+        self.label_3.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
 

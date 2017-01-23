@@ -52,7 +52,7 @@ color: rgb(60, 60, 60);</string>
     <number>6</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="fgdc_ptcontac">
      <property name="title">
       <string/>
      </property>

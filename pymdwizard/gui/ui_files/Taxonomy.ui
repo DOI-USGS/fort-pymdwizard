@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Taxonomy</class>
+ <widget class="QWidget" name="Taxonomy">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +12,9 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="toolTip">
+   <string>test docstring</string>
   </property>
   <property name="styleSheet">
    <string notr="true">font: 9pt &quot;Arial&quot;;
@@ -34,7 +37,7 @@ color: rgb(60, 60, 60);</string>
     <number>2</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="fgdc_taxonomy">
      <property name="title">
       <string/>
      </property>
@@ -231,6 +234,9 @@ color: rgb(60, 60, 60);</string>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="toolTip">
+                <string>test docstring 2</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
