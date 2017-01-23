@@ -52,7 +52,7 @@ except ImportError:
     pd = None
 
 
-def node_to_dict(node):
+def node_to_dict(node, add_fgdc=True):
     """
 
     Parameters
@@ -68,10 +68,14 @@ def node_to_dict(node):
 
     if len(node.getchildren()) == 0:
         tag = _parse_tag(node.tag)
-        node_dict[tag] = node.text
+        if add_fgdc:
+            tag = 'fgdc_' + tag
+        node_dict[tag] =  node.text
     else:
         for child in node.getchildren():
             tag = _parse_tag(child.tag)
+            if add_fgdc:
+                tag = 'fgdc_' + tag
             if len(child.getchildren()) > 0:
                 content = node_to_dict(child)
             else:
@@ -112,7 +116,7 @@ def element_to_list(results):
     List of dictionaries. Each dictionary in this list is the result of
     the _node_to_dict function
     """
-    return [node_to_dict(item) for item in results]
+    return [node_to_dict(item, add_fgdc=False) for item in results]
 
 
 def element_to_df(results):
