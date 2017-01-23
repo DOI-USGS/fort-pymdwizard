@@ -138,6 +138,7 @@ def element_to_df(results):
     results_list = element_to_list(results)
     return pd.DataFrame.from_dict(results_list)
 
+
 def node_to_string(node):
     """
 
@@ -152,5 +153,34 @@ def node_to_string(node):
     Pretty string representation of node
     """
     return etree.tostring(node, pretty_print=True).decode()
+
+
+def xml_node(tag, text='', parent_node=None):
+    """
+    convenience function for creating an xml node
+
+    Parameters
+    ----------
+    tag : str
+          The tag (e.g. fgdc short name) to be assigned to the node
+    text : str, optional
+          The text contents of the node.
+    parent_node : lxml element, optional
+          the node created by this function will be
+          appended to this nodes children
+
+    Returns
+    -------
+        lxml node
+    """
+
+    node = etree.Element(tag)
+    if text:
+        node.text = text
+
+    if parent_node is not None:
+        parent_node.append(node)
+
+    return node
 
 
