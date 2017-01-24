@@ -55,7 +55,11 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
 from pymdwizard.gui.Taxonomy import Taxonomy
-from pymdwizard.gui.ThemeKeywords import ThemeKeywords
+from pymdwizard.gui.Keywords import Keywords
+from pymdwizard.gui.AccessConstraints import AccessConstraints
+from pymdwizard.gui.UseConstraints import UseConstraints
+from pymdwizard.gui.Status import Status
+
 
 class IdInfo(WizardWidget):
 
@@ -74,22 +78,22 @@ class IdInfo(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-        self.main_layout = self.ui.main_layout
         self.setup_dragdrop(self)
 
         self.ptcontac = ContactInfoPointOfContact(parent=self)
+        self.taxonomy = Taxonomy(parent=self)
+        self.keywords = Keywords(parent=self)
+        self.access = AccessConstraints(parent=self)
+        self.use = UseConstraints(parent=self)
+        self.status = Status(parent=self)
 
-        section1 = QHBoxLayout()
-        section1.setObjectName("ContactInfoHBox")
-        section1.addWidget(self.ptcontac)
+        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        self.ui.two_column_right.layout().addWidget(self.keywords, 1)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy)
+        self.ui.two_column_left.layout().addWidget(self.access)
+        self.ui.two_column_left.layout().addWidget(self.use)
+        self.ui.two_column_left.layout().addWidget(self.status)
 
-        self.taxonomy = Taxonomy()
-        section1.addWidget(self.taxonomy)
-
-        self.main_layout.addLayout(section1)
-
-        self.keywords = ThemeKeywords(parent=self)
-        self.main_layout.addWidget(self.keywords)
 
 
     def dragEnterEvent(self, e):

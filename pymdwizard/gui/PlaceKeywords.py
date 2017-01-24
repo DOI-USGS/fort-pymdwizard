@@ -56,11 +56,11 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui import ThesaurusSearch
-from pymdwizard.gui.ui_files import UI_ThemeKeywords
+from pymdwizard.gui.ui_files import UI_PlaceKeywords
 
-class ThemeKeywords(WizardWidget):
-    drag_label = "Theme Keywords <theme>"
-    ui_class = UI_ThemeKeywords.Ui_fgdc_keywords
+class PlaceKeywords(WizardWidget):
+    drag_label = "Place Keywords <place>"
+    ui_class = UI_PlaceKeywords.Ui_place_keywords
 
     def build_ui(self):
         self.ui = self.ui_class()
@@ -72,10 +72,9 @@ class ThemeKeywords(WizardWidget):
         model.setHorizontalHeaderLabels(['Thesaurus', 'Keyword'])
         rootNode = model.invisibleRootItem()
 
-        self.ui.theme.setModel(model)
-        self.ui.theme.setColumnWidth(0, 250)
-        self.ui.theme.expandAll()
-
+        self.ui.place.setModel(model)
+        self.ui.place.setColumnWidth(0, 250)
+        self.ui.place.expandAll()
 
     def connect_events(self):
         """
@@ -87,11 +86,15 @@ class ThemeKeywords(WizardWidget):
         """
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
         self.ui.btn_add_custom.clicked.connect(self.add_custom)
-        self.ui.themekey.returnPressed.connect(self.add_custom)
-        self.ui.btn_browse_iso.clicked.connect(self.browse_iso)
+        self.ui.placekey.returnPressed.connect(self.add_custom)
         self.ui.btn_remove_keywords.clicked.connect(self.remove_selected)
-        # self.ui.btn_import_contact.clicked.connect(self.find_usgs_contact)
-        # self.ui.rbtn_perp.toggled.connect(self.switch_primary)
+        self.ui.rbtn_yes.toggled.connect(self.contact_include_place_change)
+
+    def contact_include_place_change(self, b):
+            if b:
+                self.ui.place_contents.show()
+            else:
+                self.ui.place_contents.hide()
 
     def search_controlled(self):
         """
@@ -101,7 +104,7 @@ class ThemeKeywords(WizardWidget):
         -------
         None
         """
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
 
         fg = self.frameGeometry()
         self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
@@ -117,68 +120,68 @@ class ThemeKeywords(WizardWidget):
 
     def add_custom(self):
 
-        themekey = self.ui.themekey.text()
-        themekt = self.ui.themekt.text()
+        placekey = self.ui.placekey.text()
+        placekt = self.ui.placekt.text()
 
-        self.add_keyword(themekey, themekt)
+        self.add_keyword(placekey, placekt)
 
     def add_keyword(self=None, keyword=None, thesaurus=None):
 
         contents = self._to_xml()
 
-        existing_themekts = {item.xpath('themekt')[0].text: item for item in \
-                             contents.xpath('theme')}
+        existing_placekts = {item.xpath('placekt')[0].text: item for item in \
+                             contents.xpath('place')}
 
-        if thesaurus in existing_themekts:
-            theme = existing_themekts[thesaurus]
+        if thesaurus in existing_placekts:
+            place = existing_placekts[thesaurus]
         else:
-            theme = etree.Element("theme")
-            themekt_node = etree.Element("themekt")
-            themekt_node.text = thesaurus
-            theme.append(themekt_node)
-            contents.append(theme)
+            place = etree.Element("place")
+            placekt_node = etree.Element("placekt")
+            placekt_node.text = thesaurus
+            place.append(placekt_node)
+            contents.append(place)
 
 
-        existing_keys = [key.text for key in theme.xpath('themekey')]
+        existing_keys = [key.text for key in place.xpath('placekey')]
         if keyword not in existing_keys:
-            themekey_node = etree.Element('themekey')
-            themekey_node.text = keyword
-            theme.append(themekey_node)
+            placekey_node = etree.Element('placekey')
+            placekey_node.text = keyword
+            place.append(placekey_node)
 
         self._from_xml(contents)
 
-    def remove_themekt(self, themekt):
+    def remove_placekt(self, placekt):
         contents = self._to_xml()
 
-        existing_themekts = {item.xpath('themekt')[0].text: item for item in \
-                             contents.xpath('theme')}
-        themekt_node = existing_themekts[themekt]
-        themekt_node.getparent().remove(themekt_node)
+        existing_placekts = {item.xpath('placekt')[0].text: item for item in \
+                             contents.xpath('place')}
+        placekt_node = existing_placekts[placekt]
+        placekt_node.getparent().remove(placekt_node)
         self._from_xml(contents)
 
-    def remove_keyword(self, themekey, themekt):
+    def remove_keyword(self, placekey, placekt):
         contents = self._to_xml()
-        existing_themekts = {item.xpath('themekt')[0].text: item for item in \
-                             contents.xpath('theme')}
-        themekt_node = existing_themekts[themekt]
+        existing_placekts = {item.xpath('placekt')[0].text: item for item in \
+                             contents.xpath('place')}
+        placekt_node = existing_placekts[placekt]
 
-        for themekey_node in themekt_node.xpath('theme'):
-            if themekey_node.text() == themekey:
-                themekt_node.getparent().remove(themekey_node)
+        for placekey_node in placekt_node.xpath('place'):
+            if placekey_node.text() == placekey:
+                placekt_node.getparent().remove(placekey_node)
 
         self._from_xml(contents)
 
     def remove_selected(self):
         starting_data = self._to_xml()
-        model = self.ui.theme.model()
-        for i in self.ui.theme.selectedIndexes():
+        model = self.ui.place.model()
+        for i in self.ui.place.selectedIndexes():
             try:
                 clicked_item = model.itemFromIndex(i)
                 if clicked_item.hasChildren():
-                    self.remove_themekt(clicked_item.text())
+                    self.remove_placekt(clicked_item.text())
                 else:
-                    themekt = clicked_item.parent().text()
-                    self.remove_keyword(clicked_item.text(), themekt)
+                    placekt = clicked_item.parent().text()
+                    self.remove_keyword(clicked_item.text(), placekt)
             except:
                 pass
 
@@ -200,7 +203,7 @@ class ThemeKeywords(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'keywords' or element.tag == 'theme':
+            if element.tag == 'keywords' or element.tag == 'place':
                 e.accept()
         else:
             e.ignore()
@@ -210,20 +213,20 @@ class ThemeKeywords(WizardWidget):
 
         keywords = etree.Element("keywords")
 
-        root = self.ui.theme.model().invisibleRootItem()
+        root = self.ui.place.model().invisibleRootItem()
         for i in range(root.rowCount()):
             item = root.child(i)
 
-            theme = etree.Element("theme")
-            themekt = etree.Element("themekt")
-            themekt.text = item.text()
-            theme.append(themekt)
+            place = etree.Element("place")
+            placekt = etree.Element("placekt")
+            placekt.text = item.text()
+            place.append(placekt)
             for j in range(item.rowCount()):
                 kw = item.child(j, 1)
-                themekey = etree.Element('themekey')
-                themekey.text = kw.text()
-                theme.append(themekey)
-            keywords.append(theme)
+                placekey = etree.Element('placekey')
+                placekey.text = kw.text()
+                place.append(placekey)
+            keywords.append(place)
 
         return keywords
 
@@ -234,22 +237,22 @@ class ThemeKeywords(WizardWidget):
 
         rootNode = model.invisibleRootItem()
 
-        for theme in keywords.xpath('theme'):
-            thesaurus_name = theme.xpath('themekt')[0].text
+        for place in keywords.xpath('place'):
+            thesaurus_name = place.xpath('placekt')[0].text
             branch = QStandardItem(thesaurus_name)
             branch.setFont(QFont('Arial', 9))
 
-            for kw in theme.xpath('themekey'):
+            for kw in place.xpath('placekey'):
                 childnode = QStandardItem(kw.text)
                 childnode.setFont(QFont('Arial', 10))
                 branch.appendRow([None, childnode])
 
             rootNode.appendRow([branch, None])
 
-        self.ui.theme.setModel(model)
-        # self.ui.theme.setColumnWidth(250, 150)
-        self.ui.theme.expandAll()
+        self.ui.place.setModel(model)
+        # self.ui.place.setColumnWidth(250, 150)
+        self.ui.place.expandAll()
 
 
 if __name__ == "__main__":
-    utils.launch_widget(ThemeKeywords)
+    utils.launch_widget(PlaceKeywords)

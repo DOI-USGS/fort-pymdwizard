@@ -27,7 +27,7 @@ from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 
 class ThesaurusSearch(QWidget):
 
-    def __init__(self, add_term_function=None, parent=None):
+    def __init__(self, add_term_function=None, parent=None, place=False):
         # QtGui.QMainWindow.__init__(self, parent)
         super(self.__class__, self).__init__()
 
@@ -38,8 +38,8 @@ class ThesaurusSearch(QWidget):
         self.thesauri_lookup_r = {}
 
         self.add_term_function = add_term_function
-        # self.table_include = table
-        # self.selected_items_df = selected_items_df
+
+        self.place = place
 
     def load_iso(self):
         self.ui.label_search_term.hide()
@@ -201,7 +201,8 @@ class ThesaurusSearch(QWidget):
         unique_children = []
         for item in results:
             thesaurus_name = self.thesauri_lookup[item['thcode']]
-            if item['thcode'] != '1':
+            if item['thcode'] != '1' and not self.place or \
+               item['thcode'] == '1' and self.place:
                 branch = branch_lookup.get(thesaurus_name, QStandardItem(thesaurus_name))
                 branch.setFont(QFont('Arial', 11))
                 childnode = QStandardItem(item['value'])
