@@ -39,6 +39,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys, os
+import json
 
 from lxml import etree
 
@@ -103,6 +104,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSave.triggered.connect(self.save_file)
         self.ui.actionSave_as.triggered.connect(self.save_as)
         self.ui.actionRun_Validation.triggered.connect(self.validate)
+        self.ui.actionClear_validation.triggered.connect(self.clear_validation)
 
     def open_recent_file(self):
         """
@@ -247,24 +249,28 @@ class PyMdWizardMainForm(QMainWindow):
     def stripped_name(self, full_fname):
         return QFileInfo(full_fname).fileName()
 
+    def clear_validation(self):
+
+        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+            annotation_lookup = json.loads(data_file.read())
+
+        for widget in self.error_widgets:
+            if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+                widget.setStyleSheet("""""")
+                shortname = widget.objectName().replace('fgdc_', '')
+                if shortname[-1].isdigit():
+                    shortname = shortname[:-1]
+                widget.setToolTip(annotation_lookup[shortname]['annotation'])
+
+        self.error_widgets = []
 
     def validate(self):
         xsl_fname = r"X:\FORT-wide Resources\DataManagement\Metadata\Tools\XMLNotepad\BDPfgdc-std-001-1998-annotated.xsd"
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
-
-        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
-        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-            annotation_lookup= json.loads(data_file.read())
-        for widget in self.error_widgets:
-            widget.setStyleSheet("""""")
-            shortname = widget.objectName().replace('fgdc_', '')
-            if shortname[-1].isdigit():
-                shortname = shortname[:-1]
-            widget.setToolTip(annotation_lookup[shortname]['annotation'])
-
-        self.error_widgets = []
+        self.clear_validation()
 
         for error in errors:
             xpath, error_msg, line_num = error
