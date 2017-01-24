@@ -130,16 +130,16 @@ class IdInfo(WizardWidget):
         timeperd_node = etree.Element('timeperd')
         idinfo_node.append(timeperd_node)
 
-        status_node = etree.Element('status')
+        status_node = self.status._to_xml()
         idinfo_node.append(status_node)
 
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        accconst_node = etree.Element('accconst')
+        accconst_node = self.access._to_xml()
         idinfo_node.append(accconst_node)
 
-        useconst_node = etree.Element('useconst')
+        useconst_node = self.use._to_xml()
         idinfo_node.append(useconst_node)
 
         ptcontac = self.ptcontac._to_xml()
