@@ -40,6 +40,7 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import sys
 import datetime
+import traceback
 
 from lxml import etree
 import requests
@@ -149,6 +150,7 @@ def launch_widget(Widget, title=""):
     except:
         e = sys.exc_info()[0]
         print('problem encountered', e)
+        print(traceback.format_exc())
 
 
 class PandasModel(QAbstractTableModel):
