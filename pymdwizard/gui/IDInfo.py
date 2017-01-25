@@ -136,6 +136,10 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
+        if self.taxonomy.ui.rbtn_yes.isChecked():
+            taxonomy = self.taxonomy._to_xml()
+            idinfo_node.append(taxonomy)
+
         accconst_node = self.access._to_xml()
         idinfo_node.append(accconst_node)
 
@@ -147,9 +151,7 @@ class IdInfo(WizardWidget):
 
 
 
-        if self.taxonomy.ui.rbtn_yes.isChecked():
-            taxonomy = self.taxonomy._to_xml()
-            idinfo_node.append(taxonomy)
+
 
 
 
