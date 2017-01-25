@@ -152,13 +152,8 @@ class IdInfo(WizardWidget):
         idinfo_node.append(useconst_node)
 
         ptcontac = self.ptcontac._to_xml()
-        idinfo_node.append(ptcontac)
-
-
-
-
-
-
+        if ptcontac:
+            idinfo_node.append(ptcontac)
 
         return idinfo_node
 

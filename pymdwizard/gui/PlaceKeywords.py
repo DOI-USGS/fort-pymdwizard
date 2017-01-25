@@ -242,6 +242,8 @@ class PlaceKeywords(WizardWidget):
 
         if keywords.xpath('place'):
             self.ui.rbtn_yes.setChecked(True)
+        else:
+            self.ui.rbtn_yes.setChecked(False)
 
         for place in keywords.xpath('place'):
             thesaurus_name = place.xpath('placekt')[0].text
