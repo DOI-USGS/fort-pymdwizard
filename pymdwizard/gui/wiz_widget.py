@@ -118,6 +118,7 @@ class WizardWidget(QWidget):
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
 
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -300,6 +301,7 @@ class WizardWidget(QWidget):
                 widget.setAcceptDrops(enable)
 
         self.populate_tooltips()
+        self.set_stylesheet()
 
     def populate_tooltips(self):
         import json
@@ -315,6 +317,29 @@ class WizardWidget(QWidget):
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
                 widget.setToolTip(annotation_lookup[shortname]['annotation'])
+
+    def set_stylesheet(self):
+        self.setStyleSheet("""
+QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 14px;
+    color: rgb(90, 90, 90);
+ }
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt "Arial";
+color: rgb(90, 90, 90);
+}
+QLineEdit {
+font: 9pt "Arial";
+color: rgb(50, 50, 50);
+ }""")
 
     def eventFilter(self, obj, event):
         """

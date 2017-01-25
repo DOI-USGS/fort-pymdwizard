@@ -56,19 +56,19 @@ color: rgb(50, 50, 50);
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <property name="spacing">
-       <number>3</number>
+       <number>6</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <item>
        <widget class="QWidget" name="fgdc_keywords" native="true">
@@ -210,6 +210,18 @@ color: rgb(50, 50, 50);
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox_2">
            <property name="sizePolicy">
@@ -220,7 +232,7 @@ color: rgb(50, 50, 50);
            </property>
            <property name="styleSheet">
             <string notr="true">QGroupBox{ 
-font: 75 12pt &quot;Arial&quot;;
+font: 75 10pt &quot;Arial&quot;;
 border: 1px solid black;
 border-radius: 3px;
 background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);

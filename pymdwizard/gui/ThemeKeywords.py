@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_ThemeKeywords
 
 class ThemeKeywords(WizardWidget):
     drag_label = "Theme Keywords <theme>"
-    ui_class = UI_ThemeKeywords.Ui_fgdc_keywords
+    ui_class = UI_ThemeKeywords.Ui_theme_keywords
 
     def build_ui(self):
         self.ui = self.ui_class()

@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>268</width>
-    <height>234</height>
+    <height>117</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>268</width>
-    <height>234</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -26,171 +26,167 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="fgdc_status">
-     <property name="title">
-      <string/>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <widget class="QComboBox" name="fgdc_update">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>161</y>
-        <width>181</width>
-        <height>31</height>
-       </rect>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="title">
+      <string>Data Status and Update Plans</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>3</number>
       </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
+      <property name="topMargin">
+       <number>3</number>
       </property>
-      <property name="editable">
-       <bool>true</bool>
+      <property name="rightMargin">
+       <number>3</number>
       </property>
-      <item>
-       <property name="text">
-        <string>Continually</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Daily</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Weekly</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Monthly</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Annually</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Unknown</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>As needed</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Irregular</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>None planned</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QComboBox" name="fgdc_progress">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>80</y>
-        <width>181</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="editable">
-       <bool>true</bool>
-      </property>
-      <property name="currentText">
-       <string>Complete</string>
+      <property name="bottomMargin">
+       <number>3</number>
       </property>
       <item>
-       <property name="text">
-        <string>Complete</string>
-       </property>
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Status</string>
+        </property>
+       </widget>
       </item>
       <item>
-       <property name="text">
-        <string>In Work</string>
-       </property>
+       <widget class="QComboBox" name="fgdc_progress">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>Complete</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Complete</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>In Work</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Planned</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item>
-       <property name="text">
-        <string>Planned</string>
-       </property>
+       <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Update Plans</string>
+        </property>
+       </widget>
       </item>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>20</y>
-        <width>251</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Data Status and Update Plans</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Status</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>130</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Update Plans</string>
-      </property>
-     </widget>
+      <item>
+       <widget class="QComboBox" name="fgdc_update">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>Continually</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Daily</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Weekly</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Monthly</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Annually</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Unknown</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>As needed</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Irregular</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None planned</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
