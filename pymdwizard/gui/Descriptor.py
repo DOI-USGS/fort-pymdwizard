@@ -95,8 +95,8 @@ class Descriptor(WizardWidget): #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'descript':
-#                print "element", element.text
-#                print "tag", element.tag
+#                #print "element", element.text
+#                #print "tag", element.tag
                 #mime_data.setText(element.text)
                 #print mime_data.text()
                 #self.Q.setPlainText(_translate("Form", element.text))
@@ -145,7 +145,7 @@ class Descriptor(WizardWidget): #
         """
         try:
             if descriptors.tag == 'descript':
-                print descriptors.tag
+                #print (descriptors.tag)
                 try:
 
                     abstract = descriptors[0]
