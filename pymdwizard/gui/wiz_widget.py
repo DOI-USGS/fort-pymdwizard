@@ -306,8 +306,12 @@ class WizardWidget(QWidget):
     def populate_tooltips(self):
         import json
         annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
-        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-            annotation_lookup= json.loads(data_file.read())
+        try:
+            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+                annotation_lookup = json.loads(data_file.read())
+        except TypeError:
+            with open(annotation_lookup_fname) as data_file:
+                annotation_lookup = json.loads(data_file.read())
 
 
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
