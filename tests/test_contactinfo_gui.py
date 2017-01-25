@@ -20,29 +20,43 @@ def test_contactinfo__from_xml(qtbot):
     contact = test_record.xpath("idinfo/ptcontac/cntinfo")[0]
 
     widget._from_xml(contact)
-    assert widget.findChild(QLineEdit, 'cntper').text() == "Jay Diffendorfer"
-    assert widget.findChild(QLineEdit, 'cntpos').text() == ""
-    assert widget.findChild(QLineEdit, 'cntvoice').text() == "303-236-5369"
-    assert widget.findChild(QLineEdit, 'cntemail').text() == "jediffendorfer@usgs.gov"
-    assert widget.findChild(QLineEdit, 'postal').text() == "80225"
+    assert widget.findChild(QLineEdit, 'fgdc_cntper').text() == "Jay Diffendorfer"
+    assert widget.findChild(QLineEdit, 'fgdc_cntpos').text() == ""
+    assert widget.findChild(QLineEdit, 'fgdc_cntvoice').text() == "303-236-5369"
+    assert widget.findChild(QLineEdit, 'fgdc_cntemail').text() == "jediffendorfer@usgs.gov"
+    assert widget.findChild(QLineEdit, 'fgdc_postal').text() == "80225"
 
 
 def test_contactinfo__to_xml(qtbot):
     widget = ContactInfo.ContactInfo()
     qtbot.addWidget(widget)
 
-    test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
-    test_record = etree.parse(test_record_fname)
-    contact = test_record.xpath("idinfo/ptcontac/cntinfo")[0]
 
-    cntper = widget.findChild(QLineEdit, 'cntper')
-    cntper.setText("Jay Diffendorfer")
 
-    widget._from_xml(contact)
-    assert widget.findChild(QLineEdit, 'cntper').text() == "Jay Diffendorfer"
-    assert widget.findChild(QLineEdit, 'cntpos').text() == ""
-    assert widget.findChild(QLineEdit, 'cntvoice').text() == "303-236-5369"
-    assert widget.findChild(QLineEdit, 'cntemail').text() == "jediffendorfer@usgs.gov"
-    assert widget.findChild(QLineEdit, 'postal').text() == "80225"
+    widget.findChild(QLineEdit, 'fgdc_cntper').setText("Jay Diffendorfer")
+    widget.findChild(QLineEdit, 'fgdc_cntpos').setText("")
+    widget.findChild(QLineEdit, 'fgdc_cntvoice').setText("303-236-5369")
+    widget.findChild(QLineEdit, 'fgdc_cntemail').setText("jediffendorfer@usgs.gov")
+    widget.findChild(QLineEdit, 'fgdc_postal').setText("80225")
+
+
+
+    assert widget._to_xml() == """<cntinfo>
+  <cntperp>
+    <cntper>Jay Diffendorfer</cntper>
+  </cntperp>
+  <cntaddr>
+    <addrtype>Mailing</addrtype>
+    <address/>
+    <city/>
+    <state/>
+    <postal>80225</postal>
+    <country/>
+  </cntaddr>
+  <cntvoice>303-236-5369</cntvoice>
+  <cntfax/>
+  <cntemail>jediffendorfer@usgs.gov</cntemail>
+</cntinfo>
+"""
 
 
