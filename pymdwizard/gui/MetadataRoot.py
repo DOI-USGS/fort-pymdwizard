@@ -103,9 +103,6 @@ class MetadataRoot(WizardWidget):
         self.ui.eainfo_button.pressed.connect(self.section_changed)
         self.ui.distinfo_button.pressed.connect(self.section_changed)
         self.ui.metainfo_button.pressed.connect(self.section_changed)
-        self.ui.validation_button.pressed.connect(self.section_changed)
-
-
 
     def section_changed(self):
 

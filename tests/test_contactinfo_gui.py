@@ -35,7 +35,7 @@ def test_contactinfo__to_xml(qtbot):
     test_record = etree.parse(test_record_fname)
     contact = test_record.xpath("idinfo/ptcontac/cntinfo")[0]
 
-    cntper = widget.findChild(QLineEdit, 'cntper')\
+    cntper = widget.findChild(QLineEdit, 'cntper')
     cntper.setText("Jay Diffendorfer")
 
     widget._from_xml(contact)

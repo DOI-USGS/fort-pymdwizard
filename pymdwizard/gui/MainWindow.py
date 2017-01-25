@@ -40,6 +40,7 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import sys, os
 import json
+import tempfile
 
 from lxml import etree
 
@@ -55,7 +56,7 @@ from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor,
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils
-
+from pymdwizard.gui.Preview import Preview
 
 class PyMdWizardMainForm(QMainWindow):
 
@@ -105,6 +106,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSave_as.triggered.connect(self.save_as)
         self.ui.actionRun_Validation.triggered.connect(self.validate)
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
+        self.ui.actionPreview.triggered.connect(self.preview)
 
     def open_recent_file(self):
         """
@@ -300,6 +302,25 @@ class PyMdWizardMainForm(QMainWindow):
                                 }}""".format(widgetname=widget.objectName()))
                 widget.setToolTip(error_msg)
 
+    def preview(self):
+        """
+        Shows a preview window with the xml content rendered using stylesheet
+
+        Returns
+        -------
+        None
+        """
+
+        xsl_fname = r"N:\Metadata\MetadataWizard\MDWizard_Source\_Deploy_Software\MetadataWizardToolbox\Resources\MetadataWizardStylesheet.xsl"
+        transform = etree.XSLT(etree.parse(xsl_fname))
+        result = transform(self.metadata_root._to_xml())
+
+        tmp = tempfile.NamedTemporaryFile(suffix='.html')
+        tmp.close()
+        result.write(tmp.name)
+
+        self.preview = Preview(url=tmp.name)
+        self.preview.show()
 
 def main():
     app = QApplication(sys.argv)

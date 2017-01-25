@@ -126,7 +126,7 @@ def my_exception_hook(exctype, value, traceback):
 sys.excepthook = my_exception_hook
 
 
-def launch_widget(Widget, title=""):
+def launch_widget(Widget, title="", **kwargs):
     """
     run a widget within it's own application
     Parameters
@@ -143,7 +143,7 @@ def launch_widget(Widget, title=""):
     try:
         app = QApplication([])
         app.title = title
-        widget = Widget()
+        widget = Widget(**kwargs)
         widget.setWindowTitle(title)
         widget.show()
         sys.exit(app.exec_())
