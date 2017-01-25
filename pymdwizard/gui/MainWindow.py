@@ -277,25 +277,16 @@ class PyMdWizardMainForm(QMainWindow):
             widget = self.metadata_root.get_widget(xpath)
             self.error_widgets.append(widget)
             if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
-                widget.setStyleSheet("""* {     background-color: rgb(255,76,77);
+                widget.setStyleSheet("""QWidget#{}
+                                    {{background-color: rgb(255,76,77);
                                     border-color: red;
-                                    border-width: 3px;
-                                    border-style: solid;
-                                    padding: 3px;
-                                    font: bold;
-                                    border-radius: 3px;
-                                    opacity: 75;}
+                                    opacity: 75;}}
 
-                                        QToolTip {
+                                        QToolTip {{
                                     background-color: rgb(255,76,77);
                                     border-color: red;
-                                    border-width: 1px;
-                                    border-style: solid;
-                                    padding: 3px;
-                                    font: bold;
-                                    border-radius: 3px;
                                     opacity: 255;
-                                }""")
+                                }}""".format(widget.objectName()))
                 widget.setToolTip(error_msg)
 
 
