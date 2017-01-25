@@ -46,7 +46,7 @@ from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
 from pymdwizard.core import utils
@@ -83,6 +83,8 @@ class Keywords(WizardWidget):
         self.place = PlaceKeywords()
         self.ui.fgdc_keywords.layout().addWidget(self.place)
 
+        spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.ui.fgdc_keywords.layout().addItem(spacerItem)
         self.setup_dragdrop(self)
 
     def dragEnterEvent(self, e):

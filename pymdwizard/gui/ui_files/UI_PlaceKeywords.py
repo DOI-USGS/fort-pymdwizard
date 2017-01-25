@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_place_keywords(object):
     def setupUi(self, place_keywords):
         place_keywords.setObjectName("place_keywords")
-        place_keywords.resize(489, 616)
+        place_keywords.resize(600, 427)
         place_keywords.setStyleSheet("QLabel{\n"
 "font: 9pt \"Arial\";\n"
 "color: rgb(90, 90, 90);\n"
@@ -26,7 +26,7 @@ class Ui_place_keywords(object):
         self.verticalLayout_8.setSpacing(3)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.fgdc_place = QtWidgets.QGroupBox(place_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_place.sizePolicy().hasHeightForWidth())
@@ -81,9 +81,14 @@ class Ui_place_keywords(object):
         self.main_layout.addLayout(self.horizontalLayout_5)
         self.verticalLayout_7.addLayout(self.main_layout)
         self.verticalLayout_9.addWidget(self.fgdc_keywords)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 8, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 8, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         self.verticalLayout_9.addItem(spacerItem1)
         self.place_contents = QtWidgets.QFrame(self.fgdc_place)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.place_contents.sizePolicy().hasHeightForWidth())
+        self.place_contents.setSizePolicy(sizePolicy)
         self.place_contents.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.place_contents.setFrameShadow(QtWidgets.QFrame.Raised)
         self.place_contents.setObjectName("place_contents")
@@ -205,11 +210,12 @@ class Ui_place_keywords(object):
         self.verticalLayout_6.addLayout(self.verticalLayout_5)
         self.verticalLayout_3.addWidget(self.groupBox_2)
         self.place = QtWidgets.QTreeView(self.place_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.place.sizePolicy().hasHeightForWidth())
         self.place.setSizePolicy(sizePolicy)
+        self.place.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.place.setFont(font)

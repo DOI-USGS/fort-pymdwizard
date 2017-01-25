@@ -41,6 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 import datetime
 import traceback
+import pkg_resources
 
 from lxml import etree
 import requests
@@ -152,6 +153,21 @@ def launch_widget(Widget, title="", **kwargs):
         print('problem encountered', e)
         print(traceback.format_exc())
 
+
+def get_resource_path(fname):
+    """
+
+    Parameters
+    ----------
+    fname : str
+            filename that you would like to find
+
+    Returns
+    -------
+            the full file path to the resource specified
+    """
+    return pkg_resources.resource_filename('pymdwizard',
+                                           'resources/FGDC/{}'.format(fname))
 
 class PandasModel(QAbstractTableModel):
     """

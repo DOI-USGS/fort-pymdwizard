@@ -12,6 +12,11 @@ class Ui_theme_keywords(object):
     def setupUi(self, theme_keywords):
         theme_keywords.setObjectName("theme_keywords")
         theme_keywords.resize(499, 472)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(theme_keywords.sizePolicy().hasHeightForWidth())
+        theme_keywords.setSizePolicy(sizePolicy)
         theme_keywords.setStyleSheet("QLabel{\n"
 "font: 9pt \"Arial\";\n"
 "color: rgb(90, 90, 90);\n"
@@ -27,7 +32,7 @@ class Ui_theme_keywords(object):
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.fgdc_theme = QtWidgets.QGroupBox(theme_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_theme.sizePolicy().hasHeightForWidth())

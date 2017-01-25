@@ -45,7 +45,7 @@ from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
 
 from pymdwizard.core import utils
@@ -94,6 +94,11 @@ class IdInfo(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.use)
         self.ui.two_column_left.layout().addWidget(self.status)
 
+        spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.ui.two_column_left.layout().addItem(spacerItem)
+
+        spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.ui.two_column_right.layout().addItem(spacerItem2)
 
 
     def dragEnterEvent(self, e):
