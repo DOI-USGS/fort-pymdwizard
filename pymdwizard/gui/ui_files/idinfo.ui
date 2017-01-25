@@ -24,7 +24,7 @@
     <number>3</number>
    </property>
    <property name="rightMargin">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>3</number>
@@ -306,7 +306,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>703</width>
+            <width>706</width>
             <height>804</height>
            </rect>
           </property>

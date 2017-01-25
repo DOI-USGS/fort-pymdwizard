@@ -52,7 +52,7 @@ from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
 from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
-
+from pymdwizard.core import utils
 
 class WizardWidget(QWidget):
     """
@@ -305,7 +305,7 @@ class WizardWidget(QWidget):
 
     def populate_tooltips(self):
         import json
-        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup= json.loads(data_file.read())
 
@@ -336,7 +336,7 @@ QLabel{
 font: 9pt "Arial";
 color: rgb(90, 90, 90);
 }
-QLineEdit {
+QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
  }""")
