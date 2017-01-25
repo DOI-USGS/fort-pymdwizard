@@ -39,9 +39,10 @@ def test_contactinfo__to_xml(qtbot):
     widget.findChild(QLineEdit, 'fgdc_cntemail').setText("jediffendorfer@usgs.gov")
     widget.findChild(QLineEdit, 'fgdc_postal').setText("80225")
 
+    cntinfo = widget._to_xml()
 
-
-    assert widget._to_xml() == """<cntinfo>
+    assert etree.tostring(cntinfo, pretty_print=True).decode() \
+    == """<cntinfo>
   <cntperp>
     <cntper>Jay Diffendorfer</cntper>
   </cntperp>

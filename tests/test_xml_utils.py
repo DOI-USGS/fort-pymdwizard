@@ -29,4 +29,4 @@ element = etree.fromstring(xml_str, parser=parser)
 
 def test_node_to_dict():
     result = pymdwizard.core.xml_utils.node_to_dict(element)
-    assert result['cntperp']['cntper'] == 'Colin Talbert'
+    assert result['fgdc_cntperp']['fgdc_cntper'] == 'Colin Talbert'
