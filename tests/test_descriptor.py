@@ -29,9 +29,6 @@ def test_descriptor__to_xml(qtbot):
     widget = Descriptor.Descriptor()
     qtbot.addWidget(widget)
 
-    #test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
-    #test_record = etree.parse(test_record_fname)
-    #use_const = test_record.xpath("idinfo/useconst")[0]
 
     widget._to_xml#(use_const)
     assert widget.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText() == ""
