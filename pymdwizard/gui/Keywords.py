@@ -115,13 +115,10 @@ class Keywords(WizardWidget):
 
         return keywords
 
-    def _from_xml(self, contact_information):
+    def _from_xml(self, keywords):
 
-        if contact_information.tag == 'cntinfo':
-            cntinfo_node = contact_information
-        else:
-            cntinfo_node = contact_information.xpath('cntinfo')[0]
-        self.cntinfo._from_xml(cntinfo_node)
+        self.theme._from_xml(keywords)
+        self.place._from_xml(keywords)
 
 
 if __name__ == "__main__":
