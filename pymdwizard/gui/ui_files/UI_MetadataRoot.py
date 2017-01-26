@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MetadataRoot.ui'
+# Form implementation generated from reading ui file 'MetaDataroot.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -133,18 +133,6 @@ class Ui_metadata_root(object):
         self.metainfo_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
         self.metainfo_button.setObjectName("metainfo_button")
         self.horizontalLayout.addWidget(self.metainfo_button)
-        self.validation_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.validation_button.sizePolicy().hasHeightForWidth())
-        self.validation_button.setSizePolicy(sizePolicy)
-        self.validation_button.setCheckable(True)
-        self.validation_button.setChecked(False)
-        self.validation_button.setAutoExclusive(True)
-        self.validation_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
-        self.validation_button.setObjectName("validation_button")
-        self.horizontalLayout.addWidget(self.validation_button)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_2.addWidget(self.frame)
         self.fgdc_metadata = QtWidgets.QStackedWidget(metadata_root)
@@ -203,20 +191,10 @@ class Ui_metadata_root(object):
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.fgdc_metadata.addWidget(self.page_metainfo)
-        self.page_validation = QtWidgets.QWidget()
-        self.page_validation.setObjectName("page_validation")
-        self.label_7 = QtWidgets.QLabel(self.page_validation)
-        self.label_7.setGeometry(QtCore.QRect(730, 310, 181, 81))
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label_7.setFont(font)
-        self.label_7.setObjectName("label_7")
-        self.fgdc_metadata.addWidget(self.page_validation)
         self.verticalLayout_2.addWidget(self.fgdc_metadata)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.retranslateUi(metadata_root)
-        self.fgdc_metadata.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(metadata_root)
 
     def retranslateUi(self, metadata_root):
@@ -228,12 +206,10 @@ class Ui_metadata_root(object):
         self.eainfo_button.setText(_translate("metadata_root", "Entity and Attribute"))
         self.distinfo_button.setText(_translate("metadata_root", "Distribution"))
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
-        self.validation_button.setText(_translate("metadata_root", "Validation"))
         self.label.setText(_translate("metadata_root", "ID INFO"))
         self.label_2.setText(_translate("metadata_root", "Data Quality"))
         self.label_3.setText(_translate("metadata_root", "Spatial"))
         self.label_4.setText(_translate("metadata_root", "Entity and Att"))
         self.label_5.setText(_translate("metadata_root", "Distribution"))
         self.label_6.setText(_translate("metadata_root", "Metadata Ref"))
-        self.label_7.setText(_translate("metadata_root", "Validation"))
 

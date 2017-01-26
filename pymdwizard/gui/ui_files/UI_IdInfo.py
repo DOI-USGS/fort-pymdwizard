@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Idinfo.ui'
+# Form implementation generated from reading ui file 'IdInfo.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -13,8 +13,8 @@ class Ui_fgdc_idinfo(object):
         fgdc_idinfo.setObjectName("fgdc_idinfo")
         fgdc_idinfo.resize(710, 845)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_idinfo)
-        self.verticalLayout_2.setContentsMargins(2, 2, 2, 2)
-        self.verticalLayout_2.setSpacing(2)
+        self.verticalLayout_2.setContentsMargins(0, 3, 3, 3)
+        self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.frame = QtWidgets.QFrame(fgdc_idinfo)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -27,7 +27,7 @@ class Ui_fgdc_idinfo(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout.setContentsMargins(-1, 2, 2, 2)
+        self.horizontalLayout.setContentsMargins(10, 2, 2, 2)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_5 = QtWidgets.QLabel(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -125,7 +125,7 @@ class Ui_fgdc_idinfo(object):
         self.idinfo_scroll_area.setWidgetResizable(True)
         self.idinfo_scroll_area.setObjectName("idinfo_scroll_area")
         self.idinfo_main_widget = QtWidgets.QWidget()
-        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 702, 810))
+        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 703, 804))
         self.idinfo_main_widget.setObjectName("idinfo_main_widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.idinfo_main_widget)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -149,6 +149,7 @@ class Ui_fgdc_idinfo(object):
         self.two_column_left.setFrameShadow(QtWidgets.QFrame.Raised)
         self.two_column_left.setObjectName("two_column_left")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.two_column_left)
+        self.verticalLayout_5.setContentsMargins(0, 3, 3, 3)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         spacerItem1 = QtWidgets.QSpacerItem(20, 378, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_5.addItem(spacerItem1)
@@ -158,6 +159,7 @@ class Ui_fgdc_idinfo(object):
         self.two_column_right.setFrameShadow(QtWidgets.QFrame.Raised)
         self.two_column_right.setObjectName("two_column_right")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.two_column_right)
+        self.verticalLayout_4.setContentsMargins(3, 3, 0, 3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         spacerItem2 = QtWidgets.QSpacerItem(20, 378, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem2)

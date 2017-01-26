@@ -254,31 +254,6 @@ QToolButton:checked:Hover{
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QToolButton" name="validation_button">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Validation</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextOnly</enum>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -286,9 +261,6 @@ QToolButton:checked:Hover{
      </item>
      <item>
       <widget class="QStackedWidget" name="fgdc_metadata">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
        <widget class="QWidget" name="page_idinfo">
         <widget class="QLabel" name="label">
          <property name="geometry">
@@ -406,26 +378,6 @@ QToolButton:checked:Hover{
          </property>
          <property name="text">
           <string>Metadata Ref</string>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="page_validation">
-        <widget class="QLabel" name="label_7">
-         <property name="geometry">
-          <rect>
-           <x>730</x>
-           <y>310</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Validation</string>
          </property>
         </widget>
        </widget>

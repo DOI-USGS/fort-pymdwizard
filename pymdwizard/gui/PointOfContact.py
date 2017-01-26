@@ -144,10 +144,13 @@ class ContactInfoPointOfContact(WizardWidget):
             e.ignore()
 
     def _to_xml(self):
-        pntcontact = etree.Element('ptcontac')
+        if self.ui.rbtn_yes.isChecked():
+            pntcontact = etree.Element('ptcontac')
 
-        cntinfo = self.cntinfo._to_xml()
-        pntcontact.append(cntinfo)
+            cntinfo = self.cntinfo._to_xml()
+            pntcontact.append(cntinfo)
+        else:
+            pntcontact = None
 
         return pntcontact
 

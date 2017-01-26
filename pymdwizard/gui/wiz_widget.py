@@ -42,7 +42,7 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys, io
+import sys
 from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -52,7 +52,7 @@ from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
 from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
-
+from pymdwizard.core import utils
 
 class WizardWidget(QWidget):
     """
@@ -117,6 +117,7 @@ class WizardWidget(QWidget):
         # Any child widgets that have a separate drag-drop interactivity
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
+
 
     def connect_events(self):
         """
@@ -300,16 +301,18 @@ class WizardWidget(QWidget):
                 widget.setAcceptDrops(enable)
 
         self.populate_tooltips()
+        self.set_stylesheet()
 
     def populate_tooltips(self):
         import json
-        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-                annotation_lookup= json.loads(data_file.read())
-        except:
+                annotation_lookup = json.loads(data_file.read())
+        except TypeError:
             with open(annotation_lookup_fname) as data_file:
                 annotation_lookup = json.loads(data_file.read())
+
 
 
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
@@ -319,6 +322,29 @@ class WizardWidget(QWidget):
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
                 widget.setToolTip(annotation_lookup[shortname]['annotation'])
+
+    def set_stylesheet(self):
+        self.setStyleSheet("""
+QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 14px;
+    color: rgb(90, 90, 90);
+ }
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt "Arial";
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt "Arial";
+color: rgb(50, 50, 50);
+ }""")
 
     def eventFilter(self, obj, event):
         """

@@ -41,6 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 import datetime
 import traceback
+import pkg_resources
 
 from lxml import etree
 import requests
@@ -126,7 +127,7 @@ def my_exception_hook(exctype, value, traceback):
 sys.excepthook = my_exception_hook
 
 
-def launch_widget(Widget, title=""):
+def launch_widget(Widget, title="", **kwargs):
     """
     run a widget within it's own application
     Parameters
@@ -143,7 +144,7 @@ def launch_widget(Widget, title=""):
     try:
         app = QApplication([])
         app.title = title
-        widget = Widget()
+        widget = Widget(**kwargs)
         widget.setWindowTitle(title)
         widget.show()
         sys.exit(app.exec_())
@@ -152,6 +153,21 @@ def launch_widget(Widget, title=""):
         print('problem encountered', e)
         print(traceback.format_exc())
 
+
+def get_resource_path(fname):
+    """
+
+    Parameters
+    ----------
+    fname : str
+            filename that you would like to find
+
+    Returns
+    -------
+            the full file path to the resource specified
+    """
+    return pkg_resources.resource_filename('pymdwizard',
+                                           'resources/FGDC/{}'.format(fname))
 
 class PandasModel(QAbstractTableModel):
     """

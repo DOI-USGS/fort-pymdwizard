@@ -80,6 +80,8 @@ class Ui_MainWindow(object):
         self.actionErrors.setObjectName("actionErrors")
         self.actionClear_validation = QtWidgets.QAction(MainWindow)
         self.actionClear_validation.setObjectName("actionClear_validation")
+        self.actionPreview = QtWidgets.QAction(MainWindow)
+        self.actionPreview.setObjectName("actionPreview")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
@@ -92,6 +94,7 @@ class Ui_MainWindow(object):
         self.menuValidate.addAction(self.actionClear_validation)
         self.menuValidate.addSeparator()
         self.menuValidate.addAction(self.actionErrors)
+        self.menuPreview.addAction(self.actionPreview)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuValidate.menuAction())
         self.menubar.addAction(self.menuPreview.menuAction())
@@ -123,5 +126,6 @@ class Ui_MainWindow(object):
         self.actionRun_Validation.setText(_translate("MainWindow", "Run Validation"))
         self.actionErrors.setText(_translate("MainWindow", "Errors:"))
         self.actionClear_validation.setText(_translate("MainWindow", "Clear validation"))
+        self.actionPreview.setText(_translate("MainWindow", "Preview"))
 
 import icons_rc

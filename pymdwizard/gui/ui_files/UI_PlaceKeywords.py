@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_place_keywords(object):
     def setupUi(self, place_keywords):
         place_keywords.setObjectName("place_keywords")
-        place_keywords.resize(489, 616)
+        place_keywords.resize(600, 427)
         place_keywords.setStyleSheet("QLabel{\n"
 "font: 9pt \"Arial\";\n"
 "color: rgb(90, 90, 90);\n"
@@ -26,7 +26,7 @@ class Ui_place_keywords(object):
         self.verticalLayout_8.setSpacing(3)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.fgdc_place = QtWidgets.QGroupBox(place_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_place.sizePolicy().hasHeightForWidth())
@@ -34,8 +34,8 @@ class Ui_place_keywords(object):
         self.fgdc_place.setStyleSheet("QGroupBox{ font: 11pt } ")
         self.fgdc_place.setObjectName("fgdc_place")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.fgdc_place)
-        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_9.setSpacing(3)
+        self.verticalLayout_9.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout_9.setSpacing(6)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.fgdc_keywords = QtWidgets.QWidget(self.fgdc_place)
         self.fgdc_keywords.setObjectName("fgdc_keywords")
@@ -81,13 +81,19 @@ class Ui_place_keywords(object):
         self.main_layout.addLayout(self.horizontalLayout_5)
         self.verticalLayout_7.addLayout(self.main_layout)
         self.verticalLayout_9.addWidget(self.fgdc_keywords)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 8, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 8, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         self.verticalLayout_9.addItem(spacerItem1)
         self.place_contents = QtWidgets.QFrame(self.fgdc_place)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.place_contents.sizePolicy().hasHeightForWidth())
+        self.place_contents.setSizePolicy(sizePolicy)
         self.place_contents.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.place_contents.setFrameShadow(QtWidgets.QFrame.Raised)
         self.place_contents.setObjectName("place_contents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.place_contents)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.groupBox_2 = QtWidgets.QGroupBox(self.place_contents)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -96,7 +102,7 @@ class Ui_place_keywords(object):
         sizePolicy.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
         self.groupBox_2.setSizePolicy(sizePolicy)
         self.groupBox_2.setStyleSheet("QGroupBox{ \n"
-"font: 75 12pt \"Arial\";\n"
+"font: 75 10pt \"Arial\";\n"
 "border: 1px solid black;\n"
 "border-radius: 3px;\n"
 "background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
@@ -204,11 +210,12 @@ class Ui_place_keywords(object):
         self.verticalLayout_6.addLayout(self.verticalLayout_5)
         self.verticalLayout_3.addWidget(self.groupBox_2)
         self.place = QtWidgets.QTreeView(self.place_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.place.sizePolicy().hasHeightForWidth())
         self.place.setSizePolicy(sizePolicy)
+        self.place.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.place.setFont(font)

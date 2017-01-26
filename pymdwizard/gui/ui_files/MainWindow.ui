@@ -98,6 +98,7 @@
     <property name="title">
      <string>Preview</string>
     </property>
+    <addaction name="actionPreview"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
@@ -191,6 +192,11 @@
   <action name="actionClear_validation">
    <property name="text">
     <string>Clear validation</string>
+   </property>
+  </action>
+  <action name="actionPreview">
+   <property name="text">
+    <string>Preview</string>
    </property>
   </action>
  </widget>

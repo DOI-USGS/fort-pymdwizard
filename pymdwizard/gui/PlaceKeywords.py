@@ -76,6 +76,8 @@ class PlaceKeywords(WizardWidget):
         self.ui.place.setColumnWidth(0, 250)
         self.ui.place.expandAll()
 
+        self.contact_include_place_change(self.ui.rbtn_yes.isChecked())
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -213,20 +215,21 @@ class PlaceKeywords(WizardWidget):
 
         keywords = etree.Element("keywords")
 
-        root = self.ui.place.model().invisibleRootItem()
-        for i in range(root.rowCount()):
-            item = root.child(i)
+        if self.ui.rbtn_yes.isChecked():
+            root = self.ui.place.model().invisibleRootItem()
+            for i in range(root.rowCount()):
+                item = root.child(i)
 
-            place = etree.Element("place")
-            placekt = etree.Element("placekt")
-            placekt.text = item.text()
-            place.append(placekt)
-            for j in range(item.rowCount()):
-                kw = item.child(j, 1)
-                placekey = etree.Element('placekey')
-                placekey.text = kw.text()
-                place.append(placekey)
-            keywords.append(place)
+                place = etree.Element("place")
+                placekt = etree.Element("placekt")
+                placekt.text = item.text()
+                place.append(placekt)
+                for j in range(item.rowCount()):
+                    kw = item.child(j, 1)
+                    placekey = etree.Element('placekey')
+                    placekey.text = kw.text()
+                    place.append(placekey)
+                keywords.append(place)
 
         return keywords
 
@@ -236,6 +239,11 @@ class PlaceKeywords(WizardWidget):
         model.setHorizontalHeaderLabels(['Thesaurus', 'Keyword'])
 
         rootNode = model.invisibleRootItem()
+
+        if keywords.xpath('place'):
+            self.ui.rbtn_yes.setChecked(True)
+        else:
+            self.ui.rbtn_yes.setChecked(False)
 
         for place in keywords.xpath('place'):
             thesaurus_name = place.xpath('placekt')[0].text

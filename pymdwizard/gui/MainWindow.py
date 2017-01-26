@@ -40,6 +40,7 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import sys, os
 import json
+import tempfile
 
 from lxml import etree
 
@@ -54,8 +55,8 @@ from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor,
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
-from pymdwizard.core import xml_utils
-
+from pymdwizard.core import xml_utils, utils
+from pymdwizard.gui.Preview import Preview
 
 class PyMdWizardMainForm(QMainWindow):
 
@@ -105,6 +106,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSave_as.triggered.connect(self.save_as)
         self.ui.actionRun_Validation.triggered.connect(self.validate)
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
+        self.ui.actionPreview.triggered.connect(self.preview)
 
     def open_recent_file(self):
         """
@@ -251,7 +253,7 @@ class PyMdWizardMainForm(QMainWindow):
 
     def clear_validation(self):
 
-        annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
+        annotation_lookup_fname = utils.get_resource_path("bdp_lookup")
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup = json.loads(data_file.read())
 
@@ -266,7 +268,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
 
     def validate(self):
-        xsl_fname = r"X:\FORT-wide Resources\DataManagement\Metadata\Tools\XMLNotepad\BDPfgdc-std-001-1998-annotated.xsd"
+        xsl_fname = utils.get_resource_path('BDPfgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
@@ -277,72 +279,125 @@ class PyMdWizardMainForm(QMainWindow):
             widget = self.metadata_root.get_widget(xpath)
             self.error_widgets.append(widget)
             if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
-                widget.setStyleSheet("""* {     background-color: rgb(255,76,77);
-                                    border-color: red;
-                                    border-width: 3px;
-                                    border-style: solid;
-                                    padding: 3px;
-                                    font: bold;
-                                    border-radius: 3px;
-                                    opacity: 75;}
-
-                                        QToolTip {
-                                    background-color: rgb(255,76,77);
-                                    border-color: red;
-                                    border-width: 1px;
-                                    border-style: solid;
-                                    padding: 3px;
-                                    font: bold;
-                                    border-radius: 3px;
-                                    opacity: 255;
-                                }""")
+                widget.setStyleSheet(
+                    # """QGroupBox#{widgetname}
+                    #                 {{    margin: 10px;
+                    #                 border: 2px solid red;
+                    #                 padding: 20px;
+                    #
+                    #                 background-color: rgb(255,76,77);
+                    #                 background-position: top right;
+                    #                 background-origin: content;
+                    #                 background-repeat: none;
+                    #                 opacity: 25;
+                    #                 }}
+                    #                 QLineEdit#{widgetname}
+                    #                 {{background-color: rgb(255,76,77);
+                    #                 opacity: 25;
+                    #                 }}
+                    #
+                    #                     QToolTip {{
+                    #                 background-color: rgb(255,76,77);
+                    #                 border-color: red;
+                    #                 opacity: 255;
+                    #             }}"""
+                        """
+QGroupBox#{widgetname}{{
+  background-color: rgb(255,76,77);
+    border: 2px solid red;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 14px;
+    color: rgb(90, 90, 90);
+ }}
+QGroupBox#{widgetname}::title {{
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}}
+QLabel{{
+font: 9pt "Arial";
+color: rgb(90, 90, 90);
+}}
+QLineEdit#{widgetname} {{
+font: 9pt "Arial";
+color: rgb(50, 50, 50);
+background-color: rgb(255,76,77);
+opacity: 25;
+ }}
+ QToolTip {{
+    background-color: rgb(255,76,77);
+    border-color: red;
+    opacity: 255;
+}}
+                    """.format(widgetname=widget.objectName()))
                 widget.setToolTip(error_msg)
 
+    def preview(self):
+        """
+        Shows a preview window with the xml content rendered using stylesheet
+
+        Returns
+        -------
+        None
+        """
+
+        xsl_fname = utils.get_resource_path("FGDC_Stylesheet.xsl")
+        transform = etree.XSLT(etree.parse(xsl_fname))
+        result = transform(self.metadata_root._to_xml())
+
+        tmp = tempfile.NamedTemporaryFile(suffix='.html')
+        tmp.close()
+        result.write(tmp.name)
+
+        self.preview = Preview(url=tmp.name)
+        self.preview.show()
 
 def main():
     app = QApplication(sys.argv)
 
     import time
     start = time.time()
-    # splash_pix = QPixmap(r"N:\Metadata\MetadataWizard\testing\pymdwizard3\Lib\site-packages\nbconvert\tests\files\containerized_deployments.jpeg")
-    #
-    # # below makes the pixmap half transparent
-    # painter = QPainter(splash_pix)
-    # painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
-    #
-    # painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 127))
-    #
-    # font = QFont()
-    # font.setFamily('Arial')
-    # font.setPointSize(40)
-    # font.setBold(True)
-    # painter.setFont(font)
-    #
-    # painter.setPen(Qt.white)
-    # painter.drawText(splash_pix.rect(), Qt.AlignCenter,
-    #              "Metadata Wizard")
-    #
-    # font = QFont()
-    # font.setFamily('Arial')
-    # font.setPointSize(19)
-    # font.setBold(True)
-    # painter.setFont(font)
-    #
-    # painter.setPen(Qt.red)
-    # painter.drawText(splash_pix.rect(), Qt.AlignBottom,
-    #                  "TODO: add a respectable picture...")
-    # painter.end()
-    #
-    #
-    # splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
-    # splash.show()
-    # app.processEvents()
-    # time.sleep(2)
+    splash_fname = utils.get_resource_path('Metadata duck.png')
+    splash_pix = QPixmap(splash_fname)
+
+    # below makes the pixmap half transparent
+    painter = QPainter(splash_pix)
+    painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
+
+    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 127))
+
+    font = QFont()
+    font.setFamily('Arial')
+    font.setPointSize(40)
+    font.setBold(True)
+    painter.setFont(font)
+
+    painter.setPen(Qt.white)
+    painter.drawText(splash_pix.rect(), Qt.AlignCenter,
+                 "Metadata Wizard")
+
+    font = QFont()
+    font.setFamily('Arial')
+    font.setPointSize(19)
+    font.setBold(True)
+    painter.setFont(font)
+
+    painter.setPen(Qt.red)
+    painter.drawText(splash_pix.rect(), Qt.AlignBottom,
+                     "TODO: add a respectable picture...")
+    painter.end()
+
+
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.show()
+    app.processEvents()
+    time.sleep(2)
 
     app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
-    # splash.finish(mdwiz)
+    splash.finish(mdwiz)
     app.exec_()
 
 

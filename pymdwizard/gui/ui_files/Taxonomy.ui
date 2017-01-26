@@ -17,8 +17,7 @@
    <string>test docstring</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">font: 9pt &quot;Arial&quot;;
-color: rgb(60, 60, 60);</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -39,7 +38,7 @@ color: rgb(60, 60, 60);</string>
    <item>
     <widget class="QGroupBox" name="fgdc_taxonomy">
      <property name="title">
-      <string/>
+      <string>Taxonomy</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
@@ -71,7 +70,7 @@ color: rgb(60, 60, 60);</string>
            <number>6</number>
           </property>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="label_3">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -79,10 +78,10 @@ color: rgb(60, 60, 60);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: bold;</string>
+             <string notr="true">font: italic;</string>
             </property>
             <property name="text">
-             <string>Include Taxonomy Section?</string>
+             <string>Does this record contain biological data about particular species or other  taxons?</string>
             </property>
            </widget>
           </item>
@@ -132,35 +131,6 @@ color: rgb(60, 60, 60);</string>
           <property name="leftMargin">
            <number>6</number>
           </property>
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">font: italic;</string>
-            </property>
-            <property name="text">
-             <string>Does this record contain biological data about particular species or other  taxons?</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
          </layout>
         </item>
         <item>
@@ -172,22 +142,6 @@ color: rgb(60, 60, 60);</string>
            <number>6</number>
           </property>
          </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>10</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QFrame" name="frame_included_species">
@@ -230,7 +184,7 @@ color: rgb(60, 60, 60);</string>
                 <font>
                  <family>MS Shell Dlg 2</family>
                  <pointsize>10</pointsize>
-                 <weight>9</weight>
+                 <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
@@ -239,7 +193,7 @@ color: rgb(60, 60, 60);</string>
                 <string>test docstring 2</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Items to Include (Species, Families, Orders, etc.):</string>
@@ -271,13 +225,13 @@ color: rgb(60, 60, 60);</string>
                 <font>
                  <family>MS Shell Dlg 2</family>
                  <pointsize>10</pointsize>
-                 <weight>9</weight>
+                 <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Add Items from ITIS</string>

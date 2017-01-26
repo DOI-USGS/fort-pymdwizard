@@ -45,7 +45,7 @@ from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
 
 from pymdwizard.core import utils
@@ -94,6 +94,11 @@ class IdInfo(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.use)
         self.ui.two_column_left.layout().addWidget(self.status)
 
+        spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.ui.two_column_left.layout().addItem(spacerItem)
+
+        spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.ui.two_column_right.layout().addItem(spacerItem2)
 
 
     def dragEnterEvent(self, e):
@@ -136,6 +141,10 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
+        if self.taxonomy.ui.rbtn_yes.isChecked():
+            taxonomy = self.taxonomy._to_xml()
+            idinfo_node.append(taxonomy)
+
         accconst_node = self.access._to_xml()
         idinfo_node.append(accconst_node)
 
@@ -143,15 +152,8 @@ class IdInfo(WizardWidget):
         idinfo_node.append(useconst_node)
 
         ptcontac = self.ptcontac._to_xml()
-        idinfo_node.append(ptcontac)
-
-
-
-        if self.taxonomy.ui.rbtn_yes.isChecked():
-            taxonomy = self.taxonomy._to_xml()
-            idinfo_node.append(taxonomy)
-
-
+        if ptcontac:
+            idinfo_node.append(ptcontac)
 
         return idinfo_node
 

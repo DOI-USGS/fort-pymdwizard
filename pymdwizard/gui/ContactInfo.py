@@ -193,12 +193,19 @@ class ContactInfo(WizardWidget):
         addrtype_str = self.findChild(QComboBox, "fgdc_addrtype").currentText()
         addrtype = xml_node("addrtype", addrtype_str, cntaddr)
 
-        for label in ['address', 'address2', 'address3', 'city', 'state',
+        address_str = self.findChild(QLineEdit, "fgdc_address").text()
+        node = xml_node('address', address_str, cntaddr)
+        address2_str = self.findChild(QLineEdit, "fgdc_address2").text()
+        if address2_str:
+            node = xml_node('address', address2_str, cntaddr)
+        address3_str = self.findChild(QLineEdit, "fgdc_address3").text()
+        if address3_str:
+            node = xml_node('address', address3_str, cntaddr)
+
+        for label in ['city', 'state',
                       'postal', 'country']:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                if label[-1].isdigit():
-                    label = label[:-1]
                 node = xml_node(label, widget_str, cntaddr)
             except:
                 pass
