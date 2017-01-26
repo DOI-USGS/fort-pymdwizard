@@ -42,7 +42,7 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
+import sys, io
 from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -304,8 +304,12 @@ class WizardWidget(QWidget):
     def populate_tooltips(self):
         import json
         annotation_lookup_fname = r"N:\Metadata\MetadataWizard\pymdwizard\pymdwizard\resources\FGDC_schemas\bdp_lookup"
-        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-            annotation_lookup= json.loads(data_file.read())
+        try:
+            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+                annotation_lookup= json.loads(data_file.read())
+        except:
+            with open(annotation_lookup_fname) as data_file:
+                annotation_lookup = json.loads(data_file.read())
 
 
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
