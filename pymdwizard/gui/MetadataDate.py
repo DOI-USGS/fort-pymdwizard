@@ -74,6 +74,7 @@ class MetadataDate(WizardWidget): #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
         self.ui.pushButton.clicked.connect(self.pushButton_clicked)
+        self.ui.pushButton_2.clicked.connect(self.pushButton2_clicked)
 
     def pushButton_clicked(self):
         temp_var0 = self.findChild(QDateEdit, "addDate").date()
@@ -81,6 +82,12 @@ class MetadataDate(WizardWidget): #
         #print var_name0
         listV = self.findChild(QListWidget, "listWidget")
         listV.addItem(str(var_name0))
+
+    def pushButton2_clicked(self):
+        temp_var00 = self.findChild(QListWidget, "listWidget")
+        temp_var01 = temp_var00.currentRow()
+        print temp_var01
+        temp_var00.takeItem(temp_var01)
 
 
 
