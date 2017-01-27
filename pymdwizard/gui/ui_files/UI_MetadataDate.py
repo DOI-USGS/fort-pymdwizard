@@ -13,6 +13,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(603, 201)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.fgdc_timeperd = QtWidgets.QGroupBox(Form)
         self.fgdc_timeperd.setObjectName("fgdc_timeperd")
