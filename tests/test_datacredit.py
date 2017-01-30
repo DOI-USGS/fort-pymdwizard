@@ -15,7 +15,7 @@ def test_datacredit__from_xml(qtbot):
     widget = DataCredit.DataCredit()
     qtbot.addWidget(widget)
 
-    test_record_fname = "tests/data/GenericFGDCTemplate_FGDCtemp.xml"
+    test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/GenericFGDCTemplate_FGDCtemp.xml"
     test_record = etree.parse(test_record_fname)
     data_credit = test_record.xpath("idinfo/datacred")[0]
 
@@ -31,4 +31,10 @@ def test_datacredit__to_xml(qtbot):
     #use_const = test_record.xpath("idinfo/useconst")[0]
 
     widget._to_xml#(use_const)
-    assert widget.findChild(QPlainTextEdit, "fgdc_datacred").toPlainText() == ""
+    widget.findChild(QPlainTextEdit, "fgdc_datacred").setPlainText("This is who should be credited.")
+
+    dc = widget._to_xml()
+
+    assert etree.tostring(dc, pretty_print=True).decode() \
+    == """<datacred>This is who should be credited.</datacred>
+"""
