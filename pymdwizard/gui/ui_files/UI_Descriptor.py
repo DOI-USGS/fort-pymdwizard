@@ -11,8 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(913, 699)
+        Form.resize(599, 501)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.fgdc_descript = QtWidgets.QGroupBox(Form)
         self.fgdc_descript.setObjectName("fgdc_descript")
