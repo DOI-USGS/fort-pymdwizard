@@ -17,6 +17,7 @@ class Ui_Form(object):
         font.setPointSize(9)
         Form.setFont(font)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setObjectName("groupBox")
