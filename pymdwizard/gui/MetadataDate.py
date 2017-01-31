@@ -149,6 +149,7 @@ class MetadataDate(WizardWidget): #
             var_name = str(var_name)
             sngdate.text = var_name.replace('-', '')
             timeinfo.append(sngdate)
+            timeperd.append(timeinfo)
         if tabIndex == 1:
             #print ("1")
             rngdates = etree.Element("rngdates")
@@ -168,6 +169,7 @@ class MetadataDate(WizardWidget): #
             rngdates.append(enddate)
             timeinfo.append(rngdates)
             #print var_name3
+            timeperd.append(timeinfo)
         if tabIndex == 2:
             #print ("2")
             mdattim = etree.Element("mdattim")
@@ -187,10 +189,11 @@ class MetadataDate(WizardWidget): #
             #labels = [i.text() for i in items]
            # print labels
             #abstract.text = str(labels)
-            timeinfo.append(mdattim)
+                timeinfo.append(mdattim)
+                timeperd.append(timeinfo)
 
 
-        timeperd.append(timeinfo)
+        #timeperd.append(timeinfo)
 
         current = etree.Element('current')
         current.text = self.findChild(QComboBox, 'fgdc_current').currentText()
@@ -217,7 +220,7 @@ class MetadataDate(WizardWidget): #
                 #print metadata_date.xpath("string()")
                 #cur = metadata_date.findall("current")
 
-                if metadata_date.findall("current"):
+                if metadata_date.find("current"):
                     current_text = metadata_date.findtext("current")
                     #print current_text
                     current_box = self.findChild(QComboBox, 'fgdc_current')
