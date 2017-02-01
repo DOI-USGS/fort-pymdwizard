@@ -17,6 +17,8 @@ class Ui_Form(object):
         font.setPointSize(9)
         Form.setFont(font)
         self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setContentsMargins(3, 3, 3, 3)
+        self.gridLayout.setHorizontalSpacing(3)
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setObjectName("groupBox")

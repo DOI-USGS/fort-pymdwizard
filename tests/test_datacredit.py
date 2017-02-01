@@ -15,7 +15,7 @@ def test_datacredit__from_xml(qtbot):
     widget = DataCredit.DataCredit()
     qtbot.addWidget(widget)
 
-    test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/GenericFGDCTemplate_FGDCtemp.xml"
+    test_record_fname = "tests/data/GenericFGDCTemplate_FGDCtemp.xml"
     test_record = etree.parse(test_record_fname)
     data_credit = test_record.xpath("idinfo/datacred")[0]
 

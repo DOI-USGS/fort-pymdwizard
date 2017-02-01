@@ -15,7 +15,7 @@ def test_accessconstraints__from_xml(qtbot):
     widget = AccessConstraints.AccessConstraints()
     qtbot.addWidget(widget)
 
-    test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
+    test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
     test_record = etree.parse(test_record_fname)
     acc_const = test_record.xpath("idinfo/accconst")[0]
 
