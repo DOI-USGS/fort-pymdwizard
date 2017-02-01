@@ -28,6 +28,7 @@ def test_accessconstraints__to_xml(qtbot):
     qtbot.addWidget(widget)
 
     assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == "None.  Please see 'Distribution Info' for details."
-    # ac = widget._to_xml
-    # assert etree.tostring(ac, pretty_print=True).decode() \
-    # == """<accconst>None Please see This for details.</accconst>"""
+    ac = widget._to_xml()
+    assert str(etree.tostring(ac, pretty_print=True).decode()) \
+    == """<accconst>None.  Please see 'Distribution Info' for details.</accconst>
+"""
