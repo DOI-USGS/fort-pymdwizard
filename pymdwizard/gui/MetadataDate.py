@@ -95,7 +95,6 @@ class MetadataDate(WizardWidget): #
     def pushButton2_clicked(self):
         temp_var00 = self.findChild(QListWidget, "listWidget")
         temp_var01 = temp_var00.currentRow()
-        print temp_var01
         temp_var00.takeItem(temp_var01)
 
     def switch_primary(self):
