@@ -314,6 +314,7 @@ class WizardWidget(QWidget):
                 annotation_lookup = json.loads(data_file.read())
 
 
+
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
         for widget in widgets:
             if widget.objectName().startswith('fgdc_'):

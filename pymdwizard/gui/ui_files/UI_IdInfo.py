@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'IdInfo.ui'
+# Form implementation generated from reading ui file 'idinfo.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -13,7 +13,7 @@ class Ui_fgdc_idinfo(object):
         fgdc_idinfo.setObjectName("fgdc_idinfo")
         fgdc_idinfo.resize(710, 845)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_idinfo)
-        self.verticalLayout_2.setContentsMargins(0, 3, 3, 3)
+        self.verticalLayout_2.setContentsMargins(0, 3, 0, 3)
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.frame = QtWidgets.QFrame(fgdc_idinfo)
@@ -125,18 +125,30 @@ class Ui_fgdc_idinfo(object):
         self.idinfo_scroll_area.setWidgetResizable(True)
         self.idinfo_scroll_area.setObjectName("idinfo_scroll_area")
         self.idinfo_main_widget = QtWidgets.QWidget()
-        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 703, 804))
+        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 706, 804))
         self.idinfo_main_widget.setObjectName("idinfo_main_widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.idinfo_main_widget)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setSpacing(3)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.frame_citation = QtWidgets.QFrame(self.idinfo_main_widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_citation.sizePolicy().hasHeightForWidth())
+        self.frame_citation.setSizePolicy(sizePolicy)
         self.frame_citation.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_citation.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_citation.setObjectName("frame_citation")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame_citation)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.verticalLayout_3.addWidget(self.frame_citation)
         self.two_column = QtWidgets.QFrame(self.idinfo_main_widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.two_column.sizePolicy().hasHeightForWidth())
+        self.two_column.setSizePolicy(sizePolicy)
         self.two_column.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.two_column.setFrameShadow(QtWidgets.QFrame.Raised)
         self.two_column.setObjectName("two_column")
