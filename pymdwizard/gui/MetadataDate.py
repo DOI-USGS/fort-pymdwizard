@@ -241,7 +241,6 @@ class MetadataDate(WizardWidget): #
 
                 if metadata_date.findall("current"):
                     current_text = metadata_date.findtext("current")
-                    print current_text
                     current_box = self.findChild(QComboBox, 'fgdc_current')
                     current_box.setCurrentText(current_text)
                 else:
