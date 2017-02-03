@@ -44,7 +44,7 @@ from lxml import etree
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QRadioButton
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
@@ -73,7 +73,40 @@ class Citation(WizardWidget): #
         self.ui = UI_Citation.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
+        self.ui.lwork_ext.hide()
+        self.ui.series_ext.hide()
+        self.ui.pub_ext.hide()
 
+    def connect_events(self):
+        """
+        Connect the appropriate GUI components with the corresponding functions
+
+        Returns
+        -------
+        None
+        """
+        self.ui.radioButton.toggled.connect(self.include_lworkext_change)
+        self.ui.radioButton_3.toggled.connect(self.include_seriesext_change)
+        self.ui.radioButton_5.toggled.connect(self.include_pubext_change)
+
+
+    def include_seriesext_change(self, b):
+        if b:
+            self.ui.series_ext.show()
+        else:
+            self.ui.series_ext.hide()
+
+    def include_pubext_change(self, b):
+        if b:
+            self.ui.pub_ext.show()
+        else:
+            self.ui.pub_ext.hide()
+
+    def include_lworkext_change(self, b):
+        if b:
+            self.ui.lwork_ext.show()
+        else:
+            self.ui.lwork_ext.hide()
 
 
     def dragEnterEvent(self, e):

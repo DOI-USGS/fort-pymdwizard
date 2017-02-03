@@ -43,8 +43,8 @@ from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QTabWidget, QDateEdit, QListWidget
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate
 
@@ -75,19 +75,43 @@ class MetadataDate(WizardWidget): #
         self.setup_dragdrop(self)
         self.ui.pushButton.clicked.connect(self.pushButton_clicked)
         self.ui.pushButton_2.clicked.connect(self.pushButton2_clicked)
+        self.ui.radioButton.toggled.connect(self.switch_primary)
+        self.ui.radioButton_2.toggled.connect(self.switch_primary)
+        self.ui.radioButton_3.toggled.connect(self.switch_primary)
+        self.ui.dateEdit0.dateChanged.connect(self.onDateChanged)
+
+    def onDateChanged(self, newDate):
+        newDate = newDate.toString('yyyyMMdd')
+        print("The new date is " + newDate)
+        self.findChild(QLineEdit, "dateEdit").setText(newDate)
 
     def pushButton_clicked(self):
-        temp_var0 = self.findChild(QDateEdit, "addDate").date()
-        var_name0 = temp_var0.toPyDate()
+        temp_var0 = self.findChild(QLineEdit, "dateEdit_4").text()
+        #var_name0 = temp_var0.toPyDate()
         #print var_name0
         listV = self.findChild(QListWidget, "listWidget")
-        listV.addItem(str(var_name0))
+        listV.addItem(temp_var0)
 
     def pushButton2_clicked(self):
         temp_var00 = self.findChild(QListWidget, "listWidget")
         temp_var01 = temp_var00.currentRow()
         print temp_var01
         temp_var00.takeItem(temp_var01)
+
+    def switch_primary(self):
+        """
+        Switches form to reflect either organization or person primary
+
+        Returns
+        -------
+        None
+        """
+        if self.ui.radioButton.isChecked():
+            self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
+        elif self.ui.radioButton_2.isChecked():
+            self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
+        elif self.ui.radioButton_3.isChecked():
+            self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
 
 
 
@@ -135,8 +159,8 @@ class MetadataDate(WizardWidget): #
 
         timeinfo = etree.Element("timeinfo")
 
-        tabIndex = self.findChild(QTabWidget, "fgdc_timeinfo").currentIndex()
-        #print tabIndex
+        tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo").currentIndex()
+        print tabIndex
 
         if tabIndex == 0:
             #print ("0")
@@ -144,10 +168,10 @@ class MetadataDate(WizardWidget): #
             # abstract = etree.Element("abstract")
             # abstract.text = self.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText()
             # descript.append(abstract)
-            temp_var = self.findChild(QDateEdit, "dateEdit").date()
-            var_name = temp_var.toPyDate()
-            var_name = str(var_name)
-            sngdate.text = var_name.replace('-', '')
+            temp_var = self.findChild(QLineEdit, "dateEdit").text()
+            # var_name = temp_var.toPyDate()
+            # var_name = str(var_name)
+            sngdate.text = temp_var #var_name.replace('-', '')
             timeinfo.append(sngdate)
             timeperd.append(timeinfo)
         if tabIndex == 1:
@@ -157,14 +181,14 @@ class MetadataDate(WizardWidget): #
             enddate = etree.Element("enddate")
             # abstract.text = self.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText()
             # descript.append(abstract)
-            temp_var2 = self.findChild(QDateEdit, "dateEdit_2").date()
-            var_name2 = temp_var2.toPyDate()
-            var_name2 = str(var_name2)
-            begdate.text = var_name2.replace('-', '')
-            temp_var3 = self.findChild(QDateEdit, "dateEdit_3").date()
-            var_name3 = temp_var3.toPyDate()
-            var_name3 = str(var_name3)
-            enddate.text = var_name3.replace('-', '')
+            temp_var2 = self.findChild(QLineEdit, "dateEdit_2").text()
+            # var_name2 = temp_var2.toPyDate()
+            # var_name2 = str(var_name2)
+            begdate.text = temp_var2 #var_name2.replace('-', '')
+            temp_var3 = self.findChild(QLineEdit, "dateEdit_3").text()
+            # var_name3 = temp_var3.toPyDate()
+            # var_name3 = str(var_name3)
+            enddate.text = temp_var3 #.replace('-', '')
             rngdates.append(begdate)
             rngdates.append(enddate)
             timeinfo.append(rngdates)
@@ -182,9 +206,9 @@ class MetadataDate(WizardWidget): #
                 sngdate = etree.Element("sngdate")
                 rowEach = (self.findChild(QListWidget, "listWidget").item(index).text())
                 strEach = str(rowEach)
-                strSimple = strEach.replace("-", '')
+                #strSimple = strEach.replace("-", '')
 
-                sngdate.text = strSimple
+                sngdate.text = strEach
                 mdattim.append(sngdate)
             #labels = [i.text() for i in items]
            # print labels
@@ -220,28 +244,31 @@ class MetadataDate(WizardWidget): #
                 #print metadata_date.xpath("string()")
                 #cur = metadata_date.findall("current")
 
-                if metadata_date.find("current"):
+                if metadata_date.findall("current"):
                     current_text = metadata_date.findtext("current")
-                    #print current_text
+                    print current_text
                     current_box = self.findChild(QComboBox, 'fgdc_current')
                     current_box.setCurrentText(current_text)
                 else:
                     pass
 
-                tabIndex = self.findChild(QTabWidget, "fgdc_timeinfo")
+                tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo")
+                print tabIndex.currentIndex()
                 if metadata_date.find("timeinfo/rngdates"):
+                    self.ui.radioButton_2.setChecked(True)
                     tabIndex.setCurrentIndex(1)
                     begdate = metadata_date.findtext("timeinfo/rngdates/begdate")
                     enddate = metadata_date.findtext("timeinfo/rngdates/enddate")
-                    begdateQ = QDate.fromString(begdate, 'yyyyMMdd')
-                    enddateQ = QDate.fromString(enddate, 'yyyyMMdd')
+                    #begdateQ = QDate.fromString(begdate, 'yyyyMMdd')
+                    #enddateQ = QDate.fromString(enddate, 'yyyyMMdd')
                     #[b.text for b in metadata_date.iterfind(".//rngdate")]
-                    date_edit2 = self.findChild(QDateEdit, "dateEdit_2")
-                    date_edit2.setDate(begdateQ)
-                    date_edit3 = self.findChild(QDateEdit, "dateEdit_3")
-                    date_edit3.setDate(enddateQ)
+                    date_edit2 = self.findChild(QLineEdit, "dateEdit_2")
+                    date_edit2.setText(begdate)
+                    date_edit3 = self.findChild(QLineEdit, "dateEdit_3")
+                    date_edit3.setText(enddate)
 
                 elif metadata_date.find("timeinfo/mdattim"):
+                    self.ui.radioButton_3.setChecked(True)
                     tabIndex.setCurrentIndex(2)
                     listW = [b.text for b in metadata_date.iterfind(".//sngdate")]
                     qListW = self.findChild(QListWidget, "listWidget")
@@ -250,15 +277,16 @@ class MetadataDate(WizardWidget): #
 
 
                 elif metadata_date.find("timeinfo"):
+                    self.ui.radioButton.setChecked(True)
                     tabIndex.setCurrentIndex(0)
 
                     sngdate = metadata_date.findtext("timeinfo/sngdate")
                     #print sngdate
-                    sngdateQ = QDate.fromString(sngdate,'yyyyMMdd')
+                    #sngdateQ = QDate.fromString(sngdate,'yyyyMMdd')
                     #print sngdateQ
                     #print sngdateQ.year(), sngdateQ.month(), sngdateQ.day()
-                    date_edit = self.findChild(QDateEdit, "dateEdit")
-                    date_edit.setDate(sngdateQ)
+                    date_edit = self.findChild(QLineEdit, "dateEdit")
+                    date_edit.setText(sngdate)
                 else:
                     pass
 

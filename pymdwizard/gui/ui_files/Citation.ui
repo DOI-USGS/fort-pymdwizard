@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1017</width>
-    <height>568</height>
+    <width>983</width>
+    <height>532</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -65,7 +65,7 @@
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>731</width>
+      <width>861</width>
       <height>16</height>
      </rect>
     </property>
@@ -250,6 +250,9 @@
      <property name="text">
       <string>No</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
@@ -289,6 +292,9 @@
      <property name="text">
       <string>No</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QLabel" name="label_17">
@@ -317,317 +323,12 @@
      <string>More details are always helpful for finding and properly referencing data.</string>
     </property>
    </widget>
-   <zorder>fgdc_title</zorder>
-   <zorder>label</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
-   <zorder>label_5</zorder>
-   <zorder>fgdc_origin</zorder>
-   <zorder>fgdc_pubdate</zorder>
-   <zorder>label_9</zorder>
-   <zorder>radioButton</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>label_10</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_15</zorder>
-   <zorder>label_16</zorder>
-   <zorder>groupBox_2</zorder>
-   <zorder>groupBox_3</zorder>
-   <zorder>label_17</zorder>
-   <zorder>label_18</zorder>
-  </widget>
-  <widget class="QGroupBox" name="lworkcit">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>360</y>
-     <width>1001</width>
-     <height>191</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Larger Work</string>
-   </property>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Title of Larger Work</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>10</y>
-      <width>221</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Author / Originator of Larger Work</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_13">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>100</y>
-      <width>191</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Publication Date (YYYYMMDD)</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>191</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Larger Work Format</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>461</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>130</y>
-      <width>141</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="editable">
-     <bool>true</bool>
-    </property>
-    <item>
-     <property name="text">
-      <string>Publication (Book)</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Publication (Journal)</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Publication (Other)</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Ongoing Project</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Website</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>GIS Data Project/Collection</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>GIS Data Service</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Other</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_7">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>130</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_23">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>100</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Edition</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_8">
-    <property name="geometry">
-     <rect>
-      <x>374</x>
-      <y>130</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listWidget">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>30</y>
-      <width>161</width>
-      <height>61</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_24">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>30</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Publisher</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_9">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>50</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_25">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>70</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Publication Place</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_10">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>90</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_26">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>120</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Online Link</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_11">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>140</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_27">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>140</y>
-      <width>211</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Issue Name / Number within Series</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_12">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>160</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_28">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>100</y>
-      <width>181</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Series of Journal Name</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_13">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>120</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>340</y>
+     <y>300</y>
      <width>451</width>
      <height>21</height>
     </rect>
@@ -640,7 +341,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>340</y>
+     <y>300</y>
      <width>361</width>
      <height>16</height>
     </rect>
@@ -653,7 +354,7 @@
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>340</y>
+     <y>300</y>
      <width>101</width>
      <height>21</height>
     </rect>
@@ -686,124 +387,461 @@
     <property name="text">
      <string>No</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_4">
+  <widget class="QFrame" name="series_ext">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>210</y>
+     <y>200</y>
      <width>451</width>
-     <height>101</height>
+     <height>91</height>
     </rect>
    </property>
-   <property name="title">
-    <string/>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <widget class="QLabel" name="label_19">
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>151</width>
-      <height>16</height>
+      <x>0</x>
+      <y>10</y>
+      <width>451</width>
+      <height>81</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Series Name</string>
+    <property name="title">
+     <string/>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_20">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>20</y>
-      <width>231</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Issue Name / Number within Series</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>161</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>50</y>
-      <width>201</width>
-      <height>20</height>
-     </rect>
-    </property>
+    <widget class="QLabel" name="label_19">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Series Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_20">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>20</y>
+       <width>231</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Issue Name / Number within Series</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>161</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_3">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>50</y>
+       <width>201</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_5">
+  <widget class="QFrame" name="pub_ext">
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>210</y>
+     <y>200</y>
      <width>551</width>
-     <height>101</height>
+     <height>91</height>
     </rect>
    </property>
-   <property name="title">
-    <string/>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <widget class="QLabel" name="label_21">
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>151</width>
-      <height>16</height>
+      <x>0</x>
+      <y>10</y>
+      <width>551</width>
+      <height>81</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Publication Place</string>
+    <property name="title">
+     <string/>
     </property>
+    <widget class="QLabel" name="label_21">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Publication Place</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>161</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>20</y>
+       <width>231</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Publisher</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_5">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>50</y>
+       <width>201</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+  </widget>
+  <widget class="QFrame" name="lwork_ext">
+   <property name="geometry">
+    <rect>
+     <x>-10</x>
+     <y>320</y>
+     <width>1011</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QGroupBox" name="lworkcit">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
-      <width>161</width>
-      <height>20</height>
+      <x>20</x>
+      <y>10</y>
+      <width>1001</width>
+      <height>191</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_22">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>20</y>
-      <width>231</width>
-      <height>16</height>
-     </rect>
+    <property name="title">
+     <string>Larger Work</string>
     </property>
-    <property name="text">
-     <string>Publisher</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>50</y>
-      <width>201</width>
-      <height>20</height>
-     </rect>
-    </property>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>171</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Title of Larger Work</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>10</y>
+       <width>221</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Author / Originator of Larger Work</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>100</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Publication Date (YYYYMMDD)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Larger Work Format</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_6">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>461</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>141</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>Publication (Book)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Publication (Journal)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Publication (Other)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ongoing Project</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Website</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>GIS Data Project/Collection</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>GIS Data Service</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Other</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_7">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>130</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_23">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>100</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edition</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_8">
+     <property name="geometry">
+      <rect>
+       <x>374</x>
+       <y>130</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>30</y>
+       <width>161</width>
+       <height>61</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_24">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>30</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Publisher</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_9">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>50</y>
+       <width>231</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_25">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>70</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Publication Place</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_10">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>90</y>
+       <width>231</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>120</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Online Link</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_11">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>140</y>
+       <width>231</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_27">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>140</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Issue Name / Number within Series</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_12">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>160</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_28">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>100</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Series of Journal Name</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_13">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>120</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>
