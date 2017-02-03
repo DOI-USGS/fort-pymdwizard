@@ -248,7 +248,7 @@ class MetadataDate(WizardWidget): #
                     pass
 
                 tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo")
-                print tabIndex.currentIndex()
+                print (tabIndex.currentIndex())
                 if metadata_date.find("timeinfo/rngdates"):
                     self.ui.radioButton_2.setChecked(True)
                     tabIndex.setCurrentIndex(1)
