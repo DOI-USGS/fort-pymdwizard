@@ -159,7 +159,7 @@ class MetadataDate(WizardWidget): #
         timeinfo = etree.Element("timeinfo")
 
         tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo").currentIndex()
-        print tabIndex
+        #print tabIndex
 
         if tabIndex == 0:
             #print ("0")
