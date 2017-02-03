@@ -7,7 +7,7 @@ import sys
 from pytestqt import qtbot
 from lxml import etree
 
-from PyQt5.QtWidgets import QDateEdit, QComboBox, QTabWidget
+from PyQt5.QtWidgets import QLineEdit, QComboBox, QTabWidget, QStackedWidget
 from PyQt5.QtCore import QDate
 
 from pymdwizard.gui import MetadataDate
@@ -29,11 +29,11 @@ def test_metadata_date__to_xml(qtbot):
     qtbot.addWidget(widget)
 
     widget._to_xml
-    widget.findChild(QTabWidget, "fgdc_timeinfo").setCurrentIndex(1)
-    begdateQ = QDate.fromString("20131219", 'yyyyMMdd')
-    enddateQ = QDate.fromString("20140904", 'yyyyMMdd')
-    widget.findChild(QDateEdit, "dateEdit_2").setDate(begdateQ)
-    widget.findChild(QDateEdit, "dateEdit_3").setDate(enddateQ)
+    widget.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
+    #begdateQ = QDate.fromString("20131219", 'yyyyMMdd')
+    #enddateQ = QDate.fromString("20140904", 'yyyyMMdd')
+    widget.findChild(QLineEdit, "dateEdit_2").setText("20131219")
+    widget.findChild(QLineEdit, "dateEdit_3").setText("20140904")
     #widget.findChild(QComboBox, 'fgdc_current').setCurrentText("up to date")
 
     mdDate = widget._to_xml()

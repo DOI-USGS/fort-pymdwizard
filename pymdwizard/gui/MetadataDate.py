@@ -239,10 +239,6 @@ class MetadataDate(WizardWidget): #
         """
         try:
             if metadata_date.tag == 'timeperd':
-                #print metadata_date.tag
-                #print etree.tostring(metadata_date, pretty_print=True)
-                #print metadata_date.xpath("string()")
-                #cur = metadata_date.findall("current")
 
                 if metadata_date.findall("current"):
                     current_text = metadata_date.findtext("current")
@@ -259,9 +255,6 @@ class MetadataDate(WizardWidget): #
                     tabIndex.setCurrentIndex(1)
                     begdate = metadata_date.findtext("timeinfo/rngdates/begdate")
                     enddate = metadata_date.findtext("timeinfo/rngdates/enddate")
-                    #begdateQ = QDate.fromString(begdate, 'yyyyMMdd')
-                    #enddateQ = QDate.fromString(enddate, 'yyyyMMdd')
-                    #[b.text for b in metadata_date.iterfind(".//rngdate")]
                     date_edit2 = self.findChild(QLineEdit, "dateEdit_2")
                     date_edit2.setText(begdate)
                     date_edit3 = self.findChild(QLineEdit, "dateEdit_3")
@@ -281,10 +274,6 @@ class MetadataDate(WizardWidget): #
                     tabIndex.setCurrentIndex(0)
 
                     sngdate = metadata_date.findtext("timeinfo/sngdate")
-                    #print sngdate
-                    #sngdateQ = QDate.fromString(sngdate,'yyyyMMdd')
-                    #print sngdateQ
-                    #print sngdateQ.year(), sngdateQ.month(), sngdateQ.day()
                     date_edit = self.findChild(QLineEdit, "dateEdit")
                     date_edit.setText(sngdate)
                 else:
