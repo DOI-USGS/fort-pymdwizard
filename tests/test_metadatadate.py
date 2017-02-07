@@ -16,7 +16,7 @@ from pymdwizard.gui import MetadataDate
 #     widget = MetadataDate.MetadataDate()
 #     qtbot.addWidget(widget)
 #
-#     test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
+#     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
 #     test_record = etree.parse(test_record_fname)
 #     metadatadate = test_record.xpath("idinfo/timeperd")[0]
 #
