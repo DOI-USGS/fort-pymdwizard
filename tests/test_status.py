@@ -27,9 +27,6 @@ def test_status__to_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
-    #test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
-    #test_record = etree.parse(test_record_fname)
-    #status = test_record.xpath("status")[0]
 
     widget._to_xml#(status)
     #assert type(progress) == 'lxml.etree._Element'
