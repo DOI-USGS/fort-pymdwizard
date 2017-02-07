@@ -261,6 +261,9 @@ QToolButton:checked:Hover{
      </item>
      <item>
       <widget class="QStackedWidget" name="fgdc_metadata">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
        <widget class="QWidget" name="page_idinfo">
         <widget class="QLabel" name="label">
          <property name="geometry">
@@ -301,26 +304,7 @@ QToolButton:checked:Hover{
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="page_spatial">
-        <widget class="QLabel" name="label_3">
-         <property name="geometry">
-          <rect>
-           <x>290</x>
-           <y>280</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Spatial</string>
-         </property>
-        </widget>
-       </widget>
+       <widget class="QWidget" name="page_spatial"/>
        <widget class="QWidget" name="page_eainfo">
         <widget class="QLabel" name="label_4">
          <property name="geometry">

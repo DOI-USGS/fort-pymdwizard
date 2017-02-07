@@ -87,7 +87,8 @@ class IdInfo(WizardWidget):
         self.use = UseConstraints(parent=self)
         self.status = Status(parent=self)
 
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        self.ui.frame_citation.layout().addWidget(self.ptcontac, 0)
+        # self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
         self.ui.two_column_right.layout().addWidget(self.keywords, 1)
         self.ui.two_column_left.layout().addWidget(self.taxonomy)
         self.ui.two_column_left.layout().addWidget(self.access)
@@ -112,7 +113,6 @@ class IdInfo(WizardWidget):
         -------
 
         """
-        print("idinfo drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
