@@ -119,6 +119,22 @@ def element_to_list(results):
     return [node_to_dict(item, add_fgdc=False) for item in results]
 
 
+def search_xpath(node, xpath):
+    """
+
+    Parameters
+    ----------
+    node : lxml node
+
+    xpath : xpath.search
+
+    Returns
+    -------
+    list of lxml nodes
+    """
+    return node.xpath(xpath)
+
+
 def element_to_df(results):
     """
     Returns the results (etree) formatted into a pandas dataframe.
@@ -155,7 +171,39 @@ def node_to_string(node):
     return etree.tostring(node, pretty_print=True).decode()
 
 
-def xml_node(tag, text='', parent_node=None):
+def fname_to_node(fname):
+    """
+
+    Parameters
+    ----------
+    fname : str
+            full file and path to the the file to load
+    Returns
+    -------
+    lxml node
+    """
+    return etree.parse(fname)
+
+
+def string_to_node(str_node):
+    """
+    covert an string representation of a node into an lxml node
+
+    Parameters
+    ----------
+    str_node : str
+               string representation of an XML element
+
+    Returns
+    -------
+    lxml node
+    """
+    parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+    element = etree.fromstring(str_node, parser=parser)
+    return element
+
+
+def xml_node(tag, text='', parent_node=None, index=-1):
     """
     convenience function for creating an xml node
 
@@ -168,18 +216,24 @@ def xml_node(tag, text='', parent_node=None):
     parent_node : lxml element, optional
           the node created by this function will be
           appended to this nodes children
+    index : int, optional
+          The positional index to insert the node at. (zero based)
+          If none specified will append node to end of existing children.
 
     Returns
     -------
-        lxml node
+        the lxml node created by the function.
     """
 
     node = etree.Element(tag)
     if text:
-        node.text = text
+        node.text = str(text)
 
     if parent_node is not None:
-        parent_node.append(node)
+        if index == -1:
+            parent_node.append(node)
+        else:
+            parent_node.insert(index, node)
 
     return node
 
