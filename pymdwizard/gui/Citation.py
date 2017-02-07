@@ -109,6 +109,7 @@ class Citation(WizardWidget): #
             #self.ui.main_layout.addWidget(self.cit)
             self.lworkcit = Citation()
             #layout = self.findChild(QFrame, "frame").layout()
+            self.lworkcit.findChild(QGroupBox, "fgdc_lworkcit").deleteLater()
 
             hBoxLayout = QHBoxLayout()
             hBoxLayout.addWidget(self.lworkcit)
