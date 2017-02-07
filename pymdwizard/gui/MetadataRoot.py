@@ -64,12 +64,6 @@ class MetadataRoot(WizardWidget):
 
     drag_label = "Metadata <metadata>"
 
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-                        'cntorg': 'cntinfo/cntperp/cntorg',
-                        'cntpos': 'cntinfo/cntpos',}
-
     ui_class = UI_MetadataRoot.Ui_metadata_root
 
     def build_ui(self):

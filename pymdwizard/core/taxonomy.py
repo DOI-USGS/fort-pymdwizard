@@ -315,8 +315,8 @@ class Taxon(object):
 
             self._indent_lookup = dict(zip(self._rank_names.rankName, self._rank_names.rankId))
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            self._rank_names = []
-            self._indent_lookup = []
+            self._rank_names = {}
+            self._indent_lookup = {}
 
     def __eq__(self, other):
         return self.taxon_name == other.taxon_name and \
