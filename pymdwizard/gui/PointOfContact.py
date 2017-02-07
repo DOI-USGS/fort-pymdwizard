@@ -64,23 +64,6 @@ class ContactInfoPointOfContact(WizardWidget):
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
 
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-                    'cntorg': 'cntinfo/cntperp/cntorg',
-                    'cntpos': 'cntinfo/cntpos',
-                    'address': 'cntinfo/cntaddr/address',
-                    'address2': 'cntinfo/cntaddr/address[2]',
-                    'address3': 'cntinfo/cntaddr/address[3]',
-                    'city': 'cntinfo/cntaddr/city',
-                    'state': 'cntinfo/cntaddr/state',
-                    'postal': 'cntinfo/cntaddr/postal',
-                    'state': 'cntinfo/cntaddr/state',
-                    'country': 'cntinfo/cntaddr/country',
-                    'addrtype': 'cntinfo/cntaddr/addrtype',
-                    'cntvoice': 'cntinfo/cntvoice',
-                    'cntfax': 'cntinfo/cntfax',
-                    'cntemail': 'cntinfo/cntemail'}
 
     def build_ui(self):
         """

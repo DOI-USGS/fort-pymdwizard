@@ -62,24 +62,6 @@ class ContactInfo(WizardWidget):
     xpath_root = "cntinfo"
     drag_label = "Contact Information <cntinfo>"
 
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    xpath_lookup = {'cntper': 'cntperp/cntper',
-                    'cntorg': 'cntperp/cntorg',
-                    'cntpos': 'cntpos',
-                    'address': 'cntaddr/address',
-                    'address2': 'cntaddr/address[2]',
-                    'address3': 'cntaddr/address[3]',
-                    'city': 'cntaddr/city',
-                    'state': 'cntaddr/state',
-                    'postal': 'cntaddr/postal',
-                    'state': 'cntaddr/state',
-                    'country': 'cntaddr/country',
-                    'addrtype': 'cntaddr/addrtype',
-                    'cntvoice': 'cntvoice',
-                    'cntfax': 'cntfax',
-                    'cntemail': 'cntemail'}
-
     ui_class = UI_ContactInfo.Ui_USGSContactInfoWidget
 
     def connect_events(self):
@@ -216,6 +198,28 @@ class ContactInfo(WizardWidget):
                 node = xml_node(label, widget_str, cntinfo)
             except:
                 pass
+
+        str_repr = """<cntinfo>
+          <cntperp>
+            <cntper>Jay Diffendorfer</cntper>
+          </cntperp>
+          <cntaddr>
+            <addrtype>Mailing</addrtype>
+            <address/>
+            <city/>
+            <state/>
+            <postal>80225</postal>
+            <country/>
+          </cntaddr>
+          <cntvoice>303-236-5369</cntvoice>
+          <cntfax/>
+          <cntemail>jediffendorfer@usgs.gov</cntemail>
+        </cntinfo>
+        """
+
+        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        element = etree.fromstring(str_repr, parser=parser)
+
 
         return cntinfo
 

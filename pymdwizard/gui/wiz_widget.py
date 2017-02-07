@@ -53,6 +53,7 @@ from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 from pymdwizard.core import utils
+from pymdwizard.core import xml_utils
 
 class WizardWidget(QWidget):
     """
@@ -209,8 +210,7 @@ class WizardWidget(QWidget):
             e.setDropAction(Qt.CopyAction)
             e.accept()
             mime_data = e.mimeData()
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
+            element = xml_utils.string_to_node(mime_data.text())
 
             self._from_xml(element)
         except:
