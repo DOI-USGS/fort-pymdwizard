@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>377</height>
+    <width>454</width>
+    <height>203</height>
    </rect>
   </property>
   <property name="font">
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
     <number>3</number>
    </property>
@@ -32,24 +32,12 @@
    <property name="bottomMargin">
     <number>3</number>
    </property>
-   <property name="horizontalSpacing">
-    <number>3</number>
-   </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Data Use Constraints</string>
+      <string>Data Set Credit(s)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>3</number>
-      </property>
-      <property name="topMargin">
-       <number>3</number>
-      </property>
-      <property name="rightMargin">
-       <number>3</number>
-      </property>
       <item>
        <widget class="QLabel" name="label">
         <property name="font">
@@ -58,7 +46,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Describe any restrictions or legal prerequisites for USING the data set.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set.</string>
+         <string>Are there other organizations / individuals who should get credit for support, funding, data collection, or analysis?</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -66,12 +54,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_useconst">
+       <widget class="QPlainTextEdit" name="fgdc_datacred">
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
         <property name="plainText">
-         <string>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</string>
+         <string/>
         </property>
         <property name="overwriteMode">
          <bool>true</bool>
