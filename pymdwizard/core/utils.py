@@ -56,7 +56,7 @@ from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 
 from pymdwizard.core import xml_utils
 
-USGS_AD_URL = "http://geo-nsdi.er.usgs.gov/contact-xml.php?email={}"
+USGS_AD_URL = "https://geo-nsdi.er.usgs.gov/contact-xml.php?email={}"
 
 
 def get_usgs_contact_info(ad_username, as_dictionary=True):
