@@ -21,6 +21,7 @@ parts/
 sdist/
 var/
 venv/
+
 *.egg-info/
 .installed.cfg
 *.egg
@@ -66,5 +67,8 @@ target/
 # User-specific stuff:
 .idea/*
 *.iml
+
+pymdwizard/Scratch
+tests/data/projections
 
 Thumbs.db
