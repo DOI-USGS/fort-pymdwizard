@@ -499,6 +499,88 @@ def albers_conic_equal_area(params):
         xml_node(item, params[item], albers)
     return albers
 
+
+def azimuthal_equidistant(params):
+    """
+    returns lxml nodes that contain project parameters for fgdc azimuthal equidistant projection
+
+    longcm = Longitude of Central Meridian
+    latprjo = Latitude of Projection Origin
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+    Returns
+    -------
+    lxml nodes for fgdc azimuthal equidistant projection
+    """
+
+    # This section should probably be handled in a different function?
+    # planar = xml_node('planar')
+    # mapproj = xml_node('mapproj', parent_node=planar)
+    # mapprojn = xml_node('mapprojn', params['mapprojn'], mapproj)
+
+    azimequi = xml_node('azimequi')
+    longcm = xml_node('longcm', params['longcm'], azimequi)
+    latprjo = xml_node('latprjo', params['latprjo'], azimequi)
+    feast = xml_node('feast', params['feast'], azimequi)
+    fnorth = xml_node('fnorth', params['fnorth'], azimequi)
+    return azimequi
+
+
+def equidistant_conic(params):
+    """
+    returns lxml nodes that contain project parameters for fgdc equidistant conic projection
+
+    stdparll = First standard parallel
+    stdparl_2 = Second standard parallel (if exists)
+    longcm = Longitude of Central Meridian
+    latprjo = Latitude of Projection Origin
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc equidistant conic projection
+    """
+
+    equicon = xml_node('equicon')
+    stdparll = xml_node('stdparll', params['stdparll'], equicon)
+    if params['stdparl_2']:
+        stdparll_2 = xml_node('stdparll', params['stdparll_2'], equicon)
+
+    for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
+        xml_node(item, params[item], equicon)
+    return equicon
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 PROJECTION_LOOKUP = {'Albers Conical Equal Area':{'shortname': 'albers',
                                   'elements': ['stdparll',
                                                'longcm',
