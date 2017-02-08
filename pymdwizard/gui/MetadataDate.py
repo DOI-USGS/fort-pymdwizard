@@ -56,6 +56,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_MetadataDate #
 
+from pymdwizard.gui.single_date import SingleDate
 
 class MetadataDate(WizardWidget): #
 
@@ -72,6 +73,12 @@ class MetadataDate(WizardWidget): #
         """
         self.ui = UI_MetadataDate.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
+
+        first_date = SingleDate()
+        first_date.ui.lbl_format.deleteLater()
+        self.multi_dates = [first_date, ]
+        self.ui.sa_multi_dates_content.layout().insertWidget(0, first_date)
+
         self.setup_dragdrop(self)
         self.ui.pushButton.clicked.connect(self.pushButton_clicked)
         self.ui.pushButton_2.clicked.connect(self.pushButton2_clicked)
@@ -86,16 +93,16 @@ class MetadataDate(WizardWidget): #
         self.findChild(QLineEdit, "dateEdit").setText(newDate)
 
     def pushButton_clicked(self):
-        temp_var0 = self.findChild(QLineEdit, "dateEdit_4").text()
-        #var_name0 = temp_var0.toPyDate()
-        #print var_name0
-        listV = self.findChild(QListWidget, "listWidget")
-        listV.addItem(temp_var0)
+        new_date = SingleDate()
+        new_date.ui.lbl_format.deleteLater()
+
+        self.ui.sa_multi_dates_content.layout().insertWidget(len(self.multi_dates), new_date)
+        self.multi_dates.append(new_date)
 
     def pushButton2_clicked(self):
-        temp_var00 = self.findChild(QListWidget, "listWidget")
-        temp_var01 = temp_var00.currentRow()
-        temp_var00.takeItem(temp_var01)
+
+        last_date = self.multi_dates.pop()
+        last_date.deleteLater()
 
     def switch_primary(self):
         """
