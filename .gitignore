@@ -67,4 +67,7 @@ target/
 .idea/*
 *.iml
 
+pymdwizard/Scratch
+tests/data/projections
+
 Thumbs.db
