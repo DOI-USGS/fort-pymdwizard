@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Citation2.ui'
+# Form implementation generated from reading ui file 'Citation.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -20,7 +20,7 @@ class Ui_Form(object):
         self.formLayout_2 = QtWidgets.QFormLayout(Form)
         self.formLayout_2.setObjectName("formLayout_2")
         self.fgdc_citeinfo = QtWidgets.QGroupBox(Form)
-        self.fgdc_citeinfo.setMinimumSize(QtCore.QSize(0, 200))
+        self.fgdc_citeinfo.setMinimumSize(QtCore.QSize(1000, 360))
         self.fgdc_citeinfo.setObjectName("fgdc_citeinfo")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.fgdc_citeinfo)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
