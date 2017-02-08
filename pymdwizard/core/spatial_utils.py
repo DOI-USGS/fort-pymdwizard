@@ -293,6 +293,7 @@ def get_params(layer):
     params['heightpt'] = ref.GetProjParm(osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT)
     params['longpc'] = ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_CENTER)
     params['latprjc'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
+    params['latprojo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
     params['sfctrlin'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
     params['obqlazim'] = 'Unknown'
     params['azimangle'] = ref.GetProjParm(osr.SRS_PP_AZIMUTH)
@@ -351,11 +352,6 @@ def get_params(layer):
     params['sfctrmer'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
 
     #     results['sprojorg'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
-
-
-    params['stdparl2'] = ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_2)
-    #f
-
 
 
     #SPCS_Zone
@@ -457,7 +453,7 @@ def spatial_ref(fname, feature_class=None):
     """
     layer = get_layer(fname)
 
-    params = get_ref_params(layer)
+    params = get_params(layer)
 
     spref = xml_node('spref')
     horizsys = xml_node('horizsys', parent_node=spref)
@@ -491,9 +487,9 @@ def geographic(params):
 
 def albers_conic_equal_area(params):
     albers = xml_node('albers')
-    stdparll = xml_node('stdparll', params['stdparll', albers])
-    if params['stdparl_2']:
-        stdparll_2 = xml_node('stdparll', params['stdparll_2', albers])
+    stdparll = xml_node('stdparll', params['stdparll'], albers)
+    if params['stdparll_2']:
+        stdparll_2 = xml_node('stdparll', params['stdparll_2'], albers)
 
     for item in ['longcm', 'latprojo', 'feast', 'fnorth']:
         xml_node(item, params[item], albers)
