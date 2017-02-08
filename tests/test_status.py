@@ -27,11 +27,17 @@ def test_status__to_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
-    #test_record_fname = "C:/Users/mhannon/dev_mdwizard/pymdwizard/tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
-    #test_record = etree.parse(test_record_fname)
-    #status = test_record.xpath("status")[0]
 
     widget._to_xml#(status)
     #assert type(progress) == 'lxml.etree._Element'
-    assert widget.findChild(QComboBox, 'fgdc_progress').currentText() == 'Complete'
-    assert widget.findChild(QComboBox, 'fgdc_update').currentText() == 'Continually'
+    widget.findChild(QComboBox, 'fgdc_progress').currentText()# == 'Complete'
+    widget.findChild(QComboBox, 'fgdc_update').currentText()# == 'Continually'
+
+    stat = widget._to_xml()
+
+    assert etree.tostring(stat, pretty_print=True).decode() \
+    == """<status>
+  <progress>Complete</progress>
+  <update>Continually</update>
+</status>
+"""
