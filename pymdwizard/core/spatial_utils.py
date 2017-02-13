@@ -127,7 +127,7 @@ def get_ref(layer):
         wkt = layer.GetSpatialRef().ExportToWkt()
 
     return osr.SpatialReference(wkt=wkt)
-    
+
 
 def get_latlong_res(extent):
     #D. Ignizio : This function is a modified approach to calculating latitudinal and longitudinal resolution in a GCS.
@@ -293,7 +293,7 @@ def get_params(layer):
     params['heightpt'] = ref.GetProjParm(osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT)
     params['longpc'] = ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_CENTER)
     params['latprjc'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
-    params['latprojo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
+    params['latprjo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
     params['sfctrlin'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
     params['obqlazim'] = 'Unknown'
     params['azimangle'] = ref.GetProjParm(osr.SRS_PP_AZIMUTH)
@@ -429,7 +429,7 @@ def get_layer(fname, feature_class=None):
         data = gdb.GetLayerByName(feature_class)
     else:
         #it better be a raster
-        global data
+        # global data
         data = gdal.Open(fname)
 
     return data
@@ -491,14 +491,14 @@ def albers_conic_equal_area(params):
     if params['stdparll_2']:
         stdparll_2 = xml_node('stdparll', params['stdparll_2'], albers)
 
-    for item in ['longcm', 'latprojo', 'feast', 'fnorth']:
+    for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
         xml_node(item, params[item], albers)
     return albers
 
 
 def azimuthal_equidistant(params):
     """
-    returns lxml nodes that contain project parameters for fgdc azimuthal equidistant projection
+    returns lxml nodes that contain projection parameters for fgdc azimuthal equidistant projection
 
     longcm = Longitude of Central Meridian
     latprjo = Latitude of Projection Origin
@@ -529,7 +529,7 @@ def azimuthal_equidistant(params):
 
 def equidistant_conic(params):
     """
-    returns lxml nodes that contain project parameters for fgdc equidistant conic projection
+    returns lxml nodes that contain projection parameters for fgdc equidistant conic projection
 
     stdparll = First standard parallel
     stdparl_2 = Second standard parallel (if exists)
@@ -558,6 +558,63 @@ def equidistant_conic(params):
     return equicon
 
 
+def equirectangular(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc equirectangular projection
+
+    stdparll = First standard parallel
+    longcm = Longitude of Central Meridian
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc equirectangular projection
+    """
+    equirect = xml_node('equirect')
+    stdparll = xml_node('stdparll', params['stdparll'], equirect)
+    longcm = xml_node('longcm', params['longcm'], equirect)
+    feast = xml_node('feast', params['feast'], equirect)
+    fnorth = xml_node('fnorth', params['fnorth'], equirect)
+    return equirect
+
+
+def general_vertical_near_sided_perspective(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc General Vertical Near-sided Perspective projection
+
+    heightpc = Height of perspective point above surface
+    longpc = Longitude of projection center
+    latprjc = Latitude of projection center
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc General Vertical Near-sided Perspective projection
+    """
+    gvnsp = xml_node('gvnsp')
+    heightpt = xml_node('heightpt', params['heightpt'], gvnsp)
+    longpc = xml_node('longpc', params['longpc'], gvnsp)
+    latprjc = xml_node('latprjc', params['latprjc'], gvnsp)
+    feast = xml_node('feast', params['feast'], gvnsp)
+    fnorth = xml_node('fnorth', params['fnorth'], gvnsp)
+    return gvnsp
+
+
+
+
+
 
 
 
@@ -578,11 +635,18 @@ def equidistant_conic(params):
 
 
 PROJECTION_LOOKUP = {'Albers Conical Equal Area':{'shortname': 'albers',
-                                  'elements': ['stdparll',
+                                  'elements': ['stdparll', 'stdparl_2',
                                                'longcm',
-                                               'latprojo', 'feast', 'fnorth']},
-                     'Azimuthal_Equidistant': {'shortname':'azimequi',
-                                  'elements': ['longcm', 'longprojo', 'feast', 'fnorth']}}
+                                               'latprjo', 'feast', 'fnorth']},
+                     'Azimuthal Equidistant':{'shortname':'azimequi',
+                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
+                     'Equidistant Conic':{'shortname':'equicon',
+                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
+                     'Equirectangular':{'shortname':'equirect',
+                                    'elements': ['stdparll', 'longcm', 'feast', 'fnorth']},
+                     'General Vertical Near-sided Perspective':{'shortname':'gvnsp',
+                                    'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']}
+                     }
 
 
 def get_bounding(fname):
