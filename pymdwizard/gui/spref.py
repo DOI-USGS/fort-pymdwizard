@@ -185,6 +185,7 @@ class SpRef(WizardWidget):
 
     def _to_xml(self):
         spref_node = xml_utils.xml_node('spref')
+        return spref_node
         horizsys = xml_utils.xml_node('horizsys',   parent_node=spref_node)
 
         if self.ui.btn_geographic.isChecked():
