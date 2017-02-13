@@ -6,26 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>594</width>
-    <height>196</height>
+    <width>616</width>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="leftMargin">
-    <number>3</number>
-   </property>
-   <property name="topMargin">
-    <number>3</number>
-   </property>
-   <property name="rightMargin">
-    <number>3</number>
-   </property>
-   <property name="bottomMargin">
-    <number>3</number>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <widget class="QGroupBox" name="fgdc_timeperd">
      <property name="title">
@@ -59,7 +47,7 @@
         <x>10</x>
         <y>80</y>
         <width>361</width>
-        <height>91</height>
+        <height>151</height>
        </rect>
       </property>
       <property name="font">
@@ -76,7 +64,7 @@
         <property name="geometry">
          <rect>
           <x>120</x>
-          <y>10</y>
+          <y>20</y>
           <width>101</width>
           <height>16</height>
          </rect>
@@ -85,173 +73,179 @@
          <string>Date (YYYYMMDD)</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="dateEdit">
+       <widget class="QWidget" name="single_date_content" native="true">
         <property name="geometry">
          <rect>
-          <x>120</x>
-          <y>30</y>
-          <width>113</width>
-          <height>20</height>
+          <x>94</x>
+          <y>40</y>
+          <width>171</width>
+          <height>31</height>
          </rect>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-       </widget>
-       <widget class="QDateEdit" name="dateEdit0">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>30</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="displayFormat">
-         <string>yyyy/MM/dd</string>
-        </property>
-        <property name="calendarPopup">
-         <bool>true</bool>
         </property>
        </widget>
       </widget>
       <widget class="QWidget" name="timeinfoPage2">
-       <widget class="QLabel" name="label_5">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>20</y>
-          <width>161</width>
-          <height>20</height>
+          <width>351</width>
+          <height>71</height>
          </rect>
         </property>
-        <property name="text">
-         <string>BeginningDate (YYYYMMDD)</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_6">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>20</y>
-          <width>131</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>End Date (YYYYMMDD)</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="dateEdit_2">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>40</y>
-          <width>113</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="dateEdit_3">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>40</y>
-          <width>113</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Beginning Date (YYYYMMDD)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>End Date (YYYYMMDD)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QWidget" name="range_date_content_1" native="true"/>
+           </item>
+           <item>
+            <widget class="QWidget" name="range_date_content_2" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>166</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="timeinfoPage3">
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>50</y>
-          <width>111</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Add Date</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>0</y>
-          <width>191</width>
-          <height>20</height>
+          <x>20</x>
+          <y>10</y>
+          <width>184</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
          <string>Add Series of Dates (YYYYMMDD)</string>
         </property>
        </widget>
-       <widget class="QListWidget" name="listWidget">
+       <widget class="QScrollArea" name="SA_multi_dates">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>30</y>
+          <width>181</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="sa_multi_dates_content">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>181</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>10</y>
-          <width>111</width>
-          <height>71</height>
+          <y>40</y>
+          <width>104</width>
+          <height>54</height>
          </rect>
         </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::AllEditTriggers</set>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="geometry">
-         <rect>
-          <x>140</x>
-          <y>50</y>
-          <width>61</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Delete</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="dateEdit_4">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>20</y>
-          <width>113</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Add Another Date</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>Delete Last</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -340,7 +334,7 @@
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>351</width>
+        <width>361</width>
         <height>31</height>
        </rect>
       </property>
@@ -399,7 +393,7 @@
      <zorder>fgdc_current</zorder>
      <zorder>label_8</zorder>
      <zorder>groupBox</zorder>
-     <zorder>dateEdit</zorder>
+     <zorder>pushButton</zorder>
     </widget>
    </item>
   </layout>
