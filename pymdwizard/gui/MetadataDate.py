@@ -209,7 +209,7 @@ class MetadataDate(WizardWidget): #
             # var_name = temp_var.toPyDate()
             # var_name = str(var_name)
             temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
-            print temp_var
+            #print temp_var
             sngdate.text = temp_var #var_name.replace('-', '')
             timeinfo.append(sngdate)
             timeperd.append(timeinfo)
@@ -250,7 +250,7 @@ class MetadataDate(WizardWidget): #
                 sngdate = etree.Element("sngdate")
                 #rowEach = self.multi_dates(index).text()
                 strEach = str(rowEach)
-                print strEach
+                #print strEach
                 #strSimple = strEach.replace("-", '')
 
                 sngdate.text = strEach
@@ -311,24 +311,24 @@ class MetadataDate(WizardWidget): #
                     tabIndex.setCurrentIndex(2)
                     listW = [b.text for b in metadata_date.iterfind(".//sngdate")]
                     lenLW = len(listW)
-                    print lenLW
+                    #print lenLW
                     self.first_date.findChild(QLineEdit, "lineEdit").setText(listW[0])
                     # new_date = SingleDate()
                     # new_date.ui.lbl_format.deleteLater()
                     #qListW = self.findChild(QListWidget, "listWidget")
                     cnt = 1
                     for lw in listW[1:]:
-                        print "here", type(lw)
+                        #print "here", type(lw)
                         new_date = "new_date" + str(cnt)
-                        print new_date
+                        #print new_date
                         new_date = SingleDate()
 
                         new_date.ui.lbl_format.deleteLater()
-                        print new_date
+                        #print new_date
                         self.ui.sa_multi_dates_content.layout().insertWidget(cnt, new_date)
                         #self.multi_dates.append(new_date)
                         new_date.findChild(QLineEdit, "lineEdit").setText(listW[cnt])
-                        print cnt
+                        #print cnt
                         cnt +=1
                         #qListW.addItem(lw)
 
