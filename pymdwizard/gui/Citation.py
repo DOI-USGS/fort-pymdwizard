@@ -180,7 +180,7 @@ class Citation(WizardWidget): #
             hBoxLayout = QHBoxLayout()
             hBoxLayout.addWidget(self.lworkcit)
             lwork_ext = self.findChild(QFrame, "lworkcit_ext")
-            print lwork_ext
+            #print lwork_ext
             #lwork_ext.setFixedSize(500,500)
             lwork_ext.setLayout(hBoxLayout)
             #########################################
@@ -246,14 +246,19 @@ class Citation(WizardWidget): #
         geoform = etree.Element("geoform")
         title = etree.Element("title")
         onlink = etree.Element("onlink")
-        origin.text = self.findChild(QLineEdit, "fgdc_origin").text()
-        pubdate.text = self.findChild(QLineEdit, "fgdc_pubdate").text()
+        #origin.text = self.findChild(QLineEdit, "fgdc_origin").text()
+        #pubdate.text = self.findChild(QLineEdit, "fgdc_pubdate").text()
+
+        temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
+        # print temp_var
+        pubdate.text = temp_var
+
         title.text = self.findChild(QLineEdit, "fgdc_title").text()
         edition.text = self.findChild(QLineEdit, "fgdc_edition").text()
         geoform.text = self.findChild(QComboBox, "fgdc_geoform").currentText()
-        onlink.text = self.findChild(QLineEdit, "fgdc_onlink").text()
+        #onlink.text = self.findChild(QLineEdit, "fgdc_onlink").text()
 
-        citeinfo.append(origin)
+        #citeinfo.append(origin)
         citeinfo.append(pubdate)
         citeinfo.append(title)
         citeinfo.append(edition)
@@ -288,20 +293,24 @@ class Citation(WizardWidget): #
         if self.ui.radioButton.isChecked():
             lworkcit1 = etree.Element('lworkcit')
             citeinfo1 = etree.Element('citeinfo')
-            origin1 = etree.Element("origin")
+            #origin1 = etree.Element("origin")
             pubdate1 = etree.Element("pubdate")
             edition1 = etree.Element("edition")
             geoform1 = etree.Element("geoform")
             title1 = etree.Element("title")
-            onlink1 = etree.Element("onlink")
-            origin1.text = self.lworkcit.findChild(QLineEdit, "fgdc_origin").text()
-            pubdate1.text = self.lworkcit.findChild(QLineEdit, "fgdc_pubdate").text()
+            #onlink1 = etree.Element("onlink")
+            #origin1.text = self.lworkcit.findChild(QLineEdit, "fgdc_origin").text()
+            #pubdate1.text = self.lworkcit.findChild(QLineEdit, "fgdc_pubdate").text()
             title1.text = self.lworkcit.findChild(QLineEdit, "fgdc_title").text()
             edition1.text = self.lworkcit.findChild(QLineEdit, "fgdc_edition").text()
             geoform1.text = self.lworkcit.findChild(QComboBox, "fgdc_geoform").currentText()
-            onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
+            #onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
 
-            citeinfo1.append(origin1)
+            temp_var1 = self.lworkcit.single_date.findChild(QLineEdit, "lineEdit").text()
+            # print temp_var
+            pubdate1.text = temp_var1
+
+            #citeinfo1.append(origin1)
             citeinfo1.append(pubdate1)
             citeinfo1.append(title1)
             citeinfo1.append(edition1)
@@ -333,7 +342,7 @@ class Citation(WizardWidget): #
             lworkcit1.append(citeinfo1)
 #####################################################################################################################
             citeinfo.append(lworkcit1)
-        citeinfo.append(onlink)
+        #citeinfo.append(onlink)
 
         #print "ok"
         citation.append(citeinfo)
