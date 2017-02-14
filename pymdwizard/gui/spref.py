@@ -133,7 +133,8 @@ class SpRef(WizardWidget):
             with open(annotation_lookup_fname) as data_file:
                 annotation_lookup = json.loads(data_file.read())
 
-
+        annotation_lookup['stdparl_2'] = {'long_name':'Standard Parallel',
+                                      'annotation':annotation_lookup['stdparll']['annotation']}
     # widgets = self.findChildren(QObject, QRegExp(r'.*'))
     # for widget in widgets:
     #     if widget.objectName().startswith('fgdc_'):
@@ -184,7 +185,9 @@ class SpRef(WizardWidget):
             e.ignore()
 
     def _to_xml(self):
+
         spref_node = xml_utils.xml_node('spref')
+        return spref_node
         horizsys = xml_utils.xml_node('horizsys',   parent_node=spref_node)
 
         if self.ui.btn_geographic.isChecked():
