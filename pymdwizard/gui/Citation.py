@@ -43,7 +43,7 @@ from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QFormLayout
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QFormLayout, QLabel
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QRadioButton, QFrame
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QScrollArea, QGroupBox
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
@@ -55,6 +55,8 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_Citation #
+from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.multiple_instances import Multi_Instance
 
 
 class Citation(WizardWidget): #
@@ -76,6 +78,52 @@ class Citation(WizardWidget): #
         self.ui.lworkcite_ext.hide()
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
+        self.single_date = SingleDate()
+        self.single_date.ui.lbl_format.deleteLater()
+        self.single_date.ui.label.deleteLater()
+
+        self.ui.fgdc_pubdate.setLayout(QVBoxLayout(self))
+        self.ui.fgdc_pubdate.layout().insertWidget(0, self.single_date)
+
+        #Multi_Inst onlink
+        olParams = {'Title':'Online Link for the Data Set',
+                  'Italic Text':'Is there a link to the data or agency that produced it?',
+                  'Label': 'Link',
+                  'Add text':'+',
+                  'Remove text': '-'}
+                  #'widget':SingleDate}
+        self.multi_instance = Multi_Instance(params=olParams)
+        #self.multi_instance(params)
+        self.ui.fg_dc_onlink.layout().insertWidget(0, self.multi_instance)
+
+        #Multi_Inst originator
+        ogParams = {'Title':'Data Set Author / Originator',
+                  'Italic Text':'Who created the data set? List the organization and/or person(s)',
+                  'Label': 'Origin',
+                  'Add text':'+',
+                  'Remove text': '-'}
+                  #'widget':SingleDate}
+        self.multi_instance1 = Multi_Instance(params=ogParams)
+        #self.multi_instance(params)
+        self.ui.fg_dc_origin.layout().insertWidget(0, self.multi_instance1)
+
+
+        # self.ui.scrollAreaWidgetContents.setLayout(QVBoxLayout(self))
+        # self.horiz = QHBoxLayout()
+        # self.qlbl = QLabel('Orig', self)
+        # self.first_line_edit = QLineEdit()
+        # self.horiz.addWidget(self.qlbl)
+        # self.horiz.addWidget(self.first_line_edit)
+        # print self.first_line_edit
+        # self.multi_orig = [self.first_line_edit, ]
+        # # trial = self.findChild(QWidget, "scrollAreaWidgetContents")
+        # # print "trial", trial.parent()
+        # # trial.layout().addWidget(len(self.multi_orig), self.new_line_edit)
+        # self.ui.scrollAreaWidgetContents.layout().addLayout(self.horiz) #addLayout(self, horiz)
+        # self.multi_orig.append(self.first_line_edit)
+
+
+
 
 
     def connect_events(self):
@@ -89,6 +137,24 @@ class Citation(WizardWidget): #
         self.ui.radioButton.toggled.connect(self.include_lworkext_change)
         self.ui.radioButton_3.toggled.connect(self.include_seriesext_change)
         self.ui.radioButton_5.toggled.connect(self.include_pubext_change)
+        #self.ui.add_og.clicked.connect(self.add_originator)
+
+    # def add_originator(self):
+    #     print "here"
+    #     self.horiz = QHBoxLayout()
+    #     self.qlbl = QLabel('Orig ' + str(len(self.multi_orig)), self)
+    #     self.first_line_edit = QLineEdit()
+    #     self.horiz.addWidget(self.qlbl)
+    #     self.horiz.addWidget(self.first_line_edit)
+    #     print self.first_line_edit
+    #     self.new_line_edit = QLineEdit()
+    #     print self.new_line_edit
+    #     #trial = self.findChild(QWidget, "scrollAreaWidgetContents")
+    #    # print "trial", trial.parent()
+    #     #trial.layout().addWidget(len(self.multi_orig), self.new_line_edit)
+    #     self.ui.scrollAreaWidgetContents.layout().addLayout(self.horiz)
+    #     self.multi_orig.append(self.new_line_edit)
+
 
 
     def include_seriesext_change(self, b):
