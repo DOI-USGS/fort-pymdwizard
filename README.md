@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/talbertc-usgs/pymdwizard.svg?branch=master)](https://travis-ci.org/talbertc-usgs/pymdwizard)
-[![Hackage](https://coveralls.io/repos/github/talbertc-usgs/pymdwizard/badge.svg?branch=master)](https://coveralls.io/github/talbertc-usgs/pymdwizard?branch=master)
+[![Build Status](https://travis-ci.org/talbertc-usgs/fort-pymdwizard.svg?branch=master)](https://travis-ci.org/talbertc-usgs/fort-pymdwizard)
+[![Hackage](https://coveralls.io/repos/github/talbertc-usgs/fort-pymdwizard/badge.svg?branch=master)](https://coveralls.io/github/talbertc-usgs/fort-pymdwizard?branch=master)
 
 <img width="250" align="right" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/USGS_logo_green.svg/500px-USGS_logo_green.svg.png"/>
 
@@ -8,14 +8,35 @@
 pymdwizard: A Python based open source version of the Metadata Wizard
 ===========================================================================================
 
-The [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source) is an extremely useful tool designed to facilitate FGDC 
-metadata creation for spatial and some non-spatial datasets.  It is distributed
-as an ESRI toolbox.  It is written in a combination of VB.net forms, ArcObjects, 
-and arcpy code.  This limits the usage to Windows computers with ArcGIS installed.
+The  is a useful tool designed to facilitate FGDC  
+metadata creation for spatial and non-spatial datasets.  It is a cross-platform desktop application
+built using an open-source Python architecture.  
 
-This project aims to recreate and extend the current functionality using an
-open-source Python based architecture which will allow for use by people who do
-not have an installation of ArcMap on their computer.
+It provides several tools to automate the creation of high quality 
+metadata records including:
+
+* Auto-population of sections with information extracted from the dataset being documented.
+    - Spatial Data Organization
+    - Spatial Reference
+    - Entity and Attribute
+* Supports a variety of common data formats for introspection including 
+    - CSV
+    - Excel worksheets
+    - Database tables
+    - Shapefiles
+    - GeoTiffs
+    - File geodatabase feature classes.
+* Automate creation of sections from existing web-services
+    - Contact information (for USGS affiliates)
+    - Taxonomic information from ITIS
+    - keywords from USGS controlled vocabularies
+* Built in validator which highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
+* Drag-and-Drop integration with other tools including XML-Notepad and text editors.
+* Built in help documentation which guides users through common and detailed questions about metadata.
+
+![Alt text](docs/screenshot.png?raw=true "Screen shot")
+
+This project is modeled off of the original [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source), which was designed as a toolbox in ArcMap, and required an ESRI installation.
 
 
 
