@@ -358,14 +358,18 @@ def main():
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('Metadata duck.png')
+    splash_fname = utils.get_resource_path('splash_ducks.jpg')
     splash_pix = QPixmap(splash_fname)
+
+    size = splash_pix.size()*.55
+    splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
+                                transformMode=Qt.SmoothTransformation)
 
     # below makes the pixmap half transparent
     painter = QPainter(splash_pix)
     painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
 
-    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 127))
+    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 100))
 
     font = QFont()
     font.setFamily('Arial')
@@ -373,7 +377,7 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(Qt.white)
+    painter.setPen(QColor(250, 250, 250))
     painter.drawText(splash_pix.rect(), Qt.AlignCenter,
                  "Metadata Wizard")
 
@@ -383,9 +387,9 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(Qt.red)
-    painter.drawText(splash_pix.rect(), Qt.AlignBottom,
-                     "TODO: add a respectable picture...")
+    painter.setPen(QColor(150, 150, 150, 200))
+    painter.drawText(splash_pix.rect().adjusted(20, -20, -20, -20), Qt.AlignBottom,
+                     "putting the fun in fundamental science practices")
     painter.end()
 
 
