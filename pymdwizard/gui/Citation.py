@@ -240,7 +240,7 @@ class Citation(WizardWidget): #
         """
         citation = etree.Element('citation')
         citeinfo = etree.Element('citeinfo')
-        origin = etree.Element("origin")
+
         pubdate = etree.Element("pubdate")
         edition = etree.Element("edition")
         geoform = etree.Element("geoform")
@@ -252,25 +252,27 @@ class Citation(WizardWidget): #
         #self.ui.fg_dc_origin.layout().insertWidget(0, self.multi_instance1)
         #self.widget_instances
         #self.added_line = QLineEdit()
-        ## cnt = 0
-        # list_orig = self.multi_instance1.widget_instances
-        # len_listorig = len(self.multi_instance1.widget_instances)
-        # print list_orig
-        # print len_listorig
-        # while cnt < len_listorig:
-        #     linEdit = self.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
-        #     print linEdit[cnt].text()
-        #     #rowEach = index.findChild(QLineEdit, "lineEdit").text()
-        #     #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
-        #     #print 'length', len(self.multi_instance1.widget_instances.)
-        ##     cnt +=1
+        cnt = 0
+        list_orig = self.multi_instance1.widget_instances
+        len_listorig = len(self.multi_instance1.widget_instances)
+        while cnt < len_listorig:
+            linEdit = self.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+            og_text = linEdit[0].text()
+            str_og = str(og_text)
+            #print type(str_og)
+            origin = etree.Element("origin")
+            origin.text = str_og
+            #rowEach = index.findChild(QLineEdit, "lineEdit").text()
+            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+            #print 'length', len(self.multi_instance1.widget_instances.)
+            cnt +=1
             # sngdate = etree.Element("sngdate")
             # # rowEach = self.multi_dates(index).text()
             # strEach = str(rowEach)
             # # print strEach
             # # strSimple = strEach.replace("-", '')
             # sngdate.text = strEach
-            # mdattim.append(sngdate)
+            citeinfo.append(origin)
 
         temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
         # print temp_var
@@ -329,6 +331,28 @@ class Citation(WizardWidget): #
             geoform1.text = self.lworkcit.findChild(QComboBox, "fgdc_geoform").currentText()
             #onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
 
+            cnt = 0
+            #list_orig1 = self.multi_instance1.widget_instances
+            len_listorig1 = len(self.lworkcit.multi_instance1.widget_instances)
+            while cnt < len_listorig1:
+                linEdit2 = self.lworkcit.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+                og_text1 = linEdit2[0].text()
+                str_og1 = str(og_text1)
+                # print type(str_og)
+                origin1 = etree.Element("origin")
+                origin1.text = str_og1
+                # rowEach = index.findChild(QLineEdit, "lineEdit").text()
+                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+                # print 'length', len(self.multi_instance1.widget_instances.)
+                cnt += 1
+                # sngdate = etree.Element("sngdate")
+                # # rowEach = self.multi_dates(index).text()
+                # strEach = str(rowEach)
+                # # print strEach
+                # # strSimple = strEach.replace("-", '')
+                # sngdate.text = strEach
+                citeinfo1.append(origin1)
+
             temp_var1 = self.lworkcit.single_date.findChild(QLineEdit, "lineEdit").text()
             # print temp_var
             pubdate1.text = temp_var1
@@ -362,9 +386,41 @@ class Citation(WizardWidget): #
                 pubinfo1.append(publish1)
                 citeinfo1.append(pubinfo1)
 
+            cnt = 0
+            # list_onlink = self.multi_instance.widget_instances
+            len_listonlink1 = len(self.lworkcit.multi_instance.widget_instances)
+            while cnt < len_listonlink1:
+                linEdit3 = self.lworkcit.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
+                ol_text1 = linEdit3[0].text()
+                str_ol1 = str(ol_text1)
+                # print type(str_og)
+                onlink = etree.Element("onlink")
+                onlink.text = str_ol1
+                # rowEach = index.findChild(QLineEdit, "lineEdit").text()
+                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+                # print 'length', len(self.multi_instance1.widget_instances.)
+                cnt += 1
+                citeinfo1.append(onlink)
+
             lworkcit1.append(citeinfo1)
 #####################################################################################################################
             citeinfo.append(lworkcit1)
+
+        cnt = 0
+        #list_onlink = self.multi_instance.widget_instances
+        len_listonlink = len(self.multi_instance.widget_instances)
+        while cnt < len_listonlink:
+            linEdit1 = self.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
+            ol_text = linEdit1[0].text()
+            str_ol = str(ol_text)
+            #print type(str_og)
+            onlink = etree.Element("onlink")
+            onlink.text = str_ol
+            #rowEach = index.findChild(QLineEdit, "lineEdit").text()
+            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+            #print 'length', len(self.multi_instance1.widget_instances.)
+            cnt +=1
+            citeinfo.append(onlink)
         #citeinfo.append(onlink)
 
         #print "ok"
