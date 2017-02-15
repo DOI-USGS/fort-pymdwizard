@@ -118,22 +118,19 @@ class MetadataDate(WizardWidget): #
 
         self.ui.sa_multi_dates_content.layout().insertWidget(len(self.multi_dates), new_date)
         self.multi_dates.append(new_date)
+
+        
         area = self.findChild(QScrollArea, "SA_multi_dates")
         vbar = area.verticalScrollBar()
         vbar.setValue(vbar.maximum()+90)
 
-        # temp_var0 = self.findChild(QLineEdit, "dateEdit_4").text()
-        # #var_name0 = temp_var0.toPyDate()
-        # #print var_name0
-        # listV = self.findChild(QListWidget, "listWidget")
-        # listV.addItem(temp_var0)
 
     def pushButton2_clicked(self):
+
+
         last_date = self.multi_dates.pop()
         last_date.deleteLater()
-        # temp_var00 = self.findChild(QListWidget, "listWidget")
-        # temp_var01 = temp_var00.currentRow()
-        # temp_var00.takeItem(temp_var01)
+
 
     def switch_primary(self):
         """
