@@ -66,6 +66,7 @@ target/
 # User-specific stuff:
 .idea/*
 *.iml
+.idea
 
 pymdwizard/Scratch
 tests/data/projections
