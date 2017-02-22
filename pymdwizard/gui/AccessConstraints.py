@@ -95,11 +95,6 @@ class AccessConstraints(WizardWidget): #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'accconst':
-#                print "element", element.text
-#                print "tag", element.tag
-                #mime_data.setText(element.text)
-                #print mime_data.text()
-                #self.Q.setPlainText(_translate("Form", element.text))
                 e.accept()
         else:
             e.ignore()
@@ -117,7 +112,6 @@ class AccessConstraints(WizardWidget): #
         """
         accconst = etree.Element('accconst')
         accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
-        #print "ok"
 
         return accconst
 
