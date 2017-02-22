@@ -29,6 +29,7 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setItalic(True)
         self.label.setFont(font)
+        self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
