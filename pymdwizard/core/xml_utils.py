@@ -238,3 +238,17 @@ def xml_node(tag, text='', parent_node=None, index=-1):
     return node
 
 
+def clear_children(element):
+    """
+    Removes all child elements from the element passed
+    Parameters
+    ----------
+    xml_node : lxml element
+
+    Returns
+    -------
+    None
+    """
+    for child in element.getchildren():
+        element.remove(child)
+
