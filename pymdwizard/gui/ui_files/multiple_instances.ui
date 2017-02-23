@@ -27,6 +27,9 @@
        </item>
        <item>
         <widget class="QLabel" name="QLabelItalic">
+         <property name="styleSheet">
+          <string notr="true">font: italic;</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -119,11 +122,7 @@
     </layout>
    </item>
   </layout>
-  <zorder>layoutWidget</zorder>
   <zorder></zorder>
-  <zorder>addAnother</zorder>
-  <zorder>popOff</zorder>
-  <zorder>scrollArea</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -23,6 +23,7 @@ class Ui_Form(object):
         self.QLabel_Title.setObjectName("QLabel_Title")
         self.verticalLayout_5.addWidget(self.QLabel_Title)
         self.QLabelItalic = QtWidgets.QLabel(Form)
+        self.QLabelItalic.setStyleSheet("font: italic;")
         self.QLabelItalic.setText("")
         self.QLabelItalic.setObjectName("QLabelItalic")
         self.verticalLayout_5.addWidget(self.QLabelItalic)
@@ -57,9 +58,6 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.popOff)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
-        self.addAnother.raise_()
-        self.popOff.raise_()
-        self.scrollArea.raise_()
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

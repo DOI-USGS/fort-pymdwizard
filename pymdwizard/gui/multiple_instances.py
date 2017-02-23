@@ -82,28 +82,6 @@ class Multi_Instance(QWidget):
         self.ui = UI_multiple_instances.Ui_Form()
         self.ui.setupUi(self)
 
-        # self.ui.scrollArea.setLayout(QVBoxLayout(self))
-        # self.ui.qlbl = QLabel(self)
-        # self.ui.label.deleteLater()
-        # self.ui.lineEdit.setText('this')
-
-        # self.multi_instances = [self.ui.lineEdit, ]
-
-
-
-        # self.ui.scrollAreaWidgetContents.setLayout(QVBoxLayout(self))
-        # self.horiz = QHBoxLayout()
-        # self.qlbl = QLabel('Orig', self)
-        # self.first_line_edit = QLineEdit()
-        # self.horiz.addWidget(self.qlbl)
-        # self.horiz.addWidget(self.first_line_edit)
-        # print self.first_line_edit
-        # self.ui.scrollAreaWidgetContents.layout().addLayout(self.horiz)
-        # self.multi_instances = [self.first_line_edit, ]
-        # area = self.findChild(QScrollArea, "scrollArea")
-        # vbar = area.verticalScrollBar()
-        # vbar.setValue(vbar.maximum()+90)
-
 
     def connect_events(self):
         """
@@ -113,45 +91,71 @@ class Multi_Instance(QWidget):
         -------
         None
         """
-        #self.ui.lineEdit.editingFinished.connect(self.check_format)
         self.ui.addAnother.clicked.connect(self.add_another)
         self.ui.popOff.clicked.connect(self.pop_off)
 
     def load_params(self, params):
+        """
+        Loads the parameters for the multiple widget/instance build
+
+        Parameters
+        ----------
+        params = {'Title':'hello',
+           'Italic Text':'world',
+           'Label': 'This is a label',
+           'Add text':'button add me',
+           'Remove text': 'button delete me',
+           'scrollArea': 'fgdc_name
+           'widget':Citation.Citation}
+
+        Returns
+        -------
+        None
+        """
         if 'widget' in params.keys():
             self.widget = params['widget']
         else:
             self.widget = DefaultWidget
-            # def widget_load_params(self):
-            #     self.qlbl.setText(params['Label'])
-
-            # self.widget.load_params = widget_load_params
 
 
         self.ui.QLabel_Title.setText(params['Title'])
         self.ui.QLabelItalic.setText(params['Italic Text'])
         self.ui.addAnother.setText(params['Add text'])
         self.ui.popOff.setText(params['Remove text'])
-
+        self.ui.scroll = self.findChild(QScrollArea, "scrollArea")
+        print (self.ui.scroll)
+        self.ui.scroll.setObjectName(params["scrollArea"])
+        print (params["scrollArea"])
+        print (self.ui.scroll.objectName())
 
     def add_another(self):
-        # if 'widget' in params.keys():
-        #     self.widget = params['widget']
-        # else:
-        #     self.widget = DefaultWidget
-        ###self.widget = DefaultWidget
+        """
+        Adds another instance of a widget or ____
+
+        Returns
+        -------
+        None
+        """
+
         widget_instance = self.widget(label=self.params['Label'])
         self.ui.verticalLayout.insertWidget(len(self.ui.verticalLayout) - 1, widget_instance)
 
         self.widget_instances.append(widget_instance)
 
-        area = self.findChild(QScrollArea, "scrollArea")
+        area = self.ui.scroll
+        print (area.objectName())
         vbar = area.verticalScrollBar()
         vbar.setValue(vbar.maximum()+90)
 
 
-
     def pop_off(self):
+        """
+        Deletes an instance or widget instance
+
+        Returns
+        -------
+        None
+        """
         last_added = self.widget_instances.pop()
         last_added.deleteLater()
 
@@ -159,6 +163,14 @@ class Multi_Instance(QWidget):
 class DefaultWidget(QWidget):
 
     def __init__(self, label='', parent=None):
+        """
+        This is the default widget, which allows the creation of your own
+
+        Parameters
+        ----------
+        label - the label to be set
+        parent - set to none by default
+        """
         QWidget.__init__(self)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
@@ -167,8 +179,6 @@ class DefaultWidget(QWidget):
         self.layout.addWidget(self.added_line)
         self.layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.layout)
-
-        # self.load_params()
 
     def load_params(self):
         pass
