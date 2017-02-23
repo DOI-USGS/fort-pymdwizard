@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(599, 501)
+        Form.resize(526, 432)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -34,6 +34,7 @@ class Ui_Form(object):
         font.setPointSize(9)
         font.setItalic(True)
         self.label_2.setFont(font)
+        self.label_2.setStyleSheet("font: italic;")
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
@@ -62,6 +63,7 @@ class Ui_Form(object):
         font.setPointSize(9)
         font.setItalic(True)
         self.label_3.setFont(font)
+        self.label_3.setStyleSheet("font: italic;")
         self.label_3.setWordWrap(True)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
@@ -90,6 +92,7 @@ class Ui_Form(object):
         font.setPointSize(9)
         font.setItalic(True)
         self.label.setFont(font)
+        self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)

@@ -103,9 +103,9 @@ class Citation(WizardWidget): #
                   'Add text':'+',
                   'Remove text': '-'}
                   #'widget':SingleDate}
-        self.multi_instance1 = Multi_Instance(params=ogParams)
+        self.fgdc_origin = Multi_Instance(params=ogParams)
         #self.multi_instance(params)
-        self.ui.fg_dc_origin.layout().insertWidget(0, self.multi_instance1)
+        self.ui.fg_dc_origin.layout().insertWidget(0, self.fgdc_origin)
 
 
         # self.ui.scrollAreaWidgetContents.setLayout(QVBoxLayout(self))
@@ -249,22 +249,22 @@ class Citation(WizardWidget): #
         #origin.text = self.findChild(QLineEdit, "fgdc_origin").text()
         #pubdate.text = self.findChild(QLineEdit, "fgdc_pubdate").text()
 
-        #self.ui.fg_dc_origin.layout().insertWidget(0, self.multi_instance1)
+        #self.ui.fg_dc_origin.layout().insertWidget(0, self.fgdc_origin)
         #self.widget_instances
         #self.added_line = QLineEdit()
         cnt = 0
-        list_orig = self.multi_instance1.widget_instances
-        len_listorig = len(self.multi_instance1.widget_instances)
+        list_orig = self.fgdc_origin.widget_instances
+        len_listorig = len(self.fgdc_origin.widget_instances)
         while cnt < len_listorig:
-            linEdit = self.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+            linEdit = self.fgdc_origin.widget_instances[cnt].findChildren(QLineEdit)
             og_text = linEdit[0].text()
             str_og = str(og_text)
             #print type(str_og)
             origin = etree.Element("origin")
             origin.text = str_og
             #rowEach = index.findChild(QLineEdit, "lineEdit").text()
-            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
-            #print 'length', len(self.multi_instance1.widget_instances.)
+            #print index.findChild(QLineEdit, self.fgdc_origin.widget_instances).text()
+            #print 'length', len(self.fgdc_origin.widget_instances.)
             cnt +=1
             # sngdate = etree.Element("sngdate")
             # # rowEach = self.multi_dates(index).text()
@@ -332,18 +332,18 @@ class Citation(WizardWidget): #
             #onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
 
             cnt = 0
-            #list_orig1 = self.multi_instance1.widget_instances
-            len_listorig1 = len(self.lworkcit.multi_instance1.widget_instances)
+            #list_orig1 = self.fgdc_origin.widget_instances
+            len_listorig1 = len(self.lworkcit.fgdc_origin.widget_instances)
             while cnt < len_listorig1:
-                linEdit2 = self.lworkcit.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+                linEdit2 = self.lworkcit.fgdc_origin.widget_instances[cnt].findChildren(QLineEdit)
                 og_text1 = linEdit2[0].text()
                 str_og1 = str(og_text1)
                 # print type(str_og)
                 origin1 = etree.Element("origin")
                 origin1.text = str_og1
                 # rowEach = index.findChild(QLineEdit, "lineEdit").text()
-                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
-                # print 'length', len(self.multi_instance1.widget_instances.)
+                # print index.findChild(QLineEdit, self.fgdc_origin.widget_instances).text()
+                # print 'length', len(self.fgdc_origin.widget_instances.)
                 cnt += 1
                 # sngdate = etree.Element("sngdate")
                 # # rowEach = self.multi_dates(index).text()
@@ -397,8 +397,8 @@ class Citation(WizardWidget): #
                 onlink = etree.Element("onlink")
                 onlink.text = str_ol1
                 # rowEach = index.findChild(QLineEdit, "lineEdit").text()
-                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
-                # print 'length', len(self.multi_instance1.widget_instances.)
+                # print index.findChild(QLineEdit, self.fgdc_origin.widget_instances).text()
+                # print 'length', len(self.fgdc_origin.widget_instances.)
                 cnt += 1
                 citeinfo1.append(onlink)
 
@@ -417,8 +417,8 @@ class Citation(WizardWidget): #
             onlink = etree.Element("onlink")
             onlink.text = str_ol
             #rowEach = index.findChild(QLineEdit, "lineEdit").text()
-            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
-            #print 'length', len(self.multi_instance1.widget_instances.)
+            #print index.findChild(QLineEdit, self.fgdc_origin.widget_instances).text()
+            #print 'length', len(self.fgdc_origin.widget_instances.)
             cnt +=1
             citeinfo.append(onlink)
         #citeinfo.append(onlink)
