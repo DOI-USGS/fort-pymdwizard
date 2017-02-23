@@ -59,7 +59,7 @@ class MetadataDate(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_MetadataDate.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_MetadataDate.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -92,12 +92,7 @@ class MetadataDate(WizardWidget):  #
         self.ui.radioButton.toggled.connect(self.switch_primary)
         self.ui.radioButton_2.toggled.connect(self.switch_primary)
         self.ui.radioButton_3.toggled.connect(self.switch_primary)
-        # self.ui.dateEdit0.dateChanged.connect(self.onDateChanged)
 
-    # def onDateChanged(self, newDate):
-    #     newDate = newDate.toString('yyyyMMdd')
-    #     print("The new date is " + newDate)
-    #     self.findChild(QLineEdit, "dateEdit").setText(newDate)
 
     def pushButton_clicked(self):
         new_date = SingleDate()
@@ -145,11 +140,6 @@ class MetadataDate(WizardWidget):  #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'timeperd':
-                #                print "element", element.text
-                #                print "tag", element.tag
-                # mime_data.setText(element.text)
-                # print mime_data.text()
-                # self.Q.setPlainText(_translate("Form", element.text))
                 e.accept()
         else:
             e.ignore()
@@ -162,75 +152,41 @@ class MetadataDate(WizardWidget):  #
         timeperd element tag in xml tree
         """
         timeperd = etree.Element('timeperd')
-
         timeinfo = etree.Element("timeinfo")
-
         tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo").currentIndex()
-        # print tabIndex
 
         if tabIndex == 0:
-            # print ("0")
             sngdate = etree.Element("sngdate")
-            # abstract = etree.Element("abstract")
-            # abstract.text = self.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText()
-            # descript.append(abstract)
-            # temp_var = self.findChild(QLineEdit, "dateEdit").text()
-            # var_name = temp_var.toPyDate()
-            # var_name = str(var_name)
             temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
-            # print temp_var
-            sngdate.text = temp_var  # var_name.replace('-', '')
+            sngdate.text = temp_var
             timeinfo.append(sngdate)
             timeperd.append(timeinfo)
         if tabIndex == 1:
-            # print ("1")
             rngdates = etree.Element("rngdates")
             begdate = etree.Element("begdate")
             enddate = etree.Element("enddate")
-            # abstract.text = self.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText()
-            # descript.append(abstract)
-            # temp_var2 = self.findChild(QLineEdit, "dateEdit_2").text()
-            # var_name2 = temp_var2.toPyDate()
-            # var_name2 = str(var_name2)
+
             temp_var2 = self.range_date1.findChild(QLineEdit, "lineEdit").text()
-            begdate.text = temp_var2  # var_name2.replace('-', '')
-            # temp_var3 = self.findChild(QLineEdit, "dateEdit_3").text()
-            # var_name3 = temp_var3.toPyDate()
-            # var_name3 = str(var_name3)
+            begdate.text = temp_var2
             temp_var3 = self.range_date2.findChild(QLineEdit, "lineEdit").text()
-            enddate.text = temp_var3  # .replace('-', '')
+            enddate.text = temp_var3
             rngdates.append(begdate)
             rngdates.append(enddate)
             timeinfo.append(rngdates)
-            # print var_name3
             timeperd.append(timeinfo)
         if tabIndex == 2:
-            # print ("2")
             mdattim = etree.Element("mdattim")
-            # sngdate = etree.Element("sngdate")
-            # items = []
-            # for index in xrange(self.findChild(QListWidget, "listWidget").count()):
-            #     items.append(self.findChild(QListWidget, "listWidget").item(index))
-            # labels = [i.text() for i in items]
-            # for index in xrange(self.findChild(QListWidget, "listWidget").count()):
 
             for index in self.multi_dates:
                 rowEach = index.findChild(QLineEdit, "lineEdit").text()
                 sngdate = etree.Element("sngdate")
-                # rowEach = self.multi_dates(index).text()
                 strEach = str(rowEach)
-                # print strEach
-                # strSimple = strEach.replace("-", '')
 
                 sngdate.text = strEach
                 mdattim.append(sngdate)
-                # labels = [i.text() for i in items]
-                # print labels
-                # abstract.text = str(labels)
                 timeinfo.append(mdattim)
                 timeperd.append(timeinfo)
 
-        # timeperd.append(timeinfo)
 
         current = etree.Element('current')
         current.text = self.findChild(QComboBox, 'fgdc_current').currentText()
@@ -265,10 +221,8 @@ class MetadataDate(WizardWidget):  #
                     tabIndex.setCurrentIndex(1)
                     begdate = metadata_date.findtext("timeinfo/rngdates/begdate")
                     enddate = metadata_date.findtext("timeinfo/rngdates/enddate")
-                    # date_edit2 = self.findChild(QLineEdit, "dateEdit_2")
                     date_edit2 = self.range_date1.findChild(QLineEdit, "lineEdit")
                     date_edit2.setText(begdate)
-                    # date_edit3 = self.findChild(QLineEdit, "dateEdit_3")
                     date_edit3 = self.range_date2.findChild(QLineEdit, "lineEdit")
                     date_edit3.setText(enddate)
 
@@ -277,26 +231,16 @@ class MetadataDate(WizardWidget):  #
                     tabIndex.setCurrentIndex(2)
                     listW = [b.text for b in metadata_date.iterfind(".//sngdate")]
                     lenLW = len(listW)
-                    # print lenLW
                     self.first_date.findChild(QLineEdit, "lineEdit").setText(listW[0])
-                    # new_date = SingleDate()
-                    # new_date.ui.lbl_format.deleteLater()
-                    # qListW = self.findChild(QListWidget, "listWidget")
                     cnt = 1
                     for lw in listW[1:]:
-                        # print "here", type(lw)
                         new_date = "new_date" + str(cnt)
-                        # print new_date
                         new_date = SingleDate()
 
                         new_date.ui.lbl_format.deleteLater()
-                        # print new_date
                         self.ui.sa_multi_dates_content.layout().insertWidget(cnt, new_date)
-                        # self.multi_dates.append(new_date)
                         new_date.findChild(QLineEdit, "lineEdit").setText(listW[cnt])
-                        # print cnt
                         cnt += 1
-                        # qListW.addItem(lw)
 
 
                 elif metadata_date.find("timeinfo"):
@@ -304,14 +248,11 @@ class MetadataDate(WizardWidget):  #
                     tabIndex.setCurrentIndex(0)
 
                     sngdate = metadata_date.findtext("timeinfo/sngdate")
-                    # date_edit = self.findChild(QLineEdit, "dateEdit")
                     date_edit = self.single_date.findChild(QLineEdit, "lineEdit")
                     date_edit.setText(sngdate)
                 else:
                     pass
 
-                    # for child in metadata_date:
-                    #     print child.tag, '- ', child.text
 
             else:
                 print ("The tag is not timeperd")
