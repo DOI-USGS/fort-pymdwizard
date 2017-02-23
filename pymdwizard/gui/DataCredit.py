@@ -86,7 +86,7 @@ class DataCredit(WizardWidget): #
 
         Returns
         -------
-
+        None
 
         """
         print("pc drag enter")
@@ -95,11 +95,6 @@ class DataCredit(WizardWidget): #
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element.tag == 'datacred':
-#                print "element", element.text
-#                print "tag", element.tag
-                #mime_data.setText(element.text)
-                #print mime_data.text()
-                #self.Q.setPlainText(_translate("Form", element.text))
                 e.accept()
         else:
             e.ignore()
@@ -118,7 +113,6 @@ class DataCredit(WizardWidget): #
         datacred = etree.Element('datacred')
 
         datacred.text = self.findChild(QPlainTextEdit, "fgdc_datacred").toPlainText()
-        #print "ok"
 
         return datacred
 
