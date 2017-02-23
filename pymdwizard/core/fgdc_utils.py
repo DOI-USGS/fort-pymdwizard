@@ -1,4 +1,7 @@
 import requests
+
+from dateutil import parser
+
 from lxml import etree
 from lxml import html
 
@@ -52,3 +55,21 @@ def clean_error_message(message):
     else:
         clean_message = message
     return clean_message
+
+
+def format_date(date_input):
+    """
+
+    Parameters
+    ----------
+    date_input : str or datetime
+            if str provided must be in format that dateutil's parser can handle
+    Returns
+    -------
+        str : date formated in FGDC YYYYMMDD format
+    """
+
+    if type(date_input) == str:
+        date_input = parser.parse(date_input)
+
+    return date_input.strftime('%Y%m%d')
