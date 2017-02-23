@@ -76,10 +76,29 @@
               </item>
               <item>
                <widget class="QLabel" name="label_2">
+                <property name="styleSheet">
+                 <string notr="true">font: italic;</string>
+                </property>
                 <property name="text">
                  <string>What type of publication format</string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item>
                <widget class="QComboBox" name="fgdc_geoform">
@@ -144,10 +163,29 @@
               </item>
               <item>
                <widget class="QLabel" name="label">
+                <property name="styleSheet">
+                 <string notr="true">font: italic;</string>
+                </property>
                 <property name="text">
                  <string>The edition associated with the publication</string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item>
                <widget class="QLineEdit" name="fgdc_edition"/>
@@ -170,6 +208,9 @@
             </item>
             <item>
              <widget class="QLabel" name="label_38">
+              <property name="styleSheet">
+               <string notr="true">font: italic;</string>
+              </property>
               <property name="text">
                <string>When was the data set published or finalized?</string>
               </property>
@@ -208,6 +249,9 @@
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
                     <widget class="QLabel" name="label_43">
+                     <property name="styleSheet">
+                      <string notr="true">font: bold;</string>
+                     </property>
                      <property name="text">
                       <string>Is this data set part of a series?</string>
                      </property>
@@ -247,6 +291,9 @@
                  </item>
                  <item>
                   <widget class="QLabel" name="label_44">
+                   <property name="styleSheet">
+                    <string notr="true">font: italic;</string>
+                   </property>
                    <property name="text">
                     <string> Is it a release with an assigned issue number (e.g. USGS Data Series)</string>
                    </property>
@@ -313,6 +360,9 @@
                   <layout class="QHBoxLayout" name="horizontalLayout_8">
                    <item>
                     <widget class="QLabel" name="label_49">
+                     <property name="styleSheet">
+                      <string notr="true">font: bold;</string>
+                     </property>
                      <property name="text">
                       <string>Can you provide more publication information about this data set?</string>
                      </property>
@@ -352,6 +402,9 @@
                  </item>
                  <item>
                   <widget class="QLabel" name="label_50">
+                   <property name="styleSheet">
+                    <string notr="true">font: italic;</string>
+                   </property>
                    <property name="text">
                     <string>More details are always helpful for finding and properly referencing data.</string>
                    </property>
@@ -420,6 +473,9 @@
                 <layout class="QHBoxLayout" name="horizontalLayout_27">
                  <item>
                   <widget class="QLabel" name="label_63">
+                   <property name="styleSheet">
+                    <string notr="true">font: bold;</string>
+                   </property>
                    <property name="text">
                     <string>Is this data set associated with a larger work?</string>
                    </property>
@@ -459,6 +515,9 @@
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_64">
+                 <property name="styleSheet">
+                  <string notr="true">font: italic;</string>
+                 </property>
                  <property name="text">
                   <string>If the citation of a larger project is relevant, you may optionally cite it here.</string>
                  </property>
