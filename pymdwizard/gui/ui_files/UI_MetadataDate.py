@@ -11,10 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(616, 260)
+        Form.resize(582, 257)
+        Form.setMinimumSize(QtCore.QSize(582, 0))
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.fgdc_timeperd = QtWidgets.QGroupBox(Form)
+        self.fgdc_timeperd.setMinimumSize(QtCore.QSize(0, 239))
         self.fgdc_timeperd.setObjectName("fgdc_timeperd")
         self.label_2 = QtWidgets.QLabel(self.fgdc_timeperd)
         self.label_2.setGeometry(QtCore.QRect(10, 20, 411, 31))
