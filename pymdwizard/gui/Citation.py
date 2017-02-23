@@ -180,7 +180,7 @@ class Citation(WizardWidget): #
             hBoxLayout = QHBoxLayout()
             hBoxLayout.addWidget(self.lworkcit)
             lwork_ext = self.findChild(QFrame, "lworkcit_ext")
-
+            #print lwork_ext
             #lwork_ext.setFixedSize(500,500)
             lwork_ext.setLayout(hBoxLayout)
             #########################################
@@ -240,20 +240,50 @@ class Citation(WizardWidget): #
         """
         citation = etree.Element('citation')
         citeinfo = etree.Element('citeinfo')
-        origin = etree.Element("origin")
+
         pubdate = etree.Element("pubdate")
         edition = etree.Element("edition")
         geoform = etree.Element("geoform")
         title = etree.Element("title")
         onlink = etree.Element("onlink")
-        origin.text = self.ui.fg_dc_onlink.text()# = self.findChild(QLineEdit, "fgdc_origin").text()
-        pubdate.text = self.findChild(QLineEdit, "fgdc_pubdate").text()
+        #origin.text = self.findChild(QLineEdit, "fgdc_origin").text()
+        #pubdate.text = self.findChild(QLineEdit, "fgdc_pubdate").text()
+
+        #self.ui.fg_dc_origin.layout().insertWidget(0, self.multi_instance1)
+        #self.widget_instances
+        #self.added_line = QLineEdit()
+        cnt = 0
+        list_orig = self.multi_instance1.widget_instances
+        len_listorig = len(self.multi_instance1.widget_instances)
+        while cnt < len_listorig:
+            linEdit = self.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+            og_text = linEdit[0].text()
+            str_og = str(og_text)
+            #print type(str_og)
+            origin = etree.Element("origin")
+            origin.text = str_og
+            #rowEach = index.findChild(QLineEdit, "lineEdit").text()
+            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+            #print 'length', len(self.multi_instance1.widget_instances.)
+            cnt +=1
+            # sngdate = etree.Element("sngdate")
+            # # rowEach = self.multi_dates(index).text()
+            # strEach = str(rowEach)
+            # # print strEach
+            # # strSimple = strEach.replace("-", '')
+            # sngdate.text = strEach
+            citeinfo.append(origin)
+
+        temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
+        # print temp_var
+        pubdate.text = temp_var
+
         title.text = self.findChild(QLineEdit, "fgdc_title").text()
         edition.text = self.findChild(QLineEdit, "fgdc_edition").text()
         geoform.text = self.findChild(QComboBox, "fgdc_geoform").currentText()
-        onlink.text = self.ui.fg_dc_onlink.text()
+        #onlink.text = self.findChild(QLineEdit, "fgdc_onlink").text()
 
-        citeinfo.append(origin)
+        #citeinfo.append(origin)
         citeinfo.append(pubdate)
         citeinfo.append(title)
         citeinfo.append(edition)
@@ -288,20 +318,46 @@ class Citation(WizardWidget): #
         if self.ui.radioButton.isChecked():
             lworkcit1 = etree.Element('lworkcit')
             citeinfo1 = etree.Element('citeinfo')
-            origin1 = etree.Element("origin")
+            #origin1 = etree.Element("origin")
             pubdate1 = etree.Element("pubdate")
             edition1 = etree.Element("edition")
             geoform1 = etree.Element("geoform")
             title1 = etree.Element("title")
-            onlink1 = etree.Element("onlink")
-            origin1.text = self.lworkcit.findChild(QLineEdit, "fgdc_origin").text()
-            pubdate1.text = self.lworkcit.findChild(QLineEdit, "fgdc_pubdate").text()
+            #onlink1 = etree.Element("onlink")
+            #origin1.text = self.lworkcit.findChild(QLineEdit, "fgdc_origin").text()
+            #pubdate1.text = self.lworkcit.findChild(QLineEdit, "fgdc_pubdate").text()
             title1.text = self.lworkcit.findChild(QLineEdit, "fgdc_title").text()
             edition1.text = self.lworkcit.findChild(QLineEdit, "fgdc_edition").text()
             geoform1.text = self.lworkcit.findChild(QComboBox, "fgdc_geoform").currentText()
-            onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
+            #onlink1.text = self.lworkcit.findChild(QLineEdit, "fgdc_onlink").text()
 
-            citeinfo1.append(origin1)
+            cnt = 0
+            #list_orig1 = self.multi_instance1.widget_instances
+            len_listorig1 = len(self.lworkcit.multi_instance1.widget_instances)
+            while cnt < len_listorig1:
+                linEdit2 = self.lworkcit.multi_instance1.widget_instances[cnt].findChildren(QLineEdit)
+                og_text1 = linEdit2[0].text()
+                str_og1 = str(og_text1)
+                # print type(str_og)
+                origin1 = etree.Element("origin")
+                origin1.text = str_og1
+                # rowEach = index.findChild(QLineEdit, "lineEdit").text()
+                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+                # print 'length', len(self.multi_instance1.widget_instances.)
+                cnt += 1
+                # sngdate = etree.Element("sngdate")
+                # # rowEach = self.multi_dates(index).text()
+                # strEach = str(rowEach)
+                # # print strEach
+                # # strSimple = strEach.replace("-", '')
+                # sngdate.text = strEach
+                citeinfo1.append(origin1)
+
+            temp_var1 = self.lworkcit.single_date.findChild(QLineEdit, "lineEdit").text()
+            # print temp_var
+            pubdate1.text = temp_var1
+
+            #citeinfo1.append(origin1)
             citeinfo1.append(pubdate1)
             citeinfo1.append(title1)
             citeinfo1.append(edition1)
@@ -330,10 +386,42 @@ class Citation(WizardWidget): #
                 pubinfo1.append(publish1)
                 citeinfo1.append(pubinfo1)
 
+            cnt = 0
+            # list_onlink = self.multi_instance.widget_instances
+            len_listonlink1 = len(self.lworkcit.multi_instance.widget_instances)
+            while cnt < len_listonlink1:
+                linEdit3 = self.lworkcit.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
+                ol_text1 = linEdit3[0].text()
+                str_ol1 = str(ol_text1)
+                # print type(str_og)
+                onlink = etree.Element("onlink")
+                onlink.text = str_ol1
+                # rowEach = index.findChild(QLineEdit, "lineEdit").text()
+                # print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+                # print 'length', len(self.multi_instance1.widget_instances.)
+                cnt += 1
+                citeinfo1.append(onlink)
+
             lworkcit1.append(citeinfo1)
 #####################################################################################################################
             citeinfo.append(lworkcit1)
-        citeinfo.append(onlink)
+
+        cnt = 0
+        #list_onlink = self.multi_instance.widget_instances
+        len_listonlink = len(self.multi_instance.widget_instances)
+        while cnt < len_listonlink:
+            linEdit1 = self.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
+            ol_text = linEdit1[0].text()
+            str_ol = str(ol_text)
+            #print type(str_og)
+            onlink = etree.Element("onlink")
+            onlink.text = str_ol
+            #rowEach = index.findChild(QLineEdit, "lineEdit").text()
+            #print index.findChild(QLineEdit, self.multi_instance1.widget_instances).text()
+            #print 'length', len(self.multi_instance1.widget_instances.)
+            cnt +=1
+            citeinfo.append(onlink)
+        #citeinfo.append(onlink)
 
         #print "ok"
         citation.append(citeinfo)
@@ -353,8 +441,11 @@ class Citation(WizardWidget): #
         """
         try:
             if citation.tag == "citation":
+                #print citation.tag
+                #print citation.text
                 if citation.findall("citeinfo/origin"):
                     origin_text = citation.findtext("citeinfo/origin")
+                    #print origin_text
 
                     origin_box = self.findChild(QLineEdit, 'fgdc_origin')
                     origin_box.setText(origin_text)
@@ -363,6 +454,7 @@ class Citation(WizardWidget): #
 
                 if citation.findall("citeinfo/pubdate"):
                     pubdate_text = citation.findtext("citeinfo/pubdate")
+                    #print pubdate_text
 
                     pubdate_box = self.findChild(QLineEdit, 'fgdc_pubdate')
                     pubdate_box.setText(pubdate_text)
@@ -371,7 +463,7 @@ class Citation(WizardWidget): #
 
                 if citation.findall("citeinfo/title"):
                     title_text = citation.findtext("citeinfo/title")
-                    # print title_text
+                    #print title_text
 
                     title_box = self.findChild(QLineEdit, 'fgdc_title')
                     title_box.setText(title_text)
@@ -380,7 +472,7 @@ class Citation(WizardWidget): #
 
                 if citation.findall("citeinfo/edition"):
                     edition_text = citation.findtext("citeinfo/edition")
-                    # print edition_text
+                    #print edition_text
 
                     edition_box = self.findChild(QLineEdit, 'fgdc_edition')
                     edition_box.setText(edition_text)
@@ -389,7 +481,7 @@ class Citation(WizardWidget): #
 
                 if citation.findall("citeinfo/geoform"):
                     geoform_text = citation.findtext("citeinfo/geoform")
-                    # print geoform_text
+                    #print geoform_text
 
                     geoform_box = self.findChild(QComboBox, 'fgdc_geoform')
                     geoform_box.setCurrentText(geoform_text)
@@ -398,7 +490,7 @@ class Citation(WizardWidget): #
 
                 if citation.findall("citeinfo/onlink"):
                     onlink_text = citation.findtext("citeinfo/onlink")
-                    # print onlink_text
+                    #print onlink_text
 
                     onlink_box = self.findChild(QLineEdit, 'fgdc_onlink')
                     onlink_box.setText(onlink_text)
@@ -408,13 +500,13 @@ class Citation(WizardWidget): #
                 if citation.findall("citeinfo/serinfo"):
                     self.ui.radioButton_3.setChecked(True)
                     sername_text = citation.findtext("citeinfo/serinfo/sername")
-                    # print sername_text
+                    #print sername_text
 
                     sername_box = self.findChild(QLineEdit, 'fgdc_sername')
                     sername_box.setText(sername_text)
 
                     issue_text = citation.findtext("citeinfo/serinfo/issue")
-                    # print issue_text
+                    #print issue_text
 
                     issue_box = self.findChild(QLineEdit, 'fgdc_issue')
                     issue_box.setText(issue_text)
@@ -425,13 +517,13 @@ class Citation(WizardWidget): #
                 if citation.findall("citeinfo/pubinfo"):
                     self.ui.radioButton_5.setChecked(True)
                     pubplace_text = citation.findtext("citeinfo/pubinfo/pubplace")
-                    # print pubplace_text
+                    #print pubplace_text
 
                     pub_box = self.findChild(QLineEdit, 'fgdc_pubplace')
                     pub_box.setText(pubplace_text)
 
                     publish_text = citation.findtext("citeinfo/pubinfo/publish")
-                    # print publish_text
+                    #print publish_text
 
                     publish_box = self.findChild(QLineEdit, 'fgdc_publish')
                     publish_box.setText(publish_text)
@@ -445,7 +537,7 @@ class Citation(WizardWidget): #
                     self.ui.radioButton.setChecked(True)
                     if citation.findall("citeinfo/lworkcit/citeinfo/origin"):
                         origin_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/origin")
-                        # print origin_text1
+                        ##print origin_text1
 
                         origin_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_origin')
                         origin_box1.setText(origin_text1)
@@ -454,7 +546,7 @@ class Citation(WizardWidget): #
 
                     if citation.findall("citeinfo/lworkcit/citeinfo/origin"):
                         pubdate_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/pubdate")
-                        # print pubdate_text1
+                        #print pubdate_text1
 
                         pubdate_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_pubdate')
                         pubdate_box1.setText(pubdate_text1)
@@ -463,7 +555,7 @@ class Citation(WizardWidget): #
 
                     if citation.findall("citeinfo/lworkcit/citeinfo/title"):
                         title_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/title")
-                        # print title_text1
+                        #print title_text1
 
                         title_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_title')
                         title_box1.setText(title_text1)
@@ -472,7 +564,7 @@ class Citation(WizardWidget): #
 
                     if citation.findall("lworkcit/citeinfo/edition"):
                         edition_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/edition")
-                        # print edition_text1
+                        #print edition_text1
 
                         edition_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_edition')
                         edition_box1.setText(edition_text1)
@@ -481,7 +573,7 @@ class Citation(WizardWidget): #
 
                     if citation.findall("citeinfo/lworkcit/citeinfo/geoform"):
                         geoform_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/geoform")
-                        # print geoform_text1
+                        #print geoform_text1
 
                         geoform_box1 = self.lworkcit.findChild(QComboBox, 'fgdc_geoform')
                         geoform_box1.setCurrentText(geoform_text1)
@@ -490,7 +582,7 @@ class Citation(WizardWidget): #
 
                     if citation.findall("citeinfo/lworkcit/citeinfo/onlink"):
                         onlink_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/onlink")
-                        # print onlink_text1
+                        #print onlink_text1
 
                         onlink_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_onlink')
                         onlink_box1.setText(onlink_text1)
@@ -500,13 +592,13 @@ class Citation(WizardWidget): #
                     if citation.findall("citeinfo/lworkcit/citeinfo/serinfo"):
                         self.lworkcit.ui.radioButton_3.setChecked(True)
                         sername_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/serinfo/sername")
-                        # print sername_text1
+                        #print sername_text1
 
                         sername_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_sername')
                         sername_box1.setText(sername_text1)
 
                         issue_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/serinfo/issue")
-                        # print issue_text1
+                        #print issue_text1
 
                         issue_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_issue')
                         issue_box1.setText(issue_text1)
@@ -517,13 +609,13 @@ class Citation(WizardWidget): #
                     if citation.findall("citeinfo/lworkcit/citeinfo/pubinfo"):
                         self.lworkcit.ui.radioButton_5.setChecked(True)
                         pubplace_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/pubinfo/pubplace")
-                        # print pubplace_text1
+                        #print pubplace_text1
 
                         pub_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_pubplace')
                         pub_box1.setText(pubplace_text1)
 
                         publish_text1 = citation.findtext("citeinfo/lworkcit/citeinfo/pubinfo/publish")
-                        # print publish_text1
+                        #print publish_text1
 
                         publish_box1 = self.lworkcit.findChild(QLineEdit, 'fgdc_publish')
                         publish_box1.setText(publish_text1)
