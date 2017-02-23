@@ -37,6 +37,9 @@
         <bold>false</bold>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">font: italic;</string>
+      </property>
       <property name="text">
        <string>What is the time period of the information represented in the data set?</string>
       </property>
@@ -85,7 +88,7 @@
        </widget>
       </widget>
       <widget class="QWidget" name="timeinfoPage2">
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>5</x>
@@ -203,7 +206,7 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>220</x>
@@ -265,6 +268,9 @@
         <italic>true</italic>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">font: italic;</string>
+      </property>
       <property name="text">
        <string>Enter information for only one option, either 'Single Date', 'Date Range', or 'Multiple Dates'.</string>
       </property>
@@ -321,9 +327,13 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: bold;</string>
       </property>
       <property name="text">
        <string>Currentness Reference</string>
@@ -387,13 +397,6 @@
        </property>
       </widget>
      </widget>
-     <zorder>label_2</zorder>
-     <zorder>fgdc_timeinfo</zorder>
-     <zorder>label_3</zorder>
-     <zorder>fgdc_current</zorder>
-     <zorder>label_8</zorder>
-     <zorder>groupBox</zorder>
-     <zorder>pushButton</zorder>
     </widget>
    </item>
   </layout>
