@@ -122,11 +122,6 @@ class Multi_Instance(QWidget):
         self.ui.QLabelItalic.setText(params['Italic Text'])
         self.ui.addAnother.setText(params['Add text'])
         self.ui.popOff.setText(params['Remove text'])
-        self.ui.scroll = self.findChild(QScrollArea, "scrollArea")
-        print (self.ui.scroll)
-        self.ui.scroll.setObjectName(params["scrollArea"])
-        print (params["scrollArea"])
-        print (self.ui.scroll.objectName())
 
     def add_another(self):
         """
@@ -134,7 +129,7 @@ class Multi_Instance(QWidget):
 
         Returns
         -------
-        None
+
         """
 
         widget_instance = self.widget(label=self.params['Label'])
@@ -142,20 +137,13 @@ class Multi_Instance(QWidget):
 
         self.widget_instances.append(widget_instance)
 
-        area = self.ui.scroll
-        print (area.objectName())
+        area = self.findChild(QScrollArea, "scrollArea")
         vbar = area.verticalScrollBar()
-        vbar.setValue(vbar.maximum()+90)
+        vbar.setValue(vbar.maximum() + 90)
+
 
 
     def pop_off(self):
-        """
-        Deletes an instance or widget instance
-
-        Returns
-        -------
-        None
-        """
         last_added = self.widget_instances.pop()
         last_added.deleteLater()
 
@@ -163,14 +151,6 @@ class Multi_Instance(QWidget):
 class DefaultWidget(QWidget):
 
     def __init__(self, label='', parent=None):
-        """
-        This is the default widget, which allows the creation of your own
-
-        Parameters
-        ----------
-        label - the label to be set
-        parent - set to none by default
-        """
         QWidget.__init__(self)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
