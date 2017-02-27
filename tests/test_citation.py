@@ -32,7 +32,15 @@ def test_citation__to_xml(qtbot):
     widget._to_xml#(status)
     #assert type(progress) == 'lxml.etree._Element'
     widget.findChild(QComboBox, 'fgdc_geoform').setCurrentText('Book')# == 'Complete'
-    widget.findChild(QLineEdit, 'fgdc_pubdate').setText('20001013')# == 'Continually'
+    #widget.findChild(QLineEdit, 'fgdc_pubdate').setText('20001013')# == 'Continually'
+    date = widget.single_date.findChild(QLineEdit, "lineEdit")
+    date.setText('20001013')
+
+    widget.ui.radioButton_3.setChecked(True)
+    series = widget.findChild(QLineEdit, "fgdc_sername")
+    series2 = widget.findChild(QLineEdit, "fgdc_issue")
+    series.setText('Name 25')
+    series2.setText('Issue 45')
 
     cit = widget._to_xml()
 
@@ -44,6 +52,10 @@ def test_citation__to_xml(qtbot):
     <title></title>
     <edition></edition>
     <geoform>Book</geoform>
+    <serinfo>
+      <sername>Name 25</sername>
+      <issue>Issue 45</issue>
+    </serinfo>
     <onlink></onlink>
   </citeinfo>
 </citation>
