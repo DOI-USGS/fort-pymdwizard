@@ -363,7 +363,6 @@ color: rgb(50, 50, 50);
         # the event or not.
         # Here we just check if its one of the layout widget
         if event.type() == event.MouseButtonPress:
-            print(event.pos())
             self.drag_start_pos = event.pos()
         elif event.type() == event.MouseMove:
             self.mouseMoveEvent(event)

@@ -82,29 +82,6 @@ class Multi_Instance(QWidget):
         self.ui = UI_multiple_instances.Ui_Form()
         self.ui.setupUi(self)
 
-        # self.ui.scrollArea.setLayout(QVBoxLayout(self))
-        # self.ui.qlbl = QLabel(self)
-        # self.ui.label.deleteLater()
-        # self.ui.lineEdit.setText('this')
-
-        # self.multi_instances = [self.ui.lineEdit, ]
-
-
-
-        # self.ui.scrollAreaWidgetContents.setLayout(QVBoxLayout(self))
-        # self.horiz = QHBoxLayout()
-        # self.qlbl = QLabel('Orig', self)
-        # self.first_line_edit = QLineEdit()
-        # self.horiz.addWidget(self.qlbl)
-        # self.horiz.addWidget(self.first_line_edit)
-        # print self.first_line_edit
-        # self.ui.scrollAreaWidgetContents.layout().addLayout(self.horiz)
-        # self.multi_instances = [self.first_line_edit, ]
-        # area = self.findChild(QScrollArea, "scrollArea")
-        # vbar = area.verticalScrollBar()
-        # vbar.setValue(vbar.maximum()+90)
-
-
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -128,10 +105,10 @@ class Multi_Instance(QWidget):
             # self.widget.load_params = widget_load_params
 
 
-        self.ui.QLabel_Title.setText(params['Title'])
-        self.ui.QLabelItalic.setText(params['Italic Text'])
-        self.ui.addAnother.setText(params['Add text'])
-        self.ui.popOff.setText(params['Remove text'])
+            self.ui.QLabel_Title.setText(params['Title'])
+            self.ui.QLabelItalic.setText(params['Italic Text'])
+            self.ui.addAnother.setText(params['Add text'])
+            self.ui.popOff.setText(params['Remove text'])
 
 
     def add_another(self):
@@ -148,8 +125,6 @@ class Multi_Instance(QWidget):
         area = self.findChild(QScrollArea, "scrollArea")
         vbar = area.verticalScrollBar()
         vbar.setValue(vbar.maximum()+90)
-
-
 
     def pop_off(self):
         last_added = self.widget_instances.pop()
@@ -168,8 +143,6 @@ class DefaultWidget(QWidget):
         self.layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.layout)
 
-        # self.load_params()
-
     def load_params(self):
         pass
 
@@ -183,20 +156,6 @@ class CoolSingleDate(single_date.SingleDate):
         self.ui.lbl_format.deleteLater()
 
 if __name__ == "__main__":
-
-    #from pymdwizard.gui import  Citation
-
-    # params = {'Title':'hello',
-    #           'Italic Text':'world',
-    #           'Label': 'This is a label',
-    #           'Add text':'button add me',
-    #           'Remove text': 'button eat me',
-    #           'widget':Citation.Citation}
-
-
-
-
-
     utils.launch_widget(Multi_Instance, params=params)
 
 
