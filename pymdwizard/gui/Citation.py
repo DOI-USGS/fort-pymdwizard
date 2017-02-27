@@ -90,8 +90,7 @@ class Citation(WizardWidget): #
                   'Italic Text':'Is there a link to the data or agency that produced it?',
                   'Label': 'Link',
                   'Add text':'+',
-                  'Remove text': '-',
-                  'scrollArea': 'fgdc_onlink'}
+                  'Remove text': '-'}
                   #'widget':SingleDate}
         self.multi_instance = Multi_Instance(params=olParams)
         self.ui.fg_dc_onlink.layout().insertWidget(0, self.multi_instance)
@@ -101,8 +100,7 @@ class Citation(WizardWidget): #
                   'Italic Text':'Who created the data set? List the organization and/or person(s)',
                   'Label': 'Origin',
                   'Add text':'+',
-                  'Remove text': '-',
-                  'scrollArea': 'fgdc_origin'}
+                  'Remove text': '-'}
                   #'widget':SingleDate}
         self.fgdc_origin = Multi_Instance(params=ogParams)
         self.ui.fg_dc_origin.layout().insertWidget(0, self.fgdc_origin)
