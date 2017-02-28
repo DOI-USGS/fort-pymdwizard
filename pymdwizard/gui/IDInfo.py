@@ -142,7 +142,7 @@ class IdInfo(WizardWidget):
         citation_node = self.citation._to_xml()
         idinfo_node.append(citation_node)
 
-        descript_node = etree.Element('descript')
+        descript_node = self.descriptor._to_xml()
         idinfo_node.append(descript_node)
 
         timeperd_node = self.metadatadate._to_xml()
@@ -163,6 +163,9 @@ class IdInfo(WizardWidget):
 
         useconst_node = self.use._to_xml()
         idinfo_node.append(useconst_node)
+
+        datacredit_node = self.datacredit._to_xml()
+        idinfo_node.append(datacredit_node)
 
         ptcontac = self.ptcontac._to_xml()
         if ptcontac:
