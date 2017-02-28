@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1503</width>
-    <height>506</height>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,188 +25,227 @@
      <property name="title">
       <string>Citation</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <layout class="QHBoxLayout" name="horizontalLayout_15">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_8">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_33">
-              <property name="text">
-               <string>Data Set Title</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_34">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>A good title includes 'What', 'Where', and 'When'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="fgdc_title"/>
-            </item>
-           </layout>
+           <widget class="QLabel" name="label_33">
+            <property name="text">
+             <string>Data Set Title</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <widget class="QLabel" name="label_34">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>A good title includes 'What', 'Where', and 'When'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="fgdc_title"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_14">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QVBoxLayout" name="verticalLayout">
               <property name="spacing">
-               <number>3</number>
+               <number>2</number>
               </property>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout">
-                <property name="spacing">
-                 <number>2</number>
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>Larger Work Format</string>
                 </property>
-                <item>
-                 <widget class="QLabel" name="label_14">
-                  <property name="text">
-                   <string>Larger Work Format</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_2">
-                  <property name="styleSheet">
-                   <string notr="true">font: italic;</string>
-                  </property>
-                  <property name="text">
-                   <string>What type of publication format</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>10</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="fgdc_geoform">
-                  <property name="editable">
-                   <bool>true</bool>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Publication (Book)</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Publication (Journal)</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Publication (Other)</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Ongoing Project</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Website</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>GIS Data Project/Collection</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>GIS Data Service</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Other</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-               </layout>
+               </widget>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_3">
-                <property name="spacing">
-                 <number>2</number>
+               <widget class="QLabel" name="label_2">
+                <property name="styleSheet">
+                 <string notr="true">font: italic;</string>
+                </property>
+                <property name="text">
+                 <string>What type of publication format</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QComboBox" name="fgdc_geoform">
+                <property name="editable">
+                 <bool>true</bool>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_23">
-                  <property name="text">
-                   <string>Edition</string>
-                  </property>
-                 </widget>
+                 <property name="text">
+                  <string>Publication (Book)</string>
+                 </property>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label">
-                  <property name="styleSheet">
-                   <string notr="true">font: italic;</string>
-                  </property>
-                  <property name="text">
-                   <string>The edition associated with the publication</string>
-                  </property>
-                 </widget>
+                 <property name="text">
+                  <string>Publication (Journal)</string>
+                 </property>
                 </item>
                 <item>
-                 <spacer name="verticalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>10</height>
-                   </size>
-                  </property>
-                 </spacer>
+                 <property name="text">
+                  <string>Publication (Other)</string>
+                 </property>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="fgdc_edition"/>
+                 <property name="text">
+                  <string>Ongoing Project</string>
+                 </property>
                 </item>
-               </layout>
+                <item>
+                 <property name="text">
+                  <string>Website</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>GIS Data Project/Collection</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>GIS Data Service</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Other</string>
+                 </property>
+                </item>
+               </widget>
               </item>
              </layout>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_19">
+             <layout class="QVBoxLayout" name="verticalLayout_3">
               <property name="spacing">
                <number>2</number>
               </property>
+              <item>
+               <widget class="QLabel" name="label_23">
+                <property name="text">
+                 <string>Edition</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="styleSheet">
+                 <string notr="true">font: italic;</string>
+                </property>
+                <property name="text">
+                 <string>The edition associated with the publication</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_edition"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>10</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item>
                <widget class="QLabel" name="label_37">
                 <property name="text">
                  <string>Publication Date (YYYYMMDD)</string>
                 </property>
                </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>10</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item>
                <widget class="QLabel" name="label_38">
@@ -218,13 +257,52 @@
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QWidget" name="fgdc_pubdate" native="true"/>
-              </item>
              </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QWidget" name="fgdc_pubdate" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>221</width>
+                <height>100</height>
+               </size>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="spacing">
@@ -242,16 +320,7 @@
                <property name="spacing">
                 <number>1</number>
                </property>
-               <property name="leftMargin">
-                <number>1</number>
-               </property>
-               <property name="topMargin">
-                <number>1</number>
-               </property>
-               <property name="rightMargin">
-                <number>1</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>1</number>
                </property>
                <item>
@@ -272,16 +341,7 @@
                <property name="spacing">
                 <number>1</number>
                </property>
-               <property name="leftMargin">
-                <number>1</number>
-               </property>
-               <property name="topMargin">
-                <number>1</number>
-               </property>
-               <property name="rightMargin">
-                <number>1</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>1</number>
                </property>
                <item>
@@ -292,145 +352,256 @@
             </item>
            </layout>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_30">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QGroupBox" name="fgdc_serinfo">
-              <property name="title">
-               <string/>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_21">
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_23">
+             <layout class="QHBoxLayout" name="horizontalLayout_30">
+              <item>
+               <widget class="QGroupBox" name="fgdc_serinfo">
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_21">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <layout class="QVBoxLayout" name="verticalLayout_23">
                    <item>
-                    <widget class="QLabel" name="label_43">
+                    <layout class="QHBoxLayout" name="horizontalLayout_6">
+                     <item>
+                      <widget class="QLabel" name="label_43">
+                       <property name="styleSheet">
+                        <string notr="true">font: bold;</string>
+                       </property>
+                       <property name="text">
+                        <string>Is this data set part of a series?</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_3">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>48</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_3">
+                       <property name="text">
+                        <string>Yes</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_4">
+                       <property name="text">
+                        <string>No</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_44">
                      <property name="styleSheet">
-                      <string notr="true">font: bold;</string>
+                      <string notr="true">font: italic;</string>
                      </property>
                      <property name="text">
-                      <string>Is this data set part of a series?</string>
+                      <string> Is it a release with an assigned issue number (e.g. USGS Data Series)</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_3">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QFrame" name="series_ext">
+                     <property name="frameShape">
+                      <enum>QFrame::StyledPanel</enum>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>48</width>
-                       <height>20</height>
-                      </size>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
                      </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_3">
-                     <property name="text">
-                      <string>Yes</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_4">
-                     <property name="text">
-                      <string>No</string>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_44">
-                   <property name="styleSheet">
-                    <string notr="true">font: italic;</string>
-                   </property>
-                   <property name="text">
-                    <string> Is it a release with an assigned issue number (e.g. USGS Data Series)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QFrame" name="series_ext">
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_10">
-                    <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_9">
+                     <layout class="QHBoxLayout" name="horizontalLayout_10">
                       <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_21">
+                       <layout class="QHBoxLayout" name="horizontalLayout_9">
                         <item>
-                         <widget class="QLabel" name="label_42">
-                          <property name="text">
-                           <string>Series Name</string>
-                          </property>
-                         </widget>
+                         <layout class="QVBoxLayout" name="verticalLayout_21">
+                          <item>
+                           <widget class="QLabel" name="label_42">
+                            <property name="text">
+                             <string>Series Name</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="fgdc_sername"/>
+                          </item>
+                         </layout>
                         </item>
                         <item>
-                         <widget class="QLineEdit" name="fgdc_sername"/>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_22">
-                        <item>
-                         <widget class="QLabel" name="label_41">
-                          <property name="text">
-                           <string>Issue Name / Number within Series</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="fgdc_issue"/>
+                         <layout class="QVBoxLayout" name="verticalLayout_22">
+                          <item>
+                           <widget class="QLabel" name="label_41">
+                            <property name="text">
+                             <string>Issue Name / Number within Series</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="fgdc_issue"/>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
                       </item>
                      </layout>
-                    </item>
-                   </layout>
-                  </widget>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="fgdc_pubinfo">
-              <property name="title">
-               <string/>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_16">
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_24">
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="fgdc_pubinfo">
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_16">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <layout class="QVBoxLayout" name="verticalLayout_24">
                    <item>
-                    <widget class="QLabel" name="label_49">
+                    <layout class="QHBoxLayout" name="horizontalLayout_8">
+                     <item>
+                      <widget class="QLabel" name="label_49">
+                       <property name="styleSheet">
+                        <string notr="true">font: bold;</string>
+                       </property>
+                       <property name="text">
+                        <string>Can you provide more publication information about this data set?</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_5">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>48</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_5">
+                       <property name="text">
+                        <string>Yes</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_8">
+                       <property name="text">
+                        <string>No</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_50">
                      <property name="styleSheet">
-                      <string notr="true">font: bold;</string>
+                      <string notr="true">font: italic;</string>
                      </property>
                      <property name="text">
-                      <string>Can you provide more publication information about this data set?</string>
+                      <string>More details are always helpful for finding and properly referencing data.</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_5">
+                    <widget class="QFrame" name="pub_ext">
+                     <property name="frameShape">
+                      <enum>QFrame::StyledPanel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
+                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_11">
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_12">
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_30">
+                          <item>
+                           <widget class="QLabel" name="label_51">
+                            <property name="text">
+                             <string>Publication Place</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="fgdc_pubplace"/>
+                          </item>
+                         </layout>
+                        </item>
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_31">
+                          <item>
+                           <widget class="QLabel" name="label_52">
+                            <property name="text">
+                             <string>Publisher</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="fgdc_publish"/>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="fgdc_lworkcit">
+              <property name="title">
+               <string>Larger Work</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_26">
+               <item>
+                <layout class="QFormLayout" name="formLayout">
+                 <item row="0" column="0">
+                  <layout class="QHBoxLayout" name="horizontalLayout_27">
+                   <item>
+                    <widget class="QLabel" name="label_63">
+                     <property name="styleSheet">
+                      <string notr="true">font: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Is this data set associated with a larger work?</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_8">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -443,14 +614,14 @@
                     </spacer>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="radioButton_5">
+                    <widget class="QRadioButton" name="radioButton">
                      <property name="text">
                       <string>Yes</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="radioButton_8">
+                    <widget class="QRadioButton" name="radioButton_14">
                      <property name="text">
                       <string>No</string>
                      </property>
@@ -461,54 +632,52 @@
                    </item>
                   </layout>
                  </item>
-                 <item>
-                  <widget class="QLabel" name="label_50">
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_64">
                    <property name="styleSheet">
                     <string notr="true">font: italic;</string>
                    </property>
                    <property name="text">
-                    <string>More details are always helpful for finding and properly referencing data.</string>
+                    <string>If the citation of a larger project is relevant, you may optionally cite it here.</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QFrame" name="pub_ext">
+                 <item row="2" column="0" colspan="2">
+                  <widget class="QFrame" name="lworkcite_ext">
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_11">
+                   <layout class="QHBoxLayout" name="horizontalLayout_4">
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_12">
+                     <layout class="QHBoxLayout" name="horizontalLayout_3">
                       <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_30">
-                        <item>
-                         <widget class="QLabel" name="label_51">
-                          <property name="text">
-                           <string>Publication Place</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="fgdc_pubplace"/>
-                        </item>
-                       </layout>
+                       <spacer name="horizontalSpacer">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Fixed</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>18</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
                       </item>
                       <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_31">
-                        <item>
-                         <widget class="QLabel" name="label_52">
-                          <property name="text">
-                           <string>Publisher</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="fgdc_publish"/>
-                        </item>
-                       </layout>
+                       <widget class="QFrame" name="lworkcit_ext">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -521,115 +690,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QGroupBox" name="fgdc_lworkcit">
-            <property name="title">
-             <string>Larger Work</string>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_26">
-             <item>
-              <layout class="QFormLayout" name="formLayout">
-               <item row="0" column="0">
-                <layout class="QHBoxLayout" name="horizontalLayout_27">
-                 <item>
-                  <widget class="QLabel" name="label_63">
-                   <property name="styleSheet">
-                    <string notr="true">font: bold;</string>
-                   </property>
-                   <property name="text">
-                    <string>Is this data set associated with a larger work?</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_8">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>48</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton">
-                   <property name="text">
-                    <string>Yes</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_14">
-                   <property name="text">
-                    <string>No</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_64">
-                 <property name="styleSheet">
-                  <string notr="true">font: italic;</string>
-                 </property>
-                 <property name="text">
-                  <string>If the citation of a larger project is relevant, you may optionally cite it here.</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0" colspan="2">
-                <widget class="QFrame" name="lworkcite_ext">
-                 <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_3">
-                    <item>
-                     <spacer name="horizontalSpacer">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeType">
-                       <enum>QSizePolicy::Fixed</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>18</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="lworkcit_ext">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
           </item>
          </layout>
         </item>
