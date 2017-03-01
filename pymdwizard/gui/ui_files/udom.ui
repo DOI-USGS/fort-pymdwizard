@@ -37,61 +37,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextBrowser" name="fgdc_udom">
+    <widget class="QPlainTextEdit" name="fgdc_udom">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: bold;</string>
-     </property>
-     <property name="text">
-      <string>&quot;Unrepresentable Domain&quot;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_3">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: italic;</string>
-     </property>
-     <property name="text">
-      <string>This attribute type should be used for any attribute value that is not a codeset, an enumerated domain, or a range. When uncertain about which domain type should be used, this is often a good option. Clearly explain what a field represents to assist future data users. If a description is simple, it may be appropriate to have the same text in the 'Attribute Definition' and the free text description of the field. 
-
-Examples: name of a data technician, dates, notes, free text descriptions/entries, etc.</string>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

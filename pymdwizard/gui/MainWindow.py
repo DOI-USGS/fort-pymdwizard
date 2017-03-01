@@ -162,14 +162,16 @@ class PyMdWizardMainForm(QMainWindow):
             return
         file.close()
 
+        exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
             self.metadata_root._from_xml(new_record)
 
             self.set_current_file(fname)
             self.statusBar().showMessage("File loaded", 2000)
-        except:
-            msg = "Cannot open file %s:\n%s." % (fname, file.errorString())
+        except BaseException as e:
+            import traceback
+            msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QMessageBox.warning(self, "Recent Files", msg)
 
     def save_as(self):
@@ -207,6 +209,7 @@ class PyMdWizardMainForm(QMainWindow):
         out_str << xml_utils.node_to_string(self.metadata_root._to_xml())
         QApplication.restoreOverrideCursor()
 
+        file.close()
         self.set_current_file(self.cur_fname)
         self.statusBar().showMessage("File saved", 2000)
 

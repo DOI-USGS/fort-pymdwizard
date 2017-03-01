@@ -30,26 +30,30 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
+import os
 from lxml import etree
 
+import pandas as pd
+
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
+from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_rdom
+from pymdwizard.gui.ui_files import UI_detailed
+from pymdwizard.gui import attributes
 
 
-class Rdom(WizardWidget):  #
+class Detailed(WizardWidget):  #
 
-    drag_label = "Range Domain <rdom>"
+    drag_label = "Detailed Description <detailed>"
 
     def build_ui(self):
         """
@@ -58,9 +62,50 @@ class Rdom(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_rdom.Ui_fgdc_rdom() # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_detailed.Ui_Form()
         self.ui.setupUi(self)
+
+        self.attributes = attributes.Attributes()
+        self.ui.attribute_frame.layout().addWidget(self.attributes)
+
         self.setup_dragdrop(self)
+
+        self.ui.btn_browse.clicked.connect(self.browse)
+
+    def browse(self):
+        settings = QSettings('USGS', 'pymdwizard')
+        last_data_fname = settings.value('lastDataFname', '')
+        if last_data_fname:
+            dname, fname = os.path.split(last_data_fname)
+        else:
+            fname, dname = "", ""
+
+        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        if fname[0]:
+            settings.setValue('lastDataFname', fname[0])
+            self.populate_from_fname(fname[0])
+
+    def populate_from_fname(self, fname):
+        shortname = os.path.split(fname)[1]
+
+        ext = os.path.splitext(shortname)[1]
+        if ext.lower() == '.csv':
+            self.ui.fgdc_enttypl.setText(shortname)
+            self.ui.fgdc_enttypd.setText('Comma Separate Value (CSV) file containing data.')
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
+        elif ext.lower() == '.shp':
+            self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
+            self.ui.fgdc_enttypd.setText('Table containing attribute information associated with the data set.')
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
+
+
+        else:
+            msg = "Can only read '.csv' and '.shp' files here"
+            QMessageBox.warning(self, "Unsupported file format", msg)
 
     def dragEnterEvent(self, e):
         """
@@ -76,7 +121,7 @@ class Rdom(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'rdom':
+            if element.tag == 'detailed':
                 e.accept()
         else:
             e.ignore()
@@ -88,15 +133,18 @@ class Rdom(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        rdom = xml_utils.xml_node('rdom')
-        rdommin = xml_utils.xml_node('rdommin', text=self.ui.fgdc_rdommin.text(), parent_node=rdom)
-        rdommax = xml_utils.xml_node('rdommax', text=self.ui.fgdc_rdommax.text(), parent_node=rdom)
-        attrunit= xml_utils.xml_node('attrunit', text=self.ui.fgdc_attrunit.text(), parent_node=rdom)
-        attrmres= xml_utils.xml_node('attrmres', text=self.ui.fgdc_attrmres.text(), parent_node=rdom)
+        detailed = xml_utils.xml_node('detailed')
+        enttyp = xml_utils.xml_node('enttyp', parent_node=detailed)
+        enttypl = xml_utils.xml_node('enttypl', text=self.ui.fgdc_enttypl.text(), parent_node=enttyp)
+        enttypd = xml_utils.xml_node('enttypd', text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp)
+        enttypds = xml_utils.xml_node('enttyplds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
 
-        return rdom
+        attr = self.attributes._to_xml()
+        for a in attr.xpath('attr'):
+            detailed.append(a)
+        return detailed
 
-    def _from_xml(self, rdom):
+    def _from_xml(self, detailed):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -107,14 +155,15 @@ class Rdom(WizardWidget):  #
         None
         """
         try:
-            if rdom.tag == 'rdom':
-                utils.populate_widget(self, rdom)
+            if detailed.tag == 'detailed':
+                utils.populate_widget(self, detailed)
+                self.attributes._from_xml(detailed)
             else:
-                print ("The tag is not rdom")
+                print ("The tag is not a detailed")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Rdom,
-                        "udom testing")
+    utils.launch_widget(Detailed,
+                        "detailed testing")

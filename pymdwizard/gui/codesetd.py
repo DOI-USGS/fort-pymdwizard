@@ -76,7 +76,7 @@ class Codesetd(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'udom':
+            if element.tag == 'codesetd':
                 e.accept()
         else:
             e.ignore()
@@ -88,11 +88,16 @@ class Codesetd(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        udom = xml_utils.xml_node('udom', self.ui.fgdc_udom.toPlainText())
+        codesetd = xml_utils.xml_node('codesetd')
+        codesetn = xml_utils.xml_node('codesetn',
+                                      text= self.ui.fgdc_codesetn.currentText(),
+                                      parent_node=codesetd)
+        codesetn = xml_utils.xml_node('codesets',
+                                      text= self.ui.fgdc_codesets.text(),
+                                      parent_node=codesetd)
+        return codesetd
 
-        return udom
-
-    def _from_xml(self, udom):
+    def _from_xml(self, codesetd):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -103,14 +108,15 @@ class Codesetd(WizardWidget):  #
         None
         """
         try:
-            if udom.tag == 'udom':
-                self.ui.fgdc_udom.setText(udom.text)
+            if codesetd.tag == 'codesetd':
+                self.ui.fgdc_codesetn.setCurrentText(codesetd.xpath('codesetn')[0].text)
+                self.ui.fgdc_codesets.setText(codesetd.xpath('codesets')[0].text)
             else:
-                print ("The tag is not udom")
+                print ("The tag is not codesetd")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Udom,
+    utils.launch_widget(Codesetd,
                         "udom testing")

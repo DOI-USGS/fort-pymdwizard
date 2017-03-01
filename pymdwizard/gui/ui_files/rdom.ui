@@ -476,31 +476,6 @@ Short Name: city</string>
      </property>
     </spacer>
    </item>
-   <item>
-    <widget class="QLabel" name="label_2">
-     <property name="styleSheet">
-      <string notr="true">font: bold;</string>
-     </property>
-     <property name="text">
-      <string>&quot;Range Domain&quot;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_3">
-     <property name="styleSheet">
-      <string notr="true">font: italic;</string>
-     </property>
-     <property name="text">
-      <string>This attribute type should be used when value entries will fall within some numerical range. The Range Minimum should represent the minimum value recorded in the field. The Range Maximum should represent the maximum value recorded in the field. (In some cases, these values could also represent the minimum and maximum values that could possibly be recorded for the field, although this is usually a little less useful). Include units when relevant.
-
-Examples: field data tallies, temperature measurements, measured percentage of some phenomenon, length/area/height, etc. </string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>

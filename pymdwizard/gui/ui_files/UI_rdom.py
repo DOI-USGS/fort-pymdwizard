@@ -193,15 +193,6 @@ class Ui_fgdc_rdom(object):
         self.verticalLayout.addLayout(self.verticalLayout_5)
         spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
-        self.label_2 = QtWidgets.QLabel(fgdc_rdom)
-        self.label_2.setStyleSheet("font: bold;")
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
-        self.label_3 = QtWidgets.QLabel(fgdc_rdom)
-        self.label_3.setStyleSheet("font: italic;")
-        self.label_3.setWordWrap(True)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout.addWidget(self.label_3)
 
         self.retranslateUi(fgdc_rdom)
         QtCore.QMetaObject.connectSlotsByName(fgdc_rdom)
@@ -235,8 +226,4 @@ class Ui_fgdc_rdom(object):
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: city"))
-        self.label_2.setText(_translate("fgdc_rdom", "\"Range Domain\""))
-        self.label_3.setText(_translate("fgdc_rdom", "This attribute type should be used when value entries will fall within some numerical range. The Range Minimum should represent the minimum value recorded in the field. The Range Maximum should represent the maximum value recorded in the field. (In some cases, these values could also represent the minimum and maximum values that could possibly be recorded for the field, although this is usually a little less useful). Include units when relevant.\n"
-"\n"
-"Examples: field data tallies, temperature measurements, measured percentage of some phenomenon, length/area/height, etc. "))
 

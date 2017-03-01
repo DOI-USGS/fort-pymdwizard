@@ -68,11 +68,13 @@ class Attributes(WizardWidget):  #
 
 
         import pandas as pd
-        df = pd.read_csv(r"C:\Users\talbertc\Downloads\GermaineEtAl\GermaineEtAlData.csv")
-        self.load_df(df)
+        # df = pd.read_csv(r"C:\Users\talbertc\Downloads\Titanic.csv")
+        # self.load_df(df)
         self.minimize_children()
 
     def load_df(self, df):
+        self.clear_children()
+
         for col_label in df.columns:
             col = df[col_label]
             attr_i = attr.Attr(parent=self)
@@ -83,6 +85,12 @@ class Attributes(WizardWidget):  #
 
             self.attrs.append(attr_i)
             self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+
+    def clear_children(self):
+
+        for attribute in self.attrs:
+            attribute.deleteLater()
+        self.attrs = []
 
     def minimize_children(self):
         for attr_widget in self.attrs:
@@ -109,11 +117,13 @@ class Attributes(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        udom = xml_utils.xml_node('attr')
+        detailed = xml_utils.xml_node('detailed')
+        for a in self.attrs:
+            detailed.append(a._to_xml())
 
-        return udom
+        return detailed
 
-    def _from_xml(self, attr):
+    def _from_xml(self, detailed):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -124,9 +134,14 @@ class Attributes(WizardWidget):  #
         None
         """
         try:
-            if attr.tag == 'attr':
-                pass
-                # self.ui.fgdc_udom.setText(udom.text)
+            if detailed.tag == 'detailed':
+                self.clear_children()
+                for attr_node in detailed.xpath('attr'):
+                    attr_widget = attr.Attr(parent=self)
+                    attr_widget._from_xml(attr_node)
+
+                    self.attrs.append(attr_widget)
+                    self.main_layout.insertWidget(len(self.main_layout) - 1, attr_widget)
             else:
                 print ("The tag is not udom")
         except KeyError:

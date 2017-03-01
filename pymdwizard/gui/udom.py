@@ -104,7 +104,7 @@ class Udom(WizardWidget):  #
         """
         try:
             if udom.tag == 'udom':
-                self.ui.fgdc_udom.setText(udom.text)
+                utils.populate_widget(self, udom)
             else:
                 print ("The tag is not udom")
         except KeyError:

@@ -47,9 +47,15 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_edom  #
 
 
-class Edom(WizardWidget):  #
+class Edom(QWidget):  #
 
     drag_label = "Enumerated Domain <edom>"
+
+    def __init__(self, xml=None, parent=None):
+        QWidget.__init__(self, parent=parent)
+
+        self.build_ui()
+
 
     def build_ui(self):
         """
@@ -60,7 +66,7 @@ class Edom(WizardWidget):  #
         """
         self.ui = UI_edom.Ui_fgdc_edom()
         self.ui.setupUi(self)
-        self.setup_dragdrop(self)
+        # self.setup_dragdrop(self)
 
     def dragEnterEvent(self, e):
         """
@@ -72,14 +78,15 @@ class Edom(WizardWidget):  #
         Returns
         -------
         """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'udom':
-                e.accept()
-        else:
-            e.ignore()
+        # mime_data = e.mimeData()
+        # if e.mimeData().hasFormat('text/plain'):
+        #     parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        #     element = etree.fromstring(mime_data.text(), parser=parser)
+        #     if element.tag == 'udom':
+        #         e.accept()
+        # else:
+        #     e.ignore()
+        e.ignore()
 
     def _to_xml(self):
         """
@@ -88,11 +95,14 @@ class Edom(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        udom = xml_utils.xml_node('udom', self.ui.fgdc_udom.toPlainText())
+        edom = xml_utils.xml_node('edom')
+        edomv = xml_utils.xml_node('edomv', text=self.ui.fgdc_edomv.text(), parent_node=edom)
+        edomvd = xml_utils.xml_node('edomvd', text=self.ui.fgdc_edomvd.text(), parent_node=edom)
+        edomvds = xml_utils.xml_node('edomvds', text=self.ui.fgdc_edomvds.text(), parent_node=edom)
 
-        return udom
+        return edom
 
-    def _from_xml(self, udom):
+    def _from_xml(self, edom):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -103,10 +113,10 @@ class Edom(WizardWidget):  #
         None
         """
         try:
-            if udom.tag == 'udom':
-                self.ui.fgdc_udom.setText(udom.text)
+            if edom.tag == 'edom':
+                utils.populate_widget(self, edom)
             else:
-                print ("The tag is not udom")
+                print("The tag is not udom")
         except KeyError:
             pass
 

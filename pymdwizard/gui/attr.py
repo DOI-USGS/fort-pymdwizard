@@ -48,7 +48,7 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_attr
-from pymdwizard.gui import udom, edom, rdom, codesetd
+from pymdwizard.gui import udom, rdom, codesetd, edom_list
 
 
 class Attr(WizardWidget):  #
@@ -77,7 +77,7 @@ class Attr(WizardWidget):  #
         self.ui.fgdc_attrdomv.installEventFilter(self)
         # self.ui.comboBox.installEventFilter(self)
 
-        self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
+        self.ui.comboBox.currentTextChanged.connect(self.change_domain)
 
     def clear_domain(self):
         for child in self.ui.fgdc_attrdomv.children():
@@ -88,28 +88,28 @@ class Attr(WizardWidget):  #
         self.series = series
 
     def guess_domain(self):
+
+        cbo = self.ui.comboBox
+
         if self.series is not None:
-            if self.series.dtype == np.float:
-                min = self.series.min()
-                max = self.series.max()
+            uniques = self.series.unique()
+            if len(uniques) < 15:
+                self.enumerateds = []
+                enumerated = edom_list.EdomList()
+                enumerated.populate_from_list(uniques)
+
+                self.domain = enumerated
+                cbo.setCurrentIndex(0)
+
+            elif self.series.dtype == np.float or \
+                            self.series.dtype == np.int:
                 self.domain = rdom.Rdom()
-                self.domain.ui.fgdc_rdommin.setText(str(min))
-                self.domain.ui.fgdc_rdommax.setText(str(max))
-            elif self.series.dtype == np.object or \
-                 self.series.dtype == np.int:
-                uniques = self.series.unique()
-                if len(uniques) < 15:
-                    self.enumerateds = []
-                    for unique in uniques:
-                        enumerated = edom.Edom()
-                        enumerated.ui.fgdc_edomv.setText(str(unique))
-                        self.enumerateds.append(enumerated)
-                        self.ui.fgdc_attrdomv.layout().addWidget(enumerated)
-                    self.domain = edom.Edom()
-                else:
-                    self.domain = udom.Udom()
+                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+                cbo.setCurrentIndex(1)
             else:
                 self.domain = udom.Udom()
+                cbo.setCurrentIndex(3)
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
     # def change_domain(self, which):
@@ -123,13 +123,19 @@ class Attr(WizardWidget):  #
 
         domain = self.ui.comboBox.currentText().lower()
         if 'enumerated' in domain:
-            self.domain = edom.Edom()
+            self.domain = edom_list.EdomList(parent=self)
+            if self.series is not None:
+                uniques = self.series.unique()
+                self.domain.populate_from_list(uniques)
         elif 'range' in domain:
-            self.domain = rdom.Rdom()
+            self.domain = rdom.Rdom(parent=self)
+            if self.series is not None:
+                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
         elif 'codeset' in domain:
-            self.domain = codesetd.Codesetd()
+            self.domain = codesetd.Codesetd(parent=self)
         elif 'unrepresentable' in domain:
-            self.domain = udom.Udom()
+            self.domain = udom.Udom(parent=self)
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
 
@@ -154,7 +160,7 @@ class Attr(WizardWidget):  #
 
     def supersize_me(self, s=''):
         self.animation = QPropertyAnimation(self, b"minimumSize")
-        self.animation.setDuration(300)
+        self.animation.setDuration(400)
         self.animation.setEndValue(QSize(300, self.height()))
         self.animation.start()
 
@@ -181,7 +187,6 @@ class Attr(WizardWidget):  #
         # for different types of widgets and either filtering
         # the event or not.
         # Here we just check if its one of the layout widget
-        print(event.type())
         if event.type() == event.MouseButtonPress:
             self.parent_ui.minimize_children()
             self.supersize_me()
@@ -201,9 +206,26 @@ class Attr(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        udom = xml_utils.xml_node('attr')
+        attr = xml_utils.xml_node('attr')
+        if self.ui.comboBox.currentIndex() == 0:
+            attr = self.domain._to_xml()
+        else:
+            attr = xml_utils.xml_node('attr')
+            attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr)
+            domain_node = self.domain._to_xml()
+            attrdomv.append(domain_node)
 
-        return udom
+        attrlabl = xml_utils.xml_node('attrlabl',
+                                      text=self.ui.fgdc_attrlabl.text(),
+                                      parent_node=attr, index=0)
+        attrdef = xml_utils.xml_node('attrdef',
+                                     text=self.ui.fgdc_attrdef.toPlainText(),
+                                     parent_node=attr, index=1)
+        attrdefs = xml_utils.xml_node('attrdefs',
+                                      text=self.ui.fgdc_attrdefs.text(),
+                                      parent_node=attr, index=2)
+
+        return attr
 
     def _from_xml(self, attr):
         """
@@ -217,8 +239,26 @@ class Attr(WizardWidget):  #
         """
         try:
             if attr.tag == 'attr':
-                pass
-                # self.ui.fgdc_udom.setText(udom.text)
+                attr_dict = xml_utils.node_to_dict(attr)
+                if 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
+                    self.ui.comboBox.setCurrentIndex(3)
+                    self.domain._from_xml(attr.xpath('attrdomv/udom')[0])
+                elif 'fgdc_rdom' in attr_dict['fgdc_attrdomv'].keys():
+                    self.ui.comboBox.setCurrentIndex(1)
+                    self.domain._from_xml(attr.xpath('attrdomv/rdom')[0])
+                elif 'fgdc_edom' in attr_dict['fgdc_attrdomv'].keys():
+                    self.ui.comboBox.setCurrentIndex(0)
+                    self.change_domain(None)
+                    self.domain._from_xml(attr)
+                elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
+                    self.ui.comboBox.setCurrentIndex(2)
+                    self.domain._from_xml(attr.xpath('attrdomv/codesetd')[0])
+
+                utils.populate_widget(self, attr)
+
+
+
+
             else:
                 print ("The tag is not udom")
         except KeyError:

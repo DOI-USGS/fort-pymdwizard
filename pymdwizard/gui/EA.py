@@ -30,26 +30,30 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
+import os
 from lxml import etree
 
+import pandas as pd
+
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
+from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_rdom
+from pymdwizard.gui.ui_files import UI_EA
+from pymdwizard.gui import detailed
 
 
-class Rdom(WizardWidget):  #
+class EA(WizardWidget):  #
 
-    drag_label = "Range Domain <rdom>"
+    drag_label = "Entity and Attributes <eainfo>"
 
     def build_ui(self):
         """
@@ -58,8 +62,12 @@ class Rdom(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_rdom.Ui_fgdc_rdom() # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_EA.Ui_Form()
         self.ui.setupUi(self)
+
+        self.detailed = detailed.Detailed()
+        self.ui.detailed_frame.layout().addWidget(self.detailed)
+
         self.setup_dragdrop(self)
 
     def dragEnterEvent(self, e):
@@ -76,7 +84,7 @@ class Rdom(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'rdom':
+            if element.tag == 'detailed':
                 e.accept()
         else:
             e.ignore()
@@ -88,15 +96,20 @@ class Rdom(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        rdom = xml_utils.xml_node('rdom')
-        rdommin = xml_utils.xml_node('rdommin', text=self.ui.fgdc_rdommin.text(), parent_node=rdom)
-        rdommax = xml_utils.xml_node('rdommax', text=self.ui.fgdc_rdommax.text(), parent_node=rdom)
-        attrunit= xml_utils.xml_node('attrunit', text=self.ui.fgdc_attrunit.text(), parent_node=rdom)
-        attrmres= xml_utils.xml_node('attrmres', text=self.ui.fgdc_attrmres.text(), parent_node=rdom)
+        eainfo = xml_utils.xml_node('eainfo')
 
-        return rdom
+        #TODO add some logic to not include these when they haven't been used.
+        detailed = self.detailed._to_xml()
+        eainfo.append(detailed)
 
-    def _from_xml(self, rdom):
+        overview = xml_utils.xml_node('overview')
+        eaover = xml_utils.xml_node('eaover', text=self.ui.fgdc_eaover.toPlainText(), parent_node=overview)
+        eadetcit = xml_utils.xml_node('eadetcit', text=self.ui.fgdc_eaover.toPlainText(), parent_node=overview)
+        eainfo.append(overview)
+
+        return eainfo
+
+    def _from_xml(self, eainfo):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -107,14 +120,20 @@ class Rdom(WizardWidget):  #
         None
         """
         try:
-            if rdom.tag == 'rdom':
-                utils.populate_widget(self, rdom)
+            if eainfo.tag == 'eainfo':
+                detailed = eainfo.xpath('detailed')[0]
+                self.detailed._from_xml(detailed)
+
+                overview = eainfo.xpath('overview')
+                if overview:
+                    self.ui.fgdc_eaover.setText(eainfo.xpath('overview/eaover')[0].text)
+                    self.ui.fgdc_eadetcit.setText(eainfo.xpath('overview/eadetcit')[0].text)
             else:
-                print ("The tag is not rdom")
+                print ("The tag is not udom")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Rdom,
-                        "udom testing")
+    utils.launch_widget(EA,
+                        "detailed testing")
