@@ -29,12 +29,15 @@ def test_metadata_date__to_xml(qtbot):
     qtbot.addWidget(widget)
 
     widget._to_xml
-    widget.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
-    #begdateQ = QDate.fromString("20131219", 'yyyyMMdd')
-    #enddateQ = QDate.fromString("20140904", 'yyyyMMdd')
-    widget.findChild(QLineEdit, "dateEdit_2").setText("20131219")
-    widget.findChild(QLineEdit, "dateEdit_3").setText("20140904")
-    #widget.findChild(QComboBox, 'fgdc_current').setCurrentText("up to date")
+    widget.ui.radioButton_2.setChecked(True)
+    timeWidget = widget.findChild(QStackedWidget, "fgdc_timeinfo")
+    timeWidget.setCurrentIndex(1)
+    begdate = "20131219"
+    enddate = "20140904"
+    date_edit2 = widget.range_date1.findChild(QLineEdit, "lineEdit")
+    date_edit2.setText(begdate)
+    date_edit3 = widget.range_date2.findChild(QLineEdit, "lineEdit")
+    date_edit3.setText(enddate)
 
     mdDate = widget._to_xml()
 

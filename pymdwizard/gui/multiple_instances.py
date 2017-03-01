@@ -82,6 +82,7 @@ class Multi_Instance(QWidget):
         self.ui = UI_multiple_instances.Ui_Form()
         self.ui.setupUi(self)
 
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -90,33 +91,47 @@ class Multi_Instance(QWidget):
         -------
         None
         """
-        #self.ui.lineEdit.editingFinished.connect(self.check_format)
         self.ui.addAnother.clicked.connect(self.add_another)
         self.ui.popOff.clicked.connect(self.pop_off)
 
     def load_params(self, params):
+        """
+        Loads the parameters for the multiple widget/instance build
+
+        Parameters
+        ----------
+        params = {'Title':'hello',
+           'Italic Text':'world',
+           'Label': 'This is a label',
+           'Add text':'button add me',
+           'Remove text': 'button delete me',
+           'scrollArea': 'fgdc_name
+           'widget':Citation.Citation}
+
+        Returns
+        -------
+        None
+        """
         if 'widget' in params.keys():
             self.widget = params['widget']
         else:
             self.widget = DefaultWidget
-            # def widget_load_params(self):
-            #     self.qlbl.setText(params['Label'])
-
-            # self.widget.load_params = widget_load_params
 
 
-            self.ui.QLabel_Title.setText(params['Title'])
-            self.ui.QLabelItalic.setText(params['Italic Text'])
-            self.ui.addAnother.setText(params['Add text'])
-            self.ui.popOff.setText(params['Remove text'])
-
+        self.ui.QLabel_Title.setText(params['Title'])
+        self.ui.QLabelItalic.setText(params['Italic Text'])
+        self.ui.addAnother.setText(params['Add text'])
+        self.ui.popOff.setText(params['Remove text'])
 
     def add_another(self):
-        # if 'widget' in params.keys():
-        #     self.widget = params['widget']
-        # else:
-        #     self.widget = DefaultWidget
-        ###self.widget = DefaultWidget
+        """
+        Adds another instance of a widget or ____
+
+        Returns
+        -------
+
+        """
+
         widget_instance = self.widget(label=self.params['Label'])
         self.ui.verticalLayout.insertWidget(len(self.ui.verticalLayout) - 1, widget_instance)
 
@@ -124,7 +139,9 @@ class Multi_Instance(QWidget):
 
         area = self.findChild(QScrollArea, "scrollArea")
         vbar = area.verticalScrollBar()
-        vbar.setValue(vbar.maximum()+90)
+        vbar.setValue(vbar.maximum() + 90)
+
+
 
     def pop_off(self):
         last_added = self.widget_instances.pop()
@@ -156,6 +173,20 @@ class CoolSingleDate(single_date.SingleDate):
         self.ui.lbl_format.deleteLater()
 
 if __name__ == "__main__":
+
+    #from pymdwizard.gui import  Citation
+
+    # params = {'Title':'hello',
+    #           'Italic Text':'world',
+    #           'Label': 'This is a label',
+    #           'Add text':'button add me',
+    #           'Remove text': 'button eat me',
+    #           'widget':Citation.Citation}
+
+
+
+
+
     utils.launch_widget(Multi_Instance, params=params)
 
 

@@ -61,6 +61,8 @@ from pymdwizard.gui.UseConstraints import UseConstraints
 from pymdwizard.gui.Status import Status
 from pymdwizard.gui.MetadataDate import MetadataDate
 from pymdwizard.gui.Citation import Citation
+from pymdwizard.gui.DataCredit import DataCredit
+from pymdwizard.gui.Descriptor import Descriptor
 
 
 class IdInfo(WizardWidget):
@@ -90,24 +92,26 @@ class IdInfo(WizardWidget):
         self.status = Status(parent=self)
         self.metadatadate = MetadataDate(parent=self)
         self.citation = Citation(parent=self)
-
+        self.datacredit = DataCredit(parent=self)
+        self.descriptor = Descriptor(parent=self)
 
         self.ui.frame_citation.layout().addWidget(self.citation)
-        left_layout = self.ui.two_column_left.layout()
-        right_layout = self.ui.two_column_right.layout()
-        left_layout.insertWidget(left_layout.count() - 1, self.ptcontac)
-        left_layout.insertWidget(left_layout.count() - 1, self.taxonomy)
-        left_layout.insertWidget(left_layout.count() - 1, self.access)
-        left_layout.insertWidget(left_layout.count() - 1, self.use)
-        left_layout.insertWidget(left_layout.count() - 1, self.status)
+        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        self.ui.two_column_right.layout().addWidget(self.keywords, 1)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy)
+        self.ui.two_column_left.layout().addWidget(self.status)
+        self.ui.two_column_left.layout().addWidget(self.access)
+        self.ui.two_column_left.layout().addWidget(self.use)
+        self.ui.two_column_left.layout().addWidget(self.datacredit)
 
-        right_layout = self.ui.two_column_right.layout()
-        right_layout.insertWidget(right_layout.count() - 1, self.keywords)
-        right_layout.insertWidget(right_layout.count() - 1, self.metadatadate)
-        # right_layout.insertWidget(right_layout.count() - 1, self.ptcontac)
-        # right_layout.insertWidget(right_layout.count() - 1, self.ptcontac)
-        # right_layout.insertWidget(right_layout.count() - 1, self.ptcontac)
+        self.ui.two_column_right.layout().addWidget(self.metadatadate)
+        self.ui.two_column_right.layout().addWidget(self.descriptor)
 
+        # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        # self.ui.two_column_left.layout().addItem(spacerItem)
+        #
+        # spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
+        # self.ui.two_column_right.layout().addItem(spacerItem2)
 
 
     def dragEnterEvent(self, e):
@@ -138,7 +142,7 @@ class IdInfo(WizardWidget):
         citation_node = self.citation._to_xml()
         idinfo_node.append(citation_node)
 
-        descript_node = etree.Element('descript')
+        descript_node = self.descriptor._to_xml()
         idinfo_node.append(descript_node)
 
         timeperd_node = self.metadatadate._to_xml()
@@ -159,6 +163,9 @@ class IdInfo(WizardWidget):
 
         useconst_node = self.use._to_xml()
         idinfo_node.append(useconst_node)
+
+        datacredit_node = self.datacredit._to_xml()
+        idinfo_node.append(datacredit_node)
 
         ptcontac = self.ptcontac._to_xml()
         if ptcontac:

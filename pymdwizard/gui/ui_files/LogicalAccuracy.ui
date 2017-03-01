@@ -35,7 +35,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Data Access Constraints</string>
+      <string>Logical Accuracy Report</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -45,11 +45,8 @@
           <italic>true</italic>
          </font>
         </property>
-        <property name="styleSheet">
-         <string notr="true">font: italic;</string>
-        </property>
         <property name="text">
-         <string>Describe any restrictions of legal prerequisites for ACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set.</string>
+         <string>Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -57,12 +54,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_accconst">
+       <widget class="QPlainTextEdit" name="fgdc_logic">
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
         <property name="plainText">
-         <string>None.  Please see 'Distribution Info' for details.</string>
+         <string>No formal logical accuracy tests were conducted.</string>
         </property>
         <property name="overwriteMode">
          <bool>true</bool>

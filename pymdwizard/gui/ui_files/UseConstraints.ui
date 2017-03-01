@@ -57,6 +57,9 @@
           <italic>true</italic>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
+        </property>
         <property name="text">
          <string>Describe any restrictions or legal prerequisites for USING the data set.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set.</string>
         </property>

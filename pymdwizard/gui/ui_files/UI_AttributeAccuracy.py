@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'AccessConstraints.ui'
+# Form implementation generated from reading ui file 'AttributeAccuracy.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(592, 301)
+        Form.resize(564, 206)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -27,15 +27,14 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setItalic(True)
         self.label.setFont(font)
-        self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.fgdc_accconst = QtWidgets.QPlainTextEdit(self.groupBox)
-        self.fgdc_accconst.setAcceptDrops(False)
-        self.fgdc_accconst.setOverwriteMode(True)
-        self.fgdc_accconst.setObjectName("fgdc_accconst")
-        self.verticalLayout_2.addWidget(self.fgdc_accconst)
+        self.fgdc_attraccr = QtWidgets.QPlainTextEdit(self.groupBox)
+        self.fgdc_attraccr.setAcceptDrops(False)
+        self.fgdc_attraccr.setOverwriteMode(True)
+        self.fgdc_attraccr.setObjectName("fgdc_attraccr")
+        self.verticalLayout_2.addWidget(self.fgdc_attraccr)
         self.verticalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(Form)
@@ -44,9 +43,9 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Data Access Constraints"))
-        self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites for ACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set."))
-        self.fgdc_accconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
+        self.groupBox.setTitle(_translate("Form", "Attribute Accuracy Report"))
+        self.label.setText(_translate("Form", "How accurate are the values in the data set relative to \"true\" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info."))
+        self.fgdc_attraccr.setPlainText(_translate("Form", "No formal attribute accuracy tests were conducted."))
 
 
 if __name__ == "__main__":

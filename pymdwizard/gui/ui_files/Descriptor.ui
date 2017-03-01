@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
-    <height>501</height>
+    <width>526</width>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,6 +55,9 @@
           <pointsize>9</pointsize>
           <italic>true</italic>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
         </property>
         <property name="text">
          <string>Provide a description of the data set.</string>
@@ -107,6 +110,9 @@
           <italic>true</italic>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
+        </property>
         <property name="text">
          <string>Why were the data collected?  What is an appropriate use of the data?</string>
         </property>
@@ -157,6 +163,9 @@
           <pointsize>9</pointsize>
           <italic>true</italic>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
         </property>
         <property name="text">
          <string>Use this optional section to add ANY other details or information about the data set that may be helpful to future users.</string>

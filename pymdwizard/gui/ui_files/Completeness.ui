@@ -35,7 +35,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Data Access Constraints</string>
+      <string>Completeness Report</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -45,11 +45,8 @@
           <italic>true</italic>
          </font>
         </property>
-        <property name="styleSheet">
-         <string notr="true">font: italic;</string>
-        </property>
         <property name="text">
-         <string>Describe any restrictions of legal prerequisites for ACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set.</string>
+         <string>Does the data set represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the data set versus what is not.   See help for more info.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -57,12 +54,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_accconst">
+       <widget class="QPlainTextEdit" name="fgdc_complete">
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
         <property name="plainText">
-         <string>None.  Please see 'Distribution Info' for details.</string>
+         <string>Data set is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details.</string>
         </property>
         <property name="overwriteMode">
          <bool>true</bool>
