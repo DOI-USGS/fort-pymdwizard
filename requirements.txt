@@ -2,4 +2,6 @@ requests
 lxml
 pandas
 jupyter
+gdal
+geopandas
 # PyQt >= 5.0
