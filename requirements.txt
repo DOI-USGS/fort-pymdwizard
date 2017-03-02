@@ -4,4 +4,4 @@ pandas
 jupyter
 gdal
 geopandas
-# PyQt >= 5.0
+PyQt >= 5.0
