@@ -31,6 +31,16 @@ def test_descriptor__to_xml(qtbot):
 
 
     widget._to_xml#(use_const)
-    assert widget.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText() == ""
-    assert widget.findChild(QPlainTextEdit, "fgdc_purpose").toPlainText() == ""
-    assert widget.findChild(QPlainTextEdit, "fgdc_supplinf").toPlainText() == ""
+    widget.findChild(QPlainTextEdit, "fgdc_abstract").setPlainText("This is the description portion")
+    widget.findChild(QPlainTextEdit, "fgdc_purpose").setPlainText("The purpose and appropriate use of the data is to...")
+    widget.findChild(QPlainTextEdit, "fgdc_supplinf").setPlainText("Any additional supplemental info is this,")
+
+    mdDescript = widget._to_xml()
+
+    assert etree.tostring(mdDescript, pretty_print=True).decode() \
+    == """<descript>
+  <abstract>This is the description portion</abstract>
+  <purpose>The purpose and appropriate use of the data is to...</purpose>
+  <supplinf>Any additional supplemental info is this,</supplinf>
+</descript>
+"""

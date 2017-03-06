@@ -1,20 +1,26 @@
 language: python
 
+sudo: required
+
 env:
     - CONDA="python=2.7"
     - CONDA="python=3.4"
     - CONDA="python=3.5"
 before_install:
+    - sudo wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu52_52.1-3ubuntu0.4_amd64.deb
+    - sudo dpkg -i libicu52_52.1-3ubuntu0.4_amd64.deb
+
     - wget http://bit.ly/miniconda -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
     - conda update --yes conda
-    - travis_retry conda create --yes -n TEST $CONDA --file requirements.txt
     - conda config --add channels conda-forge --force
+    - travis_retry conda create --yes -n TEST $CONDA --file requirements.txt
     - source activate TEST
     - travis_retry conda install --yes pytest
     - travis_retry conda install --yes pytest-cov
     - travis_retry conda install --yes pytest-qt
+    - travis_retry conda install icu=56.*
 install:
   - "pip install coveralls>=1.1"
 before_script:

@@ -45,6 +45,9 @@
           <italic>true</italic>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
+        </property>
         <property name="text">
          <string>Are there other organizations / individuals who should get credit for support, funding, data collection, or analysis?</string>
         </property>

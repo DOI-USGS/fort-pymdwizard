@@ -59,6 +59,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_MetadataRoot
 from pymdwizard.gui.IDInfo import IdInfo
 from pymdwizard.gui.spref import SpRef
+from pymdwizard.gui.EA import EA
 
 
 class MetadataRoot(WizardWidget):
@@ -84,6 +85,9 @@ class MetadataRoot(WizardWidget):
 
         self.spref = SpRef()
         self.ui.page_spatial.setLayout(self.spref.layout())
+
+        self.eainfo = EA()
+        self.ui.page_eainfo.setLayout(self.eainfo.layout())
 
     def connect_events(self):
         """
@@ -130,13 +134,16 @@ class MetadataRoot(WizardWidget):
         spref = self.spref._to_xml()
         metadata_node.append(spref)
 
+        eainfo = self.eainfo._to_xml()
+        metadata_node.append(eainfo)
+
         return metadata_node
 
 
     def _from_xml(self, metadata_element):
         self.idinfo._from_xml(metadata_element.xpath('idinfo')[0])
-        self.spref._from_xml(metadata_element.xpath('spref')[0])
-
+        # self.spref._from_xml(metadata_element.xpath('spref')[0])
+        self.eainfo._from_xml(metadata_element.xpath('eainfo')[0])
 
 class FaderWidget(QWidget):
 
