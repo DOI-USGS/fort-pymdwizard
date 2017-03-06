@@ -174,14 +174,14 @@ class CoolSingleDate(single_date.SingleDate):
 
 if __name__ == "__main__":
 
-    #from pymdwizard.gui import  Citation
+    from pymdwizard.gui import  Citation
 
-    # params = {'Title':'hello',
-    #           'Italic Text':'world',
+    # params = {'Title': 'hello',
+    #           'Italic Text': 'world',
     #           'Label': 'This is a label',
-    #           'Add text':'button add me',
-    #           'Remove text': 'button eat me',
-    #           'widget':Citation.Citation}
+    #           'Add text': 'button add me',
+    #           'Remove text': 'button del me',
+    #           'widget': Citation.Citation}
 
 
 
