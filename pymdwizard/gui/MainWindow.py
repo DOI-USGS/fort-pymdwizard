@@ -57,6 +57,7 @@ from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils, utils
 from pymdwizard.gui.Preview import Preview
+from pymdwizard.core import spatial_utils
 
 class PyMdWizardMainForm(QMainWindow):
 
@@ -107,6 +108,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionRun_Validation.triggered.connect(self.validate)
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
+        self.ui.actionPull_From_Data.triggered.connect(self.harvest)
 
     def open_recent_file(self):
         """
@@ -352,6 +354,14 @@ opacity: 25;
 
         self.preview = Preview(url=tmp.name)
         self.preview.show()
+
+    def harvest(self):
+        fname = r"N:\Metadata\MetadataWizard\pymdwizard\tests\data\projections\World_Azimuthal_Equidistant.shp"
+        layer = spatial_utils.get_layer(fname)
+        params = spatial_utils.get_params(layer)
+        geo = spatial_utils.geographic(params)
+
+        self.metadata_root.spref._from_xml(geo)
 
 def main():
     app = QApplication(sys.argv)
