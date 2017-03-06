@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Access Constraints <accconst> section
+Provide a pyqt widget for a Logical Accuracy <logic> section
 
 
 SCRIPT DEPENDENCIES
@@ -54,12 +54,12 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_AccessConstraints #
+from pymdwizard.gui.ui_files import UI_LogicalAccuracy #
 
 
-class AccessConstraints(WizardWidget): #
+class LogicalAccuracy(WizardWidget): #
 
-    drag_label = "Access Constraints <accconst>"
+    drag_label = "Logical Accuracy <logic>"
 
 
     def build_ui(self):
@@ -70,7 +70,7 @@ class AccessConstraints(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_AccessConstraints.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_LogicalAccuracy.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -79,7 +79,7 @@ class AccessConstraints(WizardWidget): #
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'accconst'
+        a root tag called 'logic'
         Parameters
         ----------
         e : qt event
@@ -94,7 +94,7 @@ class AccessConstraints(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'accconst':
+            if element.tag == 'logic':
                 e.accept()
         else:
             e.ignore()
@@ -108,36 +108,36 @@ class AccessConstraints(WizardWidget): #
 
         Returns
         -------
-        accconst element tag in xml tree
+        logic element tag in xml tree
         """
-        accconst = etree.Element('accconst')
-        accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
+        logic = etree.Element('logic')
+        logic.text = self.findChild(QPlainTextEdit, "fgdc_logic").toPlainText()
 
-        return accconst
+        return logic
 
-    def _from_xml(self, access_constraints):
+    def _from_xml(self, logical_accuracy):
         """
-        parses the xml code into the relevant accconst elements
+        parses the xml code into the relevant logic elements
 
         Parameters
         ----------
-        access_constraints - the xml element status and its contents
+        logical_accuracy - the xml element status and its contents
 
         Returns
         -------
         None
         """
         try:
-            if access_constraints.tag == 'accconst':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
-               accost_box.setPlainText(access_constraints.text)
+            if logical_accuracy.tag == 'logic':
+               accost_box = self.findChild(QPlainTextEdit, "fgdc_logic")
+               accost_box.setPlainText(logical_accuracy.text)
             else:
-               print ("The tag is not accconst")
+               print ("The tag is not logic")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(AccessConstraints,
-                        "Access Constraints testing")
+    utils.launch_widget(LogicalAccuracy,
+                        "Logical Accuracy testing")
 
