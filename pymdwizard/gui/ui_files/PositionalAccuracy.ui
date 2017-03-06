@@ -20,20 +20,11 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>3</number>
-   </property>
-   <property name="topMargin">
-    <number>3</number>
-   </property>
-   <property name="rightMargin">
-    <number>3</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>3</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="fgdc_possacc">
+    <widget class="QGroupBox" name="fg_dc_possacc">
      <property name="title">
       <string>Positional Accuracy</string>
      </property>
