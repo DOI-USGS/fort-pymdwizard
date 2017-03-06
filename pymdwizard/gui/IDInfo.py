@@ -96,16 +96,17 @@ class IdInfo(WizardWidget):
         self.descriptor = Descriptor(parent=self)
 
         self.ui.frame_citation.layout().addWidget(self.citation)
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        self.ui.two_column_right.layout().addWidget(self.keywords, 1)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy)
-        self.ui.two_column_left.layout().addWidget(self.status)
-        self.ui.two_column_left.layout().addWidget(self.access)
-        self.ui.two_column_left.layout().addWidget(self.use)
-        self.ui.two_column_left.layout().addWidget(self.datacredit)
 
-        self.ui.two_column_right.layout().addWidget(self.metadatadate)
-        self.ui.two_column_right.layout().addWidget(self.descriptor)
+        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
+        self.ui.two_column_left.layout().addWidget(self.status, 2)
+        self.ui.two_column_left.layout().addWidget(self.access, 3)
+        self.ui.two_column_left.layout().addWidget(self.use, 4)
+        self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
+
+        self.ui.two_column_right.layout().addWidget(self.keywords, 0)
+        self.ui.two_column_right.layout().addWidget(self.metadatadate, 1)
+        self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
 
         # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
         # self.ui.two_column_left.layout().addItem(spacerItem)
