@@ -57,6 +57,7 @@ from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils, utils
 from pymdwizard.gui.Preview import Preview
+from pymdwizard.core import spatial_utils
 
 class PyMdWizardMainForm(QMainWindow):
 
@@ -107,6 +108,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionRun_Validation.triggered.connect(self.validate)
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
+        self.ui.actionPull_From_Data.triggered.connect(self.harvest)
 
     def open_recent_file(self):
         """
@@ -160,14 +162,16 @@ class PyMdWizardMainForm(QMainWindow):
             return
         file.close()
 
+        exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
             self.metadata_root._from_xml(new_record)
 
             self.set_current_file(fname)
             self.statusBar().showMessage("File loaded", 2000)
-        except:
-            msg = "Cannot open file %s:\n%s." % (fname, file.errorString())
+        except BaseException as e:
+            import traceback
+            msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QMessageBox.warning(self, "Recent Files", msg)
 
     def save_as(self):
@@ -205,6 +209,7 @@ class PyMdWizardMainForm(QMainWindow):
         out_str << xml_utils.node_to_string(self.metadata_root._to_xml())
         QApplication.restoreOverrideCursor()
 
+        file.close()
         self.set_current_file(self.cur_fname)
         self.statusBar().showMessage("File saved", 2000)
 
@@ -353,19 +358,31 @@ opacity: 25;
         self.preview = Preview(url=tmp.name)
         self.preview.show()
 
+    def harvest(self):
+        fname = r"N:\Metadata\MetadataWizard\pymdwizard\tests\data\projections\World_Azimuthal_Equidistant.shp"
+        layer = spatial_utils.get_layer(fname)
+        params = spatial_utils.get_params(layer)
+        geo = spatial_utils.geographic(params)
+
+        self.metadata_root.spref._from_xml(geo)
+
 def main():
     app = QApplication(sys.argv)
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('Metadata duck.png')
+    splash_fname = utils.get_resource_path('splash_ducks.jpg')
     splash_pix = QPixmap(splash_fname)
+
+    size = splash_pix.size()*.55
+    splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
+                                transformMode=Qt.SmoothTransformation)
 
     # below makes the pixmap half transparent
     painter = QPainter(splash_pix)
     painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
 
-    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 127))
+    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 100))
 
     font = QFont()
     font.setFamily('Arial')
@@ -373,7 +390,7 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(Qt.white)
+    painter.setPen(QColor(250, 250, 250))
     painter.drawText(splash_pix.rect(), Qt.AlignCenter,
                  "Metadata Wizard")
 
@@ -383,9 +400,9 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(Qt.red)
-    painter.drawText(splash_pix.rect(), Qt.AlignBottom,
-                     "TODO: add a respectable picture...")
+    painter.setPen(QColor(150, 150, 150, 200))
+    painter.drawText(splash_pix.rect().adjusted(20, -20, -20, -20), Qt.AlignBottom,
+                     "putting the fun in fundamental science practices")
     painter.end()
 
 

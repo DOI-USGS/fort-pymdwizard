@@ -5,7 +5,7 @@
 
 
 
-pymdwizard: A Python based open source version of the Metadata Wizard
+pymdwizard: Standalone version of the Metadata Wizard
 ===========================================================================================
 
 The  is a useful tool designed to facilitate FGDC  

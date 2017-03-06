@@ -39,6 +39,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 # built in Python imports
+import os
 import collections
 import warnings
 
@@ -50,6 +51,33 @@ try:
 except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
+
+
+def xml_document_loader(xml_locator):
+    """
+
+    Parameters
+    ----------
+    xml_locator : str or lxml element or lxml document
+                if str can be one of:
+                    file path and name to an xml document
+                    string representation of an xml document
+                    TODO: add option for url that resolves to an xml document
+                lxml element or document
+
+    Returns
+    -------
+        lxml element
+    """
+
+    if isinstance(xml_locator, str):
+        if os.path.exists(xml_locator):
+            return fname_to_node(xml_locator)
+        else:
+            return string_to_node(xml_locator)
+
+    else:
+        return xml_locator
 
 
 def node_to_dict(node, add_fgdc=True):
@@ -237,4 +265,18 @@ def xml_node(tag, text='', parent_node=None, index=-1):
 
     return node
 
+
+def clear_children(element):
+    """
+    Removes all child elements from the element passed
+    Parameters
+    ----------
+    xml_node : lxml element
+
+    Returns
+    -------
+    None
+    """
+    for child in element.getchildren():
+        element.remove(child)
 

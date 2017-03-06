@@ -1,16 +1,50 @@
 import requests
+
+from dateutil import parser
+
 from lxml import etree
-from lxml import html
 
 from pymdwizard.core import xml_utils
+from pymdwizard.core import utils
 
-def validate_xml(xml, xsl_fname):
+
+def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
+    """
+
+    Parameters
+    ----------
+    xml : lxml document
+                or
+          filename
+                or
+          string containing xml representation
+
+    xsl_fname : str (optional)
+                can be one of:
+                'fgdc' - uses the standard fgdc schema
+                        ../resources/FGDC/fgdc-std-001-1998-annotated.xsd
+                'bdp' = use the Biological Data profile schema,
+                        ../resources/FGDC/BDPfgdc-std-001-1998-annotated.xsd
+                full file path to another local schema.
+
+                if not specified defaults to 'fgdc'
+
+    Returns
+    -------
+        list of tuples
+        (
+    """
+
+    if xsl_fname.lower() == 'fgdc':
+        xsl_fname = utils.get_resource_path('fgdc-std-001-1998-annotated.xsd')
+    elif xsl_fname.lower() == 'bdp':
+        xsl_fname = utils.get_resource_path('BDPfgdc-std-001-1998-annotated.xsd')
 
     xmlschema_doc = etree.parse(xsl_fname)
     xmlschema = etree.XMLSchema(xmlschema_doc)
 
-    # tree = etree.ElementTree(xml)
-    tree =  etree.ElementTree(etree.fromstring(xml_utils.node_to_string(xml)))
+    xml_str = xml_utils.node_to_string(xml_utils.xml_document_loader(xml))
+    tree = etree.ElementTree(etree.fromstring(xml_str))
 
     if xmlschema.validate(tree):
         return []
@@ -28,6 +62,7 @@ def validate_xml(xml, xsl_fname):
                            error.line))
 
     return errors
+
 
 def clean_error_message(message):
     """
@@ -52,3 +87,21 @@ def clean_error_message(message):
     else:
         clean_message = message
     return clean_message
+
+
+def format_date(date_input):
+    """
+
+    Parameters
+    ----------
+    date_input : str or datetime
+            if str provided must be in format that dateutil's parser can handle
+    Returns
+    -------
+        str : date formated in FGDC YYYYMMDD format
+    """
+
+    if type(date_input) == str:
+        date_input = parser.parse(date_input)
+
+    return date_input.strftime('%Y%m%d')

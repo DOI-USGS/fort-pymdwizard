@@ -100,9 +100,16 @@
     </property>
     <addaction name="actionPreview"/>
    </widget>
+   <widget class="QMenu" name="menuPull_From_Data">
+    <property name="title">
+     <string>Pull From Data</string>
+    </property>
+    <addaction name="actionPull_From_Data"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
    <addaction name="menuPreview"/>
+   <addaction name="menuPull_From_Data"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -197,6 +204,11 @@
   <action name="actionPreview">
    <property name="text">
     <string>Preview</string>
+   </property>
+  </action>
+  <action name="actionPull_From_Data">
+   <property name="text">
+    <string>Pull From Data</string>
    </property>
   </action>
  </widget>

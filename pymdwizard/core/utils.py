@@ -48,7 +48,7 @@ import requests
 
 import pandas as pd
 
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLineEdit, QTextEdit, QTextBrowser, QPlainTextEdit
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtCore import Qt
@@ -85,7 +85,7 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
         return element
 
 
-def populate_widget(widget, data_dict):
+def populate_widget(widget, contents):
     """
     uses the
 
@@ -94,7 +94,7 @@ def populate_widget(widget, data_dict):
     widget : QtGui:QWidget
             This widget has QLineEdits with names that correspond to the keys
             in the dictionary.
-    data_dict : dict
+    contents : dict
             A dictionary containing key that correspond to line edits and
             values that will be inserted as text.  This dictionary will be
             flattened if it contains a nested hierarchy.
@@ -103,14 +103,26 @@ def populate_widget(widget, data_dict):
     None
 
     """
-    for key, value in data_dict.items():
+    if not isinstance(contents, dict):
+        contents = xml_utils.node_to_dict(contents)
+
+    for key, value in contents.items():
         if isinstance(value, dict):
             populate_widget(widget, value)
         else:
             try:
-                line_edit = widget.findChild(QLineEdit, key)
-                line_edit.setText(value)
-            except:
+                child_widget = getattr(widget.ui, key)
+                try:
+                    child_widget.setText(value)
+                except:
+                    pass
+
+                try:
+                    child_widget.setPlainText(value)
+                except:
+                    pass
+
+            except AttributeError:
                 pass
 
 # Back up the reference to the exceptionhook

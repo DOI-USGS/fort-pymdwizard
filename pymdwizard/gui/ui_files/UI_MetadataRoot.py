@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MetaDataroot.ui'
+# Form implementation generated from reading ui file 'MetadataRoot.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -157,12 +157,6 @@ class Ui_metadata_root(object):
         self.fgdc_metadata.addWidget(self.page_dataqual)
         self.page_spatial = QtWidgets.QWidget()
         self.page_spatial.setObjectName("page_spatial")
-        self.label_3 = QtWidgets.QLabel(self.page_spatial)
-        self.label_3.setGeometry(QtCore.QRect(290, 280, 181, 81))
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
         self.fgdc_metadata.addWidget(self.page_spatial)
         self.page_eainfo = QtWidgets.QWidget()
         self.page_eainfo.setObjectName("page_eainfo")
@@ -195,6 +189,7 @@ class Ui_metadata_root(object):
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.retranslateUi(metadata_root)
+        self.fgdc_metadata.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(metadata_root)
 
     def retranslateUi(self, metadata_root):
@@ -208,7 +203,6 @@ class Ui_metadata_root(object):
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
         self.label.setText(_translate("metadata_root", "ID INFO"))
         self.label_2.setText(_translate("metadata_root", "Data Quality"))
-        self.label_3.setText(_translate("metadata_root", "Spatial"))
         self.label_4.setText(_translate("metadata_root", "Entity and Att"))
         self.label_5.setText(_translate("metadata_root", "Distribution"))
         self.label_6.setText(_translate("metadata_root", "Metadata Ref"))
