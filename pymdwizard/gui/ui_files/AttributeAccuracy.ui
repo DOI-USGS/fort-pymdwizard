@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>564</width>
-    <height>206</height>
+    <width>565</width>
+    <height>160</height>
    </rect>
   </property>
   <property name="font">
@@ -35,6 +35,9 @@
          <font>
           <italic>true</italic>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
         </property>
         <property name="text">
          <string>How accurate are the values in the data set relative to &quot;true&quot; values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info.</string>
