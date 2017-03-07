@@ -59,7 +59,7 @@ from pymdwizard.gui.Keywords import Keywords
 from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
 from pymdwizard.gui.Status import Status
-from pymdwizard.gui.MetadataDate import MetadataDate
+from pymdwizard.gui.timeperd import Timeperd
 from pymdwizard.gui.Citation import Citation
 from pymdwizard.gui.DataCredit import DataCredit
 from pymdwizard.gui.Descriptor import Descriptor
@@ -90,7 +90,7 @@ class IdInfo(WizardWidget):
         self.access = AccessConstraints(parent=self)
         self.use = UseConstraints(parent=self)
         self.status = Status(parent=self)
-        self.metadatadate = MetadataDate(parent=self)
+        self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
         self.descriptor = Descriptor(parent=self)
@@ -105,14 +105,8 @@ class IdInfo(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
 
         self.ui.two_column_right.layout().addWidget(self.keywords, 0)
-        self.ui.two_column_right.layout().addWidget(self.metadatadate, 1)
+        self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
         self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
-
-        # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_left.layout().addItem(spacerItem)
-        #
-        # spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_right.layout().addItem(spacerItem2)
 
 
     def dragEnterEvent(self, e):
