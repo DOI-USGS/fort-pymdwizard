@@ -54,10 +54,9 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Citation #
+from pymdwizard.gui.ui_files import UI_Citation
 from pymdwizard.gui.single_date import SingleDate
-from pymdwizard.gui.multiple_instances import Multi_Instance
-
+from pymdwizard.gui.repeating_element import RepeatingElement
 
 class Citation(WizardWidget): #
 
@@ -74,38 +73,30 @@ class Citation(WizardWidget): #
         """
         self.ui = UI_Citation.Ui_Form()
         self.ui.setupUi(self)
-        self.setup_dragdrop(self)
+
         self.ui.lworkcite_ext.hide()
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.single_date = SingleDate()
-        self.single_date.ui.lbl_format.deleteLater()
-        self.single_date.ui.label.deleteLater()
-
-        self.ui.fgdc_pubdate.setLayout(QVBoxLayout(self))
-        self.ui.fgdc_pubdate.layout().insertWidget(0, self.single_date)
+        self.single_date = SingleDate(label='', show_format=False)
+        self.ui.pubdate_layout.addWidget(self.single_date)
 
         #Multi_Inst onlink
-        olParams = {'Title':'Online Link for the Data Set',
-                  'Italic Text':'Is there a link to the data or agency that produced it?',
-                  'Label': 'Link',
-                  'Add text':'+',
-                  'Remove text': '-'}
-                  #'widget':SingleDate}
-        self.multi_instance = Multi_Instance(params=olParams)
-        self.ui.fg_dc_onlink.layout().insertWidget(0, self.multi_instance)
+        olParams = {'Add text':'add another url',
+                  'Remove text': 'remove last url',
+                  'widget_kwargs': {'label': 'Link'}}
+        self.onlink_list = RepeatingElement(params=olParams)
+        self.onlink_list.add_another()
+        self.ui.onlink_layout.addWidget(self.onlink_list)
 
         #Multi_Inst originator
-        ogParams = {'Title':'Data Set Author / Originator',
-                  'Italic Text':'Who created the data set? List the organization and/or person(s)',
-                  'Label': 'Origin',
-                  'Add text':'+',
-                  'Remove text': '-'}
-                  #'widget':SingleDate}
-        self.fgdc_origin = Multi_Instance(params=ogParams)
-        self.ui.fg_dc_origin.layout().insertWidget(0, self.fgdc_origin)
+        ogParams = {'Add text':'add another originator',
+                  'Remove text': 'remove last originator',
+                  'widget_kwargs': {'label': 'Originator'}}
+        self.fgdc_origin = RepeatingElement(params=ogParams, which='vertical')
+        self.fgdc_origin.add_another()
+        self.ui.originator_layout.addWidget(self.fgdc_origin)
 
-
+        self.setup_dragdrop(self)
 
     def connect_events(self):
         """
@@ -224,10 +215,10 @@ class Citation(WizardWidget): #
         title = etree.Element("title")
         onlink = etree.Element("onlink")
         cnt = 0
-        list_orig = self.fgdc_origin.widget_instances
-        len_listorig = len(self.fgdc_origin.widget_instances)
+        list_orig = self.fgdc_origin.widgets
+        len_listorig = len(self.fgdc_origin.widgets)
         while cnt < len_listorig:
-            linEdit = self.fgdc_origin.widget_instances[cnt].findChildren(QLineEdit)
+            linEdit = self.fgdc_origin.widgets[cnt].findChildren(QLineEdit)
             og_text = linEdit[0].text()
             str_og = str(og_text)
             origin = etree.Element("origin")
