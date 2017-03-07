@@ -330,6 +330,9 @@ QGroupBox{
      padding-top: 20px;
     font: bold 14px;
     color: rgb(90, 90, 90);
+    border: 1px solid gray;
+    border-radius: 2px;
+}
  }
 QGroupBox::title {
 text-align: left;
