@@ -46,30 +46,72 @@ from lxml import etree
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QScrollArea
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QScrollArea, QListWidgetItem
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
 
 from pymdwizard.core import utils
 
-from pymdwizard.gui.ui_files import UI_multiple_instances
+from pymdwizard.gui.ui_files import UI_repeating_element
 from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.wiz_widget import WizardWidget
+
+class DefaultWidget(QWidget):
+
+    def __init__(self, label='', parent=None):
+        QWidget.__init__(self)
+        self.layout = QHBoxLayout()
+        self.qlbl = QLabel(label, self)
+        self.added_line = QLineEdit()
+        self.layout.addWidget(self.qlbl)
+        self.layout.addWidget(self.added_line)
+        self.layout.setContentsMargins(1, 1, 1, 1)
+        self.layout.setSpacing(2)
+        self.setLayout(self.layout)
 
 
-class Multi_Instance(QWidget):
+class RepeatingElement(QWidget):
 
-    def __init__(self, xml=None, params={}, parent=None):
+    default_params = {'Title': 'insert title here',
+                       'Italic Text': 'add notes here',
+                       'Add text': 'button add me',
+                       'Remove text': 'button del me',
+                       'widget': DefaultWidget,
+                       'widget_kwargs': {'label': 'add a text label'}}
+
+    def __init__(self, xml=None, which='vertical', params={}, parent=None):
         QWidget.__init__(self, parent=parent)
 
-        self.widget_instances = []
+        self.widgets = []
 
         self.build_ui()
+        if which == 'vertical':
+            self.SA = self.ui.vertical_contents
+            self.content_layout = self.ui.vertical_contents.layout()
+            self.tab = False
+
+            self.ui.tab_widget.hide()
+            self.ui.horizontal_scroll.hide()
+        elif which == 'horizontal':
+            self.ui.stackedWidget.setCurrentIndex(1)
+            self.SA = self.ui.horizontal_contents
+            self.content_layout = self.ui.horizontal_contents.layout()
+            self.tab = False
+            self.ui.tab_widget.hide()
+            self.ui.vertical_widget.hide()
+        elif which == 'tab':
+            self.content_widget = self.ui.tab_widget
+            self.tab = True
+            self.ui.horizontal_scroll.hide()
+            self.ui.vertical_scroll.hide()
+
         self.connect_events()
 
-        self.params = params
-        if self.params:
-            self.load_params(self.params)
-        self.add_another()
+        if params:
+            self.params = params
+        else:
+            self.params = self.default_params
+        self.load_params(self.params)
 
     def build_ui(self):
         """
@@ -79,9 +121,8 @@ class Multi_Instance(QWidget):
         -------
         None
         """
-        self.ui = UI_multiple_instances.Ui_Form()
+        self.ui = UI_repeating_element.Ui_Form()
         self.ui.setupUi(self)
-
 
     def connect_events(self):
         """
@@ -117,13 +158,10 @@ class Multi_Instance(QWidget):
         else:
             self.widget = DefaultWidget
 
-
-        self.ui.QLabel_Title.setText(params['Title'])
-        self.ui.QLabelItalic.setText(params['Italic Text'])
         self.ui.addAnother.setText(params['Add text'])
         self.ui.popOff.setText(params['Remove text'])
 
-    def add_another(self):
+    def add_another(self, clicked=None, tab_label=''):
         """
         Adds another instance of a widget or ____
 
@@ -131,62 +169,35 @@ class Multi_Instance(QWidget):
         -------
 
         """
-
-        widget_instance = self.widget(label=self.params['Label'])
-        self.ui.verticalLayout.insertWidget(len(self.ui.verticalLayout) - 1, widget_instance)
-
-        self.widget_instances.append(widget_instance)
-
-        area = self.findChild(QScrollArea, "scrollArea")
-        vbar = area.verticalScrollBar()
-        vbar.setValue(vbar.maximum() + 90)
-
-
+        widget = self.widget(**self.params.get('widget_kwargs', {}))
+        self.widgets.append(widget)
+        if self.tab:
+            self.ui.tab_widget.addTab(widget, tab_label)
+        else:
+            self.content_layout.insertWidget(len(self.widgets)-1, widget)
 
     def pop_off(self):
-        last_added = self.widget_instances.pop()
-        last_added.deleteLater()
+        if self.widgets:
+            last_added = self.widgets.pop()
+            last_added.deleteLater()
 
+    def get_widgets(self):
+        return self.widgets()
 
-class DefaultWidget(QWidget):
-
-    def __init__(self, label='', parent=None):
-        QWidget.__init__(self)
-        self.layout = QHBoxLayout()
-        self.qlbl = QLabel(label, self)
-        self.added_line = QLineEdit()
-        self.layout.addWidget(self.qlbl)
-        self.layout.addWidget(self.added_line)
-        self.layout.setContentsMargins(1, 1, 1, 1)
-        self.setLayout(self.layout)
-
-    def load_params(self):
-        pass
-
-from pymdwizard.gui import single_date
-class CoolSingleDate(single_date.SingleDate):
-
-    def __init__(self, parent=None):
-
-        single_date.SingleDate.__init__(self, parent=parent)
-        self.ui.label.setText('testing')
-        self.ui.lbl_format.deleteLater()
 
 if __name__ == "__main__":
 
-    from pymdwizard.gui import  Citation
+    from pymdwizard.gui import attr, edom, single_date
 
-    # params = {'Title': 'hello',
-    #           'Italic Text': 'world',
-    #           'Label': 'This is a label',
-    #           'Add text': 'button add me',
-    #           'Remove text': 'button del me',
-    #           'widget': Citation.Citation}
+    params = {'Add text': '+',
+              'Remove text': '-',
+              'widget': single_date.SingleDate,
+              'widget_kwargs':{'show_format':False}}
 
 
 
 
 
-    utils.launch_widget(Multi_Instance, params=params)
+    utils.launch_widget(RepeatingElement, which='tab', params=params)
 
 
