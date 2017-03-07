@@ -589,7 +589,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QRadioButton" name="radioButton">
+                <widget class="QRadioButton" name="radio_lworkyes">
                  <property name="text">
                   <string>Yes</string>
                  </property>

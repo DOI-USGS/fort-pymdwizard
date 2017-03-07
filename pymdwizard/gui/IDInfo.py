@@ -140,7 +140,7 @@ class IdInfo(WizardWidget):
         descript_node = self.descriptor._to_xml()
         idinfo_node.append(descript_node)
 
-        timeperd_node = self.metadatadate._to_xml()
+        timeperd_node = self.timeperd._to_xml()
         idinfo_node.append(timeperd_node)
 
         status_node = self.status._to_xml()
