@@ -182,7 +182,7 @@ class RepeatingElement(QWidget):
             last_added.deleteLater()
 
     def get_widgets(self):
-        return self.widgets()
+        return self.widgets
 
 
 if __name__ == "__main__":
