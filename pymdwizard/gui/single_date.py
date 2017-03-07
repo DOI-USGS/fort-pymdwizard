@@ -57,11 +57,22 @@ from pymdwizard.gui.ui_files import UI_single_date
 
 class SingleDate(QWidget):
 
-    def __init__(self, xml=None, parent=None):
+    def __init__(self, xml=None, parent=None, show_format=True, label=''):
         QWidget.__init__(self, parent=parent)
 
         self.build_ui()
+
+        if not show_format:
+            self.ui.frame_format.hide()
+
+        if label:
+            self.ui.label.setText(label)
+        else:
+            self.ui.label.visible = False
+
+        self.changed = False
         self.connect_events()
+
 
     def build_ui(self):
         """
@@ -83,8 +94,15 @@ class SingleDate(QWidget):
         None
         """
         self.ui.lineEdit.editingFinished.connect(self.check_format)
+        self.ui.lineEdit.textChanged.connect(self.changed_text)
+
+    def changed_text(self):
+        self.changed = True
 
     def check_format(self):
+        if not self.changed:
+            return None
+
         cur_contents = self.ui.lineEdit.text()
 
         msg = ""
@@ -102,5 +120,8 @@ class SingleDate(QWidget):
             msgbox.setStandardButtons(QMessageBox.Retry)
             msgbox.exec_()
 
+        self.changed = False
+
 if __name__ == "__main__":
-    utils.launch_widget(SingleDate)
+    utils.launch_widget(SingleDate, label='testing', show_format=False)
+
