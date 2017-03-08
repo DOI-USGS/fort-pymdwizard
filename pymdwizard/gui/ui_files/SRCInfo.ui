@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>632</width>
+    <height>468</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_7">
+   <item>
+    <widget class="QGroupBox" name="fgdc_srcinfo">
+     <property name="title">
+      <string>Source Input</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_19">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Title of Source Input</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_title"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Author / Originator of Source Input</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_origin"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Publisher / Data Provider</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_publish"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Publication Place</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_pubplace"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_18">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Type of Data</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="fgdc_geoform">
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Vector Digital Data Set</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Raster Digital Data Set</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Raster Digital Data (Aerial Imagery)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Publication (Book)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Publication (Journal Article)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Publication (Conference Proceeding)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Paper Map</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Observed/Measured First-Hand</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Photographic Print</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Computer Program</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Other</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_13">
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Type of Resource</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="fgdc_typesrc">
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Digital and/or Hardcopy</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QLabel" name="label_37">
+                <property name="text">
+                 <string>Publication Date (YYYYMMDD)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="fgdc_pubdate" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>221</width>
+                  <height>100</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QFrame" name="fgdc_onlink">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <property name="margin">
+                <number>1</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="fg_dc_onlink"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="fgdc_srctime">
+          <property name="title">
+           <string>Time Period Information of Source Input</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QLabel" name="label_38">
+                 <property name="text">
+                  <string>Beginning Date (YYYYMMDD)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="fgdc_begdate" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>221</width>
+                   <height>100</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <item>
+                <widget class="QLabel" name="label_39">
+                 <property name="text">
+                  <string>End Date (YYYYMMDD)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="fgdc_enddate" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>221</width>
+                   <height>100</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_11">
+               <item>
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Currentness Reference</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="fgdc_srccurr">
+                 <property name="editable">
+                  <bool>true</bool>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>ground condition</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>observed</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>publication date</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Abbreviation / Short Name for the Input Data   (Updated as Needed)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_srccitea"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <item>
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>1:</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_16">
+              <item>
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Source Scale</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="fgdc_srcscale"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_15">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Contribution of Source Input   (Update as Needed)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="fgdc_srccontr"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+     <zorder>label</zorder>
+     <zorder>label_2</zorder>
+     <zorder>label_3</zorder>
+     <zorder>label_4</zorder>
+     <zorder>layoutWidget</zorder>
+     <zorder>label_37</zorder>
+     <zorder>label_6</zorder>
+     <zorder>layoutWidget</zorder>
+     <zorder>fgdc_title</zorder>
+     <zorder>fgdc_origin</zorder>
+     <zorder>fgdc_publish</zorder>
+     <zorder>fgdc_pubplace</zorder>
+     <zorder>fgdc_geoform</zorder>
+     <zorder>layoutWidget_2</zorder>
+     <zorder>layoutWidget_3</zorder>
+     <zorder>label_5</zorder>
+     <zorder>fgdc_srccurr</zorder>
+     <zorder>fgdc_srctime</zorder>
+     <zorder>label_7</zorder>
+     <zorder>label_8</zorder>
+     <zorder>label_9</zorder>
+     <zorder>fgdc_srccitea</zorder>
+     <zorder>fgdc_srccontr</zorder>
+     <zorder>fgdc_srcscale</zorder>
+     <zorder>label_10</zorder>
+     <zorder>label_11</zorder>
+     <zorder>fgdc_onlink</zorder>
+     <zorder>label_12</zorder>
+     <zorder>fgdc_typesrc</zorder>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

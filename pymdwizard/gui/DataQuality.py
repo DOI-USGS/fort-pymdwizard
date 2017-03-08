@@ -57,6 +57,8 @@ from pymdwizard.gui.AttributeAccuracy import AttributeAccuracy
 from pymdwizard.gui.LogicalAccuracy import LogicalAccuracy
 from pymdwizard.gui.Completeness import Completeness
 from pymdwizard.gui.PositionalAccuracy import PositionalAccuracy
+from pymdwizard.gui.SRCInfo import SRCInfo
+from pymdwizard.gui.ProcessStep import ProcessStep
 
 
 
@@ -83,6 +85,8 @@ class DataQuality(WizardWidget):
         self.logic = LogicalAccuracy(parent=self)
         self.complete = Completeness(parent=self)
         self.posacc = PositionalAccuracy(parent=self)
+        self.srcinfo = SRCInfo(parent=self)
+        self.procstep = ProcessStep(parent=self)
 
 
        # self.ui.frame_citation.layout().addWidget(self.citation)
@@ -91,7 +95,8 @@ class DataQuality(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.complete)
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
-        #self.ui.two_column_right.layout().addWidget(self.metadatadate)
+        self.ui.two_column_right.layout().addWidget(self.srcinfo)
+        self.ui.two_column_right.layout().addWidget(self.procstep)
         #self.ui.two_column_right.layout().addWidget(self.descriptor)
 
         # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -137,6 +142,14 @@ class DataQuality(WizardWidget):
 
         posacc_node = self.posacc._to_xml()
         dataqual_node.append(posacc_node)
+
+        srcinfo_node = self.srcinfo._to_xml()
+        dataqual_node.append(srcinfo_node)
+
+        procstep_node = self.procstep._to_xml()
+        dataqual_node.append(procstep_node)
+
+
 
 
         if self.taxonomy.ui.rbtn_yes.isChecked():
