@@ -79,7 +79,8 @@ class RepeatingElement(QWidget):
                        'widget': DefaultWidget,
                        'widget_kwargs': {'label': 'add a text label'}}
 
-    def __init__(self, xml=None, which='vertical', params={}, parent=None):
+    def __init__(self, xml=None, which='vertical', tab_label='tab',
+                 show_buttons=True, params={}, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
@@ -105,7 +106,12 @@ class RepeatingElement(QWidget):
             self.ui.horizontal_scroll.hide()
             self.ui.vertical_scroll.hide()
 
+        self.tab_label = tab_label
+
         self.connect_events()
+
+        if not show_buttons:
+            self.ui.button_frame.hide()
 
         if params:
             self.params = params
@@ -172,9 +178,13 @@ class RepeatingElement(QWidget):
         widget = self.widget(**self.params.get('widget_kwargs', {}))
         self.widgets.append(widget)
         if self.tab:
+            if not tab_label:
+                tab_label = ' '.join([self.tab_label,
+                                      str(self.ui.tab_widget.count() + 1)])
             self.ui.tab_widget.addTab(widget, tab_label)
         else:
             self.content_layout.insertWidget(len(self.widgets)-1, widget)
+        return widget
 
     def pop_off(self):
         if self.widgets:
@@ -184,20 +194,27 @@ class RepeatingElement(QWidget):
     def get_widgets(self):
         return self.widgets
 
+    def clear_widgets(self):
+        for widget in self.widgets:
+            widget.deleteLater()
+
+        self.widets = []
+
 
 if __name__ == "__main__":
 
     from pymdwizard.gui import attr, edom, single_date
+    import random
+
 
     params = {'Add text': '+',
               'Remove text': '-',
-              'widget': single_date.SingleDate,
-              'widget_kwargs':{'show_format':False}}
+              'widget': edom.Edom,
+              # 'widget_kwargs':{'show_format':False}
+              }
 
 
-
-
-
-    utils.launch_widget(RepeatingElement, which='tab', params=params)
+    utils.launch_widget(RepeatingElement, which='tab', tab_label='Processing Step',
+                        params=params)
 
 
