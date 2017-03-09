@@ -79,13 +79,20 @@ class RepeatingElement(QWidget):
                        'widget': DefaultWidget,
                        'widget_kwargs': {'label': 'add a text label'}}
 
-    def __init__(self, xml=None, which='vertical', tab_label='tab',
-                 show_buttons=True, params={}, parent=None):
+    def __init__(self, which='vertical', tab_label='tab',
+                 widget=DefaultWidget, widget_kwargs={},
+                 italic_text='',
+                 add_text="Add another", remove_text="Remove last",
+                 show_buttons=True, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
 
         self.build_ui()
+
+        if italic_text:
+            self.ui.italic_label.setText(italic_text)
+
         if which == 'vertical':
             self.SA = self.ui.vertical_contents
             self.content_layout = self.ui.vertical_contents.layout()
@@ -112,12 +119,12 @@ class RepeatingElement(QWidget):
 
         if not show_buttons:
             self.ui.button_frame.hide()
+        self.ui.addAnother.setText(add_text)
+        self.ui.popOff.setText(remove_text)
 
-        if params:
-            self.params = params
-        else:
-            self.params = self.default_params
-        self.load_params(self.params)
+        self.widget = widget
+        self.widget_kwargs = widget_kwargs
+        self.widget_kwargs['parent'] = self
 
     def build_ui(self):
         """
@@ -141,31 +148,6 @@ class RepeatingElement(QWidget):
         self.ui.addAnother.clicked.connect(self.add_another)
         self.ui.popOff.clicked.connect(self.pop_off)
 
-    def load_params(self, params):
-        """
-        Loads the parameters for the multiple widget/instance build
-
-        Parameters
-        ----------
-        params = {'Title':'hello',
-           'Italic Text':'world',
-           'Label': 'This is a label',
-           'Add text':'button add me',
-           'Remove text': 'button delete me',
-           'scrollArea': 'fgdc_name
-           'widget':Citation.Citation}
-
-        Returns
-        -------
-        None
-        """
-        if 'widget' in params.keys():
-            self.widget = params['widget']
-        else:
-            self.widget = DefaultWidget
-
-        self.ui.addAnother.setText(params['Add text'])
-        self.ui.popOff.setText(params['Remove text'])
 
     def add_another(self, clicked=None, tab_label=''):
         """
@@ -175,7 +157,7 @@ class RepeatingElement(QWidget):
         -------
 
         """
-        widget = self.widget(**self.params.get('widget_kwargs', {}))
+        widget = self.widget(**self.widget_kwargs)
         self.widgets.append(widget)
         if self.tab:
             if not tab_label:
@@ -207,14 +189,11 @@ if __name__ == "__main__":
     import random
 
 
-    params = {'Add text': '+',
-              'Remove text': '-',
-              'widget': edom.Edom,
-              # 'widget_kwargs':{'show_format':False}
-              }
 
 
-    utils.launch_widget(RepeatingElement, which='tab', tab_label='Processing Step',
-                        params=params)
+    utils.launch_widget(RepeatingElement, which='tab',
+                        tab_label='Processing Step', add_text='test add',
+                        widget = attr.Attr, remove_text='test remove', italic_text='some instruction')
+
 
 
