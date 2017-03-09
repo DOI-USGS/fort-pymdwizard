@@ -56,7 +56,9 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_SRCInfo #
 from pymdwizard.gui.single_date import SingleDate
-from pymdwizard.gui.multiple_instances import Multi_Instance
+from pymdwizard.gui.Citation import Citation
+from pymdwizard.gui.timeperd import Timeperd
+
 
 
 class SRCInfo(WizardWidget): #
@@ -74,35 +76,20 @@ class SRCInfo(WizardWidget): #
         """
         self.ui = UI_SRCInfo.Ui_Form()
         self.ui.setupUi(self)
+        self.citation = Citation()
+        self.timeperd = Timeperd()
+
+        self.citation.ui.lworkcite_ext.hide()
+
+        self.ui.frame_citation.layout().addWidget(self.citation)
+        self.ui.frame_timeperd.layout().addWidget(self.timeperd)
+
         self.setup_dragdrop(self)
         self.single_date = SingleDate()
-        self.single_date.ui.lbl_format.deleteLater()
-        self.single_date.ui.label.deleteLater()
-        self.beg_date = SingleDate()
-        self.beg_date.ui.lbl_format.deleteLater()
-        self.beg_date.ui.label.deleteLater()
-        self.end_date = SingleDate()
-        self.end_date.ui.lbl_format.deleteLater()
-        self.end_date.ui.label.deleteLater()
 
-        self.ui.fgdc_pubdate.setLayout(QVBoxLayout(self))
-        self.ui.fgdc_pubdate.layout().insertWidget(0, self.single_date)
-
-        self.ui.fgdc_begdate.setLayout(QVBoxLayout(self))
-        self.ui.fgdc_begdate.layout().insertWidget(0, self.beg_date)
-
-        self.ui.fgdc_enddate.setLayout(QVBoxLayout(self))
-        self.ui.fgdc_enddate.layout().insertWidget(0, self.end_date)
 
         #Multi_Inst onlink
-        olParams = {'Title':'Online Link for the Data Set',
-                  'Italic Text':'Is there a link to the data?',
-                  'Label': 'Link',
-                  'Add text':'+',
-                  'Remove text': '-'}
-                  #'widget':SingleDate}
-        self.multi_instance = Multi_Instance(params=olParams)
-        self.ui.fg_dc_onlink.layout().insertWidget(0, self.multi_instance)
+
 
 
 
@@ -308,88 +295,21 @@ class SRCInfo(WizardWidget): #
                 srccurr_text = str(srccurr[0])
                 self.findChild(QComboBox, "fgdc_srccurr").setCurrentText(srccurr_text)
 
+
                 list_onlink = [b.text for b in xml_srcinfo.iterfind("srccite/citeinfo/onlink")]
                 lenOL = len(list_onlink)
                 cnt = 0
-                for lw in list_onlink[:1]:
-                    line_edit = self.multi_instance.findChild(QLineEdit)
-                    print list_onlink[cnt]
-                    line_edit.setText(list_onlink[cnt])
-                cnt =+ 1
-                for lw in list_onlink[2:]:
+
+                cnt += 1
+                while cnt < lenOL:
                     self.multi_instance.add_another()
-                    scroll = self.multi_instance.findChild(QScrollArea, 'scrollArea')
-                    line_edit = scroll.findChild(QLineEdit)
-                    line_edits = scroll.findChildren(QLineEdit)
-                    print line_edits
-                    print lw
-                    line_edit(cnt).setText(lw)
-                    print line_edit[cnt]
                     cnt += 1
-
-
-                #
-                # if srcinfo.findall("citeinfo/title"):
-                #     title_text = srcinfo.findtext("citeinfo/title")
-                #
-                #     title_box = self.findChild(QLineEdit, 'fgdc_title')
-                #     title_box.setText(title_text)
-                # else:
-                #     print ("No title tag")
-                #
-                # if srcinfo.findall("citeinfo/edition"):
-                #     edition_text = srcinfo.findtext("citeinfo/edition")
-                #
-                #     edition_box = self.findChild(QLineEdit, 'fgdc_edition')
-                #     edition_box.setText(edition_text)
-                # else:
-                #     print ("No onlink tag")
-                #
-                # if srcinfo.findall("citeinfo/geoform"):
-                #     geoform_text = srcinfo.findtext("citeinfo/geoform")
-                #
-                #     geoform_box = self.findChild(QComboBox, 'fgdc_geoform')
-                #     geoform_box.setCurrentText(geoform_text)
-                # else:
-                #     print ("No onlink tag")
-                #
-                # if srcinfo.findall("citeinfo/onlink"):
-                #     onlink_text = srcinfo.findtext("citeinfo/onlink")
-                #
-                #     onlink_box = self.findChild(QLineEdit, 'fgdc_onlink')
-                #     onlink_box.setText(onlink_text)
-                # else:
-                #     print ("No onlink tag")
-                #
-                # if srcinfo.findall("citeinfo/serinfo"):
-                #     self.ui.radioButton_3.setChecked(True)
-                #     sername_text = srcinfo.findtext("citeinfo/serinfo/sername")
-                #
-                #     sername_box = self.findChild(QLineEdit, 'fgdc_sername')
-                #     sername_box.setText(sername_text)
-                #
-                #     issue_text = srcinfo.findtext("citeinfo/serinfo/issue")
-                #
-                #     issue_box = self.findChild(QLineEdit, 'fgdc_issue')
-                #     issue_box.setText(issue_text)
-                #
-                # else:
-                #     print ("No series name tag")
-                #
-                # if srcinfo.findall("citeinfo/pubinfo"):
-                #     self.ui.radioButton_5.setChecked(True)
-                #     pubplace_text = srcinfo.findtext("citeinfo/pubinfo/pubplace")
-                #
-                #     pub_box = self.findChild(QLineEdit, 'fgdc_pubplace')
-                #     pub_box.setText(pubplace_text)
-                #
-                #     publish_text = srcinfo.findtext("citeinfo/pubinfo/publish")
-                #
-                #     publish_box = self.findChild(QLineEdit, 'fgdc_publish')
-                #     publish_box.setText(publish_text)
-                #
-                # else:
-                #     print ("No pub tag")
+                scroll = self.multi_instance.findChild(QScrollArea, 'scrollArea')
+                line_edits = scroll.findChildren(QLineEdit)
+                #line_edits.remove(line_edit)
+                for lw, le in zip(list_onlink, line_edits):
+                    print (lw, le)
+                    le.setText(lw)
 
             else:
                 print ("The tag is not srcinfo")
