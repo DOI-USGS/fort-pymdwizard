@@ -11,12 +11,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(780, 548)
+        Form.resize(780, 330)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.fgdc_srcinfo = QtWidgets.QGroupBox(Form)
         self.fgdc_srcinfo.setObjectName("fgdc_srcinfo")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.fgdc_srcinfo)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.frame_citation = QtWidgets.QFrame(self.fgdc_srcinfo)
         self.frame_citation.setFrameShape(QtWidgets.QFrame.StyledPanel)

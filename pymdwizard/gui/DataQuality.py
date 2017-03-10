@@ -57,8 +57,9 @@ from pymdwizard.gui.AttributeAccuracy import AttributeAccuracy
 from pymdwizard.gui.LogicalAccuracy import LogicalAccuracy
 from pymdwizard.gui.Completeness import Completeness
 from pymdwizard.gui.PositionalAccuracy import PositionalAccuracy
-from pymdwizard.gui.SRCInfo import SRCInfo
+from pymdwizard.gui.sourceinput import SourceInput
 from pymdwizard.gui.ProcessStep import ProcessStep
+from pymdwizard.gui.repeating_element import RepeatingElement
 
 
 
@@ -85,18 +86,27 @@ class DataQuality(WizardWidget):
         self.logic = LogicalAccuracy(parent=self)
         self.complete = Completeness(parent=self)
         self.posacc = PositionalAccuracy(parent=self)
-        self.srcinfo = SRCInfo(parent=self)
-        self.procstep = ProcessStep(parent=self)
+        self.sourceinput = SourceInput(parent=self)
+        #self.procstep = ProcessStep(parent=self)
+
+        params = {'Add text': 'Source Input',
+                  'Remove text': 'Remove Source',
+                  'widget': ProcessStep,
+                  }
+        self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
+        self.proc_step.add_another()
+
 
 
        # self.ui.frame_citation.layout().addWidget(self.citation)
         self.ui.two_column_left.layout().addWidget(self.attraccr)
-        self.ui.two_column_left.layout().addWidget(self.logic)
+        self.ui.two_column_right.layout().addWidget(self.logic)
         self.ui.two_column_left.layout().addWidget(self.complete)
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
-        self.ui.two_column_right.layout().addWidget(self.srcinfo)
-        self.ui.two_column_right.layout().addWidget(self.procstep)
+        self.ui.bottom_layout.layout().addWidget(self.sourceinput)
+        #self.ui.two_column_right.layout().addWidget(self.procstep)
+        self.ui.two_column_right.layout().addWidget(self.proc_step)
         #self.ui.two_column_right.layout().addWidget(self.descriptor)
 
         # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
