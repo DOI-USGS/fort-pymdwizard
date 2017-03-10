@@ -37,7 +37,7 @@ import pandas as pd
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton, QInputDialog
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
@@ -91,20 +91,30 @@ class Detailed(WizardWidget):  #
         ext = os.path.splitext(shortname)[1]
         if ext.lower() == '.csv':
             self.ui.fgdc_enttypl.setText(shortname)
-            self.ui.fgdc_enttypd.setText('Comma Separate Value (CSV) file containing data.')
+            self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
 
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
         elif ext.lower() == '.shp':
             self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
-            self.ui.fgdc_enttypd.setText('Table containing attribute information associated with the data set.')
+            self.ui.fgdc_enttypd.setPlainText('Table containing attribute information associated with the data set.')
 
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
+        elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
+            sheets = data_io.get_sheet_names(fname)
 
+            sheet_name, ok = QInputDialog.getItem(self, "select sheet dialog",
+                                "Pick one of the sheets from this workbook",
+                                                  sheets, 0, False)
+            if ok and sheet_name:
+                self.ui.fgdc_enttypl.setText('{} ({})'.format(shortname, sheet_name))
+                self.ui.fgdc_enttypd.setPlainText('Excel Worksheet')
 
+                df = data_io.read_excel(fname, sheet_name)
+                self.attributes.load_df(df)
         else:
-            msg = "Can only read '.csv' and '.shp' files here"
+            msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
 
     def dragEnterEvent(self, e):

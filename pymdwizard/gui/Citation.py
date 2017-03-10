@@ -54,17 +54,19 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Citation #
+from pymdwizard.gui.ui_files import UI_Citation
 from pymdwizard.gui.single_date import SingleDate
-from pymdwizard.gui.multiple_instances import Multi_Instance
-
+from pymdwizard.gui.repeating_element import RepeatingElement
 
 class Citation(WizardWidget): #
 
     drag_label = "Citation <citation>"
 
+    def __init__(self, parent=None, include_lwork=True):
+        self.include_lwork = include_lwork
+        WizardWidget.__init__(self, parent=parent)
 
-    def build_ui(self):
+    def build_ui(self, ):
         """
         Build and modify this widget's GUI
 
@@ -74,38 +76,37 @@ class Citation(WizardWidget): #
         """
         self.ui = UI_Citation.Ui_Form()
         self.ui.setupUi(self)
-        self.setup_dragdrop(self)
+
+        if self.include_lwork:
+            self.lworkcit_widget = Citation(parent=self, include_lwork=False)
+            self.lworkcit_widget.ui.fgdc_lworkcit.deleteLater()
+            self.ui.lworkcite_ext.layout().addWidget(self.lworkcit_widget)
+        else:
+            self.lworkcit_widget = None
         self.ui.lworkcite_ext.hide()
+
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.single_date = SingleDate()
-        self.single_date.ui.lbl_format.deleteLater()
-        self.single_date.ui.label.deleteLater()
-
-        self.ui.fgdc_pubdate.setLayout(QVBoxLayout(self))
-        self.ui.fgdc_pubdate.layout().insertWidget(0, self.single_date)
+        self.single_date = SingleDate(label='', show_format=False)
+        self.ui.pubdate_layout.addWidget(self.single_date)
 
         #Multi_Inst onlink
-        olParams = {'Title':'Online Link for the Data Set',
-                  'Italic Text':'Is there a link to the data or agency that produced it?',
-                  'Label': 'Link',
-                  'Add text':'+',
-                  'Remove text': '-'}
-                  #'widget':SingleDate}
-        self.multi_instance = Multi_Instance(params=olParams)
-        self.ui.fg_dc_onlink.layout().insertWidget(0, self.multi_instance)
+        olParams = {'Add text':'add another url',
+                  'Remove text': 'remove last url',
+                  'widget_kwargs': {'label': 'Link'}}
+        self.onlink_list = RepeatingElement(params=olParams)
+        self.onlink_list.add_another()
+        self.ui.onlink_layout.addWidget(self.onlink_list)
 
         #Multi_Inst originator
-        ogParams = {'Title':'Data Set Author / Originator',
-                  'Italic Text':'Who created the data set? List the organization and/or person(s)',
-                  'Label': 'Origin',
-                  'Add text':'+',
-                  'Remove text': '-'}
-                  #'widget':SingleDate}
-        self.fgdc_origin = Multi_Instance(params=ogParams)
-        self.ui.fg_dc_origin.layout().insertWidget(0, self.fgdc_origin)
+        ogParams = {'Add text':'add another originator',
+                  'Remove text': 'remove last originator',
+                  'widget_kwargs': {'label': 'Originator'}}
+        self.fgdc_origin = RepeatingElement(params=ogParams, which='vertical')
+        self.fgdc_origin.add_another()
+        self.ui.originator_layout.addWidget(self.fgdc_origin)
 
-
+        self.setup_dragdrop(self)
 
     def connect_events(self):
         """
@@ -115,7 +116,7 @@ class Citation(WizardWidget): #
         -------
         None
         """
-        self.ui.radioButton.toggled.connect(self.include_lworkext_change)
+        self.ui.radio_lworkyes.toggled.connect(self.include_lworkext_change)
         self.ui.radioButton_3.toggled.connect(self.include_seriesext_change)
         self.ui.radioButton_5.toggled.connect(self.include_pubext_change)
 
@@ -169,13 +170,6 @@ class Citation(WizardWidget): #
         """
         if b:
             self.ui.lworkcite_ext.show()
-            self.lworkcit = Citation()
-            self.lworkcit.findChild(QGroupBox, "fgdc_lworkcit").deleteLater()
-
-            hBoxLayout = QHBoxLayout()
-            hBoxLayout.addWidget(self.lworkcit)
-            lwork_ext = self.findChild(QFrame, "lworkcit_ext")
-            lwork_ext.setLayout(hBoxLayout)
         else:
             self.ui.lworkcite_ext.hide()
 
@@ -219,15 +213,15 @@ class Citation(WizardWidget): #
         citeinfo = etree.Element('citeinfo')
 
         pubdate = etree.Element("pubdate")
-        edition = etree.Element("edition")
+        # edition = etree.Element("edition")
         geoform = etree.Element("geoform")
         title = etree.Element("title")
         onlink = etree.Element("onlink")
         cnt = 0
-        list_orig = self.fgdc_origin.widget_instances
-        len_listorig = len(self.fgdc_origin.widget_instances)
+        list_orig = self.fgdc_origin.widgets
+        len_listorig = len(self.fgdc_origin.widgets)
         while cnt < len_listorig:
-            linEdit = self.fgdc_origin.widget_instances[cnt].findChildren(QLineEdit)
+            linEdit = self.fgdc_origin.widgets[cnt].findChildren(QLineEdit)
             og_text = linEdit[0].text()
             str_og = str(og_text)
             origin = etree.Element("origin")
@@ -239,13 +233,13 @@ class Citation(WizardWidget): #
         pubdate.text = temp_var
 
         title.text = self.findChild(QLineEdit, "fgdc_title").text()
-        edition.text = self.findChild(QLineEdit, "fgdc_edition").text()
-        geoform.text = self.findChild(QComboBox, "fgdc_geoform").currentText()
+        # edition.text = self.findChild(QLineEdit, "fgdc_edition").text()
+        # geoform.text = self.findChild(QComboBox, "fgdc_geoform").currentText()
 
         citeinfo.append(pubdate)
         citeinfo.append(title)
-        citeinfo.append(edition)
-        citeinfo.append(geoform)
+        # citeinfo.append(edition)
+        # citeinfo.append(geoform)
 
         if self.ui.radioButton_3.isChecked():
             serinfo = etree.Element("serinfo")
@@ -272,85 +266,14 @@ class Citation(WizardWidget): #
 
         else:
             pass
-########################################################################################################
-        if self.ui.radioButton.isChecked():
-            lworkcit1 = etree.Element('lworkcit')
-            citeinfo1 = etree.Element('citeinfo')
-            pubdate1 = etree.Element("pubdate")
-            edition1 = etree.Element("edition")
-            geoform1 = etree.Element("geoform")
-            title1 = etree.Element("title")
-            title1.text = self.lworkcit.findChild(QLineEdit, "fgdc_title").text()
-            edition1.text = self.lworkcit.findChild(QLineEdit, "fgdc_edition").text()
-            geoform1.text = self.lworkcit.findChild(QComboBox, "fgdc_geoform").currentText()
 
-            cnt = 0
-            len_listorig1 = len(self.lworkcit.fgdc_origin.widget_instances)
-            while cnt < len_listorig1:
-                linEdit2 = self.lworkcit.fgdc_origin.widget_instances[cnt].findChildren(QLineEdit)
-                og_text1 = linEdit2[0].text()
-                str_og1 = str(og_text1)
-                origin1 = etree.Element("origin")
-                origin1.text = str_og1
-                cnt += 1
-                citeinfo1.append(origin1)
+        if self.include_lwork and self.ui.radio_lworkyes.isChecked():
+            lworkcit = self.lworkcit_widget._to_xml()
+            citeinfo.append(lworkcit)
 
-            temp_var1 = self.lworkcit.single_date.findChild(QLineEdit, "lineEdit").text()
-            pubdate1.text = temp_var1
-
-            citeinfo1.append(pubdate1)
-            citeinfo1.append(title1)
-            citeinfo1.append(edition1)
-            citeinfo1.append(geoform1)
-
-            if self.lworkcit.ui.radioButton_3.isChecked():
-                serinfo1 = etree.Element("serinfo")
-                sername1 = etree.Element("sername")
-                sername1.text = self.lworkcit.findChild(QLineEdit, "fgdc_sername").text()
-                issue1 = etree.Element("issue")
-                issue1.text = self.lworkcit.findChild(QLineEdit, "fgdc_issue").text()
-                serinfo1.append(sername1)
-                serinfo1.append(issue1)
-                citeinfo1.append(serinfo1)
-
-            else:
-                pass
-
-            if self.lworkcit.ui.radioButton_5.isChecked():
-                pubinfo1 = etree.Element("pubinfo")
-                pubplace1 = etree.Element("pubplace")
-                pubplace1.text = self.lworkcit.findChild(QLineEdit, "fgdc_pubplace").text()
-                publish1 = etree.Element("publish")
-                publish1.text = self.lworkcit.findChild(QLineEdit, "fgdc_publish").text()
-                pubinfo1.append(pubplace1)
-                pubinfo1.append(publish1)
-                citeinfo1.append(pubinfo1)
-
-            cnt = 0
-            len_listonlink1 = len(self.lworkcit.multi_instance.widget_instances)
-            while cnt < len_listonlink1:
-                linEdit3 = self.lworkcit.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
-                ol_text1 = linEdit3[0].text()
-                str_ol1 = str(ol_text1)
-                onlink = etree.Element("onlink")
-                onlink.text = str_ol1
-                cnt += 1
-                citeinfo1.append(onlink)
-
-            lworkcit1.append(citeinfo1)
-#####################################################################################################################
-            citeinfo.append(lworkcit1)
-
-        cnt = 0
-        len_listonlink = len(self.multi_instance.widget_instances)
-        while cnt < len_listonlink:
-            linEdit1 = self.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
-            ol_text = linEdit1[0].text()
-            str_ol = str(ol_text)
-            onlink = etree.Element("onlink")
-            onlink.text = str_ol
-            cnt +=1
-            citeinfo.append(onlink)
+        for widget in self.onlink_list.get_widgets():
+            onlink = xml_utils.xml_node('onlink', text=widget.added_line.text(),
+                                        parent_node=citation)
 
         citation.append(citeinfo)
         return citation

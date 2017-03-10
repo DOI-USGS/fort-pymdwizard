@@ -44,13 +44,14 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_MetadataDate  #
+from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.gui.ui_files import UI_timeperd #
 from pymdwizard.gui.single_date import SingleDate
 
 
-class MetadataDate(WizardWidget):  #
+class Timeperd(WizardWidget):  #
 
-    drag_label = "Metadata Date <timeperd>"
+    drag_label = "Time Period of Content <timeperd>"
 
     def build_ui(self):
         """
@@ -59,26 +60,26 @@ class MetadataDate(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_MetadataDate.Ui_Form()
+        self.ui = UI_timeperd.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.first_date = SingleDate()
-        self.first_date.ui.lbl_format.deleteLater()
-        self.range_date1 = SingleDate()
-        self.range_date1.ui.lbl_format.deleteLater()
-        self.range_date2 = SingleDate()
-        self.range_date2.ui.lbl_format.deleteLater()
-        self.single_date = SingleDate()
-        self.single_date.ui.lbl_format.deleteLater()
-        self.ui.single_date_content.setLayout(QVBoxLayout(self))
-        self.ui.single_date_content.layout().insertWidget(0, self.single_date)
-        self.multi_dates = [self.first_date, ]
-        self.ui.sa_multi_dates_content.layout().insertWidget(0, self.first_date)
-        self.ui.range_date_content_1.setLayout(QVBoxLayout(self))
-        self.ui.range_date_content_1.layout().insertWidget(0, self.range_date1)
-        self.ui.range_date_content_2.setLayout(QVBoxLayout(self))
-        self.ui.range_date_content_2.layout().insertWidget(0, self.range_date2)
+        self.single_date = SingleDate(label='    Single Date ')
+        self.ui.page_singledate.layout().insertWidget(0, self.single_date)
+
+        self.range_start_date = SingleDate(label='Start  ')
+        self.range_end_date = SingleDate(label='End  ')
+        self.ui.layout_daterange.addWidget(self.range_end_date)
+        self.ui.layout_daterange.addWidget(self.range_start_date)
+
+        multidate_params = {'Add text': 'Add additional',
+                            'Remove text': 'Remove last',
+                            'widget': SingleDate,
+                            'widget_kwargs': {'show_format': False,
+                                              'label':'Individual Date   '}}
+        self.multi_dates = RepeatingElement(params=multidate_params)
+        self.multi_dates.add_another()
+        # self.ui.layout_multipledates.addWidget(self.multi_dates)
 
     def connect_events(self):
         """
@@ -87,28 +88,9 @@ class MetadataDate(WizardWidget):  #
         -------
         None
         """
-        self.ui.pushButton.clicked.connect(self.pushButton_clicked)
-        self.ui.pushButton_2.clicked.connect(self.pushButton2_clicked)
         self.ui.radioButton.toggled.connect(self.switch_primary)
         self.ui.radioButton_2.toggled.connect(self.switch_primary)
         self.ui.radioButton_3.toggled.connect(self.switch_primary)
-
-
-    def pushButton_clicked(self):
-        new_date = SingleDate()
-        new_date.ui.lbl_format.deleteLater()
-
-        self.ui.sa_multi_dates_content.layout().insertWidget(len(self.multi_dates), new_date)
-        self.multi_dates.append(new_date)
-
-        area = self.findChild(QScrollArea, "SA_multi_dates")
-        vbar = area.verticalScrollBar()
-        vbar.setValue(vbar.maximum() + 90)
-
-    def pushButton2_clicked(self):
-
-        last_date = self.multi_dates.pop()
-        last_date.deleteLater()
 
     def switch_primary(self):
         """
@@ -119,10 +101,22 @@ class MetadataDate(WizardWidget):  #
         """
         if self.ui.radioButton.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
+            self.ui.page_singledate.show()
+            self.ui.page_daterange.hide()
+            self.ui.page_multipledates.hide()
+            self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
         elif self.ui.radioButton_2.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
+            self.ui.page_singledate.hide()
+            self.ui.page_daterange.show()
+            self.ui.page_multipledates.hide()
+            self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
         elif self.ui.radioButton_3.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
+            self.ui.page_singledate.hide()
+            self.ui.page_daterange.hide()
+            self.ui.page_multipledates.layout().addWidget(self.multi_dates)
+            self.ui.page_multipledates.show()
 
     def dragEnterEvent(self, e):
         """
@@ -261,5 +255,5 @@ class MetadataDate(WizardWidget):  #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(MetadataDate,
+    utils.launch_widget(Timeperd,
                         "Metadata Date testing")

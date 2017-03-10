@@ -97,7 +97,7 @@ class Edom(QWidget):  #
         """
         edom = xml_utils.xml_node('edom')
         edomv = xml_utils.xml_node('edomv', text=self.ui.fgdc_edomv.text(), parent_node=edom)
-        edomvd = xml_utils.xml_node('edomvd', text=self.ui.fgdc_edomvd.text(), parent_node=edom)
+        edomvd = xml_utils.xml_node('edomvd', text=self.ui.fgdc_edomvd.toPlainText(), parent_node=edom)
         edomvds = xml_utils.xml_node('edomvds', text=self.ui.fgdc_edomvds.text(), parent_node=edom)
 
         return edom

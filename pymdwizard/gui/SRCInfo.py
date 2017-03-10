@@ -79,13 +79,12 @@ class SRCInfo(WizardWidget): #
         self.citation = Citation()
         self.timeperd = Timeperd()
 
-        self.citation.ui.lworkcite_ext.hide()
+        self.citation.ui.fgdc_lworkcit.deleteLater()
 
         self.ui.frame_citation.layout().addWidget(self.citation)
         self.ui.frame_timeperd.layout().addWidget(self.timeperd)
 
         self.setup_dragdrop(self)
-        self.single_date = SingleDate()
 
 
         #Multi_Inst onlink

@@ -59,7 +59,7 @@ from pymdwizard.gui.Keywords import Keywords
 from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
 from pymdwizard.gui.Status import Status
-from pymdwizard.gui.MetadataDate import MetadataDate
+from pymdwizard.gui.timeperd import Timeperd
 from pymdwizard.gui.Citation import Citation
 from pymdwizard.gui.DataCredit import DataCredit
 from pymdwizard.gui.Descriptor import Descriptor
@@ -90,28 +90,23 @@ class IdInfo(WizardWidget):
         self.access = AccessConstraints(parent=self)
         self.use = UseConstraints(parent=self)
         self.status = Status(parent=self)
-        self.metadatadate = MetadataDate(parent=self)
+        self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
         self.descriptor = Descriptor(parent=self)
 
         self.ui.frame_citation.layout().addWidget(self.citation)
+
         self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        self.ui.two_column_right.layout().addWidget(self.keywords, 1)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy)
-        self.ui.two_column_left.layout().addWidget(self.status)
-        self.ui.two_column_left.layout().addWidget(self.access)
-        self.ui.two_column_left.layout().addWidget(self.use)
-        self.ui.two_column_left.layout().addWidget(self.datacredit)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
+        self.ui.two_column_left.layout().addWidget(self.status, 2)
+        self.ui.two_column_left.layout().addWidget(self.access, 3)
+        self.ui.two_column_left.layout().addWidget(self.use, 4)
+        self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
 
-        self.ui.two_column_right.layout().addWidget(self.metadatadate)
-        self.ui.two_column_right.layout().addWidget(self.descriptor)
-
-        # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_left.layout().addItem(spacerItem)
-        #
-        # spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_right.layout().addItem(spacerItem2)
+        self.ui.two_column_right.layout().addWidget(self.keywords, 0)
+        self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
+        self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
 
 
     def dragEnterEvent(self, e):
@@ -145,7 +140,7 @@ class IdInfo(WizardWidget):
         descript_node = self.descriptor._to_xml()
         idinfo_node.append(descript_node)
 
-        timeperd_node = self.metadatadate._to_xml()
+        timeperd_node = self.timeperd._to_xml()
         idinfo_node.append(timeperd_node)
 
         status_node = self.status._to_xml()
