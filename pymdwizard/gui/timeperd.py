@@ -48,7 +48,6 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.ui_files import UI_timeperd #
 from pymdwizard.gui.single_date import SingleDate
 
-
 class Timeperd(WizardWidget):  #
 
     drag_label = "Time Period of Content <timeperd>"
@@ -72,14 +71,16 @@ class Timeperd(WizardWidget):  #
         self.ui.layout_daterange.addWidget(self.range_end_date)
         self.ui.layout_daterange.addWidget(self.range_start_date)
 
-        multidate_params = {'Add text': 'Add additional',
-                            'Remove text': 'Remove last',
-                            'widget': SingleDate,
-                            'widget_kwargs': {'show_format': False,
-                                              'label':'Individual Date   '}}
-        self.multi_dates = RepeatingElement(params=multidate_params)
+
+        date_widget_kwargs = {'show_format': False,
+                              'label':'Individual Date   '}
+
+        self.multi_dates = RepeatingElement(widget=SingleDate,
+                                            widget_kwargs=date_widget_kwargs)
+
+
         self.multi_dates.add_another()
-        # self.ui.layout_multipledates.addWidget(self.multi_dates)
+
 
     def connect_events(self):
         """

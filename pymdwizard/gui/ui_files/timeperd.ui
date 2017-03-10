@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>312</width>
-    <height>192</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,6 +42,9 @@
        <width>0</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Time Period Information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&amp;lt;FGDC shortname: &lt;span style=&quot; font-style:italic;&quot;&gt;timeperd&lt;/span&gt;&amp;gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Time period(s) for which the data set corresponds to the currentness reference.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Specify only one of:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	single date if the dataset ... &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	 a Date range if it ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	or multiple dates if ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Choose only one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
       <string>Time Period Information</string>
@@ -230,7 +233,7 @@
                   <number>0</number>
                  </property>
                  <item>
-                  <layout class="QHBoxLayout" name="layout_daterange" stretch="">
+                  <layout class="QHBoxLayout" name="layout_daterange">
                    <property name="spacing">
                     <number>0</number>
                    </property>
@@ -289,76 +292,84 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <property name="spacing">
-              <number>12</number>
+            <widget class="QFrame" name="">
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currentness Reference &amp;lt;FGDC shortname: adjfl;ksdjf&amp;gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The blah blah blah&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="topMargin">
-              <number>12</number>
-             </property>
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_8">
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <italic>false</italic>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">font: bold;</string>
-               </property>
-               <property name="text">
-                <string>Currentness Reference</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="fgdc_current">
-               <property name="editable">
-                <bool>true</bool>
-               </property>
-               <item>
-                <property name="text">
-                 <string/>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <property name="topMargin">
+               <number>12</number>
+              </property>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>ground condition</string>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>observed</string>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_8">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                 </font>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>publication date</string>
+                <property name="whatsThis">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;currentness what's this....&lt;/p&gt;&lt;p&gt;fakls;dfhjl;sakdjfl&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>See Supplemental Info</string>
+                <property name="styleSheet">
+                 <string notr="true">font: bold;</string>
                 </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
+                <property name="text">
+                 <string>Currentness Reference</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="fgdc_current">
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ground condition</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>observed</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>publication date</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>See Supplemental Info</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
           </layout>
          </widget>
