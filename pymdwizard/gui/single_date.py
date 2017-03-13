@@ -122,6 +122,12 @@ class SingleDate(QWidget):
 
         self.changed = False
 
+    def get_date(self):
+        return self.ui.lineEdit.text()
+
+    def set_date(self, date_str):
+        self.ui.lineEdit.setText(date_str)
+
 if __name__ == "__main__":
     utils.launch_widget(SingleDate, label='testing', show_format=False)
 

@@ -125,6 +125,31 @@ def populate_widget(widget, contents):
             except AttributeError:
                 pass
 
+
+def populate_widget_element(widget, element, xpath):
+    """
+    if the xpath is present in the element
+    set the text or plainText of it to the first result of that xpath's text
+
+    Parameters
+    ----------
+    widget : pyqt widget, lineEdit or plainTextEdit
+    element : lxml element
+    xpath : str
+            xpath to the child element in the element
+
+    Returns
+    -------
+        None
+    """
+    if element.xpath(xpath):
+        first_child = element.xpath(xpath)[0]
+        try:
+            widget.setText(first_child.text)
+        except:
+            widget.setPlainText(first_child.text)
+
+
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 

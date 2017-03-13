@@ -180,7 +180,7 @@ class RepeatingElement(QWidget):
         for widget in self.widgets:
             widget.deleteLater()
 
-        self.widets = []
+        self.widgets = []
 
 
 if __name__ == "__main__":

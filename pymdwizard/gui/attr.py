@@ -163,6 +163,7 @@ class Attr(WizardWidget):  #
         self.animation.setDuration(400)
         self.animation.setEndValue(QSize(300, self.height()))
         self.animation.start()
+        self.ui.fgdc_attrdomv.show()
 
 
     def regularsize_me(self):
@@ -170,6 +171,7 @@ class Attr(WizardWidget):  #
         self.animation.setDuration(33)
         self.animation.setEndValue(QSize(100, self.height()))
         self.animation.start()
+        self.ui.fgdc_attrdomv.hide()
 
     def eventFilter(self, obj, event):
         """

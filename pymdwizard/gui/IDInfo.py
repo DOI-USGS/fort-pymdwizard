@@ -132,9 +132,11 @@ class IdInfo(WizardWidget):
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
-        idinfo_node = etree.Element('idinfo')
+        idinfo_node = xml_utils.xml_node('idinfo')
 
-        citation_node = self.citation._to_xml()
+        citation_node = xml_utils.xml_node('citation', parent_node=idinfo_node)
+        citeinfo_node = self.citation._to_xml()
+        citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
         descript_node = self.descriptor._to_xml()
@@ -181,6 +183,17 @@ class IdInfo(WizardWidget):
         except IndexError:
             pass
 
+        try:
+            citation = xml_idinfo.xpath('citation')[0]
+            self.citation._from_xml(citation)
+        except IndexError:
+            pass
+
+        try:
+            timeperd = xml_idinfo.xpath('timeperd')[0]
+            self.timeperd._from_xml(timeperd)
+        except IndexError:
+            pass
 
 if __name__ == "__main__":
     utils.launch_widget(IdInfo, "IdInfo testing")

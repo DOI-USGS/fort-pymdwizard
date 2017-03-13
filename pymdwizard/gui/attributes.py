@@ -84,7 +84,10 @@ class Attributes(WizardWidget):  #
             attr_i.guess_domain()
 
             self.attrs.append(attr_i)
+            attr_i.regularsize_me()
             self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+
+        self.attrs[0].supersize_me()
 
     def clear_children(self):
 
