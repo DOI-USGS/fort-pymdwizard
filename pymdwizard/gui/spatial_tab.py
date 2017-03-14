@@ -98,7 +98,9 @@ class SpatialTab(WizardWidget):
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname,
+                                            # Image Files (*.png *.jpg *.bmp)
+                                            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd)")
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             self.populate_from_fname(fname[0])

@@ -80,7 +80,8 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname,
+                                            filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             self.populate_from_fname(fname[0])
