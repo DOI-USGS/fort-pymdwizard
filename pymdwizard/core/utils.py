@@ -121,6 +121,7 @@ def populate_widget(widget, contents):
 
             try:
                 child_widget.setText(value)
+                child_widget.setCursorPosition(0)
             except:
                 pass
 
