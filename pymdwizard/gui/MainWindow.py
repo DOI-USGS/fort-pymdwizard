@@ -287,7 +287,11 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
 
     def validate(self):
-        xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+
+        if self.metadata_root.schema == 'bdp':
+            xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+        else:
+            xsl_fname = utils.get_resource_path('fgdc/fgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 

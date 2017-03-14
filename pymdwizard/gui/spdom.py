@@ -66,6 +66,11 @@ class Spdom(WizardWidget):
 
     ui_class = UI_spdom.Ui_Form
 
+    def __init__(self, root_widget=None):
+        super(self.__class__, self).__init__()
+        self.schema = 'bdp'
+        self.root_widget = root_widget
+
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -177,27 +182,35 @@ class Spdom(WizardWidget):
             self.draw_js_map()
 
     def update_rect(self):
-        if not self.in_update:
-            self.update_coords()
-            jstr = "rect.setBounds(L.latLngBounds(L.latLng({s}, {w}), L.latLng({n}, {e})));".format(e=self.east, w=self.west, n=self.north, s=self.south)
-            frame = self.view.page().mainFrame()
-            frame.evaluateJavaScript(jstr)
+        try:
+            if not self.in_update:
+                self.update_coords()
+                jstr = "rect.setBounds(L.latLngBounds(L.latLng({s}, {w}), L.latLng({n}, {e})));".format(e=self.east, w=self.west, n=self.north, s=self.south)
+                frame = self.view.page().mainFrame()
+                frame.evaluateJavaScript(jstr)
+        except:
+            # no matter what this error is not critical
+            pass
 
     def update_markers(self):
-        self.update_coords()
-        h_center = (self.east + self.west) / 2.0
-        v_center = (self.north + self.south) / 2.0
+        try:
+            self.update_coords()
+            h_center = (self.east + self.west) / 2.0
+            v_center = (self.north + self.south) / 2.0
 
-        frame = self.view.page().mainFrame()
-        jstr = "s_marker.setLatLng(new L.latLng({s}, {h}));".format(s=self.south, h=h_center)
-        frame.evaluateJavaScript(jstr)
-        jstr = "e_marker.setLatLng(new L.latLng({v}, {e}));".format(e=self.east, v=v_center)
-        frame.evaluateJavaScript(jstr)
+            frame = self.view.page().mainFrame()
+            jstr = "s_marker.setLatLng(new L.latLng({s}, {h}));".format(s=self.south, h=h_center)
+            frame.evaluateJavaScript(jstr)
+            jstr = "e_marker.setLatLng(new L.latLng({v}, {e}));".format(e=self.east, v=v_center)
+            frame.evaluateJavaScript(jstr)
 
-        jstr = "n_marker.setLatLng(new L.latLng({n}, {h}));".format(n=self.north, h=h_center)
-        frame.evaluateJavaScript(jstr)
-        jstr = "w_marker.setLatLng(new L.latLng({v}, {w}));".format(w=self.west, v=v_center)
-        frame.evaluateJavaScript(jstr)
+            jstr = "n_marker.setLatLng(new L.latLng({n}, {h}));".format(n=self.north, h=h_center)
+            frame.evaluateJavaScript(jstr)
+            jstr = "w_marker.setLatLng(new L.latLng({v}, {w}));".format(w=self.west, v=v_center)
+            frame.evaluateJavaScript(jstr)
+        except:
+            # no matter what this error is not critical
+            pass
 
     @pyqtSlot(float, float)
     def on_e_move(self, lat, lng):
@@ -239,10 +252,21 @@ class Spdom(WizardWidget):
         else:
             e.ignore()
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        if schema == 'bdp':
+            self.ui.fgdc_descgeog.show()
+            self.ui.descgeog_label.show()
+            self.ui.descgeog_star.show()
+        else:
+            self.ui.fgdc_descgeog.hide()
+            self.ui.descgeog_label.hide()
+            self.ui.descgeog_star.hide()
+
     def _to_xml(self):
         spdom = xml_node('spdom')
 
-        if True: # TODO replace this with global check for BDP
+        if self.schema == 'bdp':
             descgeog = xml_node('descgeog', text=self.ui.fgdc_descgeog, parent_node=spdom)
 
         bounding = xml_node('bounding', parent_node=spdom)
@@ -255,6 +279,12 @@ class Spdom(WizardWidget):
     def _from_xml(self, spdom):
         utils.populate_widget(self, spdom)
         self.draw_map()
+        self.update_rect()
+        self.update_markers()
+
+        jstr = "map.fitBounds(L.latLngBounds(L.latLng({s}, {w}), L.latLng({n}, {e})));".format(e=self.east, w=self.west, n=self.north, s=self.south)
+        frame = self.view.page().mainFrame()
+        frame.evaluateJavaScript(jstr)
 
 
 if __name__ == "__main__":

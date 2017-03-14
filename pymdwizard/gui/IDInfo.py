@@ -77,6 +77,10 @@ class IdInfo(WizardWidget):
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
+    def __init__(self):
+        self.schema = 'bdp'
+        super(self.__class__, self).__init__()
+
     def build_ui(self):
 
         self.ui = self.ui_class()
@@ -93,7 +97,7 @@ class IdInfo(WizardWidget):
         self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
-        self.descriptor = Descriptor(parent=self)
+        self.descript = Descriptor(parent=self)
 
         self.ui.frame_citation.layout().addWidget(self.citation)
 
@@ -106,7 +110,7 @@ class IdInfo(WizardWidget):
 
         self.ui.two_column_right.layout().addWidget(self.keywords, 0)
         self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
-        self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
+        self.ui.two_column_right.layout().addWidget(self.descript, 2)
 
 
     def dragEnterEvent(self, e):
@@ -130,6 +134,13 @@ class IdInfo(WizardWidget):
         else:
             e.ignore()
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        if schema == 'bdp':
+            self.taxonomy.show()
+        else:
+            self.taxonomy.hide()
+
     def _to_xml(self):
         # add code here to translate the form into xml representation
         idinfo_node = xml_utils.xml_node('idinfo')
@@ -139,7 +150,7 @@ class IdInfo(WizardWidget):
         citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
-        descript_node = self.descriptor._to_xml()
+        descript_node = self.descript._to_xml()
         idinfo_node.append(descript_node)
 
         timeperd_node = self.timeperd._to_xml()
@@ -151,7 +162,7 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        if self.taxonomy.ui.rbtn_yes.isChecked():
+        if self.schema == 'bdp' and self.taxonomy.ui.rbtn_yes.isChecked():
             taxonomy = self.taxonomy._to_xml()
             idinfo_node.append(taxonomy)
 
@@ -192,6 +203,12 @@ class IdInfo(WizardWidget):
         try:
             timeperd = xml_idinfo.xpath('timeperd')[0]
             self.timeperd._from_xml(timeperd)
+        except IndexError:
+            pass
+
+        try:
+            descript = xml_idinfo.xpath('descript')[0]
+            self.descript._from_xml(descript)
         except IndexError:
             pass
 
