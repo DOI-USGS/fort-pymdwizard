@@ -154,10 +154,10 @@ class EA(WizardWidget):  #
         None
         """
         try:
-            if eainfo.tag == 'eainfo':
-                detailed = eainfo.xpath('detailed')[0]
-                self.detailed._from_xml(detailed)
+            self.ui.tab_ea.setCurrentIndex(0)
+            self.detailed.clear_widget()
 
+            if eainfo.tag == 'eainfo':
                 overview = eainfo.xpath('overview')
                 if overview:
                     eaover = eainfo.xpath('overview/eaover')
@@ -167,8 +167,16 @@ class EA(WizardWidget):  #
                     eadetcit = eainfo.xpath('overview/eadetcit')
                     if eadetcit:
                         self.ui.fgdc_eadetcit.setText(eadetcit[0].text)
+                    self.ui.tab_ea.setCurrentIndex(2)
+
+                detailed = eainfo.xpath('detailed')
+                if detailed:
+                    self.detailed._from_xml(detailed[0])
+                    self.ui.tab_ea.setCurrentIndex(1)
+
+
             else:
-                print ("The tag is not udom")
+                print("The tag is not EA")
         except KeyError:
             pass
 
