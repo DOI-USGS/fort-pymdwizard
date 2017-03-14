@@ -89,6 +89,11 @@ class EA(WizardWidget):  #
         else:
             e.ignore()
 
+    def clear_widget(self):
+        self.detailed.clear_widget()
+        self.ui.fgdc_eaover.setText('')
+        self.ui.fgdc_eadetcit.setText('')
+
     def _to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -102,10 +107,13 @@ class EA(WizardWidget):  #
         detailed = self.detailed._to_xml()
         eainfo.append(detailed)
 
-        overview = xml_utils.xml_node('overview')
-        eaover = xml_utils.xml_node('eaover', text=self.ui.fgdc_eaover.toPlainText(), parent_node=overview)
-        eadetcit = xml_utils.xml_node('eadetcit', text=self.ui.fgdc_eaover.toPlainText(), parent_node=overview)
-        eainfo.append(overview)
+        eaover_str = self.ui.fgdc_eaover.toPlainText()
+        eadetcit_str = self.ui.fgdc_eaover.toPlainText()
+
+        if eaover_str or eadetcit_str:
+            overview = xml_utils.xml_node('overview', parent_node=eainfo)
+            eaover = xml_utils.xml_node('eaover', text=eaover_str, parent_node=overview)
+            eadetcit = xml_utils.xml_node('eadetcit', text=eadetcit_str, parent_node=overview)
 
         return eainfo
 
@@ -126,8 +134,13 @@ class EA(WizardWidget):  #
 
                 overview = eainfo.xpath('overview')
                 if overview:
-                    self.ui.fgdc_eaover.setText(eainfo.xpath('overview/eaover')[0].text)
-                    self.ui.fgdc_eadetcit.setText(eainfo.xpath('overview/eadetcit')[0].text)
+                    eaover = eainfo.xpath('overview/eaover')
+                    if eaover:
+                        self.ui.fgdc_eaover.setText(eaover[0].text)
+
+                    eadetcit = eainfo.xpath('overview/eadetcit')
+                    if eadetcit:
+                        self.ui.fgdc_eadetcit.setText(eadetcit[0].text)
             else:
                 print ("The tag is not udom")
         except KeyError:

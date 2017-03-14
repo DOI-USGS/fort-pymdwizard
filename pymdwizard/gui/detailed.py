@@ -136,6 +136,11 @@ class Detailed(WizardWidget):  #
         else:
             e.ignore()
 
+    def clear_widget(self):
+        self.ui.fgdc_enttypl.setText('')
+        self.ui.fgdc_enttypd.setPlainText('')
+        self.attributes.clear_children()
+
     def _to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
