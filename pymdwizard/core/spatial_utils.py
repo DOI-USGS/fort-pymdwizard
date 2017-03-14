@@ -355,7 +355,9 @@ def get_params(layer):
 
 
     #SPCS_Zone
-    if 'stateplane' in params['mapprojn'].lower():
+
+    if params['mapprojn'] is not None and \
+                'stateplane' in params['mapprojn'].lower():
         parts = params['mapprojn'].split('_')
         params['spcszone'] = parts[parts.index('FIPS')+1]
     #PCS_Units
