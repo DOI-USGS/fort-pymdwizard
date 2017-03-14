@@ -79,15 +79,15 @@ class Citation(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citation(parent=self, include_lwork=False)
-            self.lworkcit_widget.ui.fgdc_lworkcit.deleteLater()
-            self.ui.lworkcite_ext.layout().addWidget(self.lworkcit_widget)
+            # self.lworkcit_widget.ui.fgdc_lworkcit.hide()
+            self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
-            self.lworkcit_widget = None
-        self.ui.lworkcite_ext.hide()
+            self.ui.fgdc_lworkcit.hide()
+        self.include_lworkext_change(self.ui.radio_lworkyes.isChecked())
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = SingleDate(label='', show_format=False)
+        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ', show_format=False)
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
@@ -165,9 +165,9 @@ class Citation(WizardWidget): #
         None
         """
         if b:
-            self.ui.lworkcite_ext.show()
+            self.ui.lworkcite_widget.show()
         else:
-            self.ui.lworkcite_ext.hide()
+            self.ui.lworkcite_widget.hide()
 
 
     def dragEnterEvent(self, e):
