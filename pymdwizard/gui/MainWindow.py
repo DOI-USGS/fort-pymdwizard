@@ -168,6 +168,7 @@ class PyMdWizardMainForm(QMainWindow):
             return
         file.close()
 
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
@@ -179,6 +180,8 @@ class PyMdWizardMainForm(QMainWindow):
             import traceback
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QMessageBox.warning(self, "Recent Files", msg)
+        QApplication.restoreOverrideCursor()
+
 
     def save_as(self):
         """
@@ -191,7 +194,7 @@ class PyMdWizardMainForm(QMainWindow):
         """
         fname = self.get_save_name()
         if fname:
-            self.set_current_file(fname[0])
+            self.set_current_file(fname)
             self.update_recent_file_actions()
             self.save_file()
 
