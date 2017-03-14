@@ -120,9 +120,10 @@ class Descriptor(WizardWidget): #
         purpose.text = self.findChild(QPlainTextEdit, "fgdc_purpose").toPlainText()
         descript.append(purpose)
 
-        supplinf = etree.Element("supplinf")
-        supplinf.text = self.findChild(QPlainTextEdit, "fgdc_supplinf").toPlainText()
-        descript.append(supplinf)
+        supplinf_str = self.ui.fgdc_supplinf.toPlainText()
+        if supplinf_str:
+            upplinf = xml_utils.xml_node('supplinf', text=supplinf_str,
+                                         parent_node=descript)
 
         return descript
 

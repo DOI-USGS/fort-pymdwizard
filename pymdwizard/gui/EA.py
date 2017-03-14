@@ -90,9 +90,35 @@ class EA(WizardWidget):  #
             e.ignore()
 
     def clear_widget(self):
+        """
+        Clears all content from this widget
+
+        Returns
+        -------
+        None
+        """
         self.detailed.clear_widget()
         self.ui.fgdc_eaover.setText('')
         self.ui.fgdc_eadetcit.setText('')
+
+    def has_content(self):
+        """
+        Checks for valid content in this widget
+
+        Returns
+        -------
+        Boolean
+        """
+        has_content = False
+
+        if self.ui.fgdc_eadetcit.toPlainText():
+            has_content = True
+        if self.ui.fgdc_eaover.toPlainText():
+            has_content = True
+        if self.detailed.has_content():
+            has_content = True
+
+        return has_content
 
     def _to_xml(self):
         """

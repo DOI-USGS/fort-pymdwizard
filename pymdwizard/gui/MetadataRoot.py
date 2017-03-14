@@ -153,6 +153,10 @@ class MetadataRoot(WizardWidget):
         eainfo = self.eainfo._to_xml()
         metadata_node.append(eainfo)
 
+        if self.eainfo.has_content():
+            eainfo = self.eainfo._to_xml()
+            metadata_node.append(eainfo)
+
         metainfo = self.metainfo._to_xml()
         metadata_node.append(metainfo)
         return metadata_node
