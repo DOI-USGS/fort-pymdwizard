@@ -329,24 +329,23 @@ QToolButton:checked:Hover{
         </widget>
        </widget>
        <widget class="QWidget" name="page_distinfo">
-        <widget class="QLabel" name="label_5">
-         <property name="geometry">
-          <rect>
-           <x>580</x>
-           <y>300</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>Distribution</string>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
        </widget>
        <widget class="QWidget" name="page_metainfo">
         <layout class="QHBoxLayout" name="horizontalLayout_2">

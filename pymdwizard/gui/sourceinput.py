@@ -152,14 +152,7 @@ class SourceInput(WizardWidget): #
             srcinfo_list = self.src_info.get_widgets()
             for srcinfo in srcinfo_list:
                 lineage.append(srcinfo._to_xml())
-            # while cnt < len(list_widgets):
-            #     #lineage.append(list_widgets[cnt]._to_xml())
-            #     lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
-            #     cnt += 1
         return lineage
-        # elif self.ui.radio_sourceno.isChecked():
-        #     pass
-
 
     def _from_xml(self, xml_srcinput):
         """
@@ -181,10 +174,8 @@ class SourceInput(WizardWidget): #
                 xml_srcinput = xml_srcinput.findall('srcinfo')
                 if xml_srcinput:
                     for srcinput in xml_srcinput:
-                        print srcinput.tag
                         srcinfo_widget = self.src_info.add_another()
                         srcinfo_widget._from_xml(srcinput)
-                        #self.citation._from_xml(srccite.xpath('citeinfo')[0])
                 else:
                     self.src_info.add_another()
         except KeyError:
