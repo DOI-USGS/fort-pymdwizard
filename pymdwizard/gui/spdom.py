@@ -267,12 +267,12 @@ class Spdom(WizardWidget):
         spdom = xml_node('spdom')
 
         if self.schema == 'bdp':
-            descgeog = xml_node('descgeog', text=self.ui.fgdc_descgeog, parent_node=spdom)
+            descgeog = xml_node('descgeog', text=self.ui.fgdc_descgeog.text(), parent_node=spdom)
 
         bounding = xml_node('bounding', parent_node=spdom)
         westbc = xml_node('westbc', text=self.ui.fgdc_westbc.text(), parent_node=bounding)
         eastbc = xml_node('eastbc', text=self.ui.fgdc_eastbc.text(), parent_node=bounding)
-        northbc = xml_node('northtbc', text=self.ui.fgdc_northbc.text(), parent_node=bounding)
+        northbc = xml_node('northbc', text=self.ui.fgdc_northbc.text(), parent_node=bounding)
         southbc = xml_node('southbc', text=self.ui.fgdc_southbc.text(), parent_node=bounding)
         return spdom
 

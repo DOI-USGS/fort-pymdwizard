@@ -373,7 +373,8 @@ color: rgb(90, 90, 90);
 QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
- }""")
+
+""")
 
     def eventFilter(self, obj, event):
         """
