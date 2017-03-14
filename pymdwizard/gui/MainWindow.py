@@ -66,6 +66,8 @@ class PyMdWizardMainForm(QMainWindow):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
 
+        self.cur_fname = ''
+
         self.recent_file_actions = []
         self.error_widgets = []
 
@@ -182,6 +184,13 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        fname = self.get_save_name()
+        if fname:
+            self.set_current_file(fname[0])
+            self.update_recent_file_actions()
+            self.save_file()
+
+    def get_save_name(self):
         settings = QSettings('USGS', 'pymdwizard')
         recent_files = settings.value('recentFileList', [])
         if recent_files:
@@ -189,33 +198,34 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getSaveFileName(self, fname, dname)
-        if fname[0]:
-            self.set_current_file(fname[0])
-            self.update_recent_file_actions()
-            self.save_file()
+        fname = QFileDialog.getSaveFileName(self, "Save As", dname, \
+                                            filter="XML Files (*.xml)")
+        return fname[0]
+
 
     def save_file(self, e=None):
-        file = QFile(self.cur_fname)
-        if not file.open(QFile.ReadWrite | QFile.Text):
-            msg = "Cannot write file %s:\n%s.".format(self.cur_fname,
-                                                      file.errorString())
+        if not self.cur_fname:
+            fname = self.get_save_name()
+            if not fname:
+                return
+        else:
+            fname = self.cur_fname
+
+        fname_msg = utils.check_fname(fname)
+        if not fname_msg == 'good':
+            msg = "Cannot write to :\n  {}.".format(fname)
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        out_str = QTextStream(file)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        out_str << xml_utils.node_to_string(self.metadata_root._to_xml())
-        QApplication.restoreOverrideCursor()
+        xml_utils.save_to_file(self.metadata_root._to_xml(), fname)
 
-        file.close()
-        self.set_current_file(self.cur_fname)
+        self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
     def set_current_file(self, fname):
         self.cur_fname = fname
-        if self.cur_fname:
-            title = "%s - Recent Files" % self.stripped_name(self.cur_fname)
+        if fname:
+            title = "Metadata Wizard - {}".format(self.stripped_name(fname))
             self.setWindowTitle(title)
         else:
             self.setWindowTitle("Metadata Wizard")
