@@ -145,6 +145,9 @@ class Attributes(WizardWidget):  #
 
                     self.attrs.append(attr_widget)
                     self.main_layout.insertWidget(len(self.main_layout) - 1, attr_widget)
+
+                self.minimize_children()
+                self.attrs[0].supersize_me()
             else:
                 print ("The tag is not udom")
         except KeyError:
