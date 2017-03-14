@@ -213,7 +213,7 @@ def get_resource_path(fname):
             the full file path to the resource specified
     """
     return pkg_resources.resource_filename('pymdwizard',
-                                           'resources/FGDC/{}'.format(fname))
+                                           'resources/{}'.format(fname))
 
 class PandasModel(QAbstractTableModel):
     """

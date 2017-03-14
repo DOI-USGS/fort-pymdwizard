@@ -14,8 +14,8 @@
    <string>Metadata Wizard</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons/icons.qrc">
-    <normaloff>:/newPrefix/Ducky.ico</normaloff>:/newPrefix/Ducky.ico</iconset>
+   <iconset>
+    <normaloff>icons/Ducky.ico</normaloff>icons/Ducky.ico</iconset>
   </property>
   <property name="iconSize">
    <size>

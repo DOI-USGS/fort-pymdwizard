@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/Ducky.ico</normaloff>icons/Ducky.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="leftMargin">
     <number>3</number>

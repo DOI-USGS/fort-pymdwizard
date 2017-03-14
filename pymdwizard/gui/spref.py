@@ -125,7 +125,7 @@ class SpRef(WizardWidget):
         projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
 
 
-        annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
+        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
                 annotation_lookup = json.loads(data_file.read())

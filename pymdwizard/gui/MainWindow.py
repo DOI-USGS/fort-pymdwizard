@@ -85,7 +85,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.icon = QIcon(utils.get_resource_path('Ducky.ico'))
+        self.icon = QIcon(utils.get_resource_path('icons/Ducky.ico'))
         # self.icon.addFile(utils.get_resource_path('Ducky.ico'))
         self.setWindowIcon(self.icon)
 
@@ -271,7 +271,7 @@ class PyMdWizardMainForm(QMainWindow):
 
     def clear_validation(self):
 
-        annotation_lookup_fname = utils.get_resource_path("bdp_lookup")
+        annotation_lookup_fname = utils.get_resource_path("fgdc/bdp_lookup")
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup = json.loads(data_file.read())
 
@@ -286,7 +286,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
 
     def validate(self):
-        xsl_fname = utils.get_resource_path('BDPfgdc-std-001-1998-annotated.xsd')
+        xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
@@ -360,7 +360,7 @@ opacity: 25;
         None
         """
 
-        xsl_fname = utils.get_resource_path("FGDC_Stylesheet.xsl")
+        xsl_fname = utils.get_resource_path("fgdc/FGDC_Stylesheet.xsl")
         transform = etree.XSLT(etree.parse(xsl_fname))
         result = transform(self.metadata_root._to_xml())
 
@@ -384,7 +384,7 @@ def main():
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('splash_ducks.jpg')
+    splash_fname = utils.get_resource_path('icons/splash_ducks.jpg')
     splash_pix = QPixmap(splash_fname)
 
     size = splash_pix.size()*.55
