@@ -199,28 +199,6 @@ class ContactInfo(WizardWidget):
             except:
                 pass
 
-        str_repr = """<cntinfo>
-          <cntperp>
-            <cntper>Jay Diffendorfer</cntper>
-          </cntperp>
-          <cntaddr>
-            <addrtype>Mailing</addrtype>
-            <address/>
-            <city/>
-            <state/>
-            <postal>80225</postal>
-            <country/>
-          </cntaddr>
-          <cntvoice>303-236-5369</cntvoice>
-          <cntfax/>
-          <cntemail>jediffendorfer@usgs.gov</cntemail>
-        </cntinfo>
-        """
-
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(str_repr, parser=parser)
-
-
         return cntinfo
 
     def _from_xml(self, contact_information):
@@ -229,9 +207,10 @@ class ContactInfo(WizardWidget):
 
         addrtype_widget = self.findChild(QComboBox, 'fgdc_addrtype')
 
-
         if 'cntinfo' in contact_dict:
             contact_dict = contact_dict['cntinfo']
+        if 'fgdc_cntinfo' in contact_dict:
+            contact_dict = contact_dict['fgdc_cntinfo']
 
         try:
             addrtype = contact_dict['cntaddr']['addrtype']
