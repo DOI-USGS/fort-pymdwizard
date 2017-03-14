@@ -141,6 +141,8 @@ class MetadataRoot(WizardWidget):
         eainfo = self.eainfo._to_xml()
         metadata_node.append(eainfo)
 
+        metainfo = self.metainfo._to_xml()
+        metadata_node.append(metainfo)
         return metadata_node
 
 
@@ -148,6 +150,7 @@ class MetadataRoot(WizardWidget):
         self.idinfo._from_xml(metadata_element.xpath('idinfo')[0])
         # self.spref._from_xml(metadata_element.xpath('spref')[0])
         self.eainfo._from_xml(metadata_element.xpath('eainfo')[0])
+        self.metainfo._from_xml(metadata_element.xpath('metainfo')[0])
 
 class FaderWidget(QWidget):
 
