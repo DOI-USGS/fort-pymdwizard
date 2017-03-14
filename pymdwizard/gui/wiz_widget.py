@@ -219,6 +219,14 @@ class WizardWidget(QWidget):
             e = sys.exc_info()[0]
             print('problem drop', e)
 
+    def get_mime(self):
+        mime_data = QMimeData()
+        pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
+        mime_data.setText(pretty_xml)
+        mime_data.setData('application/x-qt-windows-mime;value="XML"',
+                          QByteArray(pretty_xml.encode()))
+        return mime_data
+
     def mouseMoveEvent(self, e):
         """
         Handles the snippet capture and drag drop initialization
@@ -238,12 +246,7 @@ class WizardWidget(QWidget):
                 not (e.pos() - self.drag_start_pos).manhattanLength() > 75:
             return
 
-        mime_data = QMimeData()
-        pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
-        mime_data.setText(pretty_xml)
-        mime_data.setData('application/x-qt-windows-mime;value="XML"',
-                          QByteArray(pretty_xml.encode()))
-
+        mime_data = self.get_mime()
 
         # let's make it fancy. we'll show a "ghost" of the button as we drag
         # grab the button to a pixmap
@@ -337,16 +340,25 @@ class WizardWidget(QWidget):
         if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
 
             menu = QMenu(self)
+            clear_action = menu.addAction("clear")
+            copy_action = menu.addAction("copy")
+            paste_action = menu.addAction("paste")
             help_action = menu.addAction("help")
             action = menu.exec_(self.mapToGlobal(event.pos()))
 
-            if action == help_action:
+            if action == copy_action:
+                pass
+            elif action == paste_action:
+                pass
+            elif action == clear_action:
+                pass
+            elif action == help_action:
                 msg = QMessageBox(self)
                 msg.setTextFormat(Qt.RichText)
                 msg.setText(clicked_widget.whatsThis())
                 msg.setWindowTitle("Help")
-
                 msg.show()
+
 
     def set_stylesheet(self):
         self.setStyleSheet("""
