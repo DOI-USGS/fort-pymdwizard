@@ -52,6 +52,8 @@ from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
 from PyQt5.QtGui import QMouseEvent
 
+from lxml import etree
+
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import spatial_utils
@@ -89,6 +91,7 @@ class SpRef(WizardWidget):
         -------
         None
         """
+        self.ui.rbtn_yes.toggled.connect(self.spref_used_change)
         self.ui.btn_geographic.toggled.connect(self.system_def_changed)
         self.ui.btngrp_planar.buttonReleased.connect(self.planar_changed)
 
@@ -99,6 +102,12 @@ class SpRef(WizardWidget):
         # self.ui.eainfo_button.pressed.connect(self.section_changed)
         # self.ui.distinfo_button.pressed.connect(self.section_changed)
         # self.ui.metainfo_button.pressed.connect(self.section_changed)
+
+    def spref_used_change(self, b):
+        if b:
+            self.ui.horiz_layout.show()
+        else:
+            self.ui.horiz_layout.hide()
 
     def system_def_changed(self):
 

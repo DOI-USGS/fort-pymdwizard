@@ -94,25 +94,14 @@ class RepeatingElement(QWidget):
             self.ui.italic_label.setText(italic_text)
 
         if which == 'vertical':
-            self.SA = self.ui.vertical_contents
-            self.content_layout = self.ui.vertical_contents.layout()
+            self.SA = self.ui.vertical_widget
+            self.content_layout = self.ui.vertical_widget.layout()
             self.tab = False
-            self.ui.frame.hide()
-            self.ui.tab_widget.hide()
-            self.ui.horizontal_scroll.hide()
-        elif which == 'horizontal':
-            self.ui.stackedWidget.setCurrentIndex(1)
-            self.SA = self.ui.horizontal_contents
-            self.content_layout = self.ui.horizontal_contents.layout()
-            self.tab = False
-            self.ui.frame.hide()
-            self.ui.tab_widget.hide()
-            self.ui.vertical_widget.hide()
+            self.ui.tab_widget.deleteLater()
         elif which == 'tab':
             self.content_widget = self.ui.tab_widget
             self.tab = True
-            self.ui.horizontal_scroll.hide()
-            self.ui.vertical_scroll.hide()
+            self.ui.vertical_widget.deleteLater()
 
         self.tab_label = tab_label
 
@@ -192,9 +181,10 @@ if __name__ == "__main__":
 
 
 
-    utils.launch_widget(RepeatingElement, which='tab',
+    utils.launch_widget(RepeatingElement, which='vertical',
                         tab_label='Processing Step', add_text='test add',
-                        widget = sourceinput.SourceInput, remove_text='test remove', italic_text='some instruction')
+                        # widget = sourceinput.SourceInput,
+                        remove_text='test remove', italic_text='some instruction')
 
 
 

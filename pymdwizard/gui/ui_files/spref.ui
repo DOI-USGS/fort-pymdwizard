@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1033</width>
-    <height>961</height>
+    <width>496</width>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="horizontal_group_box">
      <property name="title">
       <string/>
      </property>
@@ -52,7 +52,7 @@
            <string notr="true">font: bold;</string>
           </property>
           <property name="text">
-           <string>Is there spatial information in this dataset? i.e. it has X, Y or Lat, Long columns,  or it's in a GIS format</string>
+           <string>Is there a datum or projection used in this Dataset  </string>
           </property>
          </widget>
         </item>
@@ -154,7 +154,7 @@
               <item>
                <widget class="QStackedWidget" name="stack_definition">
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="fgdc_geograph">
                  <layout class="QFormLayout" name="formLayout">
@@ -314,7 +314,7 @@
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>929</width>
+                           <width>392</width>
                            <height>69</height>
                           </rect>
                          </property>

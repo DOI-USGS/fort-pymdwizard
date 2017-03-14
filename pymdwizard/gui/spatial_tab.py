@@ -39,21 +39,25 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys
+import os
+
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton, QInputDialog
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
 
 from pymdwizard.core import utils
+from pymdwizard.core import spatial_utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spatial_tab
-from pymdwizard.gui import  spref
+from pymdwizard.gui import spref
+from pymdwizard.gui import spdoinfo
 from pymdwizard.gui import spdom
 
 
@@ -79,7 +83,40 @@ class SpatialTab(WizardWidget):
         self.ui.spatial_main_widget.layout().insertWidget(0, self.spdom)
 
         self.spref = spref.SpRef()
-        self.ui.spatial_main_widget.layout().insertWidget(1, self.spref)
+        self.ui.two_column_left.layout().insertWidget(0, self.spref)
+
+        self.spdoinfo = spdoinfo.SpdoInfo()
+        self.ui.two_column_right.layout().insertWidget(0, self.spdoinfo)
+
+        self.ui.btn_browse.clicked.connect(self.browse)
+
+    def browse(self):
+        settings = QSettings('USGS', 'pymdwizard')
+        last_data_fname = settings.value('lastDataFname', '')
+        if last_data_fname:
+            dname, fname = os.path.split(last_data_fname)
+        else:
+            fname, dname = "", ""
+
+        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        if fname[0]:
+            settings.setValue('lastDataFname', fname[0])
+            self.populate_from_fname(fname[0])
+
+    def populate_from_fname(self, fname):
+
+        layer = spatial_utils.get_layer(fname)
+        params = spatial_utils.get_params(layer)
+        geo = spatial_utils.geographic(params)
+        self.spref._from_xml(geo)
+
+        spdom = spatial_utils.get_bounding(fname)
+        self.spdom._from_xml(spdom)
+
+        spdoinfo = spatial_utils.get_spdoinfo(fname)
+        self.spdoinfo._from_xml(spdoinfo)
+
+
 
 
     def dragEnterEvent(self, e):
