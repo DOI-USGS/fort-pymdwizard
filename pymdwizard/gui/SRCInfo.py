@@ -182,7 +182,7 @@ class SRCInfo(WizardWidget): #
         """
         try:
             if srcinfo.tag == "srcinfo":
-                print srcinfo.tag
+                # print srcinfo.tag
                 utils.populate_widget(self, srcinfo)
                 srccite = srcinfo.xpath('srccite')[0]
                 citeinfo = srccite.xpath('citeinfo')[0]
@@ -194,7 +194,7 @@ class SRCInfo(WizardWidget): #
 
             utils.populate_widget_element(self.citation.ui.fgdc_title, citeinfo, 'title')
 
-            utils.populate_widget_element(self.citation.ui.fgdc_pubdate.ui.lineEdit,
+            utils.populate_widget_element(self.citation.ui.pubdate_widget.ui.lineEdit,
                                           citeinfo, 'pubdate')
 
             self.citation.fgdc_origin.clear_widgets()
@@ -254,11 +254,11 @@ class SRCInfo(WizardWidget): #
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
                 srccurr = srcinfo.xpath('srctime/srccurr')[0]
                 srccurr.tag = 'current'
-                print srccurr
+                # print srccurr
                 timeperd.append(timeinfo)
                 timeperd.append(srccurr)
                 self.timeperd._from_xml(timeperd)
-                print timeperd
+                # print timeperd
                 #self.timeperd._from_xml(timeperd)
 
 

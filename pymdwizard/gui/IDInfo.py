@@ -99,7 +99,7 @@ class IdInfo(WizardWidget):
         self.datacredit = DataCredit(parent=self)
         self.descript = Descriptor(parent=self)
 
-        self.ui.frame_citation.layout().addWidget(self.citation)
+        self.ui.fgdc_citation.layout().addWidget(self.citation)
 
         self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
         self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
