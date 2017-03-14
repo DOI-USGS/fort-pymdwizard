@@ -104,13 +104,17 @@ class IdInfo(WizardWidget):
 
         self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
         self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
-        self.ui.two_column_left.layout().addWidget(self.status, 2)
+
+        time_hbox = QHBoxLayout()
+        time_hbox.addWidget(self.status)
+        time_hbox.addWidget(self.timeperd)
+        self.ui.two_column_left.layout().addLayout(time_hbox, 2)
         self.ui.two_column_left.layout().addWidget(self.accconst, 3)
         self.ui.two_column_left.layout().addWidget(self.useconst, 4)
         self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
 
         self.ui.two_column_right.layout().addWidget(self.keywords, 0)
-        self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
+        # self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
         self.ui.two_column_right.layout().addWidget(self.descript, 2)
 
 
@@ -177,7 +181,7 @@ class IdInfo(WizardWidget):
         idinfo_node.append(useconst_node)
 
         ptcontac = self.ptcontac._to_xml()
-        if ptcontac:
+        if ptcontac is not None:
             idinfo_node.append(ptcontac)
 
         datacredit_node = self.datacredit._to_xml()

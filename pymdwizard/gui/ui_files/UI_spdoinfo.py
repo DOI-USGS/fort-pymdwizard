@@ -428,7 +428,7 @@ class Ui_spatial_domain_widget(object):
 
         self.retranslateUi(spatial_domain_widget)
         self.fgdc_direct.setCurrentIndex(2)
-        self.vector_or_raster.setCurrentIndex(1)
+        self.vector_or_raster.setCurrentIndex(0)
         self.fgdc_sdtstype.setCurrentIndex(0)
         self.fgdc_rasttype.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(spatial_domain_widget)

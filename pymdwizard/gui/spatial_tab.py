@@ -107,19 +107,22 @@ class SpatialTab(WizardWidget):
 
     def populate_from_fname(self, fname):
 
-        layer = spatial_utils.get_layer(fname)
-        params = spatial_utils.get_params(layer)
-        geo = spatial_utils.geographic(params)
-        self.spref._from_xml(geo)
+        # layer = spatial_utils.get_layer(fname)
+        # params = spatial_utils.get_params(layer)
+        # geo = spatial_utils.geographic(params)
+        # self.spref._from_xml(geo)
 
-        spdom = spatial_utils.get_bounding(fname)
-        self.spdom._from_xml(spdom)
+        try:
+            spdom = spatial_utils.get_bounding(fname)
+            self.spdom._from_xml(spdom)
+        except:
+            pass
 
-        spdoinfo = spatial_utils.get_spdoinfo(fname)
-        self.spdoinfo._from_xml(spdoinfo)
-
-
-
+        try:
+            spdoinfo = spatial_utils.get_spdoinfo(fname)
+            self.spdoinfo._from_xml(spdoinfo)
+        except:
+            pass
 
     def dragEnterEvent(self, e):
         """
