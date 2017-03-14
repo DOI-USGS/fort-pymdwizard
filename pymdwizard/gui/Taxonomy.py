@@ -167,6 +167,9 @@ class Taxonomy(WizardWidget):
         return self.xml_lookup[unique_id]
 
     def _from_xml(self, taxonomy_element):
+
+        self.ui.rbtn_yes.setChecked(True)
+
         self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
         i = 0
         for common_node in taxonomy_element.findall('.//common'):
