@@ -542,6 +542,9 @@
                         <property name="editable">
                          <bool>true</bool>
                         </property>
+                        <property name="currentIndex">
+                         <number>1</number>
+                        </property>
                         <item>
                          <property name="text">
                           <string>FGDC-STD-001-1998</string>
@@ -651,6 +654,9 @@
                         </property>
                         <property name="editable">
                          <bool>true</bool>
+                        </property>
+                        <property name="currentIndex">
+                         <number>1</number>
                         </property>
                         <item>
                          <property name="text">

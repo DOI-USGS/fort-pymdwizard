@@ -97,7 +97,7 @@ class RepeatingElement(QWidget):
             self.SA = self.ui.vertical_contents
             self.content_layout = self.ui.vertical_contents.layout()
             self.tab = False
-
+            self.ui.frame.hide()
             self.ui.tab_widget.hide()
             self.ui.horizontal_scroll.hide()
         elif which == 'horizontal':
@@ -105,6 +105,7 @@ class RepeatingElement(QWidget):
             self.SA = self.ui.horizontal_contents
             self.content_layout = self.ui.horizontal_contents.layout()
             self.tab = False
+            self.ui.frame.hide()
             self.ui.tab_widget.hide()
             self.ui.vertical_widget.hide()
         elif which == 'tab':
@@ -185,7 +186,7 @@ class RepeatingElement(QWidget):
 
 if __name__ == "__main__":
 
-    from pymdwizard.gui import attr, edom, single_date
+    from pymdwizard.gui import attr, edom, single_date, sourceinput
     import random
 
 
@@ -193,7 +194,7 @@ if __name__ == "__main__":
 
     utils.launch_widget(RepeatingElement, which='tab',
                         tab_label='Processing Step', add_text='test add',
-                        widget = attr.Attr, remove_text='test remove', italic_text='some instruction')
+                        widget = sourceinput.SourceInput, remove_text='test remove', italic_text='some instruction')
 
 
 
