@@ -160,8 +160,11 @@ class MetaInfo(WizardWidget):
                     self.root_widget.switch_schema('bdp')
                 else:
                     self.root_widget.switch_schema('fgdc')
+                    
             if xml_metainfo.xpath('metstdv'):
-                self.ui.fgdc_metstdn.setCurrentText(xml_metainfo.xpath('metstdv')[0].text)
+                self.ui.fgdc_metstdv.setCurrentText(xml_metainfo.xpath('metstdv')[0].text)
+
+
             if xml_metainfo.xpath('metd'):
                 self.fgdc_metd.set_date(xml_metainfo.xpath('metd')[0].text)
 
