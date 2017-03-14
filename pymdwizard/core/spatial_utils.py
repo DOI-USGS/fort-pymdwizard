@@ -420,10 +420,12 @@ def get_layer(fname, feature_class=None):
     """
     if fname.endswith('.shp'):
         driver = ogr.GetDriverByName('ESRI Shapefile')
+        global dataset
         dataset = driver.Open(fname)
         return dataset.GetLayer()
     elif fname.endswith('.gdb'):
         driver = ogr.GetDriverByName("OpenFileGDB")
+        global gdb
         gdb = driver.Open(fname, 0)
         return gdb.GetLayerByName(feature_class)
     else:
@@ -713,7 +715,7 @@ def vector_spdoinfo(layer):
     """
     #introspect our layer to get the info we need
     feature_count = layer.GetFeatureCount()
-    for geo in data:
+    for geo in layer:
         geo_ref = geo.GetGeometryRef()
         geo_type = geo_ref.GetGeometryType()
         break
