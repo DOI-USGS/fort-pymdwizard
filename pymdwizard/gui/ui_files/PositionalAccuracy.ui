@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>495</height>
+    <width>650</width>
+    <height>233</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>190</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>325</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -33,7 +45,7 @@
     <number>3</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="fgdc_possacc">
+    <widget class="QGroupBox" name="fg_dc_possacc">
      <property name="title">
       <string>Positional Accuracy</string>
      </property>
@@ -73,7 +85,7 @@
            <bool>false</bool>
           </property>
           <property name="plainText">
-           <string>A formal accuracy assessment of the horizontal positional information in the data set has either not been conducted, or is not applicable.</string>
+           <string>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</string>
           </property>
           <property name="overwriteMode">
            <bool>true</bool>

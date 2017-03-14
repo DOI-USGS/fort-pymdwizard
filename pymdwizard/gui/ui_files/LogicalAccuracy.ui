@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>301</height>
+    <width>585</width>
+    <height>178</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>145</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>191</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -44,6 +56,9 @@
          <font>
           <italic>true</italic>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
         </property>
         <property name="text">
          <string>Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info.</string>

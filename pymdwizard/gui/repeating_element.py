@@ -162,7 +162,7 @@ class RepeatingElement(QWidget):
         if self.tab:
             if not tab_label:
                 tab_label = ' '.join([self.tab_label,
-                                      str(self.ui.tab_widget.count() + 1)])
+                                      str(len(self.widgets))])
             self.ui.tab_widget.addTab(widget, tab_label)
         else:
             self.content_layout.insertWidget(len(self.widgets)-1, widget)
