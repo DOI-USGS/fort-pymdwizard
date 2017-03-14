@@ -58,8 +58,7 @@ from pymdwizard.gui.LogicalAccuracy import LogicalAccuracy
 from pymdwizard.gui.Completeness import Completeness
 from pymdwizard.gui.PositionalAccuracy import PositionalAccuracy
 from pymdwizard.gui.sourceinput import SourceInput
-from pymdwizard.gui.ProcessStep import ProcessStep
-from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.gui.procstep import ProcStep
 
 
 
@@ -67,11 +66,6 @@ class DataQuality(WizardWidget):
 
     drag_label = "Data Quality <dataqual>"
 
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    # xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-    #                     'cntorg': 'cntinfo/cntperp/cntorg',
-    #                     'cntpos': 'cntinfo/cntpos',}
 
     ui_class = UI_DataQuality.Ui_fgdc_dataqual
 
@@ -87,33 +81,16 @@ class DataQuality(WizardWidget):
         self.complete = Completeness(parent=self)
         self.posacc = PositionalAccuracy(parent=self)
         self.sourceinput = SourceInput(parent=self)
-        #self.procstep = ProcessStep(parent=self)
-
-        params = {'Add text': 'Source Input',
-                  'Remove text': 'Remove Source',
-                  'widget': ProcessStep,
-                  }
-        self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
-        self.proc_step.add_another()
+        self.procstep = ProcStep(parent=self)
 
 
-
-       # self.ui.frame_citation.layout().addWidget(self.citation)
         self.ui.two_column_left.layout().addWidget(self.attraccr)
         self.ui.two_column_right.layout().addWidget(self.logic)
         self.ui.two_column_left.layout().addWidget(self.complete)
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
         self.ui.bottom_layout.layout().addWidget(self.sourceinput)
-        #self.ui.two_column_right.layout().addWidget(self.procstep)
-        self.ui.two_column_right.layout().addWidget(self.proc_step)
-        #self.ui.two_column_right.layout().addWidget(self.descriptor)
-
-        # spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_left.layout().addItem(spacerItem)
-        #
-        # spacerItem2 = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        # self.ui.two_column_right.layout().addItem(spacerItem2)
+        self.ui.two_column_right.layout().addWidget(self.procstep)
 
 
     def dragEnterEvent(self, e):
@@ -153,24 +130,17 @@ class DataQuality(WizardWidget):
         posacc_node = self.posacc._to_xml()
         dataqual_node.append(posacc_node)
 
-        srcinfo_node = self.srcinfo._to_xml()
-        dataqual_node.append(srcinfo_node)
+        srcinfo_node = self.sourceinput._to_xml()
 
         procstep_node = self.procstep._to_xml()
-        dataqual_node.append(procstep_node)
+        procstep_children = procstep_node.getchildren()
+        print type(procstep_children)
 
+        for i in procstep_children:
+            srcinfo_node.append(i)
+        dataqual_node.append(srcinfo_node)
 
-
-
-        if self.taxonomy.ui.rbtn_yes.isChecked():
-            taxonomy = self.taxonomy._to_xml()
-            dataqual_node.append(taxonomy)
-
-
-
-        dataqual = self.dataqual._to_xml()
-        if dataqual:
-            dataqual_node.append(dataqual)
+        #dataqual_node.append(procstep_node)
 
         return dataqual_node
 

@@ -11,7 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(565, 160)
+        Form.resize(579, 149)
+        Form.setMinimumSize(QtCore.QSize(0, 149))
+        Form.setMaximumSize(QtCore.QSize(16777215, 157))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -20,6 +22,8 @@ class Ui_Form(object):
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtWidgets.QGroupBox(Form)
+        self.groupBox.setMinimumSize(QtCore.QSize(0, 0))
+        self.groupBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")

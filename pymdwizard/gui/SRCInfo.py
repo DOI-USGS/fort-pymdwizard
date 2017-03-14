@@ -76,19 +76,15 @@ class SRCInfo(WizardWidget): #
         """
         self.ui = UI_SRCInfo.Ui_Form()
         self.ui.setupUi(self)
-        self.citation = Citation()
         self.timeperd = Timeperd()
+        self.citation = Citation(parent=self, include_lwork=False)
+
 
         self.citation.ui.fgdc_lworkcit.deleteLater()
-
         self.ui.frame_citation.layout().addWidget(self.citation)
         self.ui.frame_timeperd.layout().addWidget(self.timeperd)
 
         self.setup_dragdrop(self)
-
-
-        #Multi_Inst onlink
-
 
 
 
@@ -101,7 +97,6 @@ class SRCInfo(WizardWidget): #
         -------
         None
         """
-        #self.ui.radioButton.toggled.connect(self.include_lworkext_change)
 
 
 
@@ -140,94 +135,40 @@ class SRCInfo(WizardWidget): #
         -------
         srcinfo element tag in xml tree
         """
-        #lineage = etree.Element('lineage')
-        srcinfo = etree.Element('srcinfo')
-        srccite = etree.Element('srccite')
-        citeinfo = etree.Element('citeinfo')
+        srcinfo = xml_utils.xml_node('srcinfo')
+        srccite = xml_utils.xml_node('srccite', parent_node=srcinfo)
 
+        cite = self.citation._to_xml()
+        srccite.append(cite)
 
-        origin = etree.Element("origin")
-        pubdate = etree.Element("pubdate")
-        geoform = etree.Element("geoform")
-        title = etree.Element("title")
-        citeinfo.append(origin)
+        srcscale = xml_utils.xml_node('srcscale',
+                                      text = self.ui.fgdc_srcscale.text(),
+                                      parent_node=srcinfo)
+        typesrc = xml_utils.xml_node('typesrc',
+                                      text = self.ui.fgdc_typesrc.currentText(),
+                                      parent_node=srcinfo)
 
-        date_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
-        pubdate.text = date_var
-
-        origin.text = self.findChild(QLineEdit, "fgdc_origin").text()
-        title.text = self.findChild(QLineEdit, "fgdc_title").text()
-        geoform.text = self.findChild(QComboBox, "fgdc_geoform").currentText()
-
-        citeinfo.append(origin)
-        citeinfo.append(pubdate)
-        citeinfo.append(title)
-        citeinfo.append(geoform)
-
-
-        pubinfo = etree.Element("pubinfo")
-        pubplace = etree.Element("pubplace")
-        pubplace.text = self.findChild(QLineEdit, "fgdc_pubplace").text()
-        publish = etree.Element("publish")
-        publish.text = self.findChild(QLineEdit, "fgdc_publish").text()
-        pubinfo.append(pubplace)
-        pubinfo.append(publish)
-        citeinfo.append(pubinfo)
-
-        cnt = 0
-        len_listonlink = len(self.multi_instance.widget_instances)
-        while cnt < len_listonlink:
-            linEdit1 = self.multi_instance.widget_instances[cnt].findChildren(QLineEdit)
-            ol_text = linEdit1[0].text()
-            str_ol = str(ol_text)
-            onlink = etree.Element("onlink")
-            onlink.text = str_ol
-            cnt +=1
-            citeinfo.append(onlink)
-        else:
-            pass
-
-        srccite.append(citeinfo)
-
-        srcscale = etree.Element("srcscale")
-        srcscale.text = self.findChild(QLineEdit, "fgdc_srcscale").text()
-
-        typesrc = etree.Element("typesrc")
-        typesrc.text = self.findChild(QComboBox, "fgdc_typesrc").currentText()
-
-        srcinfo.append(srccite)
-        srcinfo.append(srcscale)
-        srcinfo.append(typesrc)
-
-        srctime = etree.Element("srctime")
-        timeinfo = etree.Element("timeinfo")
-        begdate = etree.Element("begdate")
-        enddate = etree.Element("enddate")
-
-        beg_var = self.beg_date.findChild(QLineEdit, "lineEdit").text()
-        begdate.text = beg_var
-        timeinfo.append(begdate)
-        end_var = self.end_date.findChild(QLineEdit, "lineEdit").text()
-        enddate.text = end_var
-        timeinfo.append(enddate)
+        srctime = xml_utils.xml_node('srctime', parent_node=srcinfo)
+        time = self.timeperd._to_xml()
+        timeinfo = time.xpath('/timeperd/timeinfo')[0]
         srctime.append(timeinfo)
 
-        srccurr = etree.Element("srccurr")
-        srccurr.text = self.findChild(QComboBox, "fgdc_srccurr").currentText()
-        srctime.append(srccurr)
+        #srccurr = xml_utils.xml_node('srccurr', parent_node=srctime)
+        cur = time.xpath('/timeperd/current')[0]
+        cur.tag = 'srccurr'
+        srctime.append(cur)
 
-        srccitea = etree.Element("srccitea")
-        srccontr = etree.Element("srccontr")
-        srccitea.text = self.findChild(QLineEdit, "fgdc_srccitea").text()
-        srccontr.text = self.findChild(QLineEdit, "fgdc_srccontr").text()
+        srccitea = xml_utils.xml_node('srccitea',
+                                      text = self.ui.fgdc_srccitea.text(),
+                                      parent_node=srcinfo)
 
-        srcinfo.append(srctime)
-        srcinfo.append(srccitea)
-        srcinfo.append(srccontr)
+        srccontr = xml_utils.xml_node('srccontr',
+                                      text = self.ui.fgdc_srccontr.text(),
+                                      parent_node=srcinfo)
 
         return srcinfo
 
-    def _from_xml(self, xml_srcinfo):
+    def _from_xml(self, srcinfo):
         """
         parses the xml code into the relevant srcinfo elements
 
@@ -240,80 +181,33 @@ class SRCInfo(WizardWidget): #
         None
         """
         try:
-            if xml_srcinfo.tag == "srcinfo":
-                origin = xml_srcinfo.xpath('srccite/citeinfo/origin/text()')
-                og_text = str(origin[0])
-                self.findChild(QLineEdit, "fgdc_origin").setText(og_text)
+            if srcinfo.tag == "srcinfo":
+                print srcinfo.tag
+                srccite = srcinfo.xpath('srccite')[0]
 
-                pubdate = xml_srcinfo.xpath('srccite/citeinfo/pubdate/text()')
-                date_text = str(pubdate[0])
-                self.single_date.findChild(QLineEdit, "lineEdit").setText(date_text)
+            elif srcinfo.tag != 'srcinfo':
+                print("The tag is not 'srcinfo'")
+                return
 
-                title = xml_srcinfo.xpath('srccite/citeinfo/title/text()')
-                title_text = str(title[0])
-                self.findChild(QLineEdit, "fgdc_title").setText(title_text)
+            utils.populate_widget_element(self.ui.fgdc_srcscale, srcinfo, 'srcscale')
 
-                geoform = xml_srcinfo.xpath('srccite/citeinfo/geoform/text()')
-                geoform_text = str(geoform[0])
-                self.findChild(QComboBox, "fgdc_geoform").setCurrentText(geoform_text)
+            typesrc = srcinfo.xpath('typesrc/text()')
+            typesrc_text = str(typesrc[0])
+            self.findChild(QComboBox, "fgdc_typesrc").setCurrentText(typesrc_text)
 
+            utils.populate_widget_element(self.ui.fgdc_srccitea, srcinfo, 'srccitea')
 
-                place = xml_srcinfo.xpath('srccite/citeinfo/pubinfo/pubplace/text()')
-                place_text = str(place[0])
-                self.findChild(QLineEdit, "fgdc_pubplace").setText(place_text)
+            utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, 'srccontr')
 
-                lish = xml_srcinfo.xpath('srccite/citeinfo/pubinfo/publish/text()')
-                lish_text = str(lish[0])
-                self.findChild(QLineEdit, "fgdc_publish").setText(lish_text)
+            timeperd = etree.Element('timeperd')
+            timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
+            srccurr = srcinfo.xpath('srctime/srccurr')[0]
+            srccurr.tag = 'current'
+            timeperd.append(timeinfo)
+            timeperd.append(srccurr)
+            self.timeperd._from_xml(timeperd)
 
-                scale = xml_srcinfo.xpath('srcscale/text()')
-                scale_text = str(scale[0])
-                self.findChild(QLineEdit, "fgdc_srcscale").setText(scale_text)
-
-                typesrc = xml_srcinfo.xpath('typesrc/text()')
-                typesrc_text = str(typesrc[0])
-                self.findChild(QComboBox, "fgdc_typesrc").setCurrentText(typesrc_text)
-
-                srccitea = xml_srcinfo.xpath('srccitea/text()')
-                srccitea_text = str(srccitea[0])
-                self.findChild(QLineEdit, "fgdc_srccitea").setText(srccitea_text)
-
-                srccontr = xml_srcinfo.xpath('srccontr/text()')
-                srccontr_text = str(srccontr[0])
-                self.findChild(QLineEdit, "fgdc_srccontr").setText(srccontr_text)
-
-                begdate = xml_srcinfo.xpath('srctime/timeinfo/begdate/text()')
-                begdate_text = str(begdate[0])
-                self.beg_date.findChild(QLineEdit, "lineEdit").setText(begdate_text)
-
-                enddate = xml_srcinfo.xpath('srctime/timeinfo/enddate/text()')
-                enddate_text = str(enddate[0])
-                self.end_date.findChild(QLineEdit, "lineEdit").setText(enddate_text)
-
-                srccurr = xml_srcinfo.xpath('srctime/srccurr/text()')
-                srccurr_text = str(srccurr[0])
-                self.findChild(QComboBox, "fgdc_srccurr").setCurrentText(srccurr_text)
-
-
-                list_onlink = [b.text for b in xml_srcinfo.iterfind("srccite/citeinfo/onlink")]
-                lenOL = len(list_onlink)
-                cnt = 0
-
-                cnt += 1
-                while cnt < lenOL:
-                    self.multi_instance.add_another()
-                    cnt += 1
-                scroll = self.multi_instance.findChild(QScrollArea, 'scrollArea')
-                line_edits = scroll.findChildren(QLineEdit)
-                #line_edits.remove(line_edit)
-                for lw, le in zip(list_onlink, line_edits):
-                    print (lw, le)
-                    le.setText(lw)
-
-            else:
-                print ("The tag is not srcinfo")
-
-
+            self.citation._from_xml(srccite.xpath('citeinfo')[0])
 
         except KeyError:
             pass

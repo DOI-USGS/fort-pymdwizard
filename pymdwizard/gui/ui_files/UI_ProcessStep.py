@@ -11,10 +11,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(635, 252)
+        Form.resize(647, 242)
+        Form.setMinimumSize(QtCore.QSize(0, 175))
+        Form.setMaximumSize(QtCore.QSize(16777215, 280))
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.fgdc_procstep = QtWidgets.QGroupBox(Form)
+        self.fgdc_procstep.setTitle("")
         self.fgdc_procstep.setObjectName("fgdc_procstep")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.fgdc_procstep)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -61,7 +64,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.fgdc_procstep.setTitle(_translate("Form", "Process Step"))
         self.label.setText(_translate("Form", "Describe the processing step or method below:"))
         self.fgdc_procdesc.setPlainText(_translate("Form", "Development of the data set by the agency / individuals identified in the \'Originator\' element in the Identification Info section of the record."))
         self.label_37.setText(_translate("Form", "Publication Date (YYYYMMDD)"))

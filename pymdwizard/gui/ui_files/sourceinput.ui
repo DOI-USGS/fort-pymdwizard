@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>632</width>
-    <height>207</height>
+    <height>130</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>100</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -24,7 +30,7 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -38,7 +44,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="radio_sourceyes">
           <property name="text">
            <string>No Sources were used.
 The data set represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)</string>
@@ -62,7 +68,7 @@ The data set represents 100% original content, derived first-hand (e.g. field co
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="radio_sourceno">
           <property name="text">
            <string>The source inputs are described below (reference imagery/material, assorted GIS inputs, etc.)</string>
           </property>

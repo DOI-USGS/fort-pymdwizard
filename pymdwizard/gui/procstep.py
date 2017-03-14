@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Overview frame for SourceInfo element
+Overview frame for Process Step element
 
 
 SCRIPT DEPENDENCIES
@@ -54,14 +54,14 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_sourceinput
-from pymdwizard.gui.SRCInfo import SRCInfo
+from pymdwizard.gui.ui_files import UI_procstep
+from pymdwizard.gui.ProcessStep import ProcessStep
 from pymdwizard.gui.repeating_element import RepeatingElement
 
 
-class SourceInput(WizardWidget): #
+class ProcStep(WizardWidget): #
 
-    drag_label = "Source Information <srcinfo>"
+    drag_label = "Process Step <procstep>"
 
     def build_ui(self):
         """
@@ -71,45 +71,18 @@ class SourceInput(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_sourceinput.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_procstep.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.src_info = RepeatingElement(which='tab',
-                        tab_label='Source', add_text='Source Input',
-                        widget=SRCInfo, remove_text='Remove Source', italic_text='Source')
+        self.proc_step = RepeatingElement(which='tab',
+                         tab_label='Step', add_text='Additional Step',
+                         widget=ProcessStep, remove_text='Remove Step', italic_text='Processing Steps Taken')
 
-        self.src_info.add_another()
-        self.ui.frame_sourceinfo.layout().addWidget(self.src_info)
+        #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
+        self.proc_step.add_another()
+        self.ui.frame_procstep.layout().addWidget(self.proc_step)
 
-        self.ui.frame_sourceinfo.hide()
-
-    def connect_events(self):
-        """
-        Connect the appropriate GUI components with the corresponding functions
-
-        Returns
-        -------
-        None
-        """
-        self.ui.radio_sourceyes.toggled.connect(self.include_sources_change)
-
-    def include_sources_change(self, b):
-        """
-        Extended citation to support a larger body of information for the record.
-
-        Parameters
-        ----------
-        b: qt event
-
-        Returns
-        -------
-        None
-        """
-        if b:
-            self.ui.frame_sourceinfo.hide()
-        else:
-            self.ui.frame_sourceinfo.show()
 
     def dragEnterEvent(self, e):
         """
@@ -129,58 +102,61 @@ class SourceInput(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'src':
+            if element.tag == 'lineage':
                 e.accept()
         else:
             e.ignore()
 
 
          
-
+                
     def _to_xml(self):
         """
-        encapsulates the text in an element tree representing Sources Input
+        encapsulates the etree process step in an element tag
 
         Returns
         -------
-        series of srcinfo element tag in xml tree
+        procstep portion of the lineageg element tag in xml tree
         """
         lineage = etree.Element('lineage')
         cnt = 0
-        list_widgets = self.src_info.get_widgets()
+        list_widgets = self.proc_step.get_widgets()
         while cnt < len(list_widgets):
             print cnt
-            print lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
+            print lineage.append(ProcessStep._to_xml(list_widgets[cnt]))
             cnt += 1
         return lineage
-        # for source in self.frame_sourceinfo.get_widgets():
-        #     source
-        #
-        # return accconst
-    # #
-    # # def _from_xml(self, access_constraints):
-    # #     """
-    # #     parses the xml code into the relevant accconst elements
-    # #
-    # #     Parameters
-    # #     ----------
-    # #     access_constraints - the xml element status and its contents
-    # #
-    # #     Returns
-    # #     -------
-    # #     None
-    # #     """
-    # #     try:
-    # #         if access_constraints.tag == 'accconst':
-    # #            accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
-    # #            accost_box.setPlainText(access_constraints.text)
-    # #         else:
-    # #            print ("The tag is not accconst")
-    # #     except KeyError:
-    # #         pass
+
+    def _from_xml(self, xml_procstep):
+        """
+        parses the xml code into the relevant accconst elements
+
+        Parameters
+        ----------
+        access_constraints - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
+        try:
+            if xml_procstep.tag == 'lineage':
+                self.proc_step.clear_widgets()
+                xml_procstep = xml_procstep.findall('procstep')
+                if xml_procstep:#xml_procstep.findall("procstep/procdesc"):
+                    for procstep in xml_procstep:# xml_procstep.findall("procstep/procdesc"), xml_procstep.findall("procstep/procdate"):
+                        print procstep.tag
+                        procdesc_widget = self.proc_step.add_another()
+                        procdesc_widget.findChild(QPlainTextEdit, "fgdc_procdesc").setPlainText(procstep[0].text)
+                        procdesc_widget.findChild(QLineEdit, 'lineEdit').setText(procstep[1].text)
+                else:
+                    self.proc_step.add_another()
+
+        except KeyError:
+            pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SourceInput,
+    utils.launch_widget(ProcStep,
                         "Source Input testing")
 
