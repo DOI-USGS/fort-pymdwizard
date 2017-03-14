@@ -345,7 +345,7 @@ QLabel{{
 font: 9pt "Arial";
 color: rgb(90, 90, 90);
 }}
-QLineEdit#{widgetname} {{
+QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
 background-color: rgb(255,76,77);
