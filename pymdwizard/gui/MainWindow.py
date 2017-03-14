@@ -64,7 +64,6 @@ class PyMdWizardMainForm(QMainWindow):
     max_recent_files = 5
 
     def __init__(self, parent=None):
-        # QtGui.QMainWindow.__init__(self, parent)
         super(self.__class__, self).__init__()
 
         self.recent_file_actions = []
