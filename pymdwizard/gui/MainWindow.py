@@ -142,7 +142,8 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname, \
+                                            filter="XML Files (*.xml)")
         if fname[0]:
             self.load_file(fname[0])
             self.update_recent_file_actions()
