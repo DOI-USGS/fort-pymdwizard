@@ -179,6 +179,28 @@ def search_xpath(node, xpath):
     return node.xpath(xpath)
 
 
+def get_text_content(node, xpath):
+    """
+    return the text from a specific node
+
+    Parameters
+    ----------
+    node : lxml node
+
+    xpath : xpath.search
+
+    Returns
+    -------
+    str
+    None if that xpath is not found in the node
+    """
+    nodes = node.xpath(xpath)
+    if nodes:
+        return nodes[0].text
+    else:
+        return None
+
+
 def element_to_df(results):
     """
     Returns the results (etree) formatted into a pandas dataframe.
