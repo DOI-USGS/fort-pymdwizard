@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'IdInfo.ui'
+# Form implementation generated from reading ui file 'idinfo.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -135,22 +135,22 @@ class Ui_fgdc_idinfo(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setSpacing(3)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.frame_citation = QtWidgets.QFrame(self.idinfo_main_widget)
+        self.fgdc_citation = QtWidgets.QFrame(self.idinfo_main_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_citation.sizePolicy().hasHeightForWidth())
-        self.frame_citation.setSizePolicy(sizePolicy)
-        self.frame_citation.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_citation.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_citation.setLineWidth(3)
-        self.frame_citation.setObjectName("frame_citation")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame_citation)
+        sizePolicy.setHeightForWidth(self.fgdc_citation.sizePolicy().hasHeightForWidth())
+        self.fgdc_citation.setSizePolicy(sizePolicy)
+        self.fgdc_citation.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.fgdc_citation.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.fgdc_citation.setLineWidth(3)
+        self.fgdc_citation.setObjectName("fgdc_citation")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.fgdc_citation)
         self.verticalLayout_6.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_6.addItem(spacerItem1)
-        self.verticalLayout_3.addWidget(self.frame_citation)
+        self.verticalLayout_3.addWidget(self.fgdc_citation)
         self.two_column = QtWidgets.QFrame(self.idinfo_main_widget)
         self.two_column.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.two_column.setFrameShadow(QtWidgets.QFrame.Raised)
