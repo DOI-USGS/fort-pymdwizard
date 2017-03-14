@@ -121,7 +121,7 @@ def node_to_dict(node, add_fgdc=True):
             if add_fgdc:
                 tag = 'fgdc_' + tag
             if len(child.getchildren()) > 0:
-                content = node_to_dict(child)
+                content = node_to_dict(child, add_fgdc=add_fgdc)
             else:
                 content = child.text
             node_dict[tag] = content
