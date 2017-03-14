@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>133</width>
-    <height>39</height>
+    <height>47</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,7 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QFrame" name="frame_format">
+      <widget class="QWidget" name="widget_format" native="true">
        <layout class="QHBoxLayout" name="layout_format">
         <property name="spacing">
          <number>0</number>

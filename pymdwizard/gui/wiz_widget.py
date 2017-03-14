@@ -358,21 +358,31 @@ QGroupBox{
     color: rgba(90, 90, 90, 225);
     border: 1px solid gray;
     border-radius: 2px;
-    border-color: rgba(90, 90, 90, 75);
+    border-color: rgba(90, 90, 90, 40);
 }
- }
+
 QGroupBox::title {
 text-align: left;
 subcontrol-origin: padding;
 subcontrol-position: top left; /* position at the top center */padding: 3 3px;
 }
+
 QLabel{
 font: 9pt "Arial";
 color: rgb(90, 90, 90);
 }
+
 QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
+}
+
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}
 
 """)
 
@@ -397,14 +407,7 @@ color: rgb(50, 50, 50);
         elif event.type() == event.MouseMove:
             self.mouseMoveEvent(event)
         elif event.type() == event.MouseButtonRelease:
-            # print('event filter mouse release')
             self.mouseMoveEvent(event)
-        # elif event.type() == event.DragLeave:
-        #     print ('event dragleave')
-        # elif event.type() == event.DragLeave:
-        #     print ('NonClientAreaMouseButtonRelease')
-        # else:
-        #     pass
 
         # regardless, just do the default
         elif event.type() == QEvent.ToolTip:

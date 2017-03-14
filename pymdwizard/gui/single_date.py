@@ -63,7 +63,7 @@ class SingleDate(QWidget):
         self.build_ui()
 
         if not show_format:
-            self.ui.frame_format.hide()
+            self.ui.widget_format.hide()
 
         if label:
             self.ui.label.setText(label)

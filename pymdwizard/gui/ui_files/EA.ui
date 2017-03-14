@@ -27,12 +27,12 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="QTabWidget" name="tab_overview">
+    <widget class="QTabWidget" name="tab_ea">
      <property name="tabPosition">
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_instructions">
       <attribute name="title">
