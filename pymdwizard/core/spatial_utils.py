@@ -419,22 +419,18 @@ def get_layer(fname, feature_class=None):
     Either a gdal Dataset or a ogr layer depending on the input
     """
     if fname.endswith('.shp'):
-        global driver
         driver = ogr.GetDriverByName('ESRI Shapefile')
-        global dataset
         dataset = driver.Open(fname)
-        global data
-        data = dataset.GetLayer()
+        return dataset.GetLayer()
     elif fname.endswith('.gdb'):
         driver = ogr.GetDriverByName("OpenFileGDB")
-        gdb = driver.Open(gdb_path, 0)
-        data = gdb.GetLayerByName(feature_class)
+        gdb = driver.Open(fname, 0)
+        return gdb.GetLayerByName(feature_class)
     else:
         #it better be a raster
-        # global data
-        data = gdal.Open(fname)
+        return gdal.Open(fname)
 
-    return data
+    return None
 
 
 def spatial_ref(fname, feature_class=None):
