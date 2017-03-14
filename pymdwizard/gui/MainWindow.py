@@ -50,7 +50,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
 from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings
-from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag
+from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
 
 
 from pymdwizard.gui.ui_files import UI_MainWindow
@@ -84,6 +84,10 @@ class PyMdWizardMainForm(QMainWindow):
         """
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.icon = QIcon(utils.get_resource_path('Ducky.ico'))
+        # self.icon.addFile(utils.get_resource_path('Ducky.ico'))
+        self.setWindowIcon(self.icon)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)
@@ -364,7 +368,7 @@ opacity: 25;
         tmp.close()
         result.write(tmp.name)
 
-        self.preview = Preview(url=tmp.name)
+        self.preview = Preview(url=tmp.name, parent=self)
         self.preview.show()
 
     def harvest(self):
