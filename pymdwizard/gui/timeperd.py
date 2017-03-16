@@ -196,10 +196,16 @@ class Timeperd(WizardWidget):  #
                     self.ui.radio_range.setChecked(True)
                     timeinfo_stack.setCurrentIndex(1)
 
-                    utils.populate_widget_element(self.range_start_date,
-                                                  timeperd, "timeinfo/rngdates/begdate")
-                    utils.populate_widget_element(self.range_end_date,
-                                                  timeperd, "timeinfo/rngdates/end")
+                    begdate = timeperd.findtext("timeinfo/rngdates/begdate")
+                    self.range_start_date.set_date(begdate)
+
+                    enddate = timeperd.findtext("timeinfo/rngdates/enddate")
+                    self.range_end_date.set_date(enddate)
+
+                    # utils.populate_widget_element(self.range_start_date,
+                    #                               timeperd, "timeinfo/rngdates/begdate")
+                    # utils.populate_widget_element(self.range_end_date,
+                    #                               timeperd, "timeinfo/rngdates/enddate")
 
                 elif timeperd.find("timeinfo/mdattim"):
                     self.ui.radio_multiple.setChecked(True)

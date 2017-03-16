@@ -94,7 +94,7 @@ class PositionalAccuracy(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'possacc':
+            if element.tag == 'posacc':
                 e.accept()
         else:
             e.ignore()
@@ -110,14 +110,19 @@ class PositionalAccuracy(WizardWidget): #
         -------
         possacc element tag in xml tree
         """
-        possacc = etree.Element('possacc')
+        possacc = etree.Element('posacc')
         horizpa = etree.Element('horizpa')
-        horizpa.text = self.findChild(QPlainTextEdit, "fgdc_horizpa").toPlainText()
+        horizpar = etree.Element('horizpar')
+        horizpar.text = self.findChild(QPlainTextEdit, "fgdc_horizpa").toPlainText()
 
+        horizpa.append(horizpar)
         possacc.append(horizpa)
-        vertacc = etree.Element('vertacc')
-        vertacc.text = self.findChild(QPlainTextEdit, "fgdc_vertacc").toPlainText()
 
+        vertacc = etree.Element('vertacc')
+        vertaccr = etree.Element('vertaccr')
+        vertaccr.text = self.findChild(QPlainTextEdit, "fgdc_vertacc").toPlainText()
+
+        vertacc.append(vertaccr)
         possacc.append(vertacc)
         return possacc
 
@@ -134,15 +139,15 @@ class PositionalAccuracy(WizardWidget): #
         None
         """
         try:
-            if positional_accuracy.tag == 'possacc':
+            if positional_accuracy.tag == 'posacc':
                 horizpa = etree.Element('horizpa')
-                horizpa_text = positional_accuracy.findtext("horizpa")
+                horizpa_text = positional_accuracy.findtext("horizpa/horizpar")
                 print horizpa_text
                 horizpa_box = self.findChild(QPlainTextEdit, "fgdc_horizpa")
                 horizpa_box.setPlainText(horizpa_text)
 
                 vertacc = etree.Element('vertacc')
-                vertacc_text = positional_accuracy.findtext("vertacc")
+                vertacc_text = positional_accuracy.findtext("vertacc/vertaccr")
                 vertacc_box = self.findChild(QPlainTextEdit, "fgdc_vertacc")
                 vertacc_box.setPlainText(vertacc_text)
             else:

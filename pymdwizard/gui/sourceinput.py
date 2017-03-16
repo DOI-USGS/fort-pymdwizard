@@ -107,9 +107,9 @@ class SourceInput(WizardWidget): #
         None
         """
         if b:
-            self.ui.frame_sourceinfo.hide()
-        else:
             self.ui.frame_sourceinfo.show()
+        else:
+            self.ui.frame_sourceinfo.hide()
 
     def dragEnterEvent(self, e):
         """
@@ -129,7 +129,7 @@ class SourceInput(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'src':
+            if element.tag == 'lineage':
                 e.accept()
         else:
             e.ignore()
@@ -143,41 +143,52 @@ class SourceInput(WizardWidget): #
 
         Returns
         -------
-        series of srcinfo element tag in xml tree
+        series of srcinfo element tag in lineage xml tree
         """
         lineage = etree.Element('lineage')
-        cnt = 0
-        list_widgets = self.src_info.get_widgets()
-        while cnt < len(list_widgets):
-            print cnt
-            print lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
-            cnt += 1
+        if self.ui.radio_sourceyes.isChecked():
+            print ("in to xml")
+            cnt = 0
+            srcinfo_list = self.src_info.get_widgets()
+            for srcinfo in srcinfo_list:
+                lineage.append(srcinfo._to_xml())
+            # while cnt < len(list_widgets):
+            #     #lineage.append(list_widgets[cnt]._to_xml())
+            #     lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
+            #     cnt += 1
         return lineage
-        # for source in self.frame_sourceinfo.get_widgets():
-        #     source
-        #
-        # return accconst
-    # #
-    # # def _from_xml(self, access_constraints):
-    # #     """
-    # #     parses the xml code into the relevant accconst elements
-    # #
-    # #     Parameters
-    # #     ----------
-    # #     access_constraints - the xml element status and its contents
-    # #
-    # #     Returns
-    # #     -------
-    # #     None
-    # #     """
-    # #     try:
-    # #         if access_constraints.tag == 'accconst':
-    # #            accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
-    # #            accost_box.setPlainText(access_constraints.text)
-    # #         else:
-    # #            print ("The tag is not accconst")
-    # #     except KeyError:
-    # #         pass
+        # elif self.ui.radio_sourceno.isChecked():
+        #     pass
+
+
+    def _from_xml(self, xml_srcinput):
+        """
+        parses the xml code into the relevant accconst elements
+
+        Parameters
+        ----------
+        access_constraints - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
+        try:
+            if xml_srcinput.tag == 'lineage':
+                self.src_info.clear_widgets()
+                self.ui.frame_sourceinfo.show()
+                self.ui.radio_sourceyes.setChecked(True)
+                xml_srcinput = xml_srcinput.findall('srcinfo')
+                if xml_srcinput:
+                    for srcinput in xml_srcinput:
+                        print srcinput.tag
+                        srcinfo_widget = self.src_info.add_another()
+                        srcinfo_widget._from_xml(srcinput)
+                        #self.citation._from_xml(srccite.xpath('citeinfo')[0])
+                else:
+                    self.src_info.add_another()
+        except KeyError:
+            pass
 
 
 if __name__ == "__main__":

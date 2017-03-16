@@ -85,7 +85,7 @@ class DataQuality(WizardWidget):
 
 
         self.ui.two_column_left.layout().addWidget(self.attraccr)
-        self.ui.two_column_right.layout().addWidget(self.logic)
+        self.ui.two_column_left.layout().addWidget(self.logic)
         self.ui.two_column_left.layout().addWidget(self.complete)
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
@@ -140,20 +140,44 @@ class DataQuality(WizardWidget):
             srcinfo_node.append(i)
         dataqual_node.append(srcinfo_node)
 
-        #dataqual_node.append(procstep_node)
+        dataqual_node.append(procstep_node)
 
         return dataqual_node
 
     def _from_xml(self, xml_dataqual):
         try:
-            dtqual = xml_dataqual.xpath('dataqual')[0]
-            self.dtqual._from_xml(dtqual)
+            attraccr = xml_dataqual.xpath('attraccr')[0]
+            self.attraccr._from_xml(attraccr)
         except IndexError:
             pass
 
         try:
-            keywords = xml_dataqual.xpath('keywords')[0]
-            self.keywords._from_xml(keywords)
+            logic = xml_dataqual.xpath('logic')[0]
+            self.logic._from_xml(logic)
+        except IndexError:
+            pass
+
+        try:
+            complete = xml_dataqual.xpath('complete')[0]
+            self.complete._from_xml(complete)
+        except IndexError:
+            pass
+
+        try:
+            posacc = xml_dataqual.xpath('posacc')[0]
+            self.posacc._from_xml(posacc)
+        except IndexError:
+            pass
+
+        try:
+            sourceinput = xml_dataqual.xpath('lineage')[0]
+            self.sourceinput._from_xml(sourceinput)
+        except IndexError:
+            pass
+
+        try:
+            procstep = xml_dataqual.xpath('lineage')[0]
+            self.procstep._from_xml(procstep)
         except IndexError:
             pass
 

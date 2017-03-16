@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Overview frame for Process Step element
+Provide a pyqt widget for a Point of Contact <proccont> section
 
 
 SCRIPT DEPENDENCIES
@@ -38,30 +38,32 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import sys
 
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_procstep
-from pymdwizard.gui.ProcessStep import ProcessStep
-from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.gui.ui_files import UI_proccont
+from pymdwizard.gui import ContactInfo
 
 
-class ProcStep(WizardWidget): #
+class ProcessContact(WizardWidget):
 
-    drag_label = "Process Step <procstep>"
+    WIDGET_WIDTH = 500
+    COLLAPSED_HEIGHT = 75
+    EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
+    drag_label = "Process Contact <proccont>"
+
 
     def build_ui(self):
         """
@@ -71,30 +73,47 @@ class ProcStep(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_procstep.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_proccont.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.proc_step = RepeatingElement(which='tab',
-                         tab_label='Step', add_text='Additional Step',
-                         widget=ProcessStep, remove_text='Remove Step', italic_text='Processing Steps Taken')
+        self.cntinfo = ContactInfo.ContactInfo()
+        self.ui.main_layout.addWidget(self.cntinfo)
 
-        #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
-        self.proc_step.add_another()
-        self.ui.frame_procstep.layout().addWidget(self.proc_step)
+        self.collaped_size = QSize(self.WIDGET_WIDTH,
+                                          self.COLLAPSED_HEIGHT)
+        self.expanded_size = QSize(self.WIDGET_WIDTH,
+                                   self.EXPANDED_HEIGHT)
+        self.resize(self.collaped_size)
 
+
+        self.setObjectName("ptcontac")
+
+    def connect_events(self):
+        """
+        Connect the appropriate GUI components with the corresponding functions
+
+        Returns
+        -------
+        None
+        """
+        self.ui.rbtn_yes.toggled.connect(self.contact_used_change)
+
+    def contact_used_change(self, b):
+        if b:
+            self.cntinfo.show()
+        else:
+            self.cntinfo.hide()
 
     def dragEnterEvent(self, e):
         """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'accconst'
+
         Parameters
         ----------
         e : qt event
 
         Returns
         -------
-        None
 
         """
         print("pc drag enter")
@@ -102,58 +121,33 @@ class ProcStep(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'lineage':
+            if element.tag == 'proccont' or element.tag == 'cntinfo':
                 e.accept()
         else:
             e.ignore()
 
-
-         
-                
     def _to_xml(self):
-        """
-        encapsulates the etree process step in an element tag
+        if self.ui.rbtn_yes.isChecked():
+            proccont = etree.Element('proccont')
 
-        Returns
-        -------
-        procstep portion of the lineageg element tag in xml tree
-        """
-        lineage = etree.Element('lineage')
-        procstep_list = self.proc_step.get_widgets()
-        for procstep in procstep_list:
-            lineage.append(procstep._to_xml())
+            cntinfo = self.cntinfo._to_xml()
+            proccont.append(cntinfo)
+        else:
+            proccont = None
 
-        return lineage
+        return proccont
 
-    def _from_xml(self, xml_procstep):
-        """
-        parses the xml code into the relevant accconst elements
+    def _from_xml(self, contact_information):
 
-        Parameters
-        ----------
-        access_constraints - the xml element status and its contents
-
-        Returns
-        -------
-        None
-        """
-        try:
-            if xml_procstep.tag == 'lineage':
-                self.proc_step.clear_widgets()
-                xml_procstep = xml_procstep.findall('procstep')
-                if xml_procstep:#xml_procstep.findall("procstep/procdesc"):
-                    for procstep in xml_procstep:# xml_procstep.findall("procstep/procdesc"), xml_procstep.findall("procstep/procdate"):
-                        print procstep.tag
-                        procdesc_widget = self.proc_step.add_another()
-                        procdesc_widget._from_xml(procstep)
-                else:
-                    self.proc_step.add_another()
-
-        except KeyError:
-            pass
+        if contact_information.tag == 'cntinfo':
+            self.ui.rbtn_yes.setChecked(True)
+            cntinfo_node = contact_information
+        else:
+            cntinfo_node = contact_information.xpath('cntinfo')[0]
+        self.cntinfo._from_xml(cntinfo_node)
 
 
 if __name__ == "__main__":
-    utils.launch_widget(ProcStep,
-                        "Source Input testing")
+    utils.launch_widget(ProcessContact,
+                        "ProcessContact testing")
 

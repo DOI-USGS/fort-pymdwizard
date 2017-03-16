@@ -56,6 +56,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_ProcessStep
 from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.proccont import ProcessContact
 
 
 class ProcessStep(WizardWidget): #
@@ -79,8 +80,11 @@ class ProcessStep(WizardWidget): #
         self.single_date.ui.lbl_format.deleteLater()
         self.single_date.ui.label.deleteLater()
 
+        self.proccont = ProcessContact()
+
         self.ui.fgdc_procdate.setLayout(QVBoxLayout(self))
         self.ui.fgdc_procdate.layout().insertWidget(0, self.single_date)
+        self.ui.frame_proccont.layout().insertWidget(0, self.proccont)
 
 
 
@@ -128,6 +132,19 @@ class ProcessStep(WizardWidget): #
         procdate.text = date_var
         procstep.append(procdate)
 
+        srcused = etree.Element('srcused')
+        srcused_var = self.findChild(QLineEdit, "fgdc_srcused").text()
+        srcused.text = srcused_var
+        procstep.append(srcused)
+
+        srcprod = etree.Element('srcprod')
+        srcprod_var = self.findChild(QLineEdit, "fgdc_srcprod").text()
+        srcprod.text = srcprod_var
+        procstep.append(srcprod)
+
+        proccont = self.proccont._to_xml()
+        procstep.append(proccont)
+
         return procstep
 
     def _from_xml(self, xml_processstep):
@@ -144,15 +161,17 @@ class ProcessStep(WizardWidget): #
         """
         try:
             if xml_processstep.tag == 'procstep':
-                #print xml_processstep.text[0]
-                procdesc = xml_processstep.xpath('procdesc/text()')
-                pd_text = str(procdesc[0])
-                self.findChild(QPlainTextEdit, "fgdc_procdesc").setPlainText(pd_text)
-
-                procdate = xml_processstep.xpath('procdate/text()')
-                date_text = str(procdate[0])
-                date_edit = self.single_date.findChild(QLineEdit, "lineEdit")
-                date_edit.setText(date_text)
+                utils.populate_widget(self, xml_processstep)
+                if xml_processstep.xpath('procdate'):
+                    self.single_date.set_date(xml_processstep.xpath('procdate')[0].text)
+                else:
+                    pass
+                if xml_processstep.xpath('proccont'):
+                    self.proccont.ui.rbtn_yes.setChecked(True)
+                    cntinfo_node = xml_processstep.xpath('proccont/cntinfo')[0]
+                    self.proccont._from_xml(cntinfo_node)
+                else:
+                    pass
             else:
                 print ("The tag is not procstep")
         except KeyError:
