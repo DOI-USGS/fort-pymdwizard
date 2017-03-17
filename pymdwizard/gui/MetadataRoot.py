@@ -60,6 +60,7 @@ from pymdwizard.gui.ui_files import UI_MetadataRoot
 from pymdwizard.gui.IDInfo import IdInfo
 from pymdwizard.gui.spref import SpRef
 from pymdwizard.gui.EA import EA
+from pymdwizard.gui.metainfo import MetaInfo
 
 
 class MetadataRoot(WizardWidget):
@@ -81,13 +82,16 @@ class MetadataRoot(WizardWidget):
         self.setup_dragdrop(self, enable=True)
 
         self.idinfo = IdInfo()
-        self.ui.page_idinfo.setLayout(self.idinfo.layout())
+        self.ui.page_idinfo.layout().addWidget(self.idinfo)
 
         self.spref = SpRef()
         self.ui.page_spatial.setLayout(self.spref.layout())
 
         self.eainfo = EA()
         self.ui.page_eainfo.setLayout(self.eainfo.layout())
+
+        self.metainfo = MetaInfo(root_widget=self)
+        self.ui.page_metainfo.layout().addWidget(self.metainfo)
 
     def connect_events(self):
         """

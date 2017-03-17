@@ -80,6 +80,22 @@ def xml_document_loader(xml_locator):
         return xml_locator
 
 
+def save_to_file(element, fname):
+    """
+    Save the provided element as the filename provided
+    Parameters
+    ----------
+    element : lxml element
+    fname : str
+
+    Returns
+    -------
+    None
+    """
+    with open(fname, "w") as text_file:
+        text_file.write(node_to_string(element))
+
+
 def node_to_dict(node, add_fgdc=True):
     """
 
@@ -279,4 +295,6 @@ def clear_children(element):
     """
     for child in element.getchildren():
         element.remove(child)
+
+
 

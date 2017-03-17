@@ -112,17 +112,25 @@ def populate_widget(widget, contents):
         else:
             try:
                 child_widget = getattr(widget.ui, key)
-                try:
-                    child_widget.setText(value)
-                except:
-                    pass
-
-                try:
-                    child_widget.setPlainText(value)
-                except:
-                    pass
-
             except AttributeError:
+                try:
+                    child_widget = getattr(widget, key)
+                except AttributeError:
+                    child_widget = None
+
+            try:
+                child_widget.setText(value)
+            except:
+                pass
+
+            try:
+                child_widget.setPlainText(value)
+            except:
+                pass
+
+            try:
+                child_widget.set_date(value)
+            except:
                 pass
 
 

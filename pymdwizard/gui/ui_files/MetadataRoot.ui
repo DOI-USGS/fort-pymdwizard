@@ -265,24 +265,23 @@ QToolButton:checked:Hover{
         <number>0</number>
        </property>
        <widget class="QWidget" name="page_idinfo">
-        <widget class="QLabel" name="label">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>100</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>ID INFO</string>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
        </widget>
        <widget class="QWidget" name="page_dataqual">
         <widget class="QLabel" name="label_2">
@@ -346,24 +345,23 @@ QToolButton:checked:Hover{
         </widget>
        </widget>
        <widget class="QWidget" name="page_metainfo">
-        <widget class="QLabel" name="label_6">
-         <property name="geometry">
-          <rect>
-           <x>870</x>
-           <y>230</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>Metadata Ref</string>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
        </widget>
       </widget>
      </item>
