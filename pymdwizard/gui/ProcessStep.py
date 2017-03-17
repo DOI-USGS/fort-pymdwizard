@@ -142,8 +142,9 @@ class ProcessStep(WizardWidget): #
         srcprod.text = srcprod_var
         procstep.append(srcprod)
 
-        proccont = self.proccont._to_xml()
-        procstep.append(proccont)
+        if self.proccont.ui.rbtn_yes.isChecked():
+            proccont = self.proccont._to_xml()
+            procstep.append(proccont)
 
         return procstep
 
@@ -171,6 +172,7 @@ class ProcessStep(WizardWidget): #
                     cntinfo_node = xml_processstep.xpath('proccont/cntinfo')[0]
                     self.proccont._from_xml(cntinfo_node)
                 else:
+                    self.proccont.ui.rbtn_no.setChecked(True)
                     pass
             else:
                 print ("The tag is not procstep")

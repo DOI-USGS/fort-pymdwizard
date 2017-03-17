@@ -133,6 +133,7 @@ class ProcessContact(WizardWidget):
             cntinfo = self.cntinfo._to_xml()
             proccont.append(cntinfo)
         else:
+            self.ui.rbtn_no.setChecked(True)
             proccont = None
 
         return proccont
