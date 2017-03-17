@@ -14,6 +14,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
    <item>
     <widget class="QFrame" name="frame">
      <property name="sizePolicy">
@@ -278,7 +281,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>847</width>
+        <width>854</width>
         <height>361</height>
        </rect>
       </property>
@@ -326,6 +329,9 @@
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
               <item>
                <widget class="QFrame" name="two_column_left">
                 <property name="frameShape">
@@ -336,7 +342,7 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="leftMargin">
-                  <number>0</number>
+                  <number>8</number>
                  </property>
                  <property name="topMargin">
                   <number>3</number>
@@ -410,6 +416,9 @@
             </item>
             <item>
              <layout class="QHBoxLayout" name="bottom_layout">
+              <property name="spacing">
+               <number>2</number>
+              </property>
               <item>
                <spacer name="verticalSpacer_3">
                 <property name="orientation">
