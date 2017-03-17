@@ -142,7 +142,6 @@ class PositionalAccuracy(WizardWidget): #
             if positional_accuracy.tag == 'posacc':
                 horizpa = etree.Element('horizpa')
                 horizpa_text = positional_accuracy.findtext("horizpa/horizpar")
-                print horizpa_text
                 horizpa_box = self.findChild(QPlainTextEdit, "fgdc_horizpa")
                 horizpa_box.setPlainText(horizpa_text)
 

@@ -153,7 +153,6 @@ class SRCInfo(WizardWidget): #
         timeinfo = time.xpath('/timeperd/timeinfo')[0]
         srctime.append(timeinfo)
 
-        #srccurr = xml_utils.xml_node('srccurr', parent_node=srctime)
         cur = time.xpath('/timeperd/current')[0]
         cur.tag = 'srccurr'
         srctime.append(cur)
@@ -190,7 +189,6 @@ class SRCInfo(WizardWidget): #
                 print("The tag is not 'srcinfo'")
                 return
 
-            #self.citation._from_xml(srccite.xpath('citeinfo')[0])
 
             utils.populate_widget_element(self.citation.ui.fgdc_title, citeinfo, 'title')
 
@@ -219,8 +217,6 @@ class SRCInfo(WizardWidget): #
                 self.citation.ui.fgdc_sername.setText(str(serinfo))
                 issue = srcinfo.xpath('srccite/citeinfo/serinfo/issue')[0].text
                 self.citation.ui.fgdc_issue.setText(str(issue))
-               ## utils.populate_widget(self.citation.ui.fgdc_serinfo, citeinfo.xpath('serinfo')[0])
-                # utils.populate_widget(self.citation.ui.fgdc_publish, srcinfo.xpath('srccite/citeinfo/pubinfo')[0])
             else:
                 self.citation.ui.radio_seriesyes.setChecked(False)
 
@@ -230,7 +226,6 @@ class SRCInfo(WizardWidget): #
                 self.citation.ui.fgdc_pubplace.setText(str(pubplace))
                 publish = srcinfo.xpath('srccite/citeinfo/pubinfo/publish')[0].text
                 self.citation.ui.fgdc_publish.setText(str(publish))
-                # utils.populate_widget(self.citation.ui.fgdc_publish, srcinfo.xpath('srccite/citeinfo/pubinfo')[0])
             else:
                 self.citation.ui.radio_pubinfoyes.setChecked(False)
 
@@ -247,8 +242,6 @@ class SRCInfo(WizardWidget): #
             utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, 'srccontr')
 
 
-            # self.citation._from_xml(srccite.xpath('citeinfo')[0])
-
             if srcinfo.xpath('srctime'):
                 timeperd = etree.Element('timeperd')
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
@@ -259,7 +252,6 @@ class SRCInfo(WizardWidget): #
                 timeperd.append(srccurr)
                 self.timeperd._from_xml(timeperd)
                 print timeperd
-                #self.timeperd._from_xml(timeperd)
 
 
 

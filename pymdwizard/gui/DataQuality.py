@@ -134,7 +134,6 @@ class DataQuality(WizardWidget):
 
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()
-        print type(procstep_children)
 
         for i in procstep_children:
             srcinfo_node.append(i)

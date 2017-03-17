@@ -70,7 +70,7 @@ class AttributeAccuracy(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_AttributeAccuracy.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_AttributeAccuracy.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
