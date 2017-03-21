@@ -145,7 +145,7 @@ class DataQuality(WizardWidget):
 
     def _from_xml(self, xml_dataqual):
         try:
-            attraccr = xml_dataqual.xpath('attraccr')[0]
+            attraccr = xml_dataqual.xpath('attracc')[0]
             self.attraccr._from_xml(attraccr)
         except IndexError:
             pass

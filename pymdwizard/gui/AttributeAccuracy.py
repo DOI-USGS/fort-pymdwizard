@@ -99,8 +99,6 @@ class AttributeAccuracy(WizardWidget): #
         else:
             e.ignore()
 
-
-         
                 
     def _to_xml(self):
         """
@@ -113,9 +111,7 @@ class AttributeAccuracy(WizardWidget): #
         attracc = etree.Element('attracc')
         attraccr = etree.Element('attraccr')
         attraccr.text = self.findChild(QPlainTextEdit, "fgdc_attraccr").toPlainText()
-
         attracc.append(attraccr)
-
         return attracc
 
     def _from_xml(self, attribute_accuracy):
