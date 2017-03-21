@@ -611,22 +611,23 @@ def general_vertical_near_sided_perspective(params):
     fnorth = xml_node('fnorth', params['fnorth'], gvnsp)
     return gvnsp
 
+def gnomonic(params):
+    """
 
+    Parameters
+    ----------
+    params
 
+    Returns
+    -------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    """
+    gnomonic = xml_node('gnomonic')
+    longpc = xml_node('longpc', params['longpc'], gnomonic)
+    latprjo = xml_node('latprjo', params['latprjo'], gnomonic)
+    feast = xml_node('feast', params['feast'], gnomonic)
+    fnorth = xml_node('fnorth', params['fnorth'], gnomonic)
+    return gnomonic
 
 
 
