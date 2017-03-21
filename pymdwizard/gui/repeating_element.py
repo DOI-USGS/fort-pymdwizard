@@ -79,17 +79,25 @@ class RepeatingElement(QWidget):
                        'widget': DefaultWidget,
                        'widget_kwargs': {'label': 'add a text label'}}
 
-    def __init__(self, xml=None, which='vertical', params={}, parent=None):
+    def __init__(self, which='vertical', tab_label='tab',
+                 widget=DefaultWidget, widget_kwargs={},
+                 italic_text='',
+                 add_text="Add another", remove_text="Remove last",
+                 show_buttons=True, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
 
         self.build_ui()
+
+        if italic_text:
+            self.ui.italic_label.setText(italic_text)
+
         if which == 'vertical':
             self.SA = self.ui.vertical_contents
             self.content_layout = self.ui.vertical_contents.layout()
             self.tab = False
-
+            self.ui.frame.hide()
             self.ui.tab_widget.hide()
             self.ui.horizontal_scroll.hide()
         elif which == 'horizontal':
@@ -97,6 +105,7 @@ class RepeatingElement(QWidget):
             self.SA = self.ui.horizontal_contents
             self.content_layout = self.ui.horizontal_contents.layout()
             self.tab = False
+            self.ui.frame.hide()
             self.ui.tab_widget.hide()
             self.ui.vertical_widget.hide()
         elif which == 'tab':
@@ -105,13 +114,18 @@ class RepeatingElement(QWidget):
             self.ui.horizontal_scroll.hide()
             self.ui.vertical_scroll.hide()
 
+        self.tab_label = tab_label
+
         self.connect_events()
 
-        if params:
-            self.params = params
-        else:
-            self.params = self.default_params
-        self.load_params(self.params)
+        if not show_buttons:
+            self.ui.button_frame.hide()
+        self.ui.addAnother.setText(add_text)
+        self.ui.popOff.setText(remove_text)
+
+        self.widget = widget
+        self.widget_kwargs = widget_kwargs
+        self.widget_kwargs['parent'] = self
 
     def build_ui(self):
         """
@@ -135,31 +149,6 @@ class RepeatingElement(QWidget):
         self.ui.addAnother.clicked.connect(self.add_another)
         self.ui.popOff.clicked.connect(self.pop_off)
 
-    def load_params(self, params):
-        """
-        Loads the parameters for the multiple widget/instance build
-
-        Parameters
-        ----------
-        params = {'Title':'hello',
-           'Italic Text':'world',
-           'Label': 'This is a label',
-           'Add text':'button add me',
-           'Remove text': 'button delete me',
-           'scrollArea': 'fgdc_name
-           'widget':Citation.Citation}
-
-        Returns
-        -------
-        None
-        """
-        if 'widget' in params.keys():
-            self.widget = params['widget']
-        else:
-            self.widget = DefaultWidget
-
-        self.ui.addAnother.setText(params['Add text'])
-        self.ui.popOff.setText(params['Remove text'])
 
     def add_another(self, clicked=None, tab_label=''):
         """
@@ -169,12 +158,16 @@ class RepeatingElement(QWidget):
         -------
 
         """
-        widget = self.widget(**self.params.get('widget_kwargs', {}))
+        widget = self.widget(**self.widget_kwargs)
         self.widgets.append(widget)
         if self.tab:
+            if not tab_label:
+                tab_label = ' '.join([self.tab_label,
+                                      str(len(self.widgets))])
             self.ui.tab_widget.addTab(widget, tab_label)
         else:
             self.content_layout.insertWidget(len(self.widgets)-1, widget)
+        return widget
 
     def pop_off(self):
         if self.widgets:
@@ -184,20 +177,24 @@ class RepeatingElement(QWidget):
     def get_widgets(self):
         return self.widgets
 
+    def clear_widgets(self):
+        for widget in self.widgets:
+            widget.deleteLater()
+
+        self.widgets = []
+
 
 if __name__ == "__main__":
 
-    from pymdwizard.gui import attr, edom, single_date
-
-    params = {'Add text': '+',
-              'Remove text': '-',
-              'widget': single_date.SingleDate,
-              'widget_kwargs':{'show_format':False}}
+    from pymdwizard.gui import attr, edom, single_date, sourceinput
+    import random
 
 
 
 
+    utils.launch_widget(RepeatingElement, which='tab',
+                        tab_label='Processing Step', add_text='test add',
+                        widget = sourceinput.SourceInput, remove_text='test remove', italic_text='some instruction')
 
-    utils.launch_widget(RepeatingElement, which='tab', params=params)
 
 

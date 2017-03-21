@@ -650,6 +650,17 @@ PROJECTION_LOOKUP = {'Albers Conical Equal Area':{'shortname': 'albers',
 
 
 def get_bounding(fname):
+    """
+    Return FGDC bounding element from provided espatial file
+
+    Parameters
+    ----------
+    fname : name of the shp or tif file we'll be generating the bounding for
+
+    Returns
+    -------
+    lxml element with FGDC Bounding
+    """
     layer = get_layer(fname)
     extent = get_geographic_extent(layer)
 

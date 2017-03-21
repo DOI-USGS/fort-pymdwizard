@@ -45,7 +45,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComboBox, QToolButton, QCheckBox, QSpacerItem, QLabel, QGroupBox, QFrame
 from PyQt5.QtWidgets import QTableView
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
@@ -60,7 +60,7 @@ class WizardWidget(QWidget):
     The base class all pymdwizard GUI components should inherit from.
 
     Parameters
-    ----------
+    ----------C
 
     xml : lxml node
           The original in memory xml node being displayed by the widget.
@@ -82,6 +82,8 @@ class WizardWidget(QWidget):
 
     def __init__(self, xml=None, parent=None):
         QWidget.__init__(self, parent=parent)
+
+        self.help_text = ''
 
         # for standalone testing and debugging
         if __name__ == "__main__":
@@ -271,7 +273,8 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
+        # dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction | Qt.IgnoreAction)
+        dropAction = drag.exec(Qt.MoveAction)
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):
@@ -304,7 +307,7 @@ class WizardWidget(QWidget):
 
     def populate_tooltips(self):
         import json
-        annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
+        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
                 annotation_lookup = json.loads(data_file.read())
@@ -312,7 +315,11 @@ class WizardWidget(QWidget):
             with open(annotation_lookup_fname) as data_file:
                 annotation_lookup = json.loads(data_file.read())
 
-
+        if self.objectName().startswith('fgdc_'):
+            shortname = self.objectName().replace('fgdc_', '')
+            if shortname[-1].isdigit():
+                shortname = shortname[:-1]
+            self.help_text = annotation_lookup[shortname]['annotation']
 
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
         for widget in widgets:
@@ -320,7 +327,26 @@ class WizardWidget(QWidget):
                 shortname = widget.objectName().replace('fgdc_', '')
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
-                widget.setToolTip(annotation_lookup[shortname]['annotation'])
+                widget.help_text = annotation_lookup[shortname]['annotation']
+                if not self.help_text:
+                    self.help_text = annotation_lookup[shortname]['annotation']
+
+    def contextMenuEvent(self, event):
+
+        clicked_widget = self.childAt(event.pos())
+        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+
+            menu = QMenu(self)
+            help_action = menu.addAction("help")
+            action = menu.exec_(self.mapToGlobal(event.pos()))
+
+            if action == help_action:
+                msg = QMessageBox(self)
+                msg.setTextFormat(Qt.RichText)
+                msg.setText(clicked_widget.whatsThis())
+                msg.setWindowTitle("Help")
+
+                msg.show()
 
     def set_stylesheet(self):
         self.setStyleSheet("""
@@ -347,7 +373,8 @@ color: rgb(90, 90, 90);
 QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
- }""")
+
+""")
 
     def eventFilter(self, obj, event):
         """

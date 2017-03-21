@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -131,7 +131,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QFrame" name="frame">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -143,9 +143,6 @@
           <width>100</width>
           <height>0</height>
          </size>
-        </property>
-        <property name="title">
-         <string/>
         </property>
         <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
@@ -313,7 +310,7 @@
             <x>0</x>
             <y>0</y>
             <width>854</width>
-            <height>400</height>
+            <height>403</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -333,7 +330,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QFrame" name="frame_citation">
+            <widget class="QFrame" name="fgdc_citation">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>

@@ -58,8 +58,10 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_MetadataRoot
 from pymdwizard.gui.IDInfo import IdInfo
-from pymdwizard.gui.spref import SpRef
+from pymdwizard.gui.spatial_tab import SpatialTab
 from pymdwizard.gui.EA import EA
+from pymdwizard.gui.DataQuality import DataQuality
+from pymdwizard.gui.metainfo import MetaInfo
 
 
 class MetadataRoot(WizardWidget):
@@ -67,6 +69,10 @@ class MetadataRoot(WizardWidget):
     drag_label = "Metadata <metadata>"
 
     ui_class = UI_MetadataRoot.Ui_metadata_root
+
+    def __init__(self):
+        self.schema = 'bdp'
+        super(self.__class__, self).__init__()
 
     def build_ui(self):
         """
@@ -80,14 +86,20 @@ class MetadataRoot(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self, enable=True)
 
-        self.idinfo = IdInfo()
-        self.ui.page_idinfo.setLayout(self.idinfo.layout())
+        self.idinfo = IdInfo(root_widget=self)
+        self.ui.page_idinfo.layout().addWidget(self.idinfo)
 
-        self.spref = SpRef()
-        self.ui.page_spatial.setLayout(self.spref.layout())
+        self.dataqual =DataQuality()
+        self.ui.page_dataqual.setLayout(self.dataqual.layout())
+
+        self.spatial_tab = SpatialTab(root_widget=self)
+        self.ui.page_spatial.setLayout(self.spatial_tab.layout())
 
         self.eainfo = EA()
         self.ui.page_eainfo.setLayout(self.eainfo.layout())
+
+        self.metainfo = MetaInfo(root_widget=self)
+        self.ui.page_metainfo.layout().addWidget(self.metainfo)
 
     def connect_events(self):
         """
@@ -126,24 +138,51 @@ class MetadataRoot(WizardWidget):
         fader_widget = FaderWidget(old_widget, new_widget)
         self.ui.fgdc_metadata.setCurrentIndex(new_index)
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        self.idinfo.switch_schema(schema)
+        self.spatial_tab.switch_schema(schema)
+
     def _to_xml(self):
         metadata_node = etree.Element('metadata')
         idinfo = self.idinfo._to_xml()
         metadata_node.append(idinfo)
 
-        spref = self.spref._to_xml()
-        metadata_node.append(spref)
+        dataqual = self.dataqual._to_xml()
+        metadata_node.append(dataqual)
 
-        eainfo = self.eainfo._to_xml()
-        metadata_node.append(eainfo)
+        # spref = self.spref._to_xml()
+        # metadata_node.append(spref)
 
+        if self.eainfo.has_content():
+            eainfo = self.eainfo._to_xml()
+            metadata_node.append(eainfo)
+
+        metainfo = self.metainfo._to_xml()
+        metadata_node.append(metainfo)
         return metadata_node
 
 
     def _from_xml(self, metadata_element):
         self.idinfo._from_xml(metadata_element.xpath('idinfo')[0])
-        # self.spref._from_xml(metadata_element.xpath('spref')[0])
-        self.eainfo._from_xml(metadata_element.xpath('eainfo')[0])
+
+        spdom = metadata_element.xpath('idinfo/spdom')
+        if spdom:
+            self.spatial_tab.spdom._from_xml(spdom[0])
+                # .spref._from_xml(metadata_element.xpath('spref')[0])
+
+        dataqual = metadata_element.xpath('dataqual')
+        if dataqual:
+            self.dataqual._from_xml(dataqual[0])
+
+        eainfo = metadata_element.xpath('eainfo')
+        if eainfo:
+            self.eainfo._from_xml(eainfo[0])
+        else:
+            self.eainfo.clear_widget()
+
+        self.metainfo._from_xml(metadata_element.xpath('metainfo')[0])
+
 
 class FaderWidget(QWidget):
 

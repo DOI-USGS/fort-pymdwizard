@@ -233,9 +233,7 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
             dfs[xml_utils._parse_tag(child.tag)] = df
         return dfs
     else:
-        return xml_utils.node_to_dict(results)
-
-    return _fullrecord("getFullRecordFromTSN", {'tsn': tsn}, **kwargs)
+        return xml_utils.node_to_dict(results, add_fgdc=False)
 
 
 def _get_xml(url, payload, **kwargs):

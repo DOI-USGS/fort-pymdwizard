@@ -84,7 +84,10 @@ class Attributes(WizardWidget):  #
             attr_i.guess_domain()
 
             self.attrs.append(attr_i)
+            attr_i.regularsize_me()
             self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+
+        self.attrs[0].supersize_me()
 
     def clear_children(self):
 
@@ -142,6 +145,9 @@ class Attributes(WizardWidget):  #
 
                     self.attrs.append(attr_widget)
                     self.main_layout.insertWidget(len(self.main_layout) - 1, attr_widget)
+
+                self.minimize_children()
+                self.attrs[0].supersize_me()
             else:
                 print ("The tag is not udom")
         except KeyError:

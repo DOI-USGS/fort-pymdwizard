@@ -171,7 +171,6 @@ class ContactInfo(WizardWidget):
 
         cntaddr = xml_node("cntaddr", parent_node=cntinfo)
 
-
         addrtype_str = self.findChild(QComboBox, "fgdc_addrtype").currentText()
         addrtype = xml_node("addrtype", addrtype_str, cntaddr)
 
@@ -185,40 +184,24 @@ class ContactInfo(WizardWidget):
             node = xml_node('address', address3_str, cntaddr)
 
         for label in ['city', 'state',
-                      'postal', 'country']:
+                      'postal']:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
                 node = xml_node(label, widget_str, cntaddr)
             except:
                 pass
 
+        country_str = self.ui.fgdc_country.text()
+        if country_str:
+            node = xml_node('country', country_str, cntaddr)
+
         for label in ['cntvoice', 'cntfax', 'cntemail']:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                node = xml_node(label, widget_str, cntinfo)
+                if label == 'cntvoice' or widget_str:
+                    node = xml_node(label, widget_str, cntinfo)
             except:
                 pass
-
-        str_repr = """<cntinfo>
-          <cntperp>
-            <cntper>Jay Diffendorfer</cntper>
-          </cntperp>
-          <cntaddr>
-            <addrtype>Mailing</addrtype>
-            <address/>
-            <city/>
-            <state/>
-            <postal>80225</postal>
-            <country/>
-          </cntaddr>
-          <cntvoice>303-236-5369</cntvoice>
-          <cntfax/>
-          <cntemail>jediffendorfer@usgs.gov</cntemail>
-        </cntinfo>
-        """
-
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(str_repr, parser=parser)
 
 
         return cntinfo
@@ -229,9 +212,10 @@ class ContactInfo(WizardWidget):
 
         addrtype_widget = self.findChild(QComboBox, 'fgdc_addrtype')
 
-
         if 'cntinfo' in contact_dict:
             contact_dict = contact_dict['cntinfo']
+        if 'fgdc_cntinfo' in contact_dict:
+            contact_dict = contact_dict['fgdc_cntinfo']
 
         try:
             addrtype = contact_dict['cntaddr']['addrtype']

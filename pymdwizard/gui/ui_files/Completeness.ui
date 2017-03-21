@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>301</height>
+    <width>599</width>
+    <height>191</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>145</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>191</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -44,6 +56,9 @@
          <font>
           <italic>true</italic>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: italic;</string>
         </property>
         <property name="text">
          <string>Does the data set represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the data set versus what is not.   See help for more info.</string>

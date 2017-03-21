@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
-    <height>375</height>
+    <width>476</width>
+    <height>393</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,77 @@
       <number>0</number>
      </property>
      <item>
+      <widget class="QFrame" name="button_frame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>2</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>2</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="italic_label">
+          <property name="styleSheet">
+           <string notr="true">font: italic;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>315</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addAnother">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="popOff">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QScrollArea" name="vertical_scroll">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
@@ -44,8 +114,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>438</width>
-          <height>113</height>
+          <width>474</width>
+          <height>121</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="vertical_layout_2">
@@ -83,6 +153,12 @@
      </item>
      <item>
       <widget class="QScrollArea" name="horizontal_scroll">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
@@ -91,8 +167,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>438</width>
-          <height>113</height>
+          <width>474</width>
+          <height>120</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -120,37 +196,6 @@
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="button_layout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="addAnother">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="popOff">
-       <property name="text">
-        <string>PushButton</string>
        </property>
       </widget>
      </item>

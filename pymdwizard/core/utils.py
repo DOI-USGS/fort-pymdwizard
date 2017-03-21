@@ -39,6 +39,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys
+import os
 import datetime
 import traceback
 import pkg_resources
@@ -112,18 +113,52 @@ def populate_widget(widget, contents):
         else:
             try:
                 child_widget = getattr(widget.ui, key)
-                try:
-                    child_widget.setText(value)
-                except:
-                    pass
-
-                try:
-                    child_widget.setPlainText(value)
-                except:
-                    pass
-
             except AttributeError:
+                try:
+                    child_widget = getattr(widget, key)
+                except AttributeError:
+                    child_widget = None
+
+            try:
+                child_widget.setText(value)
+                child_widget.setCursorPosition(0)
+            except:
                 pass
+
+            try:
+                child_widget.setPlainText(value)
+            except:
+                pass
+
+            try:
+                child_widget.set_date(value)
+            except:
+                pass
+
+
+def populate_widget_element(widget, element, xpath):
+    """
+    if the xpath is present in the element
+    set the text or plainText of it to the first result of that xpath's text
+
+    Parameters
+    ----------
+    widget : pyqt widget, lineEdit or plainTextEdit
+    element : lxml element
+    xpath : str
+            xpath to the child element in the element
+
+    Returns
+    -------
+        None
+    """
+    if element.xpath(xpath):
+        first_child = element.xpath(xpath)[0]
+        try:
+            widget.setText(first_child.text)
+        except:
+            widget.setPlainText(first_child.text)
+
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
@@ -179,7 +214,7 @@ def get_resource_path(fname):
             the full file path to the resource specified
     """
     return pkg_resources.resource_filename('pymdwizard',
-                                           'resources/FGDC/{}'.format(fname))
+                                           'resources/{}'.format(fname))
 
 class PandasModel(QAbstractTableModel):
     """
@@ -255,4 +290,46 @@ class PandasModel(QAbstractTableModel):
             self.df.sort_values(self.df.columns[column], ascending=asc,
                                 inplace=True, na_position=na_pos)
             self.layoutChanged.emit()
+
+def check_fname(fname):
+    """
+    Check that the given fname is in a directory that exists and the current
+    users has write permission to.  If a file named fname already exists that
+    it can be opened with write permission.
+
+    Parameters
+    ----------
+    fname : str
+
+    Returns
+    -------
+    str :
+    one of:
+    'good' if the fname is good on all criteria
+    'missing directory' if the directory does not exist
+    'not writable directory' if the user does not have write access
+    'not writable file' if there is a lock on the file
+    Boolean if the file is writable
+    """
+
+    dname = os.path.split(fname)[0]
+    if not os.path.exists(dname):
+        return 'missing directory'
+    if not os.path.exists(fname):
+        try:
+            f = open(fname, "w")
+            f.close()
+            os.remove(fname)
+            return 'good'
+        except:
+            return 'not writable directory'
+    else:
+        try:
+            f = open(fname, "a")
+            f.close()
+            return 'good'
+        except:
+            return 'not writable file'
+
+
 

@@ -20,7 +20,11 @@ before_install:
     - travis_retry conda install --yes pytest
     - travis_retry conda install --yes pytest-cov
     - travis_retry conda install --yes pytest-qt
+<<<<<<< HEAD
+    - travis_retry conda install 'icu=56.*
+=======
     - travis_retry conda install icu=56.*
+>>>>>>> 2eed9fc35ffcb4460d690a65fba345f52e343277
 install:
   - "pip install coveralls>=1.1"
 before_script:

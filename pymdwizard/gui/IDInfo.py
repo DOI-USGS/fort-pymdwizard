@@ -77,6 +77,11 @@ class IdInfo(WizardWidget):
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
+    def __init__(self, root_widget=None):
+        super(self.__class__, self).__init__()
+        self.schema = 'bdp'
+        self.root_widget = root_widget
+
     def build_ui(self):
 
         self.ui = self.ui_class()
@@ -87,26 +92,26 @@ class IdInfo(WizardWidget):
         self.ptcontac = ContactInfoPointOfContact(parent=self)
         self.taxonomy = Taxonomy(parent=self)
         self.keywords = Keywords(parent=self)
-        self.access = AccessConstraints(parent=self)
-        self.use = UseConstraints(parent=self)
+        self.accconst = AccessConstraints(parent=self)
+        self.useconst = UseConstraints(parent=self)
         self.status = Status(parent=self)
         self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
-        self.descriptor = Descriptor(parent=self)
+        self.descript = Descriptor(parent=self)
 
-        self.ui.frame_citation.layout().addWidget(self.citation)
+        self.ui.fgdc_citation.layout().addWidget(self.citation)
 
         self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
         self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
         self.ui.two_column_left.layout().addWidget(self.status, 2)
-        self.ui.two_column_left.layout().addWidget(self.access, 3)
-        self.ui.two_column_left.layout().addWidget(self.use, 4)
+        self.ui.two_column_left.layout().addWidget(self.accconst, 3)
+        self.ui.two_column_left.layout().addWidget(self.useconst, 4)
         self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
 
         self.ui.two_column_right.layout().addWidget(self.keywords, 0)
         self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
-        self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
+        self.ui.two_column_right.layout().addWidget(self.descript, 2)
 
 
     def dragEnterEvent(self, e):
@@ -130,14 +135,23 @@ class IdInfo(WizardWidget):
         else:
             e.ignore()
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        if schema == 'bdp':
+            self.taxonomy.show()
+        else:
+            self.taxonomy.hide()
+
     def _to_xml(self):
         # add code here to translate the form into xml representation
-        idinfo_node = etree.Element('idinfo')
+        idinfo_node = xml_utils.xml_node('idinfo')
 
-        citation_node = self.citation._to_xml()
+        citation_node = xml_utils.xml_node('citation', parent_node=idinfo_node)
+        citeinfo_node = self.citation._to_xml()
+        citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
-        descript_node = self.descriptor._to_xml()
+        descript_node = self.descript._to_xml()
         idinfo_node.append(descript_node)
 
         timeperd_node = self.timeperd._to_xml()
@@ -146,32 +160,61 @@ class IdInfo(WizardWidget):
         status_node = self.status._to_xml()
         idinfo_node.append(status_node)
 
+        spdom_node = self.root_widget.spatial_tab.spdom._to_xml()
+        idinfo_node.append(spdom_node)
+
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        if self.taxonomy.ui.rbtn_yes.isChecked():
+        if self.schema == 'bdp' and self.taxonomy.ui.rbtn_yes.isChecked():
             taxonomy = self.taxonomy._to_xml()
             idinfo_node.append(taxonomy)
 
-        accconst_node = self.access._to_xml()
+        accconst_node = self.accconst._to_xml()
         idinfo_node.append(accconst_node)
 
-        useconst_node = self.use._to_xml()
+        useconst_node = self.useconst._to_xml()
         idinfo_node.append(useconst_node)
-
-        datacredit_node = self.datacredit._to_xml()
-        idinfo_node.append(datacredit_node)
 
         ptcontac = self.ptcontac._to_xml()
         if ptcontac:
             idinfo_node.append(ptcontac)
 
+        datacredit_node = self.datacredit._to_xml()
+        if datacredit_node.text:
+            idinfo_node.append(datacredit_node)
+
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
+
         try:
-            ptcontac = xml_idinfo.xpath('ptcontac')[0]
-            self.ptcontac._from_xml(ptcontac)
+            citation = xml_idinfo.xpath('citation')[0]
+            self.citation._from_xml(citation)
+        except IndexError:
+            pass
+
+        try:
+            descript = xml_idinfo.xpath('descript')[0]
+            self.descript._from_xml(descript)
+        except IndexError:
+            pass
+
+        try:
+            timeperd = xml_idinfo.xpath('timeperd')[0]
+            self.timeperd._from_xml(timeperd)
+        except IndexError:
+            pass
+
+        try:
+            status = xml_idinfo.xpath('status')[0]
+            self.status._from_xml(status)
+        except IndexError:
+            pass
+
+        try:
+            spdom = xml_idinfo.xpath('spdom')[0]
+            self.root_widget.spatial_tab.spdom._from_xml(spdom)
         except IndexError:
             pass
 
@@ -180,6 +223,34 @@ class IdInfo(WizardWidget):
             self.keywords._from_xml(keywords)
         except IndexError:
             pass
+
+        try:
+            taxonomy = xml_idinfo.xpath('taxonomy')[0]
+            self.taxonomy._from_xml(taxonomy)
+        except IndexError:
+            pass
+
+        try:
+            accconst = xml_idinfo.xpath('accconst')[0]
+            self.accconst._from_xml(accconst)
+        except IndexError:
+            pass
+
+        try:
+            useconst = xml_idinfo.xpath('useconst')[0]
+            self.useconst._from_xml(useconst)
+        except IndexError:
+            pass
+
+        try:
+            ptcontac = xml_idinfo.xpath('ptcontac')[0]
+            self.ptcontac._from_xml(ptcontac)
+        except IndexError:
+            pass
+
+
+
+
 
 
 if __name__ == "__main__":

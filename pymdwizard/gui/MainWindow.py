@@ -50,7 +50,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
 from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings
-from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag
+from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
 
 
 from pymdwizard.gui.ui_files import UI_MainWindow
@@ -64,8 +64,9 @@ class PyMdWizardMainForm(QMainWindow):
     max_recent_files = 5
 
     def __init__(self, parent=None):
-        # QtGui.QMainWindow.__init__(self, parent)
         super(self.__class__, self).__init__()
+
+        self.cur_fname = ''
 
         self.recent_file_actions = []
         self.error_widgets = []
@@ -83,6 +84,10 @@ class PyMdWizardMainForm(QMainWindow):
         """
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.icon = QIcon(utils.get_resource_path('icons/Ducky.ico'))
+        # self.icon.addFile(utils.get_resource_path('Ducky.ico'))
+        self.setWindowIcon(self.icon)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)
@@ -137,7 +142,8 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname, \
+                                            filter="XML Files (*.xml)")
         if fname[0]:
             self.load_file(fname[0])
             self.update_recent_file_actions()
@@ -162,6 +168,7 @@ class PyMdWizardMainForm(QMainWindow):
             return
         file.close()
 
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
@@ -173,6 +180,8 @@ class PyMdWizardMainForm(QMainWindow):
             import traceback
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QMessageBox.warning(self, "Recent Files", msg)
+        QApplication.restoreOverrideCursor()
+
 
     def save_as(self):
         """
@@ -183,6 +192,13 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        fname = self.get_save_name()
+        if fname:
+            self.set_current_file(fname)
+            self.update_recent_file_actions()
+            self.save_file()
+
+    def get_save_name(self):
         settings = QSettings('USGS', 'pymdwizard')
         recent_files = settings.value('recentFileList', [])
         if recent_files:
@@ -190,33 +206,34 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getSaveFileName(self, fname, dname)
-        if fname[0]:
-            self.set_current_file(fname[0])
-            self.update_recent_file_actions()
-            self.save_file()
+        fname = QFileDialog.getSaveFileName(self, "Save As", dname, \
+                                            filter="XML Files (*.xml)")
+        return fname[0]
+
 
     def save_file(self, e=None):
-        file = QFile(self.cur_fname)
-        if not file.open(QFile.ReadWrite | QFile.Text):
-            msg = "Cannot write file %s:\n%s.".format(self.cur_fname,
-                                                      file.errorString())
+        if not self.cur_fname:
+            fname = self.get_save_name()
+            if not fname:
+                return
+        else:
+            fname = self.cur_fname
+
+        fname_msg = utils.check_fname(fname)
+        if not fname_msg == 'good':
+            msg = "Cannot write to :\n  {}.".format(fname)
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        out_str = QTextStream(file)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        out_str << xml_utils.node_to_string(self.metadata_root._to_xml())
-        QApplication.restoreOverrideCursor()
+        xml_utils.save_to_file(self.metadata_root._to_xml(), fname)
 
-        file.close()
-        self.set_current_file(self.cur_fname)
+        self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
     def set_current_file(self, fname):
         self.cur_fname = fname
-        if self.cur_fname:
-            title = "%s - Recent Files" % self.stripped_name(self.cur_fname)
+        if fname:
+            title = "Metadata Wizard - {}".format(self.stripped_name(fname))
             self.setWindowTitle(title)
         else:
             self.setWindowTitle("Metadata Wizard")
@@ -258,7 +275,7 @@ class PyMdWizardMainForm(QMainWindow):
 
     def clear_validation(self):
 
-        annotation_lookup_fname = utils.get_resource_path("bdp_lookup")
+        annotation_lookup_fname = utils.get_resource_path("fgdc/bdp_lookup")
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup = json.loads(data_file.read())
 
@@ -273,7 +290,11 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
 
     def validate(self):
-        xsl_fname = utils.get_resource_path('BDPfgdc-std-001-1998-annotated.xsd')
+
+        if self.metadata_root.schema == 'bdp':
+            xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+        else:
+            xsl_fname = utils.get_resource_path('fgdc/fgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
@@ -324,7 +345,7 @@ QLabel{{
 font: 9pt "Arial";
 color: rgb(90, 90, 90);
 }}
-QLineEdit#{widgetname} {{
+QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
 background-color: rgb(255,76,77);
@@ -347,7 +368,7 @@ opacity: 25;
         None
         """
 
-        xsl_fname = utils.get_resource_path("FGDC_Stylesheet.xsl")
+        xsl_fname = utils.get_resource_path("fgdc/FGDC_Stylesheet.xsl")
         transform = etree.XSLT(etree.parse(xsl_fname))
         result = transform(self.metadata_root._to_xml())
 
@@ -355,7 +376,7 @@ opacity: 25;
         tmp.close()
         result.write(tmp.name)
 
-        self.preview = Preview(url=tmp.name)
+        self.preview = Preview(url=tmp.name, parent=self)
         self.preview.show()
 
     def harvest(self):
@@ -371,7 +392,7 @@ def main():
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('splash_ducks.jpg')
+    splash_fname = utils.get_resource_path('icons/splash_ducks.jpg')
     splash_pix = QPixmap(splash_fname)
 
     size = splash_pix.size()*.55

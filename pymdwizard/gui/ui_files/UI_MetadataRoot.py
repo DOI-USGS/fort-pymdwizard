@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MetadataRoot.ui'
+# Form implementation generated from reading ui file 'metadataroot.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_metadata_root(object):
     def setupUi(self, metadata_root):
         metadata_root.setObjectName("metadata_root")
-        metadata_root.resize(1327, 885)
+        metadata_root.resize(1327, 585)
         metadata_root.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(metadata_root)
         self.verticalLayout_3.setContentsMargins(3, 3, 3, 3)
@@ -139,12 +139,10 @@ class Ui_metadata_root(object):
         self.fgdc_metadata.setObjectName("fgdc_metadata")
         self.page_idinfo = QtWidgets.QWidget()
         self.page_idinfo.setObjectName("page_idinfo")
-        self.label = QtWidgets.QLabel(self.page_idinfo)
-        self.label.setGeometry(QtCore.QRect(120, 100, 181, 81))
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.page_idinfo)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.fgdc_metadata.addWidget(self.page_idinfo)
         self.page_dataqual = QtWidgets.QWidget()
         self.page_dataqual.setObjectName("page_dataqual")
@@ -178,12 +176,10 @@ class Ui_metadata_root(object):
         self.fgdc_metadata.addWidget(self.page_distinfo)
         self.page_metainfo = QtWidgets.QWidget()
         self.page_metainfo.setObjectName("page_metainfo")
-        self.label_6 = QtWidgets.QLabel(self.page_metainfo)
-        self.label_6.setGeometry(QtCore.QRect(870, 230, 181, 81))
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label_6.setFont(font)
-        self.label_6.setObjectName("label_6")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.page_metainfo)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.fgdc_metadata.addWidget(self.page_metainfo)
         self.verticalLayout_2.addWidget(self.fgdc_metadata)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
@@ -201,9 +197,7 @@ class Ui_metadata_root(object):
         self.eainfo_button.setText(_translate("metadata_root", "Entity and Attribute"))
         self.distinfo_button.setText(_translate("metadata_root", "Distribution"))
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
-        self.label.setText(_translate("metadata_root", "ID INFO"))
         self.label_2.setText(_translate("metadata_root", "Data Quality"))
         self.label_4.setText(_translate("metadata_root", "Entity and Att"))
         self.label_5.setText(_translate("metadata_root", "Distribution"))
-        self.label_6.setText(_translate("metadata_root", "Metadata Ref"))
 

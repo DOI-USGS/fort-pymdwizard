@@ -48,7 +48,6 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.ui_files import UI_timeperd #
 from pymdwizard.gui.single_date import SingleDate
 
-
 class Timeperd(WizardWidget):  #
 
     drag_label = "Time Period of Content <timeperd>"
@@ -72,14 +71,16 @@ class Timeperd(WizardWidget):  #
         self.ui.layout_daterange.addWidget(self.range_end_date)
         self.ui.layout_daterange.addWidget(self.range_start_date)
 
-        multidate_params = {'Add text': 'Add additional',
-                            'Remove text': 'Remove last',
-                            'widget': SingleDate,
-                            'widget_kwargs': {'show_format': False,
-                                              'label':'Individual Date   '}}
-        self.multi_dates = RepeatingElement(params=multidate_params)
+
+        date_widget_kwargs = {'show_format': False,
+                              'label':'Individual Date   '}
+
+        self.multi_dates = RepeatingElement(widget=SingleDate,
+                                            widget_kwargs=date_widget_kwargs)
+
+
         self.multi_dates.add_another()
-        # self.ui.layout_multipledates.addWidget(self.multi_dates)
+
 
     def connect_events(self):
         """
@@ -88,9 +89,9 @@ class Timeperd(WizardWidget):  #
         -------
         None
         """
-        self.ui.radioButton.toggled.connect(self.switch_primary)
-        self.ui.radioButton_2.toggled.connect(self.switch_primary)
-        self.ui.radioButton_3.toggled.connect(self.switch_primary)
+        self.ui.radio_single.toggled.connect(self.switch_primary)
+        self.ui.radio_range.toggled.connect(self.switch_primary)
+        self.ui.radio_multiple.toggled.connect(self.switch_primary)
 
     def switch_primary(self):
         """
@@ -99,19 +100,19 @@ class Timeperd(WizardWidget):  #
         -------
         None
         """
-        if self.ui.radioButton.isChecked():
+        if self.ui.radio_single.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
             self.ui.page_singledate.show()
             self.ui.page_daterange.hide()
             self.ui.page_multipledates.hide()
             self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
-        elif self.ui.radioButton_2.isChecked():
+        elif self.ui.radio_range.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
             self.ui.page_singledate.hide()
             self.ui.page_daterange.show()
             self.ui.page_multipledates.hide()
             self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
-        elif self.ui.radioButton_3.isChecked():
+        elif self.ui.radio_multiple.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
             self.ui.page_singledate.hide()
             self.ui.page_daterange.hide()
@@ -128,7 +129,6 @@ class Timeperd(WizardWidget):  #
         Returns
         -------
         """
-        print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
@@ -145,50 +145,33 @@ class Timeperd(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        timeperd = etree.Element('timeperd')
-        timeinfo = etree.Element("timeinfo")
-        tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo").currentIndex()
+        timeperd = xml_utils.xml_node('timeperd')
+        timeinfo = xml_utils.xml_node("timeinfo", parent_node=timeperd)
+        tabIndex = self.ui.fgdc_timeinfo.currentIndex()
 
         if tabIndex == 0:
-            sngdate = etree.Element("sngdate")
-            temp_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
-            sngdate.text = temp_var
-            timeinfo.append(sngdate)
-            timeperd.append(timeinfo)
+            sngdate = xml_utils.xml_node("sngdate", parent_node=timeinfo)
+            caldate = xml_utils.xml_node('caldate', parent_node=sngdate,
+                                         text=self.single_date.get_date())
         if tabIndex == 1:
-            rngdates = etree.Element("rngdates")
-            begdate = etree.Element("begdate")
-            enddate = etree.Element("enddate")
-
-            temp_var2 = self.range_date1.findChild(QLineEdit, "lineEdit").text()
-            begdate.text = temp_var2
-            temp_var3 = self.range_date2.findChild(QLineEdit, "lineEdit").text()
-            enddate.text = temp_var3
-            rngdates.append(begdate)
-            rngdates.append(enddate)
-            timeinfo.append(rngdates)
-            timeperd.append(timeinfo)
+            rngdates = xml_utils.xml_node("rngdates", parent_node=timeinfo)
+            begdate = xml_utils.xml_node("begdate", parent_node=rngdates,
+                                         text=self.range_start_date.get_date())
+            enddate = xml_utils.xml_node("enddate", parent_node=rngdates,
+                                         text=self.range_end_date.get_date())
         if tabIndex == 2:
-            mdattim = etree.Element("mdattim")
+            mdattim = xml_utils.xml_node("mdattim", parent_node=timeinfo)
 
-            for index in self.multi_dates:
-                rowEach = index.findChild(QLineEdit, "lineEdit").text()
-                sngdate = etree.Element("sngdate")
-                strEach = str(rowEach)
+            for single_date in self.multi_dates.get_widgets():
+                single_date_node = xml_utils.xml_node('caldate', parent_node=mdattim,
+                                                      text=single_date.get_date())
 
-                sngdate.text = strEach
-                mdattim.append(sngdate)
-                timeinfo.append(mdattim)
-                timeperd.append(timeinfo)
-
-
-        current = etree.Element('current')
-        current.text = self.findChild(QComboBox, 'fgdc_current').currentText()
-        timeperd.append(current)
+        current = xml_utils.xml_node('current', parent_node=timeperd,
+                                     text= self.ui.fgdc_current.currentText())
 
         return timeperd
 
-    def _from_xml(self, metadata_date):
+    def _from_xml(self, timeperd):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -199,51 +182,46 @@ class Timeperd(WizardWidget):  #
         None
         """
         try:
-            if metadata_date.tag == 'timeperd':
+            if timeperd.tag == 'timeperd':
 
-                if metadata_date.findall("current"):
-                    current_text = metadata_date.findtext("current")
+                if timeperd.findall("current"):
+                    current_text = timeperd.findtext("current")
                     current_box = self.findChild(QComboBox, 'fgdc_current')
                     current_box.setCurrentText(current_text)
                 else:
                     pass
 
-                tabIndex = self.findChild(QStackedWidget, "fgdc_timeinfo")
-                print (tabIndex.currentIndex())
-                if metadata_date.find("timeinfo/rngdates"):
-                    self.ui.radioButton_2.setChecked(True)
-                    tabIndex.setCurrentIndex(1)
-                    begdate = metadata_date.findtext("timeinfo/rngdates/begdate")
-                    enddate = metadata_date.findtext("timeinfo/rngdates/enddate")
-                    date_edit2 = self.range_date1.findChild(QLineEdit, "lineEdit")
-                    date_edit2.setText(begdate)
-                    date_edit3 = self.range_date2.findChild(QLineEdit, "lineEdit")
-                    date_edit3.setText(enddate)
+                timeinfo_stack = self.ui.fgdc_timeinfo
+                if timeperd.find("timeinfo/rngdates"):
+                    self.ui.radio_range.setChecked(True)
+                    timeinfo_stack.setCurrentIndex(1)
 
-                elif metadata_date.find("timeinfo/mdattim"):
-                    self.ui.radioButton_3.setChecked(True)
-                    tabIndex.setCurrentIndex(2)
-                    listW = [b.text for b in metadata_date.iterfind(".//sngdate")]
-                    lenLW = len(listW)
-                    self.first_date.findChild(QLineEdit, "lineEdit").setText(listW[0])
-                    cnt = 1
-                    for lw in listW[1:]:
-                        new_date = "new_date" + str(cnt)
-                        new_date = SingleDate()
+                    begdate = timeperd.findtext("timeinfo/rngdates/begdate")
+                    self.range_start_date.set_date(begdate)
 
-                        new_date.ui.lbl_format.deleteLater()
-                        self.ui.sa_multi_dates_content.layout().insertWidget(cnt, new_date)
-                        new_date.findChild(QLineEdit, "lineEdit").setText(listW[cnt])
-                        cnt += 1
+                    enddate = timeperd.findtext("timeinfo/rngdates/enddate")
+                    self.range_end_date.set_date(enddate)
 
+                    # utils.populate_widget_element(self.range_start_date,
+                    #                               timeperd, "timeinfo/rngdates/begdate")
+                    # utils.populate_widget_element(self.range_end_date,
+                    #                               timeperd, "timeinfo/rngdates/enddate")
 
-                elif metadata_date.find("timeinfo"):
-                    self.ui.radioButton.setChecked(True)
-                    tabIndex.setCurrentIndex(0)
+                elif timeperd.find("timeinfo/mdattim"):
+                    self.ui.radio_multiple.setChecked(True)
+                    timeinfo_stack.setCurrentIndex(2)
 
-                    sngdate = metadata_date.findtext("timeinfo/sngdate")
-                    date_edit = self.single_date.findChild(QLineEdit, "lineEdit")
-                    date_edit.setText(sngdate)
+                    self.multi_dates.clear_widgets()
+                    for caldate in timeperd.xpath('timeinfo/mdattim/caldate'):
+                        date_widget = self.multi_dates.add_another()
+                        date_widget.set_date(caldate.text)
+
+                elif timeperd.find("timeinfo/sngdate"):
+                    self.ui.radio_single.setChecked(True)
+                    timeinfo_stack.setCurrentIndex(0)
+
+                    sngdate = timeperd.findtext("timeinfo/sngdate/caldate")
+                    self.single_date.set_date(sngdate)
                 else:
                     pass
 
