@@ -94,7 +94,7 @@ class AttributeAccuracy(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'attraccr':
+            if element.tag == 'attracc':
                 e.accept()
         else:
             e.ignore()
@@ -110,10 +110,13 @@ class AttributeAccuracy(WizardWidget): #
         -------
         attraccr element tag in xml tree
         """
+        attracc = etree.Element('attracc')
         attraccr = etree.Element('attraccr')
         attraccr.text = self.findChild(QPlainTextEdit, "fgdc_attraccr").toPlainText()
 
-        return attraccr
+        attracc.append(attraccr)
+
+        return attracc
 
     def _from_xml(self, attribute_accuracy):
         """
@@ -128,11 +131,12 @@ class AttributeAccuracy(WizardWidget): #
         None
         """
         try:
-            if attribute_accuracy.tag == 'attraccr':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_attraccr")
-               accost_box.setPlainText(attribute_accuracy.text)
+            if attribute_accuracy.tag == 'attracc':
+                attraccr_text = attribute_accuracy.findtext("attraccr")
+                accost_box = self.findChild(QPlainTextEdit, "fgdc_attraccr")
+                accost_box.setPlainText(attraccr_text)
             else:
-               print ("The tag is not attraccr")
+                print ("The tag is not attracc")
         except KeyError:
             pass
 

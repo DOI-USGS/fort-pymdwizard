@@ -113,17 +113,19 @@ class PositionalAccuracy(WizardWidget): #
         possacc = etree.Element('posacc')
         horizpa = etree.Element('horizpa')
         horizpar = etree.Element('horizpar')
-        horizpar.text = self.findChild(QPlainTextEdit, "fgdc_horizpa").toPlainText()
-
-        horizpa.append(horizpar)
-        possacc.append(horizpa)
+        horizpar_text = self.findChild(QPlainTextEdit, "fgdc_horizpa").toPlainText()
+        if len(horizpar_text) > 0:
+            horizpar.text = horizpar_text
+            horizpa.append(horizpar)
+            possacc.append(horizpa)
 
         vertacc = etree.Element('vertacc')
         vertaccr = etree.Element('vertaccr')
-        vertaccr.text = self.findChild(QPlainTextEdit, "fgdc_vertacc").toPlainText()
-
-        vertacc.append(vertaccr)
-        possacc.append(vertacc)
+        vertaccr_text = self.findChild(QPlainTextEdit, "fgdc_vertacc").toPlainText()
+        if len(vertaccr_text) > 0:
+            vertaccr.text = vertaccr_text
+            vertacc.append(vertaccr)
+            possacc.append(vertacc)
         return possacc
 
     def _from_xml(self, positional_accuracy):
@@ -140,12 +142,10 @@ class PositionalAccuracy(WizardWidget): #
         """
         try:
             if positional_accuracy.tag == 'posacc':
-                horizpa = etree.Element('horizpa')
                 horizpa_text = positional_accuracy.findtext("horizpa/horizpar")
                 horizpa_box = self.findChild(QPlainTextEdit, "fgdc_horizpa")
                 horizpa_box.setPlainText(horizpa_text)
 
-                vertacc = etree.Element('vertacc')
                 vertacc_text = positional_accuracy.findtext("vertacc/vertaccr")
                 vertacc_box = self.findChild(QPlainTextEdit, "fgdc_vertacc")
                 vertacc_box.setPlainText(vertacc_text)

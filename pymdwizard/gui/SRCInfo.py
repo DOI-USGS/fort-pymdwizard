@@ -181,7 +181,6 @@ class SRCInfo(WizardWidget): #
         """
         try:
             if srcinfo.tag == "srcinfo":
-                print srcinfo.tag
                 utils.populate_widget(self, srcinfo)
                 srccite = srcinfo.xpath('srccite')[0]
                 citeinfo = srccite.xpath('citeinfo')[0]
@@ -213,8 +212,8 @@ class SRCInfo(WizardWidget): #
 
             if citeinfo.xpath('serinfo'):
                 self.citation.ui.radio_seriesyes.setChecked(True)
-                serinfo = srcinfo.xpath('srccite/citeinfo/serinfo/serinfo')[0].text
-                self.citation.ui.fgdc_sername.setText(str(serinfo))
+                sername = srcinfo.xpath('srccite/citeinfo/serinfo/sername')[0].text
+                self.citation.ui.fgdc_sername.setText(str(sername))
                 issue = srcinfo.xpath('srccite/citeinfo/serinfo/issue')[0].text
                 self.citation.ui.fgdc_issue.setText(str(issue))
             else:
@@ -247,11 +246,9 @@ class SRCInfo(WizardWidget): #
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
                 srccurr = srcinfo.xpath('srctime/srccurr')[0]
                 srccurr.tag = 'current'
-                print srccurr
                 timeperd.append(timeinfo)
                 timeperd.append(srccurr)
                 self.timeperd._from_xml(timeperd)
-                print timeperd
 
 
 
