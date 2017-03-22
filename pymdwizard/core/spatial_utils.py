@@ -486,10 +486,29 @@ def geographic(params):
     return geograph
 
 def albers_conic_equal_area(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Albers Conic Equal Area projection
+
+    stdparll = First standard parallel
+    stdparl_2 = Second standard parallel (if exists)
+    longcm = Longitude of Central Meridian
+    latprjo = Latitude of Projection Origin
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc Albers Conic Equal Area projection
+    """
     albers = xml_node('albers')
     stdparll = xml_node('stdparll', params['stdparll'], albers)
-    if params['stdparll_2']:
-        stdparll_2 = xml_node('stdparll', params['stdparll_2'], albers)
+    if params['stdparl_2']:
+        stdparll_2 = xml_node('stdparll', params['stdparl_2'], albers)
 
     for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
         xml_node(item, params[item], albers)
@@ -498,7 +517,7 @@ def albers_conic_equal_area(params):
 
 def azimuthal_equidistant(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc azimuthal equidistant projection
+    returns lxml nodes that contain projection parameters for fgdc Azimuthal Equidistant projection
 
     longcm = Longitude of Central Meridian
     latprjo = Latitude of Projection Origin
@@ -511,7 +530,7 @@ def azimuthal_equidistant(params):
             geospatial parameters returned from get_params
     Returns
     -------
-    lxml nodes for fgdc azimuthal equidistant projection
+    lxml nodes for fgdc Azimuthal Equidistant projection
     """
 
     # This section should probably be handled in a different function?
@@ -529,7 +548,7 @@ def azimuthal_equidistant(params):
 
 def equidistant_conic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc equidistant conic projection
+    returns lxml nodes that contain projection parameters for fgdc Equidistant Conic projection
 
     stdparll = First standard parallel
     stdparl_2 = Second standard parallel (if exists)
@@ -545,7 +564,7 @@ def equidistant_conic(params):
 
     Returns
     -------
-    lxml nodes for fgdc equidistant conic projection
+    lxml nodes for fgdc Equidistant Conic projection
     """
 
     equicon = xml_node('equicon')
@@ -560,7 +579,7 @@ def equidistant_conic(params):
 
 def equirectangular(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc equirectangular projection
+    returns lxml nodes that contain projection parameters for fgdc Equirectangular projection
 
     stdparll = First standard parallel
     longcm = Longitude of Central Meridian
@@ -574,7 +593,7 @@ def equirectangular(params):
 
     Returns
     -------
-    lxml nodes for fgdc equirectangular projection
+    lxml nodes for fgdc Equirectangular projection
     """
     equirect = xml_node('equirect')
     stdparll = xml_node('stdparll', params['stdparll'], equirect)
@@ -611,25 +630,137 @@ def general_vertical_near_sided_perspective(params):
     fnorth = xml_node('fnorth', params['fnorth'], gvnsp)
     return gvnsp
 
+
 def gnomonic(params):
     """
+    returns lxml nodes that contain projection parameters for fgdc Gnomonic projection
+
+    longpc = Longitude of Projection Center
+    latprjc = Latitude of Projection Center
+    feast = False Easting
+    fnorth - False Northing
 
     Parameters
     ----------
-    params
+    params : dictionary
+            geospatial parameters returned from get_params
 
     Returns
     -------
-
+    lxml nodes for fgdc Gnomonic projection
     """
     gnomonic = xml_node('gnomonic')
     longpc = xml_node('longpc', params['longpc'], gnomonic)
-    latprjo = xml_node('latprjo', params['latprjo'], gnomonic)
+    latprjc = xml_node('latprjc', params['latprjc'], gnomonic)
     feast = xml_node('feast', params['feast'], gnomonic)
     fnorth = xml_node('fnorth', params['fnorth'], gnomonic)
     return gnomonic
 
 
+def lambert_azimuthal_equal_area(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Lambert Azimuthal Equal Area projection
+
+    longpc = Longitude of Projection Center
+    latprjc = Latitude of Projection Center
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Lambert Azimuthal Equal Area projection
+    """
+    lamberta = xml_node('lamberta')
+    longpc = xml_node('longpc', params['longpc'], lamberta)
+    latprjc = xml_node('latprjc', params['latprjc'], lamberta)
+    feast = xml_node('feast', params['feast'], lamberta)
+    fnorth = xml_node('fnorth', params['fnorth'], lamberta)
+    return lamberta
+
+
+def lambert_conformal_conic(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Lambert Conformal Conic projection
+
+    stdparll = First standard parallel
+    stdparl_2 = Second standard parallel (if exists)
+    longcm = Longitude of Central Meridian
+    latprjo = Latitude of Projection Origin
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc Lambert Conformal Conic projection
+    """
+    lambertc = xml_node('lambertc')
+    stdparll = xml_node('stdparll', params['stdparll'], lambertc)
+    if params['stdparl_2']:
+        stdparll_2 = xml_node('stdparll', params['stdparl_2'], lambertc)
+
+    for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
+        xml_node(item, params[item], lambertc)
+    return lambertc
+
+
+###def mercator(params):
+    # how to handle 'stdparll' OR 'sfequat'?
+
+
+def modified_stereograhic_for_alaska(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Modified Stereographic for Alaska projection
+
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc Modified Stereographic for Alaska projection
+    """
+    modsak = xml_node('modsak')
+    feast = xml_node('feast', params['feast'], modsak)
+    fnorth = xml_node('fnorth', params['fnorth'], modsak)
+    return modsak
+
+
+def miller_cylindrical(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Miller Cylindrical projection
+
+    longcm = Longitude of Central Meridian
+    feast = False Easting
+    fnorth = False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    lxml nodes for fgdc Miller Cylindrical projection
+    """
+    miller = xml_node('miller')
+    longcm = xml_node('longcm', params['longcm'], miller)
+    feast = xml_node('feast', params['feast'], miller)
+    fnorth =xml_node('fnorth', params['fnorth'], miller)
+    return miller
 
 
 
@@ -642,11 +773,21 @@ PROJECTION_LOOKUP = {'Albers Conical Equal Area':{'shortname': 'albers',
                      'Azimuthal Equidistant':{'shortname':'azimequi',
                                     'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
                      'Equidistant Conic':{'shortname':'equicon',
-                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
+                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
                      'Equirectangular':{'shortname':'equirect',
                                     'elements': ['stdparll', 'longcm', 'feast', 'fnorth']},
                      'General Vertical Near-sided Perspective':{'shortname':'gvnsp',
-                                    'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']}
+                                    'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']},
+                     'Gnomonic':{'shortname':'gnomonic',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
+                     'Lambert Azimuthal Equal Area':{'shortname':'lamberta',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
+                     'Lambert Conformal Conic':{'shortname':'lambertc',
+                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
+                     'Modified Stereographic for Alaska':{'shortname':'modsak',
+                                    'elements': ['feast', 'fnorth']},
+                     'Miller Cylindrical':{'shortname':'miller',
+                                    'elements': ['longcm', 'feast', 'fnorth']}
                      }
 
 
