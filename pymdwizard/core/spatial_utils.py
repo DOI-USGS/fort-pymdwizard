@@ -763,30 +763,146 @@ def miller_cylindrical(params):
     return miller
 
 
+###def oblique_mercator(params):
+   # how to handle oblique line azimuth (and dependent elements) OR oblique line point
+   #(and dependent elements)? - why does there need to be two occurrences of oblique line lat/long?
+
+
+def orthographic(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Orthographic projection
+
+    longpc = Longitude of Projection Center
+    latprjc = Latitude of Projection Center
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Orthographic projection
+    """
+    orthogr = xml_node('orthogr')
+    longpc = xml_node('longpc', params['longpc'], orthogr)
+    latprjc = xml_node('latprjc', params['latprjc'], orthogr)
+    feast = xml_node('feast', params['feast'], orthogr)
+    fnorth = xml_node('fnorth', params['fnorth'], orthogr)
+    return orthogr
+
+
+# def polar_stereographic(params):
+   #how to handle 'stdparll' OR 'sfprjorg'
+
+
+def polyconic(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Polyconic projection
+
+    longcm = Longitude of Central Meridian
+    latprjc = Latitude of Projection Origin
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Polyconic projection
+    """
+    polycon = xml_node('polycon')
+    longcm = xml_node('longcm', params['longcm'], polycon)
+    latprjo = xml_node('latprjo', params['latprjo'], polycon)
+    feast = xml_node('feast', params['feast'], polycon)
+    fnorth = xml_node('fnorth', params['fnorth'], polycon)
+    return polycon
+
+
+def robinson(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Robinson projection
+
+    longpc = Longitude of Projection Center
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Robinson projection
+    """
+    robinson = xml_node('robinson')
+    longpc = xml_node('longpc', params['longpc'], robinson)
+    feast = xml_node('feast', params['feast'], robinson)
+    fnorth = xml_node('fnorth', params['fnorth'], robinson)
+    return robinson
+
+
+def sinusoidal(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Sinusoidal projection
+
+    longcm = Longitude of Central Meridian
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Sinusoidal projection
+    """
+    sinusoid = xml_node('sinusoid')
+    longcm = xml_node('longcm', params['longcm'], sinusoid)
+    feast = xml_node('feast', params['feast'], sinusoid)
+    fnorth = xml_node('fnorth', params['fnorth'], sinusoid)
+    return sinusoid
 
 
 
-PROJECTION_LOOKUP = {'Albers Conical Equal Area':{'shortname': 'albers',
+
+PROJECTION_LOOKUP = {'Albers Conical Equal Area': {'shortname': 'albers',
                                   'elements': ['stdparll', 'stdparl_2',
                                                'longcm',
                                                'latprjo', 'feast', 'fnorth']},
-                     'Azimuthal Equidistant':{'shortname':'azimequi',
+                     'Azimuthal Equidistant': {'shortname': 'azimequi',
                                     'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Equidistant Conic':{'shortname':'equicon',
+                     'Equidistant Conic': {'shortname': 'equicon',
                                     'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Equirectangular':{'shortname':'equirect',
+                     'Equirectangular':{'shortname': 'equirect',
                                     'elements': ['stdparll', 'longcm', 'feast', 'fnorth']},
-                     'General Vertical Near-sided Perspective':{'shortname':'gvnsp',
+                     'General Vertical Near-sided Perspective': {'shortname': 'gvnsp',
                                     'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Gnomonic':{'shortname':'gnomonic',
+                     'Gnomonic': {'shortname': 'gnomonic',
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Lambert Azimuthal Equal Area':{'shortname':'lamberta',
+                     'Lambert Azimuthal Equal Area': {'shortname': 'lamberta',
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Lambert Conformal Conic':{'shortname':'lambertc',
+                     'Lambert Conformal Conic': {'shortname': 'lambertc',
                                     'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Modified Stereographic for Alaska':{'shortname':'modsak',
+                     'Modified Stereographic for Alaska': {'shortname': 'modsak',
                                     'elements': ['feast', 'fnorth']},
-                     'Miller Cylindrical':{'shortname':'miller',
+                     'Miller Cylindrical': {'shortname': 'miller',
+                                    'elements': ['longcm', 'feast', 'fnorth']},
+                     'Orthographic': {'shortname': 'orthogr',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
+                     'Polyconic': {'shortname': 'polycon',
+                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
+                     'Robinson': {'shortname': 'robinson',
+                                    'elements': ['longpc', 'feast', 'fnorth']},
+                     'Sinusoidal': {'shortname': 'sinusoid',
                                     'elements': ['longcm', 'feast', 'fnorth']}
                      }
 
