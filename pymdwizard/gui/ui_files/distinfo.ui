@@ -745,8 +745,8 @@
                    <item>
                     <widget class="QRadioButton" name="radio_dist">
                      <property name="text">
-                      <string>The data set is not available online.  Interested parties should contact the distributor for details on acquiring the data. 
-(Provide 'Distributor Contact' information.</string>
+                      <string>The data set is not available online.  Interested parties should contact the distributor for details on 
+acquiring the data. (Provide 'Distributor Contact' information.</string>
                      </property>
                     </widget>
                    </item>

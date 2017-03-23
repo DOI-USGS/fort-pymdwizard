@@ -359,8 +359,8 @@ class Ui_fgdc_distinfo(object):
         self.groupBox_3.setTitle(_translate("fgdc_distinfo", "How Can Others Access the Data?"))
         self.radio_online.setText(_translate("fgdc_distinfo", "The data set is available online."))
         self.label_7.setText(_translate("fgdc_distinfo", "URL of website or GIS service:"))
-        self.radio_dist.setText(_translate("fgdc_distinfo", "The data set is not available online.  Interested parties should contact the distributor for details on acquiring the data. \n"
-"(Provide \'Distributor Contact\' information."))
+        self.radio_dist.setText(_translate("fgdc_distinfo", "The data set is not available online.  Interested parties should contact the distributor for details on \n"
+"acquiring the data. (Provide \'Distributor Contact\' information."))
         self.radio_otherdist.setText(_translate("fgdc_distinfo", "Other Distribution method. (Describe below)"))
         self.groupBox.setTitle(_translate("fgdc_distinfo", "Distribution Liability"))
         self.label_10.setText(_translate("fgdc_distinfo", "List any distribution disclaimers or limitations of liability."))
