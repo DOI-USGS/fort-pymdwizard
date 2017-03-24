@@ -158,8 +158,9 @@ class MetadataRoot(WizardWidget):
             spdoinfo = self.spatial_tab.spdoinfo._to_xml()
             metadata_node.append(spdoinfo)
 
-        spref = self.spatial_tab.spref._to_xml()
-        metadata_node.append(spref)
+        if self.spatial_tab.spref.has_content():
+            spref = self.spatial_tab.spref._to_xml()
+            metadata_node.append(spref)
 
         if self.eainfo.has_content():
             eainfo = self.eainfo._to_xml()
