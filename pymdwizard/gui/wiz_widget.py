@@ -277,7 +277,7 @@ class WizardWidget(QWidget):
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
         # dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction | Qt.IgnoreAction)
-        dropAction = drag.exec(Qt.MoveAction)
+        dropAction = drag.exec_(Qt.MoveAction)
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):
@@ -334,6 +334,35 @@ class WizardWidget(QWidget):
                 if not self.help_text:
                     self.help_text = annotation_lookup[shortname]['annotation']
 
+
+
+    def clear_widget(self):
+        """
+        Clears all content from this widget
+
+        Returns
+        -------
+        None
+        """
+        widgets = self.findChildren(QObject, QRegExp(r'.*'))
+        for widget in widgets:
+            if widget.objectName().startswith('fgdc_'):
+                utils.set_text(widget, '')
+
+    def has_content(self):
+        """
+        Returns if the widget contains legitimate content that should be
+        written out to xml
+
+        By default this is always true but should be implement in each
+        subclass with logic to check based on contents
+        
+        Returns
+        -------
+        bool : True if there is content, False if no
+        """
+        return True
+
     def contextMenuEvent(self, event):
 
         clicked_widget = self.childAt(event.pos())
@@ -351,7 +380,7 @@ class WizardWidget(QWidget):
             elif action == paste_action:
                 pass
             elif action == clear_action:
-                pass
+                self.clear_widget()
             elif action == help_action:
                 msg = QMessageBox(self)
                 msg.setTextFormat(Qt.RichText)

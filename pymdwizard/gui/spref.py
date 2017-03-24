@@ -107,7 +107,10 @@ class SpRef(WizardWidget):
         if b:
             self.ui.horiz_layout.show()
         else:
-            self.ui.horiz_layout.hide()
+            self.ui.hori.z_layout.hide()
+
+    def has_content(self):
+        return False
 
     def system_def_changed(self):
 
