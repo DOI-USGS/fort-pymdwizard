@@ -166,20 +166,21 @@ class SourceInput(WizardWidget): #
         -------
         None
         """
-        try:
-            if xml_srcinput.tag == 'lineage':
-                self.src_info.clear_widgets()
-                self.ui.frame_sourceinfo.show()
-                self.ui.radio_sourceyes.setChecked(True)
-                xml_srcinput = xml_srcinput.findall('srcinfo')
-                if xml_srcinput:
-                    for srcinput in xml_srcinput:
-                        srcinfo_widget = self.src_info.add_another()
+
+        if xml_srcinput.tag == 'lineage':
+            self.src_info.clear_widgets()
+            self.ui.frame_sourceinfo.show()
+            self.ui.radio_sourceyes.setChecked(True)
+            xml_srcinput = xml_srcinput.findall('srcinfo')
+            if xml_srcinput:
+                for srcinput in xml_srcinput:
+                    srcinfo_widget = self.src_info.add_another()
+                    try:
                         srcinfo_widget._from_xml(srcinput)
-                else:
-                    self.src_info.add_another()
-        except KeyError:
-            pass
+                    except KeyError:
+                        pass
+            else:
+                self.src_info.add_another()
 
 
 if __name__ == "__main__":
