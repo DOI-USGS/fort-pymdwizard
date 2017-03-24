@@ -141,9 +141,8 @@ class ProcStep(WizardWidget): #
             if xml_procstep.tag == 'lineage':
                 self.proc_step.clear_widgets()
                 xml_procstep = xml_procstep.findall('procstep')
-                if xml_procstep:#xml_procstep.findall("procstep/procdesc"):
-                    for procstep in xml_procstep:# xml_procstep.findall("procstep/procdesc"), xml_procstep.findall("procstep/procdate"):
-                        print procstep.tag
+                if xml_procstep:
+                    for procstep in xml_procstep:
                         procdesc_widget = self.proc_step.add_another()
                         procdesc_widget._from_xml(procstep)
                 else:

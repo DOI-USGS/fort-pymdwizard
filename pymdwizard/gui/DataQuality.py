@@ -134,7 +134,6 @@ class DataQuality(WizardWidget):
 
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()
-        print type(procstep_children)
 
         for i in procstep_children:
             srcinfo_node.append(i)
@@ -146,7 +145,7 @@ class DataQuality(WizardWidget):
 
     def _from_xml(self, xml_dataqual):
         try:
-            attraccr = xml_dataqual.xpath('attraccr')[0]
+            attraccr = xml_dataqual.xpath('attracc')[0]
             self.attraccr._from_xml(attraccr)
         except IndexError:
             pass
