@@ -119,21 +119,40 @@ def populate_widget(widget, contents):
                 except AttributeError:
                     child_widget = None
 
-            try:
-                child_widget.setText(value)
-                child_widget.setCursorPosition(0)
-            except:
-                pass
+            set_text(child_widget, value)
 
-            try:
-                child_widget.setPlainText(value)
-            except:
-                pass
 
-            try:
-                child_widget.set_date(value)
-            except:
-                pass
+def set_text(widget, text):
+    """
+    set the text of a widget regardless of it's base type
+
+    Parameters
+    ----------
+    widget : QtGui:QWidget
+            This widget is a QlineEdit or QPlainText edit
+    text : str
+            The text that will be inserted
+    Returns
+    -------
+    None
+
+    """
+
+    try:
+        widget.setText(text)
+        widget.setCursorPosition(0)
+    except:
+        pass
+
+    try:
+        widget.setPlainText(text)
+    except:
+        pass
+
+    try:
+        widget.set_date(text)
+    except:
+        pass
 
 
 def populate_widget_element(widget, element, xpath):
