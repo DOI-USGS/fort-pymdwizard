@@ -288,9 +288,11 @@ class Citation(WizardWidget): #
             else:
                 self.ui.radio_seriesyes.setChecked(False)
 
-            if citeinfo.xpath('pubinfo'):
+            pubinfo = citeinfo.xpath('pubinfo')
+            if pubinfo:
                 self.ui.radio_pubinfoyes.setChecked(True)
-                utils.populate_widget(self.ui.fgdc_publish, citeinfo.xpath('publish')[0])
+                utils.populate_widget(self.ui.fgdc_publish, pubinfo.xpath('publish')[0])
+                utils.populate_widget(self.ui.fgdc_pubplace, pubinfo.xpath('pubplace')[0])
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
 
