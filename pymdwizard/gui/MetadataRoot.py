@@ -62,6 +62,7 @@ from pymdwizard.gui.spatial_tab import SpatialTab
 from pymdwizard.gui.EA import EA
 from pymdwizard.gui.DataQuality import DataQuality
 from pymdwizard.gui.metainfo import MetaInfo
+from pymdwizard.gui.distinfo import DistInfo
 
 
 class MetadataRoot(WizardWidget):
@@ -101,6 +102,9 @@ class MetadataRoot(WizardWidget):
         self.metainfo = MetaInfo(root_widget=self)
         self.ui.page_metainfo.layout().addWidget(self.metainfo)
 
+        self.distinfo = DistInfo(root_widget=self)
+        self.ui.page_distinfo.layout().addWidget(self.distinfo)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -110,7 +114,6 @@ class MetadataRoot(WizardWidget):
         None
         """
         self.ui.idinfo_button.pressed.connect(self.section_changed)
-
         self.ui.dataquality_button.pressed.connect(self.section_changed)
         self.ui.spatial_button.pressed.connect(self.section_changed)
         self.ui.eainfo_button.pressed.connect(self.section_changed)
@@ -162,6 +165,9 @@ class MetadataRoot(WizardWidget):
             eainfo = self.eainfo._to_xml()
             metadata_node.append(eainfo)
 
+        distinfo = self.distinfo._to_xml()
+        metadata_node.append(distinfo)
+
         metainfo = self.metainfo._to_xml()
         metadata_node.append(metainfo)
         return metadata_node
@@ -191,6 +197,10 @@ class MetadataRoot(WizardWidget):
             self.eainfo._from_xml(eainfo[0])
         else:
             self.eainfo.clear_widget()
+
+        distinfo = metadata_element.xpath('distinfo')
+        if distinfo:
+            self.distinfo._from_xml(distinfo[0])
 
         self.metainfo._from_xml(metadata_element.xpath('metainfo')[0])
 
