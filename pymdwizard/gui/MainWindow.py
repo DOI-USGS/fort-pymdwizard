@@ -423,9 +423,8 @@ def main():
 
     painter.setPen(QColor(150, 150, 150, 200))
     painter.drawText(splash_pix.rect().adjusted(20, -20, -20, -20), Qt.AlignBottom,
-                     "putting the fun in fundamental science practices")
+                     "version 0.0.0 pre-pre Alpha")
     painter.end()
-
 
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.show()
