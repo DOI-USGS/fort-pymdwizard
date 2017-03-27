@@ -47,7 +47,7 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBox, QAction
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog, QDialog
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
 from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings
 from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
@@ -376,16 +376,13 @@ opacity: 25;
         tmp.close()
         result.write(tmp.name)
 
-        self.preview = Preview(url=tmp.name, parent=self)
-        self.preview.show()
+        self.preview = Preview(url=tmp.name)
 
-    # def harvest(self):
-    #     fname = r"N:\Metadata\MetadataWizard\pymdwizard\tests\data\projections\World_Azimuthal_Equidistant.shp"
-    #     layer = spatial_utils.get_layer(fname)
-    #     params = spatial_utils.get_params(layer)
-    #     geo = spatial_utils.geographic(params)
-    #
-    #     self.metadata_root.spref._from_xml(geo)
+        self.preview_dialog = QDialog(self)
+        self.preview_dialog.setWindowTitle('Metadata Preview')
+        self.preview_dialog.setLayout(self.preview.layout())
+
+        self.preview_dialog.exec_()
 
 def main():
     app = QApplication(sys.argv)
