@@ -59,6 +59,8 @@ from pymdwizard.core import xml_utils, utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.core import spatial_utils
 
+import sip
+
 class PyMdWizardMainForm(QMainWindow):
 
     max_recent_files = 5
@@ -144,6 +146,8 @@ class PyMdWizardMainForm(QMainWindow):
 
         fname = QFileDialog.getOpenFileName(self, fname, dname, \
                                             filter="XML Files (*.xml)")
+
+
         if fname[0]:
             self.load_file(fname[0])
             self.update_recent_file_actions()
@@ -280,7 +284,9 @@ class PyMdWizardMainForm(QMainWindow):
             annotation_lookup = json.loads(data_file.read())
 
         for widget in self.error_widgets:
-            if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+
+            if not sip.isdeleted(widget) and \
+                    widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
                 widget.setStyleSheet("""""")
                 shortname = widget.objectName().replace('fgdc_', '')
                 if shortname[-1].isdigit():
