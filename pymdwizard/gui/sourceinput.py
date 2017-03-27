@@ -134,19 +134,7 @@ class SourceInput(WizardWidget): #
         else:
             e.ignore()
 
-    def has_content(self):
-        """
-        Returns if the widget contains legitimate content that should be
-        written out to xml
 
-        By default this is always true but should be implement in each
-        subclass with logic to check based on contents
-
-        Returns
-        -------
-        bool : True if there is content, False if no
-        """
-        return self.ui.radio_sourceyes.isChecked()
          
 
     def _to_xml(self):
@@ -164,7 +152,14 @@ class SourceInput(WizardWidget): #
             srcinfo_list = self.src_info.get_widgets()
             for srcinfo in srcinfo_list:
                 lineage.append(srcinfo._to_xml())
+            # while cnt < len(list_widgets):
+            #     #lineage.append(list_widgets[cnt]._to_xml())
+            #     lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
+            #     cnt += 1
         return lineage
+        # elif self.ui.radio_sourceno.isChecked():
+        #     pass
+
 
     def _from_xml(self, xml_srcinput):
         """
@@ -178,21 +173,21 @@ class SourceInput(WizardWidget): #
         -------
         None
         """
-
-        if xml_srcinput.tag == 'lineage':
-            self.src_info.clear_widgets()
-            self.ui.frame_sourceinfo.show()
-            self.ui.radio_sourceyes.setChecked(True)
-            xml_srcinput = xml_srcinput.findall('srcinfo')
-            if xml_srcinput:
-                for srcinput in xml_srcinput:
-                    srcinfo_widget = self.src_info.add_another()
-                    try:
+        try:
+            if xml_srcinput.tag == 'lineage':
+                self.src_info.clear_widgets()
+                self.ui.frame_sourceinfo.show()
+                self.ui.radio_sourceyes.setChecked(True)
+                xml_srcinput = xml_srcinput.findall('srcinfo')
+                if xml_srcinput:
+                    for srcinput in xml_srcinput:
+                        srcinfo_widget = self.src_info.add_another()
                         srcinfo_widget._from_xml(srcinput)
-                    except KeyError:
-                        pass
-            else:
-                self.src_info.add_another()
+
+                else:
+                    self.src_info.add_another()
+        except KeyError:
+            pass
 
 
 if __name__ == "__main__":
