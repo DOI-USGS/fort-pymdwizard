@@ -47,7 +47,7 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComboBox, QToolButton, QCheckBox, QSpacerItem, QLabel, QGroupBox, QFrame
-from PyQt5.QtWidgets import QTableView
+from PyQt5.QtWidgets import QTableView, QPlainTextEdit
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
 from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
@@ -130,7 +130,8 @@ class WizardWidget(QWidget):
         -------
         None
         """
-        print("connect_events method Must be overridden in subclass")
+        pass
+
 
     def _to_xml(self):
         """
@@ -141,7 +142,6 @@ class WizardWidget(QWidget):
             lxml element with the contents of this form
             translated to an xml snippet
         """
-
         print("_to_xml method Must be overridden in subclass")
 
     def _from_xml(self, xml_element):
@@ -178,23 +178,38 @@ class WizardWidget(QWidget):
         """
         xpath_items = xpath.split('/')
 
-        cur_item = self
+        cur_widget = self
         for item_string in xpath_items:
-            cur_item = self.find_descendant(cur_item, item_string)
-            if not cur_item:
-                cur_item = self
-        return cur_item
+            if '[' in item_string:
+                fgdc_tag, tag = item_string.split('[')
+                index = int(tag.split(']')[0])-1
+            else:
+                fgdc_tag = item_string
+                index = 0
+
+            cur_matches = self.find_descendant(cur_widget, fgdc_tag)
+            if len(cur_matches) > index:
+                cur_widget = cur_matches[index]
+
+        if not cur_widget:
+            return self
+        else:
+            return cur_widget
 
     def find_descendant(self, search_widget, search_name):
 
+        matches = []
         for widget in search_widget.children():
             if widget.objectName() == 'fgdc_' + search_name:
-                return widget
-            else:
+                matches.append(widget)
+
+        for widget in search_widget.children():
+            if widget.objectName() != 'fgdc_' + search_name:
                 result = self.find_descendant(widget, search_name)
                 if result:
-                    return result
-        return None
+                    matches = matches + result
+        return matches
+
 
     def dropEvent(self, e):
         """
@@ -241,10 +256,16 @@ class WizardWidget(QWidget):
         None
         """
         if e.buttons() != Qt.LeftButton:
+            if hasattr(self, 'drag_start_pos'):
+                delattr(self, 'drag_start_pos')
+
+        if not hasattr(self, 'drag_start_pos'):
             return
-        if hasattr(self, 'drag_start_pos') and \
-                not (e.pos() - self.drag_start_pos).manhattanLength() > 75:
+
+        if not (e.pos() - self.drag_start_pos).manhattanLength() > 300:
             return
+
+
 
         mime_data = self.get_mime()
 
@@ -296,7 +317,8 @@ class WizardWidget(QWidget):
         """
         self.setAcceptDrops(enable)
 
-        drag_types = [QLabel, QSpacerItem, QToolButton, QGroupBox]
+        drag_types = [QLabel, QSpacerItem, QToolButton, QGroupBox,
+                      QPlainTextEdit]
 
         for drag_type in drag_types:
             widgets = self.findChildren(drag_type, QRegExp(r'.*'))

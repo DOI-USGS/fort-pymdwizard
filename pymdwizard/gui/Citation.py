@@ -80,7 +80,6 @@ class Citation(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citation(parent=self, include_lwork=False)
-            # self.lworkcit_widget.ui.fgdc_lworkcit.hide()
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
@@ -93,13 +92,15 @@ class Citation(WizardWidget): #
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
                                             remove_text='Remove last',
-                                            widget_kwargs={'label': 'Link'})
+                                            widget_kwargs={'label': 'Link',
+                                                           'line_name':'fgdc_onlink'})
         self.onlink_list.add_another()
         self.ui.onlink_layout.addWidget(self.onlink_list)
 
         self.fgdc_origin = RepeatingElement(add_text='Add originator',
                                             remove_text='Remove last',
-                                            widget_kwargs={'label': 'Originator'})
+                                            widget_kwargs={'label': 'Originator',
+                                                           'line_name':'fgdc_origin'})
         self.fgdc_origin.add_another()
         self.ui.originator_layout.addWidget(self.fgdc_origin)
 
@@ -282,7 +283,7 @@ class Citation(WizardWidget): #
             else:
                 self.fgdc_origin.add_another()
 
-            utils.populate_widget_element(self.ui.pubdate_widget.ui.lineEdit,
+            utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
             utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
 

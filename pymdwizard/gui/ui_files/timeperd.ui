@@ -180,9 +180,9 @@
                </font>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
-              <widget class="QWidget" name="page_singledate">
+              <widget class="QWidget" name="fgdc_sngdate">
                <layout class="QVBoxLayout" name="verticalLayout_10">
                 <property name="spacing">
                  <number>6</number>
@@ -209,68 +209,9 @@
                   </property>
                  </spacer>
                 </item>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout">
-                  <item>
-                   <widget class="QLabel" name="label_8">
-                    <property name="font">
-                     <font>
-                      <weight>75</weight>
-                      <italic>false</italic>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="whatsThis">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;currentness what's this....&lt;/p&gt;&lt;p&gt;fakls;dfhjl;sakdjfl&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font: bold;</string>
-                    </property>
-                    <property name="text">
-                     <string>Currentness Reference</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QComboBox" name="fgdc_current">
-                    <property name="focusPolicy">
-                     <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="editable">
-                     <bool>true</bool>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>ground condition</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>observed</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>publication date</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>See Supplemental Info</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
                </layout>
               </widget>
-              <widget class="QWidget" name="page_daterange">
+              <widget class="QWidget" name="fgdc_rngdates">
                <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0">
                 <property name="sizeConstraint">
                  <enum>QLayout::SetDefaultConstraint</enum>
@@ -307,7 +248,7 @@
                 </item>
                </layout>
               </widget>
-              <widget class="QWidget" name="page_multipledates">
+              <widget class="QWidget" name="fgdc_mdattim">
                <layout class="QVBoxLayout" name="verticalLayout_9">
                 <property name="spacing">
                  <number>3</number>
@@ -348,12 +289,66 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="whatsThis">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;currentness what's this....&lt;/p&gt;&lt;p&gt;fakls;dfhjl;sakdjfl&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: bold;</string>
+          </property>
+          <property name="text">
+           <string>Currentness Reference</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="fgdc_current">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string/>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ground condition</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>observed</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>publication date</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>See Supplemental Info</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
-     <zorder>label_2</zorder>
-     <zorder>label_8</zorder>
-     <zorder>fgdc_current</zorder>
-     <zorder>label_8</zorder>
-     <zorder>widget_2</zorder>
     </widget>
    </item>
   </layout>

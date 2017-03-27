@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>fgdc_sngdate</class>
+ <widget class="QWidget" name="fgdc_sngdate">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>133</width>
+    <width>210</width>
     <height>47</height>
    </rect>
   </property>
@@ -106,7 +106,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="fgdc_caldate">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
