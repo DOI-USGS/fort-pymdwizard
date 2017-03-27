@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>282</width>
+    <width>677</width>
     <height>771</height>
    </rect>
   </property>
@@ -187,20 +187,28 @@
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+       <widget class="QWidget" name="place_holder" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Ignored" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Preferred</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </widget>
       </item>
       <item>
        <spacer name="verticalSpacer">
