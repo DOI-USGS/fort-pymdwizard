@@ -154,7 +154,7 @@ class MetadataRoot(WizardWidget):
         dataqual = self.dataqual._to_xml()
         metadata_node.append(dataqual)
 
-        if self.spatial_tab.spdoinfo.ui.rbtn_yes.isChecked():
+        if self.spatial_tab.spdoinfo.has_content():
             spdoinfo = self.spatial_tab.spdoinfo._to_xml()
             metadata_node.append(spdoinfo)
 
@@ -188,10 +188,16 @@ class MetadataRoot(WizardWidget):
         spdoinfo = metadata_element.xpath('spdoinfo')
         if spdoinfo:
             self.spatial_tab.spdoinfo._from_xml(spdoinfo[0])
+        else:
+            self.spatial_tab.spdoinfo.ui.rbtn_yes.setChecked(False)
+            self.spatial_tab.spdoinfo.ui.rbtn_no.setChecked(True)
 
         spref = metadata_element.xpath('spref')
         if spref:
             self.spatial_tab.spref._from_xml(spref[0])
+        else:
+            self.spatial_tab.spref.ui.rbtn_yes.setChecked(False)
+            self.spatial_tab.spref.ui.rbtn_no.setChecked(True)
 
         eainfo = metadata_element.xpath('eainfo')
         if eainfo:

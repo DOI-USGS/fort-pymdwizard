@@ -134,7 +134,19 @@ class SourceInput(WizardWidget): #
         else:
             e.ignore()
 
+    def has_content(self):
+        """
+        Returns if the widget contains legitimate content that should be
+        written out to xml
 
+        By default this is always true but should be implement in each
+        subclass with logic to check based on contents
+
+        Returns
+        -------
+        bool : True if there is content, False if no
+        """
+        return self.ui.radio_sourceyes.isChecked()
          
 
     def _to_xml(self):

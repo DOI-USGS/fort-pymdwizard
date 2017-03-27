@@ -170,7 +170,7 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        if self.schema == 'bdp' and self.taxonomy.ui.rbtn_yes.isChecked():
+        if self.schema == 'bdp' and self.taxonomy.has_content():
             taxonomy = self.taxonomy._to_xml()
             idinfo_node.append(taxonomy)
 

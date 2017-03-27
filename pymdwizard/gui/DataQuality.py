@@ -130,7 +130,8 @@ class DataQuality(WizardWidget):
         posacc_node = self.posacc._to_xml()
         dataqual_node.append(posacc_node)
 
-        srcinfo_node = self.sourceinput._to_xml()
+        if self.sourceinput.has_content():
+            srcinfo_node = self.sourceinput._to_xml()
 
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()

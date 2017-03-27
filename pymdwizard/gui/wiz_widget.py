@@ -334,8 +334,6 @@ class WizardWidget(QWidget):
                 if not self.help_text:
                     self.help_text = annotation_lookup[shortname]['annotation']
 
-
-
     def clear_widget(self):
         """
         Clears all content from this widget
@@ -356,7 +354,7 @@ class WizardWidget(QWidget):
 
         By default this is always true but should be implement in each
         subclass with logic to check based on contents
-        
+
         Returns
         -------
         bool : True if there is content, False if no
