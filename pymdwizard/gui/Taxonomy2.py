@@ -55,8 +55,12 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Taxonomy
+from pymdwizard.gui.ui_files import UI_taxonomy2
 from pymdwizard.gui import ITISSearch
+from pymdwizard.gui.repeating_element import RepeatingElement
+
+from pymdwizard.gui.taxoncl import Taxoncl
+from pymdwizard.gui.keywtax import Keywordtax
 
 
 class Taxonomy(WizardWidget):
@@ -66,21 +70,19 @@ class Taxonomy(WizardWidget):
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Taxonomy"
 
-
-
-    def __init__(self, parent=None):
-
-        WizardWidget.__init__(self, parent=parent)
-
-        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
-        self.selected_model = utils.PandasModel(self.selected_items_df)
-        self.ui.table_include.setModel(self.selected_model)
-
-        self.ui.frame_included_species.hide()
-
-        # This dictionary contains copies of each unique taxonomy xml created
-        # so that we need not generate them more than once
-        self.xml_lookup = {}
+    # def __init__(self, parent=None):
+    #
+    #     WizardWidget.__init__(self, parent=parent)
+    #
+    #     # self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
+    #     # self.selected_model = utils.PandasModel(self.selected_items_df)
+    #     # self.ui.table_include.setModel(self.selected_model)
+    #     #
+    #     # self.ui.frame_included_species.hide()
+    #     #
+    #     # # This dictionary contains copies of each unique taxonomy xml created
+    #     # # so that we need not generate them more than once
+    #     # self.xml_lookup = {}
 
     def build_ui(self):
         """
@@ -90,9 +92,15 @@ class Taxonomy(WizardWidget):
         -------
         None
         """
-        self.ui = UI_Taxonomy.Ui_Taxonomy()
+        self.ui = UI_taxonomy2.Ui_Taxonomy()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
+
+        self.keywtax = Keywordtax()
+        self.ui.taxon_kws.layout().addWidget(self.keywtax)
+
+        self.taxoncl = Taxoncl()
+        self.ui.taxoncl_contents.layout().addWidget(self.taxoncl)
 
     def connect_events(self):
         """
@@ -104,13 +112,17 @@ class Taxonomy(WizardWidget):
         """
         self.ui.btn_search.clicked.connect(self.search_itis)
         self.ui.rbtn_yes.toggled.connect(self.include_taxonomy_change)
-        self.ui.btn_remove_selected.clicked.connect(self.remove_selected)
+
 
     def include_taxonomy_change(self, b):
         if b:
             self.ui.frame_included_species.show()
+            self.ui.groupBox.show()
+            self.ui.taxoncl_scrollarea.show()
         else:
             self.ui.frame_included_species.hide()
+            self.ui.groupBox.hide()
+            self.ui.taxoncl_scrollarea.hide()
 
     def search_itis(self):
 
@@ -169,37 +181,18 @@ class Taxonomy(WizardWidget):
         return self.ui.rbtn_yes.isChecked()
 
     def _to_xml(self):
-        df = self.ui.table_include.model().dataframe()
-        include_common = self.ui.check_include_common.isChecked()
-        unique_id = tuple([tuple(df.tsn), include_common])
 
-        if unique_id not in self.xml_lookup:
-            fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
-                        tsns=list(df.tsn), include_common_names=include_common)
-            self.xml_lookup[unique_id] = fgdc_taxonomy
-
-        return self.xml_lookup[unique_id]
+        taxonomy = xml_utils.xml_node('taxonomy')
+        taxonomy.append(self.keywtax._to_xml())
+        taxonomy.append(self.taxoncl._to_xml())
 
     def _from_xml(self, taxonomy_element):
 
         self.ui.rbtn_yes.setChecked(True)
 
-        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
-        i = 0
-        for common_node in taxonomy_element.findall('.//common'):
-            if common_node.text.startswith('TSN: '):
-                tsn = common_node.text[5:]
-                self.selected_items_df.loc[i] = ['...', tsn]
-                # try:
-                #     scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
-                #     self.selected_items_df.loc[i] = [scientific_name, tsn]
-                # except:
-                #     self.selected_items_df.loc[i] = ['...', tsn]
-                # i += 1
+        self.keywtax._from_xml(taxonomy_element.xpath('keywtax')[0])
 
-        self.selected_model = utils.PandasModel(self.selected_items_df)
-        self.ui.table_include.setModel(self.selected_model)
-
+        self.taxoncl._from_xml(taxonomy_element.xpath('taxoncl')[0])
 
 if __name__ == "__main__":
     utils.launch_widget(Taxonomy, "Taxonomy testing")
