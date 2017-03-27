@@ -18,7 +18,7 @@ class Ui_Form(object):
         self.button_widget = QtWidgets.QWidget(Form)
         self.button_widget.setObjectName("button_widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.button_widget)
-        self.horizontalLayout.setContentsMargins(2, 2, 2, 2)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 2)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.italic_label = QtWidgets.QLabel(self.button_widget)
@@ -49,8 +49,6 @@ class Ui_Form(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         self.verticalLayout.addItem(spacerItem1)
         self.verticalLayout_2.addWidget(self.vertical_widget)
-        self.popOff.raise_()
-        self.vertical_widget.raise_()
 
         self.retranslateUi(Form)
         self.tab_widget.setCurrentIndex(-1)

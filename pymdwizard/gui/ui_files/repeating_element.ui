@@ -33,13 +33,13 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
        <number>2</number>
@@ -138,8 +138,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>popOff</zorder>
-  <zorder>vertical_widget</zorder>
  </widget>
  <resources/>
  <connections/>
