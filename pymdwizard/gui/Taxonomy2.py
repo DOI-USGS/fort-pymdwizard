@@ -56,7 +56,7 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_taxonomy2
-from pymdwizard.gui import ITISSearch
+from pymdwizard.gui import taxonomy_gui
 from pymdwizard.gui.repeating_element import RepeatingElement
 
 from pymdwizard.gui.taxoncl import Taxoncl
@@ -64,25 +64,7 @@ from pymdwizard.gui.keywtax import Keywordtax
 
 
 class Taxonomy(WizardWidget):
-
-    WIDGET_WIDTH = 500
-    COLLAPSED_HEIGHT = 75
-    EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Taxonomy"
-
-    # def __init__(self, parent=None):
-    #
-    #     WizardWidget.__init__(self, parent=parent)
-    #
-    #     # self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
-    #     # self.selected_model = utils.PandasModel(self.selected_items_df)
-    #     # self.ui.table_include.setModel(self.selected_model)
-    #     #
-    #     # self.ui.frame_included_species.hide()
-    #     #
-    #     # # This dictionary contains copies of each unique taxonomy xml created
-    #     # # so that we need not generate them more than once
-    #     # self.xml_lookup = {}
 
     def build_ui(self):
         """
@@ -97,10 +79,12 @@ class Taxonomy(WizardWidget):
         self.setup_dragdrop(self)
 
         self.keywtax = Keywordtax()
-        self.ui.taxon_kws.layout().addWidget(self.keywtax)
+        self.ui.kws_layout.addWidget(self.keywtax)
 
         self.taxoncl = Taxoncl()
         self.ui.taxoncl_contents.layout().addWidget(self.taxoncl)
+
+        self.include_taxonomy_change(False)
 
     def connect_events(self):
         """
@@ -116,25 +100,23 @@ class Taxonomy(WizardWidget):
 
     def include_taxonomy_change(self, b):
         if b:
-            self.ui.frame_included_species.show()
-            self.ui.groupBox.show()
-            self.ui.taxoncl_scrollarea.show()
+            self.ui.widget_contents.show()
         else:
-            self.ui.frame_included_species.hide()
-            self.ui.groupBox.hide()
-            self.ui.taxoncl_scrollarea.hide()
+            self.ui.widget_contents.hide()
 
     def search_itis(self):
 
-        # self.ITIS_Search = QDialog(self)
-        self.ITIS_Search = ITISSearch.ItisSearch(table=self.ui.table_include,
-                                                 selected_items_df=self.selected_items_df,
-                                                 parent=self)
+        self.tax_gui = taxonomy_gui.ItisMainForm(xml=self._to_xml(),
+                                                 fgdc_function=self._from_xml)
         fg = self.frameGeometry()
-        self.ITIS_Search.move(fg.topRight() - QPoint(150, -25))
-        self.ITIS_Search.show()
+        self.tax_gui.move(fg.topRight() - QPoint(150, -25))
 
-        # self.ui.table_results.setModel(self.ITIS_Search.ui.table_results)
+
+        self.taxgui_dialog = QDialog(self)
+        self.taxgui_dialog.setWindowTitle('Search Integrated Taxonomic Information System (ITIS)')
+        self.taxgui_dialog.setLayout(self.tax_gui.layout())
+
+        self.taxgui_dialog.exec_()
 
     def remove_selected(self):
         indexes = self.ui.table_include.selectionModel().selectedRows()
@@ -180,14 +162,19 @@ class Taxonomy(WizardWidget):
         """
         return self.ui.rbtn_yes.isChecked()
 
+    def clear_widget(self):
+        self.keywtax.clear_widget()
+        self.taxoncl.clear_widget()
+
     def _to_xml(self):
 
         taxonomy = xml_utils.xml_node('taxonomy')
         taxonomy.append(self.keywtax._to_xml())
         taxonomy.append(self.taxoncl._to_xml())
+        return taxonomy
 
     def _from_xml(self, taxonomy_element):
-
+        self.clear_widget()
         self.ui.rbtn_yes.setChecked(True)
 
         self.keywtax._from_xml(taxonomy_element.xpath('keywtax')[0])

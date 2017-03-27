@@ -126,6 +126,10 @@ class Keywordtax(KeywordsRepeater):  #
         else:
             e.ignore()
 
+    def clear_widget(self):
+        self.ui.thesaurus_edit.clear()
+        self.keywords.clear_widgets()
+
     def _to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag

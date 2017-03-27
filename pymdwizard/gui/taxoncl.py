@@ -61,10 +61,10 @@ class Taxoncl(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_taxoncl.Ui_fgdd_taxoncl()
+        self.ui = UI_taxoncl.Ui_fgdc_taxoncl()
         self.ui.setupUi(self)
 
-        self.child_taxoncl = None
+        self.child_taxoncl = []
 
         self.setup_dragdrop(self)
 
@@ -99,8 +99,8 @@ class Taxoncl(WizardWidget):  #
         self.ui.fgdc_taxonrv.clear()
         self.ui.fgdc_common.clear()
 
-        if self.child_taxoncl is not None:
-            self.child_taxoncl.deleteLater()
+        self.child_taxoncl = []
+
 
     def _to_xml(self):
         """
@@ -115,12 +115,12 @@ class Taxoncl(WizardWidget):  #
         taxonrv = xml_utils.xml_node('taxonrv', text=self.ui.fgdc_taxonrv.text(),
                                      parent_node=taxoncl)
         if self.ui.fgdc_common.text():
-            common = xml_utils.xml_node(self.ui.fgdc_common.text(),
+            common = xml_utils.xml_node('common',
                                         text=self.ui.fgdc_common.text(),
                                          parent_node=taxoncl)
 
-        for child_taxncl in self.child_taxoncl.layout().children:
-            taxoncl.append(child_taxncl._to_xml())
+        for child_taxoncl in self.child_taxoncl:
+            taxoncl.append(child_taxoncl._to_xml())
 
         return taxoncl
 
@@ -147,6 +147,7 @@ class Taxoncl(WizardWidget):  #
                     child_widget = Taxoncl()
                     child_widget._from_xml(child_taxoncl)
                     self.ui.child_taxoncl.layout().addWidget(child_widget)
+                    self.child_taxoncl.append(child_widget)
             else:
                 print ("The tag is not a detailed")
         except KeyError:

@@ -82,7 +82,7 @@ class KeywordsRepeater(WizardWidget):  #
 
         self.keywords.add_another()
 
-        self.ui.keywords_widget.layout().insertWidget(0, self.keywords)
+        self.ui.keywords_layout.insertWidget(0, self.keywords)
 
     def get_keywords(self):
         return [kw.added_line.text() for kw in self.keywords.get_widgets()]
