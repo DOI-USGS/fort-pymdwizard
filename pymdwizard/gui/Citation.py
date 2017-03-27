@@ -64,6 +64,7 @@ class Citation(WizardWidget): #
 
     def __init__(self, parent=None, include_lwork=True):
         self.include_lwork = include_lwork
+        self.schema = 'bdp'
         WizardWidget.__init__(self, parent=parent)
 
     def build_ui(self, ):
@@ -193,8 +194,15 @@ class Citation(WizardWidget): #
         else:
             e.ignore()
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        if schema == 'bdp':
+            self.ui.geoform_groupbox.show()
+        else:
+            self.ui.geoform_groupbox.hide()
 
-         
+        if self.include_lwork:
+            self.lworkcit_widget.switch_schema(self.schema)
                 
     def _to_xml(self):
         """
@@ -215,7 +223,11 @@ class Citation(WizardWidget): #
                                      parent_node=citeinfo)
         title = xml_utils.xml_node("title", self.ui.fgdc_title.text(),
                                    parent_node=citeinfo)
-        # geoform = xml_utils.xml_node("geoform", self.ui.fgdc_geoform.text(), parent=citeinfo)
+
+        if self.schema == 'bdp':
+            geoform = xml_utils.xml_node("geoform",
+                                         self.ui.fgdc_geoform.currentText(),
+                                         parent_node=citeinfo)
 
         if self.ui.radio_seriesyes.isChecked():
             serinfo = xml_utils.xml_node('serinfo', parent_node=citeinfo)

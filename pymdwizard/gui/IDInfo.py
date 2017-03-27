@@ -145,6 +145,7 @@ class IdInfo(WizardWidget):
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
+        self.citation.switch_schema(self.schema)
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
