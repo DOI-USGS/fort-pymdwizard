@@ -173,6 +173,7 @@ class PyMdWizardMainForm(QMainWindow):
         file.close()
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.processEvents()
         exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
@@ -310,29 +311,10 @@ class PyMdWizardMainForm(QMainWindow):
             xpath, error_msg, line_num = error
             widget = self.metadata_root.get_widget(xpath)
             self.error_widgets.append(widget)
+
             if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+                widget.setToolTip(error_msg)
                 widget.setStyleSheet(
-                    # """QGroupBox#{widgetname}
-                    #                 {{    margin: 10px;
-                    #                 border: 2px solid red;
-                    #                 padding: 20px;
-                    #
-                    #                 background-color: rgb(255,76,77);
-                    #                 background-position: top right;
-                    #                 background-origin: content;
-                    #                 background-repeat: none;
-                    #                 opacity: 25;
-                    #                 }}
-                    #                 QLineEdit#{widgetname}
-                    #                 {{background-color: rgb(255,76,77);
-                    #                 opacity: 25;
-                    #                 }}
-                    #
-                    #                     QToolTip {{
-                    #                 background-color: rgb(255,76,77);
-                    #                 border-color: red;
-                    #                 opacity: 255;
-                    #             }}"""
                         """
 QGroupBox#{widgetname}{{
   background-color: rgb(255,76,77);
@@ -363,7 +345,7 @@ opacity: 25;
     opacity: 255;
 }}
                     """.format(widgetname=widget.objectName()))
-                widget.setToolTip(error_msg)
+
 
     def preview(self):
         """

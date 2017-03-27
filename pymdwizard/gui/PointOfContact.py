@@ -64,7 +64,6 @@ class ContactInfoPointOfContact(WizardWidget):
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
 
-
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -104,6 +103,9 @@ class ContactInfoPointOfContact(WizardWidget):
             self.cntinfo.show()
         else:
             self.cntinfo.hide()
+
+    def has_content(self):
+        return self.ui.rbtn_yes.isChecked()
 
     def dragEnterEvent(self, e):
         """
