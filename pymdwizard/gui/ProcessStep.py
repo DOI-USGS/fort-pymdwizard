@@ -128,7 +128,7 @@ class ProcessStep(WizardWidget): #
         procstep.append(procdesc)
 
         procdate = etree.Element('procdate')
-        date_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
+        date_var = self.single_date.findChild(QLineEdit, "fgdc_caldate").text()
         procdate.text = date_var
         procstep.append(procdate)
 
