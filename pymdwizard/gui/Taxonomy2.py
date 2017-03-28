@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Overview frame for SourceInfo element
+Provide a pyqt widget for a Taxonomy <taxonomy> section
 
 
 SCRIPT DEPENDENCIES
@@ -38,30 +38,33 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import sys
 
 from lxml import etree
+import pandas as pd
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
-
-
+from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_sourceinput
-from pymdwizard.gui.SRCInfo import SRCInfo
+from pymdwizard.gui.ui_files import UI_taxonomy2
+from pymdwizard.gui import taxonomy_gui
 from pymdwizard.gui.repeating_element import RepeatingElement
 
+from pymdwizard.gui.taxoncl import Taxoncl
+from pymdwizard.gui.keywtax import Keywordtax
 
-class SourceInput(WizardWidget): #
 
-    drag_label = "Source Information <srcinfo>"
+class Taxonomy(WizardWidget):
+    drag_label = "Taxonomy"
 
     def build_ui(self):
         """
@@ -71,18 +74,17 @@ class SourceInput(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_sourceinput.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_taxonomy2.Ui_Taxonomy()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.src_info = RepeatingElement(which='tab',
-                        tab_label='Source', add_text='Source Input',
-                        widget=SRCInfo, remove_text='Remove Source', italic_text='Source')
+        self.keywtax = Keywordtax()
+        self.ui.kws_layout.addWidget(self.keywtax)
 
-        self.src_info.add_another()
-        self.ui.frame_sourceinfo.layout().addWidget(self.src_info)
+        self.taxoncl = Taxoncl()
+        self.ui.taxoncl_contents.layout().addWidget(self.taxoncl)
 
-        self.ui.frame_sourceinfo.hide()
+        self.include_taxonomy_change(False)
 
     def connect_events(self):
         """
@@ -92,36 +94,48 @@ class SourceInput(WizardWidget): #
         -------
         None
         """
-        self.ui.radio_sourceyes.toggled.connect(self.include_sources_change)
+        self.ui.btn_search.clicked.connect(self.search_itis)
+        self.ui.rbtn_yes.toggled.connect(self.include_taxonomy_change)
 
-    def include_sources_change(self, b):
-        """
-        Extended citation to support a larger body of information for the record.
 
-        Parameters
-        ----------
-        b: qt event
-
-        Returns
-        -------
-        None
-        """
+    def include_taxonomy_change(self, b):
         if b:
-            self.ui.frame_sourceinfo.show()
+            self.ui.widget_contents.show()
         else:
-            self.ui.frame_sourceinfo.hide()
+            self.ui.widget_contents.hide()
+
+    def search_itis(self):
+
+        self.tax_gui = taxonomy_gui.ItisMainForm(xml=self._to_xml(),
+                                                 fgdc_function=self._from_xml)
+        fg = self.frameGeometry()
+        self.tax_gui.move(fg.topRight() - QPoint(150, -25))
+
+
+        self.taxgui_dialog = QDialog(self)
+        self.taxgui_dialog.setWindowTitle('Search Integrated Taxonomic Information System (ITIS)')
+        self.taxgui_dialog.setLayout(self.tax_gui.layout())
+
+        self.taxgui_dialog.exec_()
+
+    def remove_selected(self):
+        indexes = self.ui.table_include.selectionModel().selectedRows()
+        selected_indices = [int(index.row()) for index in list(indexes)]
+        index = self.selected_items_df.index[selected_indices]
+        self.selected_items_df.drop(index, inplace=True)
+        self.ui.table_include.model().layoutChanged.emit()
 
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'accconst'
+        a root tag called 'taxonomy'
+
         Parameters
         ----------
         e : qt event
 
         Returns
         -------
-        None
 
         """
         print("pc drag enter")
@@ -129,68 +143,44 @@ class SourceInput(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'lineage':
+            if element.tag == 'taxonomy':
                 e.accept()
         else:
             e.ignore()
 
+    def has_content(self):
+        """
+        Returns if the widget contains legitimate content that should be
+        written out to xml
 
-         
+        By default this is always true but should be implement in each
+        subclass with logic to check based on contents
+
+        Returns
+        -------
+        bool : True if there is content, False if no
+        """
+        return self.ui.rbtn_yes.isChecked()
+
+    def clear_widget(self):
+        self.keywtax.clear_widget()
+        self.taxoncl.clear_widget()
 
     def _to_xml(self):
-        """
-        encapsulates the text in an element tree representing Sources Input
 
-        Returns
-        -------
-        series of srcinfo element tag in lineage xml tree
-        """
-        lineage = etree.Element('lineage')
-        if self.ui.radio_sourceyes.isChecked():
-            print ("in to xml")
-            cnt = 0
-            srcinfo_list = self.src_info.get_widgets()
-            for srcinfo in srcinfo_list:
-                lineage.append(srcinfo._to_xml())
-            # while cnt < len(list_widgets):
-            #     #lineage.append(list_widgets[cnt]._to_xml())
-            #     lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
-            #     cnt += 1
-        return lineage
-        # elif self.ui.radio_sourceno.isChecked():
-        #     pass
+        taxonomy = xml_utils.xml_node('taxonomy')
+        taxonomy.append(self.keywtax._to_xml())
+        taxonomy.append(self.taxoncl._to_xml())
+        return taxonomy
 
+    def _from_xml(self, taxonomy_element):
+        self.clear_widget()
+        self.ui.rbtn_yes.setChecked(True)
 
-    def _from_xml(self, xml_srcinput):
-        """
-        parses the xml code into the relevant accconst elements
+        self.keywtax._from_xml(taxonomy_element.xpath('keywtax')[0])
 
-        Parameters
-        ----------
-        access_constraints - the xml element status and its contents
-
-        Returns
-        -------
-        None
-        """
-        try:
-            if xml_srcinput.tag == 'lineage':
-                self.src_info.clear_widgets()
-                self.ui.frame_sourceinfo.show()
-                self.ui.radio_sourceyes.setChecked(True)
-                xml_srcinput = xml_srcinput.findall('srcinfo')
-                if xml_srcinput:
-                    for srcinput in xml_srcinput:
-                        srcinfo_widget = self.src_info.add_another()
-                        srcinfo_widget._from_xml(srcinput)
-
-                else:
-                    self.src_info.add_another()
-        except KeyError:
-            pass
-
+        self.taxoncl._from_xml(taxonomy_element.xpath('taxoncl')[0])
 
 if __name__ == "__main__":
-    utils.launch_widget(SourceInput,
-                        "Source Input testing")
+    utils.launch_widget(Taxonomy, "Taxonomy testing")
 

@@ -54,7 +54,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
-from pymdwizard.gui.Taxonomy import Taxonomy
+from pymdwizard.gui.Taxonomy2 import Taxonomy
 from pymdwizard.gui.Keywords import Keywords
 from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
@@ -139,12 +139,16 @@ class IdInfo(WizardWidget):
         else:
             e.ignore()
 
+    def children(self):
+        return super(IdInfo, self).children() + [self.root_widget.spatial_tab.spdom]
+
     def switch_schema(self, schema):
         self.schema = schema
         if schema == 'bdp':
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
+        self.citation.switch_schema(self.schema)
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
@@ -170,7 +174,7 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        if self.schema == 'bdp' and self.taxonomy.ui.rbtn_yes.isChecked():
+        if self.schema == 'bdp' and self.taxonomy.has_content():
             taxonomy = self.taxonomy._to_xml()
             idinfo_node.append(taxonomy)
 
@@ -180,8 +184,8 @@ class IdInfo(WizardWidget):
         useconst_node = self.useconst._to_xml()
         idinfo_node.append(useconst_node)
 
-        ptcontac = self.ptcontac._to_xml()
-        if ptcontac is not None:
+        if self.ptcontac.has_content():
+            ptcontac = self.ptcontac._to_xml()
             idinfo_node.append(ptcontac)
 
         datacredit_node = self.datacredit._to_xml()

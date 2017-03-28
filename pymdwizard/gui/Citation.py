@@ -64,6 +64,7 @@ class Citation(WizardWidget): #
 
     def __init__(self, parent=None, include_lwork=True):
         self.include_lwork = include_lwork
+        self.schema = 'bdp'
         WizardWidget.__init__(self, parent=parent)
 
     def build_ui(self, ):
@@ -79,7 +80,6 @@ class Citation(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citation(parent=self, include_lwork=False)
-            # self.lworkcit_widget.ui.fgdc_lworkcit.hide()
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
@@ -92,13 +92,15 @@ class Citation(WizardWidget): #
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
                                             remove_text='Remove last',
-                                            widget_kwargs={'label': 'Link'})
+                                            widget_kwargs={'label': 'Link',
+                                                           'line_name':'fgdc_onlink'})
         self.onlink_list.add_another()
         self.ui.onlink_layout.addWidget(self.onlink_list)
 
         self.fgdc_origin = RepeatingElement(add_text='Add originator',
                                             remove_text='Remove last',
-                                            widget_kwargs={'label': 'Originator'})
+                                            widget_kwargs={'label': 'Originator',
+                                                           'line_name':'fgdc_origin'})
         self.fgdc_origin.add_another()
         self.ui.originator_layout.addWidget(self.fgdc_origin)
 
@@ -193,8 +195,15 @@ class Citation(WizardWidget): #
         else:
             e.ignore()
 
+    def switch_schema(self, schema):
+        self.schema = schema
+        if schema == 'bdp':
+            self.ui.geoform_groupbox.show()
+        else:
+            self.ui.geoform_groupbox.hide()
 
-         
+        if self.include_lwork:
+            self.lworkcit_widget.switch_schema(self.schema)
                 
     def _to_xml(self):
         """
@@ -215,7 +224,11 @@ class Citation(WizardWidget): #
                                      parent_node=citeinfo)
         title = xml_utils.xml_node("title", self.ui.fgdc_title.text(),
                                    parent_node=citeinfo)
-        # geoform = xml_utils.xml_node("geoform", self.ui.fgdc_geoform.text(), parent=citeinfo)
+
+        if self.schema == 'bdp':
+            geoform = xml_utils.xml_node("geoform",
+                                         self.ui.fgdc_geoform.currentText(),
+                                         parent_node=citeinfo)
 
         if self.ui.radio_seriesyes.isChecked():
             serinfo = xml_utils.xml_node('serinfo', parent_node=citeinfo)
@@ -270,7 +283,7 @@ class Citation(WizardWidget): #
             else:
                 self.fgdc_origin.add_another()
 
-            utils.populate_widget_element(self.ui.pubdate_widget.ui.lineEdit,
+            utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
             utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
 
@@ -288,9 +301,11 @@ class Citation(WizardWidget): #
             else:
                 self.ui.radio_seriesyes.setChecked(False)
 
-            if citeinfo.xpath('pubinfo'):
+            pubinfo = citeinfo.xpath('pubinfo')
+            if pubinfo:
                 self.ui.radio_pubinfoyes.setChecked(True)
-                utils.populate_widget(self.ui.fgdc_publish, citeinfo.xpath('publish')[0])
+                utils.populate_widget(self.ui.fgdc_publish, pubinfo.xpath('publish')[0])
+                utils.populate_widget(self.ui.fgdc_pubplace, pubinfo.xpath('pubplace')[0])
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
 

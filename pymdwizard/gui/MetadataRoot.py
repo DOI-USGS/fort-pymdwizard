@@ -62,6 +62,7 @@ from pymdwizard.gui.spatial_tab import SpatialTab
 from pymdwizard.gui.EA import EA
 from pymdwizard.gui.DataQuality import DataQuality
 from pymdwizard.gui.metainfo import MetaInfo
+from pymdwizard.gui.distinfo import DistInfo
 
 
 class MetadataRoot(WizardWidget):
@@ -101,6 +102,9 @@ class MetadataRoot(WizardWidget):
         self.metainfo = MetaInfo(root_widget=self)
         self.ui.page_metainfo.layout().addWidget(self.metainfo)
 
+        self.distinfo = DistInfo(root_widget=self)
+        self.ui.page_distinfo.layout().addWidget(self.distinfo)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -110,7 +114,6 @@ class MetadataRoot(WizardWidget):
         None
         """
         self.ui.idinfo_button.pressed.connect(self.section_changed)
-
         self.ui.dataquality_button.pressed.connect(self.section_changed)
         self.ui.spatial_button.pressed.connect(self.section_changed)
         self.ui.eainfo_button.pressed.connect(self.section_changed)
@@ -151,16 +154,20 @@ class MetadataRoot(WizardWidget):
         dataqual = self.dataqual._to_xml()
         metadata_node.append(dataqual)
 
-        if self.spatial_tab.spdoinfo.ui.rbtn_yes.isChecked():
+        if self.spatial_tab.spdoinfo.has_content():
             spdoinfo = self.spatial_tab.spdoinfo._to_xml()
             metadata_node.append(spdoinfo)
 
-        spref = self.spatial_tab.spref._to_xml()
-        metadata_node.append(spref)
+        if self.spatial_tab.spref.has_content():
+            spref = self.spatial_tab.spref._to_xml()
+            metadata_node.append(spref)
 
         if self.eainfo.has_content():
             eainfo = self.eainfo._to_xml()
             metadata_node.append(eainfo)
+
+        distinfo = self.distinfo._to_xml()
+        metadata_node.append(distinfo)
 
         metainfo = self.metainfo._to_xml()
         metadata_node.append(metainfo)
@@ -181,16 +188,26 @@ class MetadataRoot(WizardWidget):
         spdoinfo = metadata_element.xpath('spdoinfo')
         if spdoinfo:
             self.spatial_tab.spdoinfo._from_xml(spdoinfo[0])
+        else:
+            self.spatial_tab.spdoinfo.ui.rbtn_yes.setChecked(False)
+            self.spatial_tab.spdoinfo.ui.rbtn_no.setChecked(True)
 
         spref = metadata_element.xpath('spref')
         if spref:
             self.spatial_tab.spref._from_xml(spref[0])
+        else:
+            self.spatial_tab.spref.ui.rbtn_yes.setChecked(False)
+            self.spatial_tab.spref.ui.rbtn_no.setChecked(True)
 
         eainfo = metadata_element.xpath('eainfo')
         if eainfo:
             self.eainfo._from_xml(eainfo[0])
         else:
             self.eainfo.clear_widget()
+
+        distinfo = metadata_element.xpath('distinfo')
+        if distinfo:
+            self.distinfo._from_xml(distinfo[0])
 
         self.metainfo._from_xml(metadata_element.xpath('metainfo')[0])
 

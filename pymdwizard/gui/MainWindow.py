@@ -47,7 +47,7 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBox, QAction
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog, QDialog
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
 from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings
 from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
@@ -58,6 +58,8 @@ from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils, utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.core import spatial_utils
+
+import sip
 
 class PyMdWizardMainForm(QMainWindow):
 
@@ -144,6 +146,8 @@ class PyMdWizardMainForm(QMainWindow):
 
         fname = QFileDialog.getOpenFileName(self, fname, dname, \
                                             filter="XML Files (*.xml)")
+
+
         if fname[0]:
             self.load_file(fname[0])
             self.update_recent_file_actions()
@@ -169,6 +173,7 @@ class PyMdWizardMainForm(QMainWindow):
         file.close()
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.processEvents()
         exc_info = sys.exc_info()
         try:
             new_record = etree.parse(fname)
@@ -280,7 +285,9 @@ class PyMdWizardMainForm(QMainWindow):
             annotation_lookup = json.loads(data_file.read())
 
         for widget in self.error_widgets:
-            if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+
+            if not sip.isdeleted(widget) and \
+                    widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
                 widget.setStyleSheet("""""")
                 shortname = widget.objectName().replace('fgdc_', '')
                 if shortname[-1].isdigit():
@@ -304,29 +311,10 @@ class PyMdWizardMainForm(QMainWindow):
             xpath, error_msg, line_num = error
             widget = self.metadata_root.get_widget(xpath)
             self.error_widgets.append(widget)
+
             if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+                widget.setToolTip(error_msg)
                 widget.setStyleSheet(
-                    # """QGroupBox#{widgetname}
-                    #                 {{    margin: 10px;
-                    #                 border: 2px solid red;
-                    #                 padding: 20px;
-                    #
-                    #                 background-color: rgb(255,76,77);
-                    #                 background-position: top right;
-                    #                 background-origin: content;
-                    #                 background-repeat: none;
-                    #                 opacity: 25;
-                    #                 }}
-                    #                 QLineEdit#{widgetname}
-                    #                 {{background-color: rgb(255,76,77);
-                    #                 opacity: 25;
-                    #                 }}
-                    #
-                    #                     QToolTip {{
-                    #                 background-color: rgb(255,76,77);
-                    #                 border-color: red;
-                    #                 opacity: 255;
-                    #             }}"""
                         """
 QGroupBox#{widgetname}{{
   background-color: rgb(255,76,77);
@@ -357,7 +345,7 @@ opacity: 25;
     opacity: 255;
 }}
                     """.format(widgetname=widget.objectName()))
-                widget.setToolTip(error_msg)
+
 
     def preview(self):
         """
@@ -376,16 +364,13 @@ opacity: 25;
         tmp.close()
         result.write(tmp.name)
 
-        self.preview = Preview(url=tmp.name, parent=self)
-        self.preview.show()
+        self.preview = Preview(url=tmp.name)
 
-    # def harvest(self):
-    #     fname = r"N:\Metadata\MetadataWizard\pymdwizard\tests\data\projections\World_Azimuthal_Equidistant.shp"
-    #     layer = spatial_utils.get_layer(fname)
-    #     params = spatial_utils.get_params(layer)
-    #     geo = spatial_utils.geographic(params)
-    #
-    #     self.metadata_root.spref._from_xml(geo)
+        self.preview_dialog = QDialog(self)
+        self.preview_dialog.setWindowTitle('Metadata Preview')
+        self.preview_dialog.setLayout(self.preview.layout())
+
+        self.preview_dialog.exec_()
 
 def main():
     app = QApplication(sys.argv)
@@ -423,9 +408,8 @@ def main():
 
     painter.setPen(QColor(150, 150, 150, 200))
     painter.drawText(splash_pix.rect().adjusted(20, -20, -20, -20), Qt.AlignBottom,
-                     "putting the fun in fundamental science practices")
+                     "version 0.0.0 pre-pre Alpha")
     painter.end()
-
 
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.show()

@@ -82,7 +82,6 @@ class SpRef(WizardWidget):
 
         self.ui.fgdc_mapprojn.addItems(spatial_utils.PROJECTION_LOOKUP.keys())
 
-
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -97,17 +96,14 @@ class SpRef(WizardWidget):
 
         self.ui.fgdc_mapprojn.currentIndexChanged.connect(self.load_projection)
 
-        # self.ui.dataquality_button.pressed.connect(self.section_changed)
-        # self.ui.spatial_button.pressed.connect(self.section_changed)
-        # self.ui.eainfo_button.pressed.connect(self.section_changed)
-        # self.ui.distinfo_button.pressed.connect(self.section_changed)
-        # self.ui.metainfo_button.pressed.connect(self.section_changed)
-
     def spref_used_change(self, b):
         if b:
             self.ui.horiz_layout.show()
         else:
             self.ui.horiz_layout.hide()
+
+    def has_content(self):
+        return self.ui.rbtn_yes.isChecked()
 
     def system_def_changed(self):
 

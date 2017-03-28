@@ -149,38 +149,16 @@ class SpatialTab(WizardWidget):
         self.spdom.switch_schema(schema)
 
     def _to_xml(self):
+        # since this tab is composed of content from three disparate sections
+        # the to and from xml functions are being handled
+        # by the parent widget (MetadataRoot)
         pass
 
     def _from_xml(self, xml_idinfo):
-        try:
-            ptcontac = xml_idinfo.xpath('ptcontac')[0]
-            self.ptcontac._from_xml(ptcontac)
-        except IndexError:
-            pass
-
-        try:
-            keywords = xml_idinfo.xpath('keywords')[0]
-            self.keywords._from_xml(keywords)
-        except IndexError:
-            pass
-
-        try:
-            citation = xml_idinfo.xpath('citation')[0]
-            self.citation._from_xml(citation)
-        except IndexError:
-            pass
-
-        try:
-            timeperd = xml_idinfo.xpath('timeperd')[0]
-            self.timeperd._from_xml(timeperd)
-        except IndexError:
-            pass
-
-        try:
-            descript = xml_idinfo.xpath('descript')[0]
-            self.descript._from_xml(descript)
-        except IndexError:
-            pass
+        # since this tab is composed of content from three disparate sections
+        # the to and from xml functions are being handled
+        # by the parent widget (MetadataRoot)
+        pass
 
 if __name__ == "__main__":
     utils.launch_widget(SpatialTab, "IdInfo testing")

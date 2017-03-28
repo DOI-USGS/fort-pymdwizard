@@ -47,13 +47,12 @@ from pymdwizard.core import xml_utils
 from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_detailed
-from pymdwizard.gui import attributes
+from pymdwizard.gui.ui_files import UI_taxoncl
 
 
-class Detailed(WizardWidget):  #
+class Taxoncl(WizardWidget):  #
 
-    drag_label = "Detailed Description <detailed>"
+    drag_label = "taxon class <taxoncl>"
 
     def build_ui(self):
         """
@@ -62,61 +61,12 @@ class Detailed(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_detailed.Ui_Form()
+        self.ui = UI_taxoncl.Ui_fgdc_taxoncl()
         self.ui.setupUi(self)
 
-        self.attributes = attributes.Attributes()
-        self.ui.attribute_frame.layout().addWidget(self.attributes)
+        self.child_taxoncl = []
 
         self.setup_dragdrop(self)
-
-        self.ui.btn_browse.clicked.connect(self.browse)
-
-    def browse(self):
-        settings = QSettings('USGS', 'pymdwizard')
-        last_data_fname = settings.value('lastDataFname', '')
-        if last_data_fname:
-            dname, fname = os.path.split(last_data_fname)
-        else:
-            fname, dname = "", ""
-
-        fname = QFileDialog.getOpenFileName(self, fname, dname,
-                                            filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
-        if fname[0]:
-            settings.setValue('lastDataFname', fname[0])
-            self.populate_from_fname(fname[0])
-
-    def populate_from_fname(self, fname):
-        shortname = os.path.split(fname)[1]
-
-        ext = os.path.splitext(shortname)[1]
-        if ext.lower() == '.csv':
-            self.ui.fgdc_enttypl.setText(shortname)
-            self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
-
-            df = data_io.read_data(fname)
-            self.attributes.load_df(df)
-        elif ext.lower() == '.shp':
-            self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
-            self.ui.fgdc_enttypd.setPlainText('Table containing attribute information associated with the data set.')
-
-            df = data_io.read_data(fname)
-            self.attributes.load_df(df)
-        elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
-            sheets = data_io.get_sheet_names(fname)
-
-            sheet_name, ok = QInputDialog.getItem(self, "select sheet dialog",
-                                "Pick one of the sheets from this workbook",
-                                                  sheets, 0, False)
-            if ok and sheet_name:
-                self.ui.fgdc_enttypl.setText('{} ({})'.format(shortname, sheet_name))
-                self.ui.fgdc_enttypd.setPlainText('Excel Worksheet')
-
-                df = data_io.read_excel(fname, sheet_name)
-                self.attributes.load_df(df)
-        else:
-            msg = "Can only read '.csv', '.shp', and Excel files here"
-            QMessageBox.warning(self, "Unsupported file format", msg)
 
     def dragEnterEvent(self, e):
         """
@@ -132,42 +82,25 @@ class Detailed(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'detailed':
+            if element.tag == 'taxoncl':
                 e.accept()
         else:
             e.ignore()
 
     def clear_widget(self):
         """
-        Clears all content from this widget
+        Clears all content from this widget<taxoncl><taxonrn>Kingdom</taxonrn><taxonrv>Animalia</taxonrv><common>animals</common><taxoncl><taxonrn>Subkingdom</taxonrn><taxonrv>Bilateria</taxonrv><taxoncl><taxonrn>Infrakingdom</taxonrn><taxonrv>Deuterostomia</taxonrv><taxoncl><taxonrn>Phylum</taxonrn><taxonrv>Chordata</taxonrv><common>chordates</common><taxoncl><taxonrn>Subphylum</taxonrn><taxonrv>Vertebrata</taxonrv><common>vertebrates</common><taxoncl><taxonrn>Infraphylum</taxonrn><taxonrv>Gnathostomata</taxonrv><taxoncl><taxonrn>Superclass</taxonrn><taxonrv>Tetrapoda</taxonrv><taxoncl><taxonrn>Class</taxonrn><taxonrv>Aves</taxonrv><common>Birds</common><taxoncl><taxonrn>Order</taxonrn><taxonrv>Passeriformes</taxonrv><common>Perching Birds</common><taxoncl><taxonrn>Family</taxonrn><taxonrv>Emberizidae</taxonrv><common>Emberizid Finches</common><common>American Sparrows</common><common>Towhees</common><common>Buntings</common><common>New World Sparrows</common><taxoncl><taxonrn>Genus</taxonrn><taxonrv>Ammodramus</taxonrv><common>Grassland Sparrows</common><taxoncl><taxonrn>Species</taxonrn><taxonrv>Ammodramus savannarum</taxonrv><common>Grasshopper Sparrow</common><taxoncl><taxonrn>Subspecies</taxonrn><taxonrv>Ammodramus savannarum ammolegus</taxonrv><common>TSN: 179337</common></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl>
 
         Returns
         -------
         None
         """
-        self.ui.fgdc_enttypl.setText('')
-        self.ui.fgdc_enttypd.setPlainText('')
-        self.attributes.clear_children()
+        self.ui.fgdc_taxonrn.clear()
+        self.ui.fgdc_taxonrv.clear()
+        self.ui.fgdc_common.clear()
 
-    def has_content(self):
-        """
-        Checks for valid content in this widget
+        self.child_taxoncl = []
 
-        Returns
-        -------
-        Boolean
-        """
-        has_content = False
-
-        if self.ui.fgdc_enttypl.text():
-            has_content = True
-        if self.ui.fgdc_enttypd.toPlainText():
-            has_content = True
-
-        if len(self.attributes.attrs) > 0:
-            has_content = True
-
-        return has_content
 
     def _to_xml(self):
         """
@@ -176,18 +109,22 @@ class Detailed(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        detailed = xml_utils.xml_node('detailed')
-        enttyp = xml_utils.xml_node('enttyp', parent_node=detailed)
-        enttypl = xml_utils.xml_node('enttypl', text=self.ui.fgdc_enttypl.text(), parent_node=enttyp)
-        enttypd = xml_utils.xml_node('enttypd', text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp)
-        enttypds = xml_utils.xml_node('enttypds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
+        taxoncl = xml_utils.xml_node('taxoncl')
+        taxonrn = xml_utils.xml_node('taxonrn', text=self.ui.fgdc_taxonrn.text(),
+                                    parent_node=taxoncl)
+        taxonrv = xml_utils.xml_node('taxonrv', text=self.ui.fgdc_taxonrv.text(),
+                                     parent_node=taxoncl)
+        if self.ui.fgdc_common.text():
+            common = xml_utils.xml_node('common',
+                                        text=self.ui.fgdc_common.text(),
+                                         parent_node=taxoncl)
 
-        attr = self.attributes._to_xml()
-        for a in attr.xpath('attr'):
-            detailed.append(a)
-        return detailed
+        for child_taxoncl in self.child_taxoncl:
+            taxoncl.append(child_taxoncl._to_xml())
 
-    def _from_xml(self, detailed):
+        return taxoncl
+
+    def _from_xml(self, taxoncl):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -198,9 +135,19 @@ class Detailed(WizardWidget):  #
         None
         """
         try:
-            if detailed.tag == 'detailed':
-                utils.populate_widget(self, detailed)
-                self.attributes._from_xml(detailed)
+            if taxoncl.tag == 'taxoncl':
+                self.ui.fgdc_taxonrn.setText(taxoncl.xpath('taxonrn')[0].text)
+                self.ui.fgdc_taxonrv.setText(taxoncl.xpath('taxonrv')[0].text)
+
+                if taxoncl.xpath('common'):
+                    self.ui.fgdc_common.setText(taxoncl.xpath('common')[0].text)
+
+                children_taxoncl = taxoncl.xpath('taxoncl')
+                for child_taxoncl in children_taxoncl:
+                    child_widget = Taxoncl()
+                    child_widget._from_xml(child_taxoncl)
+                    self.ui.child_taxoncl.layout().addWidget(child_widget)
+                    self.child_taxoncl.append(child_widget)
             else:
                 print ("The tag is not a detailed")
         except KeyError:
@@ -208,5 +155,5 @@ class Detailed(WizardWidget):  #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Detailed,
+    utils.launch_widget(Taxoncl,
                         "detailed testing")

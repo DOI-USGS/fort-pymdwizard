@@ -58,11 +58,12 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 
 class DefaultWidget(QWidget):
 
-    def __init__(self, label='', parent=None):
+    def __init__(self, label='', line_name='na', parent=None):
         QWidget.__init__(self)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
         self.added_line = QLineEdit()
+        self.added_line.setObjectName(line_name)
         self.layout.addWidget(self.qlbl)
         self.layout.addWidget(self.added_line)
         self.layout.setContentsMargins(1, 1, 1, 1)

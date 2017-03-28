@@ -188,47 +188,7 @@ class SRCInfo(WizardWidget): #
                 print("The tag is not 'srcinfo'")
                 return
 
-
-            utils.populate_widget_element(self.citation.ui.fgdc_title, citeinfo, 'title')
-
-            utils.populate_widget_element(self.citation.ui.fgdc_pubdate.ui.lineEdit,
-                                          citeinfo, 'pubdate')
-
-            self.citation.fgdc_origin.clear_widgets()
-            if citeinfo.findall("origin"):
-                for origin in citeinfo.findall('origin'):
-                    origin_widget = self.citation.fgdc_origin.add_another()
-                    origin_widget.added_line.setText(origin.text)
-            else:
-                self.citation.fgdc_origin.add_another()
-
-            self.citation.onlink_list.clear_widgets()
-            if citeinfo.findall("onlink"):
-                for onlink in citeinfo.findall('onlink'):
-                    onlink_widget = self.citation.onlink_list.add_another()
-                    onlink_widget.added_line.setText(onlink.text)
-            else:
-                self.citation.onlink_list.add_another()
-
-            if citeinfo.xpath('serinfo'):
-                self.citation.ui.radio_seriesyes.setChecked(True)
-                sername = srcinfo.xpath('srccite/citeinfo/serinfo/sername')[0].text
-                self.citation.ui.fgdc_sername.setText(str(sername))
-                issue = srcinfo.xpath('srccite/citeinfo/serinfo/issue')[0].text
-                self.citation.ui.fgdc_issue.setText(str(issue))
-            else:
-                self.citation.ui.radio_seriesyes.setChecked(False)
-
-            if citeinfo.xpath('pubinfo'):
-                self.citation.ui.radio_pubinfoyes.setChecked(True)
-                pubplace = srcinfo.xpath('srccite/citeinfo/pubinfo/pubplace')[0].text
-                self.citation.ui.fgdc_pubplace.setText(str(pubplace))
-                publish = srcinfo.xpath('srccite/citeinfo/pubinfo/publish')[0].text
-                self.citation.ui.fgdc_publish.setText(str(publish))
-            else:
-                self.citation.ui.radio_pubinfoyes.setChecked(False)
-
-
+            self.citation._from_xml(citeinfo)
 
             utils.populate_widget_element(self.ui.fgdc_srcscale, srcinfo, 'srcscale')
 

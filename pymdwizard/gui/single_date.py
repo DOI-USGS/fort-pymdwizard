@@ -82,7 +82,7 @@ class SingleDate(QWidget):
         -------
         None
         """
-        self.ui = UI_single_date.Ui_Form()
+        self.ui = UI_single_date.Ui_fgdc_sngdate()
         self.ui.setupUi(self)
 
     def connect_events(self):
@@ -93,8 +93,8 @@ class SingleDate(QWidget):
         -------
         None
         """
-        self.ui.lineEdit.editingFinished.connect(self.check_format)
-        self.ui.lineEdit.textChanged.connect(self.changed_text)
+        self.ui.fgdc_caldate.editingFinished.connect(self.check_format)
+        self.ui.fgdc_caldate.textChanged.connect(self.changed_text)
 
     def changed_text(self):
         self.changed = True
@@ -103,7 +103,7 @@ class SingleDate(QWidget):
         if not self.changed:
             return None
 
-        cur_contents = self.ui.lineEdit.text()
+        cur_contents = self.ui.fgdc_caldate.text()
 
         msg = ""
         if len(cur_contents) not in (4, 6, 8):
@@ -123,10 +123,10 @@ class SingleDate(QWidget):
         self.changed = False
 
     def get_date(self):
-        return self.ui.lineEdit.text()
+        return self.ui.fgdc_caldate.text()
 
     def set_date(self, date_str):
-        self.ui.lineEdit.setText(date_str)
+        self.ui.fgdc_caldate.setText(date_str)
 
 if __name__ == "__main__":
     utils.launch_widget(SingleDate, label='testing', show_format=False)

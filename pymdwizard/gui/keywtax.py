@@ -44,24 +44,69 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_rdom
+from pymdwizard.gui.keywords_repeater import KeywordsRepeater
+
+class Keywordtax(KeywordsRepeater):  #
+
+    drag_label = "Taxonomic keywords <keywtax>"
+
+    def __init__(self, parent=None):
+        KeywordsRepeater.__init__(self, keywords_label='Taxonomic keywords',
+                                  parent=parent)
+
+    # def build_ui(self):
+    #     """
+    #     Build and modify this widget's GUI
+    #     Returns
+    #     -------
+    #     None
+    #     """
+    #     self.
+    #
+    #     self.repeater = KeywordsRepeater(keywords_label='Taxonomic keywords')
+    #
+    #     self.ui = self.repeater.ui
+    #     self.repeater.add_another()
+    #     self.setup_dragdrop(self)
 
 
-class Rdom(WizardWidget):  #
-
-    drag_label = "Range Domain <rdom>"
-
-    def build_ui(self):
-        """
-        Build and modify this widget's GUI
-        Returns
-        -------
-        None
-        """
-        self.ui = UI_rdom.Ui_fgdc_rdom() # .Ui_USGSContactInfoWidgetMain()
-        self.ui.setupUi(self)
-        self.setup_dragdrop(self)
-
+    # def connect_events(self):
+    #     """
+    #     Connect the appropriate GUI components with the corresponding functions
+    #     Returns
+    #     -------
+    #     None
+    #     """
+    #     self.ui.radio_single.toggled.connect(self.switch_primary)
+    #     self.ui.radio_range.toggled.connect(self.switch_primary)
+    #     self.ui.radio_multiple.toggled.connect(self.switch_primary)
+    #
+    # def switch_primary(self):
+    #     """
+    #     Switches form to reflect either organization or person primary
+    #     Returns
+    #     -------
+    #     None
+    #     """
+    #     if self.ui.radio_single.isChecked():
+    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
+    #         self.ui.page_singledate.show()
+    #         self.ui.page_daterange.hide()
+    #         self.ui.page_multipledates.hide()
+    #         self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
+    #     elif self.ui.radio_range.isChecked():
+    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
+    #         self.ui.page_singledate.hide()
+    #         self.ui.page_daterange.show()
+    #         self.ui.page_multipledates.hide()
+    #         self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
+    #     elif self.ui.radio_multiple.isChecked():
+    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
+    #         self.ui.page_singledate.hide()
+    #         self.ui.page_daterange.hide()
+    #         self.ui.page_multipledates.layout().addWidget(self.multi_dates)
+    #         self.ui.page_multipledates.show()
+    #
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
@@ -76,10 +121,14 @@ class Rdom(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'rdom':
+            if element.tag == 'keywtax':
                 e.accept()
         else:
             e.ignore()
+
+    def clear_widget(self):
+        self.ui.thesaurus_edit.clear()
+        self.keywords.clear_widgets()
 
     def _to_xml(self):
         """
@@ -88,19 +137,17 @@ class Rdom(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        rdom = xml_utils.xml_node('rdom')
-        rdommin = xml_utils.xml_node('rdommin', text=self.ui.fgdc_rdommin.text(), parent_node=rdom)
-        rdommax = xml_utils.xml_node('rdommax', text=self.ui.fgdc_rdommax.text(), parent_node=rdom)
-        attrunit= xml_utils.xml_node('attrunit', text=self.ui.fgdc_attrunit.text(), parent_node=rdom)
+        keywtax = xml_utils.xml_node('keywtax')
+        taxonkt = xml_utils.xml_node("taxonkt",
+                                     text=self.ui.thesaurus_edit.text(),
+                                     parent_node=keywtax)
+        for keyword in self.get_keywords():
+            taxonkey = xml_utils.xml_node('taxonkey', text=keyword,
+                                          parent_node=keywtax)
 
-        if self.ui.fgdc_attrmres.text():
-            attrmres= xml_utils.xml_node('attrmres',
-                                         text=self.ui.fgdc_attrmres.text(),
-                                         parent_node=rdom)
+        return keywtax
 
-        return rdom
-
-    def _from_xml(self, rdom):
+    def _from_xml(self, keywtax):
         """
         parses the xml code into the relevant timeperd elements
         Parameters
@@ -111,14 +158,22 @@ class Rdom(WizardWidget):  #
         None
         """
         try:
-            if rdom.tag == 'rdom':
-                utils.populate_widget(self, rdom)
+            if keywtax.tag == 'keywtax':
+                thesaurus = keywtax.xpath('taxonkt')
+                if thesaurus:
+                    self.ui.thesaurus_edit.setText(thesaurus[0].text)
+
+                keywords = keywtax.xpath('taxonkey')
+                for kw in keywords:
+                    kw_widget = self.add_another()
+                    kw_widget.added_line.setText(kw.text)
+
             else:
-                print ("The tag is not rdom")
+                print ("The tag is not keywtax")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Rdom,
-                        "udom testing")
+    utils.launch_widget(Keywordtax,
+                        " testing")
