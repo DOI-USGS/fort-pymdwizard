@@ -46,10 +46,10 @@ import sys
 from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComboBox, QToolButton, QCheckBox, QSpacerItem, QLabel, QGroupBox, QFrame
-from PyQt5.QtWidgets import QTableView, QPlainTextEdit
+from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QLabel
+from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
-from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
+from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter, QIcon
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 from pymdwizard.core import utils
@@ -242,6 +242,18 @@ class WizardWidget(QWidget):
                           QByteArray(pretty_xml.encode()))
         return mime_data
 
+    def copy_mime(self):
+        clipboard = QApplication.clipboard()
+        clipboard.setMimeData(self.get_mime())
+
+    def paste_mime(self):
+        clipboard = QApplication.clipboard()
+        mime_data = clipboard.mimeData()
+        if mime_data.hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            self._from_xml(element)
+
     def mouseMoveEvent(self, e):
         """
         Handles the snippet capture and drag drop initialization
@@ -390,15 +402,19 @@ class WizardWidget(QWidget):
 
             menu = QMenu(self)
             clear_action = menu.addAction("clear")
-            copy_action = menu.addAction("copy")
-            paste_action = menu.addAction("paste")
+            copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
+            copy_action.setStatusTip('Copy to the Clipboard')
+
+            paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
+            paste_action.setStatusTip('Paste from the Clipboard')
+            menu.addSeparator()
             help_action = menu.addAction("help")
             action = menu.exec_(self.mapToGlobal(event.pos()))
 
             if action == copy_action:
-                pass
+                self.copy_mime()
             elif action == paste_action:
-                pass
+                self.paste_mime()
             elif action == clear_action:
                 self.clear_widget()
             elif action == help_action:
@@ -447,6 +463,22 @@ color: rgb(50, 50, 50);
 
 """)
 
+    # def keyPressEvent(self, event):
+    #
+    #     if (event.modifiers() & Qt.ControlModifier):
+    #         if event.key() == Qt.Key_C:
+    #             self.copy_mime()
+    #         elif event.key() == Qt.Key_V:
+    #             self.paste_mime()
+    #         elif event.key() == Qt.Key_X:
+    #             self.copy_mime()
+    #             self.clear_widget()
+    #
+    #
+    #         ctrl = True
+    #
+    #     return super(WizardWidget, self).keyPressEvent(event)
+
     def eventFilter(self, obj, event):
         """
 
@@ -469,7 +501,6 @@ color: rgb(50, 50, 50);
             self.mouseMoveEvent(event)
         elif event.type() == event.MouseButtonRelease:
             self.mouseMoveEvent(event)
-
         # regardless, just do the default
         elif event.type() == QEvent.ToolTip:
             pass
