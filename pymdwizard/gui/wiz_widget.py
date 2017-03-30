@@ -49,7 +49,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QPushButton, QComboBox, QToolButton, QCheckBox, QSpacerItem, QLabel, QGroupBox, QFrame
 from PyQt5.QtWidgets import QTableView
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
-from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter
+from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter, QGuiApplication
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 from pymdwizard.core import utils
@@ -118,7 +118,7 @@ class WizardWidget(QWidget):
         # Any child widgets that have a separate drag-drop interactivity
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
-
+        QGuiApplication.instance().installEventFilter(self)
 
     def connect_events(self):
         """
@@ -382,5 +382,10 @@ color: rgb(50, 50, 50);
         # regardless, just do the default
         elif event.type() == QEvent.ToolTip:
             pass
+        elif event.type() == QEvent.Wheel and isinstance(obj, QComboBox):
+            event.ignore()
+            return True
+        else:
+            return False
         return super(WizardWidget, self).eventFilter(obj, event)
 
