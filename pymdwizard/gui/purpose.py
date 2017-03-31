@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a SupplInf <supplinf> section
+Provide a pyqt widget for a Purpose <purpose> section
 
 
 SCRIPT DEPENDENCIES
@@ -54,12 +54,12 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_supplinf #
+from pymdwizard.gui.ui_files import UI_purpose
 
 
-class SupplInf(WizardWidget): #
+class Purpose(WizardWidget):
 
-    drag_label = "SupplInf <supplinf>"
+    drag_label = "Purpose <purpose>"
 
 
     def build_ui(self):
@@ -70,7 +70,7 @@ class SupplInf(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_supplinf.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_purpose.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -79,7 +79,7 @@ class SupplInf(WizardWidget): #
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'supplinf'
+        a root tag called 'purpose'
         Parameters
         ----------
         e : qt event
@@ -94,7 +94,7 @@ class SupplInf(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'supplinf':
+            if element.tag == 'purpose':
                 e.accept()
         else:
             e.ignore()
@@ -105,18 +105,18 @@ class SupplInf(WizardWidget): #
 
         Returns
         -------
-        supplinf element tag in xml tree
+        purpose element tag in xml tree
         """
 
-        supplinf = xml_utils.xml_node('supplinf',
-                                     text=self.ui.fgdc_supplinf.toPlainText())
+        purpose = xml_utils.xml_node('purpose',
+                                     text=self.ui.fgdc_purpose.toPlainText())
 
-        return supplinf
+        return purpose
 
 
-    def _from_xml(self, supplinf):
+    def _from_xml(self, purpose):
         """
-        parses the xml code into the relevant supplinf elements
+        parses the xml code into the relevant purpose elements
 
         Parameters
         ----------
@@ -127,21 +127,21 @@ class SupplInf(WizardWidget): #
         None
         """
         try:
-            if supplinf.tag == 'supplinf':
+            if purpose.tag == 'purpose':
                 try:
 
-                    supplinf_text = supplinf.text
-                    supplinf_box = self.findChild(QPlainTextEdit, "fgdc_supplinf")
-                    supplinf_box.setPlainText(supplinf.text)
+                    purpose_text = purpose.text
+                    purpose_box = self.findChild(QPlainTextEdit, "fgdc_purpose")
+                    purpose_box.setPlainText(purpose_text)
                 except:
                     pass
             else:
-               print ("The tag is not supplinf")
+               print ("The tag is not purpose")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SupplInf,
-                        "SupplInf testing")
+    utils.launch_widget(Purpose,
+                        "Purpose testing")
 

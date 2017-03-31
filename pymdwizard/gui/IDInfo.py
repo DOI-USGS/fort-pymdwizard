@@ -62,7 +62,10 @@ from pymdwizard.gui.Status import Status
 from pymdwizard.gui.timeperd import Timeperd
 from pymdwizard.gui.Citation import Citation
 from pymdwizard.gui.DataCredit import DataCredit
-from pymdwizard.gui.Descriptor import Descriptor
+#from pymdwizard.gui.Descriptor import Descriptor
+from pymdwizard.gui.supplinf import SupplInf
+from pymdwizard.gui.abstract import Abstract
+from pymdwizard.gui.purpose import Purpose
 
 
 class IdInfo(WizardWidget):
@@ -98,24 +101,37 @@ class IdInfo(WizardWidget):
         self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
-        self.descript = Descriptor(parent=self)
+
+        self.abstract = Abstract(parent=self)
+        self.purpose = Purpose(parent=self)
+        self.supplinf = SupplInf(parent=self)
+
 
         self.ui.fgdc_citation.layout().addWidget(self.citation)
 
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
 
         time_hbox = QHBoxLayout()
         time_hbox.addWidget(self.status)
         time_hbox.addWidget(self.timeperd)
-        self.ui.two_column_left.layout().addLayout(time_hbox, 2)
-        self.ui.two_column_left.layout().addWidget(self.accconst, 3)
-        self.ui.two_column_left.layout().addWidget(self.useconst, 4)
+        self.ui.two_column_left.layout().addLayout(time_hbox, 0)
+
+        #self.ui.two_column_left.layout().addWidget(self.status, 0)
+        self.ui.two_column_left.layout().addWidget(self.accconst, 1)
+        self.ui.two_column_left.layout().addWidget(self.useconst, 2)
+        self.ui.two_column_left.layout().addWidget(self.ptcontac, 3)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy, 4)
         self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
 
-        self.ui.two_column_right.layout().addWidget(self.keywords, 0)
-        # self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
-        self.ui.two_column_right.layout().addWidget(self.descript, 2)
+        self.ui.two_column_right.layout().addWidget(self.abstract, 0)
+        self.ui.two_column_right.layout().addWidget(self.purpose, 1)
+        self.ui.two_column_right.layout().addWidget(self.keywords, 2)
+        #self.ui.two_column_right.layout().addWidget(self.timeperd, 3)
+        self.ui.two_column_right.layout().addWidget(self.supplinf, 4)
+        #self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
+        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
+
+
 
 
     def dragEnterEvent(self, e):
@@ -159,7 +175,15 @@ class IdInfo(WizardWidget):
         citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
-        descript_node = self.descript._to_xml()
+        descript_node = xml_utils.xml_node('descript', parent_node=idinfo_node)
+        abstract_node = self.abstract._to_xml()
+        descript_node.append(abstract_node)
+        purpose_node = self.purpose._to_xml()
+        descript_node.append(purpose_node)
+        supplinf_node = self.supplinf._to_xml()
+        if supplinf_node.text is not None:
+            descript_node.append(supplinf_node)
+
         idinfo_node.append(descript_node)
 
         timeperd_node = self.timeperd._to_xml()
@@ -183,6 +207,11 @@ class IdInfo(WizardWidget):
 
         useconst_node = self.useconst._to_xml()
         idinfo_node.append(useconst_node)
+
+
+        datacredit_node = self.datacredit._to_xml()
+        if len(datacredit_node.text):
+            idinfo_node.append(datacredit_node)
 
         if self.ptcontac.has_content():
             ptcontac = self.ptcontac._to_xml()
