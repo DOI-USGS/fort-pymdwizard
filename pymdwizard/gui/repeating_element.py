@@ -183,7 +183,7 @@ class RepeatingElement(QWidget):
         return widget
 
     def pop_off(self):
-        if self.widgets:
+        if self.widgets and len(self.widgets) > 1:
             last_added = self.widgets.pop()
             last_added.deleteLater()
 
@@ -193,8 +193,11 @@ class RepeatingElement(QWidget):
     def clear_widgets(self):
         for widget in self.widgets:
             widget.deleteLater()
-
         self.widgets = []
+
+        self.add_another()
+
+
 
 
 if __name__ == "__main__":

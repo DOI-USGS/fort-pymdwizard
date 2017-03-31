@@ -20,7 +20,7 @@ def read_csv(filepath):
     pandas dataframe
     """
 
-    return pd.read_csv(filepath)
+    return pd.read_csv(filepath, parse_dates=True)
 
 
 def read_shp(filepath):

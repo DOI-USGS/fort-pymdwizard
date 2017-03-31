@@ -132,8 +132,15 @@ class Attr(WizardWidget):  #
         elif 'range' in domain:
             self.domain = rdom.Rdom(parent=self)
             if self.series is not None:
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+                try:
+                    series_min = self.series.min()
+                    series_max = self.series.max()
+                except TypeError:
+                    series_min = ''
+                    series_max = ''
+
+                self.domain.ui.fgdc_rdommin.setText(str(series_min))
+                self.domain.ui.fgdc_rdommax.setText(str(series_max))
         elif 'codeset' in domain:
             self.domain = codesetd.Codesetd(parent=self)
         elif 'unrepresentable' in domain:

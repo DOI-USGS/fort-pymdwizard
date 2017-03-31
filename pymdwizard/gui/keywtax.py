@@ -165,7 +165,7 @@ class Keywordtax(KeywordsRepeater):  #
 
                 keywords = keywtax.xpath('taxonkey')
                 for kw in keywords:
-                    kw_widget = self.add_another()
+                    kw_widget = self.get_widgets()[0]
                     kw_widget.added_line.setText(kw.text)
 
             else:

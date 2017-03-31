@@ -280,10 +280,13 @@ class Citation(WizardWidget): #
             self.fgdc_origin.clear_widgets()
             if citeinfo.findall("origin"):
                 for origin in citeinfo.findall('origin'):
-                    origin_widget = self.fgdc_origin.add_another()
+                    origin_widget = self.fgdc_origin.widgets[0]
                     origin_widget.added_line.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
+
+            if citeinfo.findall('geoform'):
+                self.ui.fgdc_geoform.setEditText(citeinfo.findall('geoform')[0].text)
 
             utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
@@ -292,10 +295,8 @@ class Citation(WizardWidget): #
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
                 for onlink in citeinfo.findall('onlink'):
-                    onlink_widget = self.onlink_list.add_another()
+                    onlink_widget = self.onlink_list.widgets[0]
                     onlink_widget.added_line.setText(onlink.text)
-            else:
-                self.onlink_list.add_another()
 
             if citeinfo.xpath('serinfo'):
                 self.ui.radio_seriesyes.setChecked(True)

@@ -90,6 +90,9 @@ class KeywordsRepeater(WizardWidget):  #
     def add_another(self):
         return self.keywords.add_another()
 
+    def get_widgets(self):
+        return self.keywords.get_widgets()
+
     # def connect_events(self):
     #     """
     #     Connect the appropriate GUI components with the corresponding functions
