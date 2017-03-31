@@ -30,7 +30,7 @@
     <number>3</number>
    </property>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -42,12 +42,6 @@
        <width>0</width>
        <height>25</height>
       </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
@@ -131,7 +125,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QFrame" name="frame">
+       <widget class="QWidget" name="widget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -330,21 +324,12 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QFrame" name="frame_citation">
+            <widget class="QWidget" name="fgdc_citation" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="lineWidth">
-              <number>3</number>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <property name="leftMargin">
@@ -379,13 +364,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QFrame" name="two_column">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
+            <widget class="QWidget" name="two_column" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <property name="spacing">
                <number>3</number>
@@ -403,13 +382,7 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QFrame" name="two_column_left">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
+               <widget class="QWidget" name="two_column_left" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="leftMargin">
                   <number>0</number>
@@ -443,13 +416,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QFrame" name="two_column_right">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
+               <widget class="QWidget" name="two_column_right" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_4">
                  <property name="leftMargin">
                   <number>3</number>

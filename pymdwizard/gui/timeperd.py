@@ -45,7 +45,7 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.repeating_element import RepeatingElement
-from pymdwizard.gui.ui_files import UI_timeperd #
+from pymdwizard.gui.ui_files import UI_timeperd
 from pymdwizard.gui.single_date import SingleDate
 
 class Timeperd(WizardWidget):  #
@@ -64,12 +64,16 @@ class Timeperd(WizardWidget):  #
         self.setup_dragdrop(self)
 
         self.single_date = SingleDate(label='    Single Date ')
-        self.ui.page_singledate.layout().insertWidget(0, self.single_date)
+        self.single_date.setObjectName('fgdc_sngdate')
+        self.ui.fgdc_sngdate.layout().insertWidget(0, self.single_date)
 
         self.range_start_date = SingleDate(label='Start  ')
+        self.range_start_date.ui.fgdc_caldate.setObjectName('fgdc_begdate')
         self.range_end_date = SingleDate(label='End  ')
-        self.ui.layout_daterange.addWidget(self.range_end_date)
+        self.range_end_date.ui.fgdc_caldate.setObjectName('fgdc_enddate')
         self.ui.layout_daterange.addWidget(self.range_start_date)
+        self.ui.layout_daterange.addWidget(self.range_end_date)
+
 
 
         date_widget_kwargs = {'show_format': False,
@@ -80,6 +84,7 @@ class Timeperd(WizardWidget):  #
 
 
         self.multi_dates.add_another()
+        self.switch_primary()
 
 
     def connect_events(self):
@@ -102,22 +107,22 @@ class Timeperd(WizardWidget):  #
         """
         if self.ui.radio_single.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
-            self.ui.page_singledate.show()
-            self.ui.page_daterange.hide()
-            self.ui.page_multipledates.hide()
-            self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
+            self.ui.fgdc_sngdate.show()
+            self.ui.fgdc_rngdates.hide()
+            self.ui.fgdc_mdattim.hide()
+            self.ui.fgdc_mdattim.layout().removeWidget(self.multi_dates)
         elif self.ui.radio_range.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
-            self.ui.page_singledate.hide()
-            self.ui.page_daterange.show()
-            self.ui.page_multipledates.hide()
-            self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
+            self.ui.fgdc_rngdates.hide()
+            self.ui.fgdc_rngdates.show()
+            self.ui.fgdc_mdattim.hide()
+            self.ui.fgdc_mdattim.layout().removeWidget(self.multi_dates)
         elif self.ui.radio_multiple.isChecked():
             self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
-            self.ui.page_singledate.hide()
-            self.ui.page_daterange.hide()
-            self.ui.page_multipledates.layout().addWidget(self.multi_dates)
-            self.ui.page_multipledates.show()
+            self.ui.fgdc_sngdate.hide()
+            self.ui.fgdc_rngdates.hide()
+            self.ui.fgdc_mdattim.layout().addWidget(self.multi_dates)
+            self.ui.fgdc_mdattim.show()
 
     def dragEnterEvent(self, e):
         """
@@ -163,7 +168,10 @@ class Timeperd(WizardWidget):  #
             mdattim = xml_utils.xml_node("mdattim", parent_node=timeinfo)
 
             for single_date in self.multi_dates.get_widgets():
-                single_date_node = xml_utils.xml_node('caldate', parent_node=mdattim,
+
+                single_date_node = xml_utils.xml_node("sngdate", parent_node=mdattim)
+
+                caldate =  xml_utils.xml_node('caldate', parent_node=single_date_node,
                                                       text=single_date.get_date())
 
         current = xml_utils.xml_node('current', parent_node=timeperd,
@@ -192,7 +200,7 @@ class Timeperd(WizardWidget):  #
                     pass
 
                 timeinfo_stack = self.ui.fgdc_timeinfo
-                if timeperd.find("timeinfo/rngdates"):
+                if timeperd.xpath("timeinfo/rngdates"):
                     self.ui.radio_range.setChecked(True)
                     timeinfo_stack.setCurrentIndex(1)
 
@@ -202,17 +210,16 @@ class Timeperd(WizardWidget):  #
                     enddate = timeperd.findtext("timeinfo/rngdates/enddate")
                     self.range_end_date.set_date(enddate)
 
-
-                elif timeperd.find("timeinfo/mdattim"):
+                elif timeperd.xpath("timeinfo/mdattim"):
                     self.ui.radio_multiple.setChecked(True)
                     timeinfo_stack.setCurrentIndex(2)
 
                     self.multi_dates.clear_widgets()
-                    for caldate in timeperd.xpath('timeinfo/mdattim/caldate'):
+                    for caldate in timeperd.xpath('timeinfo/mdattim/sngdate/caldate'):
                         date_widget = self.multi_dates.add_another()
                         date_widget.set_date(caldate.text)
 
-                elif timeperd.find("timeinfo/sngdate"):
+                elif timeperd.xpath("timeinfo/sngdate"):
                     self.ui.radio_single.setChecked(True)
                     timeinfo_stack.setCurrentIndex(0)
 

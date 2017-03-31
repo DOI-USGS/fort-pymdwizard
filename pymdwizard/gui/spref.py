@@ -52,6 +52,8 @@ from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
 from PyQt5.QtGui import QMouseEvent
 
+from lxml import etree
+
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import spatial_utils
@@ -80,7 +82,6 @@ class SpRef(WizardWidget):
 
         self.ui.fgdc_mapprojn.addItems(spatial_utils.PROJECTION_LOOKUP.keys())
 
-
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -89,16 +90,20 @@ class SpRef(WizardWidget):
         -------
         None
         """
+        self.ui.rbtn_yes.toggled.connect(self.spref_used_change)
         self.ui.btn_geographic.toggled.connect(self.system_def_changed)
         self.ui.btngrp_planar.buttonReleased.connect(self.planar_changed)
 
         self.ui.fgdc_mapprojn.currentIndexChanged.connect(self.load_projection)
 
-        # self.ui.dataquality_button.pressed.connect(self.section_changed)
-        # self.ui.spatial_button.pressed.connect(self.section_changed)
-        # self.ui.eainfo_button.pressed.connect(self.section_changed)
-        # self.ui.distinfo_button.pressed.connect(self.section_changed)
-        # self.ui.metainfo_button.pressed.connect(self.section_changed)
+    def spref_used_change(self, b):
+        if b:
+            self.ui.horiz_layout.show()
+        else:
+            self.ui.horiz_layout.hide()
+
+    def has_content(self):
+        return self.ui.rbtn_yes.isChecked()
 
     def system_def_changed(self):
 
@@ -125,7 +130,7 @@ class SpRef(WizardWidget):
         projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
 
 
-        annotation_lookup_fname = utils.get_resource_path('bdp_lookup')
+        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
                 annotation_lookup = json.loads(data_file.read())

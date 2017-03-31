@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>858</width>
-    <height>845</height>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
     <number>3</number>
    </property>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -42,12 +42,6 @@
        <width>0</width>
        <height>25</height>
       </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
@@ -131,7 +125,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QFrame" name="frame">
+       <widget class="QWidget" name="widget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -310,7 +304,7 @@
             <x>0</x>
             <y>0</y>
             <width>854</width>
-            <height>810</height>
+            <height>543</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -330,13 +324,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QFrame" name="two_column">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
+            <widget class="QWidget" name="two_column" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <property name="spacing">
                <number>12</number>
@@ -354,13 +342,7 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QFrame" name="two_column_left">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
+               <widget class="QWidget" name="two_column_left" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="leftMargin">
                   <number>0</number>
@@ -490,13 +472,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QFrame" name="two_column_right">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
+               <widget class="QWidget" name="two_column_right" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_4">
                  <property name="leftMargin">
                   <number>0</number>
@@ -541,6 +517,9 @@
                        <widget class="QComboBox" name="fgdc_metstdv">
                         <property name="editable">
                          <bool>true</bool>
+                        </property>
+                        <property name="currentIndex">
+                         <number>1</number>
                         </property>
                         <item>
                          <property name="text">
@@ -651,6 +630,9 @@
                         </property>
                         <property name="editable">
                          <bool>true</bool>
+                        </property>
+                        <property name="currentIndex">
+                         <number>1</number>
                         </property>
                         <item>
                          <property name="text">

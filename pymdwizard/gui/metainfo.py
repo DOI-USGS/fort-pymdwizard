@@ -89,15 +89,18 @@ class MetaInfo(WizardWidget):
     def update_metstdn(self):
         if self.ui.fgdc_metstdv.currentText() == 'FGDC-STD-001-1998':
             self.ui.fgdc_metstdn.setCurrentIndex(0)
+            self.root_widget.switch_schema('fgdc')
         elif self.ui.fgdc_metstdv.currentText() == 'FGDC-STD-001.1-1999':
             self.ui.fgdc_metstdn.setCurrentIndex(1)
-
+            self.root_widget.switch_schema('bdp')
 
     def update_metstdv(self):
         if self.ui.fgdc_metstdn.currentText() == 'FGDC CSDGM':
             self.ui.fgdc_metstdv.setCurrentIndex(0)
+            self.root_widget.switch_schema('fgdc')
         elif self.ui.fgdc_metstdn.currentText() == 'FGDC Biological Data Profile of the CDGSM':
             self.ui.fgdc_metstdv.setCurrentIndex(1)
+            self.root_widget.switch_schema('bdp')
 
     def pull_datasetcontact(self):
         self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
@@ -149,9 +152,19 @@ class MetaInfo(WizardWidget):
                 self.contactinfo._from_xml(xml_metainfo.xpath('metc/cntinfo')[0])
 
             if xml_metainfo.xpath('metstdn'):
-                self.ui.fgdc_metstdn.setCurrentText(xml_metainfo.xpath('metstdn')[0].text)
+                standard = xml_metainfo.xpath('metstdn')[0].text
+                self.ui.fgdc_metstdn.setCurrentText(standard)
+                # switch wizard content to reflect the standard in this record
+                if "biological" in standard.lower() \
+                        or 'bdp' in standard.lower():
+                    self.root_widget.switch_schema('bdp')
+                else:
+                    self.root_widget.switch_schema('fgdc')
+                    
             if xml_metainfo.xpath('metstdv'):
-                self.ui.fgdc_metstdn.setCurrentText(xml_metainfo.xpath('metstdv')[0].text)
+                self.ui.fgdc_metstdv.setCurrentText(xml_metainfo.xpath('metstdv')[0].text)
+
+
             if xml_metainfo.xpath('metd'):
                 self.fgdc_metd.set_date(xml_metainfo.xpath('metd')[0].text)
 

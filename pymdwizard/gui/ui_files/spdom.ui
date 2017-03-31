@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="group">
      <property name="title">
       <string>Spatial Domain</string>
      </property>
@@ -40,10 +40,10 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLabel" name="lbl_cntper">
+           <widget class="QLabel" name="descgeog_label">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -117,10 +117,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
+               <string/>
               </property>
               <property name="text">
                <string extracomment="cntperp\cntper"/>
@@ -131,7 +128,7 @@ Short Name: cntper</string>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="descgeog_star">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
                 <horstretch>0</horstretch>
@@ -262,10 +259,7 @@ Short Name: cntper</string>
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
+                  <string/>
                  </property>
                  <property name="text">
                   <string extracomment="cntperp\cntper"/>
@@ -401,10 +395,7 @@ Short Name: cntper</string>
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
+                  <string/>
                  </property>
                  <property name="text">
                   <string extracomment="cntperp\cntper"/>
@@ -540,10 +531,7 @@ Short Name: cntper</string>
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
+                  <string/>
                  </property>
                  <property name="text">
                   <string extracomment="cntperp\cntper"/>
@@ -679,10 +667,7 @@ Short Name: cntper</string>
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
+                  <string/>
                  </property>
                  <property name="text">
                   <string extracomment="cntperp\cntper"/>

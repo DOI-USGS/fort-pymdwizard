@@ -14,8 +14,8 @@
    <string>Metadata Wizard</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons/icons.qrc">
-    <normaloff>:/newPrefix/Ducky.ico</normaloff>:/newPrefix/Ducky.ico</iconset>
+   <iconset>
+    <normaloff>icons/Ducky.ico</normaloff>icons/Ducky.ico</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -100,16 +100,9 @@
     </property>
     <addaction name="actionPreview"/>
    </widget>
-   <widget class="QMenu" name="menuPull_From_Data">
-    <property name="title">
-     <string>Pull From Data</string>
-    </property>
-    <addaction name="actionPull_From_Data"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
    <addaction name="menuPreview"/>
-   <addaction name="menuPull_From_Data"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">

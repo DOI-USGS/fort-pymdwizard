@@ -47,7 +47,7 @@ from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QDialog
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
@@ -103,9 +103,15 @@ class ThemeKeywords(WizardWidget):
         """
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
 
+        self.thesaurus_dialog = QDialog(self)
+        self.thesaurus_dialog.setWindowTitle('Theme Keyword Thesaurus Search')
+        self.thesaurus_dialog.setLayout(self.thesaurus_search.layout())
+
         fg = self.frameGeometry()
-        self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
-        self.thesaurus_search.show()
+        self.thesaurus_dialog.move(fg.topRight() - QPoint(150, -25))
+
+        self.thesaurus_dialog.exec_()
+
 
     def browse_iso(self):
         self.iso_browse = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)

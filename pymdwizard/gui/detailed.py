@@ -80,7 +80,8 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname,
+                                            filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             self.populate_from_fname(fname[0])
@@ -136,6 +137,38 @@ class Detailed(WizardWidget):  #
         else:
             e.ignore()
 
+    def clear_widget(self):
+        """
+        Clears all content from this widget
+
+        Returns
+        -------
+        None
+        """
+        self.ui.fgdc_enttypl.setText('')
+        self.ui.fgdc_enttypd.setPlainText('')
+        self.attributes.clear_children()
+
+    def has_content(self):
+        """
+        Checks for valid content in this widget
+
+        Returns
+        -------
+        Boolean
+        """
+        has_content = False
+
+        if self.ui.fgdc_enttypl.text():
+            has_content = True
+        if self.ui.fgdc_enttypd.toPlainText():
+            has_content = True
+
+        if len(self.attributes.attrs) > 0:
+            has_content = True
+
+        return has_content
+
     def _to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -147,7 +180,7 @@ class Detailed(WizardWidget):  #
         enttyp = xml_utils.xml_node('enttyp', parent_node=detailed)
         enttypl = xml_utils.xml_node('enttypl', text=self.ui.fgdc_enttypl.text(), parent_node=enttyp)
         enttypd = xml_utils.xml_node('enttypd', text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp)
-        enttypds = xml_utils.xml_node('enttyplds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
+        enttypds = xml_utils.xml_node('enttypds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
 
         attr = self.attributes._to_xml()
         for a in attr.xpath('attr'):

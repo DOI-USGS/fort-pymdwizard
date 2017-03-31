@@ -69,14 +69,16 @@ class Attr(WizardWidget):  #
         """
         self.ui = UI_attr.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
-        self.setup_dragdrop(self)
+        #
 
         self.ui.fgdc_attrlabl.installEventFilter(self)
         self.ui.fgdc_attrdef.installEventFilter(self)
+        self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
         self.ui.fgdc_attrdomv.installEventFilter(self)
-        # self.ui.comboBox.installEventFilter(self)
+        self.ui.place_holder.installEventFilter(self)
 
+        self.setup_dragdrop(self)
         self.ui.comboBox.currentTextChanged.connect(self.change_domain)
 
     def clear_domain(self):
@@ -164,6 +166,7 @@ class Attr(WizardWidget):  #
         self.animation.setEndValue(QSize(300, self.height()))
         self.animation.start()
         self.ui.fgdc_attrdomv.show()
+        self.ui.place_holder.hide()
 
 
     def regularsize_me(self):
@@ -172,6 +175,7 @@ class Attr(WizardWidget):  #
         self.animation.setEndValue(QSize(100, self.height()))
         self.animation.start()
         self.ui.fgdc_attrdomv.hide()
+        self.ui.place_holder.show()
 
     def eventFilter(self, obj, event):
         """
@@ -189,17 +193,12 @@ class Attr(WizardWidget):  #
         # for different types of widgets and either filtering
         # the event or not.
         # Here we just check if its one of the layout widget
-        if event.type() == event.MouseButtonPress:
+        if event.type() == event.MouseButtonPress or \
+                event.type() == 207:
             self.parent_ui.minimize_children()
             self.supersize_me()
 
         return super(Attr, self).eventFilter(obj, event)
-
-    def enterEvent(self, QEvent):
-        pass
-        # self.parent_ui.minimize_children()
-        # self.supersize_me()
-
 
     def _to_xml(self):
         """

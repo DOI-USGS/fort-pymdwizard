@@ -121,7 +121,7 @@ def node_to_dict(node, add_fgdc=True):
             if add_fgdc:
                 tag = 'fgdc_' + tag
             if len(child.getchildren()) > 0:
-                content = node_to_dict(child)
+                content = node_to_dict(child, add_fgdc=add_fgdc)
             else:
                 content = child.text
             node_dict[tag] = content
@@ -177,6 +177,28 @@ def search_xpath(node, xpath):
     list of lxml nodes
     """
     return node.xpath(xpath)
+
+
+def get_text_content(node, xpath):
+    """
+    return the text from a specific node
+
+    Parameters
+    ----------
+    node : lxml node
+
+    xpath : xpath.search
+
+    Returns
+    -------
+    str
+    None if that xpath is not found in the node
+    """
+    nodes = node.xpath(xpath)
+    if nodes:
+        return nodes[0].text
+    else:
+        return None
 
 
 def element_to_df(results):

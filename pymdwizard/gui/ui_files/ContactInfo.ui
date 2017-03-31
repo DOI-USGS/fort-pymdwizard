@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
-    <height>316</height>
+    <width>508</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -61,7 +61,7 @@ color: rgb(50, 50, 50);
     <number>4</number>
    </property>
    <item>
-    <widget class="QFrame" name="fgdc_cntinfo">
+    <widget class="QWidget" name="fgdc_cntinfo" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_7">
       <property name="spacing">
        <number>2</number>
@@ -158,7 +158,7 @@ color: rgb(50, 50, 50);
          <number>2</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_2">
+         <widget class="QWidget" name="widget_2" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -168,21 +168,21 @@ color: rgb(50, 50, 50);
           <property name="styleSheet">
            <string notr="true"/>
           </property>
-          <property name="title">
-           <string/>
-          </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="spacing">
+            <number>3</number>
+           </property>
            <property name="leftMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="rightMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="bottomMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <item>
             <layout class="QVBoxLayout" name="left_vertical_layout">
@@ -795,7 +795,7 @@ Short Name: cntemail</string>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
+         <widget class="QWidget" name="widget_3" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -804,9 +804,6 @@ Short Name: cntemail</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
-          </property>
-          <property name="title">
-           <string/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="leftMargin">
@@ -1711,7 +1708,6 @@ Short Name: addrtype</string>
     </widget>
    </item>
   </layout>
-  <zorder>fgdc_cntinfo</zorder>
  </widget>
  <resources/>
  <connections/>

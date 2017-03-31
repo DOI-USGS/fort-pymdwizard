@@ -132,7 +132,7 @@ class Ui_ThesaurusSearchWidget(object):
 
     def retranslateUi(self, ThesaurusSearchWidget):
         _translate = QtCore.QCoreApplication.translate
-        ThesaurusSearchWidget.setWindowTitle(_translate("ThesaurusSearchWidget", "ITIS Search"))
+        ThesaurusSearchWidget.setWindowTitle(_translate("ThesaurusSearchWidget", "Keyword Thesaurus Search"))
         self.label_search_term.setText(_translate("ThesaurusSearchWidget", "Search Term:"))
         self.search_term.setToolTip(_translate("ThesaurusSearchWidget", "terms to search ITIS for"))
         self.button_search.setToolTip(_translate("ThesaurusSearchWidget", "Perform search of ITIS"))

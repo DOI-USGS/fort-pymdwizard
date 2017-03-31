@@ -95,12 +95,12 @@ class ContactInfo(WizardWidget):
             self._from_xml(cntperp)
             self.usgs_contact.deleteLater()
         else:
-            msg = QMessageBox()
+            msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Information)
             msg.setText("'{}' Not Found".format(username))
             msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
             msg.setWindowTitle("Name Not Found")
-            msg.setStandardButtons(QMessageBox.Retry)
+            msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
 
     def cancel(self):
@@ -171,7 +171,6 @@ class ContactInfo(WizardWidget):
 
         cntaddr = xml_node("cntaddr", parent_node=cntinfo)
 
-
         addrtype_str = self.findChild(QComboBox, "fgdc_addrtype").currentText()
         addrtype = xml_node("addrtype", addrtype_str, cntaddr)
 
@@ -185,19 +184,25 @@ class ContactInfo(WizardWidget):
             node = xml_node('address', address3_str, cntaddr)
 
         for label in ['city', 'state',
-                      'postal', 'country']:
+                      'postal']:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
                 node = xml_node(label, widget_str, cntaddr)
             except:
                 pass
 
+        country_str = self.ui.fgdc_country.text()
+        if country_str:
+            node = xml_node('country', country_str, cntaddr)
+
         for label in ['cntvoice', 'cntfax', 'cntemail']:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                node = xml_node(label, widget_str, cntinfo)
+                if label == 'cntvoice' or widget_str:
+                    node = xml_node(label, widget_str, cntinfo)
             except:
                 pass
+
 
         return cntinfo
 
