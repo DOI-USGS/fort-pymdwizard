@@ -282,7 +282,7 @@ class PyMdWizardMainForm(QMainWindow):
 
     def clear_validation(self):
 
-        annotation_lookup_fname = utils.get_resource_path("fgdc/bdp_lookup")
+        annotation_lookup_fname = utils.get_resource_path("FGDC/bdp_lookup")
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup = json.loads(data_file.read())
 
@@ -301,9 +301,9 @@ class PyMdWizardMainForm(QMainWindow):
     def validate(self):
 
         if self.metadata_root.schema == 'bdp':
-            xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+            xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
         else:
-            xsl_fname = utils.get_resource_path('fgdc/fgdc-std-001-1998-annotated.xsd')
+            xsl_fname = utils.get_resource_path('FGDC/fgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
@@ -358,7 +358,7 @@ opacity: 25;
         None
         """
 
-        xsl_fname = utils.get_resource_path("fgdc/FGDC_Stylesheet.xsl")
+        xsl_fname = utils.get_resource_path("FGDC/FGDC_Stylesheet.xsl")
         transform = etree.XSLT(etree.parse(xsl_fname))
         result = transform(self.metadata_root._to_xml())
 

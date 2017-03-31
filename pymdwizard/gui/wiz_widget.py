@@ -314,7 +314,7 @@ class WizardWidget(QWidget):
 
     def populate_tooltips(self):
         import json
-        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
+        annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
                 annotation_lookup = json.loads(data_file.read())
@@ -365,31 +365,35 @@ class WizardWidget(QWidget):
     def contextMenuEvent(self, event):
 
         clicked_widget = self.childAt(event.pos())
+
+        menu = QMenu(self)
+        clear_action = menu.addAction("clear")
+        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
+        copy_action.setStatusTip('Copy to the Clipboard')
+
+        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
+        paste_action.setStatusTip('Paste from the Clipboard')
+
         if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
-
-            menu = QMenu(self)
-            clear_action = menu.addAction("clear")
-            copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
-            copy_action.setStatusTip('Copy to the Clipboard')
-
-            paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
-            paste_action.setStatusTip('Paste from the Clipboard')
             menu.addSeparator()
             help_action = menu.addAction("help")
-            action = menu.exec_(self.mapToGlobal(event.pos()))
+        else:
+            help_action = None
 
-            if action == copy_action:
-                self.copy_mime()
-            elif action == paste_action:
-                self.paste_mime()
-            elif action == clear_action:
-                self.clear_widget()
-            elif action == help_action:
-                msg = QMessageBox(self)
-                msg.setTextFormat(Qt.RichText)
-                msg.setText(clicked_widget.whatsThis())
-                msg.setWindowTitle("Help")
-                msg.show()
+        action = menu.exec_(self.mapToGlobal(event.pos()))
+
+        if action == copy_action:
+            self.copy_mime()
+        elif action == paste_action:
+            self.paste_mime()
+        elif action == clear_action:
+            self.clear_widget()
+        elif help_action is not None and action == help_action:
+            msg = QMessageBox(self)
+            msg.setTextFormat(Qt.RichText)
+            msg.setText(clicked_widget.whatsThis())
+            msg.setWindowTitle("Help")
+            msg.show()
 
 
     def set_stylesheet(self):

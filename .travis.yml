@@ -4,12 +4,8 @@ sudo: required
 
 env:
     - CONDA="python=2.7"
-    - CONDA="python=3.4"
     - CONDA="python=3.5"
 before_install:
-    - sudo wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu52_52.1-3ubuntu0.4_amd64.deb
-    - sudo dpkg -i libicu52_52.1-3ubuntu0.4_amd64.deb
-
     - wget http://bit.ly/miniconda -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
@@ -20,11 +16,7 @@ before_install:
     - travis_retry conda install --yes pytest
     - travis_retry conda install --yes pytest-cov
     - travis_retry conda install --yes pytest-qt
-<<<<<<< HEAD
-    - travis_retry conda install 'icu=56.*
-=======
-    - travis_retry conda install icu=56.*
->>>>>>> 2eed9fc35ffcb4460d690a65fba345f52e343277
+
 install:
   - "pip install coveralls>=1.1"
 before_script:
