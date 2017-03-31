@@ -49,6 +49,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableVi
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QScrollArea, QListWidgetItem
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from PyQt5 import QtCore
 
 from pymdwizard.core import utils
 
@@ -57,8 +58,12 @@ from pymdwizard.gui.single_date import SingleDate
 from pymdwizard.gui.wiz_widget import WizardWidget
 
 class DefaultWidget(QWidget):
-
-    def __init__(self, label='', line_name='na', parent=None):
+    """
+    The default widget for a repeating element
+    a simple line edit with a label and an option required astrix
+    """
+    def __init__(self, label='', line_name='na', required=False,
+                 parent=None):
         QWidget.__init__(self)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
@@ -66,6 +71,24 @@ class DefaultWidget(QWidget):
         self.added_line.setObjectName(line_name)
         self.layout.addWidget(self.qlbl)
         self.layout.addWidget(self.added_line)
+
+        if required:
+            self.required_label = QLabel(self)
+            font = QFont()
+            font.setFamily("Arial")
+            font.setPointSize(9)
+            font.setBold(False)
+            font.setItalic(False)
+            font.setWeight(50)
+            self.required_label.setFont(font)
+            self.required_label.setScaledContents(True)
+            self.required_label.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+            self.required_label.setIndent(0)
+
+            self.required_label.setText(QtCore.QCoreApplication.translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+            self.layout.addWidget(self.required_label)
+
+
         self.layout.setContentsMargins(1, 1, 1, 1)
         self.layout.setSpacing(2)
         self.setLayout(self.layout)
@@ -179,12 +202,13 @@ if __name__ == "__main__":
     from pymdwizard.gui import attr, edom, single_date, sourceinput
     import random
 
-
+    widget_kws={'label' : 'hello', 'required' : True}
 
 
     utils.launch_widget(RepeatingElement, which='vertical',
                         tab_label='Processing Step', add_text='test add',
                         # widget = sourceinput.SourceInput,
+                        widget_kwargs=widget_kws,
                         remove_text='test remove', italic_text='some instruction')
 
 

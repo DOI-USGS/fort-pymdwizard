@@ -87,7 +87,8 @@ class Citation(WizardWidget): #
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ', show_format=False)
+        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ',
+                                            show_format=False, required=True)
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
@@ -100,7 +101,8 @@ class Citation(WizardWidget): #
         self.fgdc_origin = RepeatingElement(add_text='Add originator',
                                             remove_text='Remove last',
                                             widget_kwargs={'label': 'Originator',
-                                                           'line_name':'fgdc_origin'})
+                                                           'line_name':'fgdc_origin',
+                                                           'required':True})
         self.fgdc_origin.add_another()
         self.ui.originator_layout.addWidget(self.fgdc_origin)
 
@@ -304,8 +306,8 @@ class Citation(WizardWidget): #
             pubinfo = citeinfo.xpath('pubinfo')
             if pubinfo:
                 self.ui.radio_pubinfoyes.setChecked(True)
-                utils.populate_widget(self.ui.fgdc_publish, pubinfo.xpath('publish')[0])
-                utils.populate_widget(self.ui.fgdc_pubplace, pubinfo.xpath('pubplace')[0])
+                utils.populate_widget_element(self.ui.fgdc_publish, pubinfo[0], 'publish')
+                utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
 

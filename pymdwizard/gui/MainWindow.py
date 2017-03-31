@@ -164,6 +164,8 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        self.clear_validation()
+
         file = QFile(fname)
         if not file.open(QFile.ReadWrite | QFile.Text):
             msg = "Cannot open file %s:\n%s." % (fname, file.errorString())

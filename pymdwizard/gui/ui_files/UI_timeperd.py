@@ -160,7 +160,7 @@ class Ui_Form(object):
         self.label_8.setObjectName("label_8")
         self.verticalLayout.addWidget(self.label_8)
         self.fgdc_current = QtWidgets.QComboBox(self.fgdc_timeperd)
-        self.fgdc_current.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.fgdc_current.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.fgdc_current.setEditable(True)
         self.fgdc_current.setObjectName("fgdc_current")
         self.fgdc_current.addItem("")
@@ -174,7 +174,7 @@ class Ui_Form(object):
         self.verticalLayout_11.addWidget(self.fgdc_timeperd)
 
         self.retranslateUi(Form)
-        self.fgdc_timeinfo.setCurrentIndex(1)
+        self.fgdc_timeinfo.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

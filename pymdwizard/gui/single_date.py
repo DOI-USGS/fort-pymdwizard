@@ -57,7 +57,8 @@ from pymdwizard.gui.ui_files import UI_single_date
 
 class SingleDate(QWidget):
 
-    def __init__(self, xml=None, parent=None, show_format=True, label=''):
+    def __init__(self, xml=None, parent=None, show_format=True, label='',
+                 required=False):
         QWidget.__init__(self, parent=parent)
 
         self.build_ui()
@@ -69,6 +70,9 @@ class SingleDate(QWidget):
             self.ui.label.setText(label)
         else:
             self.ui.label.visible = False
+
+        if not required:
+            self.ui.lbl_required.hide()
 
         self.changed = False
         self.connect_events()
