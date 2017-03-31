@@ -116,8 +116,8 @@ class IdInfo(WizardWidget):
         self.ui.two_column_left.layout().addLayout(time_hbox, 0)
 
         #self.ui.two_column_left.layout().addWidget(self.status, 0)
-        self.ui.two_column_left.layout().addWidget(self.access, 1)
-        self.ui.two_column_left.layout().addWidget(self.use, 2)
+        self.ui.two_column_left.layout().addWidget(self.accconst, 1)
+        self.ui.two_column_left.layout().addWidget(self.useconst, 2)
         self.ui.two_column_left.layout().addWidget(self.ptcontac, 3)
         self.ui.two_column_left.layout().addWidget(self.taxonomy, 4)
         self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
