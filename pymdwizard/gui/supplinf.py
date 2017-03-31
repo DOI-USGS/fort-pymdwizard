@@ -70,7 +70,7 @@ class SupplInf(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_supplinf.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_supplinf.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -107,10 +107,9 @@ class SupplInf(WizardWidget): #
         -------
         supplinf element tag in xml tree
         """
-
+        supplinf_text = self.ui.fgdc_supplinf.toPlainText()
         supplinf = xml_utils.xml_node('supplinf',
-                                     text=self.ui.fgdc_supplinf.toPlainText())
-
+                                    text=supplinf_text)
         return supplinf
 
 
@@ -129,7 +128,6 @@ class SupplInf(WizardWidget): #
         try:
             if supplinf.tag == 'supplinf':
                 try:
-
                     supplinf_text = supplinf.text
                     supplinf_box = self.findChild(QPlainTextEdit, "fgdc_supplinf")
                     supplinf_box.setPlainText(supplinf.text)

@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Overview frame for SourceInfo element
+Provide a pyqt widget for a Abstract <abstract> section
 
 
 SCRIPT DEPENDENCIES
@@ -54,14 +54,13 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_sourceinput
-from pymdwizard.gui.SRCInfo import SRCInfo
-from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.gui.ui_files import UI_abstract
 
 
-class SourceInput(WizardWidget):
+class Abstract(WizardWidget):
 
-    drag_label = "Source Information <srcinfo>"
+    drag_label = "Abstract <abstract>"
+
 
     def build_ui(self):
         """
@@ -71,99 +70,53 @@ class SourceInput(WizardWidget):
         -------
         None
         """
-        self.ui = UI_sourceinput.Ui_Form()
+        self.ui = UI_abstract.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.src_info = RepeatingElement(which='tab',
-                        tab_label='Source', add_text='Source Input',
-                        widget=SRCInfo, remove_text='Remove Source', italic_text='Source')
 
-        self.src_info.add_another()
-        self.ui.frame_sourceinfo.layout().addWidget(self.src_info)
-
-        self.ui.frame_sourceinfo.hide()
-
-    def connect_events(self):
-        """
-        Connect the appropriate GUI components with the corresponding functions
-
-        Returns
-        -------
-        None
-        """
-        self.ui.radio_sourceyes.toggled.connect(self.include_sources_change)
-
-    def include_sources_change(self, b):
-        """
-        Extended citation to support a larger body of information for the record.
-
-        Parameters
-        ----------
-        b: qt event
-
-        Returns
-        -------
-        None
-        """
-        if b:
-            self.ui.frame_sourceinfo.show()
-        else:
-            self.ui.frame_sourceinfo.hide()
 
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'accconst'
+        a root tag called 'abstract'
         Parameters
         ----------
         e : qt event
 
         Returns
         -------
-        None
 
+        None
         """
         print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'lineage':
+            if element.tag == 'abstract':
                 e.accept()
         else:
             e.ignore()
 
-
-         
-
     def _to_xml(self):
         """
-        encapsulates the text in an element tree representing Sources Input
+        encapsulates the QPlainTextEdit text in an element tag
 
         Returns
         -------
-        series of srcinfo element tag in lineage xml tree
+        abstract element tag in xml tree
         """
-        lineage = etree.Element('lineage')
-        if self.ui.radio_sourceyes.isChecked():
-            print ("in to xml")
-            cnt = 0
-            srcinfo_list = self.src_info.get_widgets()
-            for srcinfo in srcinfo_list:
-                lineage.append(srcinfo._to_xml())
-            # while cnt < len(list_widgets):
-            #     #lineage.append(list_widgets[cnt]._to_xml())
-            #     lineage.append(SRCInfo._to_xml(list_widgets[cnt]))
-            #     cnt += 1
-        return lineage
-        # elif self.ui.radio_sourceno.isChecked():
-        #     pass
+
+        abstract = xml_utils.xml_node('abstract',
+                                     text=self.ui.fgdc_abstract.toPlainText())
+
+        return abstract
 
 
-    def _from_xml(self, xml_srcinput):
+    def _from_xml(self, abstract):
         """
-        parses the xml code into the relevant accconst elements
+        parses the xml code into the relevant abstract elements
 
         Parameters
         ----------
@@ -174,23 +127,21 @@ class SourceInput(WizardWidget):
         None
         """
         try:
-            if xml_srcinput.tag == 'lineage':
-                self.src_info.clear_widgets()
-                self.ui.frame_sourceinfo.show()
-                self.ui.radio_sourceyes.setChecked(True)
-                xml_srcinput = xml_srcinput.findall('srcinfo')
-                if xml_srcinput:
-                    for srcinput in xml_srcinput:
-                        srcinfo_widget = self.src_info.add_another()
-                        srcinfo_widget._from_xml(srcinput)
+            if abstract.tag == 'abstract':
+                try:
 
-                else:
-                    self.src_info.add_another()
+                    abstract_text = abstract.text
+                    abstract_box = self.findChild(QPlainTextEdit, "fgdc_abstract")
+                    abstract_box.setPlainText(abstract_text)
+                except:
+                    pass
+            else:
+               print ("The tag is not abstract")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SourceInput,
-                        "Source Input testing")
+    utils.launch_widget(Abstract,
+                        "Abstract testing")
 
