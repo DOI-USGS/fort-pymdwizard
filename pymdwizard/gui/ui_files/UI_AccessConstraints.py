@@ -35,7 +35,7 @@ class Ui_Form(object):
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_accconst = QtWidgets.QPlainTextEdit(self.groupBox)
         self.fgdc_accconst.setAcceptDrops(False)
-        self.fgdc_accconst.setOverwriteMode(True)
+        self.fgdc_accconst.setOverwriteMode(False)
         self.fgdc_accconst.setObjectName("fgdc_accconst")
         self.verticalLayout_2.addWidget(self.fgdc_accconst)
         self.verticalLayout.addWidget(self.groupBox)

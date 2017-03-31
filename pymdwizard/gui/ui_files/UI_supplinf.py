@@ -36,7 +36,7 @@ class Ui_Form(object):
         self.fgdc_supplinf = QtWidgets.QPlainTextEdit(self.groupBox)
         self.fgdc_supplinf.setAcceptDrops(False)
         self.fgdc_supplinf.setPlainText("")
-        self.fgdc_supplinf.setOverwriteMode(True)
+        self.fgdc_supplinf.setOverwriteMode(False)
         self.fgdc_supplinf.setObjectName("fgdc_supplinf")
         self.verticalLayout_2.addWidget(self.fgdc_supplinf)
         self.verticalLayout.addWidget(self.groupBox)

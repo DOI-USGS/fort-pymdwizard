@@ -128,8 +128,8 @@ class IdInfo(WizardWidget):
         #self.ui.two_column_right.layout().addWidget(self.timeperd, 3)
         self.ui.two_column_right.layout().addWidget(self.supplinf, 4)
         #self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
+        #self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
+        #self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
 
 
 

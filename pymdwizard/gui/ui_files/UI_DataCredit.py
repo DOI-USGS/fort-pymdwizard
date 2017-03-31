@@ -36,7 +36,7 @@ class Ui_Form(object):
         self.fgdc_datacred = QtWidgets.QPlainTextEdit(self.groupBox)
         self.fgdc_datacred.setAcceptDrops(False)
         self.fgdc_datacred.setPlainText("")
-        self.fgdc_datacred.setOverwriteMode(True)
+        self.fgdc_datacred.setOverwriteMode(False)
         self.fgdc_datacred.setObjectName("fgdc_datacred")
         self.verticalLayout.addWidget(self.fgdc_datacred)
         self.horizontalLayout.addWidget(self.groupBox)
