@@ -232,8 +232,20 @@ class IdInfo(WizardWidget):
             pass
 
         try:
-            descript = xml_idinfo.xpath('descript')[0]
-            self.descript._from_xml(descript)
+            abstract = xml_idinfo.xpath('descript/abstract')[0]
+            self.abstract._from_xml(abstract)
+        except IndexError:
+            pass
+
+        try:
+            purpose = xml_idinfo.xpath('descript/purpose')[0]
+            self.purpose._from_xml(purpose)
+        except IndexError:
+            pass
+
+        try:
+            supplinf = xml_idinfo.xpath('descript/supplinf')[0]
+            self.supplinf._from_xml(supplinf)
         except IndexError:
             pass
 
