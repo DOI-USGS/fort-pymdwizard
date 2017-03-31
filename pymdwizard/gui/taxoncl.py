@@ -89,7 +89,7 @@ class Taxoncl(WizardWidget):  #
 
     def clear_widget(self):
         """
-        Clears all content from this widget<taxoncl><taxonrn>Kingdom</taxonrn><taxonrv>Animalia</taxonrv><common>animals</common><taxoncl><taxonrn>Subkingdom</taxonrn><taxonrv>Bilateria</taxonrv><taxoncl><taxonrn>Infrakingdom</taxonrn><taxonrv>Deuterostomia</taxonrv><taxoncl><taxonrn>Phylum</taxonrn><taxonrv>Chordata</taxonrv><common>chordates</common><taxoncl><taxonrn>Subphylum</taxonrn><taxonrv>Vertebrata</taxonrv><common>vertebrates</common><taxoncl><taxonrn>Infraphylum</taxonrn><taxonrv>Gnathostomata</taxonrv><taxoncl><taxonrn>Superclass</taxonrn><taxonrv>Tetrapoda</taxonrv><taxoncl><taxonrn>Class</taxonrn><taxonrv>Aves</taxonrv><common>Birds</common><taxoncl><taxonrn>Order</taxonrn><taxonrv>Passeriformes</taxonrv><common>Perching Birds</common><taxoncl><taxonrn>Family</taxonrn><taxonrv>Emberizidae</taxonrv><common>Emberizid Finches</common><common>American Sparrows</common><common>Towhees</common><common>Buntings</common><common>New World Sparrows</common><taxoncl><taxonrn>Genus</taxonrn><taxonrv>Ammodramus</taxonrv><common>Grassland Sparrows</common><taxoncl><taxonrn>Species</taxonrn><taxonrv>Ammodramus savannarum</taxonrv><common>Grasshopper Sparrow</common><taxoncl><taxonrn>Subspecies</taxonrn><taxonrv>Ammodramus savannarum ammolegus</taxonrv><common>TSN: 179337</common></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl></taxoncl>
+        Clears all content from this widget
 
         Returns
         -------
@@ -99,6 +99,8 @@ class Taxoncl(WizardWidget):  #
         self.ui.fgdc_taxonrv.clear()
         self.ui.fgdc_common.clear()
 
+        for taxoncl in self.child_taxoncl:
+            taxoncl.deleteLater()
         self.child_taxoncl = []
 
 

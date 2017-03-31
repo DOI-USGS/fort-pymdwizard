@@ -85,11 +85,11 @@ class Spdom(WizardWidget):
 
         self.ui.map_viewer.hide()
 
-        view = self.view = QWebView()
-        view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
+        self.view = self.view = QWebView()
+        self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
         map_fname = utils.get_resource_path('leaflet/map.html')
-        view.setUrl(QUrl.fromLocalFile(map_fname))
-        self.ui.verticalLayout_3.addWidget(view)
+        self.view.setUrl(QUrl.fromLocalFile(map_fname))
+        self.ui.verticalLayout_3.addWidget(self.view)
 
         # this is where more complex build information would go such as
         # instantiating child widgets, inserting them into the layout,
@@ -262,6 +262,11 @@ class Spdom(WizardWidget):
             self.ui.fgdc_descgeog.hide()
             self.ui.descgeog_label.hide()
             self.ui.descgeog_star.hide()
+
+    def clear_widget(self):
+        super(self.__class__, self).clear_widget()
+        map_fname = utils.get_resource_path('leaflet/map.html')
+        self.view.setUrl(QUrl.fromLocalFile(map_fname))
 
     def _to_xml(self):
         spdom = xml_node('spdom')

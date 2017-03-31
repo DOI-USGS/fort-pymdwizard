@@ -46,6 +46,9 @@ from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
+
+
+
 class WizardWidget(QWidget):
     """
     The base class all pymdwizard GUI components should inherit from.
@@ -282,8 +285,8 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        # dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction | Qt.IgnoreAction)
-        dropAction = drag.exec_(Qt.MoveAction)
+        dropAction = drag.exec_(Qt.CopyAction)
+        # dropAction = drag.exec_(Qt.MoveAction)
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):
@@ -345,9 +348,19 @@ class WizardWidget(QWidget):
         -------
         None
         """
-        widgets = self.findChildren(QObject, QRegExp(r'.*'))
+        from pymdwizard.gui import repeating_element
+        widgets = self.findChildren(QWidget, QRegExp(r'.*'))
         for widget in widgets:
-            if widget.objectName().startswith('fgdc_'):
+            if isinstance(widget, WizardWidget):
+                widget.clear_widget()
+
+            elif isinstance(widget, repeating_element.RepeatingElement):
+                widget.clear_widgets()
+                rep1_widget = widget.get_widgets()[0]
+                if isinstance(rep1_widget, WizardWidget):
+                    rep1_widget.clear_widget()
+
+            elif widget.objectName().startswith('fgdc_'):
                 utils.set_text(widget, '')
 
     def has_content(self):
@@ -367,7 +380,7 @@ class WizardWidget(QWidget):
         clicked_widget = self.childAt(event.pos())
 
         menu = QMenu(self)
-        clear_action = menu.addAction("clear")
+        clear_action = menu.addAction("Clear content")
         copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
         copy_action.setStatusTip('Copy to the Clipboard')
 
