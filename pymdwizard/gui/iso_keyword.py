@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Point of Contact <pntcontac> section
+Provide a pyqt widget for a Abstract <abstract> section
 
 
 SCRIPT DEPENDENCIES
@@ -38,92 +38,34 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
 
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+
+
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Keywords
-from pymdwizard.gui.theme_list import ThemeList
-from pymdwizard.gui.place_list import PlaceList
+from pymdwizard.gui.ui_files import UI_iso_keyword
 
 
-class Keywords(WizardWidget):
+class IsoKeyword(QWidget):
 
-    drag_label = "Keywords <keywords>"
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent=parent)
 
-    ui_class = UI_Keywords.Ui_keyword_widget
+        self.ui = UI_iso_keyword.Ui_Form()
 
-    def build_ui(self):
-        """
-        Build and modify this widget's GUI
-
-        Returns
-        -------
-        None
-        """
-        self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-
-
-        self.theme_list = ThemeList()
-        self.ui.fgdc_keywords.layout().addWidget(self.theme_list)
-
-        self.place_list = PlaceList()
-        self.ui.fgdc_keywords.layout().addWidget(self.place_list)
-
-        spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
-        self.ui.fgdc_keywords.layout().addItem(spacerItem)
-        self.setup_dragdrop(self)
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'Keywords' or element.tag == 'theme' or \
-                            element.tag == 'place':
-                e.accept()
-        else:
-            e.ignore()
-
-    def _to_xml(self):
-        keywords = self.theme._to_xml()
-        place_keywords = self.place._to_xml()
-        for child_node in place_keywords.xpath('place'):
-            keywords.append(child_node)
-
-        return keywords
-
-    def _from_xml(self, keywords):
-
-        self.theme._from_xml(keywords)
-        self.place._from_xml(keywords)
-
-
 if __name__ == "__main__":
-    utils.launch_widget(Keywords,
-                        "keywords testing")
+    utils.launch_widget(IsoKeyword,
+                        "Abstract testing")
 

@@ -90,7 +90,7 @@ class DefaultWidget(QWidget):
 
 
         self.layout.setContentsMargins(1, 1, 1, 1)
-        self.layout.setSpacing(2)
+        self.layout.setSpacing(6)
         self.setLayout(self.layout)
 
 
@@ -107,7 +107,7 @@ class RepeatingElement(QWidget):
                  widget=DefaultWidget, widget_kwargs={},
                  italic_text='',
                  add_text="Add another", remove_text="Remove last",
-                 show_buttons=True, parent=None):
+                 show_buttons=True, add_another=None, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
@@ -117,6 +117,7 @@ class RepeatingElement(QWidget):
         if italic_text:
             self.ui.italic_label.setText(italic_text)
 
+        self.which = which
         if which == 'vertical':
             self.SA = self.ui.vertical_widget
             self.content_layout = self.ui.vertical_widget.layout()
@@ -128,6 +129,9 @@ class RepeatingElement(QWidget):
             self.ui.vertical_widget.deleteLater()
 
         self.tab_label = tab_label
+
+        if add_another is not None:
+            self.add_another = add_another
 
         self.connect_events()
 
@@ -184,18 +188,25 @@ class RepeatingElement(QWidget):
 
     def pop_off(self):
         if self.widgets and len(self.widgets) > 1:
-            last_added = self.widgets.pop()
-            last_added.deleteLater()
+            if self.which == 'tab':
+                current_tab = self.ui.tab_widget.currentIndex()
+                current_widget = self.widgets[current_tab]
+                current_widget.deleteLater()
+                del self.widgets[current_tab]
+            else:
+                last_added = self.widgets.pop()
+                last_added.deleteLater()
 
     def get_widgets(self):
         return self.widgets
 
-    def clear_widgets(self):
+    def clear_widgets(self, add_another=True):
         for widget in self.widgets:
             widget.deleteLater()
         self.widgets = []
 
-        self.add_another()
+        if add_another:
+            self.add_another()
 
 
 
