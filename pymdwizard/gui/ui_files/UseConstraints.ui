@@ -89,7 +89,7 @@
          <string>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</string>
         </property>
         <property name="overwriteMode">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

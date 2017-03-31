@@ -77,7 +77,7 @@
          <string>None.  Please see 'Distribution Info' for details.</string>
         </property>
         <property name="overwriteMode">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
