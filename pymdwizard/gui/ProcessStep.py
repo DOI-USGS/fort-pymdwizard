@@ -127,20 +127,20 @@ class ProcessStep(WizardWidget): #
         procdesc.text = self.findChild(QPlainTextEdit, "fgdc_procdesc").toPlainText()
         procstep.append(procdesc)
 
+        srcused = etree.Element('srcused')
+        srcused.text = self.findChild(QLineEdit, "fgdc_srcused").text()
+        if len(srcused.text):
+            procstep.append(srcused)
+
         procdate = etree.Element('procdate')
         date_var = self.single_date.findChild(QLineEdit, "fgdc_caldate").text()
         procdate.text = date_var
         procstep.append(procdate)
 
-        srcused = etree.Element('srcused')
-        srcused_var = self.findChild(QLineEdit, "fgdc_srcused").text()
-        srcused.text = srcused_var
-        procstep.append(srcused)
-
         srcprod = etree.Element('srcprod')
-        srcprod_var = self.findChild(QLineEdit, "fgdc_srcprod").text()
-        srcprod.text = srcprod_var
-        procstep.append(srcprod)
+        srcprod.text = self.findChild(QLineEdit, "fgdc_srcprod").text()
+        if len(srcprod.text):
+            procstep.append(srcprod)
 
         if self.proccont.ui.rbtn_yes.isChecked():
             proccont = self.proccont._to_xml()

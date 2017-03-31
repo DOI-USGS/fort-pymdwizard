@@ -34,7 +34,7 @@ class Ui_fgdc_dataqual(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
         self.label_5.setSizePolicy(sizePolicy)
-        self.label_5.setMinimumSize(QtCore.QSize(15, 0))
+        self.label_5.setMinimumSize(QtCore.QSize(510, 0))
         self.label_5.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -175,7 +175,7 @@ class Ui_fgdc_dataqual(object):
         _translate = QtCore.QCoreApplication.translate
         fgdc_dataqual.setWindowTitle(_translate("fgdc_dataqual", "Form"))
         self.label_5.setToolTip(_translate("fgdc_dataqual", "Required"))
-        self.label_5.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">Provide general Information about the data set.</span></p></body></html>"))
+        self.label_5.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Provide information about the accuracy of the data set and details about how it was produced.</span></p></body></html>"))
         self.label_4.setToolTip(_translate("fgdc_dataqual", "Required"))
         self.label_4.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("fgdc_dataqual", "Required"))
