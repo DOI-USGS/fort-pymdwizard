@@ -229,10 +229,7 @@
                 </size>
                </property>
                <property name="toolTip">
-                <string>Address Type -- the information provided by the address.
-Type: text
-Domain: &quot;mailing&quot; &quot;physical&quot; &quot;mailing and physical&quot;, free text
-Short Name: addrtype</string>
+                <string/>
                </property>
                <property name="editable">
                 <bool>true</bool>
@@ -378,10 +375,7 @@ Short Name: addrtype</string>
                       </size>
                      </property>
                      <property name="toolTip">
-                      <string>Address Type -- the information provided by the address.
-Type: text
-Domain: &quot;mailing&quot; &quot;physical&quot; &quot;mailing and physical&quot;, free text
-Short Name: addrtype</string>
+                      <string/>
                      </property>
                      <property name="editable">
                       <bool>true</bool>
@@ -633,10 +627,7 @@ Short Name: addrtype</string>
                     </size>
                    </property>
                    <property name="toolTip">
-                    <string>Address -- an address line for the address.
-Type: text
-Domain: free text
-Short Name: address</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -1136,7 +1127,6 @@ Short Name: postal</string>
        </widget>
       </item>
      </layout>
-     <zorder>label_33</zorder>
      <zorder>content_widget</zorder>
      <zorder>label_2</zorder>
     </widget>

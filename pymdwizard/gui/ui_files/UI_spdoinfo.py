@@ -88,6 +88,7 @@ class Ui_spatial_domain_widget(object):
         self.fgdc_direct.setSizePolicy(sizePolicy)
         self.fgdc_direct.setMinimumSize(QtCore.QSize(0, 0))
         self.fgdc_direct.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.fgdc_direct.setToolTip("")
         self.fgdc_direct.setEditable(True)
         self.fgdc_direct.setObjectName("fgdc_direct")
         self.fgdc_direct.addItem("")
@@ -150,6 +151,7 @@ class Ui_spatial_domain_widget(object):
         self.fgdc_sdtstype.setSizePolicy(sizePolicy)
         self.fgdc_sdtstype.setMinimumSize(QtCore.QSize(0, 0))
         self.fgdc_sdtstype.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.fgdc_sdtstype.setToolTip("")
         self.fgdc_sdtstype.setEditable(True)
         self.fgdc_sdtstype.setObjectName("fgdc_sdtstype")
         self.fgdc_sdtstype.addItem("")
@@ -224,6 +226,7 @@ class Ui_spatial_domain_widget(object):
         self.fgdc_ptvctcnt.setSizePolicy(sizePolicy)
         self.fgdc_ptvctcnt.setMinimumSize(QtCore.QSize(0, 0))
         self.fgdc_ptvctcnt.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_ptvctcnt.setToolTip("")
         self.fgdc_ptvctcnt.setObjectName("fgdc_ptvctcnt")
         self.horizontalLayout_10.addWidget(self.fgdc_ptvctcnt)
         spacerItem1 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -421,7 +424,6 @@ class Ui_spatial_domain_widget(object):
         self.vector_or_raster.addWidget(self.fgdc_rastinfo)
         self.verticalLayout_4.addWidget(self.vector_or_raster)
         self.verticalLayout_3.addWidget(self.content_widget)
-        self.label_33.raise_()
         self.content_widget.raise_()
         self.label_2.raise_()
         self.verticalLayout_2.addWidget(self.fgdc_spdoinfo)
@@ -442,20 +444,12 @@ class Ui_spatial_domain_widget(object):
         self.rbtn_no.setText(_translate("spatial_domain_widget", "No"))
         self.label_2.setText(_translate("spatial_domain_widget", "Shapefile, Geotif, Geodatabase feature class, etc"))
         self.label_33.setText(_translate("spatial_domain_widget", "Spatial Data Category"))
-        self.fgdc_direct.setToolTip(_translate("spatial_domain_widget", "Address Type -- the information provided by the address.\n"
-"Type: text\n"
-"Domain: \"mailing\" \"physical\" \"mailing and physical\", free text\n"
-"Short Name: addrtype"))
         self.fgdc_direct.setItemText(0, _translate("spatial_domain_widget", "Point"))
         self.fgdc_direct.setItemText(1, _translate("spatial_domain_widget", "Vector"))
         self.fgdc_direct.setItemText(2, _translate("spatial_domain_widget", "Raster"))
         self.label_34.setToolTip(_translate("spatial_domain_widget", "Required"))
         self.label_34.setText(_translate("spatial_domain_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_35.setText(_translate("spatial_domain_widget", "Vector Object Type"))
-        self.fgdc_sdtstype.setToolTip(_translate("spatial_domain_widget", "Address Type -- the information provided by the address.\n"
-"Type: text\n"
-"Domain: \"mailing\" \"physical\" \"mailing and physical\", free text\n"
-"Short Name: addrtype"))
         self.fgdc_sdtstype.setItemText(0, _translate("spatial_domain_widget", "Point"))
         self.fgdc_sdtstype.setItemText(1, _translate("spatial_domain_widget", "Entity point"))
         self.fgdc_sdtstype.setItemText(2, _translate("spatial_domain_widget", "Label point"))
@@ -486,10 +480,6 @@ class Ui_spatial_domain_widget(object):
         self.label_36.setToolTip(_translate("spatial_domain_widget", "Required"))
         self.label_36.setText(_translate("spatial_domain_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_22.setText(_translate("spatial_domain_widget", "Point or Vector Object Count"))
-        self.fgdc_ptvctcnt.setToolTip(_translate("spatial_domain_widget", "Address -- an address line for the address.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: address"))
         self.label_38.setText(_translate("spatial_domain_widget", "Raster Object Type"))
         self.fgdc_rasttype.setToolTip(_translate("spatial_domain_widget", "Address Type -- the information provided by the address.\n"
 "Type: text\n"
