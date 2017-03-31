@@ -89,13 +89,10 @@ class WizardWidget(QWidget):
         if __name__ == "__main__":
             QMainWindow.__init__(self, parent)
 
-        self.original_xml = xml
+        self.original_xml = None
 
         self.build_ui()
         self.connect_events()
-        if xml:
-            self.original_xml = xml
-            self._from_xml(self.xml)
 
     def build_ui(self):
         """

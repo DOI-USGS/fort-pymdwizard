@@ -274,9 +274,21 @@ class Spdom(WizardWidget):
         eastbc = xml_node('eastbc', text=self.ui.fgdc_eastbc.text(), parent_node=bounding)
         northbc = xml_node('northbc', text=self.ui.fgdc_northbc.text(), parent_node=bounding)
         southbc = xml_node('southbc', text=self.ui.fgdc_southbc.text(), parent_node=bounding)
+
+        if self.original_xml is not None:
+            boundalt = self.original_xml.xpath('bounding/boundalt')
+            if boundalt:
+                bounding.append(boundalt[0])
+
+            dsgpoly_list = self.original_xml.xpath('dsgpoly')
+            for dsgpoly in dsgpoly_list:
+                spdom.append(dsgpoly)
+
         return spdom
 
     def _from_xml(self, spdom):
+        self.original_xml = spdom
+
         utils.populate_widget(self, spdom)
         self.draw_map()
         self.update_rect()
