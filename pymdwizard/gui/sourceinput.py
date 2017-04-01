@@ -185,6 +185,7 @@ class SourceInput(WizardWidget):
                         srcinfo_widget._from_xml(srcinput)
 
                 else:
+                    self.ui.radio_sourceno_2.setChecked(True)
                     self.src_info.add_another()
         except KeyError:
             pass

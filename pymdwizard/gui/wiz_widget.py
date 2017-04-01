@@ -502,10 +502,11 @@ color: rgb(50, 50, 50);
         # regardless, just do the default
         elif event.type() == QEvent.ToolTip:
             pass
-        elif event.type() == QEvent.Wheel and isinstance(obj, QComboBox):
-            event.ignore()
-            return True
-        else:
-            return False
+
         return super(WizardWidget, self).eventFilter(obj, event)
 
+       # elif event.type() == QEvent.Wheel and isinstance(obj, QComboBox):
+        #     event.ignore()
+        #     return True
+        # else:
+        #     return False
