@@ -140,8 +140,6 @@ class DataQuality(WizardWidget):
             srcinfo_node.append(i)
         dataqual_node.append(srcinfo_node)
 
-        dataqual_node.append(procstep_node)
-
         return dataqual_node
 
     def _from_xml(self, xml_dataqual):

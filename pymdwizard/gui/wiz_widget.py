@@ -118,7 +118,7 @@ class WizardWidget(QWidget):
         # Any child widgets that have a separate drag-drop interactivity
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
-        QGuiApplication.instance().installEventFilter(self)
+        #QGuiApplication.instance().installEventFilter(self)
 
     def connect_events(self):
         """
