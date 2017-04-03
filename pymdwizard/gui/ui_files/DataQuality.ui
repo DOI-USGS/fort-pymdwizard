@@ -60,7 +60,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>15</width>
+          <width>510</width>
           <height>0</height>
          </size>
         </property>
@@ -83,7 +83,7 @@
          <string>Required</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt; font-style:italic; color:#55aaff;&quot;&gt;Provide general Information about the data set.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide information about the accuracy of the data set and details about how it was produced.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
