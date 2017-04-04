@@ -81,7 +81,7 @@ class ProcStep(WizardWidget): #
 
         #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
         self.proc_step.add_another()
-        self.ui.frame_procstep.layout().addWidget(self.proc_step)
+        self.ui.widget_procstep.layout().addWidget(self.proc_step)
 
 
     def dragEnterEvent(self, e):
