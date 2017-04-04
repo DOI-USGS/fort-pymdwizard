@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(435, 397)
+        Form.resize(435, 189)
         Form.setMinimumSize(QtCore.QSize(0, 175))
         Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(Form)
@@ -82,6 +82,8 @@ class Ui_Form(object):
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.verticalLayout_5.addWidget(self.widget_proccont)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem2)
         self.horizontalLayout_3.addWidget(self.fgdc_procstep)
 
         self.retranslateUi(Form)
