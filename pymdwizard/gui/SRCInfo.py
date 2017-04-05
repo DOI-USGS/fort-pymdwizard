@@ -81,8 +81,8 @@ class SRCInfo(WizardWidget): #
 
 
         self.citation.ui.fgdc_lworkcit.deleteLater()
-        self.ui.frame_citation.layout().addWidget(self.citation)
-        self.ui.frame_timeperd.layout().addWidget(self.timeperd)
+        self.ui.widget_citation.layout().addWidget(self.citation)
+        self.ui.widget_timeperd.layout().addWidget(self.timeperd)
 
         self.setup_dragdrop(self)
 

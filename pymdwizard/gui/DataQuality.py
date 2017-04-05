@@ -133,6 +133,7 @@ class DataQuality(WizardWidget):
         if self.sourceinput.has_content():
             srcinfo_node = self.sourceinput._to_xml()
 
+
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()
 
