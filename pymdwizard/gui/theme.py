@@ -59,17 +59,16 @@ class Theme(KeywordsRepeater):  #
     def changed_thesaurus(self, s):
         self.change_tab_label(s)
 
-    def add_keyword(self, keyword):
+    def add_keyword(self, keyword, locked=False):
         existing_kws = self.get_keywords()
         if existing_kws[0] == '':
             kw = self.keywords.get_widgets()[0]
             kw.added_line.setText(keyword)
+            kw.added_line.setReadOnly(locked)
         elif keyword not in existing_kws:
             kw = self.keywords.add_another()
             kw.added_line.setText(keyword)
-
-
-
+            kw.added_line.setReadOnly(locked)
 
     def dragEnterEvent(self, e):
         """
@@ -90,7 +89,8 @@ class Theme(KeywordsRepeater):  #
         else:
             e.ignore()
 
-
+    def get_thesaurus_name(self):
+        return self.ui.fgdc_themekt.text()
 
     def _to_xml(self):
         """

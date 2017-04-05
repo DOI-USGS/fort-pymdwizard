@@ -101,14 +101,21 @@ class ThemeList(WizardWidget): #
         self.ui.btn_add_iso.clicked.connect(self.add_iso)
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
 
-    def add_another(self, click=False, tab_label=''):
-        theme_widget = Theme()
-        theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
+    def add_another(self, click=False, tab_label='', locked=False):
 
-        self.ui.theme_tabs.addTab(theme_widget, tab_label)
-        self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+        if 'None' not in [t.get_thesaurus_name() for t in self.thesauri] and \
+                tab_label == '':
+            theme_widget = self.add_keyword(keyword='', thesaurus='None',
+                                            locked=False)
+        else:
+            theme_widget = Theme()
+            theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
 
-        self.thesauri.append(theme_widget)
+            self.ui.theme_tabs.addTab(theme_widget, tab_label)
+            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+
+            self.thesauri.append(theme_widget)
+
         return theme_widget
 
     def changed_thesaurus(self, s):
@@ -135,8 +142,6 @@ class ThemeList(WizardWidget): #
             self.ui.theme_tabs.setCurrentIndex(i)
             self.remove_selected()
 
-        # WizardWidget.clear_widget(self)
-
     def search_controlled(self):
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
 
@@ -147,7 +152,7 @@ class ThemeList(WizardWidget): #
 
         self.thesaurus_search.show()
 
-    def add_keyword(self, keyword=None, thesaurus=None):
+    def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
         for theme in self.thesauri:
             if theme.ui.fgdc_themekt.text() == thesaurus:
@@ -155,13 +160,14 @@ class ThemeList(WizardWidget): #
 
         if theme_widget is None:
             shortname = thesaurus.split(' ')[0]
-            theme_widget = self.add_another(tab_label=shortname)
+            theme_widget = self.add_another(tab_label=shortname, locked=locked)
             theme_widget.ui.fgdc_themekt.setText(thesaurus)
-            theme_widget.ui.fgdc_themekt.setReadOnly(True)
+            if locked:
+                theme_widget.lock()
             self.changed_thesaurus(shortname)
 
-        theme_widget.add_keyword(keyword)
-
+        theme_widget.add_keyword(keyword, locked=locked)
+        return theme_widget
 
     def dragEnterEvent(self, e):
         """
@@ -232,22 +238,6 @@ class ThemeList(WizardWidget): #
                     else:
                         theme = self.add_another()
                         theme._from_xml(theme_xml)
-        #         utils.populate_widget(self, xml_processstep)
-        #         if xml_processstep.xpath('procdate'):
-        #             self.single_date.set_date(xml_processstep.xpath('procdate')[0].text)
-        #         else:
-        #             pass
-        #         if xml_processstep.xpath('proccont'):
-        #             self.proccont.ui.rbtn_yes.setChecked(True)
-        #             cntinfo_node = xml_processstep.xpath('proccont/cntinfo')[0]
-        #             self.proccont._from_xml(cntinfo_node)
-        #         else:
-        #             self.proccont.ui.rbtn_no.setChecked(True)
-        #             pass
-        #     else:
-        #         print ("The tag is not procstep")
-        # except KeyError:
-        #     pass
 
 
 if __name__ == "__main__":

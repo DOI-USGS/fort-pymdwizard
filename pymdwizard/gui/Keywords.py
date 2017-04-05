@@ -110,8 +110,8 @@ class Keywords(WizardWidget):
             e.ignore()
 
     def _to_xml(self):
-        keywords = self.theme._to_xml()
-        place_keywords = self.place._to_xml()
+        keywords = self.theme_list._to_xml()
+        place_keywords = self.place_list._to_xml()
         for child_node in place_keywords.xpath('place'):
             keywords.append(child_node)
 
@@ -119,8 +119,8 @@ class Keywords(WizardWidget):
 
     def _from_xml(self, keywords):
 
-        self.theme._from_xml(keywords)
-        self.place._from_xml(keywords)
+        self.theme_list._from_xml(keywords)
+        self.place_list._from_xml(keywords)
 
 
 if __name__ == "__main__":

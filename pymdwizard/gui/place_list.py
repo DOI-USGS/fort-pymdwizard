@@ -98,17 +98,26 @@ class PlaceList(WizardWidget): #
     def contact_include_place_change(self, b):
         if b:
             self.ui.place_contents.show()
+            if len(self.thesauri) == 0:
+                theme_widget = self.add_keyword(keyword='', thesaurus='None',
+                                            locked=False)
         else:
             self.ui.place_contents.hide()
 
-    def add_another(self, click=False, tab_label=''):
-        theme_widget = Theme(which='place')
-        theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
+    def add_another(self, click=False, tab_label='', locked=False):
 
-        self.ui.theme_tabs.addTab(theme_widget, tab_label)
-        self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+        if 'None' not in [t.get_thesaurus_name() for t in self.thesauri] and \
+                        tab_label == '':
+            theme_widget = self.add_keyword(keyword='', thesaurus='None',
+                                            locked=False)
+        else:
+            theme_widget = Theme(which='place')
+            theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
 
-        self.thesauri.append(theme_widget)
+            self.ui.theme_tabs.addTab(theme_widget, tab_label)
+            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+
+            self.thesauri.append(theme_widget)
         return theme_widget
 
     def changed_thesaurus(self, s):
@@ -117,25 +126,13 @@ class PlaceList(WizardWidget): #
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
-        if current_index == 0:
-            self.ui.theme_tabs.setTabEnabled(0, False)
-            self.ui.iso_tab.hide()
-        else:
-            self.ui.theme_tabs.removeTab(current_index)
-            del self.thesauri[current_index-1]
-
-    def add_iso(self):
-        self.ui.theme_tabs.setTabEnabled(0, True)
-        self.ui.iso_tab.show()
+        self.ui.theme_tabs.removeTab(current_index)
+        del self.thesauri[current_index-1]
 
     def clear_widget(self):
-        self.iso_kws.clear_widgets()
-
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
             self.remove_selected()
-
-        # WizardWidget.clear_widget(self)
 
     def search_controlled(self):
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
@@ -147,7 +144,7 @@ class PlaceList(WizardWidget): #
 
         self.thesaurus_search.show()
 
-    def add_keyword(self, keyword=None, thesaurus=None):
+    def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
         for theme in self.thesauri:
             if theme.ui.fgdc_themekt.text() == thesaurus:
@@ -155,12 +152,14 @@ class PlaceList(WizardWidget): #
 
         if theme_widget is None:
             shortname = thesaurus.split(' ')[0]
-            theme_widget = self.add_another(tab_label=shortname)
+            theme_widget = self.add_another(tab_label=shortname, locked=locked)
             theme_widget.ui.fgdc_themekt.setText(thesaurus)
-            theme_widget.ui.fgdc_themekt.setReadOnly(True)
-            # self.changed_thesaurus(shortname)
+            if locked:
+                theme_widget.lock()
+            self.changed_thesaurus(shortname)
 
         theme_widget.add_keyword(keyword)
+        return theme_widget
 
 
     def dragEnterEvent(self, e):
@@ -221,7 +220,7 @@ class PlaceList(WizardWidget): #
         self.original_xml = keywords_xml
         if keywords_xml.tag == 'keywords':
             for place_xml in keywords_xml.xpath('place'):
-                place = self.add_another()
+                place = self.add_another(tab_label='x')
                 place._from_xml(place_xml)
 
 

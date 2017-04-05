@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Keywords.ui'
+# Form implementation generated from reading ui file 'keywords.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_keyword_widget(object):
     def setupUi(self, keyword_widget):
         keyword_widget.setObjectName("keyword_widget")
-        keyword_widget.resize(481, 529)
+        keyword_widget.resize(534, 75)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -29,9 +29,11 @@ class Ui_keyword_widget(object):
         self.fgdc_keywords = QtWidgets.QGroupBox(keyword_widget)
         self.fgdc_keywords.setObjectName("fgdc_keywords")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.fgdc_keywords)
+        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_search_term_5 = QtWidgets.QLabel(self.fgdc_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_search_term_5.sizePolicy().hasHeightForWidth())
