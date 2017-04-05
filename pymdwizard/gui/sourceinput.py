@@ -134,7 +134,9 @@ class SourceInput(WizardWidget):
         else:
             e.ignore()
 
-
+    def clear_widget(self):
+        self.ui.radio_sourceno_2.setChecked(True)
+        WizardWidget.clear_widget(self)
          
 
     def _to_xml(self):
@@ -175,7 +177,7 @@ class SourceInput(WizardWidget):
         """
         try:
             if xml_srcinput.tag == 'lineage':
-                self.src_info.clear_widgets()
+                self.src_info.clear_widgets(add_another=False)
                 self.ui.frame_sourceinfo.show()
                 self.ui.radio_sourceyes.setChecked(True)
                 xml_srcinput = xml_srcinput.findall('srcinfo')
