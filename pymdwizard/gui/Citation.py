@@ -248,8 +248,10 @@ class Citation(WizardWidget): #
                                          text=self.ui.fgdc_publish.text())
 
         for onlink in self.onlink_list.get_widgets():
-            onlink_node = xml_utils.xml_node('onlink', parent_node=citeinfo,
-                                             text=onlink.added_line.text())
+            if onlink.added_line.text() != '':
+                onlink_node = xml_utils.xml_node('onlink',
+                                                 parent_node=citeinfo,
+                                                 text=onlink.added_line.text())
 
         if self.include_lwork and self.ui.radio_lworkyes.isChecked():
             lworkcit = xml_utils.xml_node('lworkcit', parent_node=citeinfo)
