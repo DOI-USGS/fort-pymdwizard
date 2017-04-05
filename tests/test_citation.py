@@ -51,6 +51,5 @@ def test_citation__to_xml(qtbot):
     <serinfo>Name 25</serinfo>
     <issue>Issue 45</issue>
   </serinfo>
-  <onlink/>
 </citeinfo>
 """
