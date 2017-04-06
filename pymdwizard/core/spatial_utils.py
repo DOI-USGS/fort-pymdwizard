@@ -39,6 +39,7 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import collections
 
 from osgeo import gdal, osr, ogr
 gdal.UseExceptions()
@@ -874,37 +875,51 @@ def sinusoidal(params):
 
 
 
-PROJECTION_LOOKUP = {'Albers Conical Equal Area': {'shortname': 'albers',
+PROJECTION_LOOKUP = collections.OrderedDict()
+
+PROJECTION_LOOKUP['Albers Conical Equal Area'] = {'shortname': 'albers',
                                   'elements': ['stdparll', 'stdparl_2',
                                                'longcm',
-                                               'latprjo', 'feast', 'fnorth']},
-                     'Azimuthal Equidistant': {'shortname': 'azimequi',
-                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Equidistant Conic': {'shortname': 'equicon',
-                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Equirectangular':{'shortname': 'equirect',
-                                    'elements': ['stdparll', 'longcm', 'feast', 'fnorth']},
-                     'General Vertical Near-sided Perspective': {'shortname': 'gvnsp',
-                                    'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Gnomonic': {'shortname': 'gnomonic',
-                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Lambert Azimuthal Equal Area': {'shortname': 'lamberta',
-                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Lambert Conformal Conic': {'shortname': 'lambertc',
-                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Modified Stereographic for Alaska': {'shortname': 'modsak',
+                                               'latprjo', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Azimuthal Equidistant'] = {'shortname': 'azimequi',
+                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Equidistant Conic'] = {'shortname': 'equicon',
+                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Equirectangular'] = {'shortname': 'equirect',
+                                    'elements': ['stdparll', 'longcm', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['General Vertical Near-sided Perspective'] = {'shortname': 'gvnsp',
+                                    'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Gnomonic'] = {'shortname': 'gnomonic',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Lambert Azimuthal Equal Area'] = {'shortname': 'lamberta',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Lambert Conformal Conic'] = {'shortname': 'lambertc',
+                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Modified Stereographic for Alaska'] = {'shortname': 'modsak',
                                     'elements': ['feast', 'fnorth']},
-                     'Miller Cylindrical': {'shortname': 'miller',
-                                    'elements': ['longcm', 'feast', 'fnorth']},
-                     'Orthographic': {'shortname': 'orthogr',
-                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']},
-                     'Polyconic': {'shortname': 'polycon',
-                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']},
-                     'Robinson': {'shortname': 'robinson',
-                                    'elements': ['longpc', 'feast', 'fnorth']},
-                     'Sinusoidal': {'shortname': 'sinusoid',
+PROJECTION_LOOKUP['Miller Cylindrical'] = {'shortname': 'miller',
                                     'elements': ['longcm', 'feast', 'fnorth']}
-                     }
+PROJECTION_LOOKUP['Orthographic'] = {'shortname': 'orthogr',
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Polyconic'] = {'shortname': 'polycon',
+                                    'elements': ['longcm', 'latprjo', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Robinson'] = {'shortname': 'robinson',
+                                    'elements': ['longpc', 'feast', 'fnorth']}
+PROJECTION_LOOKUP['Sinusoidal'] = {'shortname': 'sinusoid',
+                                    'elements': ['longcm', 'feast', 'fnorth']}
+
+GRIDSYS_LOOKUP = collections.OrderedDict()
+
+GRIDSYS_LOOKUP['Universal Transverse Mercator'] = {'shortname': 'utm',
+                                                   'elements': []}
+GRIDSYS_LOOKUP['Universal Polar Stereographic'] = {'shortname': 'ups',
+                                                    'elements': []}
+GRIDSYS_LOOKUP['State Plane Coordinate System'] = {'shortname': 'spsc',
+                                                    'elements': []}
+GRIDSYS_LOOKUP['ARC Coordinate System'] = {'shortname': 'arc',
+                                                    'elements': []}
+GRIDSYS_LOOKUP['other grid system'] = {'shortname': 'othergrd',
+                                                    'elements': []}
 
 DATUM_LOOKUP = {'North American Datum of 1927 (NAD 27)':{'ellips':'Clarke 1866',
                                                          'semiaxis':'6378206.400000',
