@@ -80,7 +80,7 @@ class DistInfo(WizardWidget):
 
         self.ui.fgdc_distrib.layout().addWidget(self.contactinfo)
 
-        self.ui.frame_distinfo.hide()
+        self.ui.widget_distinfo.hide()
 
     def connect_events(self):
         self.ui.radio_distyes.toggled.connect(self.include_dist_contacts)
@@ -115,9 +115,9 @@ class DistInfo(WizardWidget):
 
     def include_dist_contacts(self, b):
         if b:
-            self.ui.frame_distinfo.show()
+            self.ui.widget_distinfo.show()
         else:
-            self.ui.frame_distinfo.hide()
+            self.ui.widget_distinfo.hide()
 
     def pull_datasetcontact(self):
         self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
