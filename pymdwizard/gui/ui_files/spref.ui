@@ -137,6 +137,13 @@
                  </widget>
                 </item>
                 <item>
+                 <widget class="QRadioButton" name="btn_local">
+                  <property name="text">
+                   <string>Local</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <spacer name="horizontalSpacer">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
@@ -175,7 +182,11 @@
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QLineEdit" name="fgdc_latres"/>
+                   <widget class="QLineEdit" name="fgdc_latres">
+                    <property name="text">
+                     <string>0.0001</string>
+                    </property>
+                   </widget>
                   </item>
                   <item row="2" column="0">
                    <widget class="QLabel" name="label_2">
@@ -185,7 +196,11 @@
                    </widget>
                   </item>
                   <item row="2" column="1">
-                   <widget class="QLineEdit" name="fgdc_longres"/>
+                   <widget class="QLineEdit" name="fgdc_longres">
+                    <property name="text">
+                     <string>0.0001</string>
+                    </property>
+                   </widget>
                   </item>
                   <item row="3" column="0">
                    <widget class="QLabel" name="label_3">
@@ -303,7 +318,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QRadioButton" name="btn_local">
+                     <widget class="QRadioButton" name="btn_localp">
                       <property name="text">
                        <string>Local Planar</string>
                       </property>
@@ -330,7 +345,7 @@
                   <item>
                    <widget class="QStackedWidget" name="stack_planar">
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <widget class="QWidget" name="fgdc_mapproj">
                      <layout class="QFormLayout" name="formLayout_2">
@@ -392,7 +407,38 @@
                        </widget>
                       </item>
                       <item row="0" column="1">
-                       <widget class="QComboBox" name="fgdc_gridsysn"/>
+                       <widget class="QComboBox" name="fgdc_gridsysn">
+                        <item>
+                         <property name="text">
+                          <string>Universal Transverse Mercator</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Universal Polar Stereographic</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>State Plane Coordinate System 1927</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>State Plane Coordinate System 1983</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>ARC Coordinate System</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>other grid system</string>
+                         </property>
+                        </item>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
@@ -406,7 +452,7 @@
                        </widget>
                       </item>
                       <item row="0" column="1">
-                       <widget class="QLineEdit" name="fgdc_localdes"/>
+                       <widget class="QLineEdit" name="fgdc_localpd"/>
                       </item>
                       <item row="1" column="0">
                        <widget class="QLabel" name="label_6">
@@ -421,6 +467,30 @@
                      </layout>
                     </widget>
                    </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page">
+                 <layout class="QFormLayout" name="formLayout_7">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_12">
+                    <property name="text">
+                     <string>Local Description</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="fgdc_localdes_2"/>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_14">
+                    <property name="text">
+                     <string>Local Georeference Information</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="fgdc_localgeo_2"/>
                   </item>
                  </layout>
                 </widget>

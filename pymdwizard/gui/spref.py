@@ -81,6 +81,7 @@ class SpRef(WizardWidget):
         self.setup_dragdrop(self, enable=True)
 
         self.ui.fgdc_mapprojn.addItems(spatial_utils.PROJECTION_LOOKUP.keys())
+        self.ui.fgdc_gridsysn.addItems(spatial_utils.GRIDSYS_LOOKUP.keys())
 
     def connect_events(self):
         """
@@ -156,8 +157,10 @@ class SpRef(WizardWidget):
             except:
                 long_name = param
                 annotation = 'Unknown'
+
             label = QLabel(long_name)
             label.setToolTip(annotation)
+            label.help_text = annotation
             lineedit = QLineEdit('...')
             lineedit.setObjectName('fgdc_' + param)
             lineedit.setToolTip(annotation)
@@ -198,7 +201,7 @@ class SpRef(WizardWidget):
     def _to_xml(self):
 
         spref_node = xml_utils.xml_node('spref')
-        return spref_node
+
         horizsys = xml_utils.xml_node('horizsys',   parent_node=spref_node)
 
         if self.ui.btn_geographic.isChecked():
@@ -212,6 +215,12 @@ class SpRef(WizardWidget):
         else:
             planar = xml_utils.xml_node('planar', parent_node=horizsys)
 
+            projection_name = self.ui.fgdc_mapprojn.currentText()
+            projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
+            for param in projection['elements']:
+                widget = self.ui.findChild(QLineEdit, "fgdc_"+param)
+                xml_utils.xml_node(param, text=widget.text(), parent_node=planar)
+
         if self.findChild(QComboBox, "fgdc_horizdn").currentText():
             geodetic = xml_utils.xml_node('geodetic', parent_node=horizsys)
             horizdn_str = self.findChild(QComboBox, "fgdc_horizdn").currentText()
@@ -219,17 +228,33 @@ class SpRef(WizardWidget):
             ellips_str = self.findChild(QComboBox, "fgdc_ellips").currentText()
             ellips = xml_utils.xml_node('ellips', ellips_str, geodetic)
             semiaxis_str = self.findChild(QLineEdit, "fgdc_semiaxis").text()
-            semiaxis = xml_utils.xml_node('horizdn', semiaxis_str, geodetic)
+            semiaxis = xml_utils.xml_node('semiaxis', semiaxis_str, geodetic)
             denflat_str = self.findChild(QLineEdit, "fgdc_denflat").text()
             denflat = xml_utils.xml_node('denflat', denflat_str, geodetic)
 
         return spref_node
 
 
-    def _from_xml(self, metadata_element):
-        pass
+    def _from_xml(self, spref_node):
+        self.clear_widget()
+        if spref_node.tag == 'spref':
+            self.ui.rbtn_yes.setChecked(True)
+
+            geograph = xml_utils.search_xpath(spref_node, 'horizsys/geograph')
+            if geograph:
+                self.ui.btn_geographic.setChecked(True)
+
+                utils.populate_widget_element(self.ui.fgdc_latgres, geograph[0], 'latres')
+                utils.populate_widget_element(self.ui.fgdc_longres, geograph[0], 'longres')
+                utils.populate_widget_element(self.ui.fgdc_geogunit, geograph[0], 'geogunit')
 
 
+            geodetic = xml_utils.search_xpath(spref_node, 'horizsys/geodetic')
+            if geodetic:
+                utils.populate_widget_element(self.ui.fgdc_horizdn, geodetic[0], 'horizdn')
+                utils.populate_widget_element(self.ui.fgdc_ellips, geodetic[0], 'ellips')
+                utils.populate_widget_element(self.ui.fgdc_semiaxis, geodetic[0], 'semiaxis')
+                utils.populate_widget_element(self.ui.fgdc_denflat, geodetic[0], 'denflat')
 
 if __name__ == "__main__":
     utils.launch_widget(SpRef, "spref testing")

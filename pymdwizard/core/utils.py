@@ -169,10 +169,7 @@ def populate_widget_element(widget, element, xpath):
     """
     if element.xpath(xpath):
         first_child = element.xpath(xpath)[0]
-        try:
-            widget.setText(first_child.text)
-        except:
-            widget.setPlainText(first_child.text)
+        set_text(widget, first_child.text)
 
 
 # Back up the reference to the exceptionhook
