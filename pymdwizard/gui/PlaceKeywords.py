@@ -109,14 +109,12 @@ class PlaceKeywords(WizardWidget):
 
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
 
-        self.thesaurus_dialog = QDialog(self)
-        self.thesaurus_dialog.setWindowTitle('Theme Keyword Thesaurus Search')
-        self.thesaurus_dialog.setLayout(self.thesaurus_search.layout())
+        self.thesaurus_search.setWindowTitle('Place Keyword Thesaurus Search')
 
         fg = self.frameGeometry()
-        self.thesaurus_dialog.move(fg.topRight() - QPoint(150, -25))
+        self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
 
-        self.thesaurus_dialog.exec_()
+        self.thesaurus_search.show()
 
     def browse_iso(self):
         self.iso_browse = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)

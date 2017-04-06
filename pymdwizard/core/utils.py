@@ -50,7 +50,7 @@ import requests
 import pandas as pd
 
 from PyQt5.QtWidgets import QLineEdit, QTextEdit, QTextBrowser, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QComboBox
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
@@ -137,22 +137,18 @@ def set_text(widget, text):
     None
 
     """
-
-    try:
+    if isinstance(widget, QLineEdit):
         widget.setText(text)
         widget.setCursorPosition(0)
-    except:
-        pass
 
-    try:
+    if isinstance(widget, QPlainTextEdit):
         widget.setPlainText(text)
-    except:
-        pass
 
-    try:
-        widget.set_date(text)
-    except:
-        pass
+    if isinstance(widget, QTextBrowser):
+        widget.setText(text)
+
+    if isinstance(widget, QComboBox):
+        widget.setEditText(text)
 
 
 def populate_widget_element(widget, element, xpath):

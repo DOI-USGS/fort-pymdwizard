@@ -139,7 +139,7 @@ class ProcStep(WizardWidget): #
         """
         try:
             if xml_procstep.tag == 'lineage':
-                self.proc_step.clear_widgets()
+                self.proc_step.clear_widgets(add_another=False)
                 xml_procstep = xml_procstep.findall('procstep')
                 if xml_procstep:
                     for procstep in xml_procstep:

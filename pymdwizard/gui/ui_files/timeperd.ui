@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>234</width>
-    <height>240</height>
+    <width>313</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -201,6 +201,9 @@
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
                   </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Preferred</enum>
+                  </property>
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>0</width>
@@ -237,6 +240,9 @@
                  <spacer name="verticalSpacer_4">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Preferred</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -314,7 +320,7 @@
         <item>
          <widget class="QComboBox" name="fgdc_current">
           <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
+           <enum>Qt::ClickFocus</enum>
           </property>
           <property name="editable">
            <bool>true</bool>

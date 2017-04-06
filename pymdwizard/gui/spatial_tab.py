@@ -148,6 +148,12 @@ class SpatialTab(WizardWidget):
     def switch_schema(self, schema):
         self.spdom.switch_schema(schema)
 
+
+    def clear_widget(self):
+        self.spdoinfo.clear_widget()
+        self.spdom.clear_widget()
+        self.spref.clear_widget()
+
     def _to_xml(self):
         # since this tab is composed of content from three disparate sections
         # the to and from xml functions are being handled

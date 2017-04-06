@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(271, 260)
+        Form.resize(271, 89)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_2.setContentsMargins(3, 3, 3, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -36,6 +36,11 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.popOff)
         self.verticalLayout_2.addWidget(self.button_widget)
         self.tab_widget = QtWidgets.QTabWidget(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tab_widget.sizePolicy().hasHeightForWidth())
+        self.tab_widget.setSizePolicy(sizePolicy)
         self.tab_widget.setStyleSheet("")
         self.tab_widget.setElideMode(QtCore.Qt.ElideNone)
         self.tab_widget.setObjectName("tab_widget")
@@ -43,8 +48,11 @@ class Ui_Form(object):
         self.vertical_widget = QtWidgets.QWidget(Form)
         self.vertical_widget.setObjectName("vertical_widget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.vertical_widget)
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout_4.setSpacing(3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+        spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.verticalLayout_4.addItem(spacerItem1)
         self.verticalLayout_2.addWidget(self.vertical_widget)
 
         self.retranslateUi(Form)

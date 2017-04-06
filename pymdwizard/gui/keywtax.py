@@ -53,60 +53,8 @@ class Keywordtax(KeywordsRepeater):  #
     def __init__(self, parent=None):
         KeywordsRepeater.__init__(self, keywords_label='Taxonomic keywords',
                                   parent=parent)
+        self.ui.fgdc_themekt.name = 'fgdc_taxonkt'
 
-    # def build_ui(self):
-    #     """
-    #     Build and modify this widget's GUI
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     self.
-    #
-    #     self.repeater = KeywordsRepeater(keywords_label='Taxonomic keywords')
-    #
-    #     self.ui = self.repeater.ui
-    #     self.repeater.add_another()
-    #     self.setup_dragdrop(self)
-
-
-    # def connect_events(self):
-    #     """
-    #     Connect the appropriate GUI components with the corresponding functions
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     self.ui.radio_single.toggled.connect(self.switch_primary)
-    #     self.ui.radio_range.toggled.connect(self.switch_primary)
-    #     self.ui.radio_multiple.toggled.connect(self.switch_primary)
-    #
-    # def switch_primary(self):
-    #     """
-    #     Switches form to reflect either organization or person primary
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     if self.ui.radio_single.isChecked():
-    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(0)
-    #         self.ui.page_singledate.show()
-    #         self.ui.page_daterange.hide()
-    #         self.ui.page_multipledates.hide()
-    #         self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
-    #     elif self.ui.radio_range.isChecked():
-    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(1)
-    #         self.ui.page_singledate.hide()
-    #         self.ui.page_daterange.show()
-    #         self.ui.page_multipledates.hide()
-    #         self.ui.page_multipledates.layout().removeWidget(self.multi_dates)
-    #     elif self.ui.radio_multiple.isChecked():
-    #         self.findChild(QStackedWidget, "fgdc_timeinfo").setCurrentIndex(2)
-    #         self.ui.page_singledate.hide()
-    #         self.ui.page_daterange.hide()
-    #         self.ui.page_multipledates.layout().addWidget(self.multi_dates)
-    #         self.ui.page_multipledates.show()
-    #
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
@@ -127,7 +75,7 @@ class Keywordtax(KeywordsRepeater):  #
             e.ignore()
 
     def clear_widget(self):
-        self.ui.thesaurus_edit.clear()
+        self.ui.fgdc_themekt.clear()
         self.keywords.clear_widgets()
 
     def _to_xml(self):
@@ -139,7 +87,7 @@ class Keywordtax(KeywordsRepeater):  #
         """
         keywtax = xml_utils.xml_node('keywtax')
         taxonkt = xml_utils.xml_node("taxonkt",
-                                     text=self.ui.thesaurus_edit.text(),
+                                     text=self.ui.fgdc_themekt.text(),
                                      parent_node=keywtax)
         for keyword in self.get_keywords():
             taxonkey = xml_utils.xml_node('taxonkey', text=keyword,
@@ -161,11 +109,11 @@ class Keywordtax(KeywordsRepeater):  #
             if keywtax.tag == 'keywtax':
                 thesaurus = keywtax.xpath('taxonkt')
                 if thesaurus:
-                    self.ui.thesaurus_edit.setText(thesaurus[0].text)
+                    self.ui.fgdc_themekt.setText(thesaurus[0].text)
 
                 keywords = keywtax.xpath('taxonkey')
                 for kw in keywords:
-                    kw_widget = self.add_another()
+                    kw_widget = self.get_widgets()[0]
                     kw_widget.added_line.setText(kw.text)
 
             else:

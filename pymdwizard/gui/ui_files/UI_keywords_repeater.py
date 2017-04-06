@@ -21,18 +21,18 @@ class Ui_Form(object):
         self.thesaurus_label = QtWidgets.QLabel(Form)
         self.thesaurus_label.setObjectName("thesaurus_label")
         self.horizontalLayout.addWidget(self.thesaurus_label)
-        self.thesaurus_edit = QtWidgets.QLineEdit(Form)
+        self.fgdc_themekt = QtWidgets.QLineEdit(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.thesaurus_edit.sizePolicy().hasHeightForWidth())
-        self.thesaurus_edit.setSizePolicy(sizePolicy)
-        self.thesaurus_edit.setMinimumSize(QtCore.QSize(125, 0))
-        self.thesaurus_edit.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.thesaurus_edit.setText("")
-        self.thesaurus_edit.setPlaceholderText("")
-        self.thesaurus_edit.setObjectName("thesaurus_edit")
-        self.horizontalLayout.addWidget(self.thesaurus_edit)
+        sizePolicy.setHeightForWidth(self.fgdc_themekt.sizePolicy().hasHeightForWidth())
+        self.fgdc_themekt.setSizePolicy(sizePolicy)
+        self.fgdc_themekt.setMinimumSize(QtCore.QSize(125, 0))
+        self.fgdc_themekt.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_themekt.setText("")
+        self.fgdc_themekt.setPlaceholderText("")
+        self.fgdc_themekt.setObjectName("fgdc_themekt")
+        self.horizontalLayout.addWidget(self.fgdc_themekt)
         self.required_2 = QtWidgets.QLabel(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
@@ -65,7 +65,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.thesaurus_label.setText(_translate("Form", "Thesaurus"))
-        self.thesaurus_edit.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
+        self.fgdc_themekt.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: cntper"))

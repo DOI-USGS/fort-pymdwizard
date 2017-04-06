@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(234, 240)
+        Form.resize(313, 173)
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_11.setSpacing(0)
@@ -110,7 +110,7 @@ class Ui_Form(object):
         self.verticalLayout_10.setContentsMargins(9, 9, 0, 0)
         self.verticalLayout_10.setSpacing(6)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         self.verticalLayout_10.addItem(spacerItem)
         self.fgdc_timeinfo.addWidget(self.fgdc_sngdate)
         self.fgdc_rngdates = QtWidgets.QWidget()
@@ -127,7 +127,7 @@ class Ui_Form(object):
         self.layout_daterange.setObjectName("layout_daterange")
         self.verticalLayout_3.addLayout(self.layout_daterange)
         self.verticalLayout_7.addLayout(self.verticalLayout_3)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         self.verticalLayout_7.addItem(spacerItem1)
         self.fgdc_timeinfo.addWidget(self.fgdc_rngdates)
         self.fgdc_mdattim = QtWidgets.QWidget()
@@ -160,7 +160,7 @@ class Ui_Form(object):
         self.label_8.setObjectName("label_8")
         self.verticalLayout.addWidget(self.label_8)
         self.fgdc_current = QtWidgets.QComboBox(self.fgdc_timeperd)
-        self.fgdc_current.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.fgdc_current.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.fgdc_current.setEditable(True)
         self.fgdc_current.setObjectName("fgdc_current")
         self.fgdc_current.addItem("")
@@ -174,7 +174,7 @@ class Ui_Form(object):
         self.verticalLayout_11.addWidget(self.fgdc_timeperd)
 
         self.retranslateUi(Form)
-        self.fgdc_timeinfo.setCurrentIndex(1)
+        self.fgdc_timeinfo.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

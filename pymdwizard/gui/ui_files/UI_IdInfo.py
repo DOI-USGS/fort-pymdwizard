@@ -127,7 +127,7 @@ class Ui_fgdc_idinfo(object):
         self.idinfo_scroll_area.setWidgetResizable(True)
         self.idinfo_scroll_area.setObjectName("idinfo_scroll_area")
         self.idinfo_main_widget = QtWidgets.QWidget()
-        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 854, 403))
+        self.idinfo_main_widget.setGeometry(QtCore.QRect(0, 0, 854, 810))
         self.idinfo_main_widget.setObjectName("idinfo_main_widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.idinfo_main_widget)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -172,8 +172,6 @@ class Ui_fgdc_idinfo(object):
         self.idinfo_scroll_area.setWidget(self.idinfo_main_widget)
         self.horizontalLayout_2.addWidget(self.idinfo_scroll_area)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
-        self.verticalLayout.addItem(spacerItem4)
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(fgdc_idinfo)

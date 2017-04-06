@@ -114,6 +114,10 @@ class DataQuality(WizardWidget):
         else:
             e.ignore()
 
+    def clear_widget(self):
+        self.sourceinput.clear_widget()
+        WizardWidget.clear_widget(self)
+
     def _to_xml(self):
         # add code here to translate the form into xml representation
         dataqual_node = etree.Element('dataqual')

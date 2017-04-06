@@ -106,30 +106,23 @@ class IdInfo(WizardWidget):
         self.purpose = Purpose(parent=self)
         self.supplinf = SupplInf(parent=self)
 
-
         self.ui.fgdc_citation.layout().addWidget(self.citation)
 
-
+        #bottom to top in layout
         time_hbox = QHBoxLayout()
         time_hbox.addWidget(self.status)
         time_hbox.addWidget(self.timeperd)
-        self.ui.two_column_left.layout().addLayout(time_hbox, 0)
+        self.ui.two_column_left.layout().insertLayout(0, time_hbox)
+        self.ui.two_column_left.layout().insertWidget(0, self.datacredit)
+        self.ui.two_column_left.layout().insertWidget(0, self.taxonomy)
+        self.ui.two_column_left.layout().insertWidget(0, self.ptcontac)
+        self.ui.two_column_left.layout().insertWidget(0, self.useconst)
+        self.ui.two_column_left.layout().insertWidget(0, self.accconst)
 
-        #self.ui.two_column_left.layout().addWidget(self.status, 0)
-        self.ui.two_column_left.layout().addWidget(self.accconst, 1)
-        self.ui.two_column_left.layout().addWidget(self.useconst, 2)
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 3)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy, 4)
-        self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
-
-        self.ui.two_column_right.layout().addWidget(self.abstract, 0)
-        self.ui.two_column_right.layout().addWidget(self.purpose, 1)
-        self.ui.two_column_right.layout().addWidget(self.keywords, 2)
-        #self.ui.two_column_right.layout().addWidget(self.timeperd, 3)
-        self.ui.two_column_right.layout().addWidget(self.supplinf, 4)
-        #self.ui.two_column_right.layout().addWidget(self.descriptor, 2)
-        #self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        #self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
+        self.ui.two_column_right.layout().insertWidget(0, self.supplinf)
+        self.ui.two_column_right.layout().insertWidget(0, self.keywords)
+        self.ui.two_column_right.layout().insertWidget(0, self.purpose)
+        self.ui.two_column_right.layout().insertWidget(0, self.abstract)
 
 
 

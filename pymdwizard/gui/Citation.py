@@ -87,7 +87,8 @@ class Citation(WizardWidget): #
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ', show_format=False)
+        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ',
+                                            show_format=False, required=True)
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
@@ -100,7 +101,8 @@ class Citation(WizardWidget): #
         self.fgdc_origin = RepeatingElement(add_text='Add originator',
                                             remove_text='Remove last',
                                             widget_kwargs={'label': 'Originator',
-                                                           'line_name':'fgdc_origin'})
+                                                           'line_name':'fgdc_origin',
+                                                           'required':True})
         self.fgdc_origin.add_another()
         self.ui.originator_layout.addWidget(self.fgdc_origin)
 
@@ -246,8 +248,10 @@ class Citation(WizardWidget): #
                                          text=self.ui.fgdc_publish.text())
 
         for onlink in self.onlink_list.get_widgets():
-            onlink_node = xml_utils.xml_node('onlink', parent_node=citeinfo,
-                                             text=onlink.added_line.text())
+            if onlink.added_line.text() != '':
+                onlink_node = xml_utils.xml_node('onlink',
+                                                 parent_node=citeinfo,
+                                                 text=onlink.added_line.text())
 
         if self.include_lwork and self.ui.radio_lworkyes.isChecked():
             lworkcit = xml_utils.xml_node('lworkcit', parent_node=citeinfo)
@@ -278,10 +282,13 @@ class Citation(WizardWidget): #
             self.fgdc_origin.clear_widgets()
             if citeinfo.findall("origin"):
                 for origin in citeinfo.findall('origin'):
-                    origin_widget = self.fgdc_origin.add_another()
+                    origin_widget = self.fgdc_origin.widgets[0]
                     origin_widget.added_line.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
+
+            if citeinfo.findall('geoform'):
+                self.ui.fgdc_geoform.setEditText(citeinfo.findall('geoform')[0].text)
 
             utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
@@ -290,10 +297,8 @@ class Citation(WizardWidget): #
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
                 for onlink in citeinfo.findall('onlink'):
-                    onlink_widget = self.onlink_list.add_another()
+                    onlink_widget = self.onlink_list.widgets[0]
                     onlink_widget.added_line.setText(onlink.text)
-            else:
-                self.onlink_list.add_another()
 
             if citeinfo.xpath('serinfo'):
                 self.ui.radio_seriesyes.setChecked(True)
@@ -304,8 +309,8 @@ class Citation(WizardWidget): #
             pubinfo = citeinfo.xpath('pubinfo')
             if pubinfo:
                 self.ui.radio_pubinfoyes.setChecked(True)
-                utils.populate_widget(self.ui.fgdc_publish, pubinfo.xpath('publish')[0])
-                utils.populate_widget(self.ui.fgdc_pubplace, pubinfo.xpath('pubplace')[0])
+                utils.populate_widget_element(self.ui.fgdc_publish, pubinfo[0], 'publish')
+                utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
 

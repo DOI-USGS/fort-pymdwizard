@@ -78,7 +78,7 @@ class ThesaurusSearch(QWidget):
         -------
         None
         """
-        self.ui = UI_ThesaurusSearch.Ui_ThesaurusSearchWidget()
+        self.ui = UI_ThesaurusSearch.Ui_ThesaurusSearch()
         self.ui.setupUi(self)
 
     def connect_events(self):
@@ -249,9 +249,10 @@ class ThesaurusSearch(QWidget):
                 thesaurus = parent.text()
                 self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
-    def close(self):
+    def close_form(self):
+        self.parent = None
         self.deleteLater()
-
+        self.close()
 
 if __name__ == '__main__':
     utils.launch_widget(ThesaurusSearch, "Thesaurus Search testing")
