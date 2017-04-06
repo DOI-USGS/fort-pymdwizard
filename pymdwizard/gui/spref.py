@@ -140,13 +140,6 @@ class SpRef(WizardWidget):
 
         annotation_lookup['stdparl_2'] = {'long_name':'Standard Parallel',
                                       'annotation':annotation_lookup['stdparll']['annotation']}
-    # widgets = self.findChildren(QObject, QRegExp(r'.*'))
-    # for widget in widgets:
-    #     if widget.objectName().startswith('fgdc_'):
-    #         shortname = widget.objectName().replace('fgdc_', '')
-    #         if shortname[-1].isdigit():
-    #             shortname = shortname[:-1]
-    #         widget.setToolTip(annotation_lookup[shortname]['annotation'])
 
 
         layout = self.ui.scrollAreaWidgetContents.layout()
