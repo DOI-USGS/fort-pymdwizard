@@ -906,6 +906,15 @@ PROJECTION_LOOKUP = {'Albers Conical Equal Area': {'shortname': 'albers',
                                     'elements': ['longcm', 'feast', 'fnorth']}
                      }
 
+DATUM_LOOKUP = {'North American Datum of 1927 (NAD 27)':{'ellips':'Clarke 1866',
+                                                         'semiaxis':'6378206.400000',
+                                                         'denflat':'294.978698'},
+                'North American Datum of 1983 (NAD 83)':{'ellips':'Geodetic Reference System 1980',
+                                                         'semiaxis':'6378137.000000',
+                                                         'denflat':'298.257222'},
+                'World Geodetic System 1984 (WGS 84)':{'ellips':'WGS_1984',
+                                                       'semiaxis':'6378137.000000',
+                                                       'denflat':'298.257224'}}
 
 def get_bounding(fname):
     """

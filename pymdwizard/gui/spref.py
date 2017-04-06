@@ -95,6 +95,7 @@ class SpRef(WizardWidget):
         self.ui.btngrp_planar.buttonReleased.connect(self.planar_changed)
 
         self.ui.fgdc_mapprojn.currentIndexChanged.connect(self.load_projection)
+        self.ui.fgdc_horizdn.currentIndexChanged.connect(self.load_datum)
 
     def spref_used_change(self, b):
         if b:
@@ -142,7 +143,7 @@ class SpRef(WizardWidget):
                                       'annotation':annotation_lookup['stdparll']['annotation']}
 
 
-        layout = self.ui.scrollAreaWidgetContents.layout()
+        layout = self.ui.mapproj_contents.layout()
         while layout.count():
             child = layout.takeAt(0)
             if child.widget():
@@ -161,6 +162,18 @@ class SpRef(WizardWidget):
             lineedit.setObjectName('fgdc_' + param)
             lineedit.setToolTip(annotation)
             layout.addRow(label, lineedit)
+
+    def load_datum(self):
+        datum_names = spatial_utils.DATUM_LOOKUP.keys()
+        datum_name = self.ui.fgdc_horizdn.currentText()
+        if datum_name in datum_names:
+            datum_params = spatial_utils.DATUM_LOOKUP[datum_name]
+            self.ui.fgdc_ellips.setCurrentText(datum_params['ellips'])
+            self.ui.fgdc_semiaxis.setText(datum_params['semiaxis'])
+            self.ui.fgdc_denflat.setText(datum_params['denflat'])
+
+    def has_content(self):
+        return self.ui.rbtn_yes.isChecked()
 
     def dragEnterEvent(self, e):
         """
