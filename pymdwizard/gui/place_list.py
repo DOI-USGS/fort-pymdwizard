@@ -117,7 +117,7 @@ class PlaceList(WizardWidget): #
             self.ui.theme_tabs.addTab(theme_widget, tab_label)
             self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
 
-            self.thesauri.append(theme_widget)
+        self.thesauri.append(theme_widget)
         return theme_widget
 
     def changed_thesaurus(self, s):
@@ -219,9 +219,17 @@ class PlaceList(WizardWidget): #
 
         self.original_xml = keywords_xml
         if keywords_xml.tag == 'keywords':
-            for place_xml in keywords_xml.xpath('place'):
+            place_kws = keywords_xml.xpath('place')
+
+
+            for place_xml in place_kws:
                 place = self.add_another(tab_label='x')
                 place._from_xml(place_xml)
+
+            if place_kws:
+                self.ui.rbtn_yes.setChecked(True)
+            else:
+                self.ui.rbtn_no.setChecked(True)
 
 
 if __name__ == "__main__":
