@@ -303,7 +303,7 @@ class WizardWidget(QWidget):
         self.setAcceptDrops(enable)
 
         drag_types = [QLabel, QSpacerItem, QToolButton, QGroupBox,
-                      QPlainTextEdit]
+                      QPlainTextEdit, QComboBox]
 
         for drag_type in drag_types:
             widgets = self.findChildren(drag_type, QRegExp(r'.*'))
