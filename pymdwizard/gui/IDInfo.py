@@ -201,11 +201,6 @@ class IdInfo(WizardWidget):
         useconst_node = self.useconst._to_xml()
         idinfo_node.append(useconst_node)
 
-
-        datacredit_node = self.datacredit._to_xml()
-        if len(datacredit_node.text):
-            idinfo_node.append(datacredit_node)
-
         if self.ptcontac.has_content():
             ptcontac = self.ptcontac._to_xml()
             idinfo_node.append(ptcontac)
@@ -291,6 +286,11 @@ class IdInfo(WizardWidget):
             pass
 
 
+        try:
+            datacred = xml_idinfo.xpath('datacred')[0]
+            self.datacredit._from_xml(datacred)
+        except IndexError:
+            pass
 
 
 
