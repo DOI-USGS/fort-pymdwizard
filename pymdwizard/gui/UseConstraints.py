@@ -94,7 +94,7 @@ class UseConstraints(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'useconst':
+            if element is not None and element.tag == 'useconst':
                 e.accept()
         else:
             e.ignore()

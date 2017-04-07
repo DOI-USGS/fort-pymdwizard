@@ -140,7 +140,7 @@ class SpatialTab(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'idinfo':
+            if element is not None and element.tag == 'idinfo':
                 e.accept()
         else:
             e.ignore()
@@ -158,13 +158,18 @@ class SpatialTab(WizardWidget):
         # since this tab is composed of content from three disparate sections
         # the to and from xml functions are being handled
         # by the parent widget (MetadataRoot)
-        pass
+        return self.spdom._to_xml()
 
-    def _from_xml(self, xml_idinfo):
+    def _from_xml(self, xml_unknown):
         # since this tab is composed of content from three disparate sections
         # the to and from xml functions are being handled
         # by the parent widget (MetadataRoot)
-        pass
+        if xml_unknown.tag == 'spdoinfo':
+            self.spdoinfo._from_xml(xml_unknown)
+        elif xml_unknown.tag == 'spref':
+            self.spref._from_xml(xml_unknown)
+        elif xml_unknown.tag == 'spdom':
+            self.spdom._from_xml(xml_unknown)
 
 if __name__ == "__main__":
     utils.launch_widget(SpatialTab, "IdInfo testing")

@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(592, 160)
+        Form.resize(592, 240)
         Form.setMinimumSize(QtCore.QSize(0, 120))
-        Form.setMaximumSize(QtCore.QSize(16777215, 160))
+        Form.setMaximumSize(QtCore.QSize(16777215, 240))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -49,14 +49,4 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Abstract"))
         self.label.setText(_translate("Form", "Provide a description of the data set."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
 

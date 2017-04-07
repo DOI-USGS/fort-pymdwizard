@@ -103,7 +103,7 @@ class Keywords(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'Keywords' or element.tag == 'theme' or \
+            if element is not None and element.tag == 'Keywords' or element.tag == 'theme' or \
                             element.tag == 'place':
                 e.accept()
         else:

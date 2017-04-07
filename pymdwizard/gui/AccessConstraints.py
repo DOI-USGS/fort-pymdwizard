@@ -94,7 +94,7 @@ class AccessConstraints(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'accconst':
+            if element is not None and element.tag == 'accconst':
                 e.accept()
         else:
             e.ignore()

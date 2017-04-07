@@ -77,7 +77,7 @@ class Status(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'status':
+            if element is not None and element.tag == 'status':
                 #                print "element", element.text
                 #                print "tag", element.tag
                 # mime_data.setText(element.text)
