@@ -145,6 +145,8 @@ class Attr(WizardWidget):  #
             self.domain = codesetd.Codesetd(parent=self)
         elif 'unrepresentable' in domain:
             self.domain = udom.Udom(parent=self)
+        else:
+            pass
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
 
@@ -247,8 +249,13 @@ class Attr(WizardWidget):  #
         """
         try:
             if attr.tag == 'attr':
+
+                utils.populate_widget(self, attr)
                 attr_dict = xml_utils.node_to_dict(attr)
-                if 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
+
+                if not 'fgdc_attrdomv' in attr_dict.keys():
+                    self.ui.comboBox.setCurrentIndex(3)
+                elif 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(3)
                     self.domain._from_xml(attr.xpath('attrdomv/udom')[0])
                 elif 'fgdc_rdom' in attr_dict['fgdc_attrdomv'].keys():
@@ -261,8 +268,9 @@ class Attr(WizardWidget):  #
                 elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(2)
                     self.domain._from_xml(attr.xpath('attrdomv/codesetd')[0])
+                else:
+                    self.ui.comboBox.setCurrentIndex(3)
 
-                utils.populate_widget(self, attr)
 
 
 
