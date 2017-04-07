@@ -285,7 +285,7 @@ class WizardWidget(QWidget):
         drag.setPixmap(half_pixmap)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        dropAction = drag.exec_(Qt.CopyAction)
+        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
         # dropAction = drag.exec_(Qt.MoveAction)
         e.ignore()
 
