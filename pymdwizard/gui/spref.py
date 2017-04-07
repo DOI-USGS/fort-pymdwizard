@@ -83,6 +83,7 @@ class SpRef(WizardWidget):
         self.ui.fgdc_mapprojn.addItems(spatial_utils.PROJECTION_LOOKUP.keys())
         self.ui.fgdc_gridsysn.addItems(spatial_utils.GRIDSYS_LOOKUP.keys())
 
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -92,11 +93,17 @@ class SpRef(WizardWidget):
         None
         """
         self.ui.rbtn_yes.toggled.connect(self.spref_used_change)
+
         self.ui.btn_geographic.toggled.connect(self.system_def_changed)
-        self.ui.btngrp_planar.buttonReleased.connect(self.planar_changed)
+        self.ui.btn_local.toggled.connect(self.system_def_changed)
+
+        self.ui.btngrp_planar.buttonClicked.connect(self.planar_changed)
 
         self.ui.fgdc_mapprojn.currentIndexChanged.connect(self.load_projection)
+        self.load_projection()
+
         self.ui.fgdc_horizdn.currentIndexChanged.connect(self.load_datum)
+        self.load_datum()
 
     def spref_used_change(self, b):
         if b:
@@ -112,13 +119,15 @@ class SpRef(WizardWidget):
         button_name = self.sender().objectName()
 
         is_geographic = self.ui.btn_geographic.isChecked()
-        if is_geographic:
+        if self.ui.btn_geographic.isChecked():
             self.ui.stack_definition.setCurrentIndex(0)
-        else:
+        elif self.ui.btn_planar.isChecked():
             self.ui.stack_definition.setCurrentIndex(1)
+        else:
+            self.ui.stack_definition.setCurrentIndex(2)
 
     def planar_changed(self):
-        if self.ui.btn_local.isChecked():
+        if self.ui.btn_localp.isChecked():
             index = 2
         elif self.ui.btn_projection.isChecked():
             index = 0
@@ -212,14 +221,25 @@ class SpRef(WizardWidget):
             longres = xml_utils.xml_node('longres', latres_str, geograph)
             geogunit_str = self.findChild(QComboBox, "fgdc_geogunit").currentText()
             geogunit = xml_utils.xml_node('geogunit', geogunit_str, geograph)
-        else:
+        elif self.ui.btn_planar.isChecked():
             planar = xml_utils.xml_node('planar', parent_node=horizsys)
 
             projection_name = self.ui.fgdc_mapprojn.currentText()
             projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
             for param in projection['elements']:
-                widget = self.ui.findChild(QLineEdit, "fgdc_"+param)
+                widget = self.findChild(QLineEdit, "fgdc_"+param)
                 xml_utils.xml_node(param, text=widget.text(), parent_node=planar)
+
+            planci = xml_utils.xml_node('planci', parent_node=planar)
+            plance = xml_utils.xml_node('plance', text=self.ui.fgdc_plance.currentText(), parent_node=planci)
+            coordrep = xml_utils.xml_node('coordrep', parent_node=planci)
+            absres = xml_utils.xml_node('absres', text=self.ui.fgdc_absres, parent_node=coordrep)
+            absres = xml_utils.xml_node('ordres', text=self.ui.fgdc_ordres, parent_node=coordrep)
+            plandu = xml_utils.xml_node('plandu', text=self.ui.fgdc_plandu, parent_node=planci)
+        else:
+            local = xml_utils.xml_node('local', parent_node=horizsys)
+            fgdc_localdes = xml_utils.xml_node('localdes', text=self.ui.fgdc_localdes, parent_node=local)
+            fgdc_localgeo = xml_utils.xml_node('localgeo', text=self.ui.fgdc_localgeo, parent_node=local)
 
         if self.findChild(QComboBox, "fgdc_horizdn").currentText():
             geodetic = xml_utils.xml_node('geodetic', parent_node=horizsys)
@@ -244,10 +264,36 @@ class SpRef(WizardWidget):
             if geograph:
                 self.ui.btn_geographic.setChecked(True)
 
-                utils.populate_widget_element(self.ui.fgdc_latgres, geograph[0], 'latres')
+                utils.populate_widget_element(self.ui.fgdc_latres, geograph[0], 'latres')
                 utils.populate_widget_element(self.ui.fgdc_longres, geograph[0], 'longres')
                 utils.populate_widget_element(self.ui.fgdc_geogunit, geograph[0], 'geogunit')
 
+            local = xml_utils.search_xpath(spref_node, 'horizsys/local')
+            if local:
+                self.ui.btn_local.setChecked(True)
+
+                utils.populate_widget_element(self.ui.fgdc_localdes, local[0], 'localdes')
+                utils.populate_widget_element(self.ui.fgdc_localgeo, local[0], 'localgeo')
+
+            planar = xml_utils.search_xpath(spref_node, 'horizsys/planar')
+            if planar:
+                self.ui.btn_planar.setChecked(True)
+
+                mapproj = xml_utils.search_xpath(planar[0], 'mapproj')
+                if mapproj:
+                    self.ui.btn_projection.setChecked(True)
+
+                gridsys = xml_utils.search_xpath(planar[0], 'gridsys')
+                if gridsys:
+                    self.ui.btn_grid.setChecked(True)
+
+                localp = xml_utils.search_xpath(planar[0], 'localp')
+                if localp:
+                    self.ui.btn_localp.setChecked(True)
+                    utils.populate_widget_element(self.ui.fgdc_localpd, localp[0], 'localpd')
+                    utils.populate_widget_element(self.ui.fgdc_localpgi, localp[0], 'localpgi')
+
+                self.planar_changed()
 
             geodetic = xml_utils.search_xpath(spref_node, 'horizsys/geodetic')
             if geodetic:

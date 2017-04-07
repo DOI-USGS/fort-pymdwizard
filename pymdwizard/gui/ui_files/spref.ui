@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>496</width>
-    <height>433</height>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -345,16 +345,10 @@
                   <item>
                    <widget class="QStackedWidget" name="stack_planar">
                     <property name="currentIndex">
-                     <number>2</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="fgdc_mapproj">
-                     <layout class="QFormLayout" name="formLayout_2">
-                      <property name="horizontalSpacing">
-                       <number>3</number>
-                      </property>
-                      <property name="verticalSpacing">
-                       <number>3</number>
-                      </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_7">
                       <property name="leftMargin">
                        <number>3</number>
                       </property>
@@ -367,22 +361,26 @@
                       <property name="bottomMargin">
                        <number>3</number>
                       </property>
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_4">
-                        <property name="text">
-                         <string>Projection Name</string>
-                        </property>
-                       </widget>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_4">
+                        <item>
+                         <widget class="QLabel" name="label_4">
+                          <property name="text">
+                           <string>Projection Name</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QComboBox" name="fgdc_mapprojn"/>
+                        </item>
+                       </layout>
                       </item>
-                      <item row="0" column="1">
-                       <widget class="QComboBox" name="fgdc_mapprojn"/>
-                      </item>
-                      <item row="1" column="1">
+                      <item>
                        <widget class="QWidget" name="mapproj_contents" native="true">
                         <layout class="QFormLayout" name="formLayout_6"/>
                        </widget>
                       </item>
-                      <item row="2" column="1">
+                      <item>
                        <spacer name="verticalSpacer">
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
@@ -390,10 +388,99 @@
                         <property name="sizeHint" stdset="0">
                          <size>
                           <width>20</width>
-                          <height>40</height>
+                          <height>0</height>
                          </size>
                         </property>
                        </spacer>
+                      </item>
+                      <item>
+                       <widget class="QGroupBox" name="groupBox">
+                        <property name="title">
+                         <string>Planar Coordinate Information</string>
+                        </property>
+                        <layout class="QFormLayout" name="formLayout_8">
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_15">
+                           <property name="text">
+                            <string>Planar Coordinate Encoding Method</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QComboBox" name="fgdc_plance">
+                           <item>
+                            <property name="text">
+                             <string>coordinate pair</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>distance and bearing</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>row and column</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_16">
+                           <property name="text">
+                            <string>Abscissa Resolution</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLineEdit" name="fgdc_absres">
+                           <property name="text">
+                            <string>0.0001</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="label_17">
+                           <property name="text">
+                            <string>Ordinate Resolution</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="fgdc_ordres">
+                           <property name="text">
+                            <string>0.0001</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="label_18">
+                           <property name="text">
+                            <string>Grid System Name</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QComboBox" name="fgdc_plandu">
+                           <item>
+                            <property name="text">
+                             <string>meters</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>International feet</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>survey feet</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
@@ -407,38 +494,7 @@
                        </widget>
                       </item>
                       <item row="0" column="1">
-                       <widget class="QComboBox" name="fgdc_gridsysn">
-                        <item>
-                         <property name="text">
-                          <string>Universal Transverse Mercator</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>Universal Polar Stereographic</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>State Plane Coordinate System 1927</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>State Plane Coordinate System 1983</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>ARC Coordinate System</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>other grid system</string>
-                         </property>
-                        </item>
-                       </widget>
+                       <widget class="QComboBox" name="fgdc_gridsysn"/>
                       </item>
                      </layout>
                     </widget>
@@ -462,7 +518,7 @@
                        </widget>
                       </item>
                       <item row="1" column="1">
-                       <widget class="QLineEdit" name="fgdc_localgeo"/>
+                       <widget class="QLineEdit" name="fgdc_localpgi"/>
                       </item>
                      </layout>
                     </widget>
@@ -480,7 +536,7 @@
                    </widget>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QLineEdit" name="fgdc_localdes_2"/>
+                   <widget class="QLineEdit" name="fgdc_localdes"/>
                   </item>
                   <item row="1" column="0">
                    <widget class="QLabel" name="label_14">
@@ -490,7 +546,7 @@
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QLineEdit" name="fgdc_localgeo_2"/>
+                   <widget class="QLineEdit" name="fgdc_localgeo"/>
                   </item>
                  </layout>
                 </widget>
@@ -498,105 +554,105 @@
               </item>
              </layout>
             </item>
-            <item>
-             <widget class="QGroupBox" name="fgdc_geodetic">
-              <property name="title">
-               <string>Datum (optional)</string>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="fgdc_geodetic">
+           <property name="title">
+            <string>Datum (optional)</string>
+           </property>
+           <layout class="QFormLayout" name="formLayout_5">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Datum Name</string>
               </property>
-              <layout class="QFormLayout" name="formLayout_5">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_8">
-                 <property name="text">
-                  <string>Datum Name</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QComboBox" name="fgdc_ellips">
-                 <property name="editable">
-                  <bool>true</bool>
-                 </property>
-                 <property name="currentIndex">
-                  <number>2</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Clarke 1866</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Geodetic Reference System 1980</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>WGS_1984</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>Elipsoid Name</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_10">
-                 <property name="text">
-                  <string>Semi-major Axis</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="fgdc_semiaxis">
-                 <property name="text">
-                  <string>6378137.000000</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_11">
-                 <property name="text">
-                  <string>Denominator Flattening Ratio</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QLineEdit" name="fgdc_denflat">
-                 <property name="text">
-                  <string>298.257224</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QComboBox" name="fgdc_horizdn">
-                 <property name="editable">
-                  <bool>true</bool>
-                 </property>
-                 <property name="currentIndex">
-                  <number>2</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>North American Datum of 1927 (NAD 27)</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>North American Datum of 1983 (NAD 83)</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>World Geodetic System 1984 (WGS 84)</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="fgdc_ellips">
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Clarke 1866</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Geodetic Reference System 1980</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>WGS_1984</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Elipsoid Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Semi-major Axis</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="fgdc_semiaxis">
+              <property name="text">
+               <string>6378137.000000</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Denominator Flattening Ratio</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="fgdc_denflat">
+              <property name="text">
+               <string>298.257224</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="fgdc_horizdn">
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>North American Datum of 1927 (NAD 27)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>North American Datum of 1983 (NAD 83)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>World Geodetic System 1984 (WGS 84)</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
