@@ -250,7 +250,7 @@ class WizardWidget(QWidget):
         if not hasattr(self, 'drag_start_pos'):
             return
 
-        if not (e.pos() - self.drag_start_pos).manhattanLength() > 300:
+        if not (e.pos() - self.drag_start_pos).manhattanLength() > 200:
             return
 
 
@@ -283,10 +283,11 @@ class WizardWidget(QWidget):
         drag = QDrag(self)
         drag.setMimeData(mime_data)
         drag.setPixmap(half_pixmap)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
+        drag.setHotSpot(e.pos())
 
-        dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
-        # dropAction = drag.exec_(Qt.MoveAction)
+        # dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
+        # dropAction = drag.exec_(Qt.TargetMoveAction)
+        dropAction = drag.exec_()
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):
