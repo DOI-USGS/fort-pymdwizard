@@ -86,6 +86,9 @@ class Ui_MainWindow(object):
         self.actionPull_From_Data.setObjectName("actionPull_From_Data")
         self.actionErrorsListMenu = QtWidgets.QAction(MainWindow)
         self.actionErrorsListMenu.setObjectName("actionErrorsListMenu")
+        self.actionNew = QtWidgets.QAction(MainWindow)
+        self.actionNew.setObjectName("actionNew")
+        self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
@@ -134,5 +137,6 @@ class Ui_MainWindow(object):
         self.actionPreview.setText(_translate("MainWindow", "Preview"))
         self.actionPull_From_Data.setText(_translate("MainWindow", "Pull From Data"))
         self.actionErrorsListMenu.setText(_translate("MainWindow", "ErrorsListMenu"))
+        self.actionNew.setText(_translate("MainWindow", "New"))
 
 import icons_rc
