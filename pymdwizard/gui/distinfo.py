@@ -183,22 +183,30 @@ class DistInfo(WizardWidget):
 
     def _from_xml(self, xml_distinfo):
 
+        self.clear_widget()
+
         if xml_distinfo.tag == 'distinfo':
             self.ui.radio_distyes.setChecked(True)
             if xml_distinfo.xpath('distrib/cntinfo'):
                 self.contactinfo._from_xml(xml_distinfo.xpath('distrib/cntinfo')[0])
-
             if xml_distinfo.xpath('distliab'):
                 self.ui.radio_dist.setChecked(True)
-                self.ui.fgdc_distliab.setPlainText(xml_distinfo.xpath('distliab')[0].text)
+                utils.populate_widget_element(widget=self.ui.fgdc_distliab,
+                                              element=xml_distinfo,
+                                              xpath='distliab')
             if xml_distinfo.xpath('custom'):
                 self.ui.radio_otherdist.setChecked(True)
-                self.ui.fgdc_custom.setPlainText(xml_distinfo.xpath('custom')[0].text)
+                utils.populate_widget_element(widget=self.ui.fgdc_custom,
+                                              element=xml_distinfo,
+                                              xpath='custom')
             if xml_distinfo.xpath('stdorder'):
                 self.ui.radio_online.setChecked(True)
-                self.ui.fgdc_networkr.setText(xml_distinfo.xpath('stdorder/digform/digtopt/'
-                                                                 'onlinopt/computer/networka/networkr')[0].text)
-                self.ui.fgdc_fees.setPlainText(xml_distinfo.xpath('stdorder/fees')[0].text)
+                utils.populate_widget_element(widget=self.ui.fgdc_networkr,
+                                              element=xml_distinfo,
+                                              xpath='stdorder/digform/digtopt/onlinopt/computer/networka/networkr')
+                utils.populate_widget_element(widget=self.ui.fgdc_fees,
+                                              element=xml_distinfo,
+                                              xpath='stdorder/fees')
 
 if __name__ == "__main__":
     utils.launch_widget(DistInfo, "DistInfo testing")
