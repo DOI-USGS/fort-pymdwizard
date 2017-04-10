@@ -397,9 +397,9 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(QColor(250, 250, 250))
+    painter.setPen(QColor(150, 150, 150, 200))
     painter.drawText(splash_pix.rect(), Qt.AlignCenter,
-                 "Metadata Wizard")
+                 "Metadata Wizard 2.0")
 
     font = QFont()
     font.setFamily('Arial')
