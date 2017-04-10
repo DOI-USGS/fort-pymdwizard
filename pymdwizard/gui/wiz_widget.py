@@ -80,6 +80,7 @@ class WizardWidget(QWidget):
             QMainWindow.__init__(self, parent)
 
         self.original_xml = None
+        self.in_context = False
 
         self.build_ui()
         self.connect_events()

@@ -209,7 +209,7 @@ class ThemeList(WizardWidget): #
                                          text=self.ui.fgdc_themekt.text(),
                                          parent_node=theme)
             for isokw in self.iso_kws.get_widgets():
-                theme = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
+                themekey = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
                                            parent_node=theme)
 
         for theme in self.thesauri:
@@ -241,7 +241,7 @@ class ThemeList(WizardWidget): #
                         self.iso_kws.clear_widgets(add_another=False)
                         for themekey in theme_xml.xpath('themekey'):
                             iso = self.iso_kws.add_another()
-                            iso.ui.comboBox.setCurrentText(themekey.text)
+                            iso.ui.fgdc_themekey.setCurrentText(themekey.text)
 
                     else:
                         theme = self.add_another()
