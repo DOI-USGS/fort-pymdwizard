@@ -146,6 +146,9 @@ class DistInfo(WizardWidget):
         else:
             e.ignore()
 
+    def has_content(self):
+        return self.ui.radio_distyes.isChecked()
+
     def _to_xml(self):
         distinfo_node = xml_utils.xml_node('distinfo')
 
