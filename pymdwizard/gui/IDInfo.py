@@ -213,84 +213,58 @@ class IdInfo(WizardWidget):
 
     def _from_xml(self, xml_idinfo):
 
-        try:
-            citation = xml_idinfo.xpath('citation')[0]
+        citation = xml_utils.search_xpath(xml_idinfo, 'citation')
+        if citation is not None:
             self.citation._from_xml(citation)
-        except IndexError:
-            pass
 
-        try:
-            abstract = xml_idinfo.xpath('descript/abstract')[0]
+        abstract = xml_utils.search_xpath(xml_idinfo, 'descript/abstract')
+        if abstract is not None:
             self.abstract._from_xml(abstract)
-        except IndexError:
-            pass
 
-        try:
-            purpose = xml_idinfo.xpath('descript/purpose')[0]
+        purpose = xml_utils.search_xpath(xml_idinfo, 'descript/purpose')
+        if purpose is not None:
             self.purpose._from_xml(purpose)
-        except IndexError:
-            pass
 
-        try:
-            supplinf = xml_idinfo.xpath('descript/supplinf')[0]
+        supplinf = xml_utils.search_xpath(xml_idinfo, 'descript/supplinf')
+        if supplinf is not None:
             self.supplinf._from_xml(supplinf)
-        except IndexError:
-            pass
 
-        try:
-            timeperd = xml_idinfo.xpath('timeperd')[0]
+        timeperd = xml_utils.search_xpath(xml_idinfo, 'timeperd')
+        if timeperd is not None:
             self.timeperd._from_xml(timeperd)
-        except IndexError:
-            pass
 
-        try:
-            status = xml_idinfo.xpath('status')[0]
+        status = xml_utils.search_xpath(xml_idinfo, 'status')
+        if status is not None:
             self.status._from_xml(status)
-        except IndexError:
-            pass
 
-        try:
-            spdom = xml_idinfo.xpath('spdom')[0]
+        spdom = xml_utils.search_xpath(xml_idinfo, 'spdom')
+        if spdom is not None:
             self.root_widget.spatial_tab.spdom._from_xml(spdom)
-        except IndexError:
-            pass
 
-        try:
-            keywords = xml_idinfo.xpath('keywords')[0]
+        keywords = xml_utils.search_xpath(xml_idinfo, 'keywords')
+        if keywords is not None:
             self.keywords._from_xml(keywords)
-        except IndexError:
-            pass
 
-        try:
-            taxonomy = xml_idinfo.xpath('taxonomy')[0]
+        taxonomy = xml_utils.search_xpath(xml_idinfo, 'taxonomy')
+        if taxonomy is not None:
             self.taxonomy._from_xml(taxonomy)
-        except IndexError:
-            pass
 
-        try:
-            accconst = xml_idinfo.xpath('accconst')[0]
+        accconst = xml_utils.search_xpath(xml_idinfo, 'accconst')
+        if accconst is not None:
             self.accconst._from_xml(accconst)
-        except IndexError:
-            pass
 
-        try:
-            useconst = xml_idinfo.xpath('useconst')[0]
+        useconst =xml_utils.search_xpath(xml_idinfo, 'useconst')
+        if useconst is not None:
             self.useconst._from_xml(useconst)
-        except IndexError:
-            pass
 
-        try:
-            ptcontac = xml_idinfo.xpath('ptcontac')[0]
+        ptcontac = xml_utils.search_xpath(xml_idinfo, 'ptcontac')
+        if ptcontac is not None:
             self.ptcontac._from_xml(ptcontac)
-        except IndexError:
-            pass
 
-
-        try:
-            datacred = xml_idinfo.xpath('datacred')[0]
+        datacred = xml_utils.search_xpath(xml_idinfo, 'datacred')
+        if datacred is not None:
             self.datacredit._from_xml(datacred)
-        except IndexError:
-            pass
+
 
 
 

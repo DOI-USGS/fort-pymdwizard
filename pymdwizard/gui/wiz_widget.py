@@ -397,7 +397,18 @@ class WizardWidget(QWidget):
         action = menu.exec_(self.mapToGlobal(event.pos()))
 
         if action == copy_action:
-            self.copy_mime()
+            if clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.copy_mime()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.copy_mime()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.copy_mime()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.copy_mime()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.copy_mime()
+            else:
+                self.copy_mime()
         elif action == paste_action:
             self.paste_mime()
         elif action == clear_action:
