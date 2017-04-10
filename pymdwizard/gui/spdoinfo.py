@@ -156,7 +156,7 @@ class SpdoInfo(WizardWidget):
                                         parent_node=spdoinfo)
             if self.ui.fgdc_direct.currentText() == 'Raster':
                 rastinfo = xml_utils.xml_node('rastinfo', parent_node=spdoinfo)
-                rasttype = xml_utils.xml_node('rasttype', text=self.ui.fgdc_rasttype, parent_node=rastinfo)
+                rasttype = xml_utils.xml_node('rasttype', text=self.ui.fgdc_rasttype.currentText(), parent_node=rastinfo)
 
                 rowcount_str = self.ui.fgdc_rowcount.text()
                 colcount_str = self.ui.fgdc_colcount.text()

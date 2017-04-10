@@ -89,7 +89,10 @@ class Citation(WizardWidget): #
         self.ui.pub_ext.hide()
         self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ',
                                             show_format=False, required=True)
+        self.ui.pubdate_widget.ui.fgdc_caldate.setObjectName('fgdc_pubdate')
+
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
+
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
                                             remove_text='Remove last',
@@ -200,9 +203,9 @@ class Citation(WizardWidget): #
     def switch_schema(self, schema):
         self.schema = schema
         if schema == 'bdp':
-            self.ui.geoform_groupbox.show()
+            self.ui.help_geoform.show()
         else:
-            self.ui.geoform_groupbox.hide()
+            self.ui.help_geoform.hide()
 
         if self.include_lwork:
             self.lworkcit_widget.switch_schema(self.schema)
@@ -234,7 +237,7 @@ class Citation(WizardWidget): #
 
         if self.ui.radio_seriesyes.isChecked():
             serinfo = xml_utils.xml_node('serinfo', parent_node=citeinfo)
-            sername = xml_utils.xml_node('serinfo',
+            sername = xml_utils.xml_node('sername',
                                          text=self.ui.fgdc_sername.text(),
                                          parent_node=serinfo)
             issue = xml_utils.xml_node('issue', text=self.ui.fgdc_issue.text(),
@@ -302,7 +305,7 @@ class Citation(WizardWidget): #
 
             if citeinfo.xpath('serinfo'):
                 self.ui.radio_seriesyes.setChecked(True)
-                utils.populate_widget(self.ui.fgdc_serinfo, citeinfo.xpath('serinfo')[0])
+                utils.populate_widget(self, citeinfo.xpath('serinfo')[0])
             else:
                 self.ui.radio_seriesyes.setChecked(False)
 

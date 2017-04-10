@@ -145,6 +145,7 @@ class ProcessContact(WizardWidget):
             cntinfo_node = contact_information
         else:
             cntinfo_node = contact_information.xpath('cntinfo')[0]
+
         self.cntinfo._from_xml(cntinfo_node)
 
 

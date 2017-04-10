@@ -141,11 +141,12 @@ class SRCInfo(WizardWidget): #
         cite = self.citation._to_xml()
         srccite.append(cite)
 
-        srcscale = xml_utils.xml_node('srcscale',
-                                      text = self.ui.fgdc_srcscale.text(),
-                                      parent_node=srcinfo)
+        if self.ui.fgdc_srcscale.text():
+            srcscale = xml_utils.xml_node('srcscale',
+                                          text=self.ui.fgdc_srcscale.text(),
+                                          parent_node=srcinfo)
         typesrc = xml_utils.xml_node('typesrc',
-                                      text = self.ui.fgdc_typesrc.currentText(),
+                                      text=self.ui.fgdc_typesrc.currentText(),
                                       parent_node=srcinfo)
 
         srctime = xml_utils.xml_node('srctime', parent_node=srcinfo)

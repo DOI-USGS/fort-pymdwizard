@@ -106,8 +106,6 @@ class ProcStep(WizardWidget): #
                 e.accept()
         else:
             e.ignore()
-
-
          
                 
     def _to_xml(self):

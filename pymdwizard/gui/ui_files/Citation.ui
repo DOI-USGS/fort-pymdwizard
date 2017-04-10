@@ -47,7 +47,7 @@
       <item>
        <layout class="QHBoxLayout" name="first_hbox">
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="help_title">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -159,7 +159,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="fgdc_pubdate">
+         <widget class="QGroupBox" name="help_pubdate">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -214,7 +214,7 @@
          <number>10</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
+         <widget class="QGroupBox" name="help_origin">
           <property name="title">
            <string>Dataset Author/ Originator</string>
           </property>
@@ -262,7 +262,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QGroupBox" name="geoform_groupbox">
+           <widget class="QGroupBox" name="help_geoform">
             <property name="title">
              <string>Dataset Format</string>
             </property>
@@ -408,7 +408,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_6">
+         <widget class="QGroupBox" name="help_onlink">
           <property name="title">
            <string>Online Link to the Dataset</string>
           </property>
@@ -576,7 +576,7 @@
                    <number>3</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_42">
+                   <widget class="QLabel" name="help_sername">
                     <property name="text">
                      <string>Series Name</string>
                     </property>
@@ -646,7 +646,7 @@
                    <number>3</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_41">
+                   <widget class="QLabel" name="help_issue">
                     <property name="text">
                      <string>Issue Name / Number within Series</string>
                     </property>
@@ -835,7 +835,7 @@
                    <number>3</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_51">
+                   <widget class="QLabel" name="help_pubplace">
                     <property name="text">
                      <string>Publication Place</string>
                     </property>
@@ -905,7 +905,7 @@
                    <number>3</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_52">
+                   <widget class="QLabel" name="help_publish">
                     <property name="text">
                      <string>Publisher</string>
                     </property>

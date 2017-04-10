@@ -143,14 +143,26 @@ class ThemeList(WizardWidget): #
             self.remove_selected()
 
     def search_controlled(self):
+
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
 
-        self.thesaurus_search.setWindowTitle('Theme Keyword Thesaurus Search')
+        self.thesaurus_dialog = QDialog(self)
+        self.thesaurus_dialog.setWindowTitle('Search USGS Controlled Vocabularies')
+        self.thesaurus_dialog.setLayout(self.thesaurus_search.layout())
 
-        fg = self.frameGeometry()
-        self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
+        self.thesaurus_search.dialog = self.thesaurus_dialog
+        self.thesaurus_dialog.show()
 
-        self.thesaurus_search.show()
+
+
+
+
+        # self.thesaurus_search.setWindowTitle('Theme Keyword Thesaurus Search')
+        #
+        # fg = self.frameGeometry()
+        # self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
+        #
+        # self.thesaurus_search.show()
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
