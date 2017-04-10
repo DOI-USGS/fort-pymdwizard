@@ -148,7 +148,11 @@ def set_text(widget, text):
         widget.setText(text)
 
     if isinstance(widget, QComboBox):
-        widget.setEditText(text)
+        index = widget.findText(text, Qt.MatchFixedString)
+        if index >= 0:
+            widget.setCurrentIndex(index)
+        else:
+            widget.setEditText(text)
 
 
 def populate_widget_element(widget, element, xpath):
