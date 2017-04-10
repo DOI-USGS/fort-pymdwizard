@@ -184,6 +184,7 @@ class RepeatingElement(QWidget):
                 tab_label = ' '.join([self.tab_label,
                                       str(len(self.widgets))])
             self.ui.tab_widget.addTab(widget, tab_label)
+            self.ui.tab_widget.setCurrentIndex(self.ui.tab_widget.count()-1)
         else:
             self.content_layout.insertWidget(len(self.widgets)-1, widget)
         return widget
