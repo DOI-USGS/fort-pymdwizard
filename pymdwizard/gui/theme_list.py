@@ -153,17 +153,6 @@ class ThemeList(WizardWidget): #
         self.thesaurus_search.dialog = self.thesaurus_dialog
         self.thesaurus_dialog.show()
 
-
-
-
-
-        # self.thesaurus_search.setWindowTitle('Theme Keyword Thesaurus Search')
-        #
-        # fg = self.frameGeometry()
-        # self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
-        #
-        # self.thesaurus_search.show()
-
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
         for theme in self.thesauri:
@@ -203,9 +192,6 @@ class ThemeList(WizardWidget): #
                 e.accept()
         else:
             e.ignore()
-
-
-         
                 
     def _to_xml(self):
         """
@@ -216,6 +202,16 @@ class ThemeList(WizardWidget): #
         procstep element tag in xml tree
         """
         keywords = xml_utils.xml_node('keywords')
+
+        if self.ui.theme_tabs.isTabEnabled(0):
+            theme = xml_utils.xml_node('theme', parent_node=keywords)
+            themekt = xml_utils.xml_node('themekt',
+                                         text=self.ui.fgdc_themekt.text(),
+                                         parent_node=theme)
+            for isokw in self.iso_kws.get_widgets():
+                theme = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
+                                           parent_node=theme)
+
         for theme in self.thesauri:
             theme_xml = theme._to_xml()
             keywords.append(theme_xml)

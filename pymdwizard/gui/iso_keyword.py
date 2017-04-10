@@ -65,6 +65,7 @@ class IsoKeyword(QWidget):
 
         self.ui.setupUi(self)
 
+
 if __name__ == "__main__":
     utils.launch_widget(IsoKeyword,
                         "Abstract testing")

@@ -52,9 +52,9 @@ class Theme(KeywordsRepeater):  #
 
     def __init__(self, which='theme', parent=None):
         self.which = which
-
         KeywordsRepeater.__init__(self, keywords_label='Keyword   ',
                                   parent=parent, line_name='fgdc_{}key'.format(self.which))
+        self.setObjectName('fgdc_theme')
 
     def changed_thesaurus(self, s):
         self.change_tab_label(s)

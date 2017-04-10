@@ -96,6 +96,7 @@ class KeywordsRepeater(WizardWidget):  #
 
     def add_another(self, locked=False):
         widget = self.keywords.add_another()
+        widget.setObjectName(self.line_name)
         widget.added_line.setReadOnly(locked)
         return widget
 
