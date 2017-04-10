@@ -887,6 +887,13 @@ def lookup_fdgc_projname(gdal_name):
         if v['gdal_name'] == gdal_name:
             return k, v['function']
 
+    print("!"*79)
+    print("!"*79)
+    print("!"*79)
+    print("not handled ", gdal_name)
+    print("!"*79)
+    print("!"*79)
+    print("!"*79)
     return None, None #this will blow up!
 
 
@@ -901,67 +908,67 @@ PROJECTION_LOOKUP['Albers Conical Equal Area'] = {'shortname': 'albers',
                                                'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Azimuthal Equidistant'] = {'shortname': 'azimequi',
-                                              'gdal_name': '',
+                                              'gdal_name': 'Azimuthal_Equidistant',
                                               'function': azimuthal_equidistant,
                                     'elements': ['longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Equidistant Conic'] = {'shortname': 'equicon',
-                                          'gdal_name': '',
+                                          'gdal_name': 'Equidistant_Conic',
                                           'function': equidistant_conic,
                                     'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Equirectangular'] = {'shortname': 'equirect',
-                                        'gdal_name': '',
+                                        'gdal_name': 'Equirectangular',
                                         'function': equirectangular,
                                     'elements': ['stdparll', 'longcm', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['General Vertical Near-sided Perspective'] = {'shortname': 'gvnsp',
-                                                                'gdal_name': '',
+                                                                'gdal_name': 'General_Vertical_Near-sided_Perspective',
                                                                 'function': general_vertical_near_sided_perspective,
                                     'elements': ['heightpt', 'longpc', 'latprjc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Gnomonic'] = {'shortname': 'gnomonic',
-                                 'gdal_name': '',
+                                 'gdal_name': 'Gnomonic',
                                  'function': gnomonic,
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Lambert Azimuthal Equal Area'] = {'shortname': 'lamberta',
-                                                     'gdal_name': '',
+                                                     'gdal_name': 'Lambert_Azimuthal_Equal_Area',
                                                      'function': lambert_azimuthal_equal_area,
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Lambert Conformal Conic'] = {'shortname': 'lambertc',
-                                                'gdal_name': '',
+                                                'gdal_name': 'Lambert_Conformal_Conic_2SP',
                                                 'function': lambert_conformal_conic,
                                     'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Modified Stereographic for Alaska'] = {'shortname': 'modsak',
-                                                          'gdal_name': '',
+                                                          'gdal_name': 'Modified_Stereographic_for_Alaska',
                                                           'function': modified_stereograhic_for_alaska,
                                     'elements': ['feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Miller Cylindrical'] = {'shortname': 'miller',
-                                           'gdal_name': '',
+                                           'gdal_name': 'Miller_Cylindrical',
                                            'function': miller_cylindrical,
                                     'elements': ['longcm', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Orthographic'] = {'shortname': 'orthogr',
-                                     'gdal_name': '',
+                                     'gdal_name': 'Orthographic',
                                      'function': orthographic,
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Polyconic'] = {'shortname': 'polycon',
-                                  'gdal_name': '',
+                                  'gdal_name': 'Polyconic',
                                   'function': polyconic,
                                     'elements': ['longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Robinson'] = {'shortname': 'robinson',
-                                 'gdal_name': '',
+                                 'gdal_name': 'Robinson',
                                  'function': robinson,
                                     'elements': ['longpc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Sinusoidal'] = {'shortname': 'sinusoid',
-                                   'gdal_name': '',
+                                   'gdal_name': 'Sinusoidal',
                                    'function': sinusoidal,
                                     'elements': ['longcm', 'feast', 'fnorth']}
 

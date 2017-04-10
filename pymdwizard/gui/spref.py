@@ -323,7 +323,7 @@ class SpRef(WizardWidget):
                 if mapproj is not None:
                     self.ui.btn_projection.setChecked(True)
 
-                    utils.populate_widget_element(self.ui.fgdc_gridsysn, mapproj, 'mapprojn')
+                    utils.populate_widget_element(self.ui.fgdc_mapprojn, mapproj, 'mapprojn')
                     mapproj_contents = mapproj.getchildren()[1]
                     for item in mapproj_contents.getchildren():
                         tag = item.tag
