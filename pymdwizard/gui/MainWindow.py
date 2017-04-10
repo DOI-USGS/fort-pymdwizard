@@ -102,6 +102,8 @@ class PyMdWizardMainForm(QMainWindow):
             self.ui.menuRecent_Files.addAction(self.recent_file_actions[i])
         self.update_recent_file_actions()
 
+        self.ui.menuErrors.clear()
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -187,7 +189,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.metadata_root._from_xml(new_record)
 
             self.set_current_file(fname)
-            self.statusBar().showMessage("File loaded", 2000)
+            self.statusBar().showMessage("File loaded", 10000)
         except BaseException as e:
             import traceback
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
@@ -302,6 +304,8 @@ class PyMdWizardMainForm(QMainWindow):
 
     def clear_validation(self):
 
+        self.ui.menuErrors.clear()
+
         annotation_lookup_fname = utils.get_resource_path("FGDC/bdp_lookup")
         with open(annotation_lookup_fname, encoding='utf-8') as data_file:
             annotation_lookup = json.loads(data_file.read())
@@ -327,10 +331,22 @@ class PyMdWizardMainForm(QMainWindow):
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
+        if errors:
+            self.statusBar().showMessage("There are {} errors in this record".format(len(errors)), 10000)
+        else:
+            self.statusBar().showMessage("Congratulations No FGDC Errors!", 10000)
+
         self.clear_validation()
 
         for error in errors:
             xpath, error_msg, line_num = error
+
+            action = QAction(self, visible=True)
+            action.setText(error_msg)
+            action.setData(xpath)
+                    # triggered=self.open_recent_file)
+            self.ui.menuErrors.addAction(action)
+
             widget = self.metadata_root.get_widget(xpath)
             self.error_widgets.append(widget)
 
@@ -367,7 +383,6 @@ opacity: 25;
     opacity: 255;
 }}
                     """.format(widgetname=widget.objectName()))
-
 
     def preview(self):
         """
