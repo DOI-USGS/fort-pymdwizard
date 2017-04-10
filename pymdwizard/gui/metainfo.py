@@ -153,7 +153,7 @@ class MetaInfo(WizardWidget):
                 self.contactinfo._from_xml(xml_metainfo.xpath('metc/cntinfo')[0])
 
             if xml_metainfo.xpath('metstdn'):
-                standard = xml_metainfo.xpath('metstdn')[0].text
+                standard = xml_utils.get_text_content(xml_metainfo, 'metstdn')
                 self.ui.fgdc_metstdn.setCurrentText(standard)
                 # switch wizard content to reflect the standard in this record
                 if "biological" in standard.lower() \
@@ -161,13 +161,12 @@ class MetaInfo(WizardWidget):
                     self.root_widget.switch_schema('bdp')
                 else:
                     self.root_widget.switch_schema('fgdc')
-                    
-            if xml_metainfo.xpath('metstdv'):
-                self.ui.fgdc_metstdv.setCurrentText(xml_metainfo.xpath('metstdv')[0].text)
 
+            metstdv = xml_utils.get_text_content(xml_metainfo, 'metstdv')
+            self.ui.fgdc_metstdv.setCurrentText(metstdv)
 
-            if xml_metainfo.xpath('metd'):
-                self.metd.set_date(xml_metainfo.xpath('metd')[0].text)
+            metd = xml_utils.get_text_content(xml_metainfo, 'metstdv')
+            self.metd.set_date(metd)
 
 if __name__ == "__main__":
     utils.launch_widget(MetaInfo, "MetaInfo testing")
