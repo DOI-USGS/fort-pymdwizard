@@ -175,6 +175,8 @@ class MetadataRoot(WizardWidget):
 
 
     def _from_xml(self, metadata_element):
+        self.clear_widget()
+
         self.idinfo._from_xml(metadata_element.xpath('idinfo')[0])
 
         dataqual = metadata_element.xpath('dataqual')
