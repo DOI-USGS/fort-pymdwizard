@@ -38,6 +38,6 @@ def test_status__to_xml(qtbot):
     assert etree.tostring(stat, pretty_print=True).decode() \
     == """<status>
   <progress>Complete</progress>
-  <update>Continually</update>
+  <update>None planned</update>
 </status>
 """
