@@ -172,7 +172,7 @@ class Attr(WizardWidget):  #
     def supersize_me(self, s=''):
         self.animation = QPropertyAnimation(self, b"minimumSize")
         self.animation.setDuration(400)
-        self.animation.setEndValue(QSize(300, self.height()))
+        self.animation.setEndValue(QSize(325, self.height()))
         self.animation.start()
         self.ui.fgdc_attrdomv.show()
         self.ui.place_holder.hide()
