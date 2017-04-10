@@ -86,7 +86,7 @@ class ProcessStep(WizardWidget): #
         self.ui.fgdc_procdate.layout().insertWidget(0, self.single_date)
         self.ui.widget_proccont.layout().insertWidget(0, self.proccont)
 
-
+        self.clear_widget()
 
     def dragEnterEvent(self, e):
         """
@@ -111,9 +111,10 @@ class ProcessStep(WizardWidget): #
         else:
             e.ignore()
 
+    def clear_widget(self):
+        super(self.__class__, self).clear_widget()
+        self.proccont.ui.rbtn_no.setChecked(True)
 
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
