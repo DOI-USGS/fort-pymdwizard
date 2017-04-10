@@ -303,6 +303,30 @@ class PyMdWizardMainForm(QMainWindow):
     def stripped_name(self, full_fname):
         return QFileInfo(full_fname).fileName()
 
+    def exit(self):
+        if self.cur_fname:
+            cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
+            disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
+
+            if cur_xml != disk_xml:
+                msg = "Would you like to save before exiting?"
+                alert = QDialog()
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                if confirm == QMessageBox.Yes:
+                    self.save_file(self.cur_fname)
+                elif confirm == QMessageBox.Cancel:
+                    return 'Cancel'
+                self.cur_fname = ''
+
+        self.close()
+        return 'Close'
+
+    def closeEvent(self, event):
+        if self.exit() == 'Close':
+            event.accept()
+        else:
+            event.ignore()
     def clear_validation(self):
 
         self.ui.menuErrors.clear()
