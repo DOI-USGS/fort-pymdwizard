@@ -326,21 +326,22 @@ class WizardWidget(QWidget):
             with open(annotation_lookup_fname) as data_file:
                 annotation_lookup = json.loads(data_file.read())
 
+
         if self.objectName().startswith('fgdc_'):
-            shortname = self.objectName().replace('fgdc_', '')
-            if shortname[-1].isdigit():
-                shortname = shortname[:-1]
-            self.help_text = annotation_lookup[shortname]['annotation']
+            self.populate_tooltip(self, annotation_lookup)
 
         widgets = self.findChildren(QObject, QRegExp(r'.*'))
         for widget in widgets:
-            if widget.objectName().startswith('fgdc_'):
-                shortname = widget.objectName().replace('fgdc_', '')
-                if shortname[-1].isdigit():
-                    shortname = shortname[:-1]
-                widget.help_text = annotation_lookup[shortname]['annotation']
-                if not self.help_text:
-                    self.help_text = annotation_lookup[shortname]['annotation']
+            self.populate_tooltip(widget, annotation_lookup)
+
+    def populate_tooltip(self, widget, annotation_lookup):
+        if widget.objectName().startswith('fgdc_') or \
+                widget.objectName().startswith('help_'):
+            shortname = widget.objectName()[5:]
+            if shortname[-1].isdigit():
+                shortname = shortname[:-1]
+            widget.setToolTip(annotation_lookup[shortname]['long_name'])
+            widget.help_text = annotation_lookup[shortname]['annotation']
 
     def clear_widget(self):
         """
@@ -415,8 +416,8 @@ class WizardWidget(QWidget):
             self.clear_widget()
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
-            msg.setTextFormat(Qt.RichText)
-            msg.setText(clicked_widget.whatsThis())
+            # msg.setTextFormat(Qt.RichText)
+            msg.setText(clicked_widget.help_text)
             msg.setWindowTitle("Help")
             msg.show()
 
