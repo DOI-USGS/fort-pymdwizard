@@ -206,11 +206,18 @@ def get_text_content(node, xpath):
     str
     None if that xpath is not found in the node
     """
+    if node is None:
+        return None
+
     nodes = node.xpath(xpath)
     if nodes:
-        return nodes[0].text
+        result = nodes[0].text
+        if result is None:
+            return ''
+        else:
+            return result
     else:
-        return None
+        return ''
 
 
 def element_to_df(results):
