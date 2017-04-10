@@ -41,6 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys, os
 import json
 import tempfile
+import time
 
 from lxml import etree
 
@@ -49,7 +50,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBo
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog, QDialog
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings
+from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings, QFileSystemWatcher
 from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
 
 
@@ -69,6 +70,7 @@ class PyMdWizardMainForm(QMainWindow):
         super(self.__class__, self).__init__()
 
         self.cur_fname = ''
+        self.file_watcher = None
 
         self.recent_file_actions = []
         self.error_widgets = []
@@ -163,6 +165,10 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        self.file_watcher = QFileSystemWatcher([fname])
+        self.file_watcher.fileChanged.connect(self.file_updated)
+        self.last_updated = time.time()
+
         self.clear_validation()
 
         file = QFile(fname)
@@ -187,6 +193,20 @@ class PyMdWizardMainForm(QMainWindow):
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QMessageBox.warning(self, "Recent Files", msg)
         QApplication.restoreOverrideCursor()
+
+    def file_updated(self):
+
+        print(time.time() - self.last_updated)
+        if time.time() - self.last_updated > 4:
+            print('updated')
+            # self.load_file(self.cur_fname)
+            msg = "The file you are editing has been changed on disk.  Would you like to reload this File?"
+            alert = QDialog()
+            self.last_updated = time.time()
+            confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No)
+            if confirm == QMessageBox.Yes:
+                self.load_file(self.cur_fname)
+
 
 
     def save_as(self):
@@ -232,6 +252,7 @@ class PyMdWizardMainForm(QMainWindow):
             return
 
         xml_utils.save_to_file(self.metadata_root._to_xml(), fname)
+        self.last_updated = time.time()
 
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
