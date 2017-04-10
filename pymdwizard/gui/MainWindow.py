@@ -74,6 +74,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.recent_file_actions = []
         self.error_widgets = []
+        self.last_highlight = None
 
         self.build_ui()
         self.connect_events()
@@ -338,51 +339,100 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.clear_validation()
 
+        marked_errors = []
+
         for error in errors:
             xpath, error_msg, line_num = error
+            if xpath not in marked_errors:
+                action = QAction(self, visible=True)
+                action.setText(error_msg)
+                action.setData(xpath)
+                action.triggered.connect(self.goto_error)
+                        # triggered=self.open_recent_file)
+                self.ui.menuErrors.addAction(action)
+                marked_errors.append(xpath)
 
-            action = QAction(self, visible=True)
-            action.setText(error_msg)
-            action.setData(xpath)
-                    # triggered=self.open_recent_file)
-            self.ui.menuErrors.addAction(action)
+                widget = self.metadata_root.get_widget(xpath)
+                self.highlight_error(widget, error_msg)
+                self.error_widgets.append(widget)
 
-            widget = self.metadata_root.get_widget(xpath)
-            self.error_widgets.append(widget)
+    def goto_error(self, sender):
 
-            if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
-                widget.setToolTip(error_msg)
-                widget.setStyleSheet(
-                        """
-QGroupBox#{widgetname}{{
-  background-color: rgb(255,76,77);
-    border: 2px solid red;
-     subcontrol-position: top left; /* position at the top left*/
-     padding-top: 20px;
-    font: bold 14px;
-    color: rgb(90, 90, 90);
- }}
-QGroupBox#{widgetname}::title {{
-text-align: left;
-subcontrol-origin: padding;
-subcontrol-position: top left; /* position at the top center */padding: 3 3px;
-}}
-QLabel{{
-font: 9pt "Arial";
-color: rgb(90, 90, 90);
-}}
-QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
-font: 9pt "Arial";
-color: rgb(50, 50, 50);
-background-color: rgb(255,76,77);
-opacity: 25;
- }}
- QToolTip {{
-    background-color: rgb(255,76,77);
-    border-color: red;
-    opacity: 255;
-}}
-                    """.format(widgetname=widget.objectName()))
+        xpath = self.sender().data()
+        section = xpath.split('/')[1]
+
+        if section == 'idinfo':
+            subsection = xpath.split('/')[2]
+            if subsection == 'spdom':
+                self.metadata_root.switch_section(2)
+            else:
+                self.metadata_root.switch_section(0)
+        elif section == 'dataqual':
+            self.metadata_root.switch_section(1)
+        elif section == 'spdoinfo' or section == 'spref':
+            self.metadata_root.switch_section(2)
+        elif section == 'eainfo':
+            self.metadata_root.switch_section(3)
+        elif section == 'eainfo':
+            self.metadata_root.switch_section(3)
+        elif section == 'distinfo':
+            self.metadata_root.switch_section(4)
+        elif section == 'metainfo':
+            self.metadata_root.switch_section(5)
+
+        if self.last_highlight is not None and \
+                not sip.isdeleted(self.last_highlight):
+            self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+
+        bad_widget = self.metadata_root.get_widget(xpath)
+        self.last_highlight = bad_widget
+        self.highlight_error(bad_widget, self.sender().text(), superhot=True)
+
+    def highlight_error(self, widget, error_msg, superhot=False):
+        if superhot:
+            color = "rgb(223,1,74)"
+            lw = "border: 3px solid black;"
+        else:
+            color = 'rgb(223,1,74)'
+            lw = ''
+
+        color = "rgb(225,67,94)"
+
+        if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+            widget.setToolTip(error_msg)
+            widget.setStyleSheet(
+                """
+        QGroupBox#{widgetname}{{
+        background-color: {color};
+        border: 2px solid red;
+        subcontrol-position: top left; /* position at the top left*/
+        padding-top: 20px;
+        font: bold 14px;
+        color: rgb(90, 90, 90);
+        }}
+        QGroupBox#{widgetname}::title {{
+        text-align: left;
+        subcontrol-origin: padding;
+        subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+        }}
+        QLabel{{
+        font: 9pt "Arial";
+        color: rgb(90, 90, 90);
+        }}
+        QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
+        font: 9pt "Arial";
+        color: rgb(50, 50, 50);
+        background-color: {color};
+        opacity: 25;
+        {lw}
+        }}
+        QToolTip {{
+        background-color: rgb(255,76,77);
+        border-color: red;
+        opacity: 255;
+        }}
+        """.format(widgetname=widget.objectName(), color=color, lw=lw))
+
 
     def preview(self):
         """
@@ -425,7 +475,7 @@ def main():
     painter = QPainter(splash_pix)
     painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
 
-    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 100))
+    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 150))
 
     font = QFont()
     font.setFamily('Arial')
@@ -433,7 +483,7 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(QColor(150, 150, 150, 200))
+    painter.setPen(QColor(150, 150, 150, 255))
     painter.drawText(splash_pix.rect(), Qt.AlignCenter,
                  "Metadata Wizard 2.0")
 

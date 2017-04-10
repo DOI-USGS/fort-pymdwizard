@@ -124,23 +124,36 @@ class MetadataRoot(WizardWidget):
     def section_changed(self):
 
         button_name = self.sender().objectName()
-        old_widget = self.ui.fgdc_metadata.currentWidget()
-
 
         index_lookup = {'idinfo_button': 0,
                         'dataquality_button': 1,
                         'spatial_button': 2,
                         'eainfo_button': 3,
                         'distinfo_button': 4,
-                        'metainfo_button': 5,
-                        'validation_button': 6}
+                        'metainfo_button': 5}
 
         new_index = index_lookup[button_name]
+        self.switch_section(which_index=new_index)
 
-        new_widget = self.ui.fgdc_metadata.widget(new_index)
+    def switch_section(self, which_index):
+        if which_index == 0:
+            self.ui.idinfo_button.setChecked(True)
+        elif which_index == 1:
+            self.ui.dataquality_button.setChecked(True)
+        elif which_index == 2:
+            self.ui.spatial_button.setChecked(True)
+        elif which_index == 3:
+            self.ui.eainfo_button.setChecked(True)
+        elif which_index == 4:
+            self.ui.distinfo_button.setChecked(True)
+        elif which_index == 5:
+            self.ui.metainfo_button.setChecked(True)
+
+        old_widget = self.ui.fgdc_metadata.currentWidget()
+        new_widget = self.ui.fgdc_metadata.widget(which_index)
 
         fader_widget = FaderWidget(old_widget, new_widget)
-        self.ui.fgdc_metadata.setCurrentIndex(new_index)
+        self.ui.fgdc_metadata.setCurrentIndex(which_index)
 
     def switch_schema(self, schema):
         self.schema = schema
