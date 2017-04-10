@@ -304,7 +304,7 @@ def xml_node(tag, text='', parent_node=None, index=-1):
     """
 
     node = etree.Element(tag)
-    if text:
+    if str(text):
         node.text = str(text)
 
     if parent_node is not None:
