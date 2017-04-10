@@ -129,9 +129,9 @@ class EA(WizardWidget):  #
         """
         eainfo = xml_utils.xml_node('eainfo')
 
-        #TODO add some logic to not include these when they haven't been used.
-        detailed = self.detailed._to_xml()
-        eainfo.append(detailed)
+        if self.detailed.has_content():
+            detailed = self.detailed._to_xml()
+            eainfo.append(detailed)
 
         eaover_str = self.ui.fgdc_eaover.toPlainText()
         eadetcit_str = self.ui.fgdc_eaover.toPlainText()
