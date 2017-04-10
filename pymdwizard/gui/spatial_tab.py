@@ -111,19 +111,19 @@ class SpatialTab(WizardWidget):
             spdom = spatial_utils.get_bounding(fname)
             self.spdom._from_xml(spdom)
         except:
-            pass
+            self.spdom.clear_widget()
 
         try:
             spdoinfo = spatial_utils.get_spdoinfo(fname)
             self.spdoinfo._from_xml(spdoinfo)
         except:
-            pass
+            self.spdoinfo.clear_widget()
 
         try:
             spref = spatial_utils.get_spref(fname)
             self.spref._from_xml(spref)
         except:
-            pass
+            self.spref.clear_widget()
 
     def dragEnterEvent(self, e):
         """
