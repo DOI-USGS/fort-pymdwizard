@@ -102,6 +102,9 @@ class SpRef(WizardWidget):
         self.ui.fgdc_mapprojn.currentIndexChanged.connect(self.load_projection)
         self.load_projection()
 
+        self.ui.fgdc_gridsysn.currentIndexChanged.connect(self.load_gridsys)
+        self.load_gridsys()
+
         self.ui.fgdc_horizdn.currentIndexChanged.connect(self.load_datum)
         self.load_datum()
 
@@ -154,6 +157,42 @@ class SpRef(WizardWidget):
 
 
         layout = self.ui.mapproj_contents.layout()
+        while layout.count():
+            child = layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        for param in projection['elements']:
+            try:
+                long_name = annotation_lookup[param]['long_name']
+                annotation = annotation_lookup[param]['annotation']
+            except:
+                long_name = param
+                annotation = 'Unknown'
+
+            label = QLabel(long_name)
+            label.setToolTip(annotation)
+            label.help_text = annotation
+            lineedit = QLineEdit('...')
+            lineedit.setObjectName('fgdc_' + param)
+            lineedit.setToolTip(annotation)
+            layout.addRow(label, lineedit)
+
+    def load_gridsys(self):
+
+        gridsys_name = self.ui.fgdc_gridsysn.currentText()
+        projection = spatial_utils.GRIDSYS_LOOKUP[gridsys_name]
+
+        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
+        try:
+            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+                annotation_lookup = json.loads(data_file.read())
+        except TypeError:
+            with open(annotation_lookup_fname) as data_file:
+                annotation_lookup = json.loads(data_file.read())
+
+
+        layout = self.ui.gridsys_contents.layout()
         while layout.count():
             child = layout.takeAt(0)
             if child.widget():
@@ -230,6 +269,7 @@ class SpRef(WizardWidget):
                 widget = self.findChild(QLineEdit, "fgdc_"+param)
                 xml_utils.xml_node(param, text=widget.text(), parent_node=planar)
 
+
             planci = xml_utils.xml_node('planci', parent_node=planar)
             plance = xml_utils.xml_node('plance', text=self.ui.fgdc_plance.currentText(), parent_node=planci)
             coordrep = xml_utils.xml_node('coordrep', parent_node=planci)
@@ -261,46 +301,75 @@ class SpRef(WizardWidget):
             self.ui.rbtn_yes.setChecked(True)
 
             geograph = xml_utils.search_xpath(spref_node, 'horizsys/geograph')
-            if geograph:
+            if geograph is not None:
                 self.ui.btn_geographic.setChecked(True)
 
-                utils.populate_widget_element(self.ui.fgdc_latres, geograph[0], 'latres')
-                utils.populate_widget_element(self.ui.fgdc_longres, geograph[0], 'longres')
-                utils.populate_widget_element(self.ui.fgdc_geogunit, geograph[0], 'geogunit')
+                utils.populate_widget_element(self.ui.fgdc_latres, geograph, 'latres')
+                utils.populate_widget_element(self.ui.fgdc_longres, geograph, 'longres')
+                utils.populate_widget_element(self.ui.fgdc_geogunit, geograph, 'geogunit')
 
             local = xml_utils.search_xpath(spref_node, 'horizsys/local')
-            if local:
+            if local is not None:
                 self.ui.btn_local.setChecked(True)
 
-                utils.populate_widget_element(self.ui.fgdc_localdes, local[0], 'localdes')
-                utils.populate_widget_element(self.ui.fgdc_localgeo, local[0], 'localgeo')
+                utils.populate_widget_element(self.ui.fgdc_localdes, local, 'localdes')
+                utils.populate_widget_element(self.ui.fgdc_localgeo, local, 'localgeo')
 
             planar = xml_utils.search_xpath(spref_node, 'horizsys/planar')
-            if planar:
+            if planar is not None:
                 self.ui.btn_planar.setChecked(True)
 
-                mapproj = xml_utils.search_xpath(planar[0], 'mapproj')
-                if mapproj:
+                mapproj = xml_utils.search_xpath(planar, 'mapproj')
+                if mapproj is not None:
                     self.ui.btn_projection.setChecked(True)
 
-                gridsys = xml_utils.search_xpath(planar[0], 'gridsys')
-                if gridsys:
+                    utils.populate_widget_element(self.ui.fgdc_gridsysn, mapproj, 'mapprojn')
+                    mapproj_contents = mapproj.getchildren()[1]
+                    for item in mapproj_contents.getchildren():
+                        tag = item.tag
+                        item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
+                        utils.set_text(item_widget, item.text)
+
+                    stdparll = mapproj_contents.xpath('stdparll')
+                    try:
+                        stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
+                        utils.set_text(stdparll_widget, stdparll[0].text)
+                        stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
+                        utils.set_text(stdparl_2_widget, stdparll[1].text)
+                    except:
+                        pass
+
+                gridsys = xml_utils.search_xpath(planar, 'gridsys')
+                if gridsys is not None:
                     self.ui.btn_grid.setChecked(True)
 
-                localp = xml_utils.search_xpath(planar[0], 'localp')
+                    utils.populate_widget_element(self.ui.fgdc_gridsysn, gridsys, 'gridsysn')
+                    gridsys_contents = gridsys.getchildren()[1]
+                    for item in gridsys_contents.getchildren():
+                        tag = item.tag
+                        item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
+                        utils.set_text(item_widget, item.text)
+
+
+                localp = xml_utils.search_xpath(planar, 'localp')
                 if localp:
                     self.ui.btn_localp.setChecked(True)
-                    utils.populate_widget_element(self.ui.fgdc_localpd, localp[0], 'localpd')
-                    utils.populate_widget_element(self.ui.fgdc_localpgi, localp[0], 'localpgi')
+                    utils.populate_widget_element(self.ui.fgdc_localpd, localp, 'localpd')
+                    utils.populate_widget_element(self.ui.fgdc_localpgi, localp, 'localpgi')
+
+                utils.populate_widget_element(self.ui.fgdc_plance, planar, 'planci/plance')
+                utils.populate_widget_element(self.ui.fgdc_plandu, planar, 'planci/plandu')
+                utils.populate_widget_element(self.ui.fgdc_absres, planar, 'planci/coordrep/absres')
+                utils.populate_widget_element(self.ui.fgdc_ordres, planar, 'planci/coordrep/ordres')
 
                 self.planar_changed()
 
             geodetic = xml_utils.search_xpath(spref_node, 'horizsys/geodetic')
-            if geodetic:
-                utils.populate_widget_element(self.ui.fgdc_horizdn, geodetic[0], 'horizdn')
-                utils.populate_widget_element(self.ui.fgdc_ellips, geodetic[0], 'ellips')
-                utils.populate_widget_element(self.ui.fgdc_semiaxis, geodetic[0], 'semiaxis')
-                utils.populate_widget_element(self.ui.fgdc_denflat, geodetic[0], 'denflat')
+            if geodetic is not None:
+                utils.populate_widget_element(self.ui.fgdc_horizdn, geodetic, 'horizdn')
+                utils.populate_widget_element(self.ui.fgdc_ellips, geodetic, 'ellips')
+                utils.populate_widget_element(self.ui.fgdc_semiaxis, geodetic, 'semiaxis')
+                utils.populate_widget_element(self.ui.fgdc_denflat, geodetic, 'denflat')
 
 if __name__ == "__main__":
     utils.launch_widget(SpRef, "spref testing")

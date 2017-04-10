@@ -107,11 +107,6 @@ class SpatialTab(WizardWidget):
 
     def populate_from_fname(self, fname):
 
-        # layer = spatial_utils.get_layer(fname)
-        # params = spatial_utils.get_params(layer)
-        # geo = spatial_utils.geographic(params)
-        # self.spref._from_xml(geo)
-
         try:
             spdom = spatial_utils.get_bounding(fname)
             self.spdom._from_xml(spdom)
@@ -121,6 +116,12 @@ class SpatialTab(WizardWidget):
         try:
             spdoinfo = spatial_utils.get_spdoinfo(fname)
             self.spdoinfo._from_xml(spdoinfo)
+        except:
+            pass
+
+        try:
+            spref = spatial_utils.get_spref(fname)
+            self.spref._from_xml(spref)
         except:
             pass
 

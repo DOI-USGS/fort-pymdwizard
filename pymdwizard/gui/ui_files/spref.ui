@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>496</width>
-    <height>512</height>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -393,108 +393,47 @@
                         </property>
                        </spacer>
                       </item>
-                      <item>
-                       <widget class="QGroupBox" name="groupBox">
-                        <property name="title">
-                         <string>Planar Coordinate Information</string>
-                        </property>
-                        <layout class="QFormLayout" name="formLayout_8">
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="label_15">
-                           <property name="text">
-                            <string>Planar Coordinate Encoding Method</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QComboBox" name="fgdc_plance">
-                           <item>
-                            <property name="text">
-                             <string>coordinate pair</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>distance and bearing</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>row and column</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="label_16">
-                           <property name="text">
-                            <string>Abscissa Resolution</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="1">
-                          <widget class="QLineEdit" name="fgdc_absres">
-                           <property name="text">
-                            <string>0.0001</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="label_17">
-                           <property name="text">
-                            <string>Ordinate Resolution</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QLineEdit" name="fgdc_ordres">
-                           <property name="text">
-                            <string>0.0001</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QLabel" name="label_18">
-                           <property name="text">
-                            <string>Grid System Name</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
-                          <widget class="QComboBox" name="fgdc_plandu">
-                           <item>
-                            <property name="text">
-                             <string>meters</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>International feet</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>survey feet</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
                      </layout>
                     </widget>
                     <widget class="QWidget" name="fgdc_gridsys">
-                     <layout class="QFormLayout" name="formLayout_4">
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_7">
-                        <property name="text">
-                         <string>Grid System Name</string>
-                        </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_8">
+                      <item>
+                       <widget class="QWidget" name="widget" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_9">
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_5">
+                           <item>
+                            <widget class="QLabel" name="label_7">
+                             <property name="text">
+                              <string>Grid System Name</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QComboBox" name="fgdc_gridsysn"/>
+                           </item>
+                          </layout>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="gridsys_contents" native="true">
+                           <layout class="QFormLayout" name="formLayout_2"/>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="verticalSpacer_2">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>40</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                        </layout>
                        </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QComboBox" name="fgdc_gridsysn"/>
                       </item>
                      </layout>
                     </widget>
@@ -522,6 +461,95 @@
                       </item>
                      </layout>
                     </widget>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox">
+                    <property name="title">
+                     <string>Planar Coordinate Information</string>
+                    </property>
+                    <layout class="QFormLayout" name="formLayout_8">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_15">
+                       <property name="text">
+                        <string>Planar Coordinate Encoding Method</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QComboBox" name="fgdc_plance">
+                       <item>
+                        <property name="text">
+                         <string>coordinate pair</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>distance and bearing</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>row and column</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_16">
+                       <property name="text">
+                        <string>Abscissa Resolution</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLineEdit" name="fgdc_absres">
+                       <property name="text">
+                        <string>0.0001</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_17">
+                       <property name="text">
+                        <string>Ordinate Resolution</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QLineEdit" name="fgdc_ordres">
+                       <property name="text">
+                        <string>0.0001</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QLabel" name="label_18">
+                       <property name="text">
+                        <string>Grid System Name</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QComboBox" name="fgdc_plandu">
+                       <item>
+                        <property name="text">
+                         <string>meters</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>International feet</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>survey feet</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
