@@ -109,10 +109,14 @@ class DataQuality(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'dataqual':
+            if element is not None and element.tag == 'dataqual':
                 e.accept()
         else:
             e.ignore()
+
+    def clear_widget(self):
+        self.sourceinput.clear_widget()
+        WizardWidget.clear_widget(self)
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
@@ -130,23 +134,22 @@ class DataQuality(WizardWidget):
         posacc_node = self.posacc._to_xml()
         dataqual_node.append(posacc_node)
 
-        srcinfo_node = self.sourceinput._to_xml()
+        if self.sourceinput.has_content():
+            srcinfo_node = self.sourceinput._to_xml()
+
 
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()
-        print type(procstep_children)
 
         for i in procstep_children:
             srcinfo_node.append(i)
         dataqual_node.append(srcinfo_node)
 
-        dataqual_node.append(procstep_node)
-
         return dataqual_node
 
     def _from_xml(self, xml_dataqual):
         try:
-            attraccr = xml_dataqual.xpath('attraccr')[0]
+            attraccr = xml_dataqual.xpath('attracc')[0]
             self.attraccr._from_xml(attraccr)
         except IndexError:
             pass

@@ -64,7 +64,6 @@ class ContactInfoPointOfContact(WizardWidget):
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
 
-
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -105,6 +104,9 @@ class ContactInfoPointOfContact(WizardWidget):
         else:
             self.cntinfo.hide()
 
+    def has_content(self):
+        return self.ui.rbtn_yes.isChecked()
+
     def dragEnterEvent(self, e):
         """
 
@@ -121,7 +123,8 @@ class ContactInfoPointOfContact(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'ptcontac' or element.tag == 'cntinfo':
+            if element is not None and \
+                        element.tag == 'ptcontac' or element.tag == 'cntinfo':
                 e.accept()
         else:
             e.ignore()

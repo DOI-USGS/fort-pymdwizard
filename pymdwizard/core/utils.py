@@ -50,7 +50,7 @@ import requests
 import pandas as pd
 
 from PyQt5.QtWidgets import QLineEdit, QTextEdit, QTextBrowser, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QComboBox
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
@@ -119,21 +119,36 @@ def populate_widget(widget, contents):
                 except AttributeError:
                     child_widget = None
 
-            try:
-                child_widget.setText(value)
-                child_widget.setCursorPosition(0)
-            except:
-                pass
+            set_text(child_widget, value)
 
-            try:
-                child_widget.setPlainText(value)
-            except:
-                pass
 
-            try:
-                child_widget.set_date(value)
-            except:
-                pass
+def set_text(widget, text):
+    """
+    set the text of a widget regardless of it's base type
+
+    Parameters
+    ----------
+    widget : QtGui:QWidget
+            This widget is a QlineEdit or QPlainText edit
+    text : str
+            The text that will be inserted
+    Returns
+    -------
+    None
+
+    """
+    if isinstance(widget, QLineEdit):
+        widget.setText(text)
+        widget.setCursorPosition(0)
+
+    if isinstance(widget, QPlainTextEdit):
+        widget.setPlainText(text)
+
+    if isinstance(widget, QTextBrowser):
+        widget.setText(text)
+
+    if isinstance(widget, QComboBox):
+        widget.setEditText(text)
 
 
 def populate_widget_element(widget, element, xpath):
@@ -154,10 +169,7 @@ def populate_widget_element(widget, element, xpath):
     """
     if element.xpath(xpath):
         first_child = element.xpath(xpath)[0]
-        try:
-            widget.setText(first_child.text)
-        except:
-            widget.setPlainText(first_child.text)
+        set_text(widget, first_child.text)
 
 
 # Back up the reference to the exceptionhook

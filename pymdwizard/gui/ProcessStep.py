@@ -84,9 +84,9 @@ class ProcessStep(WizardWidget): #
 
         self.ui.fgdc_procdate.setLayout(QVBoxLayout(self))
         self.ui.fgdc_procdate.layout().insertWidget(0, self.single_date)
-        self.ui.frame_proccont.layout().insertWidget(0, self.proccont)
+        self.ui.widget_proccont.layout().insertWidget(0, self.proccont)
 
-
+        self.clear_widget()
 
     def dragEnterEvent(self, e):
         """
@@ -106,14 +106,15 @@ class ProcessStep(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'procstep':
+            if element is not None and element.tag == 'procstep':
                 e.accept()
         else:
             e.ignore()
 
+    def clear_widget(self):
+        super(self.__class__, self).clear_widget()
+        self.proccont.ui.rbtn_no.setChecked(True)
 
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
@@ -127,20 +128,20 @@ class ProcessStep(WizardWidget): #
         procdesc.text = self.findChild(QPlainTextEdit, "fgdc_procdesc").toPlainText()
         procstep.append(procdesc)
 
+        srcused = etree.Element('srcused')
+        srcused.text = self.findChild(QLineEdit, "fgdc_srcused").text()
+        if len(srcused.text):
+            procstep.append(srcused)
+
         procdate = etree.Element('procdate')
-        date_var = self.single_date.findChild(QLineEdit, "lineEdit").text()
+        date_var = self.single_date.findChild(QLineEdit, "fgdc_caldate").text()
         procdate.text = date_var
         procstep.append(procdate)
 
-        srcused = etree.Element('srcused')
-        srcused_var = self.findChild(QLineEdit, "fgdc_srcused").text()
-        srcused.text = srcused_var
-        procstep.append(srcused)
-
         srcprod = etree.Element('srcprod')
-        srcprod_var = self.findChild(QLineEdit, "fgdc_srcprod").text()
-        srcprod.text = srcprod_var
-        procstep.append(srcprod)
+        srcprod.text = self.findChild(QLineEdit, "fgdc_srcprod").text()
+        if len(srcprod.text):
+            procstep.append(srcprod)
 
         if self.proccont.ui.rbtn_yes.isChecked():
             proccont = self.proccont._to_xml()

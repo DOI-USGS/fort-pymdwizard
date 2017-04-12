@@ -69,14 +69,16 @@ class Attr(WizardWidget):  #
         """
         self.ui = UI_attr.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
-        self.setup_dragdrop(self)
+        #
 
         self.ui.fgdc_attrlabl.installEventFilter(self)
         self.ui.fgdc_attrdef.installEventFilter(self)
+        self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
         self.ui.fgdc_attrdomv.installEventFilter(self)
-        # self.ui.comboBox.installEventFilter(self)
+        self.ui.place_holder.installEventFilter(self)
 
+        self.setup_dragdrop(self)
         self.ui.comboBox.currentTextChanged.connect(self.change_domain)
 
     def clear_domain(self):
@@ -130,12 +132,21 @@ class Attr(WizardWidget):  #
         elif 'range' in domain:
             self.domain = rdom.Rdom(parent=self)
             if self.series is not None:
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+                try:
+                    series_min = self.series.min()
+                    series_max = self.series.max()
+                except TypeError:
+                    series_min = ''
+                    series_max = ''
+
+                self.domain.ui.fgdc_rdommin.setText(str(series_min))
+                self.domain.ui.fgdc_rdommax.setText(str(series_max))
         elif 'codeset' in domain:
             self.domain = codesetd.Codesetd(parent=self)
         elif 'unrepresentable' in domain:
             self.domain = udom.Udom(parent=self)
+        else:
+            pass
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
 
@@ -153,7 +164,7 @@ class Attr(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'attr':
+            if element is not None and element.tag == 'attr':
                 e.accept()
         else:
             e.ignore()
@@ -164,6 +175,7 @@ class Attr(WizardWidget):  #
         self.animation.setEndValue(QSize(300, self.height()))
         self.animation.start()
         self.ui.fgdc_attrdomv.show()
+        self.ui.place_holder.hide()
 
 
     def regularsize_me(self):
@@ -172,6 +184,7 @@ class Attr(WizardWidget):  #
         self.animation.setEndValue(QSize(100, self.height()))
         self.animation.start()
         self.ui.fgdc_attrdomv.hide()
+        self.ui.place_holder.show()
 
     def eventFilter(self, obj, event):
         """
@@ -189,17 +202,12 @@ class Attr(WizardWidget):  #
         # for different types of widgets and either filtering
         # the event or not.
         # Here we just check if its one of the layout widget
-        if event.type() == event.MouseButtonPress:
+        if event.type() == event.MouseButtonPress or \
+                event.type() == 207:
             self.parent_ui.minimize_children()
             self.supersize_me()
 
         return super(Attr, self).eventFilter(obj, event)
-
-    def enterEvent(self, QEvent):
-        pass
-        # self.parent_ui.minimize_children()
-        # self.supersize_me()
-
 
     def _to_xml(self):
         """
@@ -241,8 +249,13 @@ class Attr(WizardWidget):  #
         """
         try:
             if attr.tag == 'attr':
+
+                utils.populate_widget(self, attr)
                 attr_dict = xml_utils.node_to_dict(attr)
-                if 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
+
+                if not 'fgdc_attrdomv' in attr_dict.keys():
+                    self.ui.comboBox.setCurrentIndex(3)
+                elif 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(3)
                     self.domain._from_xml(attr.xpath('attrdomv/udom')[0])
                 elif 'fgdc_rdom' in attr_dict['fgdc_attrdomv'].keys():
@@ -255,8 +268,9 @@ class Attr(WizardWidget):  #
                 elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(2)
                     self.domain._from_xml(attr.xpath('attrdomv/codesetd')[0])
+                else:
+                    self.ui.comboBox.setCurrentIndex(3)
 
-                utils.populate_widget(self, attr)
 
 
 

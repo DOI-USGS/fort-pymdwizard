@@ -25,17 +25,21 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_ITISSearch
 
 
-class ItisMainForm(WizardWidget):
+class ItisMainForm(QWidget):
 
     drag_label = "Taxonomy"
 
-    def __init__(self, parent=None):
-        # QtGui.QMainWindow.__init__(self, parent)
-        super(self.__class__, self).__init__()
+    def __init__(self, xml=None, fgdc_function=None,  parent=None):
+        QWidget.__init__(self, parent=parent)
+        self.build_ui()
+        self.connect_events()
 
         self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
         self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
+
+        self._from_xml(xml)
+        self.fgdc_function = fgdc_function
 
     def build_ui(self):
         """
@@ -48,7 +52,6 @@ class ItisMainForm(WizardWidget):
         self.ui = UI_ITISSearch.Ui_ItisSearchWidget()
         self.ui.setupUi(self)
         self.ui.splitter.setSizes([300, 100])
-        self.setup_dragdrop(self)
 
     def connect_events(self):
         """
@@ -69,6 +72,7 @@ class ItisMainForm(WizardWidget):
 
     def search_itis(self):
 
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         if str(self.ui.combo_search_type.currentText()) == 'Scientific name':
             results = taxonomy.search_by_scientific_name(str(self.ui.search_term.text()))
         else:
@@ -76,6 +80,7 @@ class ItisMainForm(WizardWidget):
 
         model = utils.PandasModel(results)
         self.ui.table_results.setModel(model)
+        QApplication.restoreOverrideCursor()
 
     def add_tsn(self, index):
         indexes = self.ui.table_results.selectionModel().selectedRows()
@@ -106,35 +111,12 @@ class ItisMainForm(WizardWidget):
         self.ui.table_include.model().layoutChanged.emit()
 
     def generate_fgdc(self):
-        self.w = MyPopup()
-        self.w.setWindowTitle('FGDC Taxonomy Section')
-        self.w.setGeometry(QRect(100, 100, 400, 200))
 
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         fgdc_taxonomy = self._to_xml()
+        self.fgdc_function(fgdc_taxonomy)
+        QApplication.restoreOverrideCursor()
 
-        self.w.textEdit.setText(etree.tostring(fgdc_taxonomy, pretty_print=True).decode())
-        self.w.show()
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'taxonomy':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
 
@@ -148,16 +130,18 @@ class ItisMainForm(WizardWidget):
         return fgdc_taxonomy
 
     def _from_xml(self, taxonomy_element):
-        i = 0
-        for common_node in taxonomy_element.findall('.//common'):
-            if common_node.text.startswith('TSN: '):
-                tsn = common_node.text[5:]
-                scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
-                self.selected_items_df.loc[i] = [scientific_name, tsn]
-                i += 1
 
-        self.selected_model = utils.PandasModel(self.selected_items_df)
-        self.ui.table_include.setModel(self.selected_model)
+        if taxonomy_element is not None:
+            i = 0
+            for common_node in taxonomy_element.findall('.//common'):
+                if common_node.text.startswith('TSN: '):
+                    tsn = common_node.text[5:]
+                    scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
+                    self.selected_items_df.loc[i] = [scientific_name, tsn]
+                    i += 1
+
+            self.selected_model = utils.PandasModel(self.selected_items_df)
+            self.ui.table_include.setModel(self.selected_model)
 
 
 class MyPopup(QWidget):

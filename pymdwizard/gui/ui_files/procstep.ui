@@ -63,13 +63,7 @@
        <number>2</number>
       </property>
       <item>
-       <widget class="QFrame" name="frame_procstep">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="widget_procstep" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="leftMargin">
           <number>2</number>

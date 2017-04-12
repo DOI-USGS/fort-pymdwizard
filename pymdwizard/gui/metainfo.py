@@ -75,9 +75,10 @@ class MetaInfo(WizardWidget):
         self.setup_dragdrop(self)
 
         self.contactinfo = ContactInfo(parent=self)
-        self.fgdc_metd = SingleDate(parent=self)
+        self.metd = SingleDate(parent=self)
+        self.metd.ui.fgdc_caldate.setObjectName('fgdc_metd')
 
-        self.ui.group_metd.layout().addWidget(self.fgdc_metd)
+        self.ui.help_metd.layout().addWidget(self.metd)
 
         self.ui.fgdc_metc.layout().addWidget(self.contactinfo)
 
@@ -121,7 +122,7 @@ class MetaInfo(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'metainfo':
+            if element is not None and element.tag == 'metainfo':
                 e.accept()
         else:
             e.ignore()
@@ -129,7 +130,7 @@ class MetaInfo(WizardWidget):
     def _to_xml(self):
         # add code here to translate the form into xml representation
         metainfo_node = xml_utils.xml_node('metainfo')
-        metd = xml_utils.xml_node('metd', text=self.fgdc_metd.get_date(),
+        metd = xml_utils.xml_node('metd', text=self.metd.get_date(),
                                   parent_node=metainfo_node)
 
         metc = xml_utils.xml_node('metc', parent_node=metainfo_node)
@@ -166,7 +167,7 @@ class MetaInfo(WizardWidget):
 
 
             if xml_metainfo.xpath('metd'):
-                self.fgdc_metd.set_date(xml_metainfo.xpath('metd')[0].text)
+                self.metd.set_date(xml_metainfo.xpath('metd')[0].text)
 
 if __name__ == "__main__":
     utils.launch_widget(MetaInfo, "MetaInfo testing")

@@ -163,7 +163,7 @@ def element_to_list(results):
     return [node_to_dict(item, add_fgdc=False) for item in results]
 
 
-def search_xpath(node, xpath):
+def search_xpath(node, xpath, only_first=True):
     """
 
     Parameters
@@ -176,7 +176,41 @@ def search_xpath(node, xpath):
     -------
     list of lxml nodes
     """
-    return node.xpath(xpath)
+
+    if type(node) == etree._Element or \
+            type(node) == etree._ElementTree:
+        matches = node.xpath(xpath)
+        if len(matches) == 0:
+            return None
+        elif len(matches) == 1 or only_first:
+            return matches[0]
+        else:
+            return matches
+    else:
+        return None
+
+
+
+def get_text_content(node, xpath):
+    """
+    return the text from a specific node
+
+    Parameters
+    ----------
+    node : lxml node
+
+    xpath : xpath.search
+
+    Returns
+    -------
+    str
+    None if that xpath is not found in the node
+    """
+    nodes = node.xpath(xpath)
+    if nodes:
+        return nodes[0].text
+    else:
+        return None
 
 
 def element_to_df(results):
@@ -270,7 +304,7 @@ def xml_node(tag, text='', parent_node=None, index=-1):
     """
 
     node = etree.Element(tag)
-    if text:
+    if str(text):
         node.text = str(text)
 
     if parent_node is not None:

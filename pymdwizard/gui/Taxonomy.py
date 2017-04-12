@@ -149,10 +149,24 @@ class Taxonomy(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'taxonomy':
+            if element is not None and element.tag == 'taxonomy':
                 e.accept()
         else:
             e.ignore()
+
+    def has_content(self):
+        """
+        Returns if the widget contains legitimate content that should be
+        written out to xml
+
+        By default this is always true but should be implement in each
+        subclass with logic to check based on contents
+
+        Returns
+        -------
+        bool : True if there is content, False if no
+        """
+        return self.ui.rbtn_yes.isChecked()
 
     def _to_xml(self):
         df = self.ui.table_include.model().dataframe()
@@ -175,9 +189,13 @@ class Taxonomy(WizardWidget):
         for common_node in taxonomy_element.findall('.//common'):
             if common_node.text.startswith('TSN: '):
                 tsn = common_node.text[5:]
-                scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
-                self.selected_items_df.loc[i] = [scientific_name, tsn]
-                i += 1
+                self.selected_items_df.loc[i] = ['...', tsn]
+                # try:
+                #     scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
+                #     self.selected_items_df.loc[i] = [scientific_name, tsn]
+                # except:
+                #     self.selected_items_df.loc[i] = ['...', tsn]
+                # i += 1
 
         self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)

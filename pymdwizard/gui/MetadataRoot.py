@@ -39,6 +39,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys
+import lxml
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
@@ -62,6 +63,7 @@ from pymdwizard.gui.spatial_tab import SpatialTab
 from pymdwizard.gui.EA import EA
 from pymdwizard.gui.DataQuality import DataQuality
 from pymdwizard.gui.metainfo import MetaInfo
+from pymdwizard.gui.distinfo import DistInfo
 
 
 class MetadataRoot(WizardWidget):
@@ -101,6 +103,9 @@ class MetadataRoot(WizardWidget):
         self.metainfo = MetaInfo(root_widget=self)
         self.ui.page_metainfo.layout().addWidget(self.metainfo)
 
+        self.distinfo = DistInfo(root_widget=self)
+        self.ui.page_distinfo.layout().addWidget(self.distinfo)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -110,7 +115,6 @@ class MetadataRoot(WizardWidget):
         None
         """
         self.ui.idinfo_button.pressed.connect(self.section_changed)
-
         self.ui.dataquality_button.pressed.connect(self.section_changed)
         self.ui.spatial_button.pressed.connect(self.section_changed)
         self.ui.eainfo_button.pressed.connect(self.section_changed)
@@ -120,23 +124,36 @@ class MetadataRoot(WizardWidget):
     def section_changed(self):
 
         button_name = self.sender().objectName()
-        old_widget = self.ui.fgdc_metadata.currentWidget()
-
 
         index_lookup = {'idinfo_button': 0,
                         'dataquality_button': 1,
                         'spatial_button': 2,
                         'eainfo_button': 3,
                         'distinfo_button': 4,
-                        'metainfo_button': 5,
-                        'validation_button': 6}
+                        'metainfo_button': 5}
 
         new_index = index_lookup[button_name]
+        self.switch_section(which_index=new_index)
 
-        new_widget = self.ui.fgdc_metadata.widget(new_index)
+    def switch_section(self, which_index):
+        if which_index == 0:
+            self.ui.idinfo_button.setChecked(True)
+        elif which_index == 1:
+            self.ui.dataquality_button.setChecked(True)
+        elif which_index == 2:
+            self.ui.spatial_button.setChecked(True)
+        elif which_index == 3:
+            self.ui.eainfo_button.setChecked(True)
+        elif which_index == 4:
+            self.ui.distinfo_button.setChecked(True)
+        elif which_index == 5:
+            self.ui.metainfo_button.setChecked(True)
+
+        old_widget = self.ui.fgdc_metadata.currentWidget()
+        new_widget = self.ui.fgdc_metadata.widget(which_index)
 
         fader_widget = FaderWidget(old_widget, new_widget)
-        self.ui.fgdc_metadata.setCurrentIndex(new_index)
+        self.ui.fgdc_metadata.setCurrentIndex(which_index)
 
     def switch_schema(self, schema):
         self.schema = schema
@@ -151,12 +168,20 @@ class MetadataRoot(WizardWidget):
         dataqual = self.dataqual._to_xml()
         metadata_node.append(dataqual)
 
-        # spref = self.spref._to_xml()
-        # metadata_node.append(spref)
+        if self.spatial_tab.spdoinfo.has_content():
+            spdoinfo = self.spatial_tab.spdoinfo._to_xml()
+            metadata_node.append(spdoinfo)
+
+        if self.spatial_tab.spref.has_content():
+            spref = self.spatial_tab.spref._to_xml()
+            metadata_node.append(spref)
 
         if self.eainfo.has_content():
             eainfo = self.eainfo._to_xml()
             metadata_node.append(eainfo)
+
+        distinfo = self.distinfo._to_xml()
+        metadata_node.append(distinfo)
 
         metainfo = self.metainfo._to_xml()
         metadata_node.append(metainfo)
@@ -164,24 +189,105 @@ class MetadataRoot(WizardWidget):
 
 
     def _from_xml(self, metadata_element):
-        self.idinfo._from_xml(metadata_element.xpath('idinfo')[0])
 
-        spdom = metadata_element.xpath('idinfo/spdom')
-        if spdom:
-            self.spatial_tab.spdom._from_xml(spdom[0])
-                # .spref._from_xml(metadata_element.xpath('spref')[0])
+        self.populate_section(metadata_element, 'idinfo', self.idinfo)
 
-        dataqual = metadata_element.xpath('dataqual')
-        if dataqual:
-            self.dataqual._from_xml(dataqual[0])
+        self.populate_section(metadata_element, 'dataqual', self.dataqual)
 
-        eainfo = metadata_element.xpath('eainfo')
-        if eainfo:
-            self.eainfo._from_xml(eainfo[0])
+        self.populate_section(metadata_element, 'eainfo', self.eainfo)
+
+        self.populate_section(metadata_element, 'distinfo', self.distinfo)
+
+        self.populate_section(metadata_element, 'metainfo', self.metainfo)
+
+
+        # if type(metadata_element) == etree._Element and \
+        #                 metadata_element.tag == 'idinfo':
+        #     idinfo = metadata_element
+        #     self.idinfo._from_xml(idinfo)
+        #     return
+        # else:
+        #     idinfo = xml_utils.search_xpath(metadata_element, 'idinfo')
+        # self.idinfo._from_xml(idinfo)
+        #
+        # if type(metadata_element) == etree._Element and \
+        #                 metadata_element.tag == 'dataqual':
+        #     dataqual = metadata_element
+        # else:
+        #     dataqual =  xml_utils.search_xpath(metadata_element, 'dataqual')
+        #
+        # if dataqual is not None:
+        #     self.dataqual._from_xml(dataqual)
+        # else:
+        #     self.dataqual.clear_widget()
+        #
+        # spdom = xml_utils.search_xpath(metadata_element, 'idinfo/spdom')
+        # if spdom is not None:
+        #     self.spatial_tab.spdom._from_xml(spdom)
+        # else:
+        #     self.spatial_tab.spdom.clear_widget()
+        #
+        # spdoinfo = xml_utils.search_xpath(metadata_element, 'spdoinfo')
+        # if spdoinfo is not None:
+        #     self.spatial_tab.spdoinfo._from_xml(spdoinfo)
+        # else:
+        #     self.spatial_tab.spdoinfo.ui.rbtn_yes.setChecked(False)
+        #     self.spatial_tab.spdoinfo.ui.rbtn_no.setChecked(True)
+        #     self.spatial_tab.clear_widget()
+        #
+        # spref = xml_utils.search_xpath(metadata_element, 'spref')
+        # if spref is not None:
+        #     self.spatial_tab.spref._from_xml(spref[0])
+        # else:
+        #     self.spatial_tab.spref.ui.rbtn_yes.setChecked(False)
+        #     self.spatial_tab.spref.ui.rbtn_no.setChecked(True)
+        #     self.spatial_tab.spref.clear_widget()
+        #
+        # if type(metadata_element) == etree._Element and \
+        #                 metadata_element.tag == 'eainfo':
+        #     eainfo = metadata_element
+        # else:
+        #     eainfo = xml_utils.search_xpath(metadata_element, 'eainfo')
+        # if eainfo is not None:
+        #     self.eainfo._from_xml(eainfo)
+        # else:
+        #     self.eainfo.clear_widget()
+        #
+        # if type(metadata_element) == etree._Element and \
+        #                 metadata_element.tag == 'distinfo':
+        #     distinfo = metadata_element
+        # else:
+        #     distinfo = xml_utils.search_xpath(metadata_element, 'distinfo')
+        # if distinfo is not None:
+        #     self.distinfo._from_xml(distinfo)
+        # else:
+        #     self.distinfo.clear_widget()
+        #
+        # if type(metadata_element) == etree._Element and \
+        #                 metadata_element.tag == 'metainfo':
+        #     metainfo = metadata_element
+        # else:
+        #     metainfo = xml_utils.search_xpath(metadata_element, 'metainfo')
+        # if metainfo is not None:
+        #     self.metainfo._from_xml(metainfo)
+        # else:
+        #     self.metainfo.clear_widget()
+
+    def populate_section(self, metadata_element, section_name, widget):
+
+        just_this_one = type(metadata_element) == etree._Element
+
+        if just_this_one and metadata_element.tag == section_name:
+            section = metadata_element
+        elif just_this_one:
+            return True
         else:
-            self.eainfo.clear_widget()
+            section =  xml_utils.search_xpath(metadata_element, section_name)
 
-        self.metainfo._from_xml(metadata_element.xpath('metainfo')[0])
+        if section is not None:
+            widget._from_xml(section)
+        elif not just_this_one:
+            widget.clear_widget()
 
 
 class FaderWidget(QWidget):

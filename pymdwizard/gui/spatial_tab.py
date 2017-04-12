@@ -39,21 +39,25 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys
+import os
+
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton, QInputDialog
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
+from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
 
 from pymdwizard.core import utils
+from pymdwizard.core import spatial_utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spatial_tab
-from pymdwizard.gui import  spref
+from pymdwizard.gui import spref
+from pymdwizard.gui import spdoinfo
 from pymdwizard.gui import spdom
 
 
@@ -79,8 +83,47 @@ class SpatialTab(WizardWidget):
         self.ui.spatial_main_widget.layout().insertWidget(0, self.spdom)
 
         self.spref = spref.SpRef()
-        self.ui.spatial_main_widget.layout().insertWidget(1, self.spref)
+        self.ui.two_column_left.layout().insertWidget(0, self.spref)
 
+        self.spdoinfo = spdoinfo.SpdoInfo()
+        self.ui.two_column_right.layout().insertWidget(0, self.spdoinfo)
+
+        self.ui.btn_browse.clicked.connect(self.browse)
+
+    def browse(self):
+        settings = QSettings('USGS', 'pymdwizard')
+        last_data_fname = settings.value('lastDataFname', '')
+        if last_data_fname:
+            dname, fname = os.path.split(last_data_fname)
+        else:
+            fname, dname = "", ""
+
+        fname = QFileDialog.getOpenFileName(self, fname, dname,
+                                            # Image Files (*.png *.jpg *.bmp)
+                                            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd)")
+        if fname[0]:
+            settings.setValue('lastDataFname', fname[0])
+            self.populate_from_fname(fname[0])
+
+    def populate_from_fname(self, fname):
+
+        try:
+            spdom = spatial_utils.get_bounding(fname)
+            self.spdom._from_xml(spdom)
+        except:
+            pass
+
+        try:
+            spdoinfo = spatial_utils.get_spdoinfo(fname)
+            self.spdoinfo._from_xml(spdoinfo)
+        except:
+            pass
+
+        try:
+            spref = spatial_utils.get_spref(fname)
+            self.spref._from_xml(spref)
+        except:
+            pass
 
     def dragEnterEvent(self, e):
         """
@@ -98,7 +141,7 @@ class SpatialTab(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'idinfo':
+            if element is not None and element.tag == 'idinfo':
                 e.accept()
         else:
             e.ignore()
@@ -106,39 +149,28 @@ class SpatialTab(WizardWidget):
     def switch_schema(self, schema):
         self.spdom.switch_schema(schema)
 
+
+    def clear_widget(self):
+        self.spdoinfo.clear_widget()
+        self.spdom.clear_widget()
+        self.spref.clear_widget()
+
     def _to_xml(self):
-        pass
+        # since this tab is composed of content from three disparate sections
+        # the to and from xml functions are being handled
+        # by the parent widget (MetadataRoot)
+        return self.spdom._to_xml()
 
-    def _from_xml(self, xml_idinfo):
-        try:
-            ptcontac = xml_idinfo.xpath('ptcontac')[0]
-            self.ptcontac._from_xml(ptcontac)
-        except IndexError:
-            pass
-
-        try:
-            keywords = xml_idinfo.xpath('keywords')[0]
-            self.keywords._from_xml(keywords)
-        except IndexError:
-            pass
-
-        try:
-            citation = xml_idinfo.xpath('citation')[0]
-            self.citation._from_xml(citation)
-        except IndexError:
-            pass
-
-        try:
-            timeperd = xml_idinfo.xpath('timeperd')[0]
-            self.timeperd._from_xml(timeperd)
-        except IndexError:
-            pass
-
-        try:
-            descript = xml_idinfo.xpath('descript')[0]
-            self.descript._from_xml(descript)
-        except IndexError:
-            pass
+    def _from_xml(self, xml_unknown):
+        # since this tab is composed of content from three disparate sections
+        # the to and from xml functions are being handled
+        # by the parent widget (MetadataRoot)
+        if xml_unknown.tag == 'spdoinfo':
+            self.spdoinfo._from_xml(xml_unknown)
+        elif xml_unknown.tag == 'spref':
+            self.spref._from_xml(xml_unknown)
+        elif xml_unknown.tag == 'spdom':
+            self.spdom._from_xml(xml_unknown)
 
 if __name__ == "__main__":
     utils.launch_widget(SpatialTab, "IdInfo testing")

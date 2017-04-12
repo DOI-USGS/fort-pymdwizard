@@ -54,8 +54,8 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_Keywords
-from pymdwizard.gui.ThemeKeywords import ThemeKeywords
-from pymdwizard.gui.PlaceKeywords import PlaceKeywords
+from pymdwizard.gui.theme_list import ThemeList
+from pymdwizard.gui.place_list import PlaceList
 
 
 class Keywords(WizardWidget):
@@ -77,11 +77,11 @@ class Keywords(WizardWidget):
 
 
 
-        self.theme = ThemeKeywords()
-        self.ui.fgdc_keywords.layout().addWidget(self.theme)
+        self.theme_list = ThemeList()
+        self.ui.fgdc_keywords.layout().addWidget(self.theme_list)
 
-        self.place = PlaceKeywords()
-        self.ui.fgdc_keywords.layout().addWidget(self.place)
+        self.place_list = PlaceList()
+        self.ui.fgdc_keywords.layout().addWidget(self.place_list)
 
         spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
         self.ui.fgdc_keywords.layout().addItem(spacerItem)
@@ -103,15 +103,15 @@ class Keywords(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'Keywords' or element.tag == 'theme' or \
+            if element is not None and element.tag == 'Keywords' or element.tag == 'theme' or \
                             element.tag == 'place':
                 e.accept()
         else:
             e.ignore()
 
     def _to_xml(self):
-        keywords = self.theme._to_xml()
-        place_keywords = self.place._to_xml()
+        keywords = self.theme_list._to_xml()
+        place_keywords = self.place_list._to_xml()
         for child_node in place_keywords.xpath('place'):
             keywords.append(child_node)
 
@@ -119,8 +119,8 @@ class Keywords(WizardWidget):
 
     def _from_xml(self, keywords):
 
-        self.theme._from_xml(keywords)
-        self.place._from_xml(keywords)
+        self.theme_list._from_xml(keywords)
+        self.place_list._from_xml(keywords)
 
 
 if __name__ == "__main__":

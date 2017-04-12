@@ -76,7 +76,7 @@ class Rdom(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'rdom':
+            if element is not None and element.tag == 'rdom':
                 e.accept()
         else:
             e.ignore()
@@ -91,8 +91,16 @@ class Rdom(WizardWidget):  #
         rdom = xml_utils.xml_node('rdom')
         rdommin = xml_utils.xml_node('rdommin', text=self.ui.fgdc_rdommin.text(), parent_node=rdom)
         rdommax = xml_utils.xml_node('rdommax', text=self.ui.fgdc_rdommax.text(), parent_node=rdom)
-        attrunit= xml_utils.xml_node('attrunit', text=self.ui.fgdc_attrunit.text(), parent_node=rdom)
-        attrmres= xml_utils.xml_node('attrmres', text=self.ui.fgdc_attrmres.text(), parent_node=rdom)
+
+        if self.ui.fgdc_attrunit.text():
+            attrunit= xml_utils.xml_node('attrunit',
+                                         text=self.ui.fgdc_attrunit.text(),
+                                         parent_node=rdom)
+
+        if self.ui.fgdc_attrmres.text():
+            attrmres= xml_utils.xml_node('attrmres',
+                                         text=self.ui.fgdc_attrmres.text(),
+                                         parent_node=rdom)
 
         return rdom
 

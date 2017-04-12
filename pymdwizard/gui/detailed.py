@@ -80,7 +80,8 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname)
+        fname = QFileDialog.getOpenFileName(self, fname, dname,
+                                            filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             self.populate_from_fname(fname[0])
@@ -131,7 +132,7 @@ class Detailed(WizardWidget):  #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'detailed':
+            if element is not None and element.tag == 'detailed':
                 e.accept()
         else:
             e.ignore()
@@ -179,7 +180,7 @@ class Detailed(WizardWidget):  #
         enttyp = xml_utils.xml_node('enttyp', parent_node=detailed)
         enttypl = xml_utils.xml_node('enttypl', text=self.ui.fgdc_enttypl.text(), parent_node=enttyp)
         enttypd = xml_utils.xml_node('enttypd', text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp)
-        enttypds = xml_utils.xml_node('enttyplds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
+        enttypds = xml_utils.xml_node('enttypds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
 
         attr = self.attributes._to_xml()
         for a in attr.xpath('attr'):

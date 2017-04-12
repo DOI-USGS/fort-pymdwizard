@@ -78,7 +78,7 @@ class ThesaurusSearch(QWidget):
         -------
         None
         """
-        self.ui = UI_ThesaurusSearch.Ui_ThesaurusSearchWidget()
+        self.ui = UI_ThesaurusSearch.Ui_ThesaurusSearch()
         self.ui.setupUi(self)
 
     def connect_events(self):
@@ -94,7 +94,7 @@ class ThesaurusSearch(QWidget):
         self.ui.treeview_results.doubleClicked.connect(self.add_term)
         self.ui.treeview_results.clicked.connect(self.show_details)
         self.ui.btn_add_term.clicked.connect(self.add_term)
-        self.ui.btn_close.clicked.connect(self.close)
+        self.ui.btn_close.clicked.connect(self.close_form)
         # self.ui.button_gen_fgdc.clicked.connect(self.generate_fgdc)
         # self.ui.button_remove_selected.clicked.connect(self.remove_selected)
         # self.ui.table_include.doubleClicked.connect(self.remove_selected)
@@ -177,16 +177,35 @@ class ThesaurusSearch(QWidget):
     def populate_thesauri_lookup(self):
         if not self.thesauri_lookup:
             url = "https://www2.usgs.gov/science/thesaurus.php?format=json"
-            result = requests.get(url).json()
-            self.thesauri_lookup = {i['thcode']: i['name'] for i in result['vocabulary']}
-            self.thesauri_lookup_r = {i['name']: i['thcode'] for i in result['vocabulary']}
+            result = self.get_result(url)
+            if result is not None:
+                self.thesauri_lookup = {i['thcode']: i['name'] for i in result['vocabulary']}
+                self.thesauri_lookup_r = {i['name']: i['thcode'] for i in result['vocabulary']}
+                return True
+            else:
+                return False
+        return True
+
+    def get_result(self, url):
+        try:
+            return requests.get(url).json()
+        except requests.exceptions.ConnectionError:
+            msg = "We're having trouble connecting to the controlled vocabularies service"
+            msg += "\n Check that you have an internet connect, or try again latter"
+            QMessageBox.warning(self, "Connection error", msg)
+            self.close_form()
 
     def search_thesaurus(self):
 
-        self.populate_thesauri_lookup()
+        if not self.populate_thesauri_lookup():
+            return False
 
         search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(self.ui.search_term.text())
-        results = requests.get(search_url).json()
+
+
+        results = self.get_result(search_url)
+        if results is None:
+            return False
 
         if not results:
             msg = QMessageBox()
@@ -249,9 +268,11 @@ class ThesaurusSearch(QWidget):
                 thesaurus = parent.text()
                 self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
-    def close(self):
+    def close_form(self):
+        self.parent = None
         self.deleteLater()
-
+        self.close()
+        self.dialog.close()
 
 if __name__ == '__main__':
     utils.launch_widget(ThesaurusSearch, "Thesaurus Search testing")

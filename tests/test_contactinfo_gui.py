@@ -52,10 +52,8 @@ def test_contactinfo__to_xml(qtbot):
     <city/>
     <state/>
     <postal>80225</postal>
-    <country/>
   </cntaddr>
   <cntvoice>303-236-5369</cntvoice>
-  <cntfax/>
   <cntemail>jediffendorfer@usgs.gov</cntemail>
 </cntinfo>
 """

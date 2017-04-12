@@ -95,12 +95,12 @@ class ContactInfo(WizardWidget):
             self._from_xml(cntperp)
             self.usgs_contact.deleteLater()
         else:
-            msg = QMessageBox()
+            msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Information)
             msg.setText("'{}' Not Found".format(username))
             msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
             msg.setWindowTitle("Name Not Found")
-            msg.setStandardButtons(QMessageBox.Retry)
+            msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
 
     def cancel(self):
@@ -141,7 +141,7 @@ class ContactInfo(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'ptcontac' or element.tag == 'cntinfo':
+            if element is not None and element.tag == 'ptcontac' or element.tag == 'cntinfo':
                 e.accept()
         else:
             e.ignore()

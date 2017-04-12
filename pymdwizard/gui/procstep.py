@@ -81,7 +81,7 @@ class ProcStep(WizardWidget): #
 
         #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
         self.proc_step.add_another()
-        self.ui.frame_procstep.layout().addWidget(self.proc_step)
+        self.ui.widget_procstep.layout().addWidget(self.proc_step)
 
 
     def dragEnterEvent(self, e):
@@ -102,12 +102,10 @@ class ProcStep(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'lineage':
+            if element is not None and element.tag == 'lineage':
                 e.accept()
         else:
             e.ignore()
-
-
          
                 
     def _to_xml(self):
@@ -139,11 +137,10 @@ class ProcStep(WizardWidget): #
         """
         try:
             if xml_procstep.tag == 'lineage':
-                self.proc_step.clear_widgets()
+                self.proc_step.clear_widgets(add_another=False)
                 xml_procstep = xml_procstep.findall('procstep')
-                if xml_procstep:#xml_procstep.findall("procstep/procdesc"):
-                    for procstep in xml_procstep:# xml_procstep.findall("procstep/procdesc"), xml_procstep.findall("procstep/procdate"):
-                        print procstep.tag
+                if xml_procstep:
+                    for procstep in xml_procstep:
                         procdesc_widget = self.proc_step.add_another()
                         procdesc_widget._from_xml(procstep)
                 else:

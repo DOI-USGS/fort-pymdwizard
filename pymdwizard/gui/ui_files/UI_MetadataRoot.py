@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'metadataroot.ui'
+# Form implementation generated from reading ui file 'MetadataRoot.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -167,12 +167,10 @@ class Ui_metadata_root(object):
         self.fgdc_metadata.addWidget(self.page_eainfo)
         self.page_distinfo = QtWidgets.QWidget()
         self.page_distinfo.setObjectName("page_distinfo")
-        self.label_5 = QtWidgets.QLabel(self.page_distinfo)
-        self.label_5.setGeometry(QtCore.QRect(580, 300, 181, 81))
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.page_distinfo)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.fgdc_metadata.addWidget(self.page_distinfo)
         self.page_metainfo = QtWidgets.QWidget()
         self.page_metainfo.setObjectName("page_metainfo")
@@ -199,5 +197,14 @@ class Ui_metadata_root(object):
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
         self.label_2.setText(_translate("metadata_root", "Data Quality"))
         self.label_4.setText(_translate("metadata_root", "Entity and Att"))
-        self.label_5.setText(_translate("metadata_root", "Distribution"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    metadata_root = QtWidgets.QWidget()
+    ui = Ui_metadata_root()
+    ui.setupUi(metadata_root)
+    metadata_root.show()
+    sys.exit(app.exec_())
 

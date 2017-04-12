@@ -49,6 +49,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableVi
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QScrollArea, QListWidgetItem
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from PyQt5 import QtCore
 
 from pymdwizard.core import utils
 
@@ -57,16 +58,39 @@ from pymdwizard.gui.single_date import SingleDate
 from pymdwizard.gui.wiz_widget import WizardWidget
 
 class DefaultWidget(QWidget):
-
-    def __init__(self, label='', parent=None):
+    """
+    The default widget for a repeating element
+    a simple line edit with a label and an option required astrix
+    """
+    def __init__(self, label='', line_name='na', required=False,
+                 parent=None):
         QWidget.__init__(self)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
         self.added_line = QLineEdit()
+        self.added_line.setObjectName(line_name)
         self.layout.addWidget(self.qlbl)
         self.layout.addWidget(self.added_line)
+
+        if required:
+            self.required_label = QLabel(self)
+            font = QFont()
+            font.setFamily("Arial")
+            font.setPointSize(9)
+            font.setBold(False)
+            font.setItalic(False)
+            font.setWeight(50)
+            self.required_label.setFont(font)
+            self.required_label.setScaledContents(True)
+            self.required_label.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+            self.required_label.setIndent(0)
+
+            self.required_label.setText(QtCore.QCoreApplication.translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+            self.layout.addWidget(self.required_label)
+
+
         self.layout.setContentsMargins(1, 1, 1, 1)
-        self.layout.setSpacing(2)
+        self.layout.setSpacing(6)
         self.setLayout(self.layout)
 
 
@@ -83,7 +107,7 @@ class RepeatingElement(QWidget):
                  widget=DefaultWidget, widget_kwargs={},
                  italic_text='',
                  add_text="Add another", remove_text="Remove last",
-                 show_buttons=True, parent=None):
+                 show_buttons=True, add_another=None, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
@@ -93,28 +117,21 @@ class RepeatingElement(QWidget):
         if italic_text:
             self.ui.italic_label.setText(italic_text)
 
+        self.which = which
         if which == 'vertical':
-            self.SA = self.ui.vertical_contents
-            self.content_layout = self.ui.vertical_contents.layout()
+            self.SA = self.ui.vertical_widget
+            self.content_layout = self.ui.vertical_widget.layout()
             self.tab = False
-            self.ui.frame.hide()
-            self.ui.tab_widget.hide()
-            self.ui.horizontal_scroll.hide()
-        elif which == 'horizontal':
-            self.ui.stackedWidget.setCurrentIndex(1)
-            self.SA = self.ui.horizontal_contents
-            self.content_layout = self.ui.horizontal_contents.layout()
-            self.tab = False
-            self.ui.frame.hide()
-            self.ui.tab_widget.hide()
-            self.ui.vertical_widget.hide()
+            self.ui.tab_widget.deleteLater()
         elif which == 'tab':
             self.content_widget = self.ui.tab_widget
             self.tab = True
-            self.ui.horizontal_scroll.hide()
-            self.ui.vertical_scroll.hide()
+            self.ui.vertical_widget.deleteLater()
 
         self.tab_label = tab_label
+
+        if add_another is not None:
+            self.add_another = add_another
 
         self.connect_events()
 
@@ -160,28 +177,44 @@ class RepeatingElement(QWidget):
         """
         widget = self.widget(**self.widget_kwargs)
         self.widgets.append(widget)
+
+
         if self.tab:
             if not tab_label:
                 tab_label = ' '.join([self.tab_label,
                                       str(len(self.widgets))])
             self.ui.tab_widget.addTab(widget, tab_label)
+            self.ui.tab_widget.setCurrentIndex(self.ui.tab_widget.count()-1)
         else:
             self.content_layout.insertWidget(len(self.widgets)-1, widget)
         return widget
 
     def pop_off(self):
-        if self.widgets:
-            last_added = self.widgets.pop()
-            last_added.deleteLater()
+        if self.widgets and len(self.widgets) > 1:
+            if self.which == 'tab':
+                current_tab = self.ui.tab_widget.currentIndex()
+                current_widget = self.widgets[current_tab]
+                current_widget.deleteLater()
+                del self.widgets[current_tab]
+            else:
+                last_added = self.widgets.pop()
+                last_added.deleteLater()
+        elif len(self.widgets) == 1:
+            self.clear_widgets()
+
 
     def get_widgets(self):
         return self.widgets
 
-    def clear_widgets(self):
+    def clear_widgets(self, add_another=True):
         for widget in self.widgets:
             widget.deleteLater()
-
         self.widgets = []
+
+        if add_another:
+            self.add_another()
+
+
 
 
 if __name__ == "__main__":
@@ -189,12 +222,14 @@ if __name__ == "__main__":
     from pymdwizard.gui import attr, edom, single_date, sourceinput
     import random
 
+    widget_kws={'label' : 'hello', 'required' : True}
 
 
-
-    utils.launch_widget(RepeatingElement, which='tab',
+    utils.launch_widget(RepeatingElement, which='vertical',
                         tab_label='Processing Step', add_text='test add',
-                        widget = sourceinput.SourceInput, remove_text='test remove', italic_text='some instruction')
+                        # widget = sourceinput.SourceInput,
+                        widget_kwargs=widget_kws,
+                        remove_text='test remove', italic_text='some instruction')
 
 
 

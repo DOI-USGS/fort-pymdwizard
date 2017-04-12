@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>222</width>
+    <height>20</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QComboBox" name="fgdc_themekey">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>farming</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>biota</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>boundaries</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>climateologyMeteorologyAtmosphere</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>economy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>elevation</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>environment</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>geoscientificInformation</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>health</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>imageryBaseMapsEarthCover</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>intelligenceMilitary</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>inlandWaters</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>location</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oceans</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>planningCadastre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>society</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>structure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>transportation</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>utilitiesCommunication</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

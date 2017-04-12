@@ -85,11 +85,11 @@ class Spdom(WizardWidget):
 
         self.ui.map_viewer.hide()
 
-        view = self.view = QWebView()
-        view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
+        self.view = self.view = QWebView()
+        self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
         map_fname = utils.get_resource_path('leaflet/map.html')
-        view.setUrl(QUrl.fromLocalFile(map_fname))
-        self.ui.verticalLayout_3.addWidget(view)
+        self.view.setUrl(QUrl.fromLocalFile(map_fname))
+        self.ui.verticalLayout_3.addWidget(self.view)
 
         # this is where more complex build information would go such as
         # instantiating child widgets, inserting them into the layout,
@@ -247,7 +247,7 @@ class Spdom(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'spdom':
+            if element is not None and element.tag == 'spdom':
                 e.accept()
         else:
             e.ignore()
@@ -263,6 +263,11 @@ class Spdom(WizardWidget):
             self.ui.descgeog_label.hide()
             self.ui.descgeog_star.hide()
 
+    def clear_widget(self):
+        super(self.__class__, self).clear_widget()
+        map_fname = utils.get_resource_path('leaflet/map.html')
+        self.view.setUrl(QUrl.fromLocalFile(map_fname))
+
     def _to_xml(self):
         spdom = xml_node('spdom')
 
@@ -274,9 +279,21 @@ class Spdom(WizardWidget):
         eastbc = xml_node('eastbc', text=self.ui.fgdc_eastbc.text(), parent_node=bounding)
         northbc = xml_node('northbc', text=self.ui.fgdc_northbc.text(), parent_node=bounding)
         southbc = xml_node('southbc', text=self.ui.fgdc_southbc.text(), parent_node=bounding)
+
+        if self.original_xml is not None:
+            boundalt = self.original_xml.xpath('bounding/boundalt')
+            if boundalt:
+                bounding.append(boundalt[0])
+
+            dsgpoly_list = self.original_xml.xpath('dsgpoly')
+            for dsgpoly in dsgpoly_list:
+                spdom.append(dsgpoly)
+
         return spdom
 
     def _from_xml(self, spdom):
+        self.original_xml = spdom
+
         utils.populate_widget(self, spdom)
         self.draw_map()
         self.update_rect()

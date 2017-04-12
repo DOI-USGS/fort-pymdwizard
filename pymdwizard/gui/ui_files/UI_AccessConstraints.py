@@ -11,7 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(592, 301)
+        Form.resize(592, 175)
+        Form.setMinimumSize(QtCore.QSize(0, 135))
+        Form.setMaximumSize(QtCore.QSize(16777215, 175))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -33,7 +35,7 @@ class Ui_Form(object):
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_accconst = QtWidgets.QPlainTextEdit(self.groupBox)
         self.fgdc_accconst.setAcceptDrops(False)
-        self.fgdc_accconst.setOverwriteMode(True)
+        self.fgdc_accconst.setOverwriteMode(False)
         self.fgdc_accconst.setObjectName("fgdc_accconst")
         self.verticalLayout_2.addWidget(self.fgdc_accconst)
         self.verticalLayout.addWidget(self.groupBox)

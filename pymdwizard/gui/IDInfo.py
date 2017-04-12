@@ -54,7 +54,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
-from pymdwizard.gui.Taxonomy import Taxonomy
+from pymdwizard.gui.Taxonomy2 import Taxonomy
 from pymdwizard.gui.Keywords import Keywords
 from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
@@ -62,7 +62,10 @@ from pymdwizard.gui.Status import Status
 from pymdwizard.gui.timeperd import Timeperd
 from pymdwizard.gui.Citation import Citation
 from pymdwizard.gui.DataCredit import DataCredit
-from pymdwizard.gui.Descriptor import Descriptor
+#from pymdwizard.gui.Descriptor import Descriptor
+from pymdwizard.gui.supplinf import SupplInf
+from pymdwizard.gui.abstract import Abstract
+from pymdwizard.gui.purpose import Purpose
 
 
 class IdInfo(WizardWidget):
@@ -98,20 +101,30 @@ class IdInfo(WizardWidget):
         self.timeperd = Timeperd(parent=self)
         self.citation = Citation(parent=self)
         self.datacredit = DataCredit(parent=self)
-        self.descript = Descriptor(parent=self)
+
+        self.abstract = Abstract(parent=self)
+        self.purpose = Purpose(parent=self)
+        self.supplinf = SupplInf(parent=self)
 
         self.ui.fgdc_citation.layout().addWidget(self.citation)
 
-        self.ui.two_column_left.layout().addWidget(self.ptcontac, 0)
-        self.ui.two_column_left.layout().addWidget(self.taxonomy, 1)
-        self.ui.two_column_left.layout().addWidget(self.status, 2)
-        self.ui.two_column_left.layout().addWidget(self.accconst, 3)
-        self.ui.two_column_left.layout().addWidget(self.useconst, 4)
-        self.ui.two_column_left.layout().addWidget(self.datacredit, 5)
+        #bottom to top in layout
+        time_hbox = QHBoxLayout()
+        time_hbox.addWidget(self.status)
+        time_hbox.addWidget(self.timeperd)
+        self.ui.two_column_left.layout().insertLayout(0, time_hbox)
+        self.ui.two_column_left.layout().insertWidget(0, self.datacredit)
+        self.ui.two_column_left.layout().insertWidget(0, self.taxonomy)
+        self.ui.two_column_left.layout().insertWidget(0, self.ptcontac)
+        self.ui.two_column_left.layout().insertWidget(0, self.useconst)
+        self.ui.two_column_left.layout().insertWidget(0, self.accconst)
 
-        self.ui.two_column_right.layout().addWidget(self.keywords, 0)
-        self.ui.two_column_right.layout().addWidget(self.timeperd, 1)
-        self.ui.two_column_right.layout().addWidget(self.descript, 2)
+        self.ui.two_column_right.layout().insertWidget(0, self.supplinf)
+        self.ui.two_column_right.layout().insertWidget(0, self.keywords)
+        self.ui.two_column_right.layout().insertWidget(0, self.purpose)
+        self.ui.two_column_right.layout().insertWidget(0, self.abstract)
+
+
 
 
     def dragEnterEvent(self, e):
@@ -130,10 +143,13 @@ class IdInfo(WizardWidget):
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'idinfo':
+            if element is not None and element.tag == 'idinfo':
                 e.accept()
         else:
             e.ignore()
+
+    def children(self):
+        return super(IdInfo, self).children() + [self.root_widget.spatial_tab.spdom]
 
     def switch_schema(self, schema):
         self.schema = schema
@@ -141,6 +157,7 @@ class IdInfo(WizardWidget):
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
+        self.citation.switch_schema(self.schema)
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
@@ -151,7 +168,15 @@ class IdInfo(WizardWidget):
         citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
-        descript_node = self.descript._to_xml()
+        descript_node = xml_utils.xml_node('descript', parent_node=idinfo_node)
+        abstract_node = self.abstract._to_xml()
+        descript_node.append(abstract_node)
+        purpose_node = self.purpose._to_xml()
+        descript_node.append(purpose_node)
+        supplinf_node = self.supplinf._to_xml()
+        if supplinf_node.text is not None:
+            descript_node.append(supplinf_node)
+
         idinfo_node.append(descript_node)
 
         timeperd_node = self.timeperd._to_xml()
@@ -166,7 +191,7 @@ class IdInfo(WizardWidget):
         keywords = self.keywords._to_xml()
         idinfo_node.append(keywords)
 
-        if self.schema == 'bdp' and self.taxonomy.ui.rbtn_yes.isChecked():
+        if self.schema == 'bdp' and self.taxonomy.has_content():
             taxonomy = self.taxonomy._to_xml()
             idinfo_node.append(taxonomy)
 
@@ -176,8 +201,8 @@ class IdInfo(WizardWidget):
         useconst_node = self.useconst._to_xml()
         idinfo_node.append(useconst_node)
 
-        ptcontac = self.ptcontac._to_xml()
-        if ptcontac:
+        if self.ptcontac.has_content():
+            ptcontac = self.ptcontac._to_xml()
             idinfo_node.append(ptcontac)
 
         datacredit_node = self.datacredit._to_xml()
@@ -188,66 +213,57 @@ class IdInfo(WizardWidget):
 
     def _from_xml(self, xml_idinfo):
 
-        try:
-            citation = xml_idinfo.xpath('citation')[0]
+        citation = xml_utils.search_xpath(xml_idinfo, 'citation')
+        if citation is not None:
             self.citation._from_xml(citation)
-        except IndexError:
-            pass
 
-        try:
-            descript = xml_idinfo.xpath('descript')[0]
-            self.descript._from_xml(descript)
-        except IndexError:
-            pass
+        abstract = xml_utils.search_xpath(xml_idinfo, 'descript/abstract')
+        if abstract is not None:
+            self.abstract._from_xml(abstract)
 
-        try:
-            timeperd = xml_idinfo.xpath('timeperd')[0]
+        purpose = xml_utils.search_xpath(xml_idinfo, 'descript/purpose')
+        if purpose is not None:
+            self.purpose._from_xml(purpose)
+
+        supplinf = xml_utils.search_xpath(xml_idinfo, 'descript/supplinf')
+        if supplinf is not None:
+            self.supplinf._from_xml(supplinf)
+
+        timeperd = xml_utils.search_xpath(xml_idinfo, 'timeperd')
+        if timeperd is not None:
             self.timeperd._from_xml(timeperd)
-        except IndexError:
-            pass
 
-        try:
-            status = xml_idinfo.xpath('status')[0]
+        status = xml_utils.search_xpath(xml_idinfo, 'status')
+        if status is not None:
             self.status._from_xml(status)
-        except IndexError:
-            pass
 
-        try:
-            spdom = xml_idinfo.xpath('spdom')[0]
+        spdom = xml_utils.search_xpath(xml_idinfo, 'spdom')
+        if spdom is not None:
             self.root_widget.spatial_tab.spdom._from_xml(spdom)
-        except IndexError:
-            pass
 
-        try:
-            keywords = xml_idinfo.xpath('keywords')[0]
+        keywords = xml_utils.search_xpath(xml_idinfo, 'keywords')
+        if keywords is not None:
             self.keywords._from_xml(keywords)
-        except IndexError:
-            pass
 
-        try:
-            taxonomy = xml_idinfo.xpath('taxonomy')[0]
+        taxonomy = xml_utils.search_xpath(xml_idinfo, 'taxonomy')
+        if taxonomy is not None:
             self.taxonomy._from_xml(taxonomy)
-        except IndexError:
-            pass
 
-        try:
-            accconst = xml_idinfo.xpath('accconst')[0]
+        accconst = xml_utils.search_xpath(xml_idinfo, 'accconst')
+        if accconst is not None:
             self.accconst._from_xml(accconst)
-        except IndexError:
-            pass
 
-        try:
-            useconst = xml_idinfo.xpath('useconst')[0]
+        useconst =xml_utils.search_xpath(xml_idinfo, 'useconst')
+        if useconst is not None:
             self.useconst._from_xml(useconst)
-        except IndexError:
-            pass
 
-        try:
-            ptcontac = xml_idinfo.xpath('ptcontac')[0]
+        ptcontac = xml_utils.search_xpath(xml_idinfo, 'ptcontac')
+        if ptcontac is not None:
             self.ptcontac._from_xml(ptcontac)
-        except IndexError:
-            pass
 
+        datacred = xml_utils.search_xpath(xml_idinfo, 'datacred')
+        if datacred is not None:
+            self.datacredit._from_xml(datacred)
 
 
 

@@ -106,10 +106,14 @@ class PlaceKeywords(WizardWidget):
         -------
         None
         """
+
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
+
+        self.thesaurus_search.setWindowTitle('Place Keyword Thesaurus Search')
 
         fg = self.frameGeometry()
         self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
+
         self.thesaurus_search.show()
 
     def browse_iso(self):

@@ -89,10 +89,16 @@
     <property name="title">
      <string>Validation</string>
     </property>
+    <widget class="QMenu" name="menuErrors">
+     <property name="title">
+      <string>Errors:</string>
+     </property>
+     <addaction name="actionErrorsListMenu"/>
+    </widget>
     <addaction name="actionRun_Validation"/>
     <addaction name="actionClear_validation"/>
     <addaction name="separator"/>
-    <addaction name="actionErrors"/>
+    <addaction name="menuErrors"/>
    </widget>
    <widget class="QMenu" name="menuPreview">
     <property name="title">
@@ -100,16 +106,9 @@
     </property>
     <addaction name="actionPreview"/>
    </widget>
-   <widget class="QMenu" name="menuPull_From_Data">
-    <property name="title">
-     <string>Pull From Data</string>
-    </property>
-    <addaction name="actionPull_From_Data"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
    <addaction name="menuPreview"/>
-   <addaction name="menuPull_From_Data"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -191,11 +190,6 @@
     <string>Run Validation</string>
    </property>
   </action>
-  <action name="actionErrors">
-   <property name="text">
-    <string>Errors:</string>
-   </property>
-  </action>
   <action name="actionClear_validation">
    <property name="text">
     <string>Clear validation</string>
@@ -209,6 +203,11 @@
   <action name="actionPull_From_Data">
    <property name="text">
     <string>Pull From Data</string>
+   </property>
+  </action>
+  <action name="actionErrorsListMenu">
+   <property name="text">
+    <string>ErrorsListMenu</string>
    </property>
   </action>
  </widget>

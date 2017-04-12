@@ -16,11 +16,11 @@ class Ui_Form(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.group = QtWidgets.QGroupBox(Form)
+        self.group.setObjectName("group")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.group)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.splitter = QtWidgets.QSplitter(self.groupBox)
+        self.splitter = QtWidgets.QSplitter(self.group)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.layoutWidget = QtWidgets.QWidget(self.splitter)
@@ -60,6 +60,7 @@ class Ui_Form(object):
         self.fgdc_descgeog.setSizePolicy(sizePolicy)
         self.fgdc_descgeog.setMinimumSize(QtCore.QSize(217, 0))
         self.fgdc_descgeog.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_descgeog.setToolTip("")
         self.fgdc_descgeog.setText("")
         self.fgdc_descgeog.setPlaceholderText("")
         self.fgdc_descgeog.setObjectName("fgdc_descgeog")
@@ -121,6 +122,7 @@ class Ui_Form(object):
         self.fgdc_westbc.setSizePolicy(sizePolicy)
         self.fgdc_westbc.setMinimumSize(QtCore.QSize(217, 0))
         self.fgdc_westbc.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_westbc.setToolTip("")
         self.fgdc_westbc.setText("")
         self.fgdc_westbc.setPlaceholderText("")
         self.fgdc_westbc.setObjectName("fgdc_westbc")
@@ -178,6 +180,7 @@ class Ui_Form(object):
         self.fgdc_eastbc.setSizePolicy(sizePolicy)
         self.fgdc_eastbc.setMinimumSize(QtCore.QSize(217, 0))
         self.fgdc_eastbc.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_eastbc.setToolTip("")
         self.fgdc_eastbc.setText("")
         self.fgdc_eastbc.setPlaceholderText("")
         self.fgdc_eastbc.setObjectName("fgdc_eastbc")
@@ -235,6 +238,7 @@ class Ui_Form(object):
         self.fgdc_northbc.setSizePolicy(sizePolicy)
         self.fgdc_northbc.setMinimumSize(QtCore.QSize(217, 0))
         self.fgdc_northbc.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_northbc.setToolTip("")
         self.fgdc_northbc.setText("")
         self.fgdc_northbc.setPlaceholderText("")
         self.fgdc_northbc.setObjectName("fgdc_northbc")
@@ -292,6 +296,7 @@ class Ui_Form(object):
         self.fgdc_southbc.setSizePolicy(sizePolicy)
         self.fgdc_southbc.setMinimumSize(QtCore.QSize(217, 0))
         self.fgdc_southbc.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.fgdc_southbc.setToolTip("")
         self.fgdc_southbc.setText("")
         self.fgdc_southbc.setPlaceholderText("")
         self.fgdc_southbc.setObjectName("fgdc_southbc")
@@ -334,7 +339,7 @@ class Ui_Form(object):
         self.map_viewer.setObjectName("map_viewer")
         self.verticalLayout_3.addWidget(self.map_viewer)
         self.verticalLayout_5.addWidget(self.splitter)
-        self.verticalLayout_4.addWidget(self.groupBox)
+        self.verticalLayout_4.addWidget(self.group)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -342,46 +347,26 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Spatial Domain"))
+        self.group.setTitle(_translate("Form", "Spatial Domain"))
         self.descgeog_label.setToolTip(_translate("Form", "The name of the person to contact"))
         self.descgeog_label.setText(_translate("Form", "Description of Geographic Extent"))
-        self.fgdc_descgeog.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
         self.descgeog_star.setToolTip(_translate("Form", "Required"))
         self.descgeog_star.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.groupBox_2.setTitle(_translate("Form", "Bounding Coordinates"))
         self.lbl_cntper_2.setToolTip(_translate("Form", "The name of the person to contact"))
         self.lbl_cntper_2.setText(_translate("Form", "West (-180 - 180)"))
-        self.fgdc_westbc.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
         self.label_4.setToolTip(_translate("Form", "Required"))
         self.label_4.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.lbl_cntper_3.setToolTip(_translate("Form", "The name of the person to contact"))
         self.lbl_cntper_3.setText(_translate("Form", "East (-180 - 180)"))
-        self.fgdc_eastbc.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
         self.label_5.setToolTip(_translate("Form", "Required"))
         self.label_5.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.lbl_cntper_4.setToolTip(_translate("Form", "The name of the person to contact"))
         self.lbl_cntper_4.setText(_translate("Form", "North (-180 - 180)"))
-        self.fgdc_northbc.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
         self.label_6.setToolTip(_translate("Form", "Required"))
         self.label_6.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.lbl_cntper_5.setToolTip(_translate("Form", "The name of the person to contact"))
         self.lbl_cntper_5.setText(_translate("Form", "South (-180 - 180)"))
-        self.fgdc_southbc.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
         self.label_7.setToolTip(_translate("Form", "Required"))
         self.label_7.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
 
