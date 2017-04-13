@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Status.ui'
+# Form implementation generated from reading ui file 'status.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -78,6 +78,7 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.fgdc_status)
 
         self.retranslateUi(Form)
+        self.fgdc_update.setCurrentIndex(8)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

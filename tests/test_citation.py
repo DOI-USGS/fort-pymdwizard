@@ -48,7 +48,7 @@ def test_citation__to_xml(qtbot):
   <title>test title</title>
   <geoform>book</geoform>
   <serinfo>
-    <serinfo>Name 25</serinfo>
+    <sername>Name 25</sername>
     <issue>Issue 45</issue>
   </serinfo>
 </citeinfo>

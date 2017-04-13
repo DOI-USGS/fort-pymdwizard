@@ -149,6 +149,8 @@ class SpdoInfo(WizardWidget):
         self.ui.fgdc_rasttype.setCurrentIndex(0)
         self.ui.fgdc_direct.setCurrentIndex(2)
 
+        self.ui.rbtn_no.setChecked(True)
+
     def _to_xml(self):
         if self.ui.rbtn_yes.isChecked():
             spdoinfo = xml_utils.xml_node('spdoinfo')

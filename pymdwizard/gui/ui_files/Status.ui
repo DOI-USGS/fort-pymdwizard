@@ -139,6 +139,9 @@
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="currentIndex">
+         <number>8</number>
+        </property>
         <item>
          <property name="text">
           <string>Continually</string>

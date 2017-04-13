@@ -56,6 +56,8 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.keywords_layout = QtWidgets.QVBoxLayout()
         self.keywords_layout.setObjectName("keywords_layout")
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.keywords_layout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.keywords_layout)
 
         self.retranslateUi(Form)

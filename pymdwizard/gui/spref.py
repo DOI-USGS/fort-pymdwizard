@@ -108,6 +108,11 @@ class SpRef(WizardWidget):
         self.ui.fgdc_horizdn.currentIndexChanged.connect(self.load_datum)
         self.load_datum()
 
+    def clear_widget(self):
+        WizardWidget.clear_widget(self)
+        self.ui.btn_geographic.setChecked(True)
+        self.ui.rbtn_no.setChecked(True)
+
     def spref_used_change(self, b):
         if b:
             self.ui.horiz_layout.show()
@@ -273,13 +278,13 @@ class SpRef(WizardWidget):
             planci = xml_utils.xml_node('planci', parent_node=planar)
             plance = xml_utils.xml_node('plance', text=self.ui.fgdc_plance.currentText(), parent_node=planci)
             coordrep = xml_utils.xml_node('coordrep', parent_node=planci)
-            absres = xml_utils.xml_node('absres', text=self.ui.fgdc_absres, parent_node=coordrep)
-            absres = xml_utils.xml_node('ordres', text=self.ui.fgdc_ordres, parent_node=coordrep)
-            plandu = xml_utils.xml_node('plandu', text=self.ui.fgdc_plandu, parent_node=planci)
+            absres = xml_utils.xml_node('absres', text=self.ui.fgdc_absres.text(), parent_node=coordrep)
+            absres = xml_utils.xml_node('ordres', text=self.ui.fgdc_ordres.text(), parent_node=coordrep)
+            plandu = xml_utils.xml_node('plandu', text=self.ui.fgdc_plandu.currentText(), parent_node=planci)
         else:
             local = xml_utils.xml_node('local', parent_node=horizsys)
-            fgdc_localdes = xml_utils.xml_node('localdes', text=self.ui.fgdc_localdes, parent_node=local)
-            fgdc_localgeo = xml_utils.xml_node('localgeo', text=self.ui.fgdc_localgeo, parent_node=local)
+            fgdc_localdes = xml_utils.xml_node('localdes', text=self.ui.fgdc_localdes.text(), parent_node=local)
+            fgdc_localgeo = xml_utils.xml_node('localgeo', text=self.ui.fgdc_localgeo.text(), parent_node=local)
 
         if self.findChild(QComboBox, "fgdc_horizdn").currentText():
             geodetic = xml_utils.xml_node('geodetic', parent_node=horizsys)
@@ -323,7 +328,7 @@ class SpRef(WizardWidget):
                 if mapproj is not None:
                     self.ui.btn_projection.setChecked(True)
 
-                    utils.populate_widget_element(self.ui.fgdc_gridsysn, mapproj, 'mapprojn')
+                    utils.populate_widget_element(self.ui.fgdc_mapprojn, mapproj, 'mapprojn')
                     mapproj_contents = mapproj.getchildren()[1]
                     for item in mapproj_contents.getchildren():
                         tag = item.tag

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
+    <width>487</width>
     <height>553</height>
    </rect>
   </property>
@@ -470,7 +470,7 @@
                     </property>
                     <layout class="QFormLayout" name="formLayout_8">
                      <item row="0" column="0">
-                      <widget class="QLabel" name="label_15">
+                      <widget class="QLabel" name="help_plance">
                        <property name="text">
                         <string>Planar Coordinate Encoding Method</string>
                        </property>
@@ -496,7 +496,7 @@
                       </widget>
                      </item>
                      <item row="2" column="0">
-                      <widget class="QLabel" name="label_16">
+                      <widget class="QLabel" name="help_absres">
                        <property name="text">
                         <string>Abscissa Resolution</string>
                        </property>
@@ -510,7 +510,7 @@
                       </widget>
                      </item>
                      <item row="3" column="0">
-                      <widget class="QLabel" name="label_17">
+                      <widget class="QLabel" name="help_ordres">
                        <property name="text">
                         <string>Ordinate Resolution</string>
                        </property>
@@ -524,9 +524,9 @@
                       </widget>
                      </item>
                      <item row="4" column="0">
-                      <widget class="QLabel" name="label_18">
+                      <widget class="QLabel" name="help_plandu">
                        <property name="text">
-                        <string>Grid System Name</string>
+                        <string>Planar Units</string>
                        </property>
                       </widget>
                      </item>

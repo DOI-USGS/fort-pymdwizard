@@ -100,6 +100,22 @@ class ThemeList(WizardWidget): #
         self.ui.btn_remove_selected.clicked.connect(self.remove_selected)
         self.ui.btn_add_iso.clicked.connect(self.add_iso)
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
+        # self.ui.theme_tabs.currentChanged.connect(self.switch_tab)
+
+    # def switch_tab(self):
+    #     current_index = self.ui.theme_tabs.currentIndex()
+    #     for i in range(len(self.thesauri), 0, -1):
+    #         tab = self.ui.theme_tabs.widget(i)
+    #         tab.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+    #
+    #     cur_tab = self.ui.theme_tabs.widget(current_index)
+    #     cur_tab.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+            # if current_index == 0:
+            #     self.ui.theme_tabs.
+            #     self.ui.iso_tab.hide()
+            # else:
+            #     self.ui.theme_tabs.removeTab(current_index)
+            #     del self.thesauri[current_index-1]
 
     def add_another(self, click=False, tab_label='', locked=False):
 
@@ -209,7 +225,7 @@ class ThemeList(WizardWidget): #
                                          text=self.ui.fgdc_themekt.text(),
                                          parent_node=theme)
             for isokw in self.iso_kws.get_widgets():
-                theme = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
+                themekey = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
                                            parent_node=theme)
 
         for theme in self.thesauri:
@@ -234,18 +250,19 @@ class ThemeList(WizardWidget): #
 
         self.original_xml = keywords_xml
         if keywords_xml.tag == 'keywords':
-            for theme_xml in keywords_xml.xpath('theme'):
-                if theme_xml.xpath('themekt'):
-                    themekt = theme_xml.xpath('themekt')[0]
-                    if 'iso 19115' in themekt.text.lower():
-                        self.iso_kws.clear_widgets(add_another=False)
-                        for themekey in theme_xml.xpath('themekey'):
-                            iso = self.iso_kws.add_another()
-                            iso.ui.comboBox.setCurrentText(themekey.text)
+            for theme_xml in xml_utils.search_xpath(keywords_xml, 'theme', False):
+                themekt = xml_utils.get_text_content(theme_xml, 'themekt')
+                if themekt is not None and 'iso 19115' in themekt.lower():
+                    self.iso_kws.clear_widgets(add_another=False)
+                    for themekey in xml_utils.search_xpath(theme_xml,
+                                                           'themekey',
+                                                           only_first=False):
+                        iso = self.iso_kws.add_another()
+                        iso.ui.fgdc_themekey.setCurrentText(themekey.text)
 
-                    else:
-                        theme = self.add_another()
-                        theme._from_xml(theme_xml)
+                else:
+                    theme = self.add_another()
+                    theme._from_xml(theme_xml)
 
 
 if __name__ == "__main__":

@@ -42,6 +42,8 @@ import sys, os
 import json
 import tempfile
 import time
+import datetime
+import shutil
 
 from lxml import etree
 
@@ -56,7 +58,7 @@ from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor,
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
-from pymdwizard.core import xml_utils, utils
+from pymdwizard.core import xml_utils, utils, fgdc_utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.core import spatial_utils
 
@@ -64,7 +66,7 @@ import sip
 
 class PyMdWizardMainForm(QMainWindow):
 
-    max_recent_files = 5
+    max_recent_files = 10
 
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
@@ -116,9 +118,11 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.open_file)
         self.ui.actionSave.triggered.connect(self.save_file)
         self.ui.actionSave_as.triggered.connect(self.save_as)
+        self.ui.actionExit.triggered.connect(self.exit)
         self.ui.actionRun_Validation.triggered.connect(self.validate)
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
+        self.ui.actionNew.triggered.connect(self.new_record)
         # self.ui.actionPull_From_Data.triggered.connect(self.harvest)
 
     def open_recent_file(self):
@@ -201,16 +205,12 @@ class PyMdWizardMainForm(QMainWindow):
 
         print(time.time() - self.last_updated)
         if time.time() - self.last_updated > 4:
-            print('updated')
-            # self.load_file(self.cur_fname)
             msg = "The file you are editing has been changed on disk.  Would you like to reload this File?"
             alert = QDialog()
             self.last_updated = time.time()
             confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No)
             if confirm == QMessageBox.Yes:
                 self.load_file(self.cur_fname)
-
-
 
     def save_as(self):
         """
@@ -260,6 +260,20 @@ class PyMdWizardMainForm(QMainWindow):
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
+    def new_record(self):
+
+        template_fname = utils.get_resource_path('CSDGM_Template.xml')
+        save_as_fname = self.get_save_name()
+        if save_as_fname:
+            shutil.copyfile(template_fname, save_as_fname)
+            self.load_file(save_as_fname)
+            self.set_current_file(save_as_fname)
+            self.update_recent_file_actions()
+
+            today = fgdc_utils.format_date(datetime.datetime.now())
+            self.metadata_root.metainfo.metd.set_date(today)
+
+
     def set_current_file(self, fname):
         self.cur_fname = fname
         if fname:
@@ -302,6 +316,32 @@ class PyMdWizardMainForm(QMainWindow):
 
     def stripped_name(self, full_fname):
         return QFileInfo(full_fname).fileName()
+
+    def exit(self):
+        if self.cur_fname:
+            cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
+            disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
+
+            if cur_xml != disk_xml:
+                msg = "Would you like to save before exiting?"
+                alert = QDialog()
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                if confirm == QMessageBox.Yes:
+                    self.save_file(self.cur_fname)
+                elif confirm == QMessageBox.Cancel:
+                    return 'Cancel'
+                self.cur_fname = ''
+
+        self.close()
+        return 'Close'
+
+    def closeEvent(self, event):
+        if self.exit() == 'Close':
+            event.accept()
+        else:
+            event.ignore()
+
 
     def clear_validation(self):
 
@@ -483,7 +523,7 @@ def main():
     font.setBold(True)
     painter.setFont(font)
 
-    painter.setPen(QColor(150, 150, 150, 255))
+    painter.setPen(QColor(250, 250, 250, 255))
     painter.drawText(splash_pix.rect(), Qt.AlignCenter,
                  "Metadata Wizard 2.0")
 

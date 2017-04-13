@@ -80,6 +80,7 @@ class WizardWidget(QWidget):
             QMainWindow.__init__(self, parent)
 
         self.original_xml = None
+        self.in_context = False
 
         self.build_ui()
         self.connect_events()
@@ -250,7 +251,10 @@ class WizardWidget(QWidget):
         if not hasattr(self, 'drag_start_pos'):
             return
 
-        if not (e.pos() - self.drag_start_pos).manhattanLength() > 200:
+        if not (e.pos() - self.drag_start_pos).manhattanLength() > 75:
+            return
+        modifiers = QApplication.keyboardModifiers()
+        if not modifiers == Qt.ControlModifier:
             return
 
 
@@ -377,12 +381,21 @@ class WizardWidget(QWidget):
         """
         return True
 
+    def leaveEvent(self, event):
+        if not self.in_context:
+            self.setStyleSheet(NORMAL_STYLE)
+
+    def enterEvent(self, QEvent):
+        self.setStyleSheet(FOCUS_STYLE)
+
     def contextMenuEvent(self, event):
 
+
+        self.in_context = True
         clicked_widget = self.childAt(event.pos())
 
+
         menu = QMenu(self)
-        clear_action = menu.addAction("Clear content")
         copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
         copy_action.setStatusTip('Copy to the Clipboard')
 
@@ -391,9 +404,12 @@ class WizardWidget(QWidget):
 
         if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
             menu.addSeparator()
-            help_action = menu.addAction("help")
+            help_action = menu.addAction("Help")
         else:
             help_action = None
+
+        menu.addSeparator()
+        clear_action = menu.addAction("Clear content")
 
         action = menu.exec_(self.mapToGlobal(event.pos()))
 
@@ -420,40 +436,11 @@ class WizardWidget(QWidget):
             msg.setText(clicked_widget.help_text)
             msg.setWindowTitle("Help")
             msg.show()
+        self.in_context = False
 
 
     def set_stylesheet(self):
-        self.setStyleSheet("""
-QGroupBox{
-    background-color: transparent;
-     subcontrol-position: top left; /* position at the top left*/
-     padding-top: 20px;
-    font: bold 12px;
-    color: rgba(90, 90, 90, 225);
-    border: 1px solid gray;
-    border-radius: 2px;
-    border-color: rgba(90, 90, 90, 40);
-}
-QGroupBox::title {
-text-align: left;
-subcontrol-origin: padding;
-subcontrol-position: top left; /* position at the top center */padding: 3 3px;
-}
-QLabel{
-font: 9pt "Arial";
-color: rgb(90, 90, 90);
-}
-QLineEdit, QComboBox {
-font: 9pt "Arial";
-color: rgb(50, 50, 50);
-}
-.QFrame {
-    color: rgba(90, 90, 90, 225);
-    border: 1px solid gray;
-    border-radius: 2px;
-    border-color: rgba(90, 90, 90, 75);
-}
-""")
+        self.setStyleSheet(NORMAL_STYLE)
 
     def eventFilter(self, obj, event):
         """
@@ -482,3 +469,79 @@ color: rgb(50, 50, 50);
             return True
 
         return super(WizardWidget, self).eventFilter(obj, event)
+
+NORMAL_STYLE = """
+QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 12px;
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 40);
+}
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt "Arial";
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt "Arial";
+color: rgb(50, 50, 50);
+}
+
+QGroupBox:Hover {
+    border-color: rgba(90, 90, 90, 240);
+}
+
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}
+
+
+}
+"""
+
+FOCUS_STYLE = """
+QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 12px;
+    color: rgba(90, 90, 90);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 200);
+}
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt "Arial";
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt "Arial";
+color: rgb(50, 50, 50);
+}
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}
+"""
+
+ERROR_STYLE = """"""
+
+ERROR_FOCUS_STYLE = """"""
