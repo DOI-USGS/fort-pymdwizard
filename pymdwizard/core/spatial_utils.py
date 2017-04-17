@@ -980,6 +980,9 @@ def utm(params):
     utm_node = xml_node('utm', parent_node=gridsys)
     utmzone = xml_node('utmzone', text=params['utmzone'], parent_node=utm_node)
 
+    transmer = transverse_mercator(params)
+    utm_node.append(transmer)
+
     return gridsys
 
 
@@ -997,7 +1000,11 @@ def lookup_fdgc_projname(gdal_name):
     print("!"*79)
     return None, None #this will blow up!
 
-
+def lookup_shortname(shortname):
+    for k, v in PROJECTION_LOOKUP.items():
+        if v['shortname'] == shortname:
+            return v
+    return None
 
 PROJECTION_LOOKUP = collections.OrderedDict()
 
@@ -1098,15 +1105,20 @@ PROJECTION_LOOKUP['Van der Grinten'] = {'shortname': 'vdgrin',
 GRIDSYS_LOOKUP = collections.OrderedDict()
 
 GRIDSYS_LOOKUP['Universal Transverse Mercator'] = {'shortname': 'utm',
-                                                   'elements': ['utmzone']}
+                                                   'elements': ['utmzone'],
+                                                   'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['Universal Polar Stereographic'] = {'shortname': 'ups',
-                                                    'elements': ['upszone']}
+                                                    'elements': ['upszone'],
+                                                   'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['State Plane Coordinate System'] = {'shortname': 'spsc',
-                                                    'elements': ['spszone']}
+                                                    'elements': ['spszone'],
+                                                   'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['ARC Coordinate System'] = {'shortname': 'arcsys',
-                                                    'elements': ['arczone']}
+                                                    'elements': ['arczone'],
+                                           'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['other grid system'] = {'shortname': 'othergrd',
-                                                    'elements': ['othergrd']}
+                                                    'elements': ['othergrd'],
+                                       'projection':'Transverse Mercator'}
 
 DATUM_LOOKUP = {'North American Datum of 1927 (NAD 27)':{'ellips':'Clarke 1866',
                                                          'semiaxis':'6378206.400000',
