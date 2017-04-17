@@ -193,10 +193,13 @@ class SpdoInfo(WizardWidget):
             direct = xml_utils.get_text_content(spdoinfo, 'direct')
             if direct is not None:
                 if 'raster' in direct.lower():
+                    self.ui.fgdc_direct.setCurrentIndex(0)
                     self.ui.fgdc_direct.setCurrentIndex(2)
                 elif 'point' in direct.lower():
+                    self.ui.fgdc_direct.setCurrentIndex(2)
                     self.ui.fgdc_direct.setCurrentIndex(0)
                 elif 'vector' in direct.lower():
+                    self.ui.fgdc_direct.setCurrentIndex(0)
                     self.ui.fgdc_direct.setCurrentIndex(1)
 
             rasttype = xml_utils.get_text_content(spdoinfo, 'rastinfo/rastype')
