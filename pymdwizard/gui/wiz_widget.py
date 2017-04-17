@@ -47,8 +47,6 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 
-
-
 class WizardWidget(QWidget):
     """
     The base class all pymdwizard GUI components should inherit from.
@@ -183,9 +181,10 @@ class WizardWidget(QWidget):
         for widget in search_widget.children():
             if widget.objectName() == 'fgdc_' + search_name:
                 matches.append(widget)
+            # elif isinstance(widget, RepeatingElement)
 
         for widget in search_widget.children():
-            if widget.objectName() != 'fgdc_' + search_name:
+            if True:#widget.objectName() != 'fgdc_' + search_name:
                 result = self.find_descendant(widget, search_name)
                 if result:
                     matches = matches + result
@@ -378,6 +377,7 @@ class WizardWidget(QWidget):
             elif widget.objectName().startswith('fgdc_'):
                 utils.set_text(widget, '')
 
+
     def has_content(self):
         """
         Returns if the widget contains legitimate content that should be
@@ -423,7 +423,9 @@ class WizardWidget(QWidget):
         action = menu.exec_(self.mapToGlobal(event.pos()))
 
         if action == copy_action:
-            if clicked_widget.objectName() == 'idinfo_button':
+            if clicked_widget is None:
+                pass
+            elif clicked_widget.objectName() == 'idinfo_button':
                 self.idinfo.copy_mime()
             elif clicked_widget.objectName() == 'dataquality_button':
                 self.dataqual.copy_mime()
