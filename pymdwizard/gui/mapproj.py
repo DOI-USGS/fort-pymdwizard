@@ -123,7 +123,7 @@ class MapProj(WizardWidget):
             lineedit = QLineEdit('...')
             lineedit.setObjectName('fgdc_' + param)
             lineedit.setToolTip(annotation)
-            layout.insertRow(layout.count()-1, label, lineedit)
+            layout.addRow(label, lineedit)
 
     def dragEnterEvent(self, e):
         """
@@ -164,7 +164,16 @@ class MapProj(WizardWidget):
             item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
             utils.set_text(item_widget, item.text)
 
-        #
+
+        stdparll = mapproj_node.xpath('stdparll')
+        try:
+            stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
+            utils.set_text(stdparll_widget, stdparll[0].text)
+            stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
+            utils.set_text(stdparl_2_widget, stdparll[1].text)
+        except:
+            pass
+
         # for param in self.projection['elements']:
         #
         # if spref_node.tag == 'spref':
@@ -200,14 +209,7 @@ class MapProj(WizardWidget):
         #                 item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
         #                 utils.set_text(item_widget, item.text)
         #
-        #             stdparll = mapproj_contents.xpath('stdparll')
-        #             try:
-        #                 stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
-        #                 utils.set_text(stdparll_widget, stdparll[0].text)
-        #                 stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
-        #                 utils.set_text(stdparl_2_widget, stdparll[1].text)
-        #             except:
-        #                 pass
+        #
         #
         #         gridsys = xml_utils.search_xpath(planar, 'gridsys')
         #         if gridsys is not None:

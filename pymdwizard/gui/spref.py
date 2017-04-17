@@ -337,19 +337,7 @@ class SpRef(WizardWidget):
 
                     utils.populate_widget_element(self.ui.fgdc_mapprojn, mapproj, 'mapprojn')
                     mapproj_contents = mapproj.getchildren()[1]
-                    for item in mapproj_contents.getchildren():
-                        tag = item.tag
-                        item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
-                        utils.set_text(item_widget, item.text)
-
-                    stdparll = mapproj_contents.xpath('stdparll')
-                    try:
-                        stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
-                        utils.set_text(stdparll_widget, stdparll[0].text)
-                        stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
-                        utils.set_text(stdparl_2_widget, stdparll[1].text)
-                    except:
-                        pass
+                    self.mapproj._from_xml(mapproj_contents)
 
                 gridsys = xml_utils.search_xpath(planar, 'gridsys')
                 if gridsys is not None:
