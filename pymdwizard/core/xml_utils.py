@@ -181,17 +181,23 @@ def search_xpath(node, xpath, only_first=True):
             type(node) == etree._ElementTree:
         matches = node.xpath(xpath)
         if len(matches) == 0:
-            return None
-        elif len(matches) == 1 or only_first:
-            return matches[0]
-        else:
+            if only_first:
+                return None
+            else:
+                return []
+        elif len(matches) > 1 or not only_first:
             return matches
+        else:
+            return matches[0]
     else:
-        return None
+        if only_first:
+            return None
+        else:
+            return []
 
 
 
-def get_text_content(node, xpath):
+def get_text_content(node, xpath=''):
     """
     return the text from a specific node
 
@@ -209,7 +215,11 @@ def get_text_content(node, xpath):
     if node is None:
         return None
 
-    nodes = node.xpath(xpath)
+    if xpath:
+        nodes = node.xpath(xpath)
+    else:
+        nodes = [node, ]
+
     if nodes:
         result = nodes[0].text
         if result is None:
