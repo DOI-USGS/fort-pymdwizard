@@ -165,7 +165,7 @@ class MetaInfo(WizardWidget):
             metstdv = xml_utils.get_text_content(xml_metainfo, 'metstdv')
             self.ui.fgdc_metstdv.setCurrentText(metstdv)
 
-            metd = xml_utils.get_text_content(xml_metainfo, 'metstdv')
+            metd = xml_utils.get_text_content(xml_metainfo, 'metd')
             self.metd.set_date(metd)
 
 if __name__ == "__main__":
