@@ -868,7 +868,108 @@ def sinusoidal(params):
     return sinusoid
 
 
+def space_oblique_mercator(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Space Oblique Mercator projection
 
+    landsat = Landsat Number
+    pathnum = Path Number
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Space Oblique Mercator projection
+    """
+    spaceobq = xml_node('spaceobq')
+    landsat = xml_node('landsat', params['landsat'], spaceobq)
+    pathnum = xml_node('pathnum', params['pathnum'], spaceobq)
+    feast = xml_node('feast', params['feast'], spaceobq)
+    fnorth = xml_node('fnorth', params['fnorth'], spaceobq)
+    return spaceobq
+
+
+def stereographic(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Stereographic projection
+
+    longpc = Longitude of Projection Center
+    latprjc = Latitude of Projection Center
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Stereographic projection
+    """
+    stereo = xml_node('stereo')
+    longpc = xml_node('longpc', params['longpc'], stereo)
+    latprjc = xml_node('latprjc', params['latprjc'], stereo)
+    feast = xml_node('feast', params['feast'], stereo)
+    fnorth = xml_node('fnorth', params['fnorth'], stereo)
+    return stereo
+
+
+def transverse_mercator(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Transverse Mercator projection
+
+    sfctrmer = Scale Factor at Central Meridian
+    longcm = Longitude of Central Meridian
+    latprjo = Latitude of Projection Origin
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Transverse Mercator projection
+    """
+    transmer = xml_node('transmer')
+    sfctrmer = xml_node('sfctrmer', params['sfctrmer'], transmer)
+    longcm = xml_node('longcm', params['longcm'], transmer)
+    latprjo = xml_node('latprjo', params['latprjo'], transmer)
+    feast = xml_node('feast', params['feast'], transmer)
+    fnorth = xml_node('fnorth', params['fnorth'], transmer)
+    return transmer
+
+
+def van_der_grinten(params):
+    """
+    returns lxml nodes that contain projection parameters for fgdc Van der Grinten projection
+
+    longcm = Longitude of Central Meridian
+    feast = False Easting
+    fnorth - False Northing
+
+    Parameters
+    ----------
+    params : dictionary
+            geospatial parameters returned from get_params
+
+    Returns
+    -------
+    xml nodes for fgdc Van der Grinten projection
+    """
+    vdgrin = xml_node('vdgrin')
+    longcm = xml_node('longcm', params['longcm'], vdgrin)
+    feast = xml_node('feast', params['feast'], vdgrin)
+    fnorth = xml_node('fnorth', params['fnorth'], vdgrin)
+    return vdgrin
 
 
 def utm(params):
@@ -970,6 +1071,26 @@ PROJECTION_LOOKUP['Robinson'] = {'shortname': 'robinson',
 PROJECTION_LOOKUP['Sinusoidal'] = {'shortname': 'sinusoid',
                                    'gdal_name': 'Sinusoidal',
                                    'function': sinusoidal,
+                                    'elements': ['longcm', 'feast', 'fnorth']}
+
+PROJECTION_LOOKUP['Space Oblique Mercator'] = {'shortname': 'spaceobq',
+                                   'gdal_name': ' ',
+                                   'function': space_oblique_mercator,
+                                    'elements': ['landsat', 'pathnum', 'feast', 'fnorth']}
+
+PROJECTION_LOOKUP['Stereographic'] = {'shortname': 'stereo',
+                                     'gdal_name': ' ',
+                                     'function': stereographic,
+                                    'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
+
+PROJECTION_LOOKUP['Transverse Mercator'] = {'shortname': 'transmer',
+                                  'gdal_name': ' ',
+                                  'function': transverse_mercator,
+                                    'elements': ['sfctrmer','longcm', 'latprjo', 'feast', 'fnorth']}
+
+PROJECTION_LOOKUP['Van der Grinten'] = {'shortname': 'vdgrin',
+                                  'gdal_name': ' ',
+                                  'function': van_der_grinten,
                                     'elements': ['longcm', 'feast', 'fnorth']}
 
 
