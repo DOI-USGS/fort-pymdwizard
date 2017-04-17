@@ -159,6 +159,10 @@ class IdInfo(WizardWidget):
             self.taxonomy.hide()
         self.citation.switch_schema(self.schema)
 
+    def clear_widget(self):
+        self.root_widget.spatial_tab.spdom.clear_widget()
+        WizardWidget.clear_widget(self)
+
     def _to_xml(self):
         # add code here to translate the form into xml representation
         idinfo_node = xml_utils.xml_node('idinfo')
