@@ -161,7 +161,7 @@
               <item>
                <widget class="QStackedWidget" name="stack_definition">
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="fgdc_geograph">
                  <layout class="QFormLayout" name="formLayout">
@@ -345,7 +345,7 @@
                   <item>
                    <widget class="QStackedWidget" name="stack_planar">
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>1</number>
                     </property>
                     <widget class="QWidget" name="fgdc_mapproj">
                      <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -375,24 +375,6 @@
                         </item>
                        </layout>
                       </item>
-                      <item>
-                       <widget class="QWidget" name="mapproj_contents" native="true">
-                        <layout class="QFormLayout" name="formLayout_6"/>
-                       </widget>
-                      </item>
-                      <item>
-                       <spacer name="verticalSpacer">
-                        <property name="orientation">
-                         <enum>Qt::Vertical</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
                      </layout>
                     </widget>
                     <widget class="QWidget" name="fgdc_gridsys">
@@ -416,18 +398,28 @@
                          </item>
                          <item>
                           <widget class="QWidget" name="gridsys_contents" native="true">
-                           <layout class="QFormLayout" name="formLayout_2"/>
+                           <layout class="QFormLayout" name="formLayout_2">
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>3</number>
+                            </property>
+                            <item row="0" column="0">
+                             <layout class="QHBoxLayout" name="horizontalLayout_6"/>
+                            </item>
+                           </layout>
                           </widget>
                          </item>
                          <item>
-                          <spacer name="verticalSpacer_2">
+                          <spacer name="verticalSpacer_4">
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
                            <property name="sizeHint" stdset="0">
                             <size>
                              <width>20</width>
-                             <height>40</height>
+                             <height>0</height>
                             </size>
                            </property>
                           </spacer>
