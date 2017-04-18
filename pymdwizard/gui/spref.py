@@ -60,6 +60,7 @@ from pymdwizard.core import spatial_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spref
+from pymdwizard.gui.mapproj import MapProj
 
 
 class SpRef(WizardWidget):
@@ -81,6 +82,13 @@ class SpRef(WizardWidget):
         self.setup_dragdrop(self, enable=True)
 
         self.ui.fgdc_mapprojn.addItems(spatial_utils.PROJECTION_LOOKUP.keys())
+
+        self.mapproj = MapProj()
+        self.ui.fgdc_mapproj.layout().addWidget(self.mapproj)
+
+        self.grid_mapproj = MapProj()
+        self.ui.fgdc_gridsys.layout().addWidget(self.grid_mapproj)
+
         self.ui.fgdc_gridsysn.addItems(spatial_utils.GRIDSYS_LOOKUP.keys())
 
 
@@ -148,40 +156,8 @@ class SpRef(WizardWidget):
         projection_name = self.ui.fgdc_mapprojn.currentText()
         projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
 
+        self.mapproj.load_projection(projection['shortname'])
 
-        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
-        try:
-            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-                annotation_lookup = json.loads(data_file.read())
-        except TypeError:
-            with open(annotation_lookup_fname) as data_file:
-                annotation_lookup = json.loads(data_file.read())
-
-        annotation_lookup['stdparl_2'] = {'long_name':'Standard Parallel',
-                                      'annotation':annotation_lookup['stdparll']['annotation']}
-
-
-        layout = self.ui.mapproj_contents.layout()
-        while layout.count():
-            child = layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
-
-        for param in projection['elements']:
-            try:
-                long_name = annotation_lookup[param]['long_name']
-                annotation = annotation_lookup[param]['annotation']
-            except:
-                long_name = param
-                annotation = 'Unknown'
-
-            label = QLabel(long_name)
-            label.setToolTip(annotation)
-            label.help_text = annotation
-            lineedit = QLineEdit('...')
-            lineedit.setObjectName('fgdc_' + param)
-            lineedit.setToolTip(annotation)
-            layout.addRow(label, lineedit)
 
     def load_gridsys(self):
 
@@ -218,6 +194,11 @@ class SpRef(WizardWidget):
             lineedit.setObjectName('fgdc_' + param)
             lineedit.setToolTip(annotation)
             layout.addRow(label, lineedit)
+
+        gridsys_proj = spatial_utils.PROJECTION_LOOKUP[projection['projection']]
+        self.grid_mapproj.load_projection(gridsys_proj['shortname'])
+
+
 
     def load_datum(self):
         datum_names = spatial_utils.DATUM_LOOKUP.keys()
@@ -268,12 +249,38 @@ class SpRef(WizardWidget):
         elif self.ui.btn_planar.isChecked():
             planar = xml_utils.xml_node('planar', parent_node=horizsys)
 
-            projection_name = self.ui.fgdc_mapprojn.currentText()
-            projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
-            for param in projection['elements']:
-                widget = self.findChild(QLineEdit, "fgdc_"+param)
-                xml_utils.xml_node(param, text=widget.text(), parent_node=planar)
+            if self.ui.btn_projection.isChecked():
+                mapproj = xml_utils.xml_node('mapproj', parent_node=planar)
+                projection_name = self.ui.fgdc_mapprojn.currentText()
+                mapprojn = xml_utils.xml_node('mapprojn', text=projection_name,
+                                              parent_node=mapproj)
+                proj = self.mapproj._to_xml()
+                mapproj.append(proj)
+            elif self.ui.btn_grid.isChecked():
+                gridsys = xml_utils.xml_node('gridsys', parent_node=planar)
+                gridsys_name = self.ui.fgdc_gridsysn.currentText()
+                gridsys_info = spatial_utils.GRIDSYS_LOOKUP[gridsys_name]
 
+                mapprojn = xml_utils.xml_node('gridsysn', text=gridsys_name,
+                                              parent_node=gridsys)
+
+                root_node = xml_utils.xml_node(gridsys_info['shortname'],
+                                               parent_node=gridsys)
+
+                for item in gridsys_info['elements']:
+                    widget = self.findChild(QLineEdit, "fgdc_"+item).text()
+                    this_node = xml_utils.xml_node(item, text=widget, parent_node=root_node)
+
+                proj = self.grid_mapproj._to_xml()
+                root_node.append(proj)
+            else:
+                localp = xml_utils.xml_node('localp', parent_node=planar)
+                localpd_str = self.ui.fgdc_localpd.text()
+                localpd = xml_utils.xml_node('localpd', localpd_str,
+                                             parent_node=localp)
+                localpgi_str = self.ui.fgdc_localpgi.text()
+                localpgi = xml_utils.xml_node('localpgi', localpgi_str,
+                                              parent_node=localp)
 
             planci = xml_utils.xml_node('planci', parent_node=planar)
             plance = xml_utils.xml_node('plance', text=self.ui.fgdc_plance.currentText(), parent_node=planci)
@@ -330,19 +337,7 @@ class SpRef(WizardWidget):
 
                     utils.populate_widget_element(self.ui.fgdc_mapprojn, mapproj, 'mapprojn')
                     mapproj_contents = mapproj.getchildren()[1]
-                    for item in mapproj_contents.getchildren():
-                        tag = item.tag
-                        item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
-                        utils.set_text(item_widget, item.text)
-
-                    stdparll = mapproj_contents.xpath('stdparll')
-                    try:
-                        stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
-                        utils.set_text(stdparll_widget, stdparll[0].text)
-                        stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
-                        utils.set_text(stdparl_2_widget, stdparll[1].text)
-                    except:
-                        pass
+                    self.mapproj._from_xml(mapproj_contents)
 
                 gridsys = xml_utils.search_xpath(planar, 'gridsys')
                 if gridsys is not None:
@@ -352,8 +347,13 @@ class SpRef(WizardWidget):
                     gridsys_contents = gridsys.getchildren()[1]
                     for item in gridsys_contents.getchildren():
                         tag = item.tag
-                        item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
-                        utils.set_text(item_widget, item.text)
+                        if spatial_utils.lookup_shortname(tag) is not None:
+                            self.grid_mapproj._from_xml(item)
+                        else:
+                            item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
+                            utils.set_text(item_widget, item.text)
+
+                    grid_proj = gridsys.xpath('proj')
 
 
                 localp = xml_utils.search_xpath(planar, 'localp')

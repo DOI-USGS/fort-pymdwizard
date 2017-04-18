@@ -11,7 +11,6 @@ from PyQt5.QtWidgets import QWidget, QLineEdit
 
 from pymdwizard.gui import single_date
 
-
 def test_single_date_setgetdate(qtbot):
     widget = single_date.SingleDate()
     qtbot.addWidget(widget)
@@ -28,18 +27,20 @@ def test_single_date_itit(qtbot):
     qtbot.addWidget(widget)
 
     assert widget.ui.label.text() == 'testing'
-    assert widget.ui.lbl_format.isHidden()
+    assert widget.ui.widget_format.isHidden()
+
 
     widget = single_date.SingleDate(label='testing', show_format=True)
     qtbot.addWidget(widget)
 
-    assert not widget.ui.lbl_format.isHidden()
+    assert not widget.ui.widget_format.isHidden()
+
 
 # def test_single_date__to_xml(qtbot):
 #     widget = single_date.single_date()
 #     qtbot.addWidget(widget)
 #
-#
+# 
 #     widget._to_xml#(single_date)
 #     #assert type(progress) == 'lxml.etree._Element'
 #     widget.findChild(QLineEdit, 'fgdc_progress').currentText()# == 'Complete'

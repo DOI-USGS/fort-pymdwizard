@@ -190,9 +190,9 @@ class MetadataRoot(WizardWidget):
 
     def _from_xml(self, metadata_element):
 
-        self.populate_section(metadata_element, 'spdoinfo', self.spatial_tab)
+        self.populate_section(metadata_element, 'spdoinfo', self.spatial_tab.spdoinfo)
         #
-        self.populate_section(metadata_element, 'spref', self.spatial_tab)
+        self.populate_section(metadata_element, 'spref', self.spatial_tab.spref)
 
         self.populate_section(metadata_element, 'idinfo', self.idinfo)
 

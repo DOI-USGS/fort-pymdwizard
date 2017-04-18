@@ -47,15 +47,12 @@
       <item>
        <layout class="QHBoxLayout" name="first_hbox">
         <item>
-         <widget class="QGroupBox" name="help_title">
+         <widget class="QFrame" name="help_title">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Dataset Title</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
            <property name="spacing">
@@ -75,12 +72,34 @@
            </property>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_10">
+             <property name="spacing">
+              <number>3</number>
+             </property>
              <property name="leftMargin">
               <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
              </property>
              <property name="rightMargin">
               <number>9</number>
              </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_45">
+               <property name="styleSheet">
+                <string notr="true">font: bold;</string>
+               </property>
+               <property name="text">
+                <string>Dataset Title</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QLabel" name="label_34">
                <property name="sizePolicy">
@@ -159,17 +178,36 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="help_pubdate">
+         <widget class="QFrame" name="help_pubdate">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="title">
-           <string>Publication Date </string>
-          </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_46">
+             <property name="styleSheet">
+              <string notr="true">font: bold;</string>
+             </property>
+             <property name="text">
+              <string>Publication Date</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QLabel" name="label_38">
              <property name="styleSheet">
@@ -214,10 +252,7 @@
          <number>10</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="help_origin">
-          <property name="title">
-           <string>Dataset Author/ Originator</string>
-          </property>
+         <widget class="QFrame" name="help_origin">
           <layout class="QVBoxLayout" name="verticalLayout_13">
            <property name="spacing">
             <number>3</number>
@@ -229,11 +264,24 @@
             <number>3</number>
            </property>
            <property name="rightMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <property name="bottomMargin">
             <number>3</number>
            </property>
+           <item>
+            <widget class="QLabel" name="label_47">
+             <property name="styleSheet">
+              <string notr="true">font: bold;</string>
+             </property>
+             <property name="text">
+              <string>Dataset Author/ Originator</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QLabel" name="label_35">
              <property name="sizePolicy">
@@ -262,26 +310,36 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QGroupBox" name="help_geoform">
-            <property name="title">
-             <string>Dataset Format</string>
-            </property>
+           <widget class="QFrame" name="help_geoform">
             <layout class="QVBoxLayout" name="verticalLayout_14">
              <property name="spacing">
               <number>3</number>
              </property>
              <property name="leftMargin">
-              <number>6</number>
+              <number>9</number>
              </property>
              <property name="topMargin">
               <number>3</number>
              </property>
              <property name="rightMargin">
-              <number>6</number>
+              <number>9</number>
              </property>
              <property name="bottomMargin">
               <number>3</number>
              </property>
+             <item>
+              <widget class="QLabel" name="label_52">
+               <property name="styleSheet">
+                <string notr="true">font: bold;</string>
+               </property>
+               <property name="text">
+                <string>Dataset Format</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
@@ -408,10 +466,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QGroupBox" name="help_onlink">
-          <property name="title">
-           <string>Online Link to the Dataset</string>
-          </property>
+         <widget class="QFrame" name="help_onlink">
           <layout class="QVBoxLayout" name="verticalLayout_17">
            <property name="spacing">
             <number>3</number>
@@ -423,11 +478,24 @@
             <number>3</number>
            </property>
            <property name="rightMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <property name="bottomMargin">
             <number>3</number>
            </property>
+           <item>
+            <widget class="QLabel" name="label_51">
+             <property name="styleSheet">
+              <string notr="true">font: bold;</string>
+             </property>
+             <property name="text">
+              <string>Online Link to the Dataset</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QLabel" name="label_39">
              <property name="sizePolicy">

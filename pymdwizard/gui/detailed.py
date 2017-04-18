@@ -94,8 +94,15 @@ class Detailed(WizardWidget):  #
             self.ui.fgdc_enttypl.setText(shortname)
             self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
 
-            df = data_io.read_data(fname)
-            self.attributes.load_df(df)
+            try:
+                self.clear_widget()
+                df = data_io.read_data(fname)
+                self.attributes.load_df(df)
+            except BaseException as e:
+                import traceback
+                msg = "Cannot read csv %s:\n%s." % (fname, traceback.format_exc())
+                QMessageBox.warning(self, "Recent Files", msg)
+
         elif ext.lower() == '.shp':
             self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
             self.ui.fgdc_enttypd.setPlainText('Table containing attribute information associated with the data set.')

@@ -159,6 +159,10 @@ class IdInfo(WizardWidget):
             self.taxonomy.hide()
         self.citation.switch_schema(self.schema)
 
+    def clear_widget(self):
+        self.root_widget.spatial_tab.spdom.clear_widget()
+        WizardWidget.clear_widget(self)
+
     def _to_xml(self):
         # add code here to translate the form into xml representation
         idinfo_node = xml_utils.xml_node('idinfo')
@@ -209,9 +213,20 @@ class IdInfo(WizardWidget):
         if datacredit_node.text:
             idinfo_node.append(datacredit_node)
 
+        if self.original_xml is not None:
+            native = xml_utils.search_xpath(self.original_xml, 'native')
+            if native is not None:
+                idinfo_node.append(native)
+
+            tool = xml_utils.search_xpath(self.original_xml, 'tool')
+            if tool is not None:
+                idinfo_node.append(tool)
+
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
+
+        self.original_xml = xml_idinfo
 
         citation = xml_utils.search_xpath(xml_idinfo, 'citation')
         if citation is not None:

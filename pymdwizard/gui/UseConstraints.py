@@ -130,11 +130,13 @@ class UseConstraints(WizardWidget): #
         try:
             if use_constraints.tag == 'useconst':
                 accost_box = self.findChild(QPlainTextEdit, "fgdc_useconst")
-                accost_box.setPlainText(use_constraints.text)
+                useconst_str = xml_utils.get_text_content(use_constraints)
+                accost_box.setPlainText(useconst_str)
+                return True
             else:
-                print ("The tag is not useconst")
+                return False
         except KeyError:
-            pass
+            return False
 
 
 if __name__ == "__main__":

@@ -74,8 +74,11 @@ class PyMdWizardMainForm(QMainWindow):
         self.cur_fname = ''
         self.file_watcher = None
 
+        # list of buttons for opening recently accessed files
         self.recent_file_actions = []
+        # list of widgets that are currently styled as errors
         self.error_widgets = []
+        # the last error widget that was highlighted
         self.last_highlight = None
 
         self.build_ui()
@@ -202,7 +205,15 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.restoreOverrideCursor()
 
     def file_updated(self):
+        """
+        The function that fires when the file watcher detects that the
+        current file has changed on the file system.  Prompts the user and
+        loads the new file if they choose to.
 
+        Returns
+        -------
+        None
+        """
         print(time.time() - self.last_updated)
         if time.time() - self.last_updated > 4:
             msg = "The file you are editing has been changed on disk.  Would you like to reload this File?"
@@ -228,6 +239,14 @@ class PyMdWizardMainForm(QMainWindow):
             self.save_file()
 
     def get_save_name(self):
+        """
+        launches a saveas dialog to browse to a file to save to.
+        starts in the directory of the most recently sopened file
+
+        Returns
+        -------
+        str: file name and path
+        """
         settings = QSettings('USGS', 'pymdwizard')
         recent_files = settings.value('recentFileList', [])
         if recent_files:
@@ -239,8 +258,15 @@ class PyMdWizardMainForm(QMainWindow):
                                             filter="XML Files (*.xml)")
         return fname[0]
 
+    def save_file(self):
+        """
+        Save the current xml document.  Prompts for a filename if one
+        has not been set yet.
 
-    def save_file(self, e=None):
+        Returns
+        -------
+        None
+        """
         if not self.cur_fname:
             fname = self.get_save_name()
             if not fname:
@@ -261,7 +287,15 @@ class PyMdWizardMainForm(QMainWindow):
         self.statusBar().showMessage("File saved", 2000)
 
     def new_record(self):
-
+        """
+        Create a new record.
+        Starts by making a copy of the template file 'CSDGM_Template.xml'.
+            in the resources folder to a name selected in a save as dialog.
+        Then updates the MD date to today.
+        Returns
+        -------
+        None
+        """
         template_fname = utils.get_resource_path('CSDGM_Template.xml')
         save_as_fname = self.get_save_name()
         if save_as_fname:
@@ -275,9 +309,26 @@ class PyMdWizardMainForm(QMainWindow):
 
 
     def set_current_file(self, fname):
+        """
+        The procedure for storing and displaying a new current file
+        The following get done:
+        1 - Display the file name without path in the apps title bar
+        2 - Insert the file name into the top slot of the recent files
+        3 - Save this list out to the setting variable
+
+        Parameters
+        ----------
+        fname : str
+            The file name and path that will be used
+
+        Returns
+        -------
+        None
+        """
         self.cur_fname = fname
         if fname:
-            title = "Metadata Wizard - {}".format(self.stripped_name(fname))
+            stripped_name = QFileInfo(fname).fileName()
+            title = "Metadata Wizard - {}".format(stripped_name)
             self.setWindowTitle(title)
         else:
             self.setWindowTitle("Metadata Wizard")
@@ -300,13 +351,22 @@ class PyMdWizardMainForm(QMainWindow):
                 widget.update_recent_file_actions()
 
     def update_recent_file_actions(self):
+        """
+        Update the actions (menu items) in the recent files list to
+        reflect the recent file paths stored in the 'recentFileList' setting
+
+        Returns
+        -------
+        None
+        """
         settings = QSettings('USGS', 'pymdwizard')
         files = settings.value('recentFileList', [])
 
         num_recent_files = min(len(files), PyMdWizardMainForm.max_recent_files)
 
         for i in range(num_recent_files):
-            text = "&%d %s" % (i + 1, self.stripped_name(files[i]))
+            stripped_name = QFileInfo(files[i]).fileName()
+            text = "&%d %s" % (i + 1, stripped_name)
             self.recent_file_actions[i].setText(text)
             self.recent_file_actions[i].setData(files[i])
             self.recent_file_actions[i].setVisible(True)
@@ -314,10 +374,17 @@ class PyMdWizardMainForm(QMainWindow):
         for j in range(num_recent_files, PyMdWizardMainForm.max_recent_files):
             self.recent_file_actions[j].setVisible(False)
 
-    def stripped_name(self, full_fname):
-        return QFileInfo(full_fname).fileName()
-
     def exit(self):
+        """
+        Before exiting check if the current contents match what is on the
+        file system.  If the do not match ask user if they would like to
+        save or cancel the exit
+
+        Returns
+        -------
+        str :
+        'Close' or 'Cancel' depending on user choice.
+        """
         if self.cur_fname:
             cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
             disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
@@ -328,7 +395,7 @@ class PyMdWizardMainForm(QMainWindow):
                 self.last_updated = time.time()
                 confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
                 if confirm == QMessageBox.Yes:
-                    self.save_file(self.cur_fname)
+                    self.save_file()
                 elif confirm == QMessageBox.Cancel:
                     return 'Cancel'
                 self.cur_fname = ''
@@ -337,6 +404,17 @@ class PyMdWizardMainForm(QMainWindow):
         return 'Close'
 
     def closeEvent(self, event):
+        """ Intercept the builtin closeEvent so that we can check for
+        changes and ask if we should change.
+
+        Parameters
+        ----------
+        event
+
+        Returns
+        -------
+
+        """
         if self.exit() == 'Close':
             event.accept()
         else:
@@ -344,7 +422,13 @@ class PyMdWizardMainForm(QMainWindow):
 
 
     def clear_validation(self):
+        """
+        Remove the error highlighting from all the error widgets
 
+        Returns
+        -------
+        None
+        """
         self.ui.menuErrors.clear()
 
         annotation_lookup_fname = utils.get_resource_path("FGDC/bdp_lookup")
@@ -364,6 +448,14 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
 
     def validate(self):
+        """
+        Check the current record against the schema and highlight any
+        error widgets
+
+        Returns
+        -------
+        None
+        """
 
         if self.metadata_root.schema == 'bdp':
             xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
@@ -397,6 +489,18 @@ class PyMdWizardMainForm(QMainWindow):
                 self.error_widgets.append(widget)
 
     def goto_error(self, sender):
+        """
+        super highlight the selected error and switch the tab to the section
+        that contains this error.
+
+        Parameters
+        ----------
+        sender : QWidget
+
+        Returns
+        -------
+        None
+        """
 
         xpath = self.sender().data()
         section = xpath.split('/')[1]
@@ -429,6 +533,22 @@ class PyMdWizardMainForm(QMainWindow):
         self.highlight_error(bad_widget, self.sender().text(), superhot=True)
 
     def highlight_error(self, widget, error_msg, superhot=False):
+        """
+        Highlight the given widget and set it's tooltip msg to error_msg
+
+        Parameters
+        ----------
+        widget : QWidget
+        error_msg : str
+                    the message that will appear in the tooltip
+        superhot : bool
+            whether to use the regular highlight
+            or also include a black thick outline
+
+        Returns
+        -------
+            None
+        """
         if superhot:
             color = "rgb(223,1,74)"
             lw = "border: 3px solid black;"
