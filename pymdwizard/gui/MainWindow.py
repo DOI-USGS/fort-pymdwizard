@@ -464,11 +464,6 @@ class PyMdWizardMainForm(QMainWindow):
         from pymdwizard.core import fgdc_utils
         errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
 
-        if errors:
-            self.statusBar().showMessage("There are {} errors in this record".format(len(errors)), 10000)
-        else:
-            self.statusBar().showMessage("Congratulations No FGDC Errors!", 10000)
-
         self.clear_validation()
 
         marked_errors = []
@@ -487,6 +482,20 @@ class PyMdWizardMainForm(QMainWindow):
                 widget = self.metadata_root.get_widget(xpath)
                 self.highlight_error(widget, error_msg)
                 self.error_widgets.append(widget)
+
+
+        if errors:
+            msg = "There are {} errors in this record".format(len(errors))
+            self.statusBar().showMessage(msg, 20000)
+            msg += "\n\n These errors are highlighted in red in the form below."
+            msg += "\n\n These errors are also listed in the Validation Menu's Errors submenu item above."
+            msg += "\n Clicking each error will take you to the section it is contained in."
+            msg += "\n Note that some highlighed errors can be in collapsed items, scrolled out of view, or in non-selected tabs"
+            QMessageBox.warning(self, "Validation", msg)
+        else:
+            msg = "Congratulations there were No FGDC Errors!"
+            self.statusBar().showMessage(msg, 20000)
+            QMessageBox.information(self, "Validation", msg)
 
     def goto_error(self, sender):
         """
