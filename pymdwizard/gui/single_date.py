@@ -74,7 +74,7 @@ class SingleDate(QWidget):
         if not required:
             self.ui.lbl_required.hide()
 
-        self.changed = False
+        self.last_checked_contents = ''
         self.connect_events()
 
 
@@ -98,33 +98,31 @@ class SingleDate(QWidget):
         None
         """
         self.ui.fgdc_caldate.editingFinished.connect(self.check_format)
-        self.ui.fgdc_caldate.textChanged.connect(self.changed_text)
-
-    def changed_text(self):
-        self.changed = True
 
     def check_format(self):
-        if not self.changed:
-            return None
 
         cur_contents = self.ui.fgdc_caldate.text()
+        if cur_contents == self.last_checked_contents:
+            return
+        else:
+            self.last_checked_contents = cur_contents
 
         msg = ""
-        if len(cur_contents) not in (4, 6, 8):
-            msg = "needs to be ..."
+        if len(cur_contents) not in (0, 4, 6, 8):
+            msg = "The FGDC date needs to be 4, 6, or 8 numbers long"
         if not cur_contents.isdigit():
-            msg = "only numbers ..."
+            msg = "An FGDC date can only consist of numbers"
 
         if msg:
             msgbox = QMessageBox()
             msgbox.setIcon(QMessageBox.Information)
             msgbox.setText(msg)
             msgbox.setInformativeText("YYYY or YYYYMM or YYYYMMDD")
-            msgbox.setWindowTitle("Problem with date format")
-            msgbox.setStandardButtons(QMessageBox.Retry)
+            msgbox.setWindowTitle("Problem with FGDC date format")
+            msgbox.setStandardButtons(QMessageBox.Ok)
             msgbox.exec_()
 
-        self.changed = False
+
 
     def get_date(self):
         return self.ui.fgdc_caldate.text()
