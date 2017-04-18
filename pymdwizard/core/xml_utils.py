@@ -347,5 +347,139 @@ def clear_children(element):
     for child in element.getchildren():
         element.remove(child)
 
+###############################################################################
+# Experimental xml convenience classes
+###############################################################################
+
+class XMLRecord(object):
+    def __init__(self, fname):
+        self.fname = fname
+        self.record = etree.parse(fname)
+        root = self.record.getroot()
+        self.tag = root.tag
+        self.__dict__[root.tag] = XMLNode(self.record.getroot())
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__[self.tag].__str__()
+
+    def serialize(self):
+        return self.__str__()
+
+    def save(self, fname=''):
+        if not fname:
+            fname = self.fname
+
+        with open(fname, "w") as text_file:
+            text_file.write(self.__str__())
 
 
+class XMLNode(object):
+    def __init__(self, element):
+        if type(element) == etree._Element:
+            self.from_xml(element)
+        elif type(element) == str:
+            self.from_str(element)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self, level=0):
+        if self.text:
+            cur_node = xml_node(self.tag, self.text)
+            result = "{}{}".format("  "*level, etree.tostring(cur_node, pretty_print=True).decode()).rstrip()
+        else:
+            result = "{}<{}>\n".format("  "*level, self.tag, self.tag)
+
+            result += '\n'.join([child.__str__(level=level+1) for child in self.children])
+
+            result += '\n{}</{}>'.format("  "*level, self.tag)
+        return result
+
+    #     def __eq__(self, other):
+    #         if isinstance(other, self.__class__):
+    #             return self.__str__ == other.__str__
+    #         return False
+
+    def from_xml(self, element):
+        self.element = element
+        self.tag = element.tag
+        try:
+            self.text = element.text.strip()
+        except:
+            self.text = ''
+
+        self.children = []
+        for child_node in self.element.getchildren():
+
+
+            child_object = XMLNode(child_node)
+            self.children.append(child_object)
+
+            if child_node.tag in self.__dict__:
+                cur_contents = self.__dict__[child_node.tag]
+                if type(cur_contents) == list:
+                    cur_contents.append(child_object)
+                else:
+                    self.__dict__[child_node.tag] = [cur_contents, child_object]
+            else:
+                self.__dict__[child_node.tag] = child_object
+
+    def to_xml(self):
+        str_element = self.to_str()
+        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        element = etree.fromstring(str_element, parser=parser)
+        return element
+
+    def from_str(self, str_element):
+        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        element = etree.fromstring(str_element, parser=parser)
+        self.from_xml(element)
+
+    def to_str(self):
+        return self.__str__()
+
+    def search_xpath(self, xpath=''):
+        if not xpath:
+            return self
+
+        xpath_items = xpath.split('/')
+        if len(xpath_items) == 1:
+            xpath_remainder = ''
+        else:
+            xpath_remainder = '/'.join(xpath_items[1:])
+        first_item = xpath_items[0]
+        try:
+            results = self.__dict__[first_item]
+            if '[' in first_item:
+                fgdc_tag, tag = item_string.split('[')
+                index = int(tag.split(']')[0])-1
+                first_result = results[index]
+                return first_result.search_xpath(xpath_remainder)
+            else:
+                if type(results) == list:
+                    aggregator = []
+                    for result in results:
+                        node = result.search_xpath(xpath_remainder)
+                        if node is not None:
+                            aggregator.append(node)
+                    return aggregator
+                else:
+                    return results.search_xpath(xpath_remainder)
+        except:
+            return None
+
+    def clear_children(self, tag=None):
+        self.children = [c for c in self.children if c.tag != tag]
+
+    def add_child(self, child, index=-1):
+        if index == -1:
+            index = len(self.children)
+        if index < -1:
+            index += 1
+
+        child_copy = XMLNode(child.to_str())
+
+        self.children.insert(index, child)
