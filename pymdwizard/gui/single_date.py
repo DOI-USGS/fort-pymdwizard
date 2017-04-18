@@ -109,7 +109,7 @@ class SingleDate(QWidget):
 
         msg = ""
         if len(cur_contents) not in (0, 4, 6, 8):
-            msg = "The FGDC date needs to be 4, 6, or 8 numbers long"
+            msg = "An FGDC date needs to be 4, 6, or 8 numbers long"
         if not cur_contents.isdigit():
             msg = "An FGDC date can only consist of numbers"
 

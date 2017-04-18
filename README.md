@@ -5,36 +5,35 @@
 
 
 
-pymdwizard: Standalone version of the Metadata Wizard
+Metadata Wizard
 ===========================================================================================
 
 The  is a useful tool designed to facilitate FGDC  
 metadata creation for spatial and non-spatial datasets.  It is a cross-platform desktop application
 built using an open-source Python architecture.  
 
-It provides several tools to automate the creation of high quality 
-metadata records including:
-
-* Auto-population of sections with information extracted from the dataset being documented.
-    - Spatial Data Organization
-    - Spatial Reference
-    - Entity and Attribute
-* Supports a variety of common data formats for introspection including 
-    - CSV
-    - Excel worksheets
-    - Database tables
-    - Shapefiles
-    - GeoTiffs
-    - File geodatabase feature classes.
-* Automate creation of sections from existing web-services
-    - Contact information (for USGS affiliates)
-    - Taxonomic information from ITIS
-    - keywords from USGS controlled vocabularies
-* Built in validator which highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
-* Drag-and-Drop integration with other tools including XML-Notepad and text editors.
-* Built in help documentation which guides users through common and detailed questions about metadata.
 
 ![Alt text](docs/screenshot.png?raw=true "Screen shot")
+
+It provides a pleasant and highly efficient environment for metadata creation, 
+editing, preview, and validation.  Built in tools automate and facilitate the creation of high quality 
+metadata records.
+
+
+* Auto-population* of challenging sections such as the spatial reference, 
+spatial organization, and entity and attribute based on information contained in
+the data being documented (CSV, Excel, Shapefiles, etc.)
+ ![Alt text](docs/EA_screenshot.png?raw=true "Screen shot") 
+
+* Automate population of contact information for USGS affiliates, 
+Taxonomic information from itis, or keywords from USGS controlled vocabularies
+ ![Alt text](docs/keywords_screenshot.png?raw=true "Screen shot") 
+* Built in FGDC validator which highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
+ ![Alt text](docs/error_screenshot.png?raw=true "Screen shot") 
+* Copy/Paste or Drag-and-Drop of entire sections, subsections, or individual content
+between different records or other tools including XML-Notepad and text editors.
+* Built in help documentation which guides users through common and detailed questions about metadata.
+
 
 This project is modeled off of the original [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source), which was designed as a toolbox in ArcMap, and required an ESRI installation.
 
