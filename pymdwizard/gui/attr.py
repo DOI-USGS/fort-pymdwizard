@@ -60,6 +60,12 @@ class Attr(WizardWidget):  #
         self.series = None
         WizardWidget.__init__(self, xml=xml, parent=parent)
 
+        self._previous_index = -1
+        self._domain_content = {'Range (Numeric data)': None,
+                               'Enumerated (Categorical Data)': None,
+                               'Unrepresentable (None of the above)': None,
+                               'Codeset (Published Categories)': None}
+
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -79,7 +85,7 @@ class Attr(WizardWidget):  #
         self.ui.place_holder.installEventFilter(self)
 
         self.setup_dragdrop(self)
-        self.ui.comboBox.currentTextChanged.connect(self.change_domain)
+        self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
 
     def clear_domain(self):
         for child in self.ui.fgdc_attrdomv.children():
@@ -114,24 +120,37 @@ class Attr(WizardWidget):  #
                 cbo.setCurrentIndex(3)
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
-    # def change_domain(self, which):
 
-    # def to_range_domain(self):
-    #     if self.series
+    def change_domain(self, index):
 
-    def change_domain(self, e):
+        previous_domain = self.ui.comboBox.itemText(self._previous_index)
+        self._domain_content[previous_domain] = self.domain._to_xml()
 
+        self._previous_index = index
         self.clear_domain()
 
         domain = self.ui.comboBox.currentText().lower()
         if 'enumerated' in domain:
             self.domain = edom_list.EdomList(parent=self)
-            if self.series is not None:
+            if self._domain_content['Enumerated (Categorical Data)'] is not None:
+                self.domain._from_xml(self._domain_content['Enumerated (Categorical Data)'])
+            elif self.series is not None:
                 uniques = self.series.unique()
-                self.domain.populate_from_list(uniques)
+                if len(uniques) > 100:
+                    msg = "There are more than 100 unique values in this field."
+                    msg += "\n This tool cannot smoothly display that many entries. "
+                    msg += "\nTypically an enumerated domain is not used with that many unique entries."
+                    msg += "\n\nOnly the first one hundred are displayed below!"
+                    msg += "\nYou will likely want to change the domain to one of the other options."
+                    QMessageBox.warning(self, "Too many unique entries", msg)
+                    self.domain.populate_from_list(uniques[:101])
+                else:
+                    self.domain.populate_from_list(uniques)
         elif 'range' in domain:
             self.domain = rdom.Rdom(parent=self)
-            if self.series is not None:
+            if self._domain_content['Range (Numeric data)'] is not None:
+                self.domain._from_xml(self._domain_content['Range (Numeric data)'])
+            elif self.series is not None:
                 try:
                     series_min = self.series.min()
                     series_max = self.series.max()
@@ -143,8 +162,12 @@ class Attr(WizardWidget):  #
                 self.domain.ui.fgdc_rdommax.setText(str(series_max))
         elif 'codeset' in domain:
             self.domain = codesetd.Codesetd(parent=self)
+            if self._domain_content['Codeset (Published Categories)'] is not None:
+                self.domain._from_xml(self._domain_content['Codeset (Published Categories)'])
         elif 'unrepresentable' in domain:
             self.domain = udom.Udom(parent=self)
+            if self._domain_content['Unrepresentable (None of the above)'] is not None:
+                self.domain._from_xml(self._domain_content['Unrepresentable (None of the above)'])
         else:
             pass
 
