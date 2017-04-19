@@ -52,7 +52,6 @@ except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
 
-
 def xml_document_loader(xml_locator):
     """
 
@@ -355,9 +354,10 @@ class XMLRecord(object):
     def __init__(self, fname):
         self.fname = fname
         self.record = etree.parse(fname)
-        root = self.record.getroot()
-        self.tag = root.tag
-        self.__dict__[root.tag] = XMLNode(self.record.getroot())
+        self._root = self.record.getroot()
+        self.tag = self._root.tag
+        self.__dict__[self._root.tag] = XMLNode(self.record.getroot())
+        self._contents = self.__dict__[self._root.tag]
 
     def __repr__(self):
         return self.__str__()
@@ -375,13 +375,25 @@ class XMLRecord(object):
         with open(fname, "w") as text_file:
             text_file.write(self.__str__())
 
+    def validate(self, schema='fgdc', as_dataframe=True):
+        from pymdwizard.core import fgdc_utils
+
+        return fgdc_utils.validate_xml(self._contents.to_xml(), xsl_fname=schema,
+                                as_dataframe=as_dataframe)
+
 
 class XMLNode(object):
-    def __init__(self, element):
+    def __init__(self, element=None, tag='', text='', parent_node=None):
         if type(element) == etree._Element:
+            self.from_xml(element)
+        if tag:
+            element = xml_node(tag=tag, text=text)
             self.from_xml(element)
         elif type(element) == str:
             self.from_str(element)
+
+        if parent_node is not None:
+            parent_node.add_child(self)
 
     def __repr__(self):
         return self.__str__()
