@@ -169,7 +169,7 @@ class MapProj(WizardWidget):
         try:
             stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
             utils.set_text(stdparll_widget, stdparll[0].text)
-            stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparl_2")[0]
+            stdparl_2_widget = self.findChildren(QLineEdit, "fgdc_stdparll_2")[0]
             utils.set_text(stdparl_2_widget, stdparll[1].text)
         except:
             pass

@@ -342,13 +342,20 @@ class SpRef(WizardWidget):
                 gridsys = xml_utils.search_xpath(planar, 'gridsys')
                 if gridsys is not None:
                     self.ui.btn_grid.setChecked(True)
+                    gridsysn = xml_utils.search_xpath(gridsys, 'gridsysn')
+                    utils.populate_widget_element(self.ui.fgdc_gridsysn,
+                                                  gridsys, 'gridsysn')
 
-                    utils.populate_widget_element(self.ui.fgdc_gridsysn, gridsys, 'gridsysn')
+
                     gridsys_contents = gridsys.getchildren()[1]
                     for item in gridsys_contents.getchildren():
                         tag = item.tag
                         if spatial_utils.lookup_shortname(tag) is not None:
                             self.grid_mapproj._from_xml(item)
+                        elif tag == 'mapproj':
+                            mapprojn = xml_utils.search_xpath(item, 'mapprojn')
+                            if mapprojn.text in spatial_utils.PROJECTION_LOOKUP:
+                                self.grid_mapproj._from_xml(item.getchildren()[1])
                         else:
                             item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
                             utils.set_text(item_widget, item.text)
