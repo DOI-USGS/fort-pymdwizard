@@ -231,14 +231,10 @@ class WizardWidget(QWidget):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element is not None:
-                result = self._from_xml(element)
+                self._from_xml(element)
             else:
-                result = False
-
-            if not result:
                 msg = "There was a problem pasting that content."
-                msg += "\n Make sure that the content being pasted is an FGDC XML element"
-                msg += "\n and matches the content of this widget."
+                msg += "\n that content being drops does not appear to be an xml element"
                 QMessageBox.warning(self, "Paste Error", msg)
 
     def mouseMoveEvent(self, e):
