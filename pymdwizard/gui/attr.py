@@ -54,17 +54,18 @@ from pymdwizard.gui import udom, rdom, codesetd, edom_list
 class Attr(WizardWidget):  #
 
     drag_label = "Attribute <attr>"
+    acceptable_tags = ['attr']
 
-    def __init__(self, xml=None, parent=None):
-        self.parent_ui = parent
-        self.series = None
-        WizardWidget.__init__(self, xml=xml, parent=parent)
-
+    def __init__(self, parent=None):
         self._previous_index = -1
         self._domain_content = {'Range (Numeric data)': None,
-                               'Enumerated (Categorical Data)': None,
-                               'Unrepresentable (None of the above)': None,
-                               'Codeset (Published Categories)': None}
+                                'Enumerated (Categorical Data)': None,
+                                'Unrepresentable (None of the above)': None,
+                                'Codeset (Published Categories)': None}
+
+        self.parent_ui = parent
+        self.series = None
+        WizardWidget.__init__(self, parent=parent)
 
     def build_ui(self):
         """
@@ -86,6 +87,8 @@ class Attr(WizardWidget):  #
 
         self.setup_dragdrop(self)
         self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
+        self.domain = udom.Udom()
+        self.ui.comboBox.setCurrentIndex(3)
 
     def clear_domain(self):
         for child in self.ui.fgdc_attrdomv.children():
@@ -125,6 +128,7 @@ class Attr(WizardWidget):  #
 
         previous_domain = self.ui.comboBox.itemText(self._previous_index)
         self._domain_content[previous_domain] = self.domain._to_xml()
+
 
         self._previous_index = index
         self.clear_domain()
@@ -173,24 +177,6 @@ class Attr(WizardWidget):  #
 
         self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
 
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt eventr
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'attr':
-                e.accept()
-        else:
-            e.ignore()
 
     def supersize_me(self, s=''):
         self.animation = QPropertyAnimation(self, b"minimumSize")
@@ -286,7 +272,7 @@ class Attr(WizardWidget):  #
                     self.domain._from_xml(attr.xpath('attrdomv/rdom')[0])
                 elif 'fgdc_edom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(0)
-                    self.change_domain(None)
+                    self.change_domain(0)
                     self.domain._from_xml(attr)
                 elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(2)
