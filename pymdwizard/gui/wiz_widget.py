@@ -516,9 +516,6 @@ QGroupBox:Hover {
     border-radius: 2px;
     border-color: rgba(90, 90, 90, 75);
 }
-
-
-}
 """
 
 FOCUS_STYLE = """
@@ -545,6 +542,7 @@ QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
 }
+
 .QFrame {
     color: rgba(90, 90, 90, 225);
     border: 1px solid gray;
