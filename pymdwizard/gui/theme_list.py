@@ -151,8 +151,12 @@ class ThemeList(WizardWidget): #
         self.ui.theme_tabs.setTabEnabled(0, True)
         self.ui.iso_tab.show()
 
-    def clear_widget(self):
+    def clear_widget(self, remove_iso=False):
+
         self.iso_kws.clear_widgets()
+        if remove_iso:
+            self.ui.theme_tabs.setTabEnabled(0, False)
+            self.ui.iso_tab.hide()
 
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
@@ -246,7 +250,7 @@ class ThemeList(WizardWidget): #
         -------
         None
         """
-        self.clear_widget()
+        self.clear_widget(remove_iso=True)
 
         self.original_xml = keywords_xml
         if keywords_xml.tag == 'keywords':
@@ -254,11 +258,13 @@ class ThemeList(WizardWidget): #
                 themekt = xml_utils.get_text_content(theme_xml, 'themekt')
                 if themekt is not None and 'iso 19115' in themekt.lower():
                     self.iso_kws.clear_widgets(add_another=False)
+                    self.ui.iso_tab.show()
                     for themekey in xml_utils.search_xpath(theme_xml,
                                                            'themekey',
                                                            only_first=False):
                         iso = self.iso_kws.add_another()
                         iso.ui.fgdc_themekey.setCurrentText(themekey.text)
+
 
                 else:
                     theme = self.add_another()
