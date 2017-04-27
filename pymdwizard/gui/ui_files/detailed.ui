@@ -24,7 +24,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>140</width>
+       <width>150</width>
        <height>16777215</height>
       </size>
      </property>
@@ -47,7 +47,9 @@
             <string notr="true">font: italic 8pt;</string>
            </property>
            <property name="text">
-            <string>If you have access to the dataset click the button to browse to the dataset.  This section will be autopopulated with appropriate content pulled from the dataset.</string>
+            <string>If you have access to the dataset being documented in this metadata record browse to it by clicking the button below.
+
+This section will be autopopulated with appropriate content pulled from the data (column labels, min/max values, unique lists, etc.).</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -109,6 +111,17 @@
           </spacer>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_remove">
+        <property name="styleSheet">
+         <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));
+</string>
+        </property>
+        <property name="text">
+         <string>Remove this Detailed</string>
+        </property>
        </widget>
       </item>
      </layout>

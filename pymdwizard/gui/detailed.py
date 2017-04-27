@@ -55,6 +55,13 @@ class Detailed(WizardWidget):  #
 
     drag_label = "Detailed Description <detailed>"
 
+    def __init__(self, remove_function=None, parent=None):
+        WizardWidget.__init__(self, parent=parent)
+        if remove_function is None:
+            self.ui.btn_remove.hide()
+        else:
+            self.ui.btn_remove.clicked.connect(remove_function)
+
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -91,11 +98,11 @@ class Detailed(WizardWidget):  #
 
         ext = os.path.splitext(shortname)[1]
         if ext.lower() == '.csv':
-            self.ui.fgdc_enttypl.setText(shortname)
-            self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
-
             try:
                 self.clear_widget()
+                self.ui.fgdc_enttypl.setText(shortname)
+                self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
+
                 df = data_io.read_data(fname)
                 self.attributes.load_df(df)
             except BaseException as e:
@@ -104,6 +111,7 @@ class Detailed(WizardWidget):  #
                 QMessageBox.warning(self, "Recent Files", msg)
 
         elif ext.lower() == '.shp':
+            self.clear_widget()
             self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
             self.ui.fgdc_enttypd.setPlainText('Table containing attribute information associated with the data set.')
 
@@ -116,6 +124,7 @@ class Detailed(WizardWidget):  #
                                 "Pick one of the sheets from this workbook",
                                                   sheets, 0, False)
             if ok and sheet_name:
+                self.clear_widget()
                 self.ui.fgdc_enttypl.setText('{} ({})'.format(shortname, sheet_name))
                 self.ui.fgdc_enttypd.setPlainText('Excel Worksheet')
 
