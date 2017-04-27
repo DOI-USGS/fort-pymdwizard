@@ -440,7 +440,18 @@ class WizardWidget(QWidget):
         elif action == paste_action:
             self.paste_mime()
         elif action == clear_action:
-            self.clear_widget()
+            if clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.clear_widget()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.clear_widget()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.clear_widget()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.clear_widget()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.clear_widget()
+            else:
+                self.clear_widget()
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
             # msg.setTextFormat(Qt.RichText)
