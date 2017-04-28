@@ -141,11 +141,14 @@ class ThemeList(WizardWidget): #
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
         if current_index == 0:
-            self.ui.theme_tabs.setTabEnabled(0, False)
-            self.ui.iso_tab.hide()
+            self.remove_iso()
         else:
             self.ui.theme_tabs.removeTab(current_index)
             del self.thesauri[current_index-1]
+
+    def remove_iso(self):
+        self.ui.theme_tabs.setTabEnabled(0, False)
+        self.ui.iso_tab.hide()
 
     def add_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, True)
@@ -155,8 +158,7 @@ class ThemeList(WizardWidget): #
 
         self.iso_kws.clear_widgets()
         if remove_iso:
-            self.ui.theme_tabs.setTabEnabled(0, False)
-            self.ui.iso_tab.hide()
+            self.remove_iso()
 
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
@@ -164,14 +166,11 @@ class ThemeList(WizardWidget): #
 
     def search_controlled(self):
 
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, parent=self)
 
-        self.thesaurus_dialog = QDialog(self)
-        self.thesaurus_dialog.setWindowTitle('Search USGS Controlled Vocabularies')
-        self.thesaurus_dialog.setLayout(self.thesaurus_search.layout())
+        self.thesaurus_search.setWindowTitle('Search USGS Controlled Vocabularies')
 
-        self.thesaurus_search.dialog = self.thesaurus_dialog
-        self.thesaurus_dialog.show()
+        self.thesaurus_search.show()
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
@@ -257,8 +256,8 @@ class ThemeList(WizardWidget): #
             for theme_xml in xml_utils.search_xpath(keywords_xml, 'theme', False):
                 themekt = xml_utils.get_text_content(theme_xml, 'themekt')
                 if themekt is not None and 'iso 19115' in themekt.lower():
+                    self.add_iso()
                     self.iso_kws.clear_widgets(add_another=False)
-                    self.ui.iso_tab.show()
                     for themekey in xml_utils.search_xpath(theme_xml,
                                                            'themekey',
                                                            only_first=False):
