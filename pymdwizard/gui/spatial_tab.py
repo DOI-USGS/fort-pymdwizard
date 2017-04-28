@@ -89,6 +89,7 @@ class SpatialTab(WizardWidget):
         self.ui.two_column_right.layout().insertWidget(0, self.spdoinfo)
 
         self.ui.btn_browse.clicked.connect(self.browse)
+        self.clear_widget()
 
     def browse(self):
         settings = QSettings('USGS', 'pymdwizard')

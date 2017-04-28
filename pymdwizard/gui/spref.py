@@ -91,6 +91,7 @@ class SpRef(WizardWidget):
 
         self.ui.fgdc_gridsysn.addItems(spatial_utils.GRIDSYS_LOOKUP.keys())
 
+        self.clear_widget()
 
     def connect_events(self):
         """
@@ -120,6 +121,7 @@ class SpRef(WizardWidget):
         WizardWidget.clear_widget(self)
         self.ui.btn_geographic.setChecked(True)
         self.ui.rbtn_no.setChecked(True)
+        self.spref_used_change(False)
 
     def spref_used_change(self, b):
         if b:
