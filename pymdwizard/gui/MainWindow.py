@@ -126,7 +126,6 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
         self.ui.actionNew.triggered.connect(self.new_record)
-        # self.ui.actionPull_From_Data.triggered.connect(self.harvest)
 
     def open_recent_file(self):
         """
@@ -420,7 +419,6 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             event.ignore()
 
-
     def clear_validation(self):
         """
         Remove the error highlighting from all the error widgets
@@ -633,38 +631,16 @@ def main():
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('icons/splash_ducks.jpg')
+    splash_fname = utils.get_resource_path('icons/splash_screen.jpg')
     splash_pix = QPixmap(splash_fname)
 
-    size = splash_pix.size()*.55
+    size = splash_pix.size()*.35
     splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
                                 transformMode=Qt.SmoothTransformation)
 
-    # below makes the pixmap half transparent
+    # # below makes the pixmap half transparent
     painter = QPainter(splash_pix)
     painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
-
-    painter.fillRect(splash_pix.rect(), QColor(0, 0, 0, 150))
-
-    font = QFont()
-    font.setFamily('Arial')
-    font.setPointSize(40)
-    font.setBold(True)
-    painter.setFont(font)
-
-    painter.setPen(QColor(250, 250, 250, 255))
-    painter.drawText(splash_pix.rect(), Qt.AlignCenter,
-                 "Metadata Wizard 2.0")
-
-    font = QFont()
-    font.setFamily('Arial')
-    font.setPointSize(19)
-    font.setBold(True)
-    painter.setFont(font)
-
-    painter.setPen(QColor(150, 150, 150, 200))
-    painter.drawText(splash_pix.rect().adjusted(20, -20, -20, -20), Qt.AlignBottom,
-                     "version 0.0.0 pre-pre Alpha")
     painter.end()
 
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
