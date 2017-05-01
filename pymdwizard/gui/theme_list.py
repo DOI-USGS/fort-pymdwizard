@@ -64,7 +64,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class ThemeList(WizardWidget): #
 
     drag_label = "Theme Keywords <keywords>"
-
+    acceptable_tags = ['keywords']
 
     def build_ui(self):
         """
@@ -188,29 +188,6 @@ class ThemeList(WizardWidget): #
 
         theme_widget.add_keyword(keyword, locked=locked)
         return theme_widget
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'procstep'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'keywords':
-                e.accept()
-        else:
-            e.ignore()
                 
     def _to_xml(self):
         """

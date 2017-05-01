@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_abstract
 class Abstract(WizardWidget):
 
     drag_label = "Abstract <abstract>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """
@@ -73,31 +73,6 @@ class Abstract(WizardWidget):
         self.ui = UI_abstract.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'abstract'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        None
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'abstract':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """
@@ -112,7 +87,6 @@ class Abstract(WizardWidget):
                                      text=self.ui.fgdc_abstract.toPlainText())
 
         return abstract
-
 
     def _from_xml(self, abstract):
         """

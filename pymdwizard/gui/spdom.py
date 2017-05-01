@@ -54,16 +54,14 @@ from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
 from pymdwizard.core.xml_utils import xml_node
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spdom
 
 class Spdom(WizardWidget):
-    xpath_root = "spdom"
     drag_label = "Spatial Domain <spdom>"
-
+    acceptable_tags = ['spdom']
     ui_class = UI_spdom.Ui_Form
 
     def __init__(self, root_widget=None):

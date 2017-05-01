@@ -59,8 +59,8 @@ from pymdwizard.gui.ui_files import UI_AttributeAccuracy #
 
 class AttributeAccuracy(WizardWidget): #
 
-    drag_label = "Attribute Accuracy <attraccr>"
-
+    drag_label = "Attribute Accuracy <attracc>"
+    acceptable_tags = ['attracc']
 
     def build_ui(self):
         """
@@ -74,32 +74,6 @@ class AttributeAccuracy(WizardWidget): #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'attraccr'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'attracc':
-                e.accept()
-        else:
-            e.ignore()
-
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag

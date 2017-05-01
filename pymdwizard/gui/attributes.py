@@ -51,6 +51,7 @@ from pymdwizard.gui import attr
 class Attributes(WizardWidget):  #
 
     drag_label = "Attributes <attr>"
+    acceptable_tags = ['attr']
 
     def build_ui(self):
         """
@@ -102,8 +103,7 @@ class Attributes(WizardWidget):  #
 
     def dragEnterEvent(self, e):
         """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
+        Attributes never accept drops
         Parameters
         ----------
         e : qt eventr

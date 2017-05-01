@@ -61,6 +61,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class Citation(WizardWidget): #
 
     drag_label = "Citation <citation>"
+    acceptable_tags = ['citation', 'citeinfo']
 
     def __init__(self, parent=None, include_lwork=True):
         self.include_lwork = include_lwork
@@ -176,29 +177,6 @@ class Citation(WizardWidget): #
         else:
             self.ui.lworkcite_widget.hide()
 
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'citation'
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag in ['citation', 'citeinfo']:
-                e.accept()
-        else:
-            e.ignore()
 
     def switch_schema(self, schema):
         self.schema = schema

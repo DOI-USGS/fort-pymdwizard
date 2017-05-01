@@ -178,7 +178,6 @@ class RepeatingElement(QWidget):
         widget = self.widget(**self.widget_kwargs)
         self.widgets.append(widget)
 
-
         if self.tab:
             if not tab_label:
                 tab_label = ' '.join([self.tab_label,
