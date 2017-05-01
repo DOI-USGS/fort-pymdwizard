@@ -54,7 +54,7 @@ from pymdwizard.gui.detailed import Detailed
 class EA(WizardWidget):  #
 
     drag_label = "Entity and Attributes <eainfo>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['eainfo', 'detailed']
 
     def build_ui(self):
         """
@@ -93,25 +93,6 @@ class EA(WizardWidget):  #
         self.detaileds.append(new_detailed)
         return new_detailed
 
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'detailed':
-                e.accept()
-        else:
-            e.ignore()
-
     def clear_widget(self):
         """
         Clears all content from this widget
@@ -144,8 +125,9 @@ class EA(WizardWidget):  #
             has_content = True
         if self.detaileds[0].has_content():
             has_content = True
-        if len(self.detaileds) > 0:
-            has_content = True
+        for detailed in self.detaileds:
+            if detailed.has_content():
+                has_content = True
 
         return has_content
 
