@@ -83,7 +83,7 @@ class MetaInfo(WizardWidget):
         self.ui.fgdc_metc.layout().addWidget(self.contactinfo)
 
     def connect_events(self):
-        self.ui.fgdc_metstdn.currentIndexChanged.connect(self.update_metstdv)
+        self.ui.fgdc_metstdn.currentTextChanged.connect(self.update_metstdv)
         self.ui.fgdc_metstdv.currentIndexChanged.connect(self.update_metstdn)
         self.ui.button_use_dataset.clicked.connect(self.pull_datasetcontact)
 
@@ -96,12 +96,13 @@ class MetaInfo(WizardWidget):
             self.root_widget.switch_schema('bdp')
 
     def update_metstdv(self):
-        if self.ui.fgdc_metstdn.currentText() == 'FGDC CSDGM':
-            self.ui.fgdc_metstdv.setCurrentIndex(0)
-            self.root_widget.switch_schema('fgdc')
-        elif self.ui.fgdc_metstdn.currentText() == 'FGDC Biological Data Profile of the CDGSM':
+        if 'biological' in self.ui.fgdc_metstdn.currentText().lower() or \
+           'bdp' in self.ui.fgdc_metstdn.currentText().lower():
             self.ui.fgdc_metstdv.setCurrentIndex(1)
             self.root_widget.switch_schema('bdp')
+        else:
+            self.ui.fgdc_metstdv.setCurrentIndex(0)
+            self.root_widget.switch_schema('fgdc')
 
     def pull_datasetcontact(self):
         self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
