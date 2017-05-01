@@ -484,7 +484,10 @@ class XMLNode(object):
             return None
 
     def clear_children(self, tag=None):
-        self.children = [c for c in self.children if c.tag != tag]
+        if tag is not None:
+            self.children = [c for c in self.children if c.tag != tag]
+        else:
+            self.children = []
 
     def add_child(self, child, index=-1):
         if index == -1:
