@@ -51,6 +51,7 @@ from pymdwizard.gui.single_date import SingleDate
 class Timeperd(WizardWidget):  #
 
     drag_label = "Time Period of Content <timeperd>"
+    acceptable_tags = ['timeperd']
 
     def build_ui(self):
         """
@@ -124,24 +125,6 @@ class Timeperd(WizardWidget):  #
             self.ui.fgdc_mdattim.layout().addWidget(self.multi_dates)
             self.ui.fgdc_mdattim.show()
 
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'timeperd':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """

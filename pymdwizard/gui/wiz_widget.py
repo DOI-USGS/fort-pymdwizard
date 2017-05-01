@@ -68,6 +68,7 @@ class WizardWidget(QWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 385
 
+    acceptable_tags = []
     def __init__(self, xml=None, parent=None):
         QWidget.__init__(self, parent=parent)
 
@@ -190,6 +191,24 @@ class WizardWidget(QWidget):
                     matches = matches + result
         return matches
 
+    def dragEnterEvent(self, e):
+        """
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called in our list of acceptable_tags
+        Parameters
+        ----------
+        e : qt event
+        Returns
+        -------
+        """
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element is not None and element.tag in self.acceptable_tags:
+                e.accept()
+        else:
+            e.ignore()
 
     def dropEvent(self, e):
         """
