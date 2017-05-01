@@ -213,7 +213,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        print(time.time() - self.last_updated)
         if time.time() - self.last_updated > 4:
             msg = "The file you are editing has been changed on disk.  Would you like to reload this File?"
             alert = QDialog()
@@ -477,6 +476,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
 
+        error_count = 0
         for error in errors:
             xpath, error_msg, line_num = error
             if xpath not in marked_errors:
@@ -491,12 +491,16 @@ class PyMdWizardMainForm(QMainWindow):
                 # widget = self.metadata_root.get_widget(xpath)
                 widgets = self.widget_lookup.xpath_march(xpath, as_list=True)
                 for widget in widgets:
-                    self.highlight_error(widget.widget, error_msg)
-                    self.error_widgets.append(widget.widget)
-
+                    if isinstance(widget, list):
+                        for w in widget:
+                            print('widget')
+                    else:
+                        self.highlight_error(widget.widget, error_msg)
+                        self.error_widgets.append(widget.widget)
+                        error_count += 1
 
         if errors:
-            msg = "There are {} errors in this record".format(len(self.error_widgets))
+            msg = "There are {} errors in this record".format(error_count)
             self.statusBar().showMessage(msg, 20000)
             msg += "\n\n These errors are highlighted in red in the form below."
             msg += "\n\n These errors are also listed in the Validation Menu's Errors submenu item above."
