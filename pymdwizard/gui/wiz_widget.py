@@ -455,7 +455,9 @@ class WizardWidget(QWidget):
         elif action == paste_action:
             self.paste_mime()
         elif action == clear_action:
-            if clicked_widget.objectName() == 'idinfo_button':
+            if clicked_widget is None:
+                self.clear_widget()
+            elif clicked_widget.objectName() == 'idinfo_button':
                 self.idinfo.clear_widget()
             elif clicked_widget.objectName() == 'dataquality_button':
                 self.dataqual.clear_widget()
