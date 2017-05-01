@@ -88,7 +88,12 @@ class ItisMainForm(QWidget):
         df = self.ui.table_results.model().dataframe()
         indexes = df.index[selected_indices]
 
-        index = selected_indices[0]
+        if df.shape[0] == 1:
+            index = 0
+        elif selected_indices:
+            index = selected_indices[0]
+        else:
+            return
 
         if 'combinedName' in df.columns:
             item_name = df.iloc[index]['combinedName']
@@ -111,11 +116,22 @@ class ItisMainForm(QWidget):
         self.ui.table_include.model().layoutChanged.emit()
 
     def generate_fgdc(self):
+        """
+        Generates a FGDC taxonomy section from the content currently in the
+        to_include data frame.
+
+        This function then passes the resulting XML to the fgdc_function
+        and closes()
+        Returns
+        -------
+        None
+        """
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         fgdc_taxonomy = self._to_xml()
         self.fgdc_function(fgdc_taxonomy)
         QApplication.restoreOverrideCursor()
+        self.close()
 
 
     def _to_xml(self):
@@ -142,19 +158,6 @@ class ItisMainForm(QWidget):
 
             self.selected_model = utils.PandasModel(self.selected_items_df)
             self.ui.table_include.setModel(self.selected_model)
-
-
-class MyPopup(QWidget):
-    def __init__(self):
-        QWidget.__init__(self)
-        layout = QVBoxLayout()
-
-
-        self.textEdit = QTextEdit()
-
-        layout.addWidget(self.textEdit)
-
-        self.setLayout(layout)
 
 
 
