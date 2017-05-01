@@ -69,7 +69,8 @@ class WizardWidget(QWidget):
     EXPANDED_HEIGHT = 385
 
     acceptable_tags = []
-    def __init__(self, xml=None, parent=None):
+
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.help_text = ''
@@ -78,11 +79,12 @@ class WizardWidget(QWidget):
         if __name__ == "__main__":
             QMainWindow.__init__(self, parent)
 
-        self.original_xml = None
         self.in_context = False
 
         self.build_ui()
         self.connect_events()
+
+        self.original_xml = None
 
     def build_ui(self):
         """
