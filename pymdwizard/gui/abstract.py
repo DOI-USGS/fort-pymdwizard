@@ -74,6 +74,19 @@ class Abstract(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
+    def get_children(self, widget):
+
+        children = []
+        children.append(self.ui.fgdc_abstract)
+
+        parent = self.parent()
+        while not parent.objectName() == 'fgdc_idinfo':
+            parent = parent.parent()
+        children.append(parent.supplinf.ui.fgdc_supplinf)
+        children.append(parent.purpose.ui.fgdc_purpose)
+
+        return children
+
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag

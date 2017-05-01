@@ -152,7 +152,6 @@ class WizardWidget(QWidget):
             except AttributeError:
                 widget_name = 'Unknown'
 
-            print(widget_name)
             if child_widget.objectName().startswith('fgdc_'):
                 root_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
                 root_node.widget = child_widget
