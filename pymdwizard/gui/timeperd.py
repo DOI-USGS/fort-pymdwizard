@@ -125,7 +125,6 @@ class Timeperd(WizardWidget):  #
             self.ui.fgdc_mdattim.layout().addWidget(self.multi_dates)
             self.ui.fgdc_mdattim.show()
 
-
     def _to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -197,7 +196,7 @@ class Timeperd(WizardWidget):  #
                     self.ui.radio_multiple.setChecked(True)
                     timeinfo_stack.setCurrentIndex(2)
 
-                    self.multi_dates.clear_widgets()
+                    self.multi_dates.clear_widgets(add_another=False)
                     for caldate in timeperd.xpath('timeinfo/mdattim/sngdate/caldate'):
                         date_widget = self.multi_dates.add_another()
                         date_widget.set_date(caldate.text)
