@@ -13,7 +13,7 @@ from lxml import etree
 from PyQt5.QtWidgets import QLineEdit, QComboBox, QTabWidget, QStackedWidget
 from PyQt5.QtCore import QDate
 
-from pymdwizard.gui import single_date
+from pymdwizard.gui import fgdc_date
 
 # def test_metadatadate__from_xml(qtbot):
 #     widget = MetadataDate.MetadataDate()
@@ -28,7 +28,7 @@ from pymdwizard.gui import single_date
 #     assert widget.findChild(QDateEdit, "dateEdit_3").date() == '2013'
 
 def test_metadata_date__to_xml(qtbot):
-    widget = single_date.SingleDate()
+    widget = fgdc_date.FGDCDate()
     qtbot.addWidget(widget)
 
 #     widget.ui.radioButton_2.setChecked(True)

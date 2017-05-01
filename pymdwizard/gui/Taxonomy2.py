@@ -64,7 +64,9 @@ from pymdwizard.gui.keywtax import Keywordtax
 
 
 class Taxonomy(WizardWidget):
+
     drag_label = "Taxonomy"
+    acceptable_tags = ['taxonomy']
 
     def build_ui(self):
         """
@@ -124,29 +126,6 @@ class Taxonomy(WizardWidget):
         index = self.selected_items_df.index[selected_indices]
         self.selected_items_df.drop(index, inplace=True)
         self.ui.table_include.model().layoutChanged.emit()
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'taxonomy'
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'taxonomy':
-                e.accept()
-        else:
-            e.ignore()
 
     def has_content(self):
         """

@@ -9,7 +9,7 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QWidget, QLineEdit
 
-from pymdwizard.gui import single_date
+from pymdwizard.gui import fgdc_date
 
 def test_single_date_setgetdate(qtbot):
     widget = single_date.SingleDate()
@@ -23,14 +23,14 @@ def test_single_date_setgetdate(qtbot):
 
 
 def test_single_date_itit(qtbot):
-    widget = single_date.SingleDate(label='testing', show_format=False)
+    widget = fgdc_date.FGDCDate(label='testing', show_format=False)
     qtbot.addWidget(widget)
 
     assert widget.ui.label.text() == 'testing'
     assert widget.ui.widget_format.isHidden()
 
 
-    widget = single_date.SingleDate(label='testing', show_format=True)
+    widget = fgdc_date.FGDCDate(label='testing', show_format=True)
     qtbot.addWidget(widget)
 
     assert not widget.ui.widget_format.isHidden()

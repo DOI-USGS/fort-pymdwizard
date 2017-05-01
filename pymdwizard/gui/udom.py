@@ -50,6 +50,7 @@ from pymdwizard.gui.ui_files import UI_udom  #
 class Udom(WizardWidget):  #
 
     drag_label = "Unrepresentable Domain <udom>"
+    acceptable_tags = ['udom']
 
     def build_ui(self):
         """
@@ -61,25 +62,6 @@ class Udom(WizardWidget):  #
         self.ui = UI_udom.Ui_udom_widget()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'udom':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """

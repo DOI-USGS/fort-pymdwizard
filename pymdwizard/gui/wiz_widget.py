@@ -154,7 +154,6 @@ class WizardWidget(QWidget):
 
             print(widget_name)
             if child_widget.objectName().startswith('fgdc_'):
-                print('!!!!!!!!!!!!!!!!', widget_name.replace('fgdc_', ''))
                 root_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
                 root_node.widget = child_widget
                 return self.add_children(child_widget, root_node)
@@ -183,13 +182,7 @@ class WizardWidget(QWidget):
             except AttributeError:
                 widget_name = 'Unknown'
 
-            if 'fgdc_place' in widget_name:
-                print('found pubdate')
-            elif 'fgdc_attr' in widget_name:
-                print('found met')
-
             if widget_name.startswith('fgdc_'):
-                print('!!!!!!!!!!!!!!!!', widget_name.replace('fgdc_', ''))
                 child_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
                 child_node.widget = child_widget
                 self.add_children(child_widget, child_node)

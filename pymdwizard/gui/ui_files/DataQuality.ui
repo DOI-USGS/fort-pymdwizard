@@ -335,7 +335,7 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
-               <widget class="QWidget" name="two_column_right" native="true">
+               <widget class="QWidget" name="fgdc_lineage" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_4">
                  <property name="leftMargin">
                   <number>3</number>
@@ -403,9 +403,6 @@
            </spacer>
           </item>
          </layout>
-         <zorder>verticalSpacer</zorder>
-         <zorder>verticalSpacer_2</zorder>
-         <zorder>verticalSpacer_3</zorder>
         </widget>
        </item>
       </layout>

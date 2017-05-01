@@ -90,7 +90,7 @@ class DataQuality(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
         self.ui.bottom_layout.layout().addWidget(self.sourceinput)
-        self.ui.two_column_right.layout().addWidget(self.procstep)
+        self.ui.fgdc_lineage.layout().addWidget(self.procstep)
 
 
     def dragEnterEvent(self, e):
