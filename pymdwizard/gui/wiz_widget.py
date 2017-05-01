@@ -36,7 +36,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox, QLayout
 from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QLabel, QComboBox
 from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
@@ -109,7 +109,6 @@ class WizardWidget(QWidget):
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
 
-
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -118,7 +117,6 @@ class WizardWidget(QWidget):
         None
         """
         pass
-
 
     def _to_xml(self):
         """
@@ -145,53 +143,63 @@ class WizardWidget(QWidget):
         # Update self.xml appropriately (probably a full reace)
         print("_from_xml method Must be overridden in subclass")
 
-    def get_widget(self, xpath):
-        """
-        returns the widget (QLineEdit, QComboBox, etc) that corresponds to
-        a given xpath.
-        TODO: finalize general implementation details, although there's
-        no reason that these couldn't be unique for different widgets.
-        Parameters
-        ----------
-        xpath : str
-        Returns
-        -------
-        pyqt widget
-        """
-        xpath_items = xpath.split('/')
+    def make_tree(self, widget):
+        widget_children = widget.children()
 
-        cur_widget = self
-        for item_string in xpath_items:
-            if '[' in item_string:
-                fgdc_tag, tag = item_string.split('[')
-                index = int(tag.split(']')[0])-1
+        for child_widget in widget_children:
+            try:
+                widget_name = child_widget.objectName()
+            except AttributeError:
+                widget_name = 'Unknown'
+
+            print(widget_name)
+            if child_widget.objectName().startswith('fgdc_'):
+                print('!!!!!!!!!!!!!!!!', widget_name.replace('fgdc_', ''))
+                root_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+                root_node.widget = child_widget
+                return self.add_children(child_widget, root_node)
             else:
-                fgdc_tag = item_string
-                index = 0
+                self.make_tree(child_widget)
 
-            cur_matches = self.find_descendant(cur_widget, fgdc_tag)
-            if len(cur_matches) > index:
-                cur_widget = cur_matches[index]
+    def get_children(self, widget):
+        try:
+            widget_children = widget.children()
+        except AttributeError:
+            try:
+                widget_children = [widget.itemAt(i) for i in range(widget.count())]
+            except AttributeError:
+                widget_children = []
+        return widget_children
 
-        if not cur_widget:
-            return self
+    def add_children(self, widget, parent_node):
+        if isinstance(widget, WizardWidget):
+            widget_children = widget.get_children(widget)
         else:
-            return cur_widget
+            widget_children = self.get_children(widget)
 
-    def find_descendant(self, search_widget, search_name):
+        for child_widget in widget_children:
+            try:
+                widget_name = child_widget.objectName()
+            except AttributeError:
+                widget_name = 'Unknown'
 
-        matches = []
-        for widget in search_widget.children():
-            if widget.objectName() == 'fgdc_' + search_name:
-                matches.append(widget)
-            # elif isinstance(widget, RepeatingElement)
+            if 'fgdc_place' in widget_name:
+                print('found pubdate')
+            elif 'fgdc_attr' in widget_name:
+                print('found met')
 
-        for widget in search_widget.children():
-            if True:#widget.objectName() != 'fgdc_' + search_name:
-                result = self.find_descendant(widget, search_name)
-                if result:
-                    matches = matches + result
-        return matches
+            if widget_name.startswith('fgdc_'):
+                print('!!!!!!!!!!!!!!!!', widget_name.replace('fgdc_', ''))
+                child_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+                child_node.widget = child_widget
+                self.add_children(child_widget, child_node)
+                parent_node.add_child(child_node)
+            else:
+
+                self.add_children(child_widget, parent_node)
+        return parent_node
+
+
 
     def dragEnterEvent(self, e):
         """

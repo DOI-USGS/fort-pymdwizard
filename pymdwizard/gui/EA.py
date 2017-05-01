@@ -76,8 +76,8 @@ class EA(WizardWidget):  #
         self.ui.btn_add_detailed.clicked.connect(self.add_detailed)
 
     def remove_detailed(self):
-        cur_index = self.ui.tab_ea.currentIndex()
-        self.ui.tab_ea.removeTab(cur_index)
+        cur_index = self.ui.fgdc_eainfo.currentIndex()
+        self.ui.fgdc_eainfo.removeTab(cur_index)
         del self.detaileds[cur_index-1]
 
     def add_detailed(self):
@@ -88,7 +88,8 @@ class EA(WizardWidget):  #
         None
         """
         new_detailed = Detailed(remove_function=self.remove_detailed)
-        self.ui.tab_ea.insertTab(self.ui.tab_ea.count()-1, new_detailed, 'Detailed')
+        self.ui.fgdc_eainfo.insertTab(self.ui.fgdc_eainfo.count()-1,
+                                      new_detailed, 'Detailed')
         self.detaileds.append(new_detailed)
         return new_detailed
 
@@ -121,11 +122,11 @@ class EA(WizardWidget):  #
         """
         self.detaileds[0].clear_widget()
         for i in range(len(self.detaileds), 1, -1):
-            self.ui.tab_ea.removeTab(i)
+            self.ui.fgdc_eainfo.removeTab(i)
             del self.detaileds[i-1]
 
-        self.ui.fgdc_eaover.setText('')
-        self.ui.fgdc_eadetcit.setText('')
+        utils.set_text(self.ui.fgdc_eaover, '')
+        utils.set_text(self.ui.fgdc_eadetcit, '')
 
     def has_content(self):
         """
@@ -168,7 +169,7 @@ class EA(WizardWidget):  #
             eainfo.append(detailed_xml)
 
         eaover_str = self.ui.fgdc_eaover.toPlainText()
-        eadetcit_str = self.ui.fgdc_eaover.toPlainText()
+        eadetcit_str = self.ui.fgdc_eadetcit.toPlainText()
 
         if eaover_str or eadetcit_str:
             overview = xml_utils.xml_node('overview', parent_node=eainfo)
@@ -188,7 +189,7 @@ class EA(WizardWidget):  #
         None
         """
         try:
-            self.ui.tab_ea.setCurrentIndex(0)
+            self.ui.fgdc_eainfo.setCurrentIndex(0)
             self.clear_widget()
 
             if eainfo.tag == 'eainfo':
@@ -196,17 +197,17 @@ class EA(WizardWidget):  #
                 if overview:
                     eaover = eainfo.xpath('overview/eaover')
                     if eaover:
-                        self.ui.fgdc_eaover.setText(eaover[0].text)
+                        utils.set_text(self.ui.fgdc_eaover, eaover[0].text)
 
                     eadetcit = eainfo.xpath('overview/eadetcit')
                     if eadetcit:
-                        self.ui.fgdc_eadetcit.setText(eadetcit[0].text)
-                    self.ui.tab_ea.setCurrentIndex(2)
+                        utils.set_text(self.ui.fgdc_eadetcit, eadetcit[0].text)
+                    self.ui.fgdc_eainfo.setCurrentIndex(2)
 
                 detailed = eainfo.xpath('detailed')
                 if detailed:
                     self.detaileds[0]._from_xml(detailed[0])
-                    self.ui.tab_ea.setCurrentIndex(1)
+                    self.ui.fgdc_eainfo.setCurrentIndex(1)
 
                     for additional_detailed in detailed[1:]:
                         new_detailed = self.add_detailed()

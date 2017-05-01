@@ -69,6 +69,7 @@ from pymdwizard.gui.distinfo import DistInfo
 class MetadataRoot(WizardWidget):
 
     drag_label = "Metadata <metadata>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_MetadataRoot.Ui_metadata_root
 
@@ -92,13 +93,14 @@ class MetadataRoot(WizardWidget):
         self.ui.page_idinfo.layout().addWidget(self.idinfo)
 
         self.dataqual =DataQuality()
-        self.ui.page_dataqual.setLayout(self.dataqual.layout())
+        self.ui.page_dataqual.layout().addWidget(self.dataqual)
+        # self.ui.page_dataqual.setLayout(self.dataqual.layout())
 
         self.spatial_tab = SpatialTab(root_widget=self)
-        self.ui.page_spatial.setLayout(self.spatial_tab.layout())
+        self.ui.page_spatial.layout().addWidget(self.spatial_tab)
 
         self.eainfo = EA()
-        self.ui.page_eainfo.setLayout(self.eainfo.layout())
+        self.ui.page_eainfo.layout().addWidget(self.eainfo)
 
         self.metainfo = MetaInfo(root_widget=self)
         self.ui.page_metainfo.layout().addWidget(self.metainfo)

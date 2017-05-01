@@ -383,17 +383,23 @@ class XMLRecord(object):
 
 
 class XMLNode(object):
-    def __init__(self, element=None, tag='', text='', parent_node=None):
+    def __init__(self, element=None, tag='', text='', parent_node=None, index=-1):
+        self.text = text
+        self.tag = tag
+        self.children = []
+
         if type(element) == etree._Element:
             self.from_xml(element)
-        if tag:
+        elif tag:
             element = xml_node(tag=tag, text=text)
             self.from_xml(element)
         elif type(element) == str:
             self.from_str(element)
 
+
+
         if parent_node is not None:
-            parent_node.add_child(self)
+            parent_node.add_child(self, index=index)
 
     def __repr__(self):
         return self.__str__()
@@ -418,6 +424,7 @@ class XMLNode(object):
     def from_xml(self, element):
         self.element = element
         self.tag = element.tag
+        self.add_attr(self.tag, self)
         try:
             self.text = element.text.strip()
         except:
@@ -425,19 +432,19 @@ class XMLNode(object):
 
         self.children = []
         for child_node in self.element.getchildren():
-
-
             child_object = XMLNode(child_node)
             self.children.append(child_object)
+            self.add_attr(child_node.tag, child_object)
 
-            if child_node.tag in self.__dict__:
-                cur_contents = self.__dict__[child_node.tag]
-                if type(cur_contents) == list:
-                    cur_contents.append(child_object)
-                else:
-                    self.__dict__[child_node.tag] = [cur_contents, child_object]
+    def add_attr(self, tag, child_object):
+        if tag in self.__dict__:
+            cur_contents = self.__dict__[tag]
+            if type(cur_contents) == list:
+                cur_contents.append(child_object)
             else:
-                self.__dict__[child_node.tag] = child_object
+                self.__dict__[tag] = [cur_contents, child_object]
+        else:
+            self.__dict__[tag] = child_object
 
     def to_xml(self):
         str_element = self.to_str()
@@ -464,10 +471,9 @@ class XMLNode(object):
             xpath_remainder = '/'.join(xpath_items[1:])
         first_item = xpath_items[0]
         try:
-            results = self.__dict__[first_item]
+            tag, index = split_tag(first_item)
+            results = self.__dict__[tag]
             if '[' in first_item:
-                fgdc_tag, tag = item_string.split('[')
-                index = int(tag.split(']')[0])-1
                 first_result = results[index]
                 return first_result.search_xpath(xpath_remainder)
             else:
@@ -481,7 +487,42 @@ class XMLNode(object):
                 else:
                     return results.search_xpath(xpath_remainder)
         except:
-            return None
+            return []
+
+    def xpath(self, xpath='', as_list=True, as_text=False):
+        results = self.search_xpath(xpath)
+        if as_list and not type(results) == list:
+            results = [results]
+
+        if as_text:
+            results = [r.text for r in results if r]
+
+        return results
+
+    def xpath_march(self, xpath, as_list=True):
+        """
+        for a given xpath, return the most distant matching element
+        iteratively searches an xpath until a match is found removing the last
+        element each time
+
+        Parameters
+        ----------
+        xpath
+        as_list
+
+        Returns
+        -------
+
+        """
+        xpath_items = xpath.split('/')
+
+        while xpath_items:
+            result = self.xpath('/'.join(xpath_items))
+            if result:
+                return result
+            xpath_items.pop()
+
+        return []
 
     def clear_children(self, tag=None):
         if tag is not None:
@@ -495,6 +536,37 @@ class XMLNode(object):
         if index < -1:
             index += 1
 
-        child_copy = XMLNode(child.to_str())
+        if type(child) == etree._Element:
+            node_str = node_to_string(child)
+        else:
+            node_str = child.to_str()
+        child_copy = XMLNode(node_str)
 
-        self.children.insert(index, child)
+        self.children.insert(index, child_copy)
+        self.add_attr(child.tag, child)
+
+    def copy(self):
+        node_str = self.to_str()
+        self_copy = XMLNode(node_str)
+        return self_copy
+
+
+def split_tag(tag):
+    """
+    parse an xml tag into the tag itself and the tag index
+    Parameters
+    ----------
+    tag : str
+        xml tag that might or might not have a [n] item
+
+    Returns
+    -------
+    tuple: fgdc_tag, index
+    """
+    if '[' in tag:
+        fgdc_tag, tag = tag.split('[')
+        index = int(tag.split(']')[0])-1
+    else:
+        fgdc_tag = tag
+        index = 0
+    return fgdc_tag, index

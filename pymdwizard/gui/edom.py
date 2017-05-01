@@ -50,6 +50,7 @@ from pymdwizard.gui.ui_files import UI_edom  #
 class Edom(QWidget):  #
 
     drag_label = "Enumerated Domain <edom>"
+    acceptable_tags = ['edom']
 
     def __init__(self, xml=None, parent=None):
         QWidget.__init__(self, parent=parent)
@@ -64,9 +65,8 @@ class Edom(QWidget):  #
         -------
         None
         """
-        self.ui = UI_edom.Ui_fgdc_edom()
+        self.ui = UI_edom.Ui_fgdc_attrdomv()
         self.ui.setupUi(self)
-        # self.setup_dragdrop(self)
 
     def dragEnterEvent(self, e):
         """

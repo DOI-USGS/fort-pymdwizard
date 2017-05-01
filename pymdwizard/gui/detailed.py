@@ -54,6 +54,7 @@ from pymdwizard.gui import attributes
 class Detailed(WizardWidget):  #
 
     drag_label = "Detailed Description <detailed>"
+    acceptable_tags = ['abstract']
 
     def __init__(self, remove_function=None, parent=None):
         WizardWidget.__init__(self, parent=parent)
@@ -133,6 +134,21 @@ class Detailed(WizardWidget):  #
         else:
             msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
+
+    # def find_descendant(self, search_widget, search_name):
+    #
+    #     matches = []
+    #     for widget in search_widget.children():
+    #         if widget.objectName() == 'fgdc_' + search_name:
+    #             matches.append(widget)
+    #             # elif isinstance(widget, RepeatingElement)
+    #
+    #     for widget in search_widget.children():
+    #         # if True:#widget.objectName() != 'fgdc_' + search_name:
+    #         result = widget.find_descendant(widget, search_name)
+    #         if result:
+    #             matches = matches + result
+    #     return matches
 
     def dragEnterEvent(self, e):
         """

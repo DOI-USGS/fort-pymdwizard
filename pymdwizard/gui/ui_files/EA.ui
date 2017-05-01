@@ -30,12 +30,12 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="QTabWidget" name="tab_ea">
+    <widget class="QTabWidget" name="fgdc_eainfo">
      <property name="tabPosition">
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_instructions">
       <attribute name="title">
@@ -324,7 +324,7 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
         <string>Overview Description</string>
        </property>
       </widget>
-      <widget class="QTextBrowser" name="fgdc_eaover">
+      <widget class="QPlainTextEdit" name="fgdc_eaover">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -332,12 +332,6 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
          <width>571</width>
          <height>192</height>
         </rect>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-       <property name="placeholderText">
-        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_6">
@@ -353,7 +347,7 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
         <string>Citation</string>
        </property>
       </widget>
-      <widget class="QTextBrowser" name="fgdc_eadetcit">
+      <widget class="QPlainTextEdit" name="fgdc_eadetcit">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -361,12 +355,6 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
          <width>571</width>
          <height>192</height>
         </rect>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-       <property name="placeholderText">
-        <string/>
        </property>
       </widget>
      </widget>

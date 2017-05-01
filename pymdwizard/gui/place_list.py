@@ -129,6 +129,16 @@ class PlaceList(WizardWidget): #
         self.ui.theme_tabs.removeTab(current_index)
         del self.thesauri[current_index-1]
 
+    def get_children(self, widget):
+
+        children = []
+
+        if self.ui.rbtn_yes.isChecked():
+            for place in self.thesauri:
+                children.append(place)
+
+        return children
+
     def clear_widget(self):
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)

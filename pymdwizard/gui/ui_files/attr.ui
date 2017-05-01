@@ -320,7 +320,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="fgdc_attrdomv" native="true">
+       <widget class="QWidget" name="attrdomv_contents" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
           <horstretch>0</horstretch>

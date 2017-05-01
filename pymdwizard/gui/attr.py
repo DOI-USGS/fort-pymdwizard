@@ -82,7 +82,7 @@ class Attr(WizardWidget):  #
         self.ui.fgdc_attrdef.installEventFilter(self)
         self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
-        self.ui.fgdc_attrdomv.installEventFilter(self)
+        self.ui.attrdomv_contents.installEventFilter(self)
         self.ui.place_holder.installEventFilter(self)
 
         self.setup_dragdrop(self)
@@ -91,7 +91,7 @@ class Attr(WizardWidget):  #
         self.ui.comboBox.setCurrentIndex(3)
 
     def clear_domain(self):
-        for child in self.ui.fgdc_attrdomv.children():
+        for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
 
@@ -122,7 +122,7 @@ class Attr(WizardWidget):  #
                 self.domain = udom.Udom()
                 cbo.setCurrentIndex(3)
 
-        self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
+        self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
     def change_domain(self, index):
 
@@ -175,7 +175,7 @@ class Attr(WizardWidget):  #
         else:
             pass
 
-        self.ui.fgdc_attrdomv.layout().addWidget(self.domain)
+        self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
 
     def supersize_me(self, s=''):
@@ -183,7 +183,7 @@ class Attr(WizardWidget):  #
         self.animation.setDuration(400)
         self.animation.setEndValue(QSize(325, self.height()))
         self.animation.start()
-        self.ui.fgdc_attrdomv.show()
+        self.ui.attrdomv_contents.show()
         self.ui.place_holder.hide()
 
 
@@ -192,7 +192,7 @@ class Attr(WizardWidget):  #
         self.animation.setDuration(33)
         self.animation.setEndValue(QSize(100, self.height()))
         self.animation.start()
-        self.ui.fgdc_attrdomv.hide()
+        self.ui.attrdomv_contents.hide()
         self.ui.place_holder.show()
 
     def eventFilter(self, obj, event):

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>fgdc_edom</class>
- <widget class="QWidget" name="fgdc_edom">
+ <class>fgdc_attrdomv</class>
+ <widget class="QWidget" name="fgdc_attrdomv">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>134</height>
+    <height>185</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
     <number>8</number>
    </property>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="fgdc_edom">
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>

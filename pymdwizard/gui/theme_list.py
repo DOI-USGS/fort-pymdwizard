@@ -148,11 +148,22 @@ class ThemeList(WizardWidget): #
 
     def remove_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, False)
-        self.ui.iso_tab.hide()
+        self.ui.fgdc_theme.hide()
 
     def add_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, True)
-        self.ui.iso_tab.show()
+        self.ui.fgdc_theme.show()
+
+    def get_children(self, widget):
+
+        children = []
+
+        if self.ui.theme_tabs.isTabEnabled(0):
+            children.append(self.ui.fgdc_theme)
+        for theme in self.thesauri:
+            children.append(theme)
+
+        return children
 
     def clear_widget(self, remove_iso=False):
 

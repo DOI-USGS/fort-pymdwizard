@@ -139,6 +139,7 @@ class PyMdWizardMainForm(QMainWindow):
         action = self.sender()
         if action:
             self.load_file(action.data())
+            self.set_current_file(action.data())
 
     def open_file(self):
         """
@@ -158,10 +159,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         fname = QFileDialog.getOpenFileName(self, fname, dname, \
                                             filter="XML Files (*.xml)")
-
-
         if fname[0]:
             self.load_file(fname[0])
+            self.set_current_file(fname[0])
             self.update_recent_file_actions()
 
     def load_file(self, fname):
@@ -196,8 +196,6 @@ class PyMdWizardMainForm(QMainWindow):
         try:
             new_record = etree.parse(fname)
             self.metadata_root._from_xml(new_record)
-
-            self.set_current_file(fname)
             self.statusBar().showMessage("File loaded", 10000)
         except BaseException as e:
             import traceback
@@ -313,6 +311,7 @@ class PyMdWizardMainForm(QMainWindow):
         template_fname = utils.get_resource_path('CSDGM_Template.xml')
 
         self.load_file(template_fname)
+        self.cur_fname = ''
 
         today = fgdc_utils.format_date(datetime.datetime.now())
         self.metadata_root.metainfo.metd.set_date(today)
@@ -339,25 +338,25 @@ class PyMdWizardMainForm(QMainWindow):
             stripped_name = QFileInfo(fname).fileName()
             title = "Metadata Wizard - {}".format(stripped_name)
             self.setWindowTitle(title)
+
+            settings = QSettings('USGS', 'pymdwizard')
+            files = settings.value('recentFileList', [])
+
+            try:
+                files.remove(fname)
+            except ValueError:
+                pass
+
+            files.insert(0, fname)
+            del files[PyMdWizardMainForm.max_recent_files:]
+
+            settings.setValue('recentFileList', files)
+
+            for widget in QApplication.topLevelWidgets():
+                if isinstance(widget, PyMdWizardMainForm):
+                    widget.update_recent_file_actions()
         else:
             self.setWindowTitle("Metadata Wizard")
-
-        settings = QSettings('USGS', 'pymdwizard')
-        files = settings.value('recentFileList', [])
-
-        try:
-            files.remove(fname)
-        except ValueError:
-            pass
-
-        files.insert(0, fname)
-        del files[PyMdWizardMainForm.max_recent_files:]
-
-        settings.setValue('recentFileList', files)
-
-        for widget in QApplication.topLevelWidgets():
-            if isinstance(widget, PyMdWizardMainForm):
-                widget.update_recent_file_actions()
 
     def update_recent_file_actions(self):
         """
@@ -476,24 +475,28 @@ class PyMdWizardMainForm(QMainWindow):
 
         marked_errors = []
 
+        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+
         for error in errors:
             xpath, error_msg, line_num = error
             if xpath not in marked_errors:
+
                 action = QAction(self, visible=True)
                 action.setText(error_msg)
                 action.setData(xpath)
                 action.triggered.connect(self.goto_error)
-                        # triggered=self.open_recent_file)
                 self.ui.menuErrors.addAction(action)
                 marked_errors.append(xpath)
 
-                widget = self.metadata_root.get_widget(xpath)
-                self.highlight_error(widget, error_msg)
-                self.error_widgets.append(widget)
+                # widget = self.metadata_root.get_widget(xpath)
+                widgets = self.widget_lookup.xpath_march(xpath, as_list=True)
+                for widget in widgets:
+                    self.highlight_error(widget.widget, error_msg)
+                    self.error_widgets.append(widget.widget)
 
 
         if errors:
-            msg = "There are {} errors in this record".format(len(errors))
+            msg = "There are {} errors in this record".format(len(self.error_widgets))
             self.statusBar().showMessage(msg, 20000)
             msg += "\n\n These errors are highlighted in red in the form below."
             msg += "\n\n These errors are also listed in the Validation Menu's Errors submenu item above."
@@ -545,9 +548,9 @@ class PyMdWizardMainForm(QMainWindow):
                 not sip.isdeleted(self.last_highlight):
             self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
 
-        bad_widget = self.metadata_root.get_widget(xpath)
-        self.last_highlight = bad_widget
-        self.highlight_error(bad_widget, self.sender().text(), superhot=True)
+        bad_widget = self.widget_lookup.xpath_march(xpath, as_list=True)
+        self.last_highlight = bad_widget[0].widget
+        self.highlight_error(bad_widget[0].widget, self.sender().text(), superhot=True)
 
     def highlight_error(self, widget, error_msg, superhot=False):
         """
@@ -566,6 +569,16 @@ class PyMdWizardMainForm(QMainWindow):
         -------
             None
         """
+
+        if widget.objectName() in ['fgdc_edomv', 'fgdc_edomvd', 'fgdc_edomvds',
+                                   'fgdc_attrlabl', 'fgdc_attrdef',
+                                   'fgdc_attrdefs', 'fgdc_attrdomv',
+                                   'fgdc_codesetd', 'fgdc_edom', 'fgdc_rdom',
+                                   'fgdc_udom', 'fgdc_rdommin', 'fgdc_rdommax',
+                                   'fgdc_codesetn', 'fgdc_codesets']:
+            self.highlight_attr(widget)
+
+
         if superhot:
             color = "rgb(223,1,74)"
             lw = "border: 3px solid black;"
@@ -610,6 +623,24 @@ class PyMdWizardMainForm(QMainWindow):
         }}
         """.format(widgetname=widget.objectName(), color=color, lw=lw))
 
+
+
+    def highlight_attr(self, widget):
+        widget_parent = widget.parent()
+
+        while not widget_parent.objectName() == 'fgdc_attr':
+            widget_parent = widget_parent.parent()
+
+        error_msg = "'Validation error in hidden contents, click to show'"
+        widget_parent.setToolTip(error_msg)
+        widget_parent.setStyleSheet(
+            """
+    QFrame#{widgetname}{{
+    border: 2px solid red;
+    }}
+        """.format(widgetname=widget_parent.objectName()))
+
+        self.error_widgets.append(widget_parent)
 
     def preview(self):
         """

@@ -8,16 +8,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_fgdc_rdom(object):
-    def setupUi(self, fgdc_rdom):
-        fgdc_rdom.setObjectName("fgdc_rdom")
-        fgdc_rdom.resize(354, 442)
-        self.verticalLayout = QtWidgets.QVBoxLayout(fgdc_rdom)
+class Ui_fgdc_attrdomv(object):
+    def setupUi(self, fgdc_attrdomv):
+        fgdc_attrdomv.setObjectName("fgdc_attrdomv")
+        fgdc_attrdomv.resize(354, 442)
+        self.verticalLayout = QtWidgets.QVBoxLayout(fgdc_attrdomv)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+        self.widget = QtWidgets.QWidget(fgdc_attrdomv)
+        self.widget.setObjectName("widget")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_5.setSpacing(2)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.label_19 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_19 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -42,7 +45,7 @@ class Ui_fgdc_rdom(object):
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setSpacing(0)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.fgdc_rdommin = QtWidgets.QLineEdit(fgdc_rdom)
+        self.fgdc_rdommin = QtWidgets.QLineEdit(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -52,7 +55,7 @@ class Ui_fgdc_rdom(object):
         self.fgdc_rdommin.setMaximumSize(QtCore.QSize(16777215, 20))
         self.fgdc_rdommin.setObjectName("fgdc_rdommin")
         self.horizontalLayout_8.addWidget(self.fgdc_rdommin)
-        self.label_20 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_20 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -73,7 +76,7 @@ class Ui_fgdc_rdom(object):
         self.label_20.setObjectName("label_20")
         self.horizontalLayout_8.addWidget(self.label_20)
         self.verticalLayout_5.addLayout(self.horizontalLayout_8)
-        self.label_21 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_21 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -87,7 +90,7 @@ class Ui_fgdc_rdom(object):
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.fgdc_rdommax = QtWidgets.QLineEdit(fgdc_rdom)
+        self.fgdc_rdommax = QtWidgets.QLineEdit(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -97,7 +100,7 @@ class Ui_fgdc_rdom(object):
         self.fgdc_rdommax.setMaximumSize(QtCore.QSize(16777215, 20))
         self.fgdc_rdommax.setObjectName("fgdc_rdommax")
         self.horizontalLayout_9.addWidget(self.fgdc_rdommax)
-        self.label_25 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_25 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -118,7 +121,7 @@ class Ui_fgdc_rdom(object):
         self.label_25.setObjectName("label_25")
         self.horizontalLayout_9.addWidget(self.label_25)
         self.verticalLayout_5.addLayout(self.horizontalLayout_9)
-        self.label_22 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_22 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -132,7 +135,7 @@ class Ui_fgdc_rdom(object):
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.fgdc_attrunit = QtWidgets.QLineEdit(fgdc_rdom)
+        self.fgdc_attrunit = QtWidgets.QLineEdit(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -145,7 +148,7 @@ class Ui_fgdc_rdom(object):
         spacerItem = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_10.addItem(spacerItem)
         self.verticalLayout_5.addLayout(self.horizontalLayout_10)
-        self.label_23 = QtWidgets.QLabel(fgdc_rdom)
+        self.label_23 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -159,7 +162,7 @@ class Ui_fgdc_rdom(object):
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setSpacing(0)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.fgdc_attrmres = QtWidgets.QLineEdit(fgdc_rdom)
+        self.fgdc_attrmres = QtWidgets.QLineEdit(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -172,37 +175,37 @@ class Ui_fgdc_rdom(object):
         spacerItem1 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem1)
         self.verticalLayout_5.addLayout(self.horizontalLayout_11)
-        self.verticalLayout.addLayout(self.verticalLayout_5)
+        self.verticalLayout.addWidget(self.widget)
         spacerItem2 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem2)
 
-        self.retranslateUi(fgdc_rdom)
-        QtCore.QMetaObject.connectSlotsByName(fgdc_rdom)
+        self.retranslateUi(fgdc_attrdomv)
+        QtCore.QMetaObject.connectSlotsByName(fgdc_attrdomv)
 
-    def retranslateUi(self, fgdc_rdom):
+    def retranslateUi(self, fgdc_attrdomv):
         _translate = QtCore.QCoreApplication.translate
-        fgdc_rdom.setWindowTitle(_translate("fgdc_rdom", "Form"))
-        self.label_19.setText(_translate("fgdc_rdom", "Range Minimum (Numeric or Date)"))
-        self.fgdc_rdommin.setToolTip(_translate("fgdc_rdom", "Address -- an address line for the address.\n"
+        fgdc_attrdomv.setWindowTitle(_translate("fgdc_attrdomv", "Form"))
+        self.label_19.setText(_translate("fgdc_attrdomv", "Range Minimum (Numeric or Date)"))
+        self.fgdc_rdommin.setToolTip(_translate("fgdc_attrdomv", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.label_20.setToolTip(_translate("fgdc_rdom", "Required"))
-        self.label_20.setText(_translate("fgdc_rdom", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_21.setText(_translate("fgdc_rdom", "Range Maximum (Numeric or Date)"))
-        self.fgdc_rdommax.setToolTip(_translate("fgdc_rdom", "Address -- an address line for the address.\n"
+        self.label_20.setToolTip(_translate("fgdc_attrdomv", "Required"))
+        self.label_20.setText(_translate("fgdc_attrdomv", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_21.setText(_translate("fgdc_attrdomv", "Range Maximum (Numeric or Date)"))
+        self.fgdc_rdommax.setToolTip(_translate("fgdc_attrdomv", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.label_25.setToolTip(_translate("fgdc_rdom", "Required"))
-        self.label_25.setText(_translate("fgdc_rdom", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_22.setText(_translate("fgdc_rdom", "Units of Measure"))
-        self.fgdc_attrunit.setToolTip(_translate("fgdc_rdom", "Address -- an address line for the address.\n"
+        self.label_25.setToolTip(_translate("fgdc_attrdomv", "Required"))
+        self.label_25.setText(_translate("fgdc_attrdomv", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_22.setText(_translate("fgdc_attrdomv", "Units of Measure"))
+        self.fgdc_attrunit.setToolTip(_translate("fgdc_attrdomv", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.label_23.setText(_translate("fgdc_rdom", "Measuremnt Resolution"))
-        self.fgdc_attrmres.setToolTip(_translate("fgdc_rdom", "City -- the city of the address.\n"
+        self.label_23.setText(_translate("fgdc_attrdomv", "Measuremnt Resolution"))
+        self.fgdc_attrmres.setToolTip(_translate("fgdc_attrdomv", "City -- the city of the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: city"))
