@@ -84,6 +84,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.build_ui()
         self.connect_events()
 
+        self.load_default()
+
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -295,9 +297,10 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        template_fname = utils.get_resource_path('CSDGM_Template.xml')
+        self.load_default()
         save_as_fname = self.get_save_name()
         if save_as_fname:
+            template_fname = utils.get_resource_path('CSDGM_Template.xml')
             shutil.copyfile(template_fname, save_as_fname)
             self.load_file(save_as_fname)
             self.set_current_file(save_as_fname)
@@ -306,6 +309,13 @@ class PyMdWizardMainForm(QMainWindow):
             today = fgdc_utils.format_date(datetime.datetime.now())
             self.metadata_root.metainfo.metd.set_date(today)
 
+    def load_default(self):
+        template_fname = utils.get_resource_path('CSDGM_Template.xml')
+
+        self.load_file(template_fname)
+
+        today = fgdc_utils.format_date(datetime.datetime.now())
+        self.metadata_root.metainfo.metd.set_date(today)
 
     def set_current_file(self, fname):
         """
