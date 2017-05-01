@@ -25,7 +25,7 @@
           <enddate></enddate>
         </rngdates>
       </timeinfo>
-      <current></current>
+      <current>ground condition</current>
     </timeperd>
     <status>
       <progress>Complete</progress>
@@ -46,11 +46,9 @@
       </theme>
       <theme>
         <themekt>None</themekt>
-        <themekey />
       </theme>
       <place>
         <placekt>None</placekt>
-        <placekey />
       </place>
     </keywords>
     <accconst>None.  Please see 'Distribution Info' for details.</accconst>
@@ -131,7 +129,7 @@
           </onlinopt>
         </digtopt>
       </digform>
-      <fees></fees>
+      <fees>None</fees>
     </stdorder>
   </distinfo>
   <metainfo>
