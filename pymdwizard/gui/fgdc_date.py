@@ -52,13 +52,13 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 
 from pymdwizard.core import utils
 
-from pymdwizard.gui.ui_files import UI_single_date
+from pymdwizard.gui.ui_files import UI_fgdc_date
 
 
-class SingleDate(QWidget):
+class FGDCDate(QWidget):
 
-    def __init__(self, xml=None, parent=None, show_format=True, label='',
-                 required=False):
+    def __init__(self, parent=None, show_format=True, label='',
+                 required=False, fgdc_name=None, parent_fgdc_name=None):
         QWidget.__init__(self, parent=parent)
 
         self.build_ui()
@@ -74,9 +74,15 @@ class SingleDate(QWidget):
         if not required:
             self.ui.lbl_required.hide()
 
+        self.date_widget = self.ui.fgdc_caldate
+        if fgdc_name is not None:
+            self.ui.fgdc_caldate.setObjectName(fgdc_name)
+
+        if parent_fgdc_name is not None:
+            self.ui.parent_fgdc.setObjectName(parent_fgdc_name)
+
         self.last_checked_contents = ''
         self.connect_events()
-
 
     def build_ui(self):
         """
@@ -86,7 +92,7 @@ class SingleDate(QWidget):
         -------
         None
         """
-        self.ui = UI_single_date.Ui_fgdc_sngdate()
+        self.ui = UI_fgdc_date.Ui_parent_widget()
         self.ui.setupUi(self)
 
     def connect_events(self):
@@ -97,11 +103,11 @@ class SingleDate(QWidget):
         -------
         None
         """
-        self.ui.fgdc_caldate.editingFinished.connect(self.check_format)
+        self.date_widget.editingFinished.connect(self.check_format)
 
     def check_format(self):
 
-        cur_contents = self.ui.fgdc_caldate.text()
+        cur_contents = self.date_widget.text()
         if cur_contents == self.last_checked_contents:
             return
         else:
@@ -122,14 +128,12 @@ class SingleDate(QWidget):
             msgbox.setStandardButtons(QMessageBox.Ok)
             msgbox.exec_()
 
-
-
     def get_date(self):
-        return self.ui.fgdc_caldate.text()
+        return self.date_widget.text()
 
     def set_date(self, date_str):
-        self.ui.fgdc_caldate.setText(date_str)
+        self.date_widget.setText(date_str)
 
 if __name__ == "__main__":
-    utils.launch_widget(SingleDate, label='testing', show_format=False)
+    utils.launch_widget(FGDCDate, label='testing', show_format=False, parent_fgdc_name='fgdc_sngdate')
 

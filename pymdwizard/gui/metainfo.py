@@ -54,7 +54,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_metainfo
 from pymdwizard.gui.ContactInfo import ContactInfo
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.fgdc_date import FGDCDate
 
 
 class MetaInfo(WizardWidget):
@@ -75,8 +75,7 @@ class MetaInfo(WizardWidget):
         self.setup_dragdrop(self)
 
         self.contactinfo = ContactInfo(parent=self)
-        self.metd = SingleDate(parent=self)
-        self.metd.ui.fgdc_caldate.setObjectName('fgdc_metd')
+        self.metd = FGDCDate(parent=self, fgdc_name='fgdc_metd')
 
         self.ui.help_metd.layout().addWidget(self.metd)
 

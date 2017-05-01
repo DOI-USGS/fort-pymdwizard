@@ -54,13 +54,13 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Citation
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.ui_files import UI_citeinfo
+from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
 
-class Citation(WizardWidget): #
+class Citeinfo(WizardWidget): #
 
-    drag_label = "Citation <citation>"
+    drag_label = "Citation information <citeinfo>"
     acceptable_tags = ['citation', 'citeinfo']
 
     def __init__(self, parent=None, include_lwork=True):
@@ -76,11 +76,11 @@ class Citation(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_Citation.Ui_fgdc_citation()
+        self.ui = UI_citeinfo.Ui_parent_form()
         self.ui.setupUi(self)
 
         if self.include_lwork:
-            self.lworkcit_widget = Citation(parent=self, include_lwork=False)
+            self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
@@ -88,9 +88,9 @@ class Citation(WizardWidget): #
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ',
-                                            show_format=False, required=True)
-        self.ui.pubdate_widget.ui.fgdc_caldate.setObjectName('fgdc_pubdate')
+        self.ui.pubdate_widget = FGDCDate(label='YYYMMDD  ',
+                                            show_format=False, required=True,
+                                            fgdc_name='fgdc_pubdate')
 
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
@@ -294,16 +294,19 @@ class Citation(WizardWidget): #
                 utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
+                self.ui.radioButton_8.setChecked(True)
 
             if citeinfo.xpath('lworkcit'):
                 self.ui.radio_lworkyes.setChecked(True)
                 self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+            else:
+                self.ui.radio_lworkno.setChecked(True)
 
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Citation,
+    utils.launch_widget(Citeinfo,
                         "Citation testing")
 

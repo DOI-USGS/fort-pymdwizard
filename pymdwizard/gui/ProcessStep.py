@@ -55,14 +55,14 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_ProcessStep
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.proccont import ProcessContact
 
 
 class ProcessStep(WizardWidget): #
 
     drag_label = "Process Step <procstep>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """
@@ -76,9 +76,7 @@ class ProcessStep(WizardWidget): #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.single_date = SingleDate()
-        self.single_date.ui.lbl_format.deleteLater()
-        self.single_date.ui.label.deleteLater()
+        self.single_date = FGDCDate(show_format=False, required=True, label='', fgdc_name='fgdc_procdate')
 
         self.proccont = ProcessContact()
 
@@ -101,7 +99,6 @@ class ProcessStep(WizardWidget): #
         None
 
         """
-        print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
@@ -134,7 +131,7 @@ class ProcessStep(WizardWidget): #
             procstep.append(srcused)
 
         procdate = etree.Element('procdate')
-        date_var = self.single_date.findChild(QLineEdit, "fgdc_caldate").text()
+        date_var = self.single_date.findChild(QLineEdit, "fgdc_procdate").text()
         procdate.text = date_var
         procstep.append(procdate)
 

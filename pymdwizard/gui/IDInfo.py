@@ -60,7 +60,7 @@ from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
 from pymdwizard.gui.Status import Status
 from pymdwizard.gui.timeperd import Timeperd
-from pymdwizard.gui.Citation import Citation
+from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.DataCredit import DataCredit
 #from pymdwizard.gui.Descriptor import Descriptor
 from pymdwizard.gui.supplinf import SupplInf
@@ -71,12 +71,7 @@ from pymdwizard.gui.purpose import Purpose
 class IdInfo(WizardWidget):
 
     drag_label = "Identification Information <idinfo>"
-
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-                        'cntorg': 'cntinfo/cntperp/cntorg',
-                        'cntpos': 'cntinfo/cntpos',}
+    acceptable_tags = ['abstract']
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
@@ -99,7 +94,7 @@ class IdInfo(WizardWidget):
         self.useconst = UseConstraints(parent=self)
         self.status = Status(parent=self)
         self.timeperd = Timeperd(parent=self)
-        self.citation = Citation(parent=self)
+        self.citation = Citeinfo(parent=self)
         self.datacredit = DataCredit(parent=self)
 
         self.abstract = Abstract(parent=self)
