@@ -63,7 +63,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class PlaceList(WizardWidget): #
 
     drag_label = "Place Keywords <keywords>"
-
+    acceptable_tags = ['keywords', 'place']
 
     def build_ui(self):
         """
@@ -135,7 +135,7 @@ class PlaceList(WizardWidget): #
             self.remove_selected()
 
     def search_controlled(self):
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True, parent=self)
 
         self.thesaurus_search.setWindowTitle('Place Keyword Thesaurus Search')
 
