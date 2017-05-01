@@ -60,6 +60,7 @@ from pymdwizard.gui.ui_files import UI_PlaceKeywords
 
 class PlaceKeywords(WizardWidget):
     drag_label = "Place Keywords <place>"
+    acceptable_tags = ['keywords', 'place']
     ui_class = UI_PlaceKeywords.Ui_place_keywords
 
     def build_ui(self):
@@ -191,28 +192,6 @@ class PlaceKeywords(WizardWidget):
             except:
                 pass
 
-
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("cinfo drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element.tag == 'keywords' or element.tag == 'place':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
 
