@@ -112,6 +112,13 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.ui.menuErrors.clear()
 
+        settings = QSettings('USGS', 'pymdwizard')
+        template_fname = settings.value('template_fname')
+
+        if template_fname is not  None:
+            just_fname = os.path.split(template_fname)[-1]
+            self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -128,6 +135,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
         self.ui.actionNew.triggered.connect(self.new_record)
+        self.ui.actionBrowseTemplate.triggered.connect(self.set_template)
+        self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
 
     def open_recent_file(self):
         """
@@ -141,15 +150,14 @@ class PyMdWizardMainForm(QMainWindow):
             self.load_file(action.data())
             self.set_current_file(action.data())
 
-    def open_file(self):
+    def get_xml_fname(self):
         """
-        Browse to a file and load it if it is acceptable
 
         Returns
         -------
-        None
+        str: path and filename of the selected file or
+        empty string if none was selected
         """
-
         settings = QSettings('USGS', 'pymdwizard')
         recent_files = settings.value('recentFileList', [])
         if recent_files:
@@ -159,9 +167,25 @@ class PyMdWizardMainForm(QMainWindow):
 
         fname = QFileDialog.getOpenFileName(self, fname, dname, \
                                             filter="XML Files (*.xml)")
+
         if fname[0]:
-            self.load_file(fname[0])
-            self.set_current_file(fname[0])
+            return fname[0]
+        else:
+            return ''
+
+    def open_file(self):
+        """
+        Browse to a file and load it if it is acceptable
+
+        Returns
+        -------
+        None
+        """
+        fname = self.get_xml_fname()
+
+        if fname:
+            self.load_file(fname)
+            self.set_current_file(fname)
             self.update_recent_file_actions()
 
     def load_file(self, fname):
@@ -306,8 +330,27 @@ class PyMdWizardMainForm(QMainWindow):
             today = fgdc_utils.format_date(datetime.datetime.now())
             self.metadata_root.metainfo.metd.set_date(today)
 
+    def set_template(self):
+        fname = self.get_xml_fname()
+
+        if fname:
+            settings = QSettings('USGS', 'pymdwizard')
+            settings.setValue('template_fname', fname)
+            just_fname = os.path.split(fname)[-1]
+            self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
+
+    def restore_template(self):
+        settings = QSettings('USGS', 'pymdwizard')
+        fname = utils.get_resource_path('CSDGM_Template.xml')
+        settings.setValue('template_fname', None)
+        self.ui.actionCurrentTemplate.setText('Current: Built-in')
+
     def load_default(self):
-        template_fname = utils.get_resource_path('CSDGM_Template.xml')
+        settings = QSettings('USGS', 'pymdwizard')
+        template_fname = settings.value('template_fname')
+
+        if template_fname is None:
+            template_fname = utils.get_resource_path('CSDGM_Template.xml')
 
         self.load_file(template_fname)
         self.cur_fname = ''
@@ -493,7 +536,7 @@ class PyMdWizardMainForm(QMainWindow):
                 for widget in widgets:
                     if isinstance(widget, list):
                         for w in widget:
-                            print('widget')
+                            print('problem highlighting error', xpath, widget)
                     else:
                         self.highlight_error(widget.widget, error_msg)
                         self.error_widgets.append(widget.widget)
