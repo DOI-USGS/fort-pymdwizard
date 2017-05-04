@@ -7,10 +7,6 @@
         <pubdate />
         <title />
         <geoform />
-        <pubinfo>
-          <pubplace />
-          <publish />
-        </pubinfo>
         <onlink>https://doi.org/10.5066/xxxxxxxx</onlink>
       </citeinfo>
     </citation>
