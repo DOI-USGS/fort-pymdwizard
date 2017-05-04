@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_Descriptor #
 class Descriptor(WizardWidget): #
 
     drag_label = "Descriptor <descript>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

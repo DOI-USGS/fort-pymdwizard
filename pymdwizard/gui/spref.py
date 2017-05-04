@@ -66,6 +66,7 @@ from pymdwizard.gui.mapproj import MapProj
 class SpRef(WizardWidget):
 
     drag_label = "Spatial Refernce <spref>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_spref.Ui_Form
 

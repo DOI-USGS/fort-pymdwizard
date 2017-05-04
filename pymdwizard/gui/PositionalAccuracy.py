@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_PositionalAccuracy #
 class PositionalAccuracy(WizardWidget): #
 
     drag_label = "Positional Accuracy <possacc>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

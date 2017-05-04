@@ -65,6 +65,7 @@ from pymdwizard.gui.ui_files import UI_mapproj
 class MapProj(WizardWidget):
 
     drag_label = "Map Projection <mapproj>"
+    acceptable_tags = ['mapproj']
 
     ui_class = UI_mapproj.Ui_Form
 
@@ -124,20 +125,6 @@ class MapProj(WizardWidget):
             lineedit.setObjectName('fgdc_' + param)
             lineedit.setToolTip(annotation)
             layout.addRow(label, lineedit)
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        # e.ignore()
-        e.accept()
 
     def _to_xml(self):
 

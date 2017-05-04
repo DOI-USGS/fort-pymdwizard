@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_Completeness #
 class Completeness(WizardWidget): #
 
     drag_label = "Completeness <complete>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

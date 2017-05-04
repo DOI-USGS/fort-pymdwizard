@@ -28,6 +28,7 @@ from pymdwizard.gui.ui_files import UI_ITISSearch
 class ItisMainForm(QWidget):
 
     drag_label = "Taxonomy"
+    acceptable_tags = ['abstract']
 
     def __init__(self, xml=None, fgdc_function=None,  parent=None):
         QWidget.__init__(self, parent=parent)

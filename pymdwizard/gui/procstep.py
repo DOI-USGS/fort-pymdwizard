@@ -62,6 +62,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class ProcStep(WizardWidget): #
 
     drag_label = "Process Step <procstep>"
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

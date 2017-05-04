@@ -59,7 +59,9 @@ from pymdwizard.gui import ThesaurusSearch
 from pymdwizard.gui.ui_files import UI_ThemeKeywords
 
 class ThemeKeywords(WizardWidget):
+
     drag_label = "Theme Keywords <theme>"
+    acceptable_tags = ['abstract']
     ui_class = UI_ThemeKeywords.Ui_theme_keywords
 
     def build_ui(self):

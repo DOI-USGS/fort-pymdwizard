@@ -60,6 +60,7 @@ from pymdwizard.gui.fgdc_date import FGDCDate
 class MetaInfo(WizardWidget):
 
     drag_label = "Metadata Information <metainfo>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_metainfo.Ui_fgdc_metainfo
 

@@ -64,6 +64,7 @@ from pymdwizard.gui import spdom
 class SpatialTab(WizardWidget):
 
     drag_label = "Spatial org and Spatial Ref <...>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_spatial_tab.Ui_spatial_tab
 

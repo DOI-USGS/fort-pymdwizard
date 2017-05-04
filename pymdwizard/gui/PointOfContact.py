@@ -63,6 +63,7 @@ class ContactInfoPointOfContact(WizardWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

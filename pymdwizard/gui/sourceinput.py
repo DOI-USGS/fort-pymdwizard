@@ -62,6 +62,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class SourceInput(WizardWidget):
 
     drag_label = "Source Information <srcinfo>"
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

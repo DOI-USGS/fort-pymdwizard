@@ -63,7 +63,7 @@ class ProcessContact(WizardWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Process Contact <proccont>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

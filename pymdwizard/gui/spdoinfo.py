@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_spdoinfo
 class SpdoInfo(WizardWidget):
 
     drag_label = "Spatial Domain Info <spdoinfo>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

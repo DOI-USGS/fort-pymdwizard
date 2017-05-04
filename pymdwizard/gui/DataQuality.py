@@ -65,7 +65,7 @@ from pymdwizard.gui.procstep import ProcStep
 class DataQuality(WizardWidget):
 
     drag_label = "Data Quality <dataqual>"
-
+    acceptable_tags = ['abstract']
 
     ui_class = UI_DataQuality.Ui_fgdc_dataqual
 
