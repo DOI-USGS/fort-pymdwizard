@@ -54,6 +54,7 @@ from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
+from pymdwizard.core import xml_utils
 from pymdwizard.core.xml_utils import xml_node
 
 from pymdwizard.gui.wiz_widget import WizardWidget
@@ -231,8 +232,19 @@ class Spdom(WizardWidget):
 
     def _from_xml(self, spdom):
         self.original_xml = spdom
-
         utils.populate_widget(self, spdom)
 
+        contents = xml_utils.node_to_dict(spdom, add_fgdc=False)
+        try:
+            jstr = """east = {eastbc};
+            west = {westbc};
+            south = {southbc};
+            north = {northbc};
+             updateMap();
+             fitMap();
+            """.format(**contents['bounding'])
+            self.frame.evaluateJavaScript(jstr)
+        except KeyError:
+            pass
 if __name__ == "__main__":
     utils.launch_widget(Spdom)
