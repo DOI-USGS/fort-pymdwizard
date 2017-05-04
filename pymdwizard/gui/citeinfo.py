@@ -81,7 +81,7 @@ class Citeinfo(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
-            self.lworkcit_widget.ui.lbl_dataset_title.setText('Title')
+            self.lworkcit_widget.ui.lbl_dataset_title.setText('Larger Work Title')
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
