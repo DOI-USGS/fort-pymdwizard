@@ -153,7 +153,6 @@ class IdInfo(WizardWidget):
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
-        self.citation.switch_schema(self.schema)
 
     def clear_widget(self):
         self.root_widget.spatial_tab.spdom.clear_widget()
