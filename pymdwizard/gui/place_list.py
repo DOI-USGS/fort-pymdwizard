@@ -207,9 +207,11 @@ class PlaceList(WizardWidget): #
         procstep element tag in xml tree
         """
         keywords = xml_utils.xml_node('keywords')
-        for theme in self.thesauri:
-            theme_xml = theme._to_xml()
-            keywords.append(theme_xml)
+
+        if self.ui.rbtn_yes.isChecked():
+            for theme in self.thesauri:
+                theme_xml = theme._to_xml()
+                keywords.append(theme_xml)
 
         return keywords
 
