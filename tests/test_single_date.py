@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QWidget, QLineEdit
 from pymdwizard.gui import fgdc_date
 
 def test_single_date_setgetdate(qtbot):
-    widget = single_date.SingleDate()
+    widget = fgdc_date.FGDCDate()
     qtbot.addWidget(widget)
 
     widget.ui.fgdc_caldate.setText('1234')
