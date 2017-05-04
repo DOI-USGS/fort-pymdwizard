@@ -65,9 +65,18 @@ class Spdom(WizardWidget):
     ui_class = UI_spdom.Ui_Form
 
     def __init__(self, root_widget=None):
+
+        self.east = 180
+        self.west = -180
+        self.north = 90
+        self.south = -90
+        self.valid = True
+
         super(self.__class__, self).__init__()
         self.schema = 'bdp'
         self.root_widget = root_widget
+
+
 
     def build_ui(self):
         """
@@ -86,7 +95,11 @@ class Spdom(WizardWidget):
         self.view = self.view = QWebView()
         self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
         map_fname = utils.get_resource_path('leaflet/map.html')
+
+
         self.view.setUrl(QUrl.fromLocalFile(map_fname))
+
+        self.frame = self.view.page().mainFrame()
         self.ui.verticalLayout_3.addWidget(self.view)
 
         # this is where more complex build information would go such as
@@ -98,30 +111,26 @@ class Spdom(WizardWidget):
         # setup drag-drop functionality for this widget and all it's children.
         self.setup_dragdrop(self)
 
-        self.in_update = False
+        # self.in_update = False
+        # self.draw_js_map()
+        # self.fit_bounds()
         self.raise_()
 
     def draw_js_map(self):
-        js_fname = utils.get_resource_path('leaflet/map.js')
-        with open(js_fname, 'r') as f:
-            js_str = f.read()
-        js_str = js_str.replace('east_var', str(self.east))
-        js_str = js_str.replace('west_var', str(self.west))
-        js_str = js_str.replace('north_var', str(self.north))
-        js_str = js_str.replace('south_var', str(self.south))
-
-        frame = self.view.page().mainFrame()
-        frame.evaluateJavaScript(js_str)
+        pass
+        # js_fname = utils.get_resource_path('leaflet/map.js')
+        # with open(js_fname, 'r') as f:
+        #     js_str = f.read()
+        # js_str = js_str.replace('east_var', str(self.east))
+        # js_str = js_str.replace('west_var', str(self.west))
+        # js_str = js_str.replace('north_var', str(self.north))
+        # js_str = js_str.replace('south_var', str(self.south))
+        #
+        # frame = self.view.page().mainFrame()
+        # frame.evaluateJavaScript(js_str)
 
 
     def connect_events(self):
-        """
-        Connect the appropriate GUI components with the corresponding functions
-
-        Returns
-        -------
-        None
-        """
 
         self.ui.fgdc_eastbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_westbc.editingFinished.connect(self.coord_updated)
@@ -129,126 +138,57 @@ class Spdom(WizardWidget):
         self.ui.fgdc_southbc.editingFinished.connect(self.coord_updated)
 
     def coord_updated(self):
-        self.update_rect()
-        self.in_update = True
-        self.update_markers()
-        self.in_update = False
 
-    def update_coords(self):
+        cur_name = self.sender().objectName()
+        cur_value = self.sender().text()
+
+        print(cur_name, cur_value)
         try:
-            self.east = float(self.ui.fgdc_eastbc.text())
+            cur_value = float(cur_value)
         except ValueError:
-            self.east = None
+            msg = 'This field should only contain a decimal number'
 
-        try:
-            self.west = float(self.ui.fgdc_westbc.text())
-        except ValueError:
-            self.west = None
+        if cur_name in ['fgdc_westbc', 'fgdc_eastbc'] \
+                and -180 >= cur_value >= 180:
+            msg = 'East or West coordinate must be within -180 and 180'
+        elif cur_name in ['fgdc_southbc', 'fgdc_northbc'] \
+                and -90 >= cur_value >= 90:
+            msg = 'North South coordinate must be within -90 and 90'
 
-        try:
-            self.north = float(self.ui.fgdc_northbc.text())
-        except ValueError:
-            self.north = None
-
-        try:
-            self.south = float(self.ui.fgdc_southbc.text())
-        except ValueError:
-            self.south = None
-
-        if self.west is not None and \
-           self.east is not None and \
-           self.south is not None and \
-           self.north is not None:
-                self.width = (self.west + self.east)
-                self.center_long =  self.width / 2.0
-                self.center_lat = (self.north + self.south) / 2.0
-                self.valid = True
         else:
-            self.width = None
-            self.valid = False
+            msg = ''
 
-        self.zoom = 3
-        if self.width is not None:
-            if self.width < 20:
-                self.zoom = 5
+        if msg:
+            QMessageBox.warning(self, "Problem bounding coordinates", msg)
+            return
 
+        which = cur_name.replace('fgdc_', '').replace('bc', '')
+        jstr = """{} = {};
+         updateMap();
+         fitMap();
+        """.format(which, cur_value)
+        self.frame.evaluateJavaScript(jstr)
 
-
-    def draw_map(self):
-        self.update_coords()
-        if self.valid:
-            self.draw_js_map()
-
-    def update_rect(self):
-        try:
-            if not self.in_update:
-                self.update_coords()
-                jstr = "rect.setBounds(L.latLngBounds(L.latLng({s}, {w}), L.latLng({n}, {e})));".format(e=self.east, w=self.west, n=self.north, s=self.south)
-                frame = self.view.page().mainFrame()
-                frame.evaluateJavaScript(jstr)
-        except:
-            # no matter what this error is not critical
-            pass
-
-    def update_markers(self):
-        try:
-            self.update_coords()
-            h_center = (self.east + self.west) / 2.0
-            v_center = (self.north + self.south) / 2.0
-
-            frame = self.view.page().mainFrame()
-            jstr = "s_marker.setLatLng(new L.latLng({s}, {h}));".format(s=self.south, h=h_center)
-            frame.evaluateJavaScript(jstr)
-            jstr = "e_marker.setLatLng(new L.latLng({v}, {e}));".format(e=self.east, v=v_center)
-            frame.evaluateJavaScript(jstr)
-
-            jstr = "n_marker.setLatLng(new L.latLng({n}, {h}));".format(n=self.north, h=h_center)
-            frame.evaluateJavaScript(jstr)
-            jstr = "w_marker.setLatLng(new L.latLng({v}, {w}));".format(w=self.west, v=v_center)
-            frame.evaluateJavaScript(jstr)
-        except:
-            # no matter what this error is not critical
-            pass
 
     @pyqtSlot(float, float)
-    def on_e_move(self, lat, lng):
+    def on_ne_move(self, lat, lng):
         self.ui.fgdc_eastbc.setText(str(lng))
-        self.update_rect()
-
-    @pyqtSlot(float, float)
-    def on_w_move(self, lat, lng):
-        self.ui.fgdc_westbc.setText(str(lng))
-        self.update_rect()
-
-    @pyqtSlot(float, float)
-    def on_n_move(self, lat, lng):
         self.ui.fgdc_northbc.setText(str(lat))
-        self.update_rect()
 
     @pyqtSlot(float, float)
-    def on_s_move(self, lat, lng):
+    def on_nw_move(self, lat, lng):
+        self.ui.fgdc_westbc.setText(str(lng))
+        self.ui.fgdc_northbc.setText(str(lat))
+
+    @pyqtSlot(float, float)
+    def on_se_move(self, lat, lng):
+        self.ui.fgdc_eastbc.setText(str(lng))
         self.ui.fgdc_southbc.setText(str(lat))
-        self.update_rect()
 
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'spdom':
-                e.accept()
-        else:
-            e.ignore()
+    @pyqtSlot(float, float)
+    def on_sw_move(self, lat, lng):
+        self.ui.fgdc_westbc.setText(str(lng))
+        self.ui.fgdc_southbc.setText(str(lat))
 
     def switch_schema(self, schema):
         self.schema = schema
@@ -293,14 +233,6 @@ class Spdom(WizardWidget):
         self.original_xml = spdom
 
         utils.populate_widget(self, spdom)
-        self.draw_map()
-        self.update_rect()
-        self.update_markers()
-
-        jstr = "map.fitBounds(L.latLngBounds(L.latLng({s}, {w}), L.latLng({n}, {e})));".format(e=self.east, w=self.west, n=self.north, s=self.south)
-        frame = self.view.page().mainFrame()
-        frame.evaluateJavaScript(jstr)
-
 
 if __name__ == "__main__":
     utils.launch_widget(Spdom)

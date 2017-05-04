@@ -1,5 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <metadata>
-  <idinfo><citation><citeinfo><origin/><pubdate/><title/><geoform/><pubinfo><pubplace/><publish/></pubinfo><onlink>https://doi.org/10.5066/xxxxxxxx</onlink></citeinfo></citation><descript><abstract/><purpose/></descript><timeperd><timeinfo><rngdates><begdate/><enddate/></rngdates></timeinfo><current>ground condition</current></timeperd><status><progress>Complete</progress><update>None planned</update></status><spdom><descgeog/><bounding><westbc/><eastbc/><northbc/><southbc/></bounding></spdom><keywords><theme><themekt>ISO 19115 Topic Category</themekt><themekey>biota</themekey></theme><theme><themekt>None</themekt><themekey/></theme><place><placekt>None</placekt><placekey/></place></keywords><accconst>None.  Please see 'Distribution Info' for details.</accconst><useconst>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst><ptcontac><cntinfo><cntperp><cntper/></cntperp><cntaddr><addrtype/><address/><city/><state/><postal/></cntaddr><cntvoice/></cntinfo></ptcontac><native/>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin />
+        <pubdate />
+        <title />
+        <geoform />
+        <pubinfo>
+          <pubplace />
+          <publish />
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/xxxxxxxx</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract />
+      <purpose />
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate />
+          <enddate />
+        </rngdates>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <descgeog>World</descgeog>
+      <bounding>
+        <westbc>-180</westbc>
+        <eastbc>180</eastbc>
+        <northbc>90</northbc>
+        <southbc>-90</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>biota</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey />
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey />
+      </place>
+    </keywords>
+    <accconst>None.  Please see 'Distribution Info' for details.</accconst>
+    <useconst>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper />
+        </cntperp>
+        <cntaddr>
+          <addrtype />
+          <address />
+          <city />
+          <state />
+          <postal />
+        </cntaddr>
+        <cntvoice />
+      </cntinfo>
+    </ptcontac>
+    <native />
   </idinfo>
   <dataqual>
     <attracc>
@@ -22,7 +94,7 @@
       </procstep>
     </lineage>
   </dataqual>
-  <eainfo/>
+  <eainfo />
   <distinfo>
     <distrib>
       <cntinfo>
@@ -65,16 +137,16 @@
     <metc>
       <cntinfo>
         <cntperp>
-          <cntper/>
+          <cntper />
         </cntperp>
         <cntaddr>
-          <addrtype/>
-          <address/>
-          <city/>
-          <state/>
-          <postal/>
+          <addrtype />
+          <address />
+          <city />
+          <state />
+          <postal />
         </cntaddr>
-        <cntvoice/>
+        <cntvoice />
       </cntinfo>
     </metc>
     <metstdn>FGDC Biological Data Profile of the CDGSM</metstdn>
