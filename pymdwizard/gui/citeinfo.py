@@ -81,6 +81,7 @@ class Citeinfo(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
+            self.lworkcit_widget.ui.lbl_dataset_title.setText('Title')
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
@@ -176,17 +177,6 @@ class Citeinfo(WizardWidget): #
             self.ui.lworkcite_widget.show()
         else:
             self.ui.lworkcite_widget.hide()
-
-
-    def switch_schema(self, schema):
-        self.schema = schema
-        if schema == 'bdp':
-            self.ui.help_geoform.show()
-        else:
-            self.ui.help_geoform.hide()
-
-        if self.include_lwork:
-            self.lworkcit_widget.switch_schema(self.schema)
                 
     def _to_xml(self):
         """
@@ -208,8 +198,7 @@ class Citeinfo(WizardWidget): #
         title = xml_utils.xml_node("title", self.ui.fgdc_title.text(),
                                    parent_node=citeinfo)
 
-        if self.schema == 'bdp':
-            geoform = xml_utils.xml_node("geoform",
+        geoform = xml_utils.xml_node("geoform",
                                          self.ui.fgdc_geoform.currentText(),
                                          parent_node=citeinfo)
 
