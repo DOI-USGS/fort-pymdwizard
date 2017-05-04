@@ -676,7 +676,7 @@ def main():
 
     import time
     start = time.time()
-    splash_fname = utils.get_resource_path('icons/splash_screen.jpg')
+    splash_fname = utils.get_resource_path('icons/splash.jpg')
     splash_pix = QPixmap(splash_fname)
 
     size = splash_pix.size()*.35
