@@ -62,7 +62,7 @@ from pymdwizard.gui.ui_files import UI_spdom
 
 class Spdom(WizardWidget):
     drag_label = "Spatial Domain <spdom>"
-    acceptable_tags = ['spdom']
+    acceptable_tags = ['spdom', 'bounding']
     ui_class = UI_spdom.Ui_Form
 
     def __init__(self, root_widget=None):
@@ -111,28 +111,9 @@ class Spdom(WizardWidget):
 
         # setup drag-drop functionality for this widget and all it's children.
         self.setup_dragdrop(self)
-
-        # self.in_update = False
-        # self.draw_js_map()
-        # self.fit_bounds()
         self.raise_()
 
-    def draw_js_map(self):
-        pass
-        # js_fname = utils.get_resource_path('leaflet/map.js')
-        # with open(js_fname, 'r') as f:
-        #     js_str = f.read()
-        # js_str = js_str.replace('east_var', str(self.east))
-        # js_str = js_str.replace('west_var', str(self.west))
-        # js_str = js_str.replace('north_var', str(self.north))
-        # js_str = js_str.replace('south_var', str(self.south))
-        #
-        # frame = self.view.page().mainFrame()
-        # frame.evaluateJavaScript(js_str)
-
-
     def connect_events(self):
-
         self.ui.fgdc_eastbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_westbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_northbc.editingFinished.connect(self.coord_updated)
@@ -235,6 +216,9 @@ class Spdom(WizardWidget):
         utils.populate_widget(self, spdom)
 
         contents = xml_utils.node_to_dict(spdom, add_fgdc=False)
+        if 'bounding' in contents:
+            contents = contents['bounding']
+
         try:
             jstr = """east = {eastbc};
             west = {westbc};
@@ -242,7 +226,7 @@ class Spdom(WizardWidget):
             north = {northbc};
              updateMap();
              fitMap();
-            """.format(**contents['bounding'])
+            """.format(**contents)
             self.frame.evaluateJavaScript(jstr)
         except KeyError:
             pass
