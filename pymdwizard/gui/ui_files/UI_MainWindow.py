@@ -157,4 +157,3 @@ class Ui_MainWindow(object):
         self.actionRestoreBuiltIn.setText(_translate("MainWindow", "Restore Built-in"))
         self.actionCurrentTemplate.setText(_translate("MainWindow", "Current: Built-in"))
 
-import icons_rc

@@ -243,8 +243,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="icons/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
