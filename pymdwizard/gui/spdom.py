@@ -124,7 +124,6 @@ class Spdom(WizardWidget):
         cur_name = self.sender().objectName()
         cur_value = self.sender().text()
 
-        print(cur_name, cur_value)
         try:
             cur_value = float(cur_value)
         except ValueError:
