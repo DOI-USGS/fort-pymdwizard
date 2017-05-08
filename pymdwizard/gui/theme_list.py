@@ -154,6 +154,9 @@ class ThemeList(WizardWidget): #
         self.ui.theme_tabs.setTabEnabled(0, True)
         self.ui.fgdc_theme.show()
 
+        self.ui.theme_tabs.setCurrentIndex(0)
+        self.repaint()
+
     def get_children(self, widget):
 
         children = []
