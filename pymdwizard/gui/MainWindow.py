@@ -188,7 +188,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.set_current_file(fname)
             self.update_recent_file_actions()
 
-    def load_file(self, fname):
+    def load_file(self, fname, read_only=False):
         """
         load a file's content into the application.
 
@@ -207,11 +207,16 @@ class PyMdWizardMainForm(QMainWindow):
         self.clear_validation()
 
         file = QFile(fname)
-        if not file.open(QFile.ReadWrite | QFile.Text):
-            msg = "Cannot open file %s:\n%s." % (fname, file.errorString())
+        if read_only and not file.open(QFile.ReadOnly | QFile.Text):
+            msg = "Cannot read file %s:\n%s." % (fname, file.errorString())
             QMessageBox.warning(self, "Recent Files", msg)
-
             return
+
+        if not read_only and not file.open(QFile.ReadWrite | QFile.Text):
+            msg = "Cannot open file for writting %s:\n%s." % (fname, file.errorString())
+            QMessageBox.warning(self, "Recent Files", msg)
+            return
+
         file.close()
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -352,7 +357,7 @@ class PyMdWizardMainForm(QMainWindow):
         if template_fname is None:
             template_fname = utils.get_resource_path('CSDGM_Template.xml')
 
-        self.load_file(template_fname)
+        self.load_file(template_fname, read_only=True)
         self.cur_fname = ''
 
         today = fgdc_utils.format_date(datetime.datetime.now())
