@@ -60,7 +60,7 @@ from pymdwizard.gui.fgdc_date import FGDCDate
 class MetaInfo(WizardWidget):
 
     drag_label = "Metadata Information <metainfo>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['metainfo', 'cntinfo', 'ptcontact']
 
     ui_class = UI_metainfo.Ui_fgdc_metainfo
 
@@ -107,27 +107,6 @@ class MetaInfo(WizardWidget):
     def pull_datasetcontact(self):
         self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
 
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("idinfo drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'metainfo':
-                e.accept()
-        else:
-            e.ignore()
-
     def _to_xml(self):
         # add code here to translate the form into xml representation
         metainfo_node = xml_utils.xml_node('metainfo')
@@ -168,6 +147,10 @@ class MetaInfo(WizardWidget):
 
             metd = xml_utils.get_text_content(xml_metainfo, 'metd')
             self.metd.set_date(metd)
+        elif xml_metainfo.tag in ['ptcontac', 'cntinfo']:
+            if xml_metainfo.tag == 'ptcontac':
+                xml_metainfo = xml_utils.search_xpath(xml_metainfo, 'cntinfo')
+            self.contactinfo._from_xml(xml_metainfo)
 
 if __name__ == "__main__":
     utils.launch_widget(MetaInfo, "MetaInfo testing")
