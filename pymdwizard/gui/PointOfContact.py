@@ -63,7 +63,7 @@ class ContactInfoPointOfContact(WizardWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['pntcontac', 'cntinfo']
 
     def build_ui(self):
         """
@@ -77,7 +77,7 @@ class ContactInfoPointOfContact(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.cntinfo = ContactInfo.ContactInfo()
+        self.cntinfo = ContactInfo.ContactInfo(parent=self)
         self.ui.main_layout.addWidget(self.cntinfo)
 
         self.collaped_size = QSize(self.WIDGET_WIDTH,
@@ -107,28 +107,6 @@ class ContactInfoPointOfContact(WizardWidget):
 
     def has_content(self):
         return self.ui.rbtn_yes.isChecked()
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and \
-                        element.tag == 'ptcontac' or element.tag == 'cntinfo':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         if self.ui.rbtn_yes.isChecked():
