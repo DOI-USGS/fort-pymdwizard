@@ -62,7 +62,7 @@ from pymdwizard.gui.proccont import ProcessContact
 class ProcessStep(WizardWidget): #
 
     drag_label = "Process Step <procstep>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['procstep']
 
     def build_ui(self):
         """
@@ -85,28 +85,6 @@ class ProcessStep(WizardWidget): #
         self.ui.widget_proccont.layout().insertWidget(0, self.proccont)
 
         self.clear_widget()
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'procstep'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'procstep':
-                e.accept()
-        else:
-            e.ignore()
 
     def clear_widget(self):
         super(self.__class__, self).clear_widget()
