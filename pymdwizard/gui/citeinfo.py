@@ -89,7 +89,7 @@ class Citeinfo(WizardWidget): #
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = FGDCDate(label='YYYMMDD  ',
+        self.ui.pubdate_widget = FGDCDate(label='YYYYMMDD  ',
                                             show_format=False, required=True,
                                             fgdc_name='fgdc_pubdate')
 
