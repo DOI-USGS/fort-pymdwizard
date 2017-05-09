@@ -55,7 +55,7 @@ from pymdwizard.gui import attributes
 class Detailed(WizardWidget):  #
 
     drag_label = "Detailed Description <detailed>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['detailed']
 
     def __init__(self, remove_function=None, parent=None):
         WizardWidget.__init__(self, parent=parent)
@@ -143,40 +143,6 @@ class Detailed(WizardWidget):  #
         else:
             msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
-
-    # def find_descendant(self, search_widget, search_name):
-    #
-    #     matches = []
-    #     for widget in search_widget.children():
-    #         if widget.objectName() == 'fgdc_' + search_name:
-    #             matches.append(widget)
-    #             # elif isinstance(widget, RepeatingElement)
-    #
-    #     for widget in search_widget.children():
-    #         # if True:#widget.objectName() != 'fgdc_' + search_name:
-    #         result = widget.find_descendant(widget, search_name)
-    #         if result:
-    #             matches = matches + result
-    #     return matches
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'detailed':
-                e.accept()
-        else:
-            e.ignore()
 
     def clear_widget(self):
         """
