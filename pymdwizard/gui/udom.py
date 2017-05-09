@@ -59,7 +59,7 @@ class Udom(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_udom.Ui_udom_widget()  # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_udom.Ui_fgdc_attrdomv() # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
