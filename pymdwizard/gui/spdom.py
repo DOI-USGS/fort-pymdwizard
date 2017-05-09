@@ -77,7 +77,7 @@ class Spdom(WizardWidget):
         self.schema = 'bdp'
         self.root_widget = root_widget
 
-
+        self.after_load = False
 
     def build_ui(self):
         """
@@ -143,13 +143,18 @@ class Spdom(WizardWidget):
             QMessageBox.warning(self, "Problem bounding coordinates", msg)
             return
 
-        which = cur_name.replace('fgdc_', '').replace('bc', '')
-        jstr = """{} = {};
-         updateMap();
-         fitMap();
-        """.format(which, cur_value)
+        jstr = """east = {eastbc};
+        west = {westbc};
+        south = {southbc};
+        north = {northbc};
+        updateMap();
+        fitMap();
+        """.format(**{'eastbc': self.ui.fgdc_eastbc.text(),
+                    'westbc': self.ui.fgdc_westbc.text(),
+                    'northbc': self.ui.fgdc_northbc.text(),
+                    'southbc': self.ui.fgdc_southbc.text(),
+        })
         self.frame.evaluateJavaScript(jstr)
-
 
     @pyqtSlot(float, float)
     def on_ne_move(self, lat, lng):
@@ -186,6 +191,11 @@ class Spdom(WizardWidget):
         super(self.__class__, self).clear_widget()
         map_fname = utils.get_resource_path('leaflet/map.html')
         self.view.setUrl(QUrl.fromLocalFile(map_fname))
+
+    def showEvent(self, e):
+        if not self.after_load:
+           self.coord_updated()
+           self.after_load = True
 
     def _to_xml(self):
         spdom = xml_node('spdom')
@@ -229,5 +239,7 @@ class Spdom(WizardWidget):
             self.frame.evaluateJavaScript(jstr)
         except KeyError:
             pass
+
+
 if __name__ == "__main__":
     utils.launch_widget(Spdom)
