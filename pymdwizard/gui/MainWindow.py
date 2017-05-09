@@ -181,7 +181,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        if fname is None:
+        if fname is None or not fname:
             fname = self.get_xml_fname()
 
         if fname:
