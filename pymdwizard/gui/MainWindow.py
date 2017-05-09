@@ -173,7 +173,7 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             return ''
 
-    def open_file(self):
+    def open_file(self, fname=None):
         """
         Browse to a file and load it if it is acceptable
 
@@ -181,7 +181,8 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        fname = self.get_xml_fname()
+        if fname is None:
+            fname = self.get_xml_fname()
 
         if fname:
             self.load_file(fname)
@@ -718,7 +719,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.preview_dialog.exec_()
 
-def main():
+def launch_main(xml_fname=None, introspect_fname=None):
     app = QApplication(sys.argv)
 
     import time
@@ -744,8 +745,19 @@ def main():
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
     splash.finish(mdwiz)
+
+    if xml_fname is not None and os.path.exists(xml_fname):
+        mdwiz.open_file(xml_fname)
+
+    if introspect_fname is not None and os.path.exists(introspect_fname):
+        mdwiz.metadata_root.eainfo.detaileds[0].populate_from_fname(introspect_fname)
+
+        mdwiz.metadata_root.spatial_tab.spdom.ui.map_viewer.reload()
+        mdwiz.metadata_root.spatial_tab.populate_from_fname(introspect_fname)
+
+
     app.exec_()
 
 
 if __name__ == '__main__':
-    main()
+    launch_main()
