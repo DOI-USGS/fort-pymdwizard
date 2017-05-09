@@ -33,6 +33,8 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
+import pandas as pd
+
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
@@ -90,8 +92,41 @@ class Attributes(WizardWidget):  #
 
         self.attrs[0].supersize_me()
 
-    def clear_children(self):
+    def load_pickle(self, contents):
+        self.clear_children()
 
+        for col_label in contents.keys():
+
+            # col = df[col_label]
+            attr_i = attr.Attr(parent=self)
+            attr_i.ui.fgdc_attrlabl.setText(col_label)
+
+            if contents[col_label][b'type'] == 'String':
+                s = pd.Series(contents[col_label][b'contents'])
+                attr_i.set_series(s)
+                attr_i.guess_domain()
+            elif  contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
+                s = pd.Series(contents[col_label][b'contents'])
+                attr_i.set_series(s)
+                attr_i.guess_domain(force='range')
+            else:
+                attr_i.guess_domain(force='unrep')
+                unrep = contents[col_label][b'contents']
+
+                utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
+                utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
+                utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
+
+            self.attrs.append(attr_i)
+            attr_i.regularsize_me()
+            self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+
+        try:
+            self.attrs[0].supersize_me()
+        except IndexError:
+            pass
+
+    def clear_children(self):
         for attribute in self.attrs:
             attribute.deleteLater()
         self.attrs = []

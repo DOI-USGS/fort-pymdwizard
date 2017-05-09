@@ -20,6 +20,9 @@ stand-alone XML file.
 """
 import traceback
 import os, sys, subprocess, time, datetime
+import tempfile
+import pickle
+
 import arcpy
 from arcpy import env
 from arcpy.sa import *
@@ -29,6 +32,8 @@ import ExportFGDC_MD_Utility
 import MDTools
 import SpatialRefTools
 import winsound
+import introspector
+
 
 InputData = arcpy.GetParameterAsText(0)
 WorkingDir = arcpy.GetParameterAsText(1)
@@ -223,35 +228,12 @@ def ProcessRoutine(ArgVariables):
 
         #Update Entity/Attribute Section
         if InputIsXML == False:
-            arcpy.AddWarning("TOD:  something intelligent in old EAs section")
-            # EAtextfile = os.path.join(WorkingDir, "EAInfo.txt")
-            #
-            # if ESRIVersion == "10.0": EAtool = EAtool_V10
-            # elif ESRIVersion == "10.1": EAtool = EAtool_V101
-            # elif ESRIVersion == "10.2": EAtool = EAtool_V102
-            # elif ESRIVersion == "10.3": EAtool = EAtool_V103
-            # else: raise Exception("This version of ArcGIS (%s) is not supported." % ESRIVersion)
-            #
-            # Arg = '"%s" "%s" "%s"' % (EAtool, InputData, EAtextfile) #Start and end quotes are necessary to handle spaces in file names when passing to Command Prompt.
-            #
-            # arcpy.AddMessage("*************************")
-            # arcpy.AddMessage("\nPLEASE UPDATE THE ENTITY/ATTRIBUTE INFORMATION IN THE POP-UP WINDOW.")
-            # arcpy.AddMessage("(Allow a moment for the window to open-- this may take several minutes for larger data sets).\n")
-            # arcpy.AddMessage("*************************")
-            # try:
-            #     winsound.PlaySound(r"C:\Windows\Media\Cityscape\Windows Exclamation.wav", winsound.SND_FILENAME)
-            # except:
-            #     pass
-            # #os.popen(Arg)
-            # p = subprocess.Popen(Arg)
-            # p.wait()
-            #
-            #
-            # try:
-            #     EAInfo = MDTools.RetrieveEAInfo(EAtextfile)
-            #     MDTools.WriteEAInfo(FGDCXML, EAInfo)
-            # except:
-            #     arcpy.AddWarning("No content was saved in the Entity / Attribute tool. The metadata element was not updated.\n")
+            data_contents = introspector.introspect_dataset(InputData)
+            input_fname = os.path.split(InputData)[1]
+            contents_fname = os.path.join(WorkingDir, input_fname+".p")
+            pickle.dump(data_contents, open(contents_fname, "wb" ))
+        else:
+            contents_fname = ''
 
         #Rerun FGDC Translator tool to handle newly-added elements that are out of order in XML tree.
         MDTools.ReRunFGDCTranslator(FGDCXML)
@@ -269,6 +251,8 @@ def ProcessRoutine(ArgVariables):
         #Arg = '"' + MetadataEditor + '"' + " " + '"' + FGDCXML + '"' + " " + '"' + outXML + '"' + " " + '"' + Browser + '"' #Start and end quotes are necessary to handle spaces in file names and IE Path when passing to Command Prompt.
         #Arg = '"' + MetadataEditor + '"' + " " + '"' + FGDCXML + '"' + " " + '"' + outXML + '"' + " "
         Arg = '"%s" "%s" "%s"' % (python_exe, mdwiz_py_fname, FGDCXML)
+        if contents_fname:
+            Arg += ' "{}"'.format(contents_fname)
         arcpy.AddWarning(Arg)
         arcpy.AddMessage("*************************")
         arcpy.AddMessage("\nPLEASE UPDATE/REVIEW THE METADATA INFO IN THE POP-UP WINDOW.")

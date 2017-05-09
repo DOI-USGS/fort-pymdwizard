@@ -98,13 +98,14 @@ class Attr(WizardWidget):  #
     def set_series(self, series):
         self.series = series
 
-    def guess_domain(self):
+    def guess_domain(self, force=False):
 
         cbo = self.ui.comboBox
 
         if self.series is not None:
             uniques = self.series.unique()
-            if len(uniques) < 15:
+            if (not force and len(uniques) < 15) \
+                    or force=='enumerated':
                 self.enumerateds = []
                 enumerated = edom_list.EdomList()
                 enumerated.populate_from_list(uniques)
@@ -112,8 +113,9 @@ class Attr(WizardWidget):  #
                 self.domain = enumerated
                 cbo.setCurrentIndex(0)
 
-            elif self.series.dtype == np.float or \
-                            self.series.dtype == np.int:
+            elif (not force and (self.series.dtype == np.float or \
+                            self.series.dtype == np.int)) or \
+                    force=='range':
                 self.domain = rdom.Rdom()
                 self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
                 self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
@@ -129,11 +131,11 @@ class Attr(WizardWidget):  #
         previous_domain = self.ui.comboBox.itemText(self._previous_index)
         self._domain_content[previous_domain] = self.domain._to_xml()
 
-
         self._previous_index = index
         self.clear_domain()
 
         domain = self.ui.comboBox.currentText().lower()
+
         if 'enumerated' in domain:
             self.domain = edom_list.EdomList(parent=self)
             if self._domain_content['Enumerated (Categorical Data)'] is not None:
@@ -161,9 +163,12 @@ class Attr(WizardWidget):  #
                 except TypeError:
                     series_min = ''
                     series_max = ''
+            else:
+                series_min = ''
+                series_max = ''
 
-                self.domain.ui.fgdc_rdommin.setText(str(series_min))
-                self.domain.ui.fgdc_rdommax.setText(str(series_max))
+            self.domain.ui.fgdc_rdommin.setText(str(series_min))
+            self.domain.ui.fgdc_rdommax.setText(str(series_max))
         elif 'codeset' in domain:
             self.domain = codesetd.Codesetd(parent=self)
             if self._domain_content['Codeset (Published Categories)'] is not None:
@@ -177,7 +182,6 @@ class Attr(WizardWidget):  #
 
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
-
     def supersize_me(self, s=''):
         self.animation = QPropertyAnimation(self, b"minimumSize")
         self.animation.setDuration(400)
@@ -185,7 +189,6 @@ class Attr(WizardWidget):  #
         self.animation.start()
         self.ui.attrdomv_contents.show()
         self.ui.place_holder.hide()
-
 
     def regularsize_me(self):
         self.animation = QPropertyAnimation(self, b"minimumSize")

@@ -751,11 +751,7 @@ def launch_main(xml_fname=None, introspect_fname=None):
 
     if introspect_fname is not None and os.path.exists(introspect_fname):
         mdwiz.metadata_root.eainfo.detaileds[0].populate_from_fname(introspect_fname)
-
-        mdwiz.metadata_root.spatial_tab.spdom.ui.map_viewer.reload()
-        mdwiz.metadata_root.spatial_tab.populate_from_fname(introspect_fname)
-
-
+        mdwiz.metadata_root.eainfo.ui.fgdc_eainfo.setCurrentIndex(1)
     app.exec_()
 
 

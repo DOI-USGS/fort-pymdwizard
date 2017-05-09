@@ -31,6 +31,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import os
+import pickle
 from lxml import etree
 
 import pandas as pd
@@ -118,6 +119,7 @@ class Detailed(WizardWidget):  #
 
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
+
         elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
             sheets = data_io.get_sheet_names(fname)
 
@@ -131,6 +133,13 @@ class Detailed(WizardWidget):  #
 
                 df = data_io.read_excel(fname, sheet_name)
                 self.attributes.load_df(df)
+        elif ext.lower() == ".p":
+            p = pickle.load(open(fname, "rb"), encoding='bytes')
+
+            self.ui.fgdc_enttypl.setText('{}'.format(shortname[:-2]))
+            self.ui.fgdc_enttypd.setPlainText('Geospatial Dataset')
+
+            self.attributes.load_pickle(p)
         else:
             msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
