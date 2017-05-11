@@ -164,12 +164,6 @@ class Ui_metadata_root(object):
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.page_eainfo)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.label_4 = QtWidgets.QLabel(self.page_eainfo)
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.verticalLayout_7.addWidget(self.label_4)
         self.fgdc_metadata.addWidget(self.page_eainfo)
         self.page_distinfo = QtWidgets.QWidget()
         self.page_distinfo.setObjectName("page_distinfo")
@@ -189,7 +183,7 @@ class Ui_metadata_root(object):
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.retranslateUi(metadata_root)
-        self.fgdc_metadata.setCurrentIndex(0)
+        self.fgdc_metadata.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(metadata_root)
 
     def retranslateUi(self, metadata_root):
@@ -201,5 +195,4 @@ class Ui_metadata_root(object):
         self.eainfo_button.setText(_translate("metadata_root", "Entity and Attribute"))
         self.distinfo_button.setText(_translate("metadata_root", "Distribution"))
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
-        self.label_4.setText(_translate("metadata_root", "Entity and Att"))
 

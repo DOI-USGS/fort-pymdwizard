@@ -266,7 +266,7 @@ QToolButton:checked:Hover{
      <item>
       <widget class="QStackedWidget" name="fgdc_metadata">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page_idinfo">
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -294,20 +294,7 @@ QToolButton:checked:Hover{
         <layout class="QVBoxLayout" name="verticalLayout_6"/>
        </widget>
        <widget class="QWidget" name="page_eainfo">
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="font">
-            <font>
-             <pointsize>22</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Entity and Att</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="verticalLayout_7"/>
        </widget>
        <widget class="QWidget" name="page_distinfo">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
