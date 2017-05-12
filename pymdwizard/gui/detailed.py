@@ -93,7 +93,12 @@ class Detailed(WizardWidget):  #
                                             filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
-            self.populate_from_fname(fname[0])
+            try:
+                self.populate_from_fname(fname[0])
+            except BaseException as e:
+                import traceback
+                msg = "Could not extract data from file %s:\n%s." % (fname, traceback.format_exc())
+                QMessageBox.warning(self, "Data file error", msg)
 
     def populate_from_fname(self, fname):
         shortname = os.path.split(fname)[1]
