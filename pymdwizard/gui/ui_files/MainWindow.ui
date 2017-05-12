@@ -76,15 +76,6 @@
       <string>Recent Files</string>
      </property>
     </widget>
-    <widget class="QMenu" name="menuTemplate">
-     <property name="title">
-      <string>Template</string>
-     </property>
-     <addaction name="actionCurrentTemplate"/>
-     <addaction name="separator"/>
-     <addaction name="actionBrowseTemplate"/>
-     <addaction name="actionRestoreBuiltIn"/>
-    </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
@@ -92,8 +83,6 @@
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
     <addaction name="menuRecent_Files"/>
-    <addaction name="separator"/>
-    <addaction name="menuTemplate"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -118,9 +107,29 @@
     </property>
     <addaction name="actionPreview"/>
    </widget>
+   <widget class="QMenu" name="menuAdvanced">
+    <property name="title">
+     <string>Advanced</string>
+    </property>
+    <widget class="QMenu" name="menuTemplate_2">
+     <property name="title">
+      <string>Template</string>
+     </property>
+     <addaction name="actionCurrentTemplate"/>
+     <addaction name="separator"/>
+     <addaction name="actionBrowseTemplate"/>
+     <addaction name="actionRestoreBuiltIn"/>
+    </widget>
+    <addaction name="menuTemplate_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionLaunch_Jupyter"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpdate"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
    <addaction name="menuPreview"/>
+   <addaction name="menuAdvanced"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -240,6 +249,22 @@
   <action name="actionCurrentTemplate">
    <property name="text">
     <string>Current: Built-in</string>
+   </property>
+  </action>
+  <action name="actionLaunch_Jupyter">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Launch Jupyter</string>
+   </property>
+  </action>
+  <action name="actionUpdate">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Update</string>
    </property>
   </action>
  </widget>

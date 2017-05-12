@@ -137,6 +137,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionNew.triggered.connect(self.new_record)
         self.ui.actionBrowseTemplate.triggered.connect(self.set_template)
         self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
+        self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
 
     def open_recent_file(self):
         """
@@ -718,6 +719,24 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.setLayout(self.preview.layout())
 
         self.preview_dialog.exec_()
+
+    def launch_jupyter(self):
+        """
+        Launches a jupyter notebook server in our examples directory
+
+        Returns
+        -------
+        None
+        """
+        from subprocess import Popen
+        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        examples_dir = os.path.join(install_dir, 'examples')
+        root_dir = os.path.dirname(install_dir)
+        jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
+
+        if os.path.exists(jupyterexe) and os.path.exists(root_dir):
+            p = Popen([jupyterexe, 'notebook'], cwd=examples_dir)
+
 
 def launch_main(xml_fname=None, introspect_fname=None):
     app = QApplication(sys.argv)
