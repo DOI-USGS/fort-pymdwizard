@@ -183,7 +183,7 @@ class Ui_metadata_root(object):
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.retranslateUi(metadata_root)
-        self.fgdc_metadata.setCurrentIndex(1)
+        self.fgdc_metadata.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(metadata_root)
 
     def retranslateUi(self, metadata_root):

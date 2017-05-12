@@ -266,7 +266,7 @@ QToolButton:checked:Hover{
      <item>
       <widget class="QStackedWidget" name="fgdc_metadata">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page_idinfo">
         <layout class="QVBoxLayout" name="verticalLayout_4">
