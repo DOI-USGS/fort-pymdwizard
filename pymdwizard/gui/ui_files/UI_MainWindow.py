@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         self.actionLaunch_Jupyter.setEnabled(True)
         self.actionLaunch_Jupyter.setObjectName("actionLaunch_Jupyter")
         self.actionUpdate = QtWidgets.QAction(MainWindow)
-        self.actionUpdate.setEnabled(False)
+        self.actionUpdate.setEnabled(True)
         self.actionUpdate.setObjectName("actionUpdate")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)

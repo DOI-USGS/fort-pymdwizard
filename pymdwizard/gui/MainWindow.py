@@ -138,6 +138,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionBrowseTemplate.triggered.connect(self.set_template)
         self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
+        self.ui.actionUpdate.triggered.connect(self.update_from_github)
 
     def open_recent_file(self):
         """
@@ -736,6 +737,24 @@ class PyMdWizardMainForm(QMainWindow):
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
             p = Popen([jupyterexe, 'notebook'], cwd=examples_dir)
+
+    def update_from_github(self):
+        from subprocess import check_output
+
+        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        root_dir = os.path.dirname(install_dir)
+        update_bat = os.path.join(root_dir, 'update_wizard.bat')
+        if os.path.exists(update_bat) and os.path.exists(root_dir):
+            p = check_output([update_bat], cwd=root_dir)
+            # stdout, stderr = p.communicate()
+            if p.splitlines()[-1] == b'Already up-to-date':
+                msg = 'Application already up to date.'
+            else:
+                msg = 'Application updated.'
+        else:
+            msg = 'Could not find the batch file to update the application'
+
+
 
 
 def launch_main(xml_fname=None, introspect_fname=None):
