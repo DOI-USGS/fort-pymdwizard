@@ -121,8 +121,12 @@ class Spdom(WizardWidget):
 
     def coord_updated(self):
 
-        cur_name = self.sender().objectName()
-        cur_value = self.sender().text()
+        try:
+            cur_name = self.sender().objectName()
+            cur_value = self.sender().text()
+        except AttributeError:
+            cur_name = 'na'
+            cur_value = 'na'
 
         try:
             cur_value = float(cur_value)
@@ -195,6 +199,8 @@ class Spdom(WizardWidget):
     def showEvent(self, e):
         if not self.after_load:
            self.coord_updated()
+           jstr = "sw_marker.openPopup();"
+           self.frame.evaluateJavaScript(jstr)
            self.after_load = True
 
     def _to_xml(self):

@@ -24,19 +24,53 @@
     var south = -90.0;
 
 
-    var map = L.map('map').setView([0, 0], 1);
 
-    var tile_layer = L.tileLayer(
+
+    var OpenStreetMap_Mapnik = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
-                maxZoom: 18,
-                minZoom: 1,
+                maxZoom: 20,
+                minZoom: 0,
                 continuousWorld: true,
                 noWrap: true,
                 attribution: 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
                 detectRetina: false
             }
-    ).addTo(map);
+    );
+
+    var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        continuousWorld: true,
+        noWrap: true,
+        minZoom: 0,
+        maxZoom: 20,
+    });
+
+    var Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.{ext}', {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: 'abcd',
+        minZoom: 0,
+        maxZoom: 20,
+        ext: 'png'
+    });
+
+    var map = L.map('map', {
+        layers: [OpenStreetMap_Mapnik]
+    });
+
+
+
+    var baseMaps = {
+        "OpenStreetMap": OpenStreetMap_Mapnik,
+        "Imagery": Esri_WorldImagery,
+    };
+
+    var overlayMaps = {
+        "Labels": Stamen_TonerLabels
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+
 
 
     var ne_marker = new L.marker([north, east],{
@@ -57,7 +91,8 @@
     var sw_marker = new L.marker([south, west],{
         draggable: true
     }).addTo(map);
-    sw_marker.bindPopup("move corner markers to resize").openPopup();
+    sw_marker.bindPopup("move corner markers to resize");
+
 
     var southWest = new L.latLng(south, west);
     var northEast = new L.latLng(north, east);
@@ -141,6 +176,7 @@
         sw_marker.on('move', onSWMove);
     }
 
+    sw_marker.openPopup();
 </script>
 
 
