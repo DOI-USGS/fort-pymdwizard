@@ -53,7 +53,7 @@ from PyQt5.QtWidgets import QLineEdit, QTextEdit, QTextBrowser, QPlainTextEdit
 from PyQt5.QtWidgets import QMainWindow, QApplication, QComboBox
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
+from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap, QIcon
 
 from pymdwizard.core import xml_utils
 
@@ -231,6 +231,9 @@ def get_resource_path(fname):
     """
     return pkg_resources.resource_filename('pymdwizard',
                                            'resources/{}'.format(fname))
+def set_window_icon(widget):
+    icon = QIcon(get_resource_path('icons/Ducky.ico'))
+    widget.setWindowIcon(icon)
 
 class PandasModel(QAbstractTableModel):
     """

@@ -36,7 +36,7 @@ class ItisSearch(QWidget):
 
         self.table_include = table
         self.selected_items_df = selected_items_df
-
+        utils.set_window_icon(self)
 
     def build_ui(self):
         """

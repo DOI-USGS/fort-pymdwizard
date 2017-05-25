@@ -97,8 +97,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.icon = QIcon(utils.get_resource_path('icons/Ducky.ico'))
-        self.setWindowIcon(self.icon)
+        utils.set_window_icon(self)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)

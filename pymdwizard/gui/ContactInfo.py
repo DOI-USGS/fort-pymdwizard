@@ -83,7 +83,7 @@ class ContactInfo(WizardWidget):
         self.usgs_contact_ui.setupUi(self.usgs_contact)
         self.usgs_contact_ui.btn_OK.clicked.connect(self.add_contact)
         self.usgs_contact_ui.btn_cancel.clicked.connect(self.cancel)
-
+        utils.set_window_icon(self.usgs_contact)
         self.usgs_contact.show()
 
     def add_contact(self):

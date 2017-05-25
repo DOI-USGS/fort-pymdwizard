@@ -17,7 +17,7 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
 from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont
+from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont, QIcon
 
 from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
@@ -40,6 +40,8 @@ class ThesaurusSearch(QDialog):
         self.add_term_function = add_term_function
 
         self.place = place
+
+        utils.set_window_icon(self)
 
     def load_iso(self):
         self.ui.label_search_term.hide()
