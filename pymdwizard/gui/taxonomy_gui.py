@@ -1,27 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-import sys
-import datetime
-
-from lxml import etree
 import pandas as pd
 
 
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView, QTextEdit
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
-
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtCore import Qt
 
 from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
 
-from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_ITISSearch
 
 
@@ -53,6 +41,7 @@ class ItisMainForm(QWidget):
         self.ui = UI_ITISSearch.Ui_ItisSearchWidget()
         self.ui.setupUi(self)
         self.ui.splitter.setSizes([300, 100])
+        utils.set_window_icon(self)
 
     def connect_events(self):
         """
@@ -84,30 +73,34 @@ class ItisMainForm(QWidget):
         QApplication.restoreOverrideCursor()
 
     def add_tsn(self, index):
-        indexes = self.ui.table_results.selectionModel().selectedRows()
-        selected_indices = [int(index.row()) for index in list(indexes)]
-        df = self.ui.table_results.model().dataframe()
-        indexes = df.index[selected_indices]
+        try:
+            indexes = self.ui.table_results.selectionModel().selectedRows()
+            selected_indices = [int(index.row()) for index in list(indexes)]
+            df = self.ui.table_results.model().dataframe()
+            indexes = df.index[selected_indices]
 
-        if df.shape[0] == 1:
-            index = 0
-        elif selected_indices:
-            index = selected_indices[0]
-        else:
-            return
+            if df.shape[0] == 1:
+                index = 0
+            elif selected_indices:
+                index = selected_indices[0]
+            else:
+                return
 
-        if 'combinedName' in df.columns:
-            item_name = df.iloc[index]['combinedName']
-        else:
-            item_name = str(df.iloc[index]['commonName'])
+            if 'combinedName' in df.columns:
+                item_name = df.iloc[index]['combinedName']
+            else:
+                item_name = str(df.iloc[index]['commonName'])
 
-        tsn = df.iloc[index]['tsn']
-        i = self.selected_items_df.index.max()+1
-        if pd.isnull(i):
-            i = 0
-        self.selected_items_df.loc[i] = [str(item_name), tsn]
-        self.selected_model = utils.PandasModel(self.selected_items_df)
-        self.ui.table_include.setModel(self.selected_model)
+            tsn = df.iloc[index]['tsn']
+            i = self.selected_items_df.index.max()+1
+            if pd.isnull(i):
+                i = 0
+            self.selected_items_df.loc[i] = [str(item_name), tsn]
+            self.selected_model = utils.PandasModel(self.selected_items_df)
+            self.ui.table_include.setModel(self.selected_model)
+        except AttributeError:
+            pass
+
 
     def remove_selected(self, index):
         indexes = self.ui.table_include.selectionModel().selectedRows()
@@ -132,6 +125,10 @@ class ItisMainForm(QWidget):
         fgdc_taxonomy = self._to_xml()
         self.fgdc_function(fgdc_taxonomy)
         QApplication.restoreOverrideCursor()
+
+        msg = "A taxonomy section has been created and added below"
+        QMessageBox.information(self, "Taxonomy created", msg)
+
         self.close()
 
 

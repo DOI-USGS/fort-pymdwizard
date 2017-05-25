@@ -5,7 +5,7 @@ import requests
 
 
 from PyQt5.QtWidgets import QMessageBox, QDialog
-from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
 
 from pymdwizard.core import utils
 
