@@ -772,11 +772,26 @@ class PyMdWizardMainForm(QMainWindow):
         jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
+            self.check_kernel_path()
             p = Popen([jupyterexe, 'notebook'], cwd=last_jupyter_dname)
 
             msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
 
             QMessageBox.information(self, "Launching Jupyter", msg)
+
+    def check_kernel_path(self):
+        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        root_dir = os.path.dirname(install_dir)
+        kernal_fname = os.path.join(root_dir, 'Python35_64', 'share', 'jupyter', 'kernels', 'python3', 'kernel.json')
+        import json
+        with open(kernal_fname, 'r') as data_file:
+            data = json.load(data_file)
+            if not os.path.exists(data['argv'][0]):
+                python_exe = os.path.join(root_dir, 'Python35_64', 'python.exe')
+                data['argv'][0] = python_exe
+                with open(kernal_fname, 'w') as f:
+                    json.dump(data, f, indent=4)
+        data
 
     def update_from_github(self):
         from subprocess import check_output
