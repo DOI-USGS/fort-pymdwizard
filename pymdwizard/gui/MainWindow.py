@@ -285,6 +285,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         fname = QFileDialog.getSaveFileName(self, "Save As", dname, \
                                             filter="XML Files (*.xml)")
+
         return fname[0]
 
     def save_file(self):
@@ -632,6 +633,12 @@ class PyMdWizardMainForm(QMainWindow):
                                    'fgdc_codesetn', 'fgdc_codesets']:
             self.highlight_attr(widget)
 
+        if widget.objectName() in ['fgdc_themekey', 'fgdc_themekt',
+                                   'fgdc_placekey', 'fgdc_placekt',
+                                   'fgdc_procdesc', 'fgdc_srcused',
+                                   'fgdc_srcprod']:
+            self.highlight_tab(widget)
+
 
         if superhot:
             color = "rgb(223,1,74)"
@@ -696,6 +703,24 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.error_widgets.append(widget_parent)
 
+    def highlight_tab(self, widget):
+        pass
+    #         widget_parent = widget.parent()
+    #
+    #     while not widget_parent.
+    #         widget_parent = widget_parent.parent()
+    #
+    #     error_msg = "'Validation error in hidden contents, click to show'"
+    #     widget_parent.setToolTip(error_msg)
+    #     widget_parent.setStyleSheet(
+    #         """
+    # QTab#{widgetname}{{
+    # border: 2px solid red;
+    # }}
+    #     """.format(widgetname=widget_parent.objectName()))
+    #
+    #     self.error_widgets.append(widget_parent
+
     def preview(self):
         """
         Shows a preview window with the xml content rendered using stylesheet
@@ -730,13 +755,28 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
         from subprocess import Popen
+
+        settings = QSettings('USGS', 'pymdwizard')
+        last_jupyter_dname = settings.value('last_jupyter_dname')
+
         install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        examples_dir = os.path.join(install_dir, 'examples')
+        if last_jupyter_dname is None:
+            last_jupyter_dname = os.path.join(install_dir, 'examples')
+
+        dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from", last_jupyter_dname)
+
+        if dname:
+            settings.setValue('last_jupyter_dname', dname)
+
         root_dir = os.path.dirname(install_dir)
         jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
-            p = Popen([jupyterexe, 'notebook'], cwd=examples_dir)
+            p = Popen([jupyterexe, 'notebook'], cwd=last_jupyter_dname)
+
+            msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
+
+            QMessageBox.information(self, "Launching Jupyter", msg)
 
     def update_from_github(self):
         from subprocess import check_output
