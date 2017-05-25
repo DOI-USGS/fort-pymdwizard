@@ -115,7 +115,7 @@ class PyMdWizardMainForm(QMainWindow):
         settings = QSettings('USGS', 'pymdwizard')
         template_fname = settings.value('template_fname')
 
-        if template_fname is not  None:
+        if template_fname is not None:
             just_fname = os.path.split(template_fname)[-1]
             self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
 
@@ -747,14 +747,14 @@ class PyMdWizardMainForm(QMainWindow):
         if os.path.exists(update_bat) and os.path.exists(root_dir):
             p = check_output([update_bat], cwd=root_dir)
             # stdout, stderr = p.communicate()
-            if p.splitlines()[-1] == b'Already up-to-date':
+            if p.splitlines()[-1] == b'Already up-to-date.':
                 msg = 'Application already up to date.'
             else:
                 msg = 'Application updated.'
         else:
             msg = 'Could not find the batch file to update the application'
 
-
+        QMessageBox.information(self, "Update results", msg)
 
 
 def launch_main(xml_fname=None, introspect_fname=None):
