@@ -78,7 +78,7 @@ class ContactInfo(WizardWidget):
         self.ui.rbtn_perp.toggled.connect(self.switch_primary)
 
     def find_usgs_contact(self):
-        self.usgs_contact = QDialog(self)
+        self.usgs_contact = QDialog(parent=self)
         self.usgs_contact_ui = UI_USGSContactImporter.Ui_ImportUsgsUser()
         self.usgs_contact_ui.setupUi(self.usgs_contact)
         self.usgs_contact_ui.btn_OK.clicked.connect(self.add_contact)
@@ -188,6 +188,9 @@ class ContactInfo(WizardWidget):
         return cntinfo
 
     def _from_xml(self, contact_information):
+
+        self.clear_widget()
+
         contact_dict = xml_utils.node_to_dict(contact_information)
         utils.populate_widget(self, contact_dict)
 
