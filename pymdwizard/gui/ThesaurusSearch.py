@@ -1,25 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
-import datetime
-
-from lxml import etree
-import pandas as pd
 import requests
 
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QDialog
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView, QTextEdit
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
+from PyQt5.QtWidgets import QMessageBox, QDialog
+from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont, QIcon
-
-from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
 
 from pymdwizard.gui.ui_files import UI_ThesaurusSearch
@@ -28,7 +15,6 @@ from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 class ThesaurusSearch(QDialog):
 
     def __init__(self, add_term_function=None, parent=None, place=False):
-        # QtGui.QMainWindow.__init__(self, parent)
         super(self.__class__, self).__init__(parent=parent)
 
         self.build_ui()
@@ -207,13 +193,10 @@ class ThesaurusSearch(QDialog):
             return False
 
         if not results:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setText("'{}' Not Found".format(self.ui.search_term.text()))
-            msg.setInformativeText("The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search")
-            msg.setWindowTitle("Keyword Not Found")
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            msg = "The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search"
+            msg += "\n\n'{}' Not Found".format(self.ui.search_term.text())
+            QMessageBox.information(self, "Search Term Not Found", msg, QMessageBox.Ok)
+            return False
 
         branch_lookup = {}
         unique_children = []
