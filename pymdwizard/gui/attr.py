@@ -43,6 +43,8 @@ from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWi
 from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QPropertyAnimation
 
+import sip
+
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
@@ -103,6 +105,9 @@ class Attr(WizardWidget):  #
         cbo = self.ui.comboBox
 
         if self.series is not None:
+            #set the current index to a non-choice below so that the
+            #setCurrentIndex fires our change index
+            cbo.setCurrentIndex(2)
             uniques = self.series.unique()
             if (not force and len(uniques) < 15) \
                     or force=='enumerated':
@@ -124,7 +129,9 @@ class Attr(WizardWidget):  #
                 self.domain = udom.Udom()
                 cbo.setCurrentIndex(3)
 
+
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
+
 
     def change_domain(self, index):
 
@@ -163,12 +170,8 @@ class Attr(WizardWidget):  #
                 except TypeError:
                     series_min = ''
                     series_max = ''
-            else:
-                series_min = ''
-                series_max = ''
-
-            self.domain.ui.fgdc_rdommin.setText(str(series_min))
-            self.domain.ui.fgdc_rdommax.setText(str(series_max))
+                self.domain.ui.fgdc_rdommin.setText(str(series_min))
+                self.domain.ui.fgdc_rdommax.setText(str(series_max))
         elif 'codeset' in domain:
             self.domain = codesetd.Codesetd(parent=self)
             if self._domain_content['Codeset (Published Categories)'] is not None:
@@ -216,7 +219,8 @@ class Attr(WizardWidget):  #
         # Here we just check if its one of the layout widget
         if event.type() == event.MouseButtonPress or \
                 event.type() == 207:
-            self.parent_ui.minimize_children()
+            if self.parent_ui is not None:
+                self.parent_ui.minimize_children()
             self.supersize_me()
 
         return super(Attr, self).eventFilter(obj, event)

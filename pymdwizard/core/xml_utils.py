@@ -113,7 +113,7 @@ def node_to_dict(node, add_fgdc=True):
         tag = _parse_tag(node.tag)
         if add_fgdc:
             tag = 'fgdc_' + tag
-        node_dict[tag] =  node.text
+        node_dict[tag] = node.text
     else:
         for child in node.getchildren():
             tag = _parse_tag(child.tag)
