@@ -112,13 +112,13 @@ class Taxonomy(WizardWidget):
                                                  fgdc_function=self._from_xml)
         fg = self.frameGeometry()
         self.tax_gui.move(fg.topRight() - QPoint(150, -25))
+        self.tax_gui.show()
 
-
-        self.taxgui_dialog = QDialog(self)
-        self.taxgui_dialog.setWindowTitle('Search Integrated Taxonomic Information System (ITIS)')
-        self.taxgui_dialog.setLayout(self.tax_gui.layout())
-
-        self.taxgui_dialog.exec_()
+        # self.taxgui_dialog = QDialog(self)
+        # self.taxgui_dialog.setWindowTitle('Search Integrated Taxonomic Information System (ITIS)')
+        # self.taxgui_dialog.setLayout(self.tax_gui.layout())
+        #
+        # self.taxgui_dialog.exec_()
 
     def remove_selected(self):
         indexes = self.ui.table_include.selectionModel().selectedRows()
