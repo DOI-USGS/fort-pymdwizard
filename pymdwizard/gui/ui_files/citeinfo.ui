@@ -1136,7 +1136,7 @@
               <string notr="true">font: italic;</string>
              </property>
              <property name="text">
-              <string>If this record is part of a publication or larger projcet, you may optionally cite it here.</string>
+              <string>If this record is part of a publication or larger project, you may optionally cite it here.</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

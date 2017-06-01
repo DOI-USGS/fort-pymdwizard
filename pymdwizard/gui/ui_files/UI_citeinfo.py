@@ -532,5 +532,5 @@ class Ui_parent_form(object):
         self.label_65.setText(_translate("parent_form", "Is this data set associated with a larger work?"))
         self.radio_lworkyes.setText(_translate("parent_form", "Yes"))
         self.radio_lworkno.setText(_translate("parent_form", "No"))
-        self.label_66.setText(_translate("parent_form", "If this record is part of a publication or larger projcet, you may optionally cite it here."))
+        self.label_66.setText(_translate("parent_form", "If this record is part of a publication or larger project, you may optionally cite it here."))
 
