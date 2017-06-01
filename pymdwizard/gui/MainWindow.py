@@ -49,18 +49,17 @@ from lxml import etree
 
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBox, QAction
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QFileDialog, QDialog
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QFile, QTextStream, QFileInfo
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine, QSettings, QFileSystemWatcher
-from PyQt5.QtGui import QPainter, QFont, QFontMetrics, QPalette, QBrush, QColor, QPixmap, QDrag, QIcon
+from PyQt5.QtWidgets import QWidget, QPushButton
+from PyQt5.QtWidgets import QFileDialog, QDialog
+from PyQt5.QtCore import QFile, QFileInfo
+from PyQt5.QtCore import Qt, QSettings, QFileSystemWatcher
+from PyQt5.QtGui import QPainter, QPixmap
 
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils, utils, fgdc_utils
 from pymdwizard.gui.Preview import Preview
-from pymdwizard.core import spatial_utils
 
 import sip
 
@@ -755,42 +754,35 @@ class PyMdWizardMainForm(QMainWindow):
         """
         from subprocess import Popen
 
-        settings = QSettings('USGS', 'pymdwizard')
-        last_jupyter_dname = settings.value('last_jupyter_dname')
+        jupyter_dialog = JupyterLocationDialog()
+        utils.set_window_icon(jupyter_dialog.msgBox)
+        jupyter_dialog.msgBox.setWindowTitle("Where do you want to launch Jupyter?")
+        ret = jupyter_dialog.msgBox.exec_()
 
         install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        if last_jupyter_dname is None:
-            last_jupyter_dname = os.path.join(install_dir, 'examples')
+        if ret == 0:
+            jupyter_dname = os.path.join(install_dir, 'examples')
+        elif ret == 1:
+            settings = QSettings('USGS', 'pymdwizard')
+            last_jupyter_dname = settings.value('last_jupyter_dname')
 
-        dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from", last_jupyter_dname)
-
-        if dname:
-            settings.setValue('last_jupyter_dname', dname)
+            if last_jupyter_dname is None:
+                last_jupyter_dname = os.path.join(install_dir, 'examples')
+            jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from", last_jupyter_dname)
+            if jupyter_dname:
+                settings.setValue('last_jupyter_dname', jupyter_dname)
+        else:
+            return
 
         root_dir = os.path.dirname(install_dir)
         jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
-            self.check_kernel_path()
-            p = Popen([jupyterexe, 'notebook'], cwd=last_jupyter_dname)
+            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname)
 
             msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
 
             QMessageBox.information(self, "Launching Jupyter", msg)
-
-    def check_kernel_path(self):
-        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        root_dir = os.path.dirname(install_dir)
-        kernal_fname = os.path.join(root_dir, 'Python35_64', 'share', 'jupyter', 'kernels', 'python3', 'kernel.json')
-        import json
-        with open(kernal_fname, 'r') as data_file:
-            data = json.load(data_file)
-            if not os.path.exists(data['argv'][0]):
-                python_exe = os.path.join(root_dir, 'Python35_64', 'python.exe')
-                data['argv'][0] = python_exe
-                with open(kernal_fname, 'w') as f:
-                    json.dump(data, f, indent=4)
-        data
 
     def update_from_github(self):
         from subprocess import check_output
@@ -812,6 +804,16 @@ class PyMdWizardMainForm(QMainWindow):
             msg = 'Could not find the batch file to update the application'
 
         QMessageBox.information(self, "Update results", msg)
+
+class JupyterLocationDialog(QDialog):
+    def __init__(self, parent=None):
+        super(JupyterLocationDialog, self).__init__(parent)
+
+        self.msgBox = QMessageBox()
+        self.msgBox.setText('Choose option below:')
+        self.msgBox.addButton(QPushButton('Default (MetadataWiazrd examples folder)'), QMessageBox.YesRole)
+        self.msgBox.addButton(QPushButton('Browse to different folder'), QMessageBox.NoRole)
+        self.msgBox.addButton(QPushButton('Cancel'), QMessageBox.RejectRole)
 
 
 def launch_main(xml_fname=None, introspect_fname=None):
