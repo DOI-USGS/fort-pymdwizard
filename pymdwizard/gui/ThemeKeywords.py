@@ -103,14 +103,20 @@ class ThemeKeywords(WizardWidget):
         -------
         None
         """
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, parent=self)
+        #
+        # self.thesaurus_search.setWindowTitle('Theme Keyword Thesaurus Search')
+        #
+        # fg = self.frameGeometry()
+        # self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
+        #
+        # self.thesaurus_search.show()
 
-        self.thesaurus_search.setWindowTitle('Theme Keyword Thesaurus Search')
+        self.search_dialog = QDialog(self)
+        self.search_dialog.setWindowTitle('Theme Keyword Thesaurus Search')
+        self.search_dialog.setLayout(self.thesaurus_search.layout())
 
-        fg = self.frameGeometry()
-        self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
-
-        self.thesaurus_search.show()
+        self.search_dialog.exec_()
 
     def browse_iso(self):
         self.iso_browse = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)

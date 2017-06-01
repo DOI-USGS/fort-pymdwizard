@@ -76,10 +76,10 @@ class Keywords(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-        self.theme_list = ThemeList()
+        self.theme_list = ThemeList(parent=self)
         self.ui.fgdc_keywords.layout().addWidget(self.theme_list)
 
-        self.place_list = PlaceList()
+        self.place_list = PlaceList(parent=self)
         self.ui.fgdc_keywords.layout().addWidget(self.place_list)
 
         spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)

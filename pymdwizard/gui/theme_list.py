@@ -100,22 +100,6 @@ class ThemeList(WizardWidget): #
         self.ui.btn_remove_selected.clicked.connect(self.remove_selected)
         self.ui.btn_add_iso.clicked.connect(self.add_iso)
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
-        # self.ui.theme_tabs.currentChanged.connect(self.switch_tab)
-
-    # def switch_tab(self):
-    #     current_index = self.ui.theme_tabs.currentIndex()
-    #     for i in range(len(self.thesauri), 0, -1):
-    #         tab = self.ui.theme_tabs.widget(i)
-    #         tab.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-    #
-    #     cur_tab = self.ui.theme_tabs.widget(current_index)
-    #     cur_tab.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-            # if current_index == 0:
-            #     self.ui.theme_tabs.
-            #     self.ui.iso_tab.hide()
-            # else:
-            #     self.ui.theme_tabs.removeTab(current_index)
-            #     del self.thesauri[current_index-1]
 
     def add_another(self, click=False, tab_label='', locked=False):
 
@@ -181,9 +165,7 @@ class ThemeList(WizardWidget): #
     def search_controlled(self):
 
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, parent=self)
-
         self.thesaurus_search.setWindowTitle('Search USGS Controlled Vocabularies')
-
         self.thesaurus_search.show()
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
