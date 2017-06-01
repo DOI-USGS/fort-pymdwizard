@@ -250,9 +250,11 @@ class Citeinfo(WizardWidget): #
                 return
 
             self.fgdc_origin.clear_widgets()
-            if citeinfo.findall("origin"):
+            originators = citeinfo.findall("origin")
+            if originators :
+                self.fgdc_origin.clear_widgets(add_another=False)
                 for origin in citeinfo.findall('origin'):
-                    origin_widget = self.fgdc_origin.widgets[0]
+                    origin_widget = self.fgdc_origin.add_another()
                     origin_widget.added_line.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
@@ -286,8 +288,16 @@ class Citeinfo(WizardWidget): #
                 self.ui.radioButton_8.setChecked(True)
 
             if citeinfo.xpath('lworkcit'):
-                self.ui.radio_lworkyes.setChecked(True)
-                self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                try:
+                    self.ui.radio_lworkyes.setChecked(True)
+                    self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                except AttributeError:
+                    msg = 'you pasted a citation element into the larger work citation area'
+                    msg += '\n that contained a larger work citation'
+                    msg += '\n Multiple nested larger work citations are not currently supported in the tool'
+                    msg += '\n\n the larger work citation being pasted will be ignored'
+                    QMessageBox.warning(self, "Dropped Content Warning", msg)
+
             else:
                 self.ui.radio_lworkno.setChecked(True)
 
