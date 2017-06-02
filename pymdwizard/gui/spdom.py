@@ -41,6 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 
 import sys
 import tempfile
+from copy import deepcopy
 
 from lxml import etree
 
@@ -216,13 +217,13 @@ class Spdom(WizardWidget):
         southbc = xml_node('southbc', text=self.ui.fgdc_southbc.text(), parent_node=bounding)
 
         if self.original_xml is not None:
-            boundalt = self.original_xml.xpath('bounding/boundalt')
-            if boundalt:
-                bounding.append(boundalt[0])
+            boundalt = xml_utils.search_xpath(self.original_xml, 'bounding/boundalt')
+            if boundalt is not None:
+                spdom.append(deepcopy(boundalt))
 
             dsgpoly_list = self.original_xml.xpath('dsgpoly')
             for dsgpoly in dsgpoly_list:
-                spdom.append(dsgpoly)
+                spdom.append(deepcopy(dsgpoly))
 
         return spdom
 
