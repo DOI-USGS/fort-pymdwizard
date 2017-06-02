@@ -114,7 +114,7 @@ class ContactInfo(WizardWidget):
             msg = QMessageBox(self)
             utils.set_window_icon(msg)
             msg.setIcon(QMessageBox.Information)
-            msg.setText("Issue encountered while searching contact inforomation.")
+            msg.setText("Issue encountered while searching contact information.")
             msg.setInformativeText(msg_text)
             msg.setWindowTitle("Problem encountered")
             msg.setStandardButtons(QMessageBox.Ok)
