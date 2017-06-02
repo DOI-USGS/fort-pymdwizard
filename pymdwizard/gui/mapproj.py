@@ -104,7 +104,7 @@ class MapProj(WizardWidget):
             with open(annotation_lookup_fname) as data_file:
                 annotation_lookup = json.loads(data_file.read())
 
-        annotation_lookup['stdparl_2'] = {'long_name':'Standard Parallel',
+        annotation_lookup['stdparll_2'] = {'long_name':'Standard Parallel',
                                       'annotation':annotation_lookup['stdparll']['annotation']}
 
         self.clear_widget()
@@ -127,14 +127,15 @@ class MapProj(WizardWidget):
             layout.addRow(label, lineedit)
 
     def _to_xml(self):
-
         if self.shortname:
             proj_root = xml_utils.xml_node(self.shortname)
 
             for param in self.projection['elements']:
                 widget = self.findChild(QLineEdit, "fgdc_"+param)
-                xml_utils.xml_node(param, text=widget.text(), parent_node=proj_root)
-
+                if widget is not None:
+                    xml_utils.xml_node(param, text=widget.text(), parent_node=proj_root)
+                else:
+                    xml_utils.xml_node(param, text='', parent_node=proj_root)
             return proj_root
         else:
             return None
