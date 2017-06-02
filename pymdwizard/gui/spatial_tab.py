@@ -64,6 +64,7 @@ from pymdwizard.gui import spdom
 class SpatialTab(WizardWidget):
 
     drag_label = "Spatial org and Spatial Ref <...>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_spatial_tab.Ui_spatial_tab
 
@@ -89,6 +90,7 @@ class SpatialTab(WizardWidget):
         self.ui.two_column_right.layout().insertWidget(0, self.spdoinfo)
 
         self.ui.btn_browse.clicked.connect(self.browse)
+        self.clear_widget()
 
     def browse(self):
         settings = QSettings('USGS', 'pymdwizard')

@@ -71,7 +71,7 @@ color: rgb(50, 50, 50);
        <number>3</number>
       </property>
       <item>
-       <widget class="QWidget" name="fgdc_keywords" native="true">
+       <widget class="QWidget" name="keywords" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="spacing">
           <number>2</number>

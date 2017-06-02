@@ -140,12 +140,12 @@ class Ui_fgdc_dataqual(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.two_column_right = QtWidgets.QWidget(self.two_column)
-        self.two_column_right.setObjectName("two_column_right")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.two_column_right)
+        self.fgdc_lineage = QtWidgets.QWidget(self.two_column)
+        self.fgdc_lineage.setObjectName("fgdc_lineage")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.fgdc_lineage)
         self.verticalLayout_4.setContentsMargins(3, 3, 0, 3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.verticalLayout_6.addWidget(self.two_column_right)
+        self.verticalLayout_6.addWidget(self.fgdc_lineage)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_6.addItem(spacerItem2)
         self.horizontalLayout_2.addLayout(self.verticalLayout_6)
@@ -174,14 +174,4 @@ class Ui_fgdc_dataqual(object):
         self.label_4.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("fgdc_dataqual", "Required"))
         self.label_3.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    fgdc_dataqual = QtWidgets.QWidget()
-    ui = Ui_fgdc_dataqual()
-    ui.setupUi(fgdc_dataqual)
-    fgdc_dataqual.show()
-    sys.exit(app.exec_())
 

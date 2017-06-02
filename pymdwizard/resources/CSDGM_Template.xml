@@ -3,40 +3,37 @@
   <idinfo>
     <citation>
       <citeinfo>
-        <origin></origin>
-        <pubdate></pubdate>
-        <title></title>
-        <geoform></geoform>
-        <pubinfo>
-          <pubplace></pubplace>
-          <publish></publish>
-        </pubinfo>
+        <origin />
+        <pubdate />
+        <title />
+        <geoform />
         <onlink>https://doi.org/10.5066/xxxxxxxx</onlink>
       </citeinfo>
     </citation>
     <descript>
-      <abstract></abstract>
-      <purpose></purpose>
+      <abstract />
+      <purpose />
     </descript>
     <timeperd>
       <timeinfo>
         <rngdates>
-          <begdate></begdate>
-          <enddate></enddate>
+          <begdate />
+          <enddate />
         </rngdates>
       </timeinfo>
-      <current></current>
+      <current>ground condition</current>
     </timeperd>
     <status>
       <progress>Complete</progress>
       <update>None planned</update>
     </status>
     <spdom>
+      <descgeog>World</descgeog>
       <bounding>
-        <westbc></westbc>
-        <eastbc></eastbc>
-        <northbc></northbc>
-        <southbc></southbc>
+        <westbc>-180</westbc>
+        <eastbc>180</eastbc>
+        <northbc>90</northbc>
+        <southbc>-90</southbc>
       </bounding>
     </spdom>
     <keywords>
@@ -58,23 +55,18 @@
     <ptcontac>
       <cntinfo>
         <cntperp>
-          <cntper></cntper>
-          <cntorg></cntorg>
+          <cntper />
         </cntperp>
         <cntaddr>
-          <addrtype></addrtype>
-          <address></address>
-          <address></address>
-          <city></city>
-          <state></state>
-          <postal></postal>
+          <addrtype />
+          <address />
+          <city />
+          <state />
+          <postal />
         </cntaddr>
-        <cntvoice></cntvoice>
-        <cntemail></cntemail>
+        <cntvoice />
       </cntinfo>
     </ptcontac>
-    <datacred></datacred>
-    <native></native>
   </idinfo>
   <dataqual>
     <attracc>
@@ -97,6 +89,7 @@
       </procstep>
     </lineage>
   </dataqual>
+  <eainfo />
   <distinfo>
     <distrib>
       <cntinfo>
@@ -119,7 +112,7 @@
     <stdorder>
       <digform>
         <digtinfo>
-          <formname></formname>
+          <formname>Digital Data</formname>
         </digtinfo>
         <digtopt>
           <onlinopt>
@@ -131,11 +124,11 @@
           </onlinopt>
         </digtopt>
       </digform>
-      <fees></fees>
+      <fees>None</fees>
     </stdorder>
   </distinfo>
   <metainfo>
-    <metd></metd>
+    <metd>20170502</metd>
     <metc>
       <cntinfo>
         <cntperp>

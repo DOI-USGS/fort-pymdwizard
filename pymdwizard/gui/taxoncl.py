@@ -53,6 +53,7 @@ from pymdwizard.gui.ui_files import UI_taxoncl
 class Taxoncl(WizardWidget):  #
 
     drag_label = "taxon class <taxoncl>"
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

@@ -433,7 +433,7 @@ Controlled Vocabularies</string>
          </property>
          <item>
           <widget class="QTabWidget" name="theme_tabs">
-           <widget class="QWidget" name="iso_tab">
+           <widget class="QWidget" name="fgdc_theme">
             <attribute name="title">
              <string>ISO 19115</string>
             </attribute>

@@ -161,7 +161,7 @@
               <item>
                <widget class="QStackedWidget" name="stack_definition">
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="fgdc_geograph">
                  <layout class="QFormLayout" name="formLayout">
@@ -345,7 +345,7 @@
                   <item>
                    <widget class="QStackedWidget" name="stack_planar">
                     <property name="currentIndex">
-                     <number>1</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="fgdc_mapproj">
                      <layout class="QVBoxLayout" name="verticalLayout_7">

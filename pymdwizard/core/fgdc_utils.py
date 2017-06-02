@@ -3,6 +3,7 @@ import requests
 from dateutil import parser
 
 from lxml import etree
+import pandas as pd
 
 from pymdwizard.core import xml_utils
 from pymdwizard.core import utils
@@ -39,6 +40,8 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
         xsl_fname = utils.get_resource_path('fgdc/fgdc-std-001-1998-annotated.xsd')
     elif xsl_fname.lower() == 'bdp':
         xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+    else:
+        xsl_fname = xsl_fname
 
     xmlschema_doc = etree.parse(xsl_fname)
     xmlschema = etree.XMLSchema(xmlschema_doc)
@@ -61,7 +64,11 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
             errors.append(('Unknown', clean_error_message(error.message),
                            error.line))
 
-    return errors
+    if as_dataframe:
+        cols = ['xpath', 'message', 'line number']
+        return pd.DataFrame.from_records(errors, columns=cols)
+    else:
+        return errors
 
 
 def clean_error_message(message):

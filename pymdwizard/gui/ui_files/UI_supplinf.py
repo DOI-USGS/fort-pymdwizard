@@ -21,11 +21,11 @@ class Ui_Form(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.fgdc_descript = QtWidgets.QGroupBox(Form)
+        self.fgdc_descript.setObjectName("fgdc_descript")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.fgdc_descript)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label = QtWidgets.QLabel(self.groupBox)
+        self.label = QtWidgets.QLabel(self.fgdc_descript)
         font = QtGui.QFont()
         font.setItalic(True)
         self.label.setFont(font)
@@ -33,13 +33,13 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.fgdc_supplinf = QtWidgets.QPlainTextEdit(self.groupBox)
+        self.fgdc_supplinf = QtWidgets.QPlainTextEdit(self.fgdc_descript)
         self.fgdc_supplinf.setAcceptDrops(False)
         self.fgdc_supplinf.setPlainText("")
         self.fgdc_supplinf.setOverwriteMode(False)
         self.fgdc_supplinf.setObjectName("fgdc_supplinf")
         self.verticalLayout_2.addWidget(self.fgdc_supplinf)
-        self.verticalLayout.addWidget(self.groupBox)
+        self.verticalLayout.addWidget(self.fgdc_descript)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -47,16 +47,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Supplemental Information"))
+        self.fgdc_descript.setTitle(_translate("Form", "Supplemental Information"))
         self.label.setText(_translate("Form", "Use this optional section to add ANY other details or information about the data set that may be helpful to future users."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
 

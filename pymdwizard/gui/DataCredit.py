@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_DataCredit #
 class DataCredit(WizardWidget): #
 
     drag_label = "Data Credit <datacred>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

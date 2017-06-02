@@ -63,7 +63,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class PlaceList(WizardWidget): #
 
     drag_label = "Place Keywords <keywords>"
-
+    acceptable_tags = ['keywords', 'place']
 
     def build_ui(self):
         """
@@ -129,13 +129,23 @@ class PlaceList(WizardWidget): #
         self.ui.theme_tabs.removeTab(current_index)
         del self.thesauri[current_index-1]
 
+    def get_children(self, widget):
+
+        children = []
+
+        if self.ui.rbtn_yes.isChecked():
+            for place in self.thesauri:
+                children.append(place)
+
+        return children
+
     def clear_widget(self):
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
             self.remove_selected()
 
     def search_controlled(self):
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True, parent=self)
 
         self.thesaurus_search.setWindowTitle('Place Keyword Thesaurus Search')
 
@@ -197,9 +207,11 @@ class PlaceList(WizardWidget): #
         procstep element tag in xml tree
         """
         keywords = xml_utils.xml_node('keywords')
-        for theme in self.thesauri:
-            theme_xml = theme._to_xml()
-            keywords.append(theme_xml)
+
+        if self.ui.rbtn_yes.isChecked():
+            for theme in self.thesauri:
+                theme_xml = theme._to_xml()
+                keywords.append(theme_xml)
 
         return keywords
 

@@ -49,12 +49,21 @@ from pymdwizard.gui.keywords_repeater import KeywordsRepeater
 class Theme(KeywordsRepeater):  #
 
     drag_label = "Theme Keywords <theme>"
+    acceptable_tags = ['theme']
 
     def __init__(self, which='theme', parent=None):
         self.which = which
         KeywordsRepeater.__init__(self, keywords_label='Keyword   ',
                                   parent=parent, line_name='fgdc_{}key'.format(self.which))
-        self.setObjectName('fgdc_theme')
+
+        self.kt = self.ui.fgdc_themekt
+        if which == 'place':
+            self.setObjectName('fgdc_place')
+            self.drag_label = "Place Keywords <place>"
+            self.ui.fgdc_themekt.setObjectName('fgdc_placekt')
+            self.acceptable_tags = ['place']
+        else:
+            self.setObjectName('fgdc_theme')
 
     def changed_thesaurus(self, s):
         self.change_tab_label(s)
@@ -90,7 +99,7 @@ class Theme(KeywordsRepeater):  #
             e.ignore()
 
     def get_thesaurus_name(self):
-        return self.ui.fgdc_themekt.text()
+        return self.kt.text()
 
     def _to_xml(self):
         """

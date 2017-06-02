@@ -8,20 +8,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_fgdc_edom(object):
-    def setupUi(self, fgdc_edom):
-        fgdc_edom.setObjectName("fgdc_edom")
-        fgdc_edom.resize(360, 134)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_edom)
+class Ui_fgdc_attrdomv(object):
+    def setupUi(self, fgdc_attrdomv):
+        fgdc_attrdomv.setObjectName("fgdc_attrdomv")
+        fgdc_attrdomv.resize(360, 185)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_attrdomv)
         self.verticalLayout_2.setContentsMargins(0, 4, 0, 8)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.frame = QtWidgets.QFrame(fgdc_edom)
-        self.frame.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame.setLineWidth(1)
-        self.frame.setObjectName("frame")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame)
+        self.fgdc_edom = QtWidgets.QFrame(fgdc_attrdomv)
+        self.fgdc_edom.setFrameShape(QtWidgets.QFrame.Box)
+        self.fgdc_edom.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.fgdc_edom.setLineWidth(1)
+        self.fgdc_edom.setObjectName("fgdc_edom")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.fgdc_edom)
         self.verticalLayout.setContentsMargins(2, 2, 2, 2)
         self.verticalLayout.setSpacing(1)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -31,7 +31,7 @@ class Ui_fgdc_edom(object):
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setSpacing(0)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.fgdc_edomv = QtWidgets.QLineEdit(self.frame)
+        self.fgdc_edomv = QtWidgets.QLineEdit(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -45,7 +45,7 @@ class Ui_fgdc_edom(object):
         self.fgdc_edomv.setObjectName("fgdc_edomv")
         self.horizontalLayout_8.addWidget(self.fgdc_edomv)
         self.verticalLayout_5.addLayout(self.horizontalLayout_8)
-        self.label_21 = QtWidgets.QLabel(self.frame)
+        self.label_21 = QtWidgets.QLabel(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -60,7 +60,7 @@ class Ui_fgdc_edom(object):
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.fgdc_edomvd = QtWidgets.QPlainTextEdit(self.frame)
+        self.fgdc_edomvd = QtWidgets.QPlainTextEdit(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -68,7 +68,7 @@ class Ui_fgdc_edom(object):
         self.fgdc_edomvd.setSizePolicy(sizePolicy)
         self.fgdc_edomvd.setObjectName("fgdc_edomvd")
         self.horizontalLayout_9.addWidget(self.fgdc_edomvd)
-        self.label_25 = QtWidgets.QLabel(self.frame)
+        self.label_25 = QtWidgets.QLabel(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -89,7 +89,7 @@ class Ui_fgdc_edom(object):
         self.label_25.setObjectName("label_25")
         self.horizontalLayout_9.addWidget(self.label_25)
         self.verticalLayout_5.addLayout(self.horizontalLayout_9)
-        self.label_22 = QtWidgets.QLabel(self.frame)
+        self.label_22 = QtWidgets.QLabel(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -104,7 +104,7 @@ class Ui_fgdc_edom(object):
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.fgdc_edomvds = QtWidgets.QLineEdit(self.frame)
+        self.fgdc_edomvds = QtWidgets.QLineEdit(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -114,7 +114,7 @@ class Ui_fgdc_edom(object):
         self.fgdc_edomvds.setMaximumSize(QtCore.QSize(16777215, 20))
         self.fgdc_edomvds.setObjectName("fgdc_edomvds")
         self.horizontalLayout_10.addWidget(self.fgdc_edomvds)
-        self.label_26 = QtWidgets.QLabel(self.frame)
+        self.label_26 = QtWidgets.QLabel(self.fgdc_edom)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -136,23 +136,23 @@ class Ui_fgdc_edom(object):
         self.horizontalLayout_10.addWidget(self.label_26)
         self.verticalLayout_5.addLayout(self.horizontalLayout_10)
         self.verticalLayout.addLayout(self.verticalLayout_5)
-        self.verticalLayout_2.addWidget(self.frame)
+        self.verticalLayout_2.addWidget(self.fgdc_edom)
 
-        self.retranslateUi(fgdc_edom)
-        QtCore.QMetaObject.connectSlotsByName(fgdc_edom)
+        self.retranslateUi(fgdc_attrdomv)
+        QtCore.QMetaObject.connectSlotsByName(fgdc_attrdomv)
 
-    def retranslateUi(self, fgdc_edom):
+    def retranslateUi(self, fgdc_attrdomv):
         _translate = QtCore.QCoreApplication.translate
-        fgdc_edom.setWindowTitle(_translate("fgdc_edom", "Form"))
-        self.label_21.setText(_translate("fgdc_edom", "Definition of this Value"))
-        self.label_25.setToolTip(_translate("fgdc_edom", "Required"))
-        self.label_25.setText(_translate("fgdc_edom", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_22.setText(_translate("fgdc_edom", "Definition Source"))
-        self.fgdc_edomvds.setToolTip(_translate("fgdc_edom", "Address -- an address line for the address.\n"
+        fgdc_attrdomv.setWindowTitle(_translate("fgdc_attrdomv", "Form"))
+        self.label_21.setText(_translate("fgdc_attrdomv", "Definition of this Value"))
+        self.label_25.setToolTip(_translate("fgdc_attrdomv", "Required"))
+        self.label_25.setText(_translate("fgdc_attrdomv", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_22.setText(_translate("fgdc_attrdomv", "Definition Source"))
+        self.fgdc_edomvds.setToolTip(_translate("fgdc_attrdomv", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.fgdc_edomvds.setText(_translate("fgdc_edom", "Producer defined"))
-        self.label_26.setToolTip(_translate("fgdc_edom", "Required"))
-        self.label_26.setText(_translate("fgdc_edom", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.fgdc_edomvds.setText(_translate("fgdc_attrdomv", "Producer defined"))
+        self.label_26.setToolTip(_translate("fgdc_attrdomv", "Required"))
+        self.label_26.setText(_translate("fgdc_attrdomv", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
 

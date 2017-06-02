@@ -107,9 +107,29 @@
     </property>
     <addaction name="actionPreview"/>
    </widget>
+   <widget class="QMenu" name="menuAdvanced">
+    <property name="title">
+     <string>Advanced</string>
+    </property>
+    <widget class="QMenu" name="menuTemplate_2">
+     <property name="title">
+      <string>Template</string>
+     </property>
+     <addaction name="actionCurrentTemplate"/>
+     <addaction name="separator"/>
+     <addaction name="actionBrowseTemplate"/>
+     <addaction name="actionRestoreBuiltIn"/>
+    </widget>
+    <addaction name="menuTemplate_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionLaunch_Jupyter"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpdate"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuValidate"/>
    <addaction name="menuPreview"/>
+   <addaction name="menuAdvanced"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -216,9 +236,38 @@
     <string>New</string>
    </property>
   </action>
+  <action name="actionBrowseTemplate">
+   <property name="text">
+    <string>Browse to new template</string>
+   </property>
+  </action>
+  <action name="actionRestoreBuiltIn">
+   <property name="text">
+    <string>Restore Built-in</string>
+   </property>
+  </action>
+  <action name="actionCurrentTemplate">
+   <property name="text">
+    <string>Current: Built-in</string>
+   </property>
+  </action>
+  <action name="actionLaunch_Jupyter">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Launch Jupyter</string>
+   </property>
+  </action>
+  <action name="actionUpdate">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
  </widget>
- <resources>
-  <include location="icons/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

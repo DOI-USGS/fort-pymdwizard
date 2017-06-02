@@ -46,11 +46,12 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.ui_files import UI_timeperd
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.fgdc_date import FGDCDate
 
 class Timeperd(WizardWidget):  #
 
     drag_label = "Time Period of Content <timeperd>"
+    acceptable_tags = ['timeperd']
 
     def build_ui(self):
         """
@@ -63,23 +64,20 @@ class Timeperd(WizardWidget):  #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.single_date = SingleDate(label='    Single Date ')
-        self.single_date.setObjectName('fgdc_sngdate')
+        self.single_date = FGDCDate(label='    Single Date ', fgdc_name='fgdc_caldate')
         self.ui.fgdc_sngdate.layout().insertWidget(0, self.single_date)
 
-        self.range_start_date = SingleDate(label='Start  ')
-        self.range_start_date.ui.fgdc_caldate.setObjectName('fgdc_begdate')
-        self.range_end_date = SingleDate(label='End  ')
-        self.range_end_date.ui.fgdc_caldate.setObjectName('fgdc_enddate')
+        self.range_start_date = FGDCDate(label='Start  ', fgdc_name='fgdc_begdate')
+        self.range_end_date = FGDCDate(label='End  ', fgdc_name='fgdc_enddate')
         self.ui.layout_daterange.addWidget(self.range_start_date)
         self.ui.layout_daterange.addWidget(self.range_end_date)
 
-
-
         date_widget_kwargs = {'show_format': False,
-                              'label':'Individual Date   '}
+                              'label': 'Individual Date   ',
+                              'fgdc_name': 'fgdc_caldate',
+                              'parent_fgdc_name': 'fgdc_sngdate'}
 
-        self.multi_dates = RepeatingElement(widget=SingleDate,
+        self.multi_dates = RepeatingElement(widget=FGDCDate,
                                             widget_kwargs=date_widget_kwargs)
 
 
@@ -123,25 +121,6 @@ class Timeperd(WizardWidget):  #
             self.ui.fgdc_rngdates.hide()
             self.ui.fgdc_mdattim.layout().addWidget(self.multi_dates)
             self.ui.fgdc_mdattim.show()
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'timeperd':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """
@@ -214,7 +193,7 @@ class Timeperd(WizardWidget):  #
                     self.ui.radio_multiple.setChecked(True)
                     timeinfo_stack.setCurrentIndex(2)
 
-                    self.multi_dates.clear_widgets()
+                    self.multi_dates.clear_widgets(add_another=False)
                     for caldate in timeperd.xpath('timeinfo/mdattim/sngdate/caldate'):
                         date_widget = self.multi_dates.add_another()
                         date_widget.set_date(caldate.text)

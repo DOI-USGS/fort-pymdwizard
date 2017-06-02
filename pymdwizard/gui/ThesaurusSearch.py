@@ -1,35 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
-import datetime
-
-from lxml import etree
-import pandas as pd
 import requests
 
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView, QTextEdit
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
+from PyQt5.QtWidgets import QMessageBox, QDialog
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent, QStandardItemModel, QStandardItem, QFont
-
-from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
 
 from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 
 
-class ThesaurusSearch(QWidget):
+class ThesaurusSearch(QDialog):
 
     def __init__(self, add_term_function=None, parent=None, place=False):
-        # QtGui.QMainWindow.__init__(self, parent)
-        super(self.__class__, self).__init__()
+        super(self.__class__, self).__init__(parent=parent)
 
         self.build_ui()
         self.connect_events()
@@ -40,6 +26,8 @@ class ThesaurusSearch(QWidget):
         self.add_term_function = add_term_function
 
         self.place = place
+
+        utils.set_window_icon(self)
 
     def load_iso(self):
         self.ui.label_search_term.hide()
@@ -95,9 +83,6 @@ class ThesaurusSearch(QWidget):
         self.ui.treeview_results.clicked.connect(self.show_details)
         self.ui.btn_add_term.clicked.connect(self.add_term)
         self.ui.btn_close.clicked.connect(self.close_form)
-        # self.ui.button_gen_fgdc.clicked.connect(self.generate_fgdc)
-        # self.ui.button_remove_selected.clicked.connect(self.remove_selected)
-        # self.ui.table_include.doubleClicked.connect(self.remove_selected)
 
     def show_details(self, index):
         clicked_item = self.ui.treeview_results.model().itemFromIndex(index)
@@ -208,13 +193,10 @@ class ThesaurusSearch(QWidget):
             return False
 
         if not results:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setText("'{}' Not Found".format(self.ui.search_term.text()))
-            msg.setInformativeText("The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search")
-            msg.setWindowTitle("Keyword Not Found")
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
+            msg = "The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search"
+            msg += "\n\n'{}' Not Found".format(self.ui.search_term.text())
+            QMessageBox.information(self, "Search Term Not Found", msg, QMessageBox.Ok)
+            return False
 
         branch_lookup = {}
         unique_children = []
@@ -233,27 +215,14 @@ class ThesaurusSearch(QWidget):
                 branch_lookup[thesaurus_name] = branch
 
         model = QStandardItemModel(0, 0)
-        # model.setHorizontalHeaderLabels(['Theme Keywords (thesaurus/keywords)'])
 
         rootNode = model.invisibleRootItem()
-        # branch1 = QStandardItem("Branch 1")
-        # branch1.appendRow([QStandardItem("Child A")])
-        # childnode = QStandardItem("Child B")
-        # branch1.appendRow([childnode])
-        #
-        # branch2 = QStandardItem("Branch 2")
-        # branch2.appendRow([QStandardItem("Child C")])
-        # branch2.appendRow([QStandardItem("Child D")])
 
         for thesaurus_node in branch_lookup.items():
             rootNode.appendRow(thesaurus_node[1])
-        # rootNode.appendRow([ branch1])
-        # rootNode.appendRow([ branch2])
 
         self.ui.treeview_results.setModel(model)
-        # self.ui.treeview_results.setColumnWidth(0, 150)
         self.ui.treeview_results.expandAll()
-
 
     def add_term(self, index):
         model = self.ui.treeview_results.model()
@@ -272,7 +241,6 @@ class ThesaurusSearch(QWidget):
         self.parent = None
         self.deleteLater()
         self.close()
-        self.dialog.close()
 
 if __name__ == '__main__':
     utils.launch_widget(ThesaurusSearch, "Thesaurus Search testing")

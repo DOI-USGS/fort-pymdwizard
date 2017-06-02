@@ -242,7 +242,8 @@ def get_params(layer):
 
     params['latres'], params['longres'] = get_latlong_res(geographic_extent)
     params['geogunit'] = 'Decimal seconds' #we will always use Decimal Seconds'
-    params['mapprojn'] = ref.GetAttrValue('projection')
+    params['mapprojn'] = ref.GetAttrValue('projcs')
+    params['projection_name'] = ref.GetAttrValue('projection')
     params['geogcs'] = ref.GetAttrValue('geogcs')
     params['stdparll'] = ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_1)
     params['stdparll_2'] = ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_2)
@@ -313,6 +314,8 @@ def get_params(layer):
                 'stateplane' in params['mapprojn'].lower():
         parts = params['mapprojn'].split('_')
         params['spcszone'] = parts[parts.index('FIPS')+1]
+    else:
+        params['spcszone'] = 'Unknown'
     #PCS_Units
 
     params['upzone'] = 'Unknown'
@@ -410,7 +413,6 @@ def get_spref(fname, feature_class=None):
         planar_node = planar(params)
         horizsys.append(planar_node)
 
-
     geodetic_node = geodetic(params)
     horizsys.append(geodetic_node)
 
@@ -436,18 +438,23 @@ def geographic(params):
     return geograph
 
 
+def mapproj(params):
+    mapproj_node = xml_node('mapproj')
+
+    fgdc_name, function = lookup_fdgc_projname(params['projection_name'])
+    mapprojn = xml_node('mapprojn', text=fgdc_name, parent_node=mapproj_node)
+    prj_node = function(params)
+    mapproj_node.append(prj_node)
+    return mapproj_node
+
 def planar(params):
     planar = xml_node('planar')
     if params['utmzone'] != 'Unknown':
         top_node = utm(params)
+    elif params['spcszone'] != 'Unknown':
+        top_node = spcs(params)
     elif params['mapprojn'] != 'Unknown':
-        top_node = xml_node('mapproj')
-
-        fgdc_name, function = lookup_fdgc_projname(params['mapprojn'])
-        mapprojn = xml_node('mapprojn', text=fgdc_name, parent_node=top_node)
-        prj_node = function(params)
-        top_node.append(prj_node)
-
+        top_node = mapproj(params)
 
     planar.append(top_node)
 
@@ -565,7 +572,7 @@ def equidistant_conic(params):
 
     equicon = xml_node('equicon')
     stdparll = xml_node('stdparll', params['stdparll'], equicon)
-    if params['stdparl_2']:
+    if params['stdparll_2'] is not 'Unknown':
         stdparll_2 = xml_node('stdparll', params['stdparll_2'], equicon)
 
     for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
@@ -701,8 +708,8 @@ def lambert_conformal_conic(params):
     """
     lambertc = xml_node('lambertc')
     stdparll = xml_node('stdparll', params['stdparll'], lambertc)
-    if params['stdparl_2']:
-        stdparll_2 = xml_node('stdparll', params['stdparl_2'], lambertc)
+    if params['stdparll_2'] is not 'Unknown':
+        stdparll_2 = xml_node('stdparll', params['stdparll_2'], lambertc)
 
     for item in ['longcm', 'latprjo', 'feast', 'fnorth']:
         xml_node(item, params[item], lambertc)
@@ -985,6 +992,23 @@ def utm(params):
 
     return gridsys
 
+def spcs(params):
+
+    gridsys = xml_node('gridsys')
+    if '1983' in params['geogcs']:
+        gridsysn = xml_node('gridsysn', text='State Plane Coordinate System 1983',
+                        parent_node=gridsys)
+    else:
+        gridsysn = xml_node('gridsysn', text='State Plane Coordinate System 1927',
+                            parent_node=gridsys)
+
+    spcs_node = xml_node('spcs', parent_node=gridsys)
+    utmzone = xml_node('spcszone', text=params['spcszone'], parent_node=spcs_node)
+
+    mapproj_node = mapproj(params)
+    spcs_node.append(mapproj_node)
+
+    return gridsys
 
 def lookup_fdgc_projname(gdal_name):
     for k, v in PROJECTION_LOOKUP.items():
@@ -1011,7 +1035,7 @@ PROJECTION_LOOKUP = collections.OrderedDict()
 PROJECTION_LOOKUP['Albers Conical Equal Area'] = {'shortname': 'albers',
                                                  'gdal_name': 'Albers_Conic_Equal_Area',
                                                  'function': albers_conic_equal_area,
-                                  'elements': ['stdparll', 'stdparl_2',
+                                  'elements': ['stdparll', 'stdparll_2',
                                                'longcm',
                                                'latprjo', 'feast', 'fnorth']}
 
@@ -1023,7 +1047,7 @@ PROJECTION_LOOKUP['Azimuthal Equidistant'] = {'shortname': 'azimequi',
 PROJECTION_LOOKUP['Equidistant Conic'] = {'shortname': 'equicon',
                                           'gdal_name': 'Equidistant_Conic',
                                           'function': equidistant_conic,
-                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
+                                    'elements': ['stdparll', 'stdparll_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Equirectangular'] = {'shortname': 'equirect',
                                         'gdal_name': 'Equirectangular',
@@ -1048,7 +1072,7 @@ PROJECTION_LOOKUP['Lambert Azimuthal Equal Area'] = {'shortname': 'lamberta',
 PROJECTION_LOOKUP['Lambert Conformal Conic'] = {'shortname': 'lambertc',
                                                 'gdal_name': 'Lambert_Conformal_Conic_2SP',
                                                 'function': lambert_conformal_conic,
-                                    'elements': ['stdparll', 'stdparl_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
+                                    'elements': ['stdparll', 'stdparll_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Modified Stereographic for Alaska'] = {'shortname': 'modsak',
                                                           'gdal_name': 'Modified_Stereographic_for_Alaska',
@@ -1110,9 +1134,12 @@ GRIDSYS_LOOKUP['Universal Transverse Mercator'] = {'shortname': 'utm',
 GRIDSYS_LOOKUP['Universal Polar Stereographic'] = {'shortname': 'ups',
                                                     'elements': ['upszone'],
                                                    'projection':'Transverse Mercator'}
-GRIDSYS_LOOKUP['State Plane Coordinate System'] = {'shortname': 'spsc',
-                                                    'elements': ['spszone'],
+GRIDSYS_LOOKUP['State Plane Coordinate System 1927'] = {'shortname': 'spsc',
+                                                    'elements': ['spcszone'],
                                                    'projection':'Transverse Mercator'}
+GRIDSYS_LOOKUP['State Plane Coordinate System 1983'] = {'shortname': 'spsc',
+                                                        'elements': ['spcszone'],
+                                                        'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['ARC Coordinate System'] = {'shortname': 'arcsys',
                                                     'elements': ['arczone'],
                                            'projection':'Transverse Mercator'}

@@ -65,7 +65,7 @@ from pymdwizard.gui.procstep import ProcStep
 class DataQuality(WizardWidget):
 
     drag_label = "Data Quality <dataqual>"
-
+    acceptable_tags = ['abstract']
 
     ui_class = UI_DataQuality.Ui_fgdc_dataqual
 
@@ -90,7 +90,7 @@ class DataQuality(WizardWidget):
         self.ui.two_column_left.layout().addWidget(self.posacc)
 
         self.ui.bottom_layout.layout().addWidget(self.sourceinput)
-        self.ui.two_column_right.layout().addWidget(self.procstep)
+        self.ui.fgdc_lineage.layout().addWidget(self.procstep)
 
 
     def dragEnterEvent(self, e):

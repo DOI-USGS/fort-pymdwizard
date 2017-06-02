@@ -49,6 +49,7 @@ from pymdwizard.gui.keywords_repeater import KeywordsRepeater
 class Keywordtax(KeywordsRepeater):  #
 
     drag_label = "Taxonomic keywords <keywtax>"
+    acceptable_tags = ['abstract']
 
     def __init__(self, parent=None):
         KeywordsRepeater.__init__(self, keywords_label='Taxonomic keywords',

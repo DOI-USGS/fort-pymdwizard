@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>fgdc_udom</class>
- <widget class="QWidget" name="fgdc_udom">
+ <class>edom_contents</class>
+ <widget class="QWidget" name="edom_contents">
   <property name="geometry">
    <rect>
     <x>0</x>

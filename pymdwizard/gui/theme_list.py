@@ -64,7 +64,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class ThemeList(WizardWidget): #
 
     drag_label = "Theme Keywords <keywords>"
-
+    acceptable_tags = ['keywords']
 
     def build_ui(self):
         """
@@ -100,22 +100,6 @@ class ThemeList(WizardWidget): #
         self.ui.btn_remove_selected.clicked.connect(self.remove_selected)
         self.ui.btn_add_iso.clicked.connect(self.add_iso)
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
-        # self.ui.theme_tabs.currentChanged.connect(self.switch_tab)
-
-    # def switch_tab(self):
-    #     current_index = self.ui.theme_tabs.currentIndex()
-    #     for i in range(len(self.thesauri), 0, -1):
-    #         tab = self.ui.theme_tabs.widget(i)
-    #         tab.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-    #
-    #     cur_tab = self.ui.theme_tabs.widget(current_index)
-    #     cur_tab.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-            # if current_index == 0:
-            #     self.ui.theme_tabs.
-            #     self.ui.iso_tab.hide()
-            # else:
-            #     self.ui.theme_tabs.removeTab(current_index)
-            #     del self.thesauri[current_index-1]
 
     def add_another(self, click=False, tab_label='', locked=False):
 
@@ -141,18 +125,38 @@ class ThemeList(WizardWidget): #
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
         if current_index == 0:
-            self.ui.theme_tabs.setTabEnabled(0, False)
-            self.ui.iso_tab.hide()
+            self.remove_iso()
         else:
             self.ui.theme_tabs.removeTab(current_index)
             del self.thesauri[current_index-1]
 
+    def remove_iso(self):
+        self.ui.theme_tabs.setTabEnabled(0, False)
+        self.ui.fgdc_theme.hide()
+
     def add_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, True)
-        self.ui.iso_tab.show()
+        self.ui.fgdc_theme.show()
 
-    def clear_widget(self):
+        self.ui.theme_tabs.setCurrentIndex(0)
+        self.repaint()
+
+    def get_children(self, widget):
+
+        children = []
+
+        if self.ui.theme_tabs.isTabEnabled(0):
+            children.append(self.ui.fgdc_theme)
+        for theme in self.thesauri:
+            children.append(theme)
+
+        return children
+
+    def clear_widget(self, remove_iso=False):
+
         self.iso_kws.clear_widgets()
+        if remove_iso:
+            self.remove_iso()
 
         for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
@@ -160,14 +164,9 @@ class ThemeList(WizardWidget): #
 
     def search_controlled(self):
 
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword)
-
-        self.thesaurus_dialog = QDialog(self)
-        self.thesaurus_dialog.setWindowTitle('Search USGS Controlled Vocabularies')
-        self.thesaurus_dialog.setLayout(self.thesaurus_search.layout())
-
-        self.thesaurus_search.dialog = self.thesaurus_dialog
-        self.thesaurus_dialog.show()
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, parent=self)
+        self.thesaurus_search.setWindowTitle('Search USGS Controlled Vocabularies')
+        self.thesaurus_search.show()
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
@@ -185,29 +184,6 @@ class ThemeList(WizardWidget): #
 
         theme_widget.add_keyword(keyword, locked=locked)
         return theme_widget
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'procstep'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'keywords':
-                e.accept()
-        else:
-            e.ignore()
                 
     def _to_xml(self):
         """
@@ -246,19 +222,21 @@ class ThemeList(WizardWidget): #
         -------
         None
         """
-        self.clear_widget()
+        self.clear_widget(remove_iso=True)
 
         self.original_xml = keywords_xml
         if keywords_xml.tag == 'keywords':
             for theme_xml in xml_utils.search_xpath(keywords_xml, 'theme', False):
                 themekt = xml_utils.get_text_content(theme_xml, 'themekt')
                 if themekt is not None and 'iso 19115' in themekt.lower():
+                    self.add_iso()
                     self.iso_kws.clear_widgets(add_another=False)
                     for themekey in xml_utils.search_xpath(theme_xml,
                                                            'themekey',
                                                            only_first=False):
                         iso = self.iso_kws.add_another()
                         iso.ui.fgdc_themekey.setCurrentText(themekey.text)
+
 
                 else:
                     theme = self.add_another()

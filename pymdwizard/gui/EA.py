@@ -48,12 +48,13 @@ from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_EA
-from pymdwizard.gui import detailed
+from pymdwizard.gui.detailed import Detailed
 
 
 class EA(WizardWidget):  #
 
     drag_label = "Entity and Attributes <eainfo>"
+    acceptable_tags = ['eainfo', 'detailed']
 
     def build_ui(self):
         """
@@ -65,29 +66,32 @@ class EA(WizardWidget):  #
         self.ui = UI_EA.Ui_Form()
         self.ui.setupUi(self)
 
-        self.detailed = detailed.Detailed()
-        self.ui.detailed_frame.layout().addWidget(self.detailed)
+        detailed = Detailed()
+        self.ui.detailed_frame.layout().addWidget(detailed)
+        self.detaileds = [detailed]
 
         self.setup_dragdrop(self)
 
-    def dragEnterEvent(self, e):
+    def connect_events(self):
+        self.ui.btn_add_detailed.clicked.connect(self.add_detailed)
+
+    def remove_detailed(self):
+        cur_index = self.ui.fgdc_eainfo.currentIndex()
+        self.ui.fgdc_eainfo.removeTab(cur_index)
+        del self.detaileds[cur_index-1]
+
+    def add_detailed(self):
         """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
+        Adds another Detailed tab to the form
         Returns
         -------
+        None
         """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'detailed':
-                e.accept()
-        else:
-            e.ignore()
+        new_detailed = Detailed(remove_function=self.remove_detailed)
+        self.ui.fgdc_eainfo.insertTab(self.ui.fgdc_eainfo.count()-1,
+                                      new_detailed, 'Detailed')
+        self.detaileds.append(new_detailed)
+        return new_detailed
 
     def clear_widget(self):
         """
@@ -97,9 +101,13 @@ class EA(WizardWidget):  #
         -------
         None
         """
-        self.detailed.clear_widget()
-        self.ui.fgdc_eaover.setText('')
-        self.ui.fgdc_eadetcit.setText('')
+        self.detaileds[0].clear_widget()
+        for i in range(len(self.detaileds), 1, -1):
+            self.ui.fgdc_eainfo.removeTab(i)
+            del self.detaileds[i-1]
+
+        utils.set_text(self.ui.fgdc_eaover, '')
+        utils.set_text(self.ui.fgdc_eadetcit, '')
 
     def has_content(self):
         """
@@ -115,8 +123,11 @@ class EA(WizardWidget):  #
             has_content = True
         if self.ui.fgdc_eaover.toPlainText():
             has_content = True
-        if self.detailed.has_content():
+        if self.detaileds[0].has_content():
             has_content = True
+        for detailed in self.detaileds:
+            if detailed.has_content():
+                has_content = True
 
         return has_content
 
@@ -129,12 +140,18 @@ class EA(WizardWidget):  #
         """
         eainfo = xml_utils.xml_node('eainfo')
 
-        if self.detailed.has_content():
-            detailed = self.detailed._to_xml()
-            eainfo.append(detailed)
+        #only output the first detailed if it has content
+        if self.detaileds[0].has_content():
+            detailed_xml = self.detaileds[0]._to_xml()
+            eainfo.append(detailed_xml)
+
+        #the remaining detaileds will get output regardless
+        for detailed in self.detaileds[1:]:
+            detailed_xml = detailed._to_xml()
+            eainfo.append(detailed_xml)
 
         eaover_str = self.ui.fgdc_eaover.toPlainText()
-        eadetcit_str = self.ui.fgdc_eaover.toPlainText()
+        eadetcit_str = self.ui.fgdc_eadetcit.toPlainText()
 
         if eaover_str or eadetcit_str:
             overview = xml_utils.xml_node('overview', parent_node=eainfo)
@@ -154,26 +171,29 @@ class EA(WizardWidget):  #
         None
         """
         try:
-            self.ui.tab_ea.setCurrentIndex(0)
-            self.detailed.clear_widget()
+            self.ui.fgdc_eainfo.setCurrentIndex(0)
+            self.clear_widget()
 
             if eainfo.tag == 'eainfo':
                 overview = eainfo.xpath('overview')
                 if overview:
                     eaover = eainfo.xpath('overview/eaover')
                     if eaover:
-                        self.ui.fgdc_eaover.setText(eaover[0].text)
+                        utils.set_text(self.ui.fgdc_eaover, eaover[0].text)
 
                     eadetcit = eainfo.xpath('overview/eadetcit')
                     if eadetcit:
-                        self.ui.fgdc_eadetcit.setText(eadetcit[0].text)
-                    self.ui.tab_ea.setCurrentIndex(2)
+                        utils.set_text(self.ui.fgdc_eadetcit, eadetcit[0].text)
+                    self.ui.fgdc_eainfo.setCurrentIndex(2)
 
                 detailed = eainfo.xpath('detailed')
                 if detailed:
-                    self.detailed._from_xml(detailed[0])
-                    self.ui.tab_ea.setCurrentIndex(1)
+                    self.detaileds[0]._from_xml(detailed[0])
+                    self.ui.fgdc_eainfo.setCurrentIndex(1)
 
+                    for additional_detailed in detailed[1:]:
+                        new_detailed = self.add_detailed()
+                        new_detailed._from_xml(additional_detailed)
 
             else:
                 print("The tag is not EA")

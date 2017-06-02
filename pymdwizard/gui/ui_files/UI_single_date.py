@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_fgdc_sngdate(object):
     def setupUi(self, fgdc_sngdate):
-        fgdc_sngdate.setObjectName("fgdc_sngdate")
+        # fgdc_sngdate.setObjectName("fgdc_sngdate")
         fgdc_sngdate.resize(210, 47)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(fgdc_sngdate)
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)

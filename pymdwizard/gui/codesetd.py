@@ -50,6 +50,7 @@ from pymdwizard.gui.ui_files import UI_codesetd
 class Codesetd(WizardWidget):  #
 
     drag_label = "Codeset Domain <codesetd>"
+    acceptable_tags = ['codesetd']
 
     def build_ui(self):
         """
@@ -58,28 +59,9 @@ class Codesetd(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_codesetd.Ui_fgdc_codesetd() # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_codesetd.Ui_fgdc_attrdomv()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and  element.tag == 'codesetd':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """

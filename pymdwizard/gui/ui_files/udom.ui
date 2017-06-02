@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>udom_widget</class>
- <widget class="QWidget" name="udom_widget">
+ <class>fgdc_attrdomv</class>
+ <widget class="QWidget" name="fgdc_attrdomv">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>171</width>
+    <width>426</width>
     <height>442</height>
    </rect>
   </property>

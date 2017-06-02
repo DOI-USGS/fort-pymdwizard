@@ -27,16 +27,14 @@ from pymdwizard.gui.ui_files import UI_ITISSearchSimple
 class ItisSearch(QWidget):
 
     def __init__(self, table=None, selected_items_df=None, parent=None):
-        # QtGui.QMainWindow.__init__(self, parent)
         super(self.__class__, self).__init__()
 
         self.build_ui()
         self.connect_events()
 
-
         self.table_include = table
         self.selected_items_df = selected_items_df
-
+        utils.set_window_icon(self)
 
     def build_ui(self):
         """
@@ -62,10 +60,6 @@ class ItisSearch(QWidget):
         self.ui.table_results.doubleClicked.connect(self.add_tsn)
         self.ui.btn_add_taxon.clicked.connect(self.add_tsn)
         self.ui.btn_close.clicked.connect(self.close)
-        # self.ui.button_gen_fgdc.clicked.connect(self.generate_fgdc)
-        # self.ui.button_remove_selected.clicked.connect(self.remove_selected)
-        # self.ui.table_include.doubleClicked.connect(self.remove_selected)
-
 
     def search_itis(self):
 

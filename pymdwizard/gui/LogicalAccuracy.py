@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_LogicalAccuracy #
 class LogicalAccuracy(WizardWidget): #
 
     drag_label = "Logical Accuracy <logic>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

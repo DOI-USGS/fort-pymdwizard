@@ -65,7 +65,7 @@ class Taxonomy(WizardWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Taxonomy"
-
+    acceptable_tags = ['abstract']
 
 
     def __init__(self, parent=None):

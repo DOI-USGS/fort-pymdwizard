@@ -288,45 +288,13 @@ QToolButton:checked:Hover{
         </layout>
        </widget>
        <widget class="QWidget" name="page_dataqual">
-        <widget class="QLabel" name="label_2">
-         <property name="geometry">
-          <rect>
-           <x>490</x>
-           <y>130</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Data Quality</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_5"/>
        </widget>
-       <widget class="QWidget" name="page_spatial"/>
+       <widget class="QWidget" name="page_spatial">
+        <layout class="QVBoxLayout" name="verticalLayout_6"/>
+       </widget>
        <widget class="QWidget" name="page_eainfo">
-        <widget class="QLabel" name="label_4">
-         <property name="geometry">
-          <rect>
-           <x>840</x>
-           <y>280</y>
-           <width>181</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>22</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Entity and Att</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_7"/>
        </widget>
        <widget class="QWidget" name="page_distinfo">
         <layout class="QHBoxLayout" name="horizontalLayout_5">

@@ -50,7 +50,8 @@ from pymdwizard.gui import edom
 
 class EdomList(WizardWidget):  #
 
-    drag_label = "Range Domain <rdom>"
+    drag_label = "Enumerated Domain <edom>"
+    acceptable_tags = ['attr']
 
     def build_ui(self):
         """
@@ -59,7 +60,7 @@ class EdomList(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_edom_list.Ui_fgdc_udom()# .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_edom_list.Ui_edom_contents()
         self.ui.setupUi(self)
 
         self.edoms = []
@@ -97,25 +98,6 @@ class EdomList(WizardWidget):  #
 
         self.ui.listWidget.addItem(item)
         self.ui.listWidget.setItemWidget(item, e)
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'timeperd'
-        Parameters
-        ----------
-        e : qt event
-        Returns
-        -------
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'attr':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         """

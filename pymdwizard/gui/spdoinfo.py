@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_spdoinfo
 class SpdoInfo(WizardWidget):
 
     drag_label = "Spatial Domain Info <spdoinfo>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """
@@ -73,6 +73,7 @@ class SpdoInfo(WizardWidget):
         self.ui = UI_spdoinfo.Ui_spatial_domain_widget()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
+        self.clear_widget()
 
     def connect_events(self):
         """
@@ -150,6 +151,7 @@ class SpdoInfo(WizardWidget):
         self.ui.fgdc_direct.setCurrentIndex(2)
 
         self.ui.rbtn_no.setChecked(True)
+        self.spdoinfo_used_change(False)
 
     def _to_xml(self):
         if self.ui.rbtn_yes.isChecked():

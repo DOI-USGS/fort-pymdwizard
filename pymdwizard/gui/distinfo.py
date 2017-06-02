@@ -61,6 +61,7 @@ from pymdwizard.gui.metainfo import MetaInfo
 class DistInfo(WizardWidget):
 
     drag_label = "Distribution Information <distinfo>"
+    acceptable_tags = ['abstract']
 
     ui_class = UI_distinfo.Ui_fgdc_distinfo
 

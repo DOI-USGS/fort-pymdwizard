@@ -60,9 +60,9 @@ from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
 from pymdwizard.gui.Status import Status
 from pymdwizard.gui.timeperd import Timeperd
-from pymdwizard.gui.Citation import Citation
+from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.DataCredit import DataCredit
-#from pymdwizard.gui.Descriptor import Descriptor
+from pymdwizard.gui.descript import Descript
 from pymdwizard.gui.supplinf import SupplInf
 from pymdwizard.gui.abstract import Abstract
 from pymdwizard.gui.purpose import Purpose
@@ -71,12 +71,7 @@ from pymdwizard.gui.purpose import Purpose
 class IdInfo(WizardWidget):
 
     drag_label = "Identification Information <idinfo>"
-
-    # This dictionary provides a mechanism for crosswalking between
-    # gui elements (pyqt widgets) and the xml document
-    xpath_lookup = {'cntper': 'cntinfo/cntperp/cntper',
-                        'cntorg': 'cntinfo/cntperp/cntorg',
-                        'cntpos': 'cntinfo/cntpos',}
+    acceptable_tags = ['abstract']
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
@@ -99,10 +94,11 @@ class IdInfo(WizardWidget):
         self.useconst = UseConstraints(parent=self)
         self.status = Status(parent=self)
         self.timeperd = Timeperd(parent=self)
-        self.citation = Citation(parent=self)
+        self.citation = Citeinfo(parent=self)
         self.datacredit = DataCredit(parent=self)
 
-        self.abstract = Abstract(parent=self)
+        self.descript = Descript(parent=self)
+
         self.purpose = Purpose(parent=self)
         self.supplinf = SupplInf(parent=self)
 
@@ -122,7 +118,7 @@ class IdInfo(WizardWidget):
         self.ui.two_column_right.layout().insertWidget(0, self.supplinf)
         self.ui.two_column_right.layout().insertWidget(0, self.keywords)
         self.ui.two_column_right.layout().insertWidget(0, self.purpose)
-        self.ui.two_column_right.layout().insertWidget(0, self.abstract)
+        self.ui.two_column_right.layout().insertWidget(0, self.descript)
 
 
 
@@ -157,7 +153,6 @@ class IdInfo(WizardWidget):
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
-        self.citation.switch_schema(self.schema)
 
     def clear_widget(self):
         self.root_widget.spatial_tab.spdom.clear_widget()
@@ -173,7 +168,7 @@ class IdInfo(WizardWidget):
         idinfo_node.append(citation_node)
 
         descript_node = xml_utils.xml_node('descript', parent_node=idinfo_node)
-        abstract_node = self.abstract._to_xml()
+        abstract_node = self.descript._to_xml()
         descript_node.append(abstract_node)
         purpose_node = self.purpose._to_xml()
         descript_node.append(purpose_node)
@@ -234,7 +229,7 @@ class IdInfo(WizardWidget):
 
         abstract = xml_utils.search_xpath(xml_idinfo, 'descript/abstract')
         if abstract is not None:
-            self.abstract._from_xml(abstract)
+            self.descript._from_xml(abstract)
 
         purpose = xml_utils.search_xpath(xml_idinfo, 'descript/purpose')
         if purpose is not None:

@@ -61,6 +61,7 @@ from pymdwizard.gui.place_list import PlaceList
 class Keywords(WizardWidget):
 
     drag_label = "Keywords <keywords>"
+    acceptable_tags = ['keywords', 'theme']
 
     ui_class = UI_Keywords.Ui_keyword_widget
 
@@ -75,39 +76,15 @@ class Keywords(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-
-
-        self.theme_list = ThemeList()
+        self.theme_list = ThemeList(parent=self)
         self.ui.fgdc_keywords.layout().addWidget(self.theme_list)
 
-        self.place_list = PlaceList()
+        self.place_list = PlaceList(parent=self)
         self.ui.fgdc_keywords.layout().addWidget(self.place_list)
 
         spacerItem = QSpacerItem(24, 10, QSizePolicy.Preferred, QSizePolicy.Expanding)
         self.ui.fgdc_keywords.layout().addItem(spacerItem)
         self.setup_dragdrop(self)
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'Keywords' or element.tag == 'theme' or \
-                            element.tag == 'place':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         keywords = self.theme_list._to_xml()

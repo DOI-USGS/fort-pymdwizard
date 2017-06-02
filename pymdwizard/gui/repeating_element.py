@@ -54,7 +54,7 @@ from PyQt5 import QtCore
 from pymdwizard.core import utils
 
 from pymdwizard.gui.ui_files import UI_repeating_element
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.wiz_widget import WizardWidget
 
 class DefaultWidget(QWidget):
@@ -178,7 +178,6 @@ class RepeatingElement(QWidget):
         widget = self.widget(**self.widget_kwargs)
         self.widgets.append(widget)
 
-
         if self.tab:
             if not tab_label:
                 tab_label = ' '.join([self.tab_label,
@@ -219,7 +218,7 @@ class RepeatingElement(QWidget):
 
 if __name__ == "__main__":
 
-    from pymdwizard.gui import attr, edom, single_date, sourceinput
+    from pymdwizard.gui import attr, edom, fgdc_date, sourceinput
     import random
 
     widget_kws={'label' : 'hello', 'required' : True}

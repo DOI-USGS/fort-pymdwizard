@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>847</width>
-    <height>419</height>
+    <width>838</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -750,7 +750,7 @@
          <property name="minimumSize">
           <size>
            <width>400</width>
-           <height>0</height>
+           <height>400</height>
           </size>
          </property>
          <property name="frameShape">
@@ -777,6 +777,18 @@
           </property>
           <item>
            <widget class="QWebView" name="map_viewer">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>400</height>
+             </size>
+            </property>
             <property name="url">
              <url>
               <string>about:blank</string>

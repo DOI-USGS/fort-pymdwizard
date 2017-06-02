@@ -36,7 +36,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox, QLayout
 from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QLabel, QComboBox
 from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
 from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
@@ -68,7 +68,9 @@ class WizardWidget(QWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 385
 
-    def __init__(self, xml=None, parent=None):
+    acceptable_tags = []
+
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
         self.help_text = ''
@@ -77,11 +79,12 @@ class WizardWidget(QWidget):
         if __name__ == "__main__":
             QMainWindow.__init__(self, parent)
 
-        self.original_xml = None
         self.in_context = False
 
         self.build_ui()
         self.connect_events()
+
+        self.original_xml = None
 
     def build_ui(self):
         """
@@ -106,7 +109,6 @@ class WizardWidget(QWidget):
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
 
-
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -115,7 +117,6 @@ class WizardWidget(QWidget):
         None
         """
         pass
-
 
     def _to_xml(self):
         """
@@ -142,54 +143,74 @@ class WizardWidget(QWidget):
         # Update self.xml appropriately (probably a full reace)
         print("_from_xml method Must be overridden in subclass")
 
-    def get_widget(self, xpath):
+    def make_tree(self, widget):
+        widget_children = widget.children()
+
+        for child_widget in widget_children:
+            try:
+                widget_name = child_widget.objectName()
+            except AttributeError:
+                widget_name = 'Unknown'
+
+            if child_widget.objectName().startswith('fgdc_'):
+                root_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+                root_node.widget = child_widget
+                return self.add_children(child_widget, root_node)
+            else:
+                self.make_tree(child_widget)
+
+    def get_children(self, widget):
+        try:
+            widget_children = widget.children()
+        except AttributeError:
+            try:
+                widget_children = [widget.itemAt(i) for i in range(widget.count())]
+            except AttributeError:
+                widget_children = []
+        return widget_children
+
+    def add_children(self, widget, parent_node):
+        if isinstance(widget, WizardWidget):
+            widget_children = widget.get_children(widget)
+        else:
+            widget_children = self.get_children(widget)
+
+        for child_widget in widget_children:
+            try:
+                widget_name = child_widget.objectName()
+            except AttributeError:
+                widget_name = 'Unknown'
+
+            if widget_name.startswith('fgdc_'):
+                child_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+                child_node.widget = child_widget
+                self.add_children(child_widget, child_node)
+                parent_node.add_child(child_node)
+            else:
+
+                self.add_children(child_widget, parent_node)
+        return parent_node
+
+
+
+    def dragEnterEvent(self, e):
         """
-        returns the widget (QLineEdit, QComboBox, etc) that corresponds to
-        a given xpath.
-        TODO: finalize general implementation details, although there's
-        no reason that these couldn't be unique for different widgets.
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called in our list of acceptable_tags
         Parameters
         ----------
-        xpath : str
+        e : qt event
         Returns
         -------
-        pyqt widget
         """
-        xpath_items = xpath.split('/')
-
-        cur_widget = self
-        for item_string in xpath_items:
-            if '[' in item_string:
-                fgdc_tag, tag = item_string.split('[')
-                index = int(tag.split(']')[0])-1
-            else:
-                fgdc_tag = item_string
-                index = 0
-
-            cur_matches = self.find_descendant(cur_widget, fgdc_tag)
-            if len(cur_matches) > index:
-                cur_widget = cur_matches[index]
-
-        if not cur_widget:
-            return self
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element is not None and element.tag in self.acceptable_tags:
+                e.accept()
         else:
-            return cur_widget
-
-    def find_descendant(self, search_widget, search_name):
-
-        matches = []
-        for widget in search_widget.children():
-            if widget.objectName() == 'fgdc_' + search_name:
-                matches.append(widget)
-            # elif isinstance(widget, RepeatingElement)
-
-        for widget in search_widget.children():
-            if True:#widget.objectName() != 'fgdc_' + search_name:
-                result = self.find_descendant(widget, search_name)
-                if result:
-                    matches = matches + result
-        return matches
-
+            e.ignore()
 
     def dropEvent(self, e):
         """
@@ -231,14 +252,10 @@ class WizardWidget(QWidget):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
             if element is not None:
-                result = self._from_xml(element)
+                self._from_xml(element)
             else:
-                result = False
-
-            if not result:
                 msg = "There was a problem pasting that content."
-                msg += "\n Make sure that the content being pasted is an FGDC XML element"
-                msg += "\n and matches the content of this widget."
+                msg += "\n that content being drops does not appear to be an xml element"
                 QMessageBox.warning(self, "Paste Error", msg)
 
     def mouseMoveEvent(self, e):
@@ -440,7 +457,20 @@ class WizardWidget(QWidget):
         elif action == paste_action:
             self.paste_mime()
         elif action == clear_action:
-            self.clear_widget()
+            if clicked_widget is None:
+                self.clear_widget()
+            elif clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.clear_widget()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.clear_widget()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.clear_widget()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.clear_widget()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.clear_widget()
+            else:
+                self.clear_widget()
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
             # msg.setTextFormat(Qt.RichText)
@@ -516,9 +546,6 @@ QGroupBox:Hover {
     border-radius: 2px;
     border-color: rgba(90, 90, 90, 75);
 }
-
-
-}
 """
 
 FOCUS_STYLE = """
@@ -545,6 +572,7 @@ QLineEdit, QComboBox {
 font: 9pt "Arial";
 color: rgb(50, 50, 50);
 }
+
 .QFrame {
     color: rgba(90, 90, 90, 225);
     border: 1px solid gray;

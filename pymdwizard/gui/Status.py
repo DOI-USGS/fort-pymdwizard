@@ -50,6 +50,7 @@ from pymdwizard.gui.ui_files import UI_Status  #
 class Status(WizardWidget):  #
 
     drag_label = "Status <status>"
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

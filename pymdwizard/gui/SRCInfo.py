@@ -54,9 +54,9 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_SRCInfo #
-from pymdwizard.gui.single_date import SingleDate
-from pymdwizard.gui.Citation import Citation
+from pymdwizard.gui.ui_files import UI_SRCInfo
+from pymdwizard.gui.fgdc_date import FGDCDate
+from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.timeperd import Timeperd
 
 
@@ -64,7 +64,7 @@ from pymdwizard.gui.timeperd import Timeperd
 class SRCInfo(WizardWidget): #
 
     drag_label = "SRCInfo <srcinfo>"
-
+    acceptable_tags = ['srcinfo']
 
     def build_ui(self):
         """
@@ -77,17 +77,13 @@ class SRCInfo(WizardWidget): #
         self.ui = UI_SRCInfo.Ui_Form()
         self.ui.setupUi(self)
         self.timeperd = Timeperd()
-        self.citation = Citation(parent=self, include_lwork=False)
-
+        self.citation = Citeinfo(parent=self, include_lwork=False)
 
         self.citation.ui.fgdc_lworkcit.deleteLater()
         self.ui.widget_citation.layout().addWidget(self.citation)
         self.ui.widget_timeperd.layout().addWidget(self.timeperd)
 
         self.setup_dragdrop(self)
-
-
-
 
     def connect_events(self):
         """
@@ -98,35 +94,6 @@ class SRCInfo(WizardWidget): #
         None
         """
 
-
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'srcinfo'
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'srcinfo':
-                e.accept()
-        else:
-            e.ignore()
-
-
-         
-                
     def _to_xml(self):
         """
         encapsulates the QLineEdit text in an element tag

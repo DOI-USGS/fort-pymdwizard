@@ -8,25 +8,25 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_fgdc_udom(object):
-    def setupUi(self, fgdc_udom):
-        fgdc_udom.setObjectName("fgdc_udom")
-        fgdc_udom.resize(620, 740)
+class Ui_edom_contents(object):
+    def setupUi(self, edom_contents):
+        edom_contents.setObjectName("edom_contents")
+        edom_contents.resize(620, 740)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(fgdc_udom.sizePolicy().hasHeightForWidth())
-        fgdc_udom.setSizePolicy(sizePolicy)
-        self.verticalLayout = QtWidgets.QVBoxLayout(fgdc_udom)
+        sizePolicy.setHeightForWidth(edom_contents.sizePolicy().hasHeightForWidth())
+        edom_contents.setSizePolicy(sizePolicy)
+        self.verticalLayout = QtWidgets.QVBoxLayout(edom_contents)
         self.verticalLayout.setContentsMargins(2, 9, 2, 4)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(fgdc_udom)
+        self.label = QtWidgets.QLabel(edom_contents)
         self.label.setWordWrap(True)
         self.label.setIndent(9)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.listWidget = QtWidgets.QListWidget(fgdc_udom)
+        self.listWidget = QtWidgets.QListWidget(edom_contents)
         self.listWidget.setMouseTracking(True)
         self.listWidget.setAutoFillBackground(True)
         self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
@@ -37,7 +37,7 @@ class Ui_fgdc_udom(object):
         self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
-        self.widget = QtWidgets.QWidget(fgdc_udom)
+        self.widget = QtWidgets.QWidget(edom_contents)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -57,13 +57,13 @@ class Ui_fgdc_udom(object):
         self.horizontalLayout.addWidget(self.btn_delete)
         self.verticalLayout.addWidget(self.widget)
 
-        self.retranslateUi(fgdc_udom)
-        QtCore.QMetaObject.connectSlotsByName(fgdc_udom)
+        self.retranslateUi(edom_contents)
+        QtCore.QMetaObject.connectSlotsByName(edom_contents)
 
-    def retranslateUi(self, fgdc_udom):
+    def retranslateUi(self, edom_contents):
         _translate = QtCore.QCoreApplication.translate
-        fgdc_udom.setWindowTitle(_translate("fgdc_udom", "Form"))
-        self.label.setText(_translate("fgdc_udom", "For each unique value contained in this column, provide a definition below."))
-        self.btn_addone.setText(_translate("fgdc_udom", "Add"))
-        self.btn_delete.setText(_translate("fgdc_udom", "Delete"))
+        edom_contents.setWindowTitle(_translate("edom_contents", "Form"))
+        self.label.setText(_translate("edom_contents", "For each unique value contained in this column, provide a definition below."))
+        self.btn_addone.setText(_translate("edom_contents", "Add"))
+        self.btn_delete.setText(_translate("edom_contents", "Delete"))
 

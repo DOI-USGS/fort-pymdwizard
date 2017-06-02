@@ -9,7 +9,7 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QWidget, QComboBox, QLineEdit
 
-from pymdwizard.gui import Citation
+from pymdwizard.gui import citeinfo
 
 # def test_citation__from_xml(qtbot):
 #     widget = Citation.Citation()
@@ -25,7 +25,7 @@ from pymdwizard.gui import Citation
 
 
 def test_citation__to_xml(qtbot):
-    widget = Citation.Citation()
+    widget = citeinfo.Citeinfo()
     qtbot.addWidget(widget)
 
     #assert type(progress) == 'lxml.etree._Element'

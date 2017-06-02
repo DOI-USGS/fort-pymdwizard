@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_UseConstraints #
 class UseConstraints(WizardWidget): #
 
     drag_label = "Use Constraints <useconst>"
-
+    acceptable_tags = ['abstract']
 
     def build_ui(self):
         """

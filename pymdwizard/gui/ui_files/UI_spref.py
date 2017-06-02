@@ -297,9 +297,9 @@ class Ui_Form(object):
         self.verticalLayout_6.addWidget(self.horizontal_group_box)
 
         self.retranslateUi(Form)
-        self.stack_definition.setCurrentIndex(1)
+        self.stack_definition.setCurrentIndex(0)
         self.fgdc_geogunit.setCurrentIndex(0)
-        self.stack_planar.setCurrentIndex(1)
+        self.stack_planar.setCurrentIndex(0)
         self.fgdc_ellips.setCurrentIndex(2)
         self.fgdc_horizdn.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)

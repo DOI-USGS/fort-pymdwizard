@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_purpose
 class Purpose(WizardWidget):
 
     drag_label = "Purpose <purpose>"
-
+    acceptable_tags = ['purpose']
 
     def build_ui(self):
         """
@@ -74,30 +74,12 @@ class Purpose(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-
-
-    def dragEnterEvent(self, e):
+    def get_children(self, widget):
         """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'purpose'
-        Parameters
-        ----------
-        e : qt event
+        This is actually getting handled in the Abstract widget
 
-        Returns
-        -------
-
-        None
         """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'purpose':
-                e.accept()
-        else:
-            e.ignore()
+        return []
 
     def _to_xml(self):
         """

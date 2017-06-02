@@ -54,12 +54,13 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_metainfo
 from pymdwizard.gui.ContactInfo import ContactInfo
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.fgdc_date import FGDCDate
 
 
 class MetaInfo(WizardWidget):
 
     drag_label = "Metadata Information <metainfo>"
+    acceptable_tags = ['metainfo', 'cntinfo', 'ptcontact']
 
     ui_class = UI_metainfo.Ui_fgdc_metainfo
 
@@ -75,15 +76,14 @@ class MetaInfo(WizardWidget):
         self.setup_dragdrop(self)
 
         self.contactinfo = ContactInfo(parent=self)
-        self.metd = SingleDate(parent=self)
-        self.metd.ui.fgdc_caldate.setObjectName('fgdc_metd')
+        self.metd = FGDCDate(parent=self, fgdc_name='fgdc_metd')
 
         self.ui.help_metd.layout().addWidget(self.metd)
 
         self.ui.fgdc_metc.layout().addWidget(self.contactinfo)
 
     def connect_events(self):
-        self.ui.fgdc_metstdn.currentIndexChanged.connect(self.update_metstdv)
+        self.ui.fgdc_metstdn.currentTextChanged.connect(self.update_metstdv)
         self.ui.fgdc_metstdv.currentIndexChanged.connect(self.update_metstdn)
         self.ui.button_use_dataset.clicked.connect(self.pull_datasetcontact)
 
@@ -96,36 +96,16 @@ class MetaInfo(WizardWidget):
             self.root_widget.switch_schema('bdp')
 
     def update_metstdv(self):
-        if self.ui.fgdc_metstdn.currentText() == 'FGDC CSDGM':
-            self.ui.fgdc_metstdv.setCurrentIndex(0)
-            self.root_widget.switch_schema('fgdc')
-        elif self.ui.fgdc_metstdn.currentText() == 'FGDC Biological Data Profile of the CDGSM':
+        if 'biological' in self.ui.fgdc_metstdn.currentText().lower() or \
+           'bdp' in self.ui.fgdc_metstdn.currentText().lower():
             self.ui.fgdc_metstdv.setCurrentIndex(1)
             self.root_widget.switch_schema('bdp')
+        else:
+            self.ui.fgdc_metstdv.setCurrentIndex(0)
+            self.root_widget.switch_schema('fgdc')
 
     def pull_datasetcontact(self):
         self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("idinfo drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'metainfo':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
         # add code here to translate the form into xml representation
@@ -167,6 +147,10 @@ class MetaInfo(WizardWidget):
 
             metd = xml_utils.get_text_content(xml_metainfo, 'metd')
             self.metd.set_date(metd)
+        elif xml_metainfo.tag in ['ptcontac', 'cntinfo']:
+            if xml_metainfo.tag == 'ptcontac':
+                xml_metainfo = xml_utils.search_xpath(xml_metainfo, 'cntinfo')
+            self.contactinfo._from_xml(xml_metainfo)
 
 if __name__ == "__main__":
     utils.launch_widget(MetaInfo, "MetaInfo testing")

@@ -54,13 +54,14 @@ from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Citation
-from pymdwizard.gui.single_date import SingleDate
+from pymdwizard.gui.ui_files import UI_citeinfo
+from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
 
-class Citation(WizardWidget): #
+class Citeinfo(WizardWidget): #
 
-    drag_label = "Citation <citation>"
+    drag_label = "Citation information <citeinfo>"
+    acceptable_tags = ['citation', 'citeinfo']
 
     def __init__(self, parent=None, include_lwork=True):
         self.include_lwork = include_lwork
@@ -75,11 +76,12 @@ class Citation(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_Citation.Ui_fgdc_citation()
+        self.ui = UI_citeinfo.Ui_parent_form()
         self.ui.setupUi(self)
 
         if self.include_lwork:
-            self.lworkcit_widget = Citation(parent=self, include_lwork=False)
+            self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
+            self.lworkcit_widget.ui.lbl_dataset_title.setText('Larger Work Title')
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
         else:
             self.ui.fgdc_lworkcit.hide()
@@ -87,9 +89,9 @@ class Citation(WizardWidget): #
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = SingleDate(label='YYYMMDD  ',
-                                            show_format=False, required=True)
-        self.ui.pubdate_widget.ui.fgdc_caldate.setObjectName('fgdc_pubdate')
+        self.ui.pubdate_widget = FGDCDate(label='YYYYMMDD  ',
+                                            show_format=False, required=True,
+                                            fgdc_name='fgdc_pubdate')
 
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
@@ -175,40 +177,6 @@ class Citation(WizardWidget): #
             self.ui.lworkcite_widget.show()
         else:
             self.ui.lworkcite_widget.hide()
-
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'citation'
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag in ['citation', 'citeinfo']:
-                e.accept()
-        else:
-            e.ignore()
-
-    def switch_schema(self, schema):
-        self.schema = schema
-        if schema == 'bdp':
-            self.ui.help_geoform.show()
-        else:
-            self.ui.help_geoform.hide()
-
-        if self.include_lwork:
-            self.lworkcit_widget.switch_schema(self.schema)
                 
     def _to_xml(self):
         """
@@ -230,8 +198,7 @@ class Citation(WizardWidget): #
         title = xml_utils.xml_node("title", self.ui.fgdc_title.text(),
                                    parent_node=citeinfo)
 
-        if self.schema == 'bdp':
-            geoform = xml_utils.xml_node("geoform",
+        geoform = xml_utils.xml_node("geoform",
                                          self.ui.fgdc_geoform.currentText(),
                                          parent_node=citeinfo)
 
@@ -283,9 +250,11 @@ class Citation(WizardWidget): #
                 return
 
             self.fgdc_origin.clear_widgets()
-            if citeinfo.findall("origin"):
+            originators = citeinfo.findall("origin")
+            if originators :
+                self.fgdc_origin.clear_widgets(add_another=False)
                 for origin in citeinfo.findall('origin'):
-                    origin_widget = self.fgdc_origin.widgets[0]
+                    origin_widget = self.fgdc_origin.add_another()
                     origin_widget.added_line.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
@@ -316,16 +285,27 @@ class Citation(WizardWidget): #
                 utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
+                self.ui.radioButton_8.setChecked(True)
 
             if citeinfo.xpath('lworkcit'):
-                self.ui.radio_lworkyes.setChecked(True)
-                self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                try:
+                    self.ui.radio_lworkyes.setChecked(True)
+                    self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                except AttributeError:
+                    msg = 'you pasted a citation element into the larger work citation area'
+                    msg += '\n that contained a larger work citation'
+                    msg += '\n Multiple nested larger work citations are not currently supported in the tool'
+                    msg += '\n\n the larger work citation being pasted will be ignored'
+                    QMessageBox.warning(self, "Dropped Content Warning", msg)
+
+            else:
+                self.ui.radio_lworkno.setChecked(True)
 
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Citation,
+    utils.launch_widget(Citeinfo,
                         "Citation testing")
 

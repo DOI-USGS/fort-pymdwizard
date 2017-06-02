@@ -59,8 +59,9 @@ from pymdwizard.gui.ui_files import UI_ContactInfo
 from pymdwizard.gui.ui_files import UI_USGSContactImporter
 
 class ContactInfo(WizardWidget):
-    xpath_root = "cntinfo"
+
     drag_label = "Contact Information <cntinfo>"
+    acceptable_tags = ['ptcontac', 'cntinfo']
 
     ui_class = UI_ContactInfo.Ui_USGSContactInfoWidget
 
@@ -73,15 +74,16 @@ class ContactInfo(WizardWidget):
         None
         """
         self.ui.btn_import_contact.clicked.connect(self.find_usgs_contact)
+        self.per_or_org = self.ui.fgdc_cntperp
         self.ui.rbtn_perp.toggled.connect(self.switch_primary)
 
     def find_usgs_contact(self):
-        self.usgs_contact = QDialog(self)
+        self.usgs_contact = QDialog(parent=self)
         self.usgs_contact_ui = UI_USGSContactImporter.Ui_ImportUsgsUser()
         self.usgs_contact_ui.setupUi(self.usgs_contact)
         self.usgs_contact_ui.btn_OK.clicked.connect(self.add_contact)
         self.usgs_contact_ui.btn_cancel.clicked.connect(self.cancel)
-
+        utils.set_window_icon(self.usgs_contact)
         self.usgs_contact.show()
 
     def add_contact(self):
@@ -115,36 +117,15 @@ class ContactInfo(WizardWidget):
         None
         """
         if self.ui.rbtn_perp.isChecked():
-            self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntper)
+            self.per_or_org.layout().insertWidget(0, self.ui.lbl_cntper)
             self.ui.required_horizontal_layout.insertWidget(0, self.ui.fgdc_cntper)
-            self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntorg)
+            self.per_or_org.layout().insertWidget(2, self.ui.lbl_cntorg)
             self.ui.optional_horizontal_layout.insertWidget(0, self.ui.fgdc_cntorg)
         else:
-            self.ui.left_vertical_layout.insertWidget(0, self.ui.lbl_cntorg)
+            self.per_or_org.layout().insertWidget(0, self.ui.lbl_cntorg)
             self.ui.required_horizontal_layout.insertWidget(0, self.ui.fgdc_cntorg)
-            self.ui.left_vertical_layout.insertWidget(2, self.ui.lbl_cntper)
+            self.per_or_org.layout().insertWidget(2, self.ui.lbl_cntper)
             self.ui.optional_horizontal_layout.insertWidget(0, self.ui.fgdc_cntper)
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("cinfo drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'ptcontac' or element.tag == 'cntinfo':
-                e.accept()
-        else:
-            e.ignore()
 
     def _to_xml(self):
 
@@ -207,6 +188,9 @@ class ContactInfo(WizardWidget):
         return cntinfo
 
     def _from_xml(self, contact_information):
+
+        self.clear_widget()
+
         contact_dict = xml_utils.node_to_dict(contact_information)
         utils.populate_widget(self, contact_dict)
 
