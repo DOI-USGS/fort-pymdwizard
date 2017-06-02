@@ -91,17 +91,29 @@ class ContactInfo(WizardWidget):
         # strip off the @usgs.gov if they entered one
         username = username.split("@")[0]
 
-        cntperp = utils.get_usgs_contact_info(username,
-                                              as_dictionary=False)
-        if cntperp.getchildren()[0].getchildren()[0].text.strip():
-            self._from_xml(cntperp)
-            self.usgs_contact.deleteLater()
-        else:
+        try:
+            cntperp = utils.get_usgs_contact_info(username,
+                                                  as_dictionary=False)
+            if cntperp.getchildren()[0].getchildren()[0].text.strip():
+                self._from_xml(cntperp)
+                self.usgs_contact.deleteLater()
+            else:
+                msg = QMessageBox(self)
+                utils.set_window_icon(msg)
+                msg.setIcon(QMessageBox.Information)
+                msg.setText("'{}' Not Found".format(username))
+                msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
+                msg.setWindowTitle("Name Not Found")
+                msg.setStandardButtons(QMessageBox.Ok)
+                msg.exec_()
+        except:
+            msg_text = "Make sure there is a working Internet connection or try again latter."
             msg = QMessageBox(self)
+            utils.set_window_icon(msg)
             msg.setIcon(QMessageBox.Information)
-            msg.setText("'{}' Not Found".format(username))
-            msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
-            msg.setWindowTitle("Name Not Found")
+            msg.setText("Issue encountered while searching contact inforomation.")
+            msg.setInformativeText(msg_text)
+            msg.setWindowTitle("Problem encountered")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
 
