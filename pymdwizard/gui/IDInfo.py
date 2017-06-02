@@ -75,8 +75,8 @@ class IdInfo(WizardWidget):
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
-    def __init__(self, root_widget=None):
-        super(self.__class__, self).__init__()
+    def __init__(self, root_widget=None, parent=None):
+        super(self.__class__, self).__init__(parent=parent)
         self.schema = 'bdp'
         self.root_widget = root_widget
 

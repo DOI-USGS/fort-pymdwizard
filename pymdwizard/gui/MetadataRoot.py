@@ -73,9 +73,9 @@ class MetadataRoot(WizardWidget):
 
     ui_class = UI_MetadataRoot.Ui_metadata_root
 
-    def __init__(self):
+    def __init__(self, parent=None):
         self.schema = 'bdp'
-        super(self.__class__, self).__init__()
+        super(self.__class__, self).__init__(parent=parent)
 
     def build_ui(self):
         """
@@ -89,7 +89,7 @@ class MetadataRoot(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self, enable=True)
 
-        self.idinfo = IdInfo(root_widget=self)
+        self.idinfo = IdInfo(root_widget=self, parent=self)
         self.ui.page_idinfo.layout().addWidget(self.idinfo)
 
         self.dataqual =DataQuality()
@@ -205,80 +205,6 @@ class MetadataRoot(WizardWidget):
         self.populate_section(metadata_element, 'distinfo', self.distinfo)
 
         self.populate_section(metadata_element, 'metainfo', self.metainfo)
-
-
-
-        # if type(metadata_element) == etree._Element and \
-        #                 metadata_element.tag == 'idinfo':
-        #     idinfo = metadata_element
-        #     self.idinfo._from_xml(idinfo)
-        #     return
-        # else:
-        #     idinfo = xml_utils.search_xpath(metadata_element, 'idinfo')
-        # self.idinfo._from_xml(idinfo)
-        #
-        # if type(metadata_element) == etree._Element and \
-        #                 metadata_element.tag == 'dataqual':
-        #     dataqual = metadata_element
-        # else:
-        #     dataqual =  xml_utils.search_xpath(metadata_element, 'dataqual')
-        #
-        # if dataqual is not None:
-        #     self.dataqual._from_xml(dataqual)
-        # else:
-        #     self.dataqual.clear_widget()
-        #
-        # spdom = xml_utils.search_xpath(metadata_element, 'idinfo/spdom')
-        # if spdom is not None:
-        #     self.spatial_tab.spdom._from_xml(spdom)
-        # else:
-        #     self.spatial_tab.spdom.clear_widget()
-        #
-        # spdoinfo = xml_utils.search_xpath(metadata_element, 'spdoinfo')
-        # if spdoinfo is not None:
-        #     self.spatial_tab.spdoinfo._from_xml(spdoinfo)
-        # else:
-        #     self.spatial_tab.spdoinfo.ui.rbtn_yes.setChecked(False)
-        #     self.spatial_tab.spdoinfo.ui.rbtn_no.setChecked(True)
-        #     self.spatial_tab.clear_widget()
-        #
-        # spref = xml_utils.search_xpath(metadata_element, 'spref')
-        # if spref is not None:
-        #     self.spatial_tab.spref._from_xml(spref[0])
-        # else:
-        #     self.spatial_tab.spref.ui.rbtn_yes.setChecked(False)
-        #     self.spatial_tab.spref.ui.rbtn_no.setChecked(True)
-        #     self.spatial_tab.spref.clear_widget()
-        #
-        # if type(metadata_element) == etree._Element and \
-        #                 metadata_element.tag == 'eainfo':
-        #     eainfo = metadata_element
-        # else:
-        #     eainfo = xml_utils.search_xpath(metadata_element, 'eainfo')
-        # if eainfo is not None:
-        #     self.eainfo._from_xml(eainfo)
-        # else:
-        #     self.eainfo.clear_widget()
-        #
-        # if type(metadata_element) == etree._Element and \
-        #                 metadata_element.tag == 'distinfo':
-        #     distinfo = metadata_element
-        # else:
-        #     distinfo = xml_utils.search_xpath(metadata_element, 'distinfo')
-        # if distinfo is not None:
-        #     self.distinfo._from_xml(distinfo)
-        # else:
-        #     self.distinfo.clear_widget()
-        #
-        # if type(metadata_element) == etree._Element and \
-        #                 metadata_element.tag == 'metainfo':
-        #     metainfo = metadata_element
-        # else:
-        #     metainfo = xml_utils.search_xpath(metadata_element, 'metainfo')
-        # if metainfo is not None:
-        #     self.metainfo._from_xml(metainfo)
-        # else:
-        #     self.metainfo.clear_widget()
 
     def populate_section(self, metadata_element, section_name, widget):
 
