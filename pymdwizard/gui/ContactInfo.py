@@ -91,6 +91,9 @@ class ContactInfo(WizardWidget):
         # strip off the @usgs.gov if they entered one
         username = username.split("@")[0]
 
+        if not username:
+            return
+
         try:
             cntperp = utils.get_usgs_contact_info(username,
                                                   as_dictionary=False)
