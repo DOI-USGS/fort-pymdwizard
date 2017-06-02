@@ -40,6 +40,8 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import sys
 from lxml import etree
+from copy import deepcopy
+
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -209,19 +211,27 @@ class IdInfo(WizardWidget):
             idinfo_node.append(datacredit_node)
 
         if self.original_xml is not None:
+            secinfo = xml_utils.search_xpath(self.original_xml, 'secinfo')
+            if secinfo is not None:
+                idinfo_node.append(deepcopy(secinfo))
+
             native = xml_utils.search_xpath(self.original_xml, 'native')
             if native is not None:
-                idinfo_node.append(native)
+                idinfo_node.append(deepcopy(native))
+
+            crossref_list = xml_utils.search_xpath(self.original_xml, 'crossref')
+            for crossref in crossref_list:
+                idinfo_node.append(deepcopy(crossref))
 
             tool = xml_utils.search_xpath(self.original_xml, 'tool')
             if tool is not None:
-                idinfo_node.append(tool)
+                idinfo_node.append(deepcopy(tool))
 
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
 
-        self.original_xml = xml_idinfo
+        self.original_xml = (xml_idinfo)
 
         citation = xml_utils.search_xpath(xml_idinfo, 'citation')
         if citation is not None:
