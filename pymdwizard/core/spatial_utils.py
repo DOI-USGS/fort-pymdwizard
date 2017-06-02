@@ -41,9 +41,15 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import collections
 
-from osgeo import gdal, osr, ogr
-gdal.UseExceptions()
-gdal.AllRegister()
+try:
+    from osgeo import gdal, osr, ogr
+    gdal.UseExceptions()
+    gdal.AllRegister()
+    use_gdal = True
+except ImportError:
+    print('ERROR Importing GDAL, Spatial functionality limited')
+    use_gdal = False
+
 
 from pymdwizard.core.xml_utils import xml_node
 
@@ -102,10 +108,13 @@ def get_geographic_extent(layer):
 
     srs = get_ref(layer)
 
+    geographic = osr.SpatialReference()
+    geographic.ImportFromEPSG(4326)
+
     west, north = transform_point(
-        min_x, max_y, srs, srs.CloneGeogCS())
+        min_x, max_y, srs, geographic)
     east, south = transform_point(
-        max_x, min_y, srs, srs.CloneGeogCS())
+        max_x, min_y, srs, geographic)
 
     return west, east, south, north
 
