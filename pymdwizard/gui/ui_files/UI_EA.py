@@ -50,10 +50,6 @@ class Ui_Form(object):
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_4.addWidget(self.label_2)
-        self.label_3 = QtWidgets.QLabel(self.tab_instructions)
-        self.label_3.setWordWrap(True)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_4.addWidget(self.label_3)
         self.label_4 = QtWidgets.QLabel(self.tab_instructions)
         self.label_4.setObjectName("label_4")
         self.verticalLayout_4.addWidget(self.label_4)
@@ -147,7 +143,7 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.fgdc_eainfo)
 
         self.retranslateUi(Form)
-        self.fgdc_eainfo.setCurrentIndex(2)
+        self.fgdc_eainfo.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -156,7 +152,6 @@ class Ui_Form(object):
         self.label_5.setToolTip(_translate("Form", "Required"))
         self.label_5.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic; color:#55aaff;\">Provide Specific Information about the data content, organization, units, and values.</span></p></body></html>"))
         self.label_2.setText(_translate("Form", "If this record describes a CSV, Shapefile, or other tabular or spatial dataset you must fill the Detailed section. Use the \'import from dataset\' functionality on the menubar to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. "))
-        self.label_3.setText(_translate("Form", "If this record describes a CSV, Shapefile, or other tabular or spatial dataset you must fill the Detailed section. Use the \'import from dataset\' functionality on the menubar to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. "))
         self.label_4.setText(_translate("Form", "Use both if that provides more clarity to data users."))
         self.groupBox.setTitle(_translate("Form", "Additional \'Detailed\' tabs"))
         self.label_34.setText(_translate("Form", "In some cases more than one Detailed section is required.  This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel Workbook, or a data bundle consisting of multiple files."))
