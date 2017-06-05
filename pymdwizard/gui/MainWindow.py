@@ -791,15 +791,20 @@ class PyMdWizardMainForm(QMainWindow):
         root_dir = os.path.dirname(install_dir)
         update_bat = os.path.join(root_dir, 'update_wizard.bat')
         if os.path.exists(update_bat) and os.path.exists(root_dir):
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            p = check_output([update_bat], cwd=root_dir, shell=False)
-            # stdout, stderr = p.communicate()
-            if p.splitlines()[-1] == b'Already up-to-date.':
-                msg = 'Application already up to date.'
-            else:
-                msg = 'Application updated.\n\n'
-                msg += 'Please close and restart for these updates to take effect'
-            QApplication.restoreOverrideCursor()
+            try:
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+                p = check_output([update_bat], cwd=root_dir, shell=False)
+                if p.splitlines()[-1] == b'Already up-to-date.':
+                    msg = 'Application already up to date.'
+                else:
+                    msg = 'Application updated.\n\n'
+                    msg += 'Please close and restart for these updates to take effect'
+                QApplication.restoreOverrideCursor()
+            except BaseException as e:
+                import traceback
+                msg = "Could not update application:\n{}".format(traceback.format_exc())
+                QMessageBox.warning(self, "Recent Files", msg)
+
         else:
             msg = 'Could not find the batch file to update the application'
 
