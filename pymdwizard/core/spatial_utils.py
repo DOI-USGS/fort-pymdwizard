@@ -39,9 +39,17 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import os
 import collections
 
+from pymdwizard.core.xml_utils import xml_node
+from pymdwizard.core import utils
+
 try:
+    python_root = utils.get_install_dname('python')
+    gdal_data = os.path.join(python_root, 'Library', 'share', 'gdal')
+    os.environ['GDAL_DATA'] = gdal_data
+
     from osgeo import gdal, osr, ogr
     gdal.UseExceptions()
     gdal.AllRegister()
@@ -49,10 +57,6 @@ try:
 except ImportError:
     print('ERROR Importing GDAL, Spatial functionality limited')
     use_gdal = False
-
-
-from pymdwizard.core.xml_utils import xml_node
-
 
 def _get_raster_extent(src):
     """

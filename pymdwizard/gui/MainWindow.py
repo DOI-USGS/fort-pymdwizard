@@ -759,7 +759,7 @@ class PyMdWizardMainForm(QMainWindow):
         jupyter_dialog.msgBox.setWindowTitle("Where do you want to launch Jupyter?")
         ret = jupyter_dialog.msgBox.exec_()
 
-        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        install_dir = utils.get_install_dname()
         if ret == 0:
             jupyter_dname = os.path.join(install_dir, 'examples')
         elif ret == 1:
@@ -787,7 +787,7 @@ class PyMdWizardMainForm(QMainWindow):
     def update_from_github(self):
         from subprocess import check_output
 
-        install_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        install_dir = utils.get_install_dname()
         root_dir = os.path.dirname(install_dir)
         update_bat = os.path.join(root_dir, 'update_wizard.bat')
         if os.path.exists(update_bat) and os.path.exists(root_dir):

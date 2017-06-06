@@ -351,4 +351,23 @@ def check_fname(fname):
             return 'not writable file'
 
 
+def get_install_dname(which='pymdwizard'):
+    """
+    get the full path to the installation directory
+    Returns
+    -------
+    str : path and directory name of the directory pymdwizard is in
+    """
+    this_fname = os.path.realpath(__file__)
+    pymdwizard_dname = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
+    root_dir = os.path.dirname(pymdwizard_dname)
+    python_dname = os.path.join(root_dir, 'Python35_64')
+
+    if which == 'root':
+        return root_dir
+    elif which == 'pymdwizard':
+        return pymdwizard_dname
+    elif which == 'python':
+        return python_dname
+
 
