@@ -219,7 +219,9 @@ class IdInfo(WizardWidget):
             if native is not None:
                 idinfo_node.append(deepcopy(native))
 
-            crossref_list = xml_utils.search_xpath(self.original_xml, 'crossref')
+
+            crossref_list = xml_utils.search_xpath(self.original_xml,
+                                                'crossref', only_first=False)
             for crossref in crossref_list:
                 idinfo_node.append(deepcopy(crossref))
 

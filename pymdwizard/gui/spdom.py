@@ -221,7 +221,8 @@ class Spdom(WizardWidget):
             if boundalt is not None:
                 spdom.append(deepcopy(boundalt))
 
-            dsgpoly_list = self.original_xml.xpath('dsgpoly')
+            dsgpoly_list = xml_utils.search_xpath(self.original_xml, 'dsgpoly',
+                                                  only_first=False)
             for dsgpoly in dsgpoly_list:
                 spdom.append(deepcopy(dsgpoly))
 
