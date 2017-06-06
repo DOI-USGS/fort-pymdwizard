@@ -813,13 +813,14 @@ class PyMdWizardMainForm(QMainWindow):
 
         QMessageBox.information(self, "Update results", msg)
 
+
 class JupyterLocationDialog(QDialog):
     def __init__(self, parent=None):
         super(JupyterLocationDialog, self).__init__(parent)
 
         self.msgBox = QMessageBox()
         self.msgBox.setText('Choose option below:')
-        self.msgBox.addButton(QPushButton('Default (MetadataWiazrd examples folder)'), QMessageBox.YesRole)
+        self.msgBox.addButton(QPushButton('Default (MetadataWizard examples folder)'), QMessageBox.YesRole)
         self.msgBox.addButton(QPushButton('Browse to different folder'), QMessageBox.NoRole)
         self.msgBox.addButton(QPushButton('Cancel'), QMessageBox.RejectRole)
 
