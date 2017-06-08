@@ -187,7 +187,6 @@ class WizardWidget(QWidget):
                 self.add_children(child_widget, child_node)
                 parent_node.add_child(child_node)
             else:
-
                 self.add_children(child_widget, parent_node)
         return parent_node
 

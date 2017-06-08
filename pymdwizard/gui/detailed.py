@@ -71,7 +71,7 @@ class Detailed(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_detailed.Ui_Form()
+        self.ui = UI_detailed.Ui_fgdc_detailed()
         self.ui.setupUi(self)
 
         self.attributes = attributes.Attributes()
