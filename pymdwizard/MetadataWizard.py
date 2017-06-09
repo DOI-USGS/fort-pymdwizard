@@ -2,10 +2,16 @@
 
 import argparse
 
+import os
 import sys
-print(sys.argv)
 
-from pymdwizard.gui import MainWindow
+
+
+def set_clean_path():
+    this_fname = os.path.realpath(__file__)
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
+    python_dname = os.path.join(root_dir, 'Python35_64')
+    os.environ['path'] = ";".join([python_dname, os.path.join(python_dname, 'Library', 'bin')])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Metadata Wizard")
@@ -13,5 +19,7 @@ if __name__ == '__main__':
     parser.add_argument("introspect_fname", help="The CSV or SHP file to use for populating the spdom, spdoinfo, spref and eainfo sections", type=str, default=None, nargs='?',)
     args = parser.parse_args()
 
+    set_clean_path()
+    from pymdwizard.gui import MainWindow
     MainWindow.launch_main(xml_fname=args.xml_fname,
                            introspect_fname=args.introspect_fname)

@@ -85,9 +85,6 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.load_default()
 
-        os.environ['path'] = ';'.join([utils.get_install_dname('python'),
-                                      os.environ['path']])
-
     def build_ui(self):
         """
         Build and modify this widget's GUI
