@@ -101,6 +101,7 @@ class PlaceList(WizardWidget): #
             if len(self.thesauri) == 0:
                 theme_widget = self.add_keyword(keyword='', thesaurus='None',
                                             locked=False)
+                self.thesauri.append(theme_widget)
         else:
             self.ui.place_contents.hide()
 
@@ -117,7 +118,7 @@ class PlaceList(WizardWidget): #
             self.ui.theme_tabs.addTab(theme_widget, tab_label)
             self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
 
-        self.thesauri.append(theme_widget)
+            self.thesauri.append(theme_widget)
         return theme_widget
 
     def changed_thesaurus(self, s):
@@ -126,11 +127,13 @@ class PlaceList(WizardWidget): #
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
-        self.ui.theme_tabs.removeTab(current_index)
-        del self.thesauri[current_index-1]
+        self.remove_tab(current_index)
+
+    def remove_tab(self, index):
+        self.ui.theme_tabs.removeTab(index)
+        del self.thesauri[index-1]
 
     def get_children(self, widget):
-
         children = []
 
         if self.ui.rbtn_yes.isChecked():
@@ -140,9 +143,9 @@ class PlaceList(WizardWidget): #
         return children
 
     def clear_widget(self):
-        for i in range(len(self.thesauri), 0, -1):
-            self.ui.theme_tabs.setCurrentIndex(i)
-            self.remove_selected()
+        for i in range(len(self.thesauri)-1, -1, -1):
+            self.remove_tab(i)
+        self.thesauri = []
 
     def search_controlled(self):
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True, parent=self)
@@ -163,6 +166,7 @@ class PlaceList(WizardWidget): #
         if theme_widget is None:
             shortname = thesaurus.split(' ')[0]
             theme_widget = self.add_another(tab_label=shortname, locked=locked)
+
             theme_widget.ui.fgdc_themekt.setText(thesaurus)
             if locked:
                 theme_widget.lock()
@@ -209,9 +213,9 @@ class PlaceList(WizardWidget): #
         keywords = xml_utils.xml_node('keywords')
 
         if self.ui.rbtn_yes.isChecked():
-            for theme in self.thesauri:
-                theme_xml = theme._to_xml()
-                keywords.append(theme_xml)
+            for place in self.thesauri:
+                place_xml = place._to_xml()
+                keywords.append(place_xml)
 
         return keywords
 
