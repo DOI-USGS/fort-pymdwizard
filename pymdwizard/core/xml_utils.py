@@ -169,7 +169,13 @@ def search_xpath(node, xpath, only_first=True):
     ----------
     node : lxml node
 
-    xpath : xpath.search
+    xpath : string
+        xpath.search
+
+    only_first : boolean
+        flag to indicate return type
+        True == only return first element found or None if none found
+        False == return list of matches found or [] if none found
 
     Returns
     -------
@@ -184,7 +190,7 @@ def search_xpath(node, xpath, only_first=True):
                 return None
             else:
                 return []
-        elif len(matches) > 1 or not only_first:
+        elif len(matches) > 1 and not only_first:
             return matches
         else:
             return matches[0]
