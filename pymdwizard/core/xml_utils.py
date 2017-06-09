@@ -422,10 +422,10 @@ class XMLNode(object):
             result += '\n{}</{}>'.format("  "*level, self.tag)
         return result
 
-    #     def __eq__(self, other):
-    #         if isinstance(other, self.__class__):
-    #             return self.__str__ == other.__str__
-    #         return False
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.to_str() == other.to_str()
+        return False
 
     def from_xml(self, element):
         self.element = element
