@@ -69,7 +69,10 @@ target/
 *.iml
 .idea
 
+examples
 pymdwizard/Scratch
 tests/data/projections
 
+#windows
+desktop.ini
 Thumbs.db
