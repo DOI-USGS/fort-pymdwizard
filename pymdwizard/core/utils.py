@@ -86,6 +86,24 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
         return element
 
 
+def get_orcid(ad_username):
+    """
+
+    Parameters
+    ----------
+    ad_username : the AD user name to search for
+
+    Returns
+    -------
+    str : the orcid as a string, if not found returns None
+
+    """
+    try:
+        return get_usgs_contact_info(ad_username)['fgdc_cntperp']['fgdc_orcid']
+    except:
+        return None
+
+
 def populate_widget(widget, contents):
     """
     uses the
