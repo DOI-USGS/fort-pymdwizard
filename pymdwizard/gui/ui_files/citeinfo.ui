@@ -394,6 +394,11 @@
                    <string>application/service</string>
                   </property>
                  </item>
+                 <item>
+                  <property name="text">
+                   <string>publication</string>
+                  </property>
+                 </item>
                 </widget>
                </item>
                <item>
