@@ -190,7 +190,9 @@ def search_xpath(node, xpath, only_first=True):
                 return None
             else:
                 return []
-        elif len(matches) > 1 and not only_first:
+        elif len(matches) == 1 and only_first:
+            return matches[0]
+        elif len(matches) >= 1 and not only_first:
             return matches
         else:
             return matches[0]
