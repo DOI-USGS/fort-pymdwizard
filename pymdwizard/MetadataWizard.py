@@ -8,10 +8,14 @@ import sys
 
 
 def set_clean_path():
-    this_fname = os.path.realpath(__file__)
-    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
-    python_dname = os.path.join(root_dir, 'Python35_64')
-    os.environ['path'] = ";".join([python_dname, os.path.join(python_dname, 'Library', 'bin')])
+
+    if os.name == 'nt':
+        this_fname = os.path.realpath(__file__)
+        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
+        python_dname = os.path.join(root_dir, 'Python35_64')
+        os.environ['path'] = ";".join([python_dname, os.path.join(python_dname, 'Library', 'bin')])
+    else:
+        pass
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Metadata Wizard")
