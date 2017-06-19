@@ -221,7 +221,7 @@
         <item>
          <widget class="QLineEdit" name="fgdc_attrdefs">
           <property name="text">
-           <string>Producer Defined</string>
+           <string>Producer defined</string>
           </property>
          </widget>
         </item>
