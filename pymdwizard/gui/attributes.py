@@ -131,6 +131,35 @@ class Attributes(WizardWidget):  #
             attribute.deleteLater()
         self.attrs = []
 
+    def insert_before(self, this_attr):
+        new_attrs = []
+        for i, attribute in enumerate(self.attrs):
+            if attribute == this_attr:
+                new_attr = attr.Attr(parent=self)
+                self.main_layout.insertWidget(i, new_attr)
+                new_attrs.append(new_attr)
+            new_attrs.append(attribute)
+        self.attrs = new_attrs
+
+    def insert_after(self, this_attr):
+        new_attrs = []
+        for i, attribute in enumerate(self.attrs):
+            new_attrs.append(attribute)
+            if attribute == this_attr:
+                new_attr = attr.Attr(parent=self)
+                self.main_layout.insertWidget(i+1, new_attr)
+                new_attrs.append(new_attr)
+        self.attrs = new_attrs
+
+    def delete_attr(self, this_attr):
+        keep_attrs = []
+        for attribute in self.attrs:
+            if attribute == this_attr:
+                attribute.deleteLater()
+            else:
+                keep_attrs.append(attribute)
+        self.attrs = keep_attrs
+
     def minimize_children(self):
         for attr_widget in self.attrs:
             attr_widget.regularsize_me()

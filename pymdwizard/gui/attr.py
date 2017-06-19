@@ -31,19 +31,12 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
-from lxml import etree
-
 import numpy as np
-import pandas as pd
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap, QCursor
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QPropertyAnimation
-
-import sip
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget, QMenu
+from PyQt5.QtCore import QPropertyAnimation, QSize
+from PyQt5.QtGui import QIcon
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -80,7 +73,7 @@ class Attr(WizardWidget):  #
         self.ui.setupUi(self)
         #
 
-        self.ui.fgdc_attrlabl.installEventFilter(self)
+        # self.ui.fgdc_attrlabl.installEventFilter(self)
         self.ui.fgdc_attrdef.installEventFilter(self)
         self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
@@ -224,6 +217,87 @@ class Attr(WizardWidget):  #
             self.supersize_me()
 
         return super(Attr, self).eventFilter(obj, event)
+
+    def contextMenuEvent(self, event):
+
+
+        self.in_context = True
+        clicked_widget = self.childAt(event.pos())
+
+
+        menu = QMenu(self)
+        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
+        copy_action.setStatusTip('Copy to the Clipboard')
+
+        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
+        paste_action.setStatusTip('Paste from the Clipboard')
+
+        menu.addSeparator()
+        insert_before = menu.addAction(QIcon('paste.png'), 'Insert before')
+        insert_before.setStatusTip('insert an empty attribute (column) before this one')
+
+        insert_after = menu.addAction(QIcon('paste.png'), 'Insert After')
+        insert_after.setStatusTip('insert an empty attribute (column) after this one')
+
+        delete_action = menu.addAction(QIcon('delete.png'), '&Delete')
+        delete_action.setStatusTip('Delete this atttribute (column)')
+
+        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+            menu.addSeparator()
+            help_action = menu.addAction("Help")
+        else:
+            help_action = None
+
+        menu.addSeparator()
+        clear_action = menu.addAction("Clear content")
+
+        action = menu.exec_(self.mapToGlobal(event.pos()))
+
+        if action == copy_action:
+            if clicked_widget is None:
+                pass
+            elif clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.copy_mime()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.copy_mime()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.copy_mime()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.copy_mime()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.copy_mime()
+            else:
+                self.copy_mime()
+        elif action == paste_action:
+            self.paste_mime()
+        elif action == clear_action:
+            if clicked_widget is None:
+                self.clear_widget()
+            elif clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.clear_widget()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.clear_widget()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.clear_widget()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.clear_widget()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.clear_widget()
+            else:
+                self.clear_widget()
+        elif action == insert_before:
+            self.parent_ui.insert_before(self)
+        elif action == insert_after:
+            self.parent_ui.insert_after(self)
+        elif action == delete_action:
+            self.parent_ui.delete_attr(self)
+        elif help_action is not None and action == help_action:
+            msg = QMessageBox(self)
+            # msg.setTextFormat(Qt.RichText)
+            msg.setText(clicked_widget.help_text)
+            msg.setWindowTitle("Help")
+            msg.show()
+        self.in_context = False
 
     def _to_xml(self):
         """
