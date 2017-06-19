@@ -270,7 +270,7 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return etree.tostring(node, pretty_print=True).decode()
+    return etree.tostring(node, pretty_print=True, with_tail=False).decode()
 
 
 def fname_to_node(fname):
