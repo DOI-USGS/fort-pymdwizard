@@ -83,6 +83,7 @@ class Citeinfo(WizardWidget): #
             self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
             self.lworkcit_widget.ui.lbl_dataset_title.setText('Larger Work Title')
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
+            self.lworkcit_widget.ui.fgdc_geoform.setEditText('publication')
         else:
             self.ui.fgdc_lworkcit.hide()
         self.include_lworkext_change(self.ui.radio_lworkyes.isChecked())

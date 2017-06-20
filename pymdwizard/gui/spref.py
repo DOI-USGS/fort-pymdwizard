@@ -167,7 +167,7 @@ class SpRef(WizardWidget):
         gridsys_name = self.ui.fgdc_gridsysn.currentText()
         projection = spatial_utils.GRIDSYS_LOOKUP[gridsys_name]
 
-        annotation_lookup_fname = utils.get_resource_path('fgdc/bdp_lookup')
+        annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
         try:
             with open(annotation_lookup_fname, encoding='utf-8') as data_file:
                 annotation_lookup = json.loads(data_file.read())

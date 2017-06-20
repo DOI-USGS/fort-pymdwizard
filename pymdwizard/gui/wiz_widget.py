@@ -36,11 +36,11 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox, QLayout
-from PyQt5.QtWidgets import QWidget, QLineEdit, QRadioButton, QLabel, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
+from PyQt5.QtWidgets import QWidget, QLabel, QComboBox
 from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
-from PyQt5.QtGui import QFont, QFontMetrics, QPalette, QBrush, QCursor
-from PyQt5.QtGui import QColor, QPixmap, QDrag, QPainter, QIcon, QGuiApplication
+from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QColor, QDrag, QPainter, QIcon
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 from pymdwizard.core import utils

@@ -37,9 +37,9 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
     """
 
     if xsl_fname.lower() == 'fgdc':
-        xsl_fname = utils.get_resource_path('fgdc/fgdc-std-001-1998-annotated.xsd')
+        xsl_fname = utils.get_resource_path('FGDC/fgdc-std-001-1998-annotated.xsd')
     elif xsl_fname.lower() == 'bdp':
-        xsl_fname = utils.get_resource_path('fgdc/BDPfgdc-std-001-1998-annotated.xsd')
+        xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
     else:
         xsl_fname = xsl_fname
 

@@ -188,7 +188,7 @@ class Ui_Form(object):
         self.label_21.setToolTip(_translate("Form", "Required"))
         self.label_21.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setText(_translate("Form", "Definition Source"))
-        self.fgdc_attrdefs.setText(_translate("Form", "Producer Defined"))
+        self.fgdc_attrdefs.setText(_translate("Form", "Producer defined"))
         self.label_24.setToolTip(_translate("Form", "Required"))
         self.label_24.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_7.setText(_translate("Form", "Column Contents Type"))

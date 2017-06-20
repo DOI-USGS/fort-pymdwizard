@@ -190,7 +190,9 @@ def search_xpath(node, xpath, only_first=True):
                 return None
             else:
                 return []
-        elif len(matches) > 1 and not only_first:
+        elif len(matches) == 1 and only_first:
+            return matches[0]
+        elif len(matches) >= 1 and not only_first:
             return matches
         else:
             return matches[0]
@@ -268,7 +270,7 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return etree.tostring(node, pretty_print=True).decode()
+    return etree.tostring(node, pretty_print=True, with_tail=False).decode()
 
 
 def fname_to_node(fname):

@@ -89,7 +89,14 @@ class ItisMainForm(QWidget):
             if 'combinedName' in df.columns:
                 item_name = df.iloc[index]['combinedName']
             else:
-                item_name = str(df.iloc[index]['commonName'])
+                try:
+                    item_name = str(df.iloc[index]['commonName'])
+                except KeyError:
+                    msg = "Error, No taxon was selected in the Search Results table!"
+                    msg += '\nMake sure the ITIS search returned results and select one before clicking Add Selection. '
+                    QMessageBox.information(self, "Problem adding tason", msg)
+
+                    return None
 
             tsn = df.iloc[index]['tsn']
             i = self.selected_items_df.index.max()+1
