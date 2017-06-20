@@ -131,7 +131,7 @@ class PlaceList(WizardWidget): #
 
     def remove_tab(self, index):
         self.ui.theme_tabs.removeTab(index)
-        del self.thesauri[index-1]
+        del self.thesauri[index]
 
     def get_children(self, widget):
         children = []
