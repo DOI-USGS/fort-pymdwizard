@@ -210,7 +210,9 @@ class Citeinfo(WizardWidget): #
             issue = xml_utils.xml_node('issue', text=self.ui.fgdc_issue.text(),
                                        parent_node=serinfo)
 
-        if self.ui.radio_pubinfoyes.isChecked():
+        if self.ui.radio_pubinfoyes.isChecked() and \
+                (self.ui.fgdc_pubplace.text() != '' or
+                 self.ui.fgdc_publish.text() != ''):
             pubinfo = xml_utils.xml_node('pubinfo', parent_node=citeinfo)
             pubplace = xml_utils.xml_node('pubplace', parent_node=pubinfo,
                                           text=self.ui.fgdc_pubplace.text())
