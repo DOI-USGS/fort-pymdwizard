@@ -31,24 +31,17 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
-from lxml import etree
-
 import pandas as pd
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate
-
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QIcon
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_attributes
 from pymdwizard.gui import attr
-
 
 class Attributes(WizardWidget):  #
 
@@ -86,11 +79,14 @@ class Attributes(WizardWidget):  #
             attr_i.set_series(col)
             attr_i.guess_domain()
 
-            self.attrs.append(attr_i)
-            attr_i.regularsize_me()
-            self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+            self.append_attr(attr_i)
 
         self.attrs[0].supersize_me()
+
+    def append_attr(self, attr):
+        self.attrs.append(attr)
+        attr.regularsize_me()
+        self.main_layout.insertWidget(len(self.main_layout) - 1, attr)
 
     def load_pickle(self, contents):
         self.clear_children()
@@ -117,9 +113,7 @@ class Attributes(WizardWidget):  #
                 utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
                 utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
 
-            self.attrs.append(attr_i)
-            attr_i.regularsize_me()
-            self.main_layout.insertWidget(len(self.main_layout) - 1, attr_i)
+            self.append_attr(attr_i)
 
         try:
             self.attrs[0].supersize_me()
@@ -164,6 +158,78 @@ class Attributes(WizardWidget):  #
         for attr_widget in self.attrs:
             attr_widget.regularsize_me()
             attr_widget.ui.fgdc_attrlabl.setCursorPosition(0)
+
+    def contextMenuEvent(self, event):
+        self.in_context = True
+        clicked_widget = self.childAt(event.pos())
+
+        menu = QMenu(self)
+        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
+        copy_action.setStatusTip('Copy to the Clipboard')
+
+        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
+        paste_action.setStatusTip('Paste from the Clipboard')
+
+        menu.addSeparator()
+        add_attr = menu.addAction(QIcon('paste.png'), 'Add attribute (column)')
+        add_attr.setStatusTip('Add attribute')
+
+        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+            menu.addSeparator()
+            help_action = menu.addAction("Help")
+        else:
+            help_action = None
+
+        menu.addSeparator()
+        clear_action = menu.addAction("Clear content")
+
+        action = menu.exec_(self.mapToGlobal(event.pos()))
+
+        if action == copy_action:
+            if clicked_widget is None:
+                pass
+            elif clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.copy_mime()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.copy_mime()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.copy_mime()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.copy_mime()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.copy_mime()
+            else:
+                self.copy_mime()
+        elif action == paste_action:
+            self.paste_mime()
+        elif action == clear_action:
+            if clicked_widget is None:
+                self.clear_widget()
+            elif clicked_widget.objectName() == 'idinfo_button':
+                self.idinfo.clear_widget()
+            elif clicked_widget.objectName() == 'dataquality_button':
+                self.dataqual.clear_widget()
+            elif clicked_widget.objectName() == 'eainfo_button':
+                self.eainfo.clear_widget()
+            elif clicked_widget.objectName() == 'distinfo_button':
+                self.distinfo.clear_widget()
+            elif clicked_widget.objectName() == 'metainfo_button':
+                self.metainfo.clear_widget()
+            else:
+                self.clear_widget()
+        elif action == add_attr:
+            new_attr = attr.Attr(parent=self)
+            self.append_attr(new_attr)
+            self.minimize_children()
+            new_attr.supersize_me()
+        elif help_action is not None and action == help_action:
+            msg = QMessageBox(self)
+            # msg.setTextFormat(Qt.RichText)
+            msg.setText(clicked_widget.help_text)
+            msg.setWindowTitle("Help")
+            msg.show()
+        self.in_context = False
+
 
     def dragEnterEvent(self, e):
         """
