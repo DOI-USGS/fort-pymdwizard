@@ -139,7 +139,7 @@ class ThemeList(WizardWidget): #
         self.ui.fgdc_theme.show()
 
         self.ui.theme_tabs.setCurrentIndex(0)
-        self.repaint()
+        self.resize(100, 100)
 
     def get_children(self, widget):
 
