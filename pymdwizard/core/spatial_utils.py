@@ -42,6 +42,8 @@ responsibility is assumed by the USGS in connection therewith.
 import os
 import collections
 
+import pandas as pd
+
 from pymdwizard.core.xml_utils import xml_node
 from pymdwizard.core import utils
 
@@ -1289,6 +1291,92 @@ def raster_spdoinfo(data):
     vrtcount = xml_node('vrtcount', text=bands, parent_node=rastinfo)
 
     return spdoinfo
+
+def band_to_df(band):
+    """
+    Creates a dataframe with one column (Value) and two rows with the bands
+    min and max value
+
+    Parameters
+    ----------
+    band : osgeo raster band object
+
+    Returns
+    -------
+    pandas dataframe
+    """
+    cols = ['Value']
+    stats = band.GetStatistics(True, False)
+    rows = [[stats[0]], [stats[1]]]
+    df = pd.DataFrame.from_records(rows, columns=cols)
+    df['Value'] = df['Value'].astype(float)
+    return df
+
+def rat_to_df(rat):
+    """
+    converts a raster attribute table into a pandas dataframe
+
+    Parameters
+    ----------
+    rat : osgeo GDALRasterAttributeTable
+
+    Returns
+    -------
+        pandas dataframe
+    """
+    icolcount = rat.GetColumnCount()
+    cols = []
+    for icol in range(icolcount):
+        cols.append(rat.GetNameOfCol(icol))
+
+    irowcount = rat.GetRowCount()
+    rows = []
+    for irow in range(irowcount):
+        vals = []
+        for icol in range(icolcount):
+            itype = rat.GetTypeOfCol(icol)
+            if itype == gdal.GFT_Integer:
+                value = '%s'%rat.GetValueAsInt(irow, icol)
+            elif itype == gdal.GFT_Real:
+                value = '%.16g'%rat.GetValueAsDouble(irow, icol)
+            else:
+                value = '%s'%rat.GetValueAsString(irow, icol)
+            vals.append(value)
+        rows.append(vals)
+
+    df = pd.DataFrame.from_records(rows, columns=cols)
+    for icol in range(icolcount):
+        col_name = rat.GetNameOfCol(icol)
+        itype = rat.GetTypeOfCol(icol)
+        if itype == gdal.GFT_Integer:
+            df[col_name] = df[col_name].astype(int)
+        elif itype == gdal.GFT_Real:
+            df[col_name] = df[col_name].astype(float)
+        else:
+            df[col_name] = df[col_name].astype(str)
+
+    return df
+
+
+def get_raster_attribute_table(fname):
+    """
+    returns the raster attribute table in a pandas dataframe format
+    Parameters
+    ----------
+    fname : str
+            file name of the raster we'll be using
+
+    Returns
+    -------
+    pandas dataframe
+    """
+    raster = get_layer(fname)
+    band = raster.GetRasterBand(1)
+    rat = band.GetDefaultRAT()
+    if rat is None:
+        return band_to_df(band)
+    else:
+        return rat_to_df(rat)
 
 
 if __name__ == "__main__":

@@ -102,7 +102,14 @@ class Attr(WizardWidget):  #
             #setCurrentIndex fires our change index
             cbo.setCurrentIndex(2)
             uniques = self.series.unique()
-            if (not force and len(uniques) < 15) \
+            if (not force and (self.series.dtype == np.float or \
+                                           self.series.dtype == np.int)) or \
+                            force=='range':
+                self.domain = rdom.Rdom()
+                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+                cbo.setCurrentIndex(1)
+            elif (not force and len(uniques) < 20) \
                     or force=='enumerated':
                 self.enumerateds = []
                 enumerated = edom_list.EdomList()
@@ -110,14 +117,6 @@ class Attr(WizardWidget):  #
 
                 self.domain = enumerated
                 cbo.setCurrentIndex(0)
-
-            elif (not force and (self.series.dtype == np.float or \
-                            self.series.dtype == np.int)) or \
-                    force=='range':
-                self.domain = rdom.Rdom()
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
-                cbo.setCurrentIndex(1)
             else:
                 self.domain = udom.Udom()
                 cbo.setCurrentIndex(3)

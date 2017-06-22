@@ -46,6 +46,7 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import data_io
+from pymdwizard.core.spatial_utils import get_raster_attribute_table
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_detailed
@@ -89,8 +90,11 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
+        filter = "data files (*.csv *.shp *.xls *.xlsm *.xlsx "
+        filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf)"
+
         fname = QFileDialog.getOpenFileName(self, fname, dname,
-                                            filter="Spatial files (*.csv *.shp *.xls *.xlsm *.xlsx *.tif)")
+                                            filter=filter)
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             try:
@@ -138,6 +142,12 @@ class Detailed(WizardWidget):  #
 
                 df = data_io.read_excel(fname, sheet_name)
                 self.attributes.load_df(df)
+        elif ext.lower() in ['.tif', '.grd', '.png', '.img', '.jpg', '.hdr',
+                             '.bmp', '.adf']:
+            self.ui.fgdc_enttypl.setText(shortname)
+            self.ui.fgdc_enttypd.setPlainText('Raster geospatial data file.')
+            df = get_raster_attribute_table(fname)
+            self.attributes.load_df(df)
         elif ext.lower() == ".p":
             p = pickle.load(open(fname, "rb"), encoding='bytes')
 
