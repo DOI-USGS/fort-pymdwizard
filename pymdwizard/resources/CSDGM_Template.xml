@@ -1,24 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <metadata>
   <idinfo>
     <citation>
       <citeinfo>
-        <origin />
-        <pubdate />
-        <title />
-        <geoform />
+        <origin/>
+        <pubdate/>
+        <title/>
+        <geoform/>
         <onlink>https://doi.org/10.5066/xxxxxxxx</onlink>
       </citeinfo>
     </citation>
     <descript>
-      <abstract />
-      <purpose />
+      <abstract/>
+      <purpose/>
     </descript>
     <timeperd>
       <timeinfo>
         <rngdates>
-          <begdate />
-          <enddate />
+          <begdate/>
+          <enddate/>
         </rngdates>
       </timeinfo>
       <current>ground condition</current>
@@ -30,10 +29,10 @@
     <spdom>
       <descgeog>World</descgeog>
       <bounding>
-        <westbc>-180</westbc>
-        <eastbc>180</eastbc>
-        <northbc>90</northbc>
-        <southbc>-90</southbc>
+        <westbc>-180.0</westbc>
+        <eastbc>180.0</eastbc>
+        <northbc>90.0</northbc>
+        <southbc>-90.0</southbc>
       </bounding>
     </spdom>
     <keywords>
@@ -43,11 +42,11 @@
       </theme>
       <theme>
         <themekt>None</themekt>
-        <themekey />
+        <themekey/>
       </theme>
       <place>
         <placekt>None</placekt>
-        <placekey />
+        <placekey/>
       </place>
     </keywords>
     <accconst>None.  Please see 'Distribution Info' for details.</accconst>
@@ -55,16 +54,16 @@
     <ptcontac>
       <cntinfo>
         <cntperp>
-          <cntper />
+          <cntper/>
         </cntperp>
         <cntaddr>
-          <addrtype />
-          <address />
-          <city />
-          <state />
-          <postal />
+          <addrtype/>
+          <address/>
+          <city/>
+          <state/>
+          <postal/>
         </cntaddr>
-        <cntvoice />
+        <cntvoice/>
       </cntinfo>
     </ptcontac>
   </idinfo>
@@ -89,20 +88,20 @@
       </procstep>
     </lineage>
   </dataqual>
-  <eainfo />
   <distinfo>
     <distrib>
       <cntinfo>
-        <cntorgp>
-          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
-        </cntorgp>
+        <cntperp>
+          <cntper>GS ScienceBase</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
         <cntaddr>
           <addrtype>mailing address</addrtype>
           <address>Denver Federal Center, Building 810, Mail Stop 302</address>
           <city>Denver</city>
           <state>CO</state>
           <postal>80225</postal>
-          <country>USA</country>
+          <country>United States</country>
         </cntaddr>
         <cntvoice>1-888-275-8747</cntvoice>
         <cntemail>sciencebase@usgs.gov</cntemail>
@@ -132,16 +131,16 @@
     <metc>
       <cntinfo>
         <cntperp>
-          <cntper />
+          <cntper/>
         </cntperp>
         <cntaddr>
-          <addrtype />
-          <address />
-          <city />
-          <state />
-          <postal />
+          <addrtype/>
+          <address/>
+          <city/>
+          <state/>
+          <postal/>
         </cntaddr>
-        <cntvoice />
+        <cntvoice/>
       </cntinfo>
     </metc>
     <metstdn>FGDC Biological Data Profile of the CDGSM</metstdn>
