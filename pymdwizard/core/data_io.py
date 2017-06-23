@@ -19,8 +19,13 @@ def read_csv(filepath):
     -------
     pandas dataframe
     """
-
-    df = pd.read_csv(filepath, parse_dates=True)
+    try:
+        df = pd.read_csv(filepath, parse_dates=True)
+    except UnicodeDecodeError:
+        try:
+            df = pd.read_csv(filepath, parse_dates=True, encoding='utf8')
+        except UnicodeDecodeError:
+            df = pd.read_csv(filepath, parse_dates=True, encoding = "ISO-8859-1")
     return df
 
 
