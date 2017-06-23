@@ -371,7 +371,7 @@ Short Name: address</string>
          </size>
         </property>
         <property name="text">
-         <string>Measuremnt Resolution</string>
+         <string>Measurement Resolution</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
