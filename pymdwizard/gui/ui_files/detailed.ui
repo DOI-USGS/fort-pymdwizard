@@ -86,7 +86,7 @@ This section will be autopopulated with appropriate content pulled from the data
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Definition Sourse</string>
+            <string>Definition Source</string>
            </property>
           </widget>
          </item>

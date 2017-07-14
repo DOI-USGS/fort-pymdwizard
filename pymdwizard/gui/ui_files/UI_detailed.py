@@ -109,7 +109,7 @@ class Ui_fgdc_detailed(object):
         self.btn_browse.setText(_translate("fgdc_detailed", "Browse to Dataset"))
         self.label_2.setText(_translate("fgdc_detailed", "Dataset Label"))
         self.label_3.setText(_translate("fgdc_detailed", "Dataset Description"))
-        self.label_4.setText(_translate("fgdc_detailed", "Definition Sourse"))
+        self.label_4.setText(_translate("fgdc_detailed", "Definition Source"))
         self.fgdc_enttypds.setText(_translate("fgdc_detailed", "Producer defined"))
         self.btn_remove.setText(_translate("fgdc_detailed", "Remove this Detailed"))
         self.label_5.setToolTip(_translate("fgdc_detailed", "Required"))
