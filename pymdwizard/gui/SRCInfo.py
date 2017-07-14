@@ -79,7 +79,6 @@ class SRCInfo(WizardWidget): #
         self.timeperd = Timeperd()
         self.citation = Citeinfo(parent=self, include_lwork=False)
 
-        self.citation.ui.fgdc_lworkcit.deleteLater()
         self.ui.widget_citation.layout().addWidget(self.citation)
         self.ui.widget_timeperd.layout().addWidget(self.timeperd)
 
