@@ -407,7 +407,7 @@ class XMLNode(object):
 
 
         if parent_node is not None:
-            parent_node.add_child(self, index=index)
+            parent_node.add_child(self, index=index, deepcopy=False)
 
     def __repr__(self):
         return self.__str__()
@@ -538,7 +538,7 @@ class XMLNode(object):
         else:
             self.children = []
 
-    def add_child(self, child, index=-1):
+    def add_child(self, child, index=-1, deepcopy=True):
         if index == -1:
             index = len(self.children)
         if index < -1:
@@ -550,7 +550,10 @@ class XMLNode(object):
             node_str = child.to_str()
         child_copy = XMLNode(node_str)
 
-        self.children.insert(index, child_copy)
+        if deepcopy:
+            self.children.insert(index, child_copy)
+        else:
+            self.children.insert(index, child)
         self.add_attr(child.tag, child)
 
     def copy(self):
