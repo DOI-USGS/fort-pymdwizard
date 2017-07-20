@@ -359,10 +359,15 @@ def clear_children(element):
 ###############################################################################
 
 class XMLRecord(object):
-    def __init__(self, fname):
-        self.fname = fname
-        self.record = etree.parse(fname)
-        self._root = self.record.getroot()
+    def __init__(self, contents):
+        try:
+            self.fname = contents
+            self._root = string_to_node(contents)
+            self.record = etree.ElementTree(self._root)
+        except etree.XMLSyntaxError:
+            self.record = etree.fromstring(contents)
+            self._root = self.record.getroot()
+
         self.tag = self._root.tag
         self.__dict__[self._root.tag] = XMLNode(self.record.getroot())
         self._contents = self.__dict__[self._root.tag]
