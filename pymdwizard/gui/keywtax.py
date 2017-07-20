@@ -113,8 +113,9 @@ class Keywordtax(KeywordsRepeater):  #
                     self.ui.fgdc_themekt.setText(thesaurus[0].text)
 
                 keywords = keywtax.xpath('taxonkey')
+                self.keywords.clear_widgets(add_another=False)
                 for kw in keywords:
-                    kw_widget = self.get_widgets()[0]
+                    kw_widget = self.keywords.add_another()
                     kw_widget.added_line.setText(kw.text)
 
             else:
