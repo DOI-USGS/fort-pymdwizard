@@ -48,5 +48,5 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.fgdc_descript.setTitle(_translate("Form", "Supplemental Information"))
-        self.label.setText(_translate("Form", "Use this optional section to add ANY other details or information about the data set that may be helpful to future users."))
+        self.label.setText(_translate("Form", "Use this optional section to add ANY other details or information about the dataset that may be helpful to future users."))
 

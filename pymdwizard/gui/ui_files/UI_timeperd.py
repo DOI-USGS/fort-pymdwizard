@@ -180,9 +180,9 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.fgdc_timeperd.setWhatsThis(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">Time Period Information</span></p><p>&lt;FGDC shortname: <span style=\" font-style:italic;\">timeperd</span>&gt;</p><p><br/></p><p>Time period(s) for which the data set corresponds to the currentness reference.</p><p><br/></p><p>Specify only one of:</p><p><span style=\" font-size:11pt;\">    single date if the dataset ... </span></p><p><span style=\" font-size:11pt;\">     a Date range if it ...</span></p><p><span style=\" font-size:11pt;\">    or multiple dates if ...</span></p><p><br/></p><p>Choose only one.</p></body></html>"))
+        self.fgdc_timeperd.setWhatsThis(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">Time Period Information</span></p><p>&lt;FGDC shortname: <span style=\" font-style:italic;\">timeperd</span>&gt;</p><p><br/></p><p>Time period(s) for which the dataset corresponds to the currentness reference.</p><p><br/></p><p>Specify only one of:</p><p><span style=\" font-size:11pt;\">    single date if the data ... </span></p><p><span style=\" font-size:11pt;\">     a Date range if it ...</span></p><p><span style=\" font-size:11pt;\">    or multiple dates if ...</span></p><p><br/></p><p>Choose only one.</p></body></html>"))
         self.fgdc_timeperd.setTitle(_translate("Form", "Time Period Information"))
-        self.label_2.setText(_translate("Form", "What is the time period represented in the data set?"))
+        self.label_2.setText(_translate("Form", "What is the time period represented in the dataset?"))
         self.label_3.setText(_translate("Form", "Select one of \'Single Date\', \'Date Range\', or \'Multiple Dates\'."))
         self.radio_single.setText(_translate("Form", "Single"))
         self.radio_range.setText(_translate("Form", "Range"))

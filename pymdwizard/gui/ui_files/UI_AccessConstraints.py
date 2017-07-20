@@ -47,7 +47,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Data Access Constraints"))
-        self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites for ACCESSING the data set.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the data set."))
+        self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites for ACCESSING the dataset.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the dataset."))
         self.fgdc_accconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
 
 

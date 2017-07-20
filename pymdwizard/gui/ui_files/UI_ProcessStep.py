@@ -93,7 +93,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Describe the processing step or method below:"))
-        self.fgdc_procdesc.setPlainText(_translate("Form", "Development of the data set by the agency / individuals identified in the \'Originator\' element in the Identification Info section of the record."))
+        self.fgdc_procdesc.setPlainText(_translate("Form", "Development of the dataset by the agency / individuals identified in the \'Originator\' element in the Identification Info section of the record."))
         self.label_37.setText(_translate("Form", "Process Date (YYYYMMDD)"))
         self.label_3.setText(_translate("Form", "Source Used Citation Abbreviation"))
         self.label_2.setText(_translate("Form", "Source Produced Citation Abbreviation"))

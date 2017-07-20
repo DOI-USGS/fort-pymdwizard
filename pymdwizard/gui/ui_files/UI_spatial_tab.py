@@ -198,6 +198,6 @@ class Ui_spatial_tab(object):
         self.label_4.setText(_translate("spatial_tab", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("spatial_tab", "Required"))
         self.label_3.setText(_translate("spatial_tab", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
-        self.label.setText(_translate("spatial_tab", "If you have access to the dataset (*.shp, *.tif, etc) click below to browse to the dataset.  This section will be autopopulated with appropriate content pulled from the dataset."))
-        self.btn_browse.setText(_translate("spatial_tab", "Browse to Dataset"))
+        self.label.setText(_translate("spatial_tab", "If you have access to the data  (*.shp, *.tif, etc) click below to browse to the data file.  This section will be autopopulated with appropriate content pulled from the dataset."))
+        self.btn_browse.setText(_translate("spatial_tab", "Browse to dataset"))
 

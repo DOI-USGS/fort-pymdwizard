@@ -89,7 +89,7 @@
          <string>Required</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide information about the individual who wrote the metadata for the data set.  This is usually YOUR information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide information about the individual who wrote the metadata for the dataset.  This is usually YOUR information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
@@ -401,7 +401,7 @@
                          <string notr="true">font: italic;</string>
                         </property>
                         <property name="text">
-                         <string>Is the Metadata Contact the same as the Data Set Contact?</string>
+                         <string>Is the Metadata Contact the same as the Dataset Contact?</string>
                         </property>
                         <property name="wordWrap">
                          <bool>true</bool>

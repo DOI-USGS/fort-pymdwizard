@@ -79,8 +79,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Source inputs Used to Create the Data Set"))
-        self.radio_sourceno_2.setText(_translate("Form", "No Sources were used.  The data set represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)"))
+        self.groupBox.setTitle(_translate("Form", "Source inputs Used to Create the Dataset"))
+        self.radio_sourceno_2.setText(_translate("Form", "No Sources were used.  The dataset represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)"))
         self.label.setText(_translate("Form", "OR"))
         self.radio_sourceyes.setText(_translate("Form", "The source inputs are described below (reference imagery/material, assorted GIS inputs, etc.)"))
 

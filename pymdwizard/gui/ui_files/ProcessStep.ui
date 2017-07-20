@@ -41,7 +41,7 @@
         <item>
          <widget class="QPlainTextEdit" name="fgdc_procdesc">
           <property name="plainText">
-           <string>Development of the data set by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</string>
+           <string>Development of the dataset by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</string>
           </property>
          </widget>
         </item>

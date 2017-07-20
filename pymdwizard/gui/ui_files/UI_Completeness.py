@@ -47,8 +47,8 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Completeness Report"))
-        self.label.setText(_translate("Form", "Does the data set represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the data set versus what is not.   See help for more info."))
-        self.fgdc_complete.setPlainText(_translate("Form", "Data set is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details."))
+        self.label.setText(_translate("Form", "Does the dataset represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the dataset versus what is not.   See help for more info."))
+        self.fgdc_complete.setPlainText(_translate("Form", "Dataset is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details."))
 
 
 if __name__ == "__main__":

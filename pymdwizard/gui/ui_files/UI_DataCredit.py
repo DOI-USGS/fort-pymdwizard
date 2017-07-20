@@ -47,7 +47,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Data Set Credit(s)"))
+        self.groupBox.setTitle(_translate("Form", "Dataset Credit(s)"))
         self.label.setText(_translate("Form", "Are there other organizations / individuals who should get credit for support, funding, data collection, or analysis?"))
 
 

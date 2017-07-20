@@ -49,7 +49,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Attribute Accuracy Report"))
-        self.label.setText(_translate("Form", "How accurate are the values in the data set relative to \"true\" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info."))
+        self.label.setText(_translate("Form", "How accurate are the values in the dataset relative to \"true\" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info."))
         self.fgdc_attraccr.setPlainText(_translate("Form", "No formal attribute accuracy tests were conducted."))
 
 

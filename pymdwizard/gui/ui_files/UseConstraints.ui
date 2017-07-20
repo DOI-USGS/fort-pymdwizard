@@ -73,7 +73,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>Describe any restrictions or legal prerequisites for USING the data set.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set.</string>
+         <string>Describe any restrictions or legal prerequisites for USING the dataset.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the dataset.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -86,7 +86,7 @@
          <bool>false</bool>
         </property>
         <property name="plainText">
-         <string>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</string>
+         <string>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</string>
         </property>
         <property name="overwriteMode">
          <bool>false</bool>

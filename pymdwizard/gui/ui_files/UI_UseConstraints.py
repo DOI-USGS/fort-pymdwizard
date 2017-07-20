@@ -49,8 +49,8 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Data Use Constraints"))
-        self.label.setText(_translate("Form", "Describe any restrictions or legal prerequisites for USING the data set.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the data set."))
-        self.fgdc_useconst.setPlainText(_translate("Form", "None.  Users are advised to read the data set\'s metadata thoroughly to understand appropriate use and data limitations."))
+        self.label.setText(_translate("Form", "Describe any restrictions or legal prerequisites for USING the dataset.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the dataset."))
+        self.fgdc_useconst.setPlainText(_translate("Form", "None.  Users are advised to read the dataset\'s metadata thoroughly to understand appropriate use and data limitations."))
 
 
 if __name__ == "__main__":

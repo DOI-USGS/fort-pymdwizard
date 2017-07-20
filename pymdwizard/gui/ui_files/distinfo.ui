@@ -252,7 +252,7 @@
      <item>
       <widget class="QRadioButton" name="radio_distno">
        <property name="text">
-        <string>Data set is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information.</string>
+        <string>Dataset is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information.</string>
        </property>
        <property name="checked">
         <bool>true</bool>

@@ -61,7 +61,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>Provide a description of the data set.</string>
+         <string>Provide a description of the dataset.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

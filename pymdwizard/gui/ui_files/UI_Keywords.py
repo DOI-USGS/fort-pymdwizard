@@ -58,5 +58,5 @@ class Ui_keyword_widget(object):
         _translate = QtCore.QCoreApplication.translate
         keyword_widget.setWindowTitle(_translate("keyword_widget", "Form"))
         self.fgdc_keywords.setTitle(_translate("keyword_widget", "Keywords"))
-        self.label_search_term_5.setText(_translate("keyword_widget", "<html><head/><body><p><span style=\" font-style:italic;\">Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your data set.;</span></p></body></html>"))
+        self.label_search_term_5.setText(_translate("keyword_widget", "<html><head/><body><p><span style=\" font-style:italic;\">Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your dataset.;</span></p></body></html>"))
 

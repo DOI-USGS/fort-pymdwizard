@@ -65,7 +65,7 @@
            <bool>false</bool>
           </property>
           <property name="plainText">
-           <string>A formal accuracy assessment of the horizontal positional information in the data set has not been conducted.</string>
+           <string>A formal accuracy assessment of the horizontal positional information in the dataset has not been conducted.</string>
           </property>
           <property name="overwriteMode">
            <bool>true</bool>
@@ -85,7 +85,7 @@
            <bool>false</bool>
           </property>
           <property name="plainText">
-           <string>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</string>
+           <string>A formal accuracy assessment of the vertical positional information in the dataset has either not been conducted, or is not applicable.</string>
           </property>
           <property name="overwriteMode">
            <bool>true</bool>

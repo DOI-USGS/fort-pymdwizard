@@ -60,7 +60,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>Provide a description of the data set.</string>
+         <string>Provide a description of the dataset.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -168,7 +168,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>Use this optional section to add ANY other details or information about the data set that may be helpful to future users.</string>
+         <string>Use this optional section to add ANY other details or information about the dataset that may be helpful to future users.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

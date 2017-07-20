@@ -48,5 +48,5 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.parent.setTitle(_translate("Form", "Abstract"))
-        self.label.setText(_translate("Form", "Provide a description of the data set."))
+        self.label.setText(_translate("Form", "Provide a description of the dataset."))
 

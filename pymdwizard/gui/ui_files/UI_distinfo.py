@@ -339,7 +339,7 @@ class Ui_fgdc_distinfo(object):
         self.label_4.setText(_translate("fgdc_distinfo", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("fgdc_distinfo", "Required"))
         self.label_3.setText(_translate("fgdc_distinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
-        self.radio_distno.setText(_translate("fgdc_distinfo", "Data set is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information."))
+        self.radio_distno.setText(_translate("fgdc_distinfo", "Dataset is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information."))
         self.label.setText(_translate("fgdc_distinfo", "OR"))
         self.radio_distyes.setText(_translate("fgdc_distinfo", "Details on how to acquire/access the data are described below."))
         self.fgdc_distrib.setTitle(_translate("fgdc_distinfo", "Distribution Contact"))
@@ -349,9 +349,9 @@ class Ui_fgdc_distinfo(object):
         self.label_11.setText(_translate("fgdc_distinfo", "Is the Distribution Contact the same as the Metadata Contact?"))
         self.button_use_metadata.setText(_translate("fgdc_distinfo", "Use Metadata Contact Info"))
         self.groupBox_3.setTitle(_translate("fgdc_distinfo", "How Can Others Access the Data?"))
-        self.radio_online.setText(_translate("fgdc_distinfo", "The data set is available online."))
+        self.radio_online.setText(_translate("fgdc_distinfo", "The dataset is available online."))
         self.label_7.setText(_translate("fgdc_distinfo", "URL of website or GIS service:"))
-        self.radio_dist.setText(_translate("fgdc_distinfo", "The data set is not available online.  Interested parties should contact the distributor for details on \n"
+        self.radio_dist.setText(_translate("fgdc_distinfo", "The dataset is not available online.  Interested parties should contact the distributor for details on \n"
 "acquiring the data. (Provide \'Distributor Contact\' information."))
         self.radio_otherdist.setText(_translate("fgdc_distinfo", "Other Distribution method. (Describe below)"))
         self.groupBox.setTitle(_translate("fgdc_distinfo", "Distribution Liability"))

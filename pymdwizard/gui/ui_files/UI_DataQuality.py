@@ -169,7 +169,7 @@ class Ui_fgdc_dataqual(object):
         _translate = QtCore.QCoreApplication.translate
         fgdc_dataqual.setWindowTitle(_translate("fgdc_dataqual", "Form"))
         self.label_5.setToolTip(_translate("fgdc_dataqual", "Required"))
-        self.label_5.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Provide information about the accuracy of the data set and details about how it was produced.</span></p></body></html>"))
+        self.label_5.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Provide information about the accuracy of the dataset and details about how it was produced.</span></p></body></html>"))
         self.label_4.setToolTip(_translate("fgdc_dataqual", "Required"))
         self.label_4.setText(_translate("fgdc_dataqual", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("fgdc_dataqual", "Required"))

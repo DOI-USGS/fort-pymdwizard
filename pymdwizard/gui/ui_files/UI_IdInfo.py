@@ -181,7 +181,7 @@ class Ui_fgdc_idinfo(object):
         _translate = QtCore.QCoreApplication.translate
         fgdc_idinfo.setWindowTitle(_translate("fgdc_idinfo", "Form"))
         self.label_5.setToolTip(_translate("fgdc_idinfo", "Required"))
-        self.label_5.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">Provide general Information about the data set.</span></p></body></html>"))
+        self.label_5.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">Provide general Information about the dataset.</span></p></body></html>"))
         self.label_4.setToolTip(_translate("fgdc_idinfo", "Required"))
         self.label_4.setText(_translate("fgdc_idinfo", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_3.setToolTip(_translate("fgdc_idinfo", "Required"))

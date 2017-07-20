@@ -54,9 +54,9 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.fg_dc_possacc.setTitle(_translate("Form", "Positional Accuracy"))
         self.label.setText(_translate("Form", "Horizontal Accuracy Report"))
-        self.fgdc_horizpa.setPlainText(_translate("Form", "A formal accuracy assessment of the horizontal positional information in the data set has not been conducted."))
+        self.fgdc_horizpa.setPlainText(_translate("Form", "A formal accuracy assessment of the horizontal positional information in the dataset has not been conducted."))
         self.label_2.setText(_translate("Form", "Vertical Accuracy Report"))
-        self.fgdc_vertacc.setPlainText(_translate("Form", "A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable."))
+        self.fgdc_vertacc.setPlainText(_translate("Form", "A formal accuracy assessment of the vertical positional information in the dataset has either not been conducted, or is not applicable."))
 
 
 if __name__ == "__main__":

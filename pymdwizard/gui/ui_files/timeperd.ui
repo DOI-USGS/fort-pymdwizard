@@ -44,7 +44,7 @@
       </size>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Time Period Information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&amp;lt;FGDC shortname: &lt;span style=&quot; font-style:italic;&quot;&gt;timeperd&lt;/span&gt;&amp;gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Time period(s) for which the data set corresponds to the currentness reference.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Specify only one of:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	single date if the dataset ... &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	 a Date range if it ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	or multiple dates if ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Choose only one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Time Period Information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&amp;lt;FGDC shortname: &lt;span style=&quot; font-style:italic;&quot;&gt;timeperd&lt;/span&gt;&amp;gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Time period(s) for which the dataset corresponds to the currentness reference.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Specify only one of:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	single date if the dataset ... &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	 a Date range if it ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;	or multiple dates if ...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Choose only one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
       <string>Time Period Information</string>
@@ -71,7 +71,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>What is the time period represented in the data set?</string>
+         <string>What is the time period represented in the dataset?</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

@@ -214,7 +214,7 @@
               <string notr="true">font: italic;</string>
              </property>
              <property name="text">
-              <string>When was the data set published or finalized?</string>
+              <string>When was the dataset published or finalized?</string>
              </property>
             </widget>
            </item>
@@ -294,7 +294,7 @@
               <string notr="true">font: italic;</string>
              </property>
              <property name="text">
-              <string>Who created the data set? List the organization and/or person(s)</string>
+              <string>Who created the dataset? List the organization and/or person(s)</string>
              </property>
             </widget>
            </item>
@@ -568,7 +568,7 @@
                 <string notr="true">font: bold;</string>
                </property>
                <property name="text">
-                <string>Is this data set part of a series?</string>
+                <string>Is this dataset part of a series?</string>
                </property>
               </widget>
              </item>
@@ -830,7 +830,7 @@
                 <string notr="true">font: bold;</string>
                </property>
                <property name="text">
-                <string>Can you provide more publication information about this data set?</string>
+                <string>Can you provide more publication information about this dataset?</string>
                </property>
               </widget>
              </item>
@@ -1082,7 +1082,7 @@
               <string notr="true">font: bold;</string>
              </property>
              <property name="text">
-              <string>Is this data set associated with a larger work?</string>
+              <string>Is this dataset associated with a larger work?</string>
              </property>
             </widget>
            </item>
