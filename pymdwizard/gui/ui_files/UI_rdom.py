@@ -204,7 +204,7 @@ class Ui_fgdc_attrdomv(object):
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.label_23.setText(_translate("fgdc_attrdomv", "Measuremnt Resolution"))
+        self.label_23.setText(_translate("fgdc_attrdomv", "Measurement Resolution"))
         self.fgdc_attrmres.setToolTip(_translate("fgdc_attrdomv", "City -- the city of the address.\n"
 "Type: text\n"
 "Domain: free text\n"
