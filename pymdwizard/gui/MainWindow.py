@@ -221,6 +221,7 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
         exc_info = sys.exc_info()
+        self.metadata_root.clear_widget()
         try:
             new_record = etree.parse(fname)
             self.metadata_root._from_xml(new_record)

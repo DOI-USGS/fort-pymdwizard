@@ -158,6 +158,8 @@ class IdInfo(WizardWidget):
 
     def clear_widget(self):
         self.root_widget.spatial_tab.spdom.clear_widget()
+        self.taxonomy.clear_widget()
+        self.taxonomy.ui.rbtn_no.setChecked(True)
         WizardWidget.clear_widget(self)
 
     def _to_xml(self):

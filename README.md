@@ -9,7 +9,7 @@ Metadata Wizard
 ===========================================================================================
 
 The  is a useful tool designed to facilitate FGDC  
-metadata creation for spatial and non-spatial datasets.  It is a cross-platform desktop application
+metadata creation for spatial and non-spatial data sets.  It is a cross-platform desktop application
 built using an open-source Python architecture.  
 
 
