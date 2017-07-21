@@ -56,7 +56,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_IdInfo
 from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
-from pymdwizard.gui.Taxonomy2 import Taxonomy
+from pymdwizard.gui.Taxonomy import Taxonomy
 from pymdwizard.gui.Keywords import Keywords
 from pymdwizard.gui.AccessConstraints import AccessConstraints
 from pymdwizard.gui.UseConstraints import UseConstraints
