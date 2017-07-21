@@ -77,7 +77,7 @@ class SourceInput(WizardWidget):
         self.setup_dragdrop(self)
 
         self.src_info = RepeatingElement(which='tab',
-                        tab_label='Source', add_text='Source Input',
+                        tab_label='Source', add_text='Add Source',
                         widget=SRCInfo, remove_text='Remove Source', italic_text='Source')
 
         self.src_info.add_another()

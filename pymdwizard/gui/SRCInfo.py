@@ -41,21 +41,13 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QFormLayout, QLabel
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QRadioButton, QFrame
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QScrollArea, QGroupBox
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QComboBox
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_SRCInfo
-from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.timeperd import Timeperd
 
@@ -92,6 +84,13 @@ class SRCInfo(WizardWidget): #
         -------
         None
         """
+        self.ui.fgdc_srccitea.editingFinished.connect(self.update_tab_label)
+
+    def update_tab_label(self):
+        new_label = "Source: {}".format(self.ui.fgdc_srccitea.text())
+        tab_widget = self.ui.fgdc_srccitea.parent().parent().parent().parent()
+        current_index = tab_widget.currentIndex()
+        tab_widget.setTabText(current_index, new_label)
 
     def _to_xml(self):
         """
