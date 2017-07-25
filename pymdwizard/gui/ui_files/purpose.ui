@@ -122,7 +122,7 @@
        </layout>
       </item>
       <item>
-       <widget class="GrowingTextEdit" name="growingtextedit">
+       <widget class="GrowingTextEdit" name="fgdc_purpose">
         <property name="sizeAdjustPolicy">
          <enum>QAbstractScrollArea::AdjustToContents</enum>
         </property>
