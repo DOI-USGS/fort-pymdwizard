@@ -37,7 +37,7 @@ import sys
 from lxml import etree
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLabel, QComboBox
+from PyQt5.QtWidgets import QWidget, QLabel, QComboBox, QTabWidget
 from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QColor, QDrag, QPainter, QIcon
@@ -161,7 +161,10 @@ class WizardWidget(QWidget):
 
     def get_children(self, widget):
         try:
-            widget_children = widget.children()
+            if type(widget) == QTabWidget:
+                widget_children = [widget.widget(i) for i in range(widget.count())]
+            else:
+                widget_children = widget.children()
         except AttributeError:
             try:
                 widget_children = [widget.itemAt(i) for i in range(widget.count())]
