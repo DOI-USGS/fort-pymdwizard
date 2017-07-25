@@ -853,7 +853,7 @@ def launch_main(xml_fname=None, introspect_fname=None):
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)
 
-    if introspect_fname.endswith('$'):
+    if introspect_fname is not None and introspect_fname.endswith('$'):
         just_fname, _ = os.path.split(introspect_fname)
     else:
         just_fname = introspect_fname
