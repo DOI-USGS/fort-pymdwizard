@@ -41,12 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 import sys
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -81,6 +76,9 @@ class DistInfo(WizardWidget):
 
         self.ui.fgdc_distrib.layout().addWidget(self.contactinfo)
 
+        testing = GrowingTextEdit()
+        self.ui.fgdc_distrib.layout().addWidget(testing)
+
         self.ui.widget_distinfo.hide()
 
     def connect_events(self):
@@ -88,8 +86,7 @@ class DistInfo(WizardWidget):
         self.ui.radio_online.toggled.connect(self.online_toggle)
         self.ui.radio_otherdist.toggled.connect(self.other_dist_toggle)
         self.ui.radio_dist.toggled.connect(self.dist_toggle)
-        self.ui.button_use_dataset.clicked.connect(self.pull_datasetcontact)
-        self.ui.button_use_metadata.clicked.connect(self.pull_metadatacontact)
+        self.ui.button_use_sb.clicked.connect(self.pull_datasetcontact)
 
     def online_toggle(self, b):
         if b:
@@ -121,10 +118,10 @@ class DistInfo(WizardWidget):
             self.ui.widget_distinfo.hide()
 
     def pull_datasetcontact(self):
-        self.contactinfo._from_xml(self.root_widget.idinfo.ptcontac._to_xml())
+        sb_info = utils.get_usgs_contact_info('sciencebase',
+                                              as_dictionary=False)
+        self.contactinfo._from_xml(sb_info)
 
-    def pull_metadatacontact(self):
-        self.contactinfo._from_xml(self.root_widget.metainfo.contactinfo._to_xml())
 
     def dragEnterEvent(self, e):
         """
@@ -211,6 +208,21 @@ class DistInfo(WizardWidget):
                 utils.populate_widget_element(widget=self.ui.fgdc_fees,
                                               element=xml_distinfo,
                                               xpath='stdorder/fees')
+
+
+class GrowingTextEdit(QPlainTextEdit):
+
+    def __init__(self, *args, **kwargs):
+        super(GrowingTextEdit, self).__init__(*args, **kwargs)
+        self.document().contentsChanged.connect(self.sizeChange)
+
+        self.heightMin = 0
+        self.heightMax = 65000
+
+    def sizeChange(self):
+        docHeight = self.document().size().height()
+        if self.heightMin <= docHeight <= self.heightMax:
+            self.setMinimumHeight(docHeight)
 
 if __name__ == "__main__":
     utils.launch_widget(DistInfo, "DistInfo testing")
