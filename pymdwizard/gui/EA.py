@@ -66,9 +66,8 @@ class EA(WizardWidget):  #
         self.ui = UI_EA.Ui_Form()
         self.ui.setupUi(self)
 
-        detailed = Detailed()
-        self.ui.detailed_frame.layout().addWidget(detailed)
-        self.detaileds = [detailed]
+        self.detaileds = []
+        detailed = self.add_detailed()
 
         self.setup_dragdrop(self)
 
@@ -87,7 +86,7 @@ class EA(WizardWidget):  #
         -------
         None
         """
-        new_detailed = Detailed(remove_function=self.remove_detailed)
+        new_detailed = Detailed(remove_function=self.remove_detailed, parent=self)
         self.ui.fgdc_eainfo.insertTab(self.ui.fgdc_eainfo.count()-1,
                                       new_detailed, 'Detailed')
         self.detaileds.append(new_detailed)
