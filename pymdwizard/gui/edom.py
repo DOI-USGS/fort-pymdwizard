@@ -114,6 +114,7 @@ class Edom(QWidget):  #
         """
         try:
             if edom.tag == 'edom':
+                self.ui.fgdc_edomvds.setText('')
                 utils.populate_widget(self, edom)
             else:
                 print("The tag is not udom")
