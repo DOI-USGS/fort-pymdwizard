@@ -31,6 +31,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import math
+import pandas as pd
 
 from PyQt5.QtWidgets import QListWidgetItem, QAbstractItemView
 
@@ -70,7 +71,9 @@ class EdomList(WizardWidget):  #
         self.ui.listWidget.clear()
 
         for item_label in items:
-            if type(item_label) != str and math.isnan(item_label):
+            if pd.isnull(item_label) or \
+                    str(item_label) == '' or \
+                    (type(item_label) != str and math.isnan(item_label)):
                 self.add_edom("<< empty cell >>")
             else:
                 self.add_edom(str(item_label))
