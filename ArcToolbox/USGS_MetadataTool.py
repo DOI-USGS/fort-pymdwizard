@@ -86,24 +86,31 @@ GeogCoordUnits = ["Decimal degrees", "Decimal minutes", "Decimal seconds",
 ###WGS 84 GCS File used to get lat/long bounding coordinates. Shipped with ToolBox.
 GCS_PrjFile = WGS84file
 
-#Check for Excel spreadsheet, and prompt to export.
-if os.path.splitext(InputData)[-1] == ".xls" or os.path.splitext(InputData)[-1] == ".xlsx":
-    arcpy.AddWarning("!!!!!!!")
-    arcpy.AddWarning("The Metadata Wizard does not operate on Excel files. Please try exporting to a .dbf and re-running the tool.")
-    arcpy.AddWarning("!!!!!!!")
-    sys.exit(1)
+# #Check for Excel spreadsheet, and prompt to export.
+# if os.path.splitext(InputData)[-1] == ".xls" or os.path.splitext(InputData)[-1] == ".xlsx":
+#     arcpy.AddWarning("!!!!!!!")
+#     arcpy.AddWarning("The Metadata Wizard does not operate on Excel files. Please try exporting to a .dbf and re-running the tool.")
+#     arcpy.AddWarning("!!!!!!!")
+#     sys.exit(1)
 
 mdwiz_data = {}
 
 
 #Determine if input is a stand-alone XML. If so, no attempt will be made to extract spatial data, etc. 'Re-import' to data set won't apply.
+InputIsXML = False
+InputIsCSV = False
+InputIsExcel = False
 if os.path.splitext(InputData)[-1] == ".xml":
     InputIsXML = True
     desc = "XML File"
-
+elif '.xls\\' in InputData or '.xlsx\\' in InputData or '.xlsm\\' in InputData:
+    InputIsExcel = True
+    desc = "Excel File"
+elif os.path.splitext(InputData)[-1] == ".csv":
+    InputIsCSV = True
+    desc = "CSV File"
 else:
-    InputIsXML = False
-
+    print(InputData)
     try:
         desc = arcpy.Describe(InputData)#**This 'desc' object is used extensively throughout program.**
 
@@ -178,7 +185,7 @@ def ProcessRoutine(ArgVariables):
         MDTools.CheckMasterNodes(FGDCXML)#Ensure all the key FGDC-CSDGM nodes are present in the record.
 
 
-        if InputIsXML == False and desc.DatasetType != "Table": #Only attempt to extract/update spatial properties from spatial data sets.
+        if not InputIsXML and not InputIsCSV and not InputIsExcel and desc.DatasetType != "Table": #Only attempt to extract/update spatial properties from spatial data sets.
 
             try:
                 GCS_ExtentList = Get_LatLon_BndBox()[1]
@@ -227,7 +234,9 @@ def ProcessRoutine(ArgVariables):
         MDTools.WriteMDDate(FGDCXML, MDDate)
 
         #Update Entity/Attribute Section
-        if InputIsXML == False:
+        if InputIsCSV or InputIsExcel:
+            contents_fname = InputData
+        elif not InputIsXML:
             data_contents = introspector.introspect_dataset(InputData)
             input_fname = os.path.split(InputData)[1]
             contents_fname = os.path.join(WorkingDir, input_fname+".p")
@@ -314,11 +323,15 @@ def Get_Data_Type():#Determine what type of data set is being evaluated
 
     ### Define type of data set
 
-    if InputIsXML == True:
+    if InputIsXML:
         myDataType = "XML File"
         myFeatType = "None"
-        return myDataType, myFeatType
-
+    elif InputIsCSV:
+        myDataType = "CSV File"
+        myFeatType = "None"
+    elif InputIsExcel:
+        myDataType = "CSV File"
+        myFeatType = "None"
     else:
         if desc.DatasetType == "RasterDataset":
             myDataType = "Raster"
@@ -366,8 +379,8 @@ def Get_Data_Type():#Determine what type of data set is being evaluated
             arcpy.AddWarning("!!!!!!!")
             sys.exit(1)
 
-        ### Return desired objects
-        return myDataType, myFeatType
+    ### Return desired objects
+    return myDataType, myFeatType
 
 def GetESRIVersion_WriteNativeEnv(FGDCXML):
     """
@@ -796,11 +809,6 @@ def pythonError():
 
 if __name__ == '__main__':
     ProcessRoutine(sys.argv)
-#    ProcessRoutine(["N:\Active\FORT_WaddleLidar\DerivedData\bc_int",
-#                   "C:\temp\MetadataWizard",
-#                    True,
-#                    "C:\Program Files (x86)\Internet Explorer",
-#                    False,
-#                    " "" ""])
-    print "Tool has completed running."
+
+    print("Tool has completed running.")
 

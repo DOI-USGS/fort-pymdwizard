@@ -105,9 +105,16 @@ class Detailed(WizardWidget):  #
                 QMessageBox.warning(self, "Data file error", msg)
 
     def populate_from_fname(self, fname):
-        shortname = os.path.split(fname)[1]
+        if fname.endswith('$'):
+            fname, sheet_name = os.path.split(fname)
+            sheet_name = sheet_name[:-1]
+            ok = True
+        else:
+            sheet_name = None
 
+        shortname = os.path.split(fname)[1]
         ext = os.path.splitext(shortname)[1]
+
         if ext.lower() == '.csv':
             try:
                 self.clear_widget()
@@ -130,11 +137,12 @@ class Detailed(WizardWidget):  #
             self.attributes.load_df(df)
 
         elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
-            sheets = data_io.get_sheet_names(fname)
+            if sheet_name is None:
+                sheets = data_io.get_sheet_names(fname)
 
-            sheet_name, ok = QInputDialog.getItem(self, "select sheet dialog",
-                                "Pick one of the sheets from this workbook",
-                                                  sheets, 0, False)
+                sheet_name, ok = QInputDialog.getItem(self, "select sheet dialog",
+                                    "Pick one of the sheets from this workbook",
+                                                      sheets, 0, False)
             if ok and sheet_name:
                 self.clear_widget()
                 self.ui.fgdc_enttypl.setText('{} ({})'.format(shortname, sheet_name))
