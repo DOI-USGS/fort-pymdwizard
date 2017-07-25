@@ -133,8 +133,7 @@ class EdomList(WizardWidget):  #
                 self.ui.listWidget.clear()
 
 
-                for attrdomv in attr.xpath('attrdomv'):
-                    edom = attrdomv.xpath('edom')[0]
+                for edom in attr.xpath('attrdomv/edom'):
                     edom_dict = xml_utils.node_to_dict(edom, False)
 
                     self.add_edom(**edom_dict)
