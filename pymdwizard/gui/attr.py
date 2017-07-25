@@ -191,6 +191,7 @@ class Attr(WizardWidget):  #
         self.animation.setEndValue(QSize(100, self.height()))
         self.animation.start()
         self.ui.attrdomv_contents.hide()
+        # self.ui.attrdomv_contents.deleteLater()
         self.ui.place_holder.show()
 
     def eventFilter(self, obj, event):

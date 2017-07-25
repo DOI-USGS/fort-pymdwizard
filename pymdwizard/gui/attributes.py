@@ -61,39 +61,46 @@ class Attributes(WizardWidget):  #
         self.main_layout = self.ui.scrollAreaWidgetContents.layout()
 
         self.attrs = []
+        self.displayed_min = 0
+        self.displayed_max = 9
 
-
-        import pandas as pd
-        # df = pd.read_csv(r"C:\Users\talbertc\Downloads\Titanic.csv")
-        # self.load_df(df)
         self.minimize_children()
 
     def load_df(self, df):
         self.clear_children()
 
+        i = 0
         for col_label in df.columns:
             col = df[col_label]
             attr_i = attr.Attr(parent=self)
-            attr_i.ui.fgdc_attrlabl.setText(col_label)
+            attr_i.ui.fgdc_attrlabl.setText(str(col_label))
 
             attr_i.set_series(col)
             attr_i.guess_domain()
 
             self.append_attr(attr_i)
 
+        self.display_attrs()
         self.attrs[0].supersize_me()
+
+        if len(df.columns) > 10:
+            self.parent().ui.displayed_widget.show()
 
     def append_attr(self, attr):
         self.attrs.append(attr)
         attr.regularsize_me()
-        self.main_layout.insertWidget(len(self.main_layout) - 1, attr)
+        attr.hide()
+
+    def display_attrs(self):
+
+        for attr in self.attrs[:10]:
+            attr.show()
+            self.main_layout.insertWidget(len(self.main_layout) - 1, attr)
 
     def load_pickle(self, contents):
         self.clear_children()
 
         for col_label in contents.keys():
-
-            # col = df[col_label]
             attr_i = attr.Attr(parent=self)
             attr_i.ui.fgdc_attrlabl.setText(col_label)
 

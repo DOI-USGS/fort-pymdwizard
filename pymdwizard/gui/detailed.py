@@ -74,8 +74,9 @@ class Detailed(WizardWidget):  #
         """
         self.ui = UI_detailed.Ui_fgdc_detailed()
         self.ui.setupUi(self)
+        self.ui.displayed_widget.hide()
 
-        self.attributes = attributes.Attributes()
+        self.attributes = attributes.Attributes(parent=self)
         self.ui.attribute_frame.layout().addWidget(self.attributes)
 
         self.setup_dragdrop(self)
@@ -103,6 +104,9 @@ class Detailed(WizardWidget):  #
                 import traceback
                 msg = "Could not extract data from file %s:\n%s." % (fname, traceback.format_exc())
                 QMessageBox.warning(self, "Data file error", msg)
+
+    def update_displayed_label(self):
+        pass
 
     def populate_from_fname(self, fname):
         shortname = os.path.split(fname)[1]
