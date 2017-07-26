@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'srcinfo.ui'
+# Form implementation generated from reading ui file 'SrcInfo.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -98,10 +98,10 @@ class Ui_Form(object):
         self.verticalLayout_16.addLayout(self.horizontalLayout_13)
         self.srccontr_layout = QtWidgets.QHBoxLayout()
         self.srccontr_layout.setObjectName("srccontr_layout")
-        self.growingtextedit = GrowingTextEdit(self.fgdc_srcinfo)
-        self.growingtextedit.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
-        self.growingtextedit.setObjectName("growingtextedit")
-        self.srccontr_layout.addWidget(self.growingtextedit)
+        self.fgdc_srccontr = GrowingTextEdit(self.fgdc_srcinfo)
+        self.fgdc_srccontr.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        self.fgdc_srccontr.setObjectName("fgdc_srccontr")
+        self.srccontr_layout.addWidget(self.fgdc_srccontr)
         self.verticalLayout_16.addLayout(self.srccontr_layout)
         self.horizontalLayout_12.addLayout(self.verticalLayout_16)
         self.verticalLayout_14 = QtWidgets.QVBoxLayout()

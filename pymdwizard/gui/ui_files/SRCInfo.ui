@@ -219,7 +219,7 @@
             <item>
              <layout class="QHBoxLayout" name="srccontr_layout">
               <item>
-               <widget class="GrowingTextEdit" name="growingtextedit">
+               <widget class="GrowingTextEdit" name="fgdc_srccontr">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
