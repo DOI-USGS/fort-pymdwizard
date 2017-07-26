@@ -499,7 +499,10 @@ class PyMdWizardMainForm(QMainWindow):
                 shortname = widget.objectName().replace('fgdc_', '')
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
-                widget.setToolTip(annotation_lookup[shortname]['annotation'])
+                try:
+                    widget.setToolTip(annotation_lookup[shortname]['annotation'])
+                except KeyError:
+                    widget.setToolTip('')
 
         self.error_widgets = []
 
@@ -624,12 +627,13 @@ class PyMdWizardMainForm(QMainWindow):
             None
         """
 
-        if widget.objectName() in ['fgdc_edomv', 'fgdc_edomvd', 'fgdc_edomvds',
-                                   'fgdc_attrlabl', 'fgdc_attrdef',
-                                   'fgdc_attrdefs', 'fgdc_attrdomv',
+        if widget.objectName() in ['fgdc_attr', 'fgdc_edomv', 'fgdc_edomvd',
+                                   'fgdc_edomvds', 'fgdc_attrlabl',
+                                   'fgdc_attrdef', 'fgdc_attrdefs',
                                    'fgdc_codesetd', 'fgdc_edom', 'fgdc_rdom',
                                    'fgdc_udom', 'fgdc_rdommin', 'fgdc_rdommax',
-                                   'fgdc_codesetn', 'fgdc_codesets']:
+                                   'fgdc_codesetn', 'fgdc_codesets',
+                                   'fgdc_attrdomv',]:
             self.highlight_attr(widget)
 
         if widget.objectName() in ['fgdc_themekey', 'fgdc_themekt',
@@ -686,11 +690,17 @@ class PyMdWizardMainForm(QMainWindow):
 
 
     def highlight_attr(self, widget):
-        widget_parent = widget.parent()
+        widget_parent = widget
+        attr_frame = widget
 
         while not widget_parent.objectName() == 'fgdc_attr':
             widget_parent = widget_parent.parent()
+            attr_frame = widget_parent
+        self.error_widgets.append(attr_frame)
+        widget_parent = widget_parent.parent()
 
+
+        widget_parent.supersize_me()
         error_msg = "'Validation error in hidden contents, click to show'"
         widget_parent.setToolTip(error_msg)
         widget_parent.setStyleSheet(
@@ -698,7 +708,7 @@ class PyMdWizardMainForm(QMainWindow):
     QFrame#{widgetname}{{
     border: 2px solid red;
     }}
-        """.format(widgetname=widget_parent.objectName()))
+        """.format(widgetname=attr_frame.objectName()))
 
         self.error_widgets.append(widget_parent)
 
