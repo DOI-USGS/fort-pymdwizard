@@ -853,7 +853,12 @@ def launch_main(xml_fname=None, introspect_fname=None):
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)
 
-    if introspect_fname is not None and os.path.exists(introspect_fname):
+    if introspect_fname is not None and introspect_fname.endswith('$'):
+        just_fname, _ = os.path.split(introspect_fname)
+    else:
+        just_fname = introspect_fname
+
+    if introspect_fname is not None and os.path.exists(just_fname):
         mdwiz.metadata_root.eainfo.detaileds[0].populate_from_fname(introspect_fname)
         mdwiz.metadata_root.eainfo.ui.fgdc_eainfo.setCurrentIndex(1)
     app.exec_()
