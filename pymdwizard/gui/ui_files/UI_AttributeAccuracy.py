@@ -21,13 +21,13 @@ class Ui_Form(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setMinimumSize(QtCore.QSize(0, 0))
-        self.groupBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.help_attraccr = QtWidgets.QGroupBox(Form)
+        self.help_attraccr.setMinimumSize(QtCore.QSize(0, 0))
+        self.help_attraccr.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.help_attraccr.setObjectName("help_attraccr")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.help_attraccr)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label = QtWidgets.QLabel(self.groupBox)
+        self.label = QtWidgets.QLabel(self.help_attraccr)
         font = QtGui.QFont()
         font.setItalic(True)
         self.label.setFont(font)
@@ -35,12 +35,12 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.fgdc_attraccr = QtWidgets.QPlainTextEdit(self.groupBox)
+        self.fgdc_attraccr = QtWidgets.QPlainTextEdit(self.help_attraccr)
         self.fgdc_attraccr.setAcceptDrops(False)
         self.fgdc_attraccr.setOverwriteMode(True)
         self.fgdc_attraccr.setObjectName("fgdc_attraccr")
         self.verticalLayout_2.addWidget(self.fgdc_attraccr)
-        self.verticalLayout.addWidget(self.groupBox)
+        self.verticalLayout.addWidget(self.help_attraccr)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -48,17 +48,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Attribute Accuracy Report"))
+        self.help_attraccr.setTitle(_translate("Form", "Attribute Accuracy Report"))
         self.label.setText(_translate("Form", "How accurate are the values in the dataset relative to \"true\" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info."))
         self.fgdc_attraccr.setPlainText(_translate("Form", "No formal attribute accuracy tests were conducted."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
 
