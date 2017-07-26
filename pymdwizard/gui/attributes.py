@@ -76,26 +76,14 @@ class Attributes(WizardWidget):  #
             attr_i.ui.fgdc_attrlabl.setText(str(col_label))
 
             attr_i.set_series(col)
-            attr_i.guess_domain()
-
+            attr_i.ui.comboBox.setCurrentIndex(attr_i.guess_domain())
             self.append_attr(attr_i)
 
-        self.display_attrs()
         self.attrs[0].supersize_me()
-
-        if len(df.columns) > 10:
-            self.parent().ui.displayed_widget.show()
 
     def append_attr(self, attr):
         self.attrs.append(attr)
-        attr.regularsize_me()
-        attr.hide()
-
-    def display_attrs(self):
-
-        for attr in self.attrs[:10]:
-            attr.show()
-            self.main_layout.insertWidget(len(self.main_layout) - 1, attr)
+        self.main_layout.insertWidget(len(self.main_layout) - 1, attr)
 
     def load_pickle(self, contents):
         self.clear_children()
@@ -163,8 +151,9 @@ class Attributes(WizardWidget):  #
 
     def minimize_children(self):
         for attr_widget in self.attrs:
-            attr_widget.regularsize_me()
-            attr_widget.ui.fgdc_attrlabl.setCursorPosition(0)
+            if attr_widget.active:
+                attr_widget.regularsize_me()
+                attr_widget.ui.fgdc_attrlabl.setCursorPosition(0)
 
     def contextMenuEvent(self, event):
         self.in_context = True

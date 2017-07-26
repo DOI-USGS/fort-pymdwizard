@@ -35,6 +35,7 @@ class Ui_edom_contents(object):
         self.listWidget.setAutoScrollMargin(25)
         self.listWidget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.listWidget.setResizeMode(QtWidgets.QListView.Adjust)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
         self.widget = QtWidgets.QWidget(edom_contents)

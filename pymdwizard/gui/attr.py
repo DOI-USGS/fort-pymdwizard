@@ -33,6 +33,8 @@ responsibility is assumed by the USGS in connection therewith.
 
 import numpy as np
 
+import sip
+
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QWidget, QMenu
 from PyQt5.QtCore import QPropertyAnimation, QSize
@@ -52,15 +54,20 @@ class Attr(WizardWidget):  #
     acceptable_tags = ['attr']
 
     def __init__(self, parent=None):
+        # This changes to true when this attribute is being viewed/edited
+        self.active = False
+
+        WizardWidget.__init__(self, parent=parent)
+
+
+        # an in memory record of all of the contents that were selected
         self._previous_index = -1
-        self._domain_content = {'Range (Numeric data)': None,
-                                'Enumerated (Categorical Data)': None,
-                                'Unrepresentable (None of the above)': None,
-                                'Codeset (Published Categories)': None}
+        cbo = self.ui.comboBox
+        self._domain_content = dict.fromkeys(range(cbo.count()), None)
 
         self.parent_ui = parent
         self.series = None
-        WizardWidget.__init__(self, parent=parent)
+
 
     def build_ui(self):
         """
@@ -71,9 +78,7 @@ class Attr(WizardWidget):  #
         """
         self.ui = UI_attr.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
-        #
 
-        # self.ui.fgdc_attrlabl.installEventFilter(self)
         self.ui.fgdc_attrdef.installEventFilter(self)
         self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
@@ -82,7 +87,7 @@ class Attr(WizardWidget):  #
 
         self.setup_dragdrop(self)
         self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
-        self.domain = udom.Udom()
+        self.domain = None
         self.ui.comboBox.setCurrentIndex(3)
 
     def clear_domain(self):
@@ -93,106 +98,106 @@ class Attr(WizardWidget):  #
     def set_series(self, series):
         self.series = series
 
-    def guess_domain(self, force=False):
-
-        cbo = self.ui.comboBox
-
+    def guess_domain(self):
+        # given a series of data take a guess as to which
+        # domain type is appropriate
         if self.series is not None:
-            #set the current index to a non-choice below so that the
-            #setCurrentIndex fires our change index
-            cbo.setCurrentIndex(2)
             uniques = self.series.unique()
-            if (not force and (self.series.dtype == np.float or \
-                                           self.series.dtype == np.int)) or \
-                            force=='range':
-                self.domain = rdom.Rdom()
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
-                cbo.setCurrentIndex(1)
-            elif (not force and len(uniques) < 20) \
-                    or force=='enumerated':
-                self.enumerateds = []
-                enumerated = edom_list.EdomList()
-                enumerated.populate_from_list(uniques)
-
-                self.domain = enumerated
-                cbo.setCurrentIndex(0)
+            if len(uniques) < 20:
+                return 0
+            elif np.issubdtype(self.series.dtype, np.number):
+                return 1
             else:
-                self.domain = udom.Udom()
-                cbo.setCurrentIndex(3)
+                return 3
 
+        # without a series to introspect we're going to default to udom
+        return 3
+
+    def store_current_content(self):
+        # take a snapshot of the current contents
+        if self.domain is not None and not sip.isdeleted(self.domain):
+            cur_xml = self.domain._to_xml()
+            if cur_xml.tag == 'udom':
+                self._domain_content[3] = cur_xml
+            elif cur_xml.tag == 'codesetd':
+                self._domain_content[2] = cur_xml
+            elif cur_xml.tag == 'rdom':
+                self._domain_content[1] = cur_xml
+            elif cur_xml.tag == 'attr':
+                self._domain_content[0] = cur_xml
+
+    def populate_domain_content(self, which='guess'):
+
+        if which == 'guess':
+            index = self.guess_domain()
+        else:
+            index = which
+
+        self.ui.comboBox.setCurrentIndex(index)
+
+        if index == 0:
+            self.domain = edom_list.EdomList()
+        elif index == 1:
+            self.domain = rdom.Rdom()
+        elif index == 2:
+            self.domain = codesetd.Codesetd()
+        else:
+            self.domain = udom.Udom()
+
+
+        if self._domain_content[index] is not None:
+            # This domain has been used before, display previous content
+            self.domain._from_xml(self._domain_content[index])
+        elif self.series is not None and index == 0:
+            uniques = self.series.unique()
+            if len(uniques) > 100:
+                msg = "There are more than 100 unique values in this field."
+                msg += "\n This tool cannot smoothly display that many entries. "
+                msg += "\nTypically an enumerated domain is not used with that many unique entries."
+                msg += "\n\nOnly the first one hundred are displayed below!"
+                msg += "\nYou will likely want to change the domain to one of the other options."
+                QMessageBox.warning(self, "Too many unique entries", msg)
+                self.domain.populate_from_list(uniques[:101])
+            else:
+                self.domain.populate_from_list(uniques)
+        elif self.series is not None and index == 1:
+            self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+            self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
 
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
-
 
     def change_domain(self, index):
+        if self.active:
+            self.store_current_content()
+            self.clear_domain()
 
-        previous_domain = self.ui.comboBox.itemText(self._previous_index)
-        self._domain_content[previous_domain] = self.domain._to_xml()
+            self.populate_domain_content(self.ui.comboBox.currentIndex())
 
-        self._previous_index = index
-        self.clear_domain()
-
-        domain = self.ui.comboBox.currentText().lower()
-
-        if 'enumerated' in domain:
-            self.domain = edom_list.EdomList(parent=self)
-            if self._domain_content['Enumerated (Categorical Data)'] is not None:
-                self.domain._from_xml(self._domain_content['Enumerated (Categorical Data)'])
-            elif self.series is not None:
-                uniques = self.series.unique()
-                if len(uniques) > 100:
-                    msg = "There are more than 100 unique values in this field."
-                    msg += "\n This tool cannot smoothly display that many entries. "
-                    msg += "\nTypically an enumerated domain is not used with that many unique entries."
-                    msg += "\n\nOnly the first one hundred are displayed below!"
-                    msg += "\nYou will likely want to change the domain to one of the other options."
-                    QMessageBox.warning(self, "Too many unique entries", msg)
-                    self.domain.populate_from_list(uniques[:101])
-                else:
-                    self.domain.populate_from_list(uniques)
-        elif 'range' in domain:
-            self.domain = rdom.Rdom(parent=self)
-            if self._domain_content['Range (Numeric data)'] is not None:
-                self.domain._from_xml(self._domain_content['Range (Numeric data)'])
-            elif self.series is not None:
-                try:
-                    series_min = self.series.min()
-                    series_max = self.series.max()
-                except TypeError:
-                    series_min = ''
-                    series_max = ''
-                self.domain.ui.fgdc_rdommin.setText(str(series_min))
-                self.domain.ui.fgdc_rdommax.setText(str(series_max))
-        elif 'codeset' in domain:
-            self.domain = codesetd.Codesetd(parent=self)
-            if self._domain_content['Codeset (Published Categories)'] is not None:
-                self.domain._from_xml(self._domain_content['Codeset (Published Categories)'])
-        elif 'unrepresentable' in domain:
-            self.domain = udom.Udom(parent=self)
-            if self._domain_content['Unrepresentable (None of the above)'] is not None:
-                self.domain._from_xml(self._domain_content['Unrepresentable (None of the above)'])
-        else:
-            pass
-
-        self.ui.attrdomv_contents.layout().addWidget(self.domain)
-
-    def supersize_me(self, s=''):
+    def supersize_me(self):
+        self.active = True
         self.animation = QPropertyAnimation(self, b"minimumSize")
-        self.animation.setDuration(400)
+        self.animation.setDuration(200)
         self.animation.setEndValue(QSize(325, self.height()))
         self.animation.start()
         self.ui.attrdomv_contents.show()
         self.ui.place_holder.hide()
 
+        cbo = self.ui.comboBox
+        self.populate_domain_content(cbo.currentIndex())
+
     def regularsize_me(self):
-        self.animation = QPropertyAnimation(self, b"minimumSize")
-        self.animation.setDuration(33)
-        self.animation.setEndValue(QSize(100, self.height()))
-        self.animation.start()
-        self.ui.attrdomv_contents.hide()
-        # self.ui.attrdomv_contents.deleteLater()
-        self.ui.place_holder.show()
+        if self.active:
+            self.store_current_content()
+            self.animation = QPropertyAnimation(self, b"minimumSize")
+            self.animation.setDuration(200)
+            self.animation.setEndValue(QSize(100, self.height()))
+            self.animation.start()
+
+            self.clear_domain()
+            self.ui.place_holder.show()
+
+        self.active = False
+
 
     def eventFilter(self, obj, event):
         """
@@ -212,9 +217,14 @@ class Attr(WizardWidget):  #
         # Here we just check if its one of the layout widget
         if event.type() == event.MouseButtonPress or \
                 event.type() == 207:
-            if self.parent_ui is not None:
-                self.parent_ui.minimize_children()
-            self.supersize_me()
+
+            if self.active:
+                #we're already big so do nothing
+                pass
+            else:
+                if self.parent_ui is not None:
+                    self.parent_ui.minimize_children()
+                self.supersize_me()
 
         return super(Attr, self).eventFilter(obj, event)
 
@@ -306,14 +316,26 @@ class Attr(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        attr = xml_utils.xml_node('attr')
+        cur_index = self.ui.comboBox.currentIndex()
+
+        if self.active:
+            domain = self.domain._to_xml()
+        elif self._domain_content[cur_index] is not None:
+            domain = self._domain_content[cur_index]
+        else:
+            self.populate_domain_content(cur_index)
+            domain = self.domain._to_xml()
+
         if self.ui.comboBox.currentIndex() == 0:
-            attr = self.domain._to_xml()
+            attr = xml_utils.XMLNode(domain)
+            attr.clear_children(tag='attrlabl')
+            attr.clear_children(tag='attrdef')
+            attr.clear_children(tag='attrdefs')
+            attr = attr.to_xml()
         else:
             attr = xml_utils.xml_node('attr')
             attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr)
-            domain_node = self.domain._to_xml()
-            attrdomv.append(domain_node)
+            attrdomv.append(domain)
 
         attrlabl = xml_utils.xml_node('attrlabl',
                                       text=self.ui.fgdc_attrlabl.text(),
@@ -347,26 +369,20 @@ class Attr(WizardWidget):  #
                     self.ui.comboBox.setCurrentIndex(3)
                 elif 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(3)
-                    self.domain._from_xml(attr.xpath('attrdomv/udom')[0])
+                    self._domain_content[3] = attr.xpath('attrdomv/udom')[0]
                 elif 'fgdc_rdom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(1)
-                    self.domain._from_xml(attr.xpath('attrdomv/rdom')[0])
+                    self._domain_content[1] = attr.xpath('attrdomv/rdom')[0]
                 elif 'fgdc_edom' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(0)
-                    self.change_domain(0)
-                    self.domain._from_xml(attr)
+                    self._domain_content[0] = attr
                 elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
                     self.ui.comboBox.setCurrentIndex(2)
-                    self.domain._from_xml(attr.xpath('attrdomv/codesetd')[0])
+                    self._domain_content[2] = attr.xpath('attrdomv/codesetd')[0]
                 else:
                     self.ui.comboBox.setCurrentIndex(3)
-
-
-
-
-
             else:
-                print ("The tag is not udom")
+                print ("The tag is not attr")
         except KeyError:
             pass
 
