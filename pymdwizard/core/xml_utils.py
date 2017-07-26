@@ -361,10 +361,17 @@ def clear_children(element):
 class XMLRecord(object):
     def __init__(self, contents):
         try:
-            self.fname = contents
-            self._root = string_to_node(contents)
-            self.record = etree.ElementTree(self._root)
+            if os.path.exists(contents[:255]):
+                self.fname = contents
+                #they passed us a file path
+                self.record = etree.parse(self.fname)
+                self._root = self.record.getroot()
+            else:
+                self.fname = None
+                self._root = string_to_node(contents)
+                self.record = etree.ElementTree(self._root)
         except etree.XMLSyntaxError:
+            self.fname = None
             self.record = etree.fromstring(contents)
             self._root = self.record.getroot()
 
