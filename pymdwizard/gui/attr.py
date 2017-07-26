@@ -36,7 +36,7 @@ import numpy as np
 import sip
 
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget, QMenu
+from PyQt5.QtWidgets import QWidget, QMenu, QComboBox, QLineEdit, QPlainTextEdit
 from PyQt5.QtCore import QPropertyAnimation, QSize
 from PyQt5.QtGui import QIcon
 
@@ -56,7 +56,7 @@ class Attr(WizardWidget):  #
     def __init__(self, parent=None):
         # This changes to true when this attribute is being viewed/edited
         self.active = False
-
+        self.ef = 0
         WizardWidget.__init__(self, parent=parent)
 
 
@@ -79,7 +79,7 @@ class Attr(WizardWidget):  #
         self.ui = UI_attr.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
 
-        self.ui.fgdc_attrdef.installEventFilter(self)
+        # self.ui.fgdc_attrdef.installEventFilter(self)
         self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
         self.ui.attrdomv_contents.installEventFilter(self)
@@ -87,8 +87,35 @@ class Attr(WizardWidget):  #
 
         self.setup_dragdrop(self)
         self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
+        self.ui.fgdc_attr.mousePressEvent = self.mousePressEvent
+        self.ui.fgdc_attrlabl.mousePressEvent = self.attrlabl_press
+        self.ui.fgdc_attrdef.mousePressEvent = self.attrdef_press
+        self.ui.fgdc_attrdefs.mousePressEvent = self.attrdefs_press
+        self.ui.comboBox.mousePressEvent = self.combo_press
         self.domain = None
         self.ui.comboBox.setCurrentIndex(3)
+
+
+    def mousePressEvent(self, event):
+        test = self.childAt(event.pos())
+        print(event.pos().x(), event.pos().y(), test.objectName())
+        self.activate()
+
+    def attrlabl_press(self, event):
+        self.activate()
+        return QLineEdit.mousePressEvent(self.ui.fgdc_attrlabl, event)
+
+    def attrdef_press(self, event):
+        self.activate()
+        return QPlainTextEdit.mousePressEvent(self.ui.fgdc_attrdef, event)
+
+    def attrdefs_press(self, event):
+        self.activate()
+        return QLineEdit.mousePressEvent(self.ui.fgdc_attrdefs, event)
+
+    def combo_press(self, event):
+        self.activate()
+        return QComboBox.mousePressEvent(self.ui.comboBox, event)
 
     def clear_domain(self):
         for child in self.ui.attrdomv_contents.children():
@@ -127,6 +154,8 @@ class Attr(WizardWidget):  #
                 self._domain_content[0] = cur_xml
 
     def populate_domain_content(self, which='guess'):
+
+        self.clear_domain()
 
         if which == 'guess':
             index = self.guess_domain()
@@ -198,35 +227,45 @@ class Attr(WizardWidget):  #
 
         self.active = False
 
+    def activate(self):
+        if self.active:
+            #we're already big so do nothing
+            pass
+        else:
+            if self.parent_ui is not None:
+                self.parent_ui.minimize_children()
+            self.supersize_me()
 
-    def eventFilter(self, obj, event):
-        """
-
-        Parameters
-        ----------
-        obj
-        event
-
-        Returns
-        -------
-
-        """
-        # you could be doing different groups of actions
-        # for different types of widgets and either filtering
-        # the event or not.
-        # Here we just check if its one of the layout widget
-        if event.type() == event.MouseButtonPress or \
-                event.type() == 207:
-
-            if self.active:
-                #we're already big so do nothing
-                pass
-            else:
-                if self.parent_ui is not None:
-                    self.parent_ui.minimize_children()
-                self.supersize_me()
-
-        return super(Attr, self).eventFilter(obj, event)
+    # def eventFilter(self, obj, event):
+    #     """
+    #
+    #     Parameters
+    #     ----------
+    #     obj
+    #     event
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     # you could be doing different groups of actions
+    #     # for different types of widgets and either filtering
+    #     # the event or not.
+    #     # Here we just check if its one of the layout widget
+    #     self.ef += 1
+    #     print("ef:{}".format(self.ef))
+    #     if event.type() == event.MouseButtonPress or \
+    #             event.type() == 207:
+    #
+    #         if self.active:
+    #             #we're already big so do nothing
+    #             pass
+    #         else:
+    #             if self.parent_ui is not None:
+    #                 self.parent_ui.minimize_children()
+    #             self.supersize_me()
+    #
+    #     return super(Attr, self).eventFilter(obj, event)
 
     def contextMenuEvent(self, event):
 
@@ -360,6 +399,7 @@ class Attr(WizardWidget):  #
         None
         """
         try:
+            self.clear_widget()
             if attr.tag == 'attr':
 
                 utils.populate_widget(self, attr)
