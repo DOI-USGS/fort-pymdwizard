@@ -76,9 +76,6 @@ class DistInfo(WizardWidget):
 
         self.ui.fgdc_distrib.layout().addWidget(self.contactinfo)
 
-        testing = GrowingTextEdit()
-        self.ui.fgdc_distrib.layout().addWidget(testing)
-
         self.ui.widget_distinfo.hide()
 
     def connect_events(self):
