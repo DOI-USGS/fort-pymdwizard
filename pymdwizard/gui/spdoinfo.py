@@ -159,29 +159,33 @@ class SpdoInfo(WizardWidget):
             direct = xml_utils.xml_node('direct', text=self.ui.fgdc_direct.currentText(),
                                         parent_node=spdoinfo)
             if self.ui.fgdc_direct.currentText() == 'Raster':
-                rastinfo = xml_utils.xml_node('rastinfo', parent_node=spdoinfo)
-                rasttype = xml_utils.xml_node('rasttype', text=self.ui.fgdc_rasttype.currentText(), parent_node=rastinfo)
+                rasttype = self.ui.fgdc_rasttype.currentText()
+                if rastype:
+                    rastinfo = xml_utils.xml_node('rastinfo', parent_node=spdoinfo)
+                    rasttype = xml_utils.xml_node('rasttype', text=rasttype, parent_node=rastinfo)
 
-                rowcount_str = self.ui.fgdc_rowcount.text()
-                colcount_str = self.ui.fgdc_colcount.text()
-                vrtcount_str = self.ui.fgdc_vrtcount.text()
+                    rowcount_str = self.ui.fgdc_rowcount.text()
+                    colcount_str = self.ui.fgdc_colcount.text()
+                    vrtcount_str = self.ui.fgdc_vrtcount.text()
 
-                if rowcount_str or colcount_str:
-                    rowcount = xml_utils.xml_node('rowcount', text=rowcount_str,
-                                                  parent_node=rastinfo)
-                    colcount = xml_utils.xml_node('colcount', text=colcount_str,
-                                                  parent_node=rastinfo)
-                    if vrtcount_str:
-                        vrtcount = xml_utils.xml_node('vrtcount', text=vrtcount_str,
+                    if rowcount_str or colcount_str:
+                        rowcount = xml_utils.xml_node('rowcount', text=rowcount_str,
+                                                      parent_node=rastinfo)
+                        colcount = xml_utils.xml_node('colcount', text=colcount_str,
+                                                      parent_node=rastinfo)
+                        if vrtcount_str:
+                            vrtcount = xml_utils.xml_node('vrtcount', text=vrtcount_str,
                                                       parent_node=rastinfo)
             else:
-                ptvctinf = xml_utils.xml_node('ptvctinf', parent_node=spdoinfo)
-                sdtsterm = xml_utils.xml_node('sdtsterm', parent_node=ptvctinf)
-                sdtstype = xml_utils.xml_node('sdtstype', text=self.ui.fgdc_sdtstype.currentText(), parent_node=sdtsterm)
+                sdtstype = self.ui.fgdc_sdtstype.currentText()
+                if sdtstype:
+                    ptvctinf = xml_utils.xml_node('ptvctinf', parent_node=spdoinfo)
+                    sdtsterm = xml_utils.xml_node('sdtsterm', parent_node=ptvctinf)
+                    sdtstype = xml_utils.xml_node('sdtstype', text=sdtstype, parent_node=sdtsterm)
 
-                ptvctcnt_str = self.ui.fgdc_ptvctcnt.text()
-                if ptvctcnt_str:
-                    sdtsterm = xml_utils.xml_node('ptvctcnt', text = ptvctcnt_str, parent_node=sdtsterm)
+                    ptvctcnt_str = self.ui.fgdc_ptvctcnt.text()
+                    if ptvctcnt_str:
+                        sdtsterm = xml_utils.xml_node('ptvctcnt', text = ptvctcnt_str, parent_node=sdtsterm)
         else:
             spdoinfo = None
 
