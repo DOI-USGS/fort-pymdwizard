@@ -124,6 +124,10 @@ class MetaInfo(WizardWidget):
                                      text=self.ui.fgdc_metstdv.currentText(),
                                      parent_node=metainfo_node)
 
+        metuc = xml_utils.xml_node('metuc',
+                                   text="Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)",
+                                   parent_node=metainfo_node)
+
         return metainfo_node
 
     def _from_xml(self, xml_metainfo):
