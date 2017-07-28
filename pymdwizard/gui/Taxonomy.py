@@ -156,9 +156,13 @@ class Taxonomy(WizardWidget):
         self.clear_widget()
         self.ui.rbtn_yes.setChecked(True)
 
-        self.keywtax._from_xml(taxonomy_element.xpath('keywtax')[0])
+        keywtax = taxonomy_element.xpath('keywtax')
+        if keywtax:
+            self.keywtax._from_xml(taxonomy_element.xpath('keywtax')[0])
 
-        self.taxoncl._from_xml(taxonomy_element.xpath('taxoncl')[0])
+        taxoncl = taxonomy_element.xpath('taxoncl')
+        if taxoncl:
+            self.taxoncl._from_xml(taxoncl[0])
 
 if __name__ == "__main__":
     utils.launch_widget(Taxonomy, "Taxonomy testing")
