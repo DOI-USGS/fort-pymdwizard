@@ -373,6 +373,12 @@ class WizardWidget(QWidget):
                 shortname = shortname[:-1]
             widget.setToolTip(annotation_lookup[shortname]['long_name'])
             widget.help_text = annotation_lookup[shortname]['annotation']
+            try:
+                if not hasattr(widget.parentWidget(), 'help_text') or \
+                        not widget.parentWidget().help_text:
+                    widget.parentWidget().help_text = widget.help_text
+            except:
+                pass
 
     def clear_widget(self):
         """
