@@ -53,7 +53,6 @@ arcpy.AddWarning("pymdwiz_dir :" + pymdwiz_dir)
 
 python_dir = os.path.join(installDir, 'Python35_64')
 arcpy.AddWarning("python_dir :" + python_dir)
-python_dir = r"C:\Anaconda3\envs\Python35_64"
 
 python_exe = os.path.join(python_dir, 'pythonw.exe')
 arcpy.AddWarning("python_exe :" + python_exe)
