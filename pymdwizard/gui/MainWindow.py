@@ -531,26 +531,34 @@ class PyMdWizardMainForm(QMainWindow):
 
         error_count = 0
         for error in errors:
-            xpath, error_msg, line_num = error
-            if xpath not in marked_errors:
 
-                action = QAction(self, visible=True)
-                action.setText(error_msg)
-                action.setData(xpath)
-                action.triggered.connect(self.goto_error)
-                self.ui.menuErrors.addAction(action)
-                marked_errors.append(xpath)
+            try:
+                xpath, error_msg, line_num = error
+                if xpath not in marked_errors:
 
-                # widget = self.metadata_root.get_widget(xpath)
-                widgets = self.widget_lookup.xpath_march(xpath, as_list=True)
-                for widget in widgets:
-                    if isinstance(widget, list):
-                        for w in widget:
-                            print('problem highlighting error', xpath, widget)
-                    else:
-                        self.highlight_error(widget.widget, error_msg)
-                        self.error_widgets.append(widget.widget)
-                        error_count += 1
+                    action = QAction(self, visible=True)
+                    action.setText(error_msg)
+                    action.setData(xpath)
+                    action.triggered.connect(self.goto_error)
+                    self.ui.menuErrors.addAction(action)
+                    marked_errors.append(xpath)
+
+                    # widget = self.metadata_root.get_widget(xpath)
+                    widgets = self.widget_lookup.xpath_march(xpath, as_list=True)
+                    for widget in widgets:
+                        if isinstance(widget, list):
+                            for w in widget:
+                                print('problem highlighting error', xpath, widget)
+                        else:
+                            self.highlight_error(widget.widget, error_msg)
+                            self.error_widgets.append(widget.widget)
+                            error_count += 1
+            except BaseException as e:
+                import traceback
+                msg = "Error encountered highlighting error:"
+                msg += "\t" + xpath
+                msg += "\n\n" + traceback.format_exc()
+                QMessageBox.warning(self, "Bug encountered", msg)
 
         if errors:
             msg = "There are {} errors in this record".format(error_count)
