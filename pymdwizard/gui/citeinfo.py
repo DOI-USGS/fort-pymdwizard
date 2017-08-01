@@ -252,7 +252,7 @@ class Citeinfo(WizardWidget): #
                 print("The tag is not 'citation' or 'citeinfo'")
                 return
 
-            self.fgdc_origin.clear_widgets()
+            self.fgdc_origin.clear_widgets(add_another=False)
             originators = citeinfo.findall("origin")
             if originators :
                 self.fgdc_origin.clear_widgets(add_another=False)
