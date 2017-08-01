@@ -79,6 +79,7 @@ class Spdom(WizardWidget):
         self.root_widget = root_widget
 
         self.after_load = False
+        self.has_rect = True
 
     def build_ui(self):
         """
@@ -91,10 +92,7 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-
-        self.ui.map_viewer.hide()
-
-        self.view = self.view = QWebView()
+        self.view = QWebView()
         self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
         map_fname = utils.get_resource_path('leaflet/map.html')
 
@@ -112,6 +110,7 @@ class Spdom(WizardWidget):
 
         # setup drag-drop functionality for this widget and all it's children.
         self.setup_dragdrop(self)
+        self.add_rect()
         self.raise_()
 
     def connect_events(self):
@@ -122,30 +121,69 @@ class Spdom(WizardWidget):
 
     def coord_updated(self):
 
+        good_coords = self.all_good_coords()
+
         try:
             cur_name = self.sender().objectName()
+            if 'fgdc' not in cur_name:
+                return
             cur_value = self.sender().text()
         except AttributeError:
-            cur_name = 'na'
-            cur_value = 'na'
+            cur_name = ''
+            cur_value = ''
 
         try:
             cur_value = float(cur_value)
         except ValueError:
-            msg = 'This field should only contain a decimal number'
+            pass
 
-        if cur_name in ['fgdc_westbc', 'fgdc_eastbc'] \
-                and -180 >= cur_value >= 180:
+        msg = ''
+        if type(cur_value) != float and cur_value != '':
+            msg = 'number entered must be numeric only'
+        elif cur_value == '':
+            msg = ''
+        elif cur_name in ['fgdc_westbc', 'fgdc_eastbc'] \
+            and -180 >= cur_value >= 180:
             msg = 'East or West coordinate must be within -180 and 180'
         elif cur_name in ['fgdc_southbc', 'fgdc_northbc'] \
                 and -90 >= cur_value >= 90:
-            msg = 'North South coordinate must be within -90 and 90'
-
-        else:
-            msg = ''
+            msg = 'North and South coordinates must be within -90 and 90'
+        elif cur_name == 'fgdc_southbc':
+            try:
+                north = float(self.ui.fgdc_northbc.text())
+                if north <= cur_value:
+                    msg = 'North coordinate must be greater than South coordinate'
+            except ValueError:
+                pass
+        elif cur_name == 'fgdc_northbc':
+            try:
+                south = float(self.ui.fgdc_southbc.text())
+                if south >= cur_value:
+                    msg = 'North coordinate must be greater than South coordinate'
+            except ValueError:
+                pass
+        elif cur_name == 'fgdc_westbc':
+            try:
+                east = float(self.ui.fgdc_eastbc.text())
+                if east <= cur_value:
+                    msg = 'West coordinate must be greater than East coordinate'
+            except ValueError:
+                pass
+        elif cur_name == 'fgdc_eastbc':
+            try:
+                west = float(self.ui.fgdc_westbc.text())
+                if west >= cur_value:
+                    msg = 'West coordinate must be greater than East coordinate'
+            except ValueError:
+                pass
 
         if msg:
-            QMessageBox.warning(self, "Problem bounding coordinates", msg)
+                QMessageBox.warning(self, "Problem bounding coordinates", msg)
+
+        if good_coords:
+            self.add_rect()
+        else:
+            self.remove_rect()
             return
 
         jstr = """east = {eastbc};
@@ -160,6 +198,16 @@ class Spdom(WizardWidget):
                     'southbc': self.ui.fgdc_southbc.text(),
         })
         self.frame.evaluateJavaScript(jstr)
+
+    def add_rect(self):
+        jstr = """addRect();"""
+        self.frame.evaluateJavaScript(jstr)
+
+    def remove_rect(self):
+        if self.has_rect:
+            self.has_rect = False
+            jstr = """removeRect()"""
+            self.frame.evaluateJavaScript(jstr)
 
     @pyqtSlot(float, float)
     def on_ne_move(self, lat, lng):
@@ -192,14 +240,35 @@ class Spdom(WizardWidget):
             self.ui.descgeog_label.hide()
             self.ui.descgeog_star.hide()
 
+    def all_good_coords(self):
+        try:
+            if -180 > float(self.ui.fgdc_westbc.text()) > 180:
+                return False
+            if -180 > float(self.ui.fgdc_eastbc.text()) > 180:
+                return False
+            if -90 > float(self.ui.fgdc_southbc.text()) > 90:
+                return False
+            if -90 > float(self.ui.fgdc_northbc.text()) > 90:
+                return False
+            if float(self.ui.fgdc_northbc.text()) <= float(self.ui.fgdc_southbc.text()):
+                return False
+            if float(self.ui.fgdc_eastbc.text()) <= float(self.ui.fgdc_westbc.text()):
+                return False
+            return True
+        except:
+            return False
+
     def clear_widget(self):
         super(self.__class__, self).clear_widget()
-        map_fname = utils.get_resource_path('leaflet/map.html')
-        self.view.setUrl(QUrl.fromLocalFile(map_fname))
+
+        # self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
+        # map_fname = utils.get_resource_path('leaflet/map.html')
+        # self.view.setUrl(QUrl.fromLocalFile(map_fname))
 
     def showEvent(self, e):
         if not self.after_load:
            self.coord_updated()
+           self.add_rect()
            jstr = "sw_marker.openPopup();"
            self.frame.evaluateJavaScript(jstr)
            self.after_load = True
@@ -237,16 +306,20 @@ class Spdom(WizardWidget):
             contents = contents['bounding']
 
         try:
-            jstr = """east = {eastbc};
-            west = {westbc};
-            south = {southbc};
-            north = {northbc};
-             updateMap();
-             fitMap();
-            """.format(**contents)
-            self.frame.evaluateJavaScript(jstr)
+            if self.all_good_coords():
+                self.add_rect()
+                jstr = """east = {eastbc};
+                west = {westbc};
+                south = {southbc};
+                north = {northbc};
+                 updateMap();
+                 fitMap();
+                """.format(**contents)
+                self.frame.evaluateJavaScript(jstr)
+            else:
+                self.remove_rect()
         except KeyError:
-            pass
+            self.remove_rect()
 
 
 if __name__ == "__main__":
