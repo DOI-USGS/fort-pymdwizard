@@ -160,7 +160,7 @@ class SpdoInfo(WizardWidget):
                                         parent_node=spdoinfo)
             if self.ui.fgdc_direct.currentText() == 'Raster':
                 rasttype = self.ui.fgdc_rasttype.currentText()
-                if rastype:
+                if rasttype:
                     rastinfo = xml_utils.xml_node('rastinfo', parent_node=spdoinfo)
                     rasttype = xml_utils.xml_node('rasttype', text=rasttype, parent_node=rastinfo)
 
