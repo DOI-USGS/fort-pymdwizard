@@ -39,6 +39,7 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 import sys
+from copy import deepcopy
 from lxml import etree
 
 from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
@@ -137,17 +138,33 @@ class DataQuality(WizardWidget):
         if self.sourceinput.has_content():
             srcinfo_node = self.sourceinput._to_xml()
 
-
         procstep_node = self.procstep._to_xml()
         procstep_children = procstep_node.getchildren()
 
         for i in procstep_children:
             srcinfo_node.append(i)
+
+        if self.original_xml is not None:
+            methods = xml_utils.search_xpath(self.original_xml,
+                                             'lineage/method', only_first=False)
+            for i, method in enumerate(methods):
+                method.tail = None
+                srcinfo_node.insert(i, deepcopy(method))
+
         dataqual_node.append(srcinfo_node)
+
+        if self.original_xml is not None:
+            cloud = xml_utils.search_xpath(self.original_xml, 'cloud')
+            if cloud is not None:
+                cloud.tail = None
+                dataqual_node.append(deepcopy(cloud))
 
         return dataqual_node
 
     def _from_xml(self, xml_dataqual):
+
+        self.original_xml = xml_dataqual
+
         try:
             attraccr = xml_dataqual.xpath('attracc')[0]
             self.attraccr._from_xml(attraccr)

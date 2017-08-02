@@ -208,6 +208,12 @@ class IdInfo(WizardWidget):
             ptcontac = self.ptcontac._to_xml()
             idinfo_node.append(ptcontac)
 
+        if self.original_xml is not None:
+            browse = xml_utils.search_xpath(self.original_xml, 'browse')
+            if browse is not None:
+                browse.tail = None
+                idinfo_node.append(deepcopy(browse))
+
         datacredit_node = self.datacredit._to_xml()
         if datacredit_node.text:
             idinfo_node.append(datacredit_node)
@@ -231,16 +237,15 @@ class IdInfo(WizardWidget):
                 idinfo_node.append(deepcopy(crossref))
 
             tools = xml_utils.search_xpath(self.original_xml, 'tool', only_first=False)
-            if tools is not None:
-                for tool in tools:
-                    tool.tail = None
-                    idinfo_node.append(deepcopy(tool))
+            for tool in tools:
+                tool.tail = None
+                idinfo_node.append(deepcopy(tool))
 
         return idinfo_node
 
     def _from_xml(self, xml_idinfo):
 
-        self.original_xml = (xml_idinfo)
+        self.original_xml = xml_idinfo
 
         citation = xml_utils.search_xpath(xml_idinfo, 'citation')
         if citation is not None:
