@@ -122,7 +122,7 @@ class EA(WizardWidget):  #
             has_content = True
         if self.ui.fgdc_eaover.toPlainText():
             has_content = True
-        if self.detaileds[0].has_content():
+        if self.detaileds and self.detaileds[0].has_content():
             has_content = True
         for detailed in self.detaileds:
             if detailed.has_content():
@@ -140,7 +140,7 @@ class EA(WizardWidget):  #
         eainfo = xml_utils.xml_node('eainfo')
 
         #only output the first detailed if it has content
-        if self.detaileds[0].has_content():
+        if self.detaileds and self.detaileds[0].has_content():
             detailed_xml = self.detaileds[0]._to_xml()
             eainfo.append(detailed_xml)
 

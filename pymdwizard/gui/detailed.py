@@ -160,6 +160,22 @@ class Detailed(WizardWidget):  #
             self.ui.fgdc_enttypd.setPlainText('Raster geospatial data file.')
             df = get_raster_attribute_table(fname)
             self.attributes.load_df(df)
+            oid_attr = self.attributes.get_attr('OID')
+            if oid_attr is not None:
+                oid_attr.populate_domain_content(3)
+                oid_attr.ui.fgdc_attrdef.setPlainText('Internal feature number.')
+                oid_attr.domain.ui.fgdc_udom.setPlainText('Sequential unique whole numbers that are automatically generated.')
+                oid_attr.regularsize_me()
+                oid_attr.supersize_me()
+            value_attr = self.attributes.get_attr('Value')
+            if value_attr is not None:
+                value_attr.populate_domain_content(1)
+                value_attr.ui.fgdc_attrdef.setPlainText('Unique numeric values contained in each raster cell.')
+            count_attr = self.attributes.get_attr('Count')
+            if count_attr is not None:
+                count_attr.populate_domain_content(1)
+                count_attr.ui.fgdc_attrdef.setPlainText('Number of raster cells with this value.')
+
         elif ext.lower() == ".p":
             p = pickle.load(open(fname, "rb"), encoding='bytes')
 

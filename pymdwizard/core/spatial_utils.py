@@ -1379,6 +1379,8 @@ def get_raster_attribute_table(fname):
         vatdbf = fname + ".vat.dbf"
         if os.path.exists(vatdbf):
             vat = data_io.read_dbf(vatdbf)
+            if 'OID' not in vat.columns:
+                vat.insert(0, 'OID', range(0, len(vat)))
             return vat
         else:
             return band_to_df(band)

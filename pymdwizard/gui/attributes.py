@@ -118,6 +118,12 @@ class Attributes(WizardWidget):  #
             attribute.deleteLater()
         self.attrs = []
 
+    def get_attr(self, which):
+        for attr in self.attrs:
+            if attr.ui.fgdc_attrlabl.text() == which:
+                return attr
+        return None
+
     def insert_before(self, this_attr):
         new_attrs = []
         for i, attribute in enumerate(self.attrs):
