@@ -96,18 +96,16 @@ class Attributes(WizardWidget):  #
                 s = pd.Series(contents[col_label][b'contents'])
                 attr_i.set_series(s)
                 attr_i.guess_domain()
-            elif  contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
+            elif contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
                 s = pd.Series(contents[col_label][b'contents'])
                 attr_i.set_series(s)
-                attr_i.guess_domain(force='range')
+                attr_i.ui.comboBox.setCurrentIndex(1)
             else:
-                attr_i.guess_domain(force='unrep')
+                attr_i.ui.comboBox.setCurrentIndex(1)
                 unrep = contents[col_label][b'contents']
 
                 utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
                 utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
-                utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
-
             self.append_attr(attr_i)
 
         try:
