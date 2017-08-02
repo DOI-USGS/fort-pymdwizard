@@ -2,6 +2,8 @@
 import os
 
 import struct
+import datetime
+import decimal
 try:
     # Python 2
     from itertools import izip
@@ -102,7 +104,8 @@ def dbfreader(f):
                 y, m, d = int(value[:4]), int(value[4:6]), int(value[6:8])
                 value = datetime.date(y, m, d)
             elif typ == b'L':
-                value = (value in b'YyTt' and b'T') or (value in b'NnFf' and 'F') or '?'
+                value = (value in b'YyTt' and b'T') or \
+                        (value in b'NnFf' and b'F') or b'?'
             elif typ == b'F':
                 value = float(value)
             result.append(value)
