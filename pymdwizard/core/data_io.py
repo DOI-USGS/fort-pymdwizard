@@ -3,8 +3,7 @@ import os
 
 import pandas as pd
 import geopandas as gpd
-
-from  osgeo import ogr, osr
+import fiona
 
 def read_csv(filepath):
     """
@@ -31,7 +30,10 @@ def read_csv(filepath):
 
 def read_shp(filepath):
     df = gpd.read_file(filepath)
-    return df[[c for c in df.columns if c != 'geometry']]
+    c = fiona.open(filepath)
+    col_names = list(c.schema['properties'].keys())
+    df = df[[c for c in df.columns if c != 'geometry']]
+    return df[col_names]
 
 
 def get_sheet_names(filepath):
