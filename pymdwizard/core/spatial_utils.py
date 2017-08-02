@@ -46,6 +46,7 @@ import pandas as pd
 
 from pymdwizard.core.xml_utils import xml_node
 from pymdwizard.core import utils
+from pymdwizard.core import data_io
 
 try:
     python_root = utils.get_install_dname('python')
@@ -1374,7 +1375,13 @@ def get_raster_attribute_table(fname):
     band = raster.GetRasterBand(1)
     rat = band.GetDefaultRAT()
     if rat is None:
-        return band_to_df(band)
+        # check for a sidecar dbf vat
+        vatdbf = fname + ".vat.dbf"
+        if os.path.exists(vatdbf):
+            vat = data_io.read_dbf(vatdbf)
+            return vat
+        else:
+            return band_to_df(band)
     else:
         return rat_to_df(rat)
 
