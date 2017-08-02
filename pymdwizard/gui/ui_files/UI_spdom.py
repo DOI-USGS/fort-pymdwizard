@@ -334,16 +334,6 @@ class Ui_Form(object):
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.map_display)
         self.verticalLayout_3.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.map_viewer = QtWebKitWidgets.QWebView(self.map_display)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.map_viewer.sizePolicy().hasHeightForWidth())
-        self.map_viewer.setSizePolicy(sizePolicy)
-        self.map_viewer.setMinimumSize(QtCore.QSize(0, 400))
-        self.map_viewer.setUrl(QtCore.QUrl("about:blank"))
-        self.map_viewer.setObjectName("map_viewer")
-        self.verticalLayout_3.addWidget(self.map_viewer)
         self.verticalLayout_5.addWidget(self.splitter)
         self.verticalLayout_4.addWidget(self.group)
 
@@ -376,4 +366,3 @@ class Ui_Form(object):
         self.label_7.setToolTip(_translate("Form", "Required"))
         self.label_7.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
 
-from PyQt5 import QtWebKitWidgets

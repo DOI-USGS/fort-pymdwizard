@@ -186,6 +186,9 @@ class Spdom(WizardWidget):
             self.remove_rect()
             return
 
+        self.update_map()
+
+    def update_map(self):
         jstr = """east = {eastbc};
         west = {westbc};
         south = {southbc};
@@ -193,10 +196,10 @@ class Spdom(WizardWidget):
         updateMap();
         fitMap();
         """.format(**{'eastbc': self.ui.fgdc_eastbc.text(),
-                    'westbc': self.ui.fgdc_westbc.text(),
-                    'northbc': self.ui.fgdc_northbc.text(),
-                    'southbc': self.ui.fgdc_southbc.text(),
-        })
+                      'westbc': self.ui.fgdc_westbc.text(),
+                      'northbc': self.ui.fgdc_northbc.text(),
+                      'southbc': self.ui.fgdc_southbc.text(),
+                      })
         self.frame.evaluateJavaScript(jstr)
 
     def add_rect(self):
@@ -267,8 +270,8 @@ class Spdom(WizardWidget):
 
     def showEvent(self, e):
         if not self.after_load:
-           self.coord_updated()
            self.add_rect()
+           self.update_map()
            jstr = "sw_marker.openPopup();"
            self.frame.evaluateJavaScript(jstr)
            self.after_load = True
@@ -308,14 +311,7 @@ class Spdom(WizardWidget):
         try:
             if self.all_good_coords():
                 self.add_rect()
-                jstr = """east = {eastbc};
-                west = {westbc};
-                south = {southbc};
-                north = {northbc};
-                 updateMap();
-                 fitMap();
-                """.format(**contents)
-                self.frame.evaluateJavaScript(jstr)
+                self.update_map()
             else:
                 self.remove_rect()
         except KeyError:
