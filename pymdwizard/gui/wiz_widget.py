@@ -389,11 +389,9 @@ class WizardWidget(QWidget):
         """
         from pymdwizard.gui import repeating_element
         widgets = self.findChildren(QWidget, QRegExp(r'.*'))
-        for widget in widgets:
-            if isinstance(widget, WizardWidget):
-                widget.clear_widget()
 
-            elif isinstance(widget, repeating_element.RepeatingElement):
+        for widget in widgets:
+            if isinstance(widget, repeating_element.RepeatingElement):
                 widget.clear_widgets()
                 rep1_widget = widget.get_widgets()[0]
                 if isinstance(rep1_widget, WizardWidget):
@@ -401,6 +399,10 @@ class WizardWidget(QWidget):
 
             elif widget.objectName().startswith('fgdc_'):
                 utils.set_text(widget, '')
+
+        for widget in widgets:
+            if isinstance(widget, WizardWidget):
+                widget.clear_widget()
 
 
     def has_content(self):

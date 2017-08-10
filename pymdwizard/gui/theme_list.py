@@ -158,9 +158,11 @@ class ThemeList(WizardWidget): #
         if remove_iso:
             self.remove_iso()
 
-        for i in range(len(self.thesauri), -1, -1):
+        for i in range(len(self.thesauri), 0, -1):
             self.ui.theme_tabs.setCurrentIndex(i)
             self.remove_selected()
+
+        self.ui.fgdc_themekt.setText('ISO 19115 Topic Category')
 
     def search_controlled(self):
 
