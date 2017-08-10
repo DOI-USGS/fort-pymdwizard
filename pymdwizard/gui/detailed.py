@@ -163,7 +163,7 @@ class Detailed(WizardWidget):  #
             oid_attr = self.attributes.get_attr('OID')
             if oid_attr is not None:
                 oid_attr.populate_domain_content(3)
-                oid_attr.ui.fgdc_attrdef.setPlainText('Internal feature number.')
+                oid_attr.ui.fgdc_attrdef.setPlainText('Internal object identifier.')
                 oid_attr.domain.ui.fgdc_udom.setPlainText('Sequential unique whole numbers that are automatically generated.')
                 oid_attr.regularsize_me()
                 oid_attr.supersize_me()
