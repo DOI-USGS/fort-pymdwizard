@@ -8,14 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(138, 771)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
+class Ui_attribute_widget(object):
+    def setupUi(self, attribute_widget):
+        attribute_widget.setObjectName("attribute_widget")
+        attribute_widget.resize(163, 771)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(attribute_widget)
         self.verticalLayout_2.setContentsMargins(2, 2, 2, 2)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.fgdc_attr = QtWidgets.QFrame(Form)
+        self.fgdc_attr = QtWidgets.QFrame(attribute_widget)
         self.fgdc_attr.setFrameShape(QtWidgets.QFrame.Panel)
         self.fgdc_attr.setFrameShadow(QtWidgets.QFrame.Plain)
         self.fgdc_attr.setLineWidth(2)
@@ -175,25 +175,25 @@ class Ui_Form(object):
         self.verticalLayout.addItem(spacerItem1)
         self.verticalLayout_2.addWidget(self.fgdc_attr)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(attribute_widget)
+        QtCore.QMetaObject.connectSlotsByName(attribute_widget)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, attribute_widget):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_2.setText(_translate("Form", "Column Label"))
-        self.label_20.setToolTip(_translate("Form", "Required"))
-        self.label_20.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label.setText(_translate("Form", "Column Definition"))
-        self.label_21.setToolTip(_translate("Form", "Required"))
-        self.label_21.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_3.setText(_translate("Form", "Definition Source"))
-        self.fgdc_attrdefs.setText(_translate("Form", "Producer defined"))
-        self.label_24.setToolTip(_translate("Form", "Required"))
-        self.label_24.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_7.setText(_translate("Form", "Column Contents Type"))
-        self.comboBox.setItemText(0, _translate("Form", "Enumerated (Categorical Data)"))
-        self.comboBox.setItemText(1, _translate("Form", "Range (Numeric data)"))
-        self.comboBox.setItemText(2, _translate("Form", "Codeset (Published Categories)"))
-        self.comboBox.setItemText(3, _translate("Form", "Unrepresentable (None of the above)"))
+        attribute_widget.setWindowTitle(_translate("attribute_widget", "Form"))
+        self.label_2.setText(_translate("attribute_widget", "Column Label"))
+        self.label_20.setToolTip(_translate("attribute_widget", "Required"))
+        self.label_20.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label.setText(_translate("attribute_widget", "Column Definition"))
+        self.label_21.setToolTip(_translate("attribute_widget", "Required"))
+        self.label_21.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_3.setText(_translate("attribute_widget", "Definition Source"))
+        self.fgdc_attrdefs.setText(_translate("attribute_widget", "Producer defined"))
+        self.label_24.setToolTip(_translate("attribute_widget", "Required"))
+        self.label_24.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_7.setText(_translate("attribute_widget", "Column Contents Type"))
+        self.comboBox.setItemText(0, _translate("attribute_widget", "Enumerated (Categorical Data)"))
+        self.comboBox.setItemText(1, _translate("attribute_widget", "Range (Numeric data)"))
+        self.comboBox.setItemText(2, _translate("attribute_widget", "Codeset (Published Categories)"))
+        self.comboBox.setItemText(3, _translate("attribute_widget", "Unrepresentable (None of the above)"))
 

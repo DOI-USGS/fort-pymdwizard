@@ -76,7 +76,7 @@ class Attr(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_attr.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_attr.Ui_attribute_widget()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
 
         # self.ui.fgdc_attrdef.installEventFilter(self)
@@ -203,16 +203,17 @@ class Attr(WizardWidget):  #
             self.populate_domain_content(self.ui.comboBox.currentIndex())
 
     def supersize_me(self):
-        self.active = True
-        self.animation = QPropertyAnimation(self, b"minimumSize")
-        self.animation.setDuration(200)
-        self.animation.setEndValue(QSize(325, self.height()))
-        self.animation.start()
-        self.ui.attrdomv_contents.show()
-        self.ui.place_holder.hide()
+        if not self.active:
+            self.active = True
+            self.animation = QPropertyAnimation(self, b"minimumSize")
+            self.animation.setDuration(200)
+            self.animation.setEndValue(QSize(325, self.height()))
+            self.animation.start()
+            self.ui.attrdomv_contents.show()
+            self.ui.place_holder.hide()
 
-        cbo = self.ui.comboBox
-        self.populate_domain_content(cbo.currentIndex())
+            cbo = self.ui.comboBox
+            self.populate_domain_content(cbo.currentIndex())
 
     def regularsize_me(self):
         if self.active:

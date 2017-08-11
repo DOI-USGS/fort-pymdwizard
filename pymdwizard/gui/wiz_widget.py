@@ -418,10 +418,15 @@ class WizardWidget(QWidget):
         return True
 
     def leaveEvent(self, event):
+        if self.objectName() == 'attribute_widget':
+            return
+
         if not self.in_context:
             self.setStyleSheet(NORMAL_STYLE)
 
     def enterEvent(self, QEvent):
+        if self.objectName() == 'attribute_widget':
+            return
         self.setStyleSheet(FOCUS_STYLE)
 
     def contextMenuEvent(self, event):

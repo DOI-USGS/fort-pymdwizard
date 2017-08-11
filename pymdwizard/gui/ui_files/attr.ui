@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>attribute_widget</class>
+ <widget class="QWidget" name="attribute_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>138</width>
+    <width>163</width>
     <height>771</height>
    </rect>
   </property>

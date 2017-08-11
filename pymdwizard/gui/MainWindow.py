@@ -559,7 +559,7 @@ class PyMdWizardMainForm(QMainWindow):
                 msg += "\t" + xpath
                 msg += "\n\n" + traceback.format_exc()
                 QMessageBox.warning(self, "Bug encountered", msg)
-
+        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         if errors:
             msg = "There are {} errors in this record".format(error_count)
             self.statusBar().showMessage(msg, 20000)
@@ -613,6 +613,7 @@ class PyMdWizardMainForm(QMainWindow):
                 not sip.isdeleted(self.last_highlight):
             self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
 
+        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         bad_widget = self.widget_lookup.xpath_march(xpath, as_list=True)
         self.last_highlight = bad_widget[0].widget
         self.highlight_error(bad_widget[0].widget, self.sender().text(), superhot=True)
