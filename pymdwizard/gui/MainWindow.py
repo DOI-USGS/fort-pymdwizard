@@ -59,7 +59,7 @@ from PyQt5.QtGui import QPainter, QPixmap
 try:
     import docx
 except ImportError:
-    docx is None
+    docx = None
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
