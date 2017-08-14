@@ -38,25 +38,15 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
-import json
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QLabel, QComboBox
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
-
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel, QComboBox
 
 from lxml import etree
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import spatial_utils
+from pymdwizard.core import fgdc_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spref
@@ -167,14 +157,7 @@ class SpRef(WizardWidget):
         gridsys_name = self.ui.fgdc_gridsysn.currentText()
         projection = spatial_utils.GRIDSYS_LOOKUP[gridsys_name]
 
-        annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
-        try:
-            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-                annotation_lookup = json.loads(data_file.read())
-        except TypeError:
-            with open(annotation_lookup_fname) as data_file:
-                annotation_lookup = json.loads(data_file.read())
-
+        annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         layout = self.ui.gridsys_contents.layout()
         while layout.count():

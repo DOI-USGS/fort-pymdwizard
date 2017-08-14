@@ -44,7 +44,7 @@ from PyQt5.QtGui import QColor, QDrag, QPainter, QIcon
 from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+from pymdwizard.core import xml_utils, fgdc_utils
 
 
 class WizardWidget(QWidget):
@@ -192,8 +192,6 @@ class WizardWidget(QWidget):
             else:
                 self.add_children(child_widget, parent_node)
         return parent_node
-
-
 
     def dragEnterEvent(self, e):
         """
@@ -348,15 +346,7 @@ class WizardWidget(QWidget):
         self.set_stylesheet()
 
     def populate_tooltips(self):
-        import json
-        annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
-        try:
-            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-                annotation_lookup = json.loads(data_file.read())
-        except TypeError:
-            with open(annotation_lookup_fname) as data_file:
-                annotation_lookup = json.loads(data_file.read())
-
+        annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         if self.objectName().startswith('fgdc_'):
             self.populate_tooltip(self, annotation_lookup)
@@ -403,7 +393,6 @@ class WizardWidget(QWidget):
         for widget in widgets:
             if isinstance(widget, WizardWidget):
                 widget.clear_widget()
-
 
     def has_content(self):
         """

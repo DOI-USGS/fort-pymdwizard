@@ -487,9 +487,7 @@ class PyMdWizardMainForm(QMainWindow):
         """
         self.ui.menuErrors.clear()
 
-        annotation_lookup_fname = utils.get_resource_path("FGDC/bdp_lookup")
-        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-            annotation_lookup = json.loads(data_file.read())
+        annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         for widget in self.error_widgets:
 

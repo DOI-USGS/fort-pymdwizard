@@ -1,5 +1,6 @@
 import requests
 
+import json
 from dateutil import parser
 
 from lxml import etree
@@ -69,6 +70,18 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
         return pd.DataFrame.from_records(errors, columns=cols)
     else:
         return errors
+
+
+def get_fgdc_lookup():
+    annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
+    try:
+        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+            annotation_lookup = json.loads(data_file.read())
+    except TypeError:
+        with open(annotation_lookup_fname) as data_file:
+            annotation_lookup = json.loads(data_file.read())
+
+    return annotation_lookup
 
 
 def clean_error_message(message):

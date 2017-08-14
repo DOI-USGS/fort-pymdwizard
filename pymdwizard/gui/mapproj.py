@@ -57,6 +57,7 @@ from lxml import etree
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import spatial_utils
+from pymdwizard.core import fgdc_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_mapproj
@@ -96,13 +97,7 @@ class MapProj(WizardWidget):
         self.shortname = shortname
         self.projection = spatial_utils.lookup_shortname(shortname)
 
-        annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
-        try:
-            with open(annotation_lookup_fname, encoding='utf-8') as data_file:
-                annotation_lookup = json.loads(data_file.read())
-        except TypeError:
-            with open(annotation_lookup_fname) as data_file:
-                annotation_lookup = json.loads(data_file.read())
+        annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         annotation_lookup['stdparll_2'] = {'long_name':'Standard Parallel',
                                       'annotation':annotation_lookup['stdparll']['annotation']}
