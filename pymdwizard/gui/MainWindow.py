@@ -534,8 +534,29 @@ class PyMdWizardMainForm(QMainWindow):
 
         marked_errors = []
 
-        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        # We need to expand / populate all attributes that have an error
+        for error in errors:
+            try:
+                xpath, error_msg, line_num = error
+                if 'attr' in xpath:
+                    try:
+                        detailed_index = xpath.split('/detailed[')[1].split('/')[0][:-1]
+                        detailed_index = int(detailed_index)-1
+                    except IndexError:
+                        detailed_index = 0
 
+                    try:
+                        attr_index = xpath.split('/attr[')[1].split('/')[0][:-1]
+                        attr_index = int(attr_index)-1
+                    except IndexError:
+                        attr_index = 0
+
+                    self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
+            except:
+                pass
+
+
+        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         error_count = 0
         for error in errors:
 
@@ -658,7 +679,6 @@ class PyMdWizardMainForm(QMainWindow):
                                    'fgdc_srcprod']:
             self.highlight_tab(widget)
 
-
         if superhot:
             color = "rgb(223,1,74)"
             lw = "border: 3px solid black;"
@@ -714,7 +734,6 @@ class PyMdWizardMainForm(QMainWindow):
             attr_frame = widget_parent
         self.error_widgets.append(attr_frame)
         widget_parent = widget_parent.parent()
-
 
         widget_parent.supersize_me()
         error_msg = "'Validation error in hidden contents, click to show'"
