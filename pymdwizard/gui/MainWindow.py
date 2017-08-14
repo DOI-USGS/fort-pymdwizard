@@ -44,6 +44,7 @@ import tempfile
 import time
 import datetime
 import shutil
+from subprocess import Popen
 
 from lxml import etree
 
@@ -55,10 +56,14 @@ from PyQt5.QtCore import QFile, QFileInfo
 from PyQt5.QtCore import Qt, QSettings, QFileSystemWatcher
 from PyQt5.QtGui import QPainter, QPixmap
 
+try:
+    import docx
+except ImportError:
+    docx is None
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
-from pymdwizard.core import xml_utils, utils, fgdc_utils
+from pymdwizard.core import xml_utils, utils, fgdc_utils, review_utils
 from pymdwizard.gui.Preview import Preview
 
 import sip
@@ -117,6 +122,9 @@ class PyMdWizardMainForm(QMainWindow):
             just_fname = os.path.split(template_fname)[-1]
             self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
 
+        if docx is None:
+            self.ui.generate_review.setEnabled(False)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -137,6 +145,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
         self.ui.actionUpdate.triggered.connect(self.update_from_github)
+        self.ui.generate_review.triggered.connect(self.generate_review_doc)
 
     def open_recent_file(self):
         """
@@ -762,6 +771,34 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.preview_dialog.exec_()
 
+    def generate_review_doc(self):
+        if self.cur_fname:
+            out_fname = self.cur_fname[:-4] + '_REVIEW.docx'
+
+            if time.time() - self.last_updated > 4:
+                msg = "Would you like to save the current file before continuing?"
+                alert = QDialog()
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(self, "File save", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                if confirm == QMessageBox.Yes:
+                    self.save_file()
+                elif confirm == QMessageBox.Cancel:
+                    return
+            try:
+                cur_content = xml_utils.XMLRecord(self.cur_fname)
+                review_utils.generate_review_report(cur_content, out_fname)
+
+                import subprocess
+                os.startfile('"{}"'.format(out_fname))
+                msg = 'Review document available at: {}'.format(out_fname)
+                msg += '\n\nReview document now opening in default application...'
+                QMessageBox.information(self, "Review finished", msg)
+            except BaseException as e:
+                import traceback
+                msg = "Problem encountered generateing review document:\n{}".format(traceback.format_exc())
+                QMessageBox.warning(self, "Problem encountered", msg)
+
+
     def launch_jupyter(self):
         """
         Launches a jupyter notebook server in our examples directory
@@ -770,7 +807,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        from subprocess import Popen
 
         jupyter_dialog = JupyterLocationDialog()
         utils.set_window_icon(jupyter_dialog.msgBox)

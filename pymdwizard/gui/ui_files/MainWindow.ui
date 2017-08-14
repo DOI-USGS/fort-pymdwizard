@@ -122,6 +122,8 @@
     </widget>
     <addaction name="menuTemplate_2"/>
     <addaction name="separator"/>
+    <addaction name="generate_review"/>
+    <addaction name="separator"/>
     <addaction name="actionLaunch_Jupyter"/>
     <addaction name="separator"/>
     <addaction name="actionUpdate"/>
@@ -265,6 +267,11 @@
    </property>
    <property name="text">
     <string>Update</string>
+   </property>
+  </action>
+  <action name="generate_review">
+   <property name="text">
+    <string>Generate Review Doc</string>
    </property>
   </action>
  </widget>

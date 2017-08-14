@@ -593,3 +593,4 @@ def split_tag(tag):
         fgdc_tag = tag
         index = 0
     return fgdc_tag, index
+

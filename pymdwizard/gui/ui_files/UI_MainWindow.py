@@ -104,6 +104,8 @@ class Ui_MainWindow(object):
         self.actionUpdate = QtWidgets.QAction(MainWindow)
         self.actionUpdate.setEnabled(True)
         self.actionUpdate.setObjectName("actionUpdate")
+        self.generate_review = QtWidgets.QAction(MainWindow)
+        self.generate_review.setObjectName("generate_review")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
@@ -124,6 +126,8 @@ class Ui_MainWindow(object):
         self.menuTemplate_2.addAction(self.actionBrowseTemplate)
         self.menuTemplate_2.addAction(self.actionRestoreBuiltIn)
         self.menuAdvanced.addAction(self.menuTemplate_2.menuAction())
+        self.menuAdvanced.addSeparator()
+        self.menuAdvanced.addAction(self.generate_review)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.actionLaunch_Jupyter)
         self.menuAdvanced.addSeparator()
@@ -171,4 +175,5 @@ class Ui_MainWindow(object):
         self.actionCurrentTemplate.setText(_translate("MainWindow", "Current: Built-in"))
         self.actionLaunch_Jupyter.setText(_translate("MainWindow", "Launch Jupyter"))
         self.actionUpdate.setText(_translate("MainWindow", "Update"))
+        self.generate_review.setText(_translate("MainWindow", "Generate Review Doc"))
 
