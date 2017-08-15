@@ -97,8 +97,6 @@ class Attr(WizardWidget):  #
 
 
     def mousePressEvent(self, event):
-        test = self.childAt(event.pos())
-        print(event.pos().x(), event.pos().y(), test.objectName())
         self.activate()
 
     def attrlabl_press(self, event):
