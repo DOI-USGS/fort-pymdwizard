@@ -689,39 +689,42 @@ class PyMdWizardMainForm(QMainWindow):
         color = "rgb(225,67,94)"
 
         if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
-            widget.setToolTip(error_msg)
-            widget.setStyleSheet(
-                """
-        QGroupBox#{widgetname}{{
-        background-color: {color};
-        border: 2px solid red;
-        subcontrol-position: top left; /* position at the top left*/
-        padding-top: 20px;
-        font: bold 14px;
-        color: rgb(90, 90, 90);
-        }}
-        QGroupBox#{widgetname}::title {{
-        text-align: left;
-        subcontrol-origin: padding;
-        subcontrol-position: top left; /* position at the top center */padding: 3 3px;
-        }}
-        QLabel{{
-        font: 9pt "Arial";
-        color: rgb(90, 90, 90);
-        }}
-        QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
-        font: 9pt "Arial";
-        color: rgb(50, 50, 50);
-        background-color: {color};
-        opacity: 25;
-        {lw}
-        }}
-        QToolTip {{
-        background-color: rgb(255,76,77);
-        border-color: red;
-        opacity: 255;
-        }}
-        """.format(widgetname=widget.objectName(), color=color, lw=lw))
+            try:
+                widget.setToolTip(error_msg)
+                widget.setStyleSheet(
+                            """
+                QGroupBox#{widgetname}{{
+                background-color: {color};
+                border: 2px solid red;
+                subcontrol-position: top left; /* position at the top left*/
+                padding-top: 20px;
+                font: bold 14px;
+                color: rgb(90, 90, 90);
+                }}
+                QGroupBox#{widgetname}::title {{
+                text-align: left;
+                subcontrol-origin: padding;
+                subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+                }}
+                QLabel{{
+                font: 9pt "Arial";
+                color: rgb(90, 90, 90);
+                }}
+                QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
+                font: 9pt "Arial";
+                color: rgb(50, 50, 50);
+                background-color: {color};
+                opacity: 25;
+                {lw}
+                }}
+                QToolTip {{
+                background-color: rgb(255,76,77);
+                border-color: red;
+                opacity: 255;
+                }}
+                """.format(widgetname=widget.objectName(), color=color, lw=lw))
+            except:
+                pass
 
 
 
