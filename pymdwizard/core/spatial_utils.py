@@ -42,6 +42,7 @@ responsibility is assumed by the USGS in connection therewith.
 import os
 import collections
 
+import numpy as np
 import pandas as pd
 
 from pymdwizard.core.xml_utils import xml_node
@@ -113,15 +114,23 @@ def get_geographic_extent(layer):
     """
     min_x, max_x, min_y, max_y = get_extent(layer)
 
+    x = np.linspace(min_x, max_x, num=10)
+    y = np.linspace(min_y, max_y, num=10)
+
+    edge_points = [(min_x, this_y) for this_y in y] + \
+               [(max_x, this_y) for this_y in y] + \
+               [(this_x, min_y) for this_x in x] + \
+               [(this_x, max_y) for this_x in x]
+
     srs = get_ref(layer)
 
     geographic = osr.SpatialReference()
     geographic.ImportFromEPSG(4326)
 
-    west, north = transform_point(
-        min_x, max_y, srs, geographic)
-    east, south = transform_point(
-        max_x, min_y, srs, geographic)
+    t_points = np.apply_along_axis(transform_point, 1, edge_points,
+                                   from_srs=srs, to_srs=geographic)
+    east, north = t_points.max(0)
+    west, south = t_points.min(0)
 
     return west, east, south, north
 
@@ -340,7 +349,8 @@ def get_params(layer):
     return params
 
 
-def transform_point(x, y, from_srs, to_srs):
+
+def transform_point(xy, from_srs, to_srs):
     """
     Transforms a point from one srs to another
 
@@ -356,8 +366,8 @@ def transform_point(x, y, from_srs, to_srs):
     (x, y) : (float, float)
     """
     coord_xform = osr.CoordinateTransformation(from_srs, to_srs)
-    y_round = round(y, 8)
-    x_round = round(x, 8)
+    y_round = round(xy[1], 8)
+    x_round = round(xy[0], 8)
 
     results = coord_xform.TransformPoint(x_round, y_round)
     return results[0], results[1]

@@ -65,6 +65,8 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
             errors.append(('Unknown', clean_error_message(error.message),
                            error.line))
 
+    errors = list(set(errors))
+
     if as_dataframe:
         cols = ['xpath', 'message', 'line number']
         return pd.DataFrame.from_records(errors, columns=cols)
