@@ -551,6 +551,7 @@ class PyMdWizardMainForm(QMainWindow):
                     except IndexError:
                         attr_index = 0
 
+                    self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].regular_me()
                     self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
             except:
                 pass

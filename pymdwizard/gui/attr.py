@@ -163,13 +163,13 @@ class Attr(WizardWidget):  #
         self.ui.comboBox.setCurrentIndex(index)
 
         if index == 0:
-            self.domain = edom_list.EdomList()
+            self.domain = edom_list.EdomList(parent=self)
         elif index == 1:
-            self.domain = rdom.Rdom()
+            self.domain = rdom.Rdom(parent=self)
         elif index == 2:
-            self.domain = codesetd.Codesetd()
+            self.domain = codesetd.Codesetd(parent=self)
         else:
-            self.domain = udom.Udom()
+            self.domain = udom.Udom(parent=self)
 
 
         if self._domain_content[index] is not None:
