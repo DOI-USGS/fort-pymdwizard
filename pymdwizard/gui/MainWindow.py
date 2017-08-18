@@ -125,6 +125,8 @@ class PyMdWizardMainForm(QMainWindow):
         if docx is None:
             self.ui.generate_review.setEnabled(False)
 
+        self.setAcceptDrops(True)
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -210,6 +212,10 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        changed = self.check_for_changes()
+        if changed == 'Cancel':
+            return changed
+
         self.file_watcher = QFileSystemWatcher([fname])
         self.file_watcher.fileChanged.connect(self.file_updated)
         self.last_updated = time.time()
@@ -391,6 +397,9 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        if self.check_for_changes() == 'Cancel':
+            return None
+
         self.cur_fname = fname
         if fname:
             stripped_name = QFileInfo(fname).fileName()
@@ -440,6 +449,23 @@ class PyMdWizardMainForm(QMainWindow):
         for j in range(num_recent_files, PyMdWizardMainForm.max_recent_files):
             self.recent_file_actions[j].setVisible(False)
 
+    def check_for_changes(self):
+        if self.cur_fname:
+            cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
+            disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
+
+            if cur_xml != disk_xml:
+                msg = "Do you want to save your changes?"
+                alert = QDialog()
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(self, "Save Changes", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                if confirm == QMessageBox.Yes:
+                    self.save_file()
+                elif confirm == QMessageBox.Cancel:
+                    return 'Cancel'
+                self.cur_fname = ''
+        return None
+
     def exit(self):
         """
         Before exiting check if the current contents match what is on the
@@ -451,23 +477,12 @@ class PyMdWizardMainForm(QMainWindow):
         str :
         'Close' or 'Cancel' depending on user choice.
         """
-        if self.cur_fname:
-            cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
-            disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
-
-            if cur_xml != disk_xml:
-                msg = "Would you like to save before exiting?"
-                alert = QDialog()
-                self.last_updated = time.time()
-                confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-                if confirm == QMessageBox.Yes:
-                    self.save_file()
-                elif confirm == QMessageBox.Cancel:
-                    return 'Cancel'
-                self.cur_fname = ''
-
-        self.close()
-        return 'Close'
+        changed = self.check_for_changes()
+        if changed == 'Cancel':
+            return changed
+        else:
+            self.close()
+            return 'Close'
 
     def closeEvent(self, event):
         """ Intercept the builtin closeEvent so that we can check for
@@ -551,6 +566,7 @@ class PyMdWizardMainForm(QMainWindow):
                     except IndexError:
                         attr_index = 0
 
+                    # self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
                     self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].regular_me()
                     self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
             except:
@@ -768,6 +784,35 @@ class PyMdWizardMainForm(QMainWindow):
     #     """.format(widgetname=widget_parent.objectName()))
     #
     #     self.error_widgets.append(widget_parent
+    def dragEnterEvent(self, e):
+        if e.mimeData().hasUrls:
+            e.accept()
+        else:
+            e.ignore()
+
+    def dragMoveEvent(self, e):
+        if e.mimeData().hasUrls:
+            e.accept()
+        else:
+            e.ignore()
+
+    def dropEvent(self, e):
+        """
+        Drop files directly onto the widget
+        File locations are stored in fname
+        :param e:
+        :return:
+        """
+        if e.mimeData().hasUrls:
+            e.setDropAction(Qt.MoveAction)
+
+            url = e.mimeData().urls()[0]
+            fname = url.toLocalFile()
+            if os.path.isfile(fname):
+                self.load_file(fname)
+            e.accept()
+        else:
+            e.ignore()
 
     def preview(self):
         """
