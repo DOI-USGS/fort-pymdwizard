@@ -450,7 +450,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.recent_file_actions[j].setVisible(False)
 
     def check_for_changes(self):
-        if self.cur_fname:
+        if self.cur_fname and os.path.exists(self.cur_fname):
             cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
             disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
 

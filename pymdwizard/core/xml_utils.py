@@ -91,8 +91,10 @@ def save_to_file(element, fname):
     -------
     None
     """
-    with open(fname, "w") as text_file:
-        text_file.write(node_to_string(element))
+    import codecs
+    file = codecs.open(fname, "w", "utf-8")
+    file.write(node_to_string(element))
+    file.close()
 
 
 def node_to_dict(node, add_fgdc=True):
@@ -270,7 +272,8 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return etree.tostring(node, pretty_print=True, with_tail=False).decode()
+    return etree.tostring(node, pretty_print=True, with_tail=False,
+                          encoding='UTF-8', xml_declaration=True).decode()
 
 
 def fname_to_node(fname):
@@ -284,7 +287,11 @@ def fname_to_node(fname):
     -------
     lxml node
     """
-    return etree.parse(fname)
+    try:
+        return etree.parse(fname)
+    except:
+        msg = "Error encounterd opening the selected file"
+        msg += "\n Please make sure file exists and is valid FGDC XML"
 
 
 def string_to_node(str_node):
@@ -593,4 +600,5 @@ def split_tag(tag):
         fgdc_tag = tag
         index = 0
     return fgdc_tag, index
+
 
