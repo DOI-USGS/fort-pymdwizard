@@ -397,8 +397,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        if self.check_for_changes() == 'Cancel':
-            return None
 
         self.cur_fname = fname
         if fname:
@@ -460,7 +458,7 @@ class PyMdWizardMainForm(QMainWindow):
                 self.last_updated = time.time()
                 confirm = QMessageBox.question(self, "Save Changes", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
                 if confirm == QMessageBox.Yes:
-                    self.save_file()
+                    xml_utils.save_to_file(self.metadata_root._to_xml(), self.cur_fname)
                 elif confirm == QMessageBox.Cancel:
                     return 'Cancel'
                 self.cur_fname = ''
