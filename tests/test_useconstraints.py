@@ -28,10 +28,10 @@ def test_useconstraints__to_xml(qtbot):
 
 
     widget._to_xml#(use_const)
-    assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == "None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations."
+    assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == "None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
 
     uc = widget._to_xml()
 
     assert etree.tostring(uc, pretty_print=True).decode() \
-    == """<useconst>None.  Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    == """<useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
 """
