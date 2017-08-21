@@ -48,7 +48,9 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
     xmlschema = etree.XMLSchema(xmlschema_doc)
 
     xml_str = xml_utils.node_to_string(xml_utils.xml_document_loader(xml))
-    tree = etree.ElementTree(etree.fromstring(xml_str))
+
+    parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+    tree = etree.ElementTree(etree.fromstring(xml_str.encode('utf-8')))
 
     if xmlschema.validate(tree):
         return []

@@ -294,6 +294,7 @@ def fname_to_node(fname):
         msg += "\n Please make sure file exists and is valid FGDC XML"
 
 
+
 def string_to_node(str_node):
     """
     covert an string representation of a node into an lxml node
