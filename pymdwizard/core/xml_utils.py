@@ -424,8 +424,6 @@ class XMLNode(object):
         elif type(element) == str:
             self.from_str(element)
 
-
-
         if parent_node is not None:
             parent_node.add_child(self, index=index, deepcopy=False)
 
@@ -437,10 +435,11 @@ class XMLNode(object):
             cur_node = xml_node(self.tag, self.text)
             result = "{}{}".format("  "*level, etree.tostring(cur_node, pretty_print=True).decode()).rstrip()
         else:
-            result = "{}<{}>\n".format("  "*level, self.tag, self.tag)
-
-            result += '\n'.join([child.__str__(level=level+1) for child in self.children])
-
+            result = "{}<{}>".format("  "*level, self.tag, self.tag)
+            for child in self.children:
+                if type(self.__dict__[child.tag]) == XMLNode:
+                    child = self.__dict__[child.tag]
+                result += '\n' + child.__str__(level=level+1)
             result += '\n{}</{}>'.format("  "*level, self.tag)
         return result
 
@@ -557,6 +556,28 @@ class XMLNode(object):
             self.children = [c for c in self.children if c.tag != tag]
         else:
             self.children = []
+
+    def replace_child(self, new_child, tag=None, deepcopy=True):
+        """
+        replaces the
+
+        Parameters
+        ----------
+        tag : Str (optional)
+            The child node tag that will be replaced.
+            If not supplied the tag of the child node will be used.
+        child : XMLNode
+
+        Returns
+        -------
+        None
+        """
+        if tag is None:
+            tag = new_child.tag
+        for i, child in enumerate(self.children):
+            if child.tag == tag:
+                del self.children[i]
+                self.add_child(new_child, i, deepcopy=deepcopy)
 
     def add_child(self, child, index=-1, deepcopy=True):
         if index == -1:
