@@ -83,6 +83,7 @@ class SpRef(WizardWidget):
         self.ui.fgdc_gridsysn.addItems(spatial_utils.GRIDSYS_LOOKUP.keys())
 
         self.clear_widget()
+        self.ui.fgdc_mapprojn.setCurrentText('Transverse Mercator')
 
     def connect_events(self):
         """
@@ -147,10 +148,11 @@ class SpRef(WizardWidget):
     def load_projection(self):
 
         projection_name = self.ui.fgdc_mapprojn.currentText()
-        projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
-
-        self.mapproj.load_projection(projection['shortname'])
-
+        try:
+            projection = spatial_utils.PROJECTION_LOOKUP[projection_name]
+            self.mapproj.load_projection(projection['shortname'])
+        except:
+            pass
 
     def load_gridsys(self):
 

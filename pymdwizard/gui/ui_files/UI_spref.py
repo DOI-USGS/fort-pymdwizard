@@ -144,6 +144,7 @@ class Ui_Form(object):
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_4.addWidget(self.label_4)
         self.fgdc_mapprojn = QtWidgets.QComboBox(self.fgdc_mapproj)
+        self.fgdc_mapprojn.setEditable(True)
         self.fgdc_mapprojn.setObjectName("fgdc_mapprojn")
         self.horizontalLayout_4.addWidget(self.fgdc_mapprojn)
         self.verticalLayout_7.addLayout(self.horizontalLayout_4)

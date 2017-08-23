@@ -371,7 +371,11 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QComboBox" name="fgdc_mapprojn"/>
+                         <widget class="QComboBox" name="fgdc_mapprojn">
+                          <property name="editable">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
                         </item>
                        </layout>
                       </item>

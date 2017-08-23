@@ -283,7 +283,7 @@ def get_params(layer):
     params['latprjo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
     params['sfctrlin'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
     params['obqlazim'] = 'Unknown'
-    params['azimangle'] = ref.GetProjParm(osr.SRS_PP_AZIMUTH)
+    params['azimangl'] = ref.GetProjParm(osr.SRS_PP_AZIMUTH)
     params['azimptl'] = ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_ORIGIN)
     params['obqlpt'] = 'Unknown'
     params['obqllat'] = 'Unknown'
@@ -468,8 +468,12 @@ def mapproj(params):
     mapproj_node = xml_node('mapproj')
 
     fgdc_name, function = lookup_fdgc_projname(params['projection_name'])
+    if fgdc_name is None:
+        fgdc_name = params['projection_name']
+        prj_node = unknown_projection(params)
+    else:
+        prj_node = function(params)
     mapprojn = xml_node('mapprojn', text=fgdc_name, parent_node=mapproj_node)
-    prj_node = function(params)
     mapproj_node.append(prj_node)
     return mapproj_node
 
@@ -605,6 +609,20 @@ def equidistant_conic(params):
         xml_node(item, params[item], equicon)
     return equicon
 
+def unknown_projection(params):
+    mapprojp = xml_node('mapprojp')
+
+    if params['stdparll'] is not 'Unknown':
+        stdparll = xml_node('stdparll', params['stdparll'], mapprojp)
+    if params['stdparll_2'] is not 'Unknown':
+        stdparll_2 = xml_node('stdparll', params['stdparll_2'], mapprojp)
+
+    for k in ['longcm', 'latprjo', 'feast', 'fnorth', 'sfequat', 'heightpt',
+              'longpc', 'latprjc', 'sfctrlin', 'obqlazim', 'azimangl', 'azimptl']:
+        print(k)
+        if params[k] not in ['Unknown', 'unknown']:
+            xml_node(k, params[k], mapprojp)
+    return mapprojp
 
 def equirectangular(params):
     """
@@ -1149,6 +1167,11 @@ PROJECTION_LOOKUP['Van der Grinten'] = {'shortname': 'vdgrin',
                                   'gdal_name': ' ',
                                   'function': van_der_grinten,
                                     'elements': ['longcm', 'feast', 'fnorth']}
+
+PROJECTION_LOOKUP['undefined'] = {'shortname': 'mapprojp',
+                                                'gdal_name': 'NA',
+                                                'function': 'NA',
+                                                'elements': ['stdparll', 'stdparll_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
 
 
