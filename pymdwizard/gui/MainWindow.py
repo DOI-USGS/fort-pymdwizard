@@ -48,10 +48,9 @@ from subprocess import Popen
 
 from lxml import etree
 
-
 from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBox, QAction
 from PyQt5.QtWidgets import QWidget, QPushButton
-from PyQt5.QtWidgets import QFileDialog, QDialog
+from PyQt5.QtWidgets import QFileDialog, QDialog, QTabWidget
 from PyQt5.QtCore import QFile, QFileInfo
 from PyQt5.QtCore import Qt, QSettings, QFileSystemWatcher
 from PyQt5.QtGui import QPainter, QPixmap
@@ -512,10 +511,10 @@ class PyMdWizardMainForm(QMainWindow):
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         for widget in self.error_widgets:
-
             if not sip.isdeleted(widget) and \
                     widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
                 widget.setStyleSheet("""""")
+                print(widget.objectName())
                 shortname = widget.objectName().replace('fgdc_', '')
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
@@ -570,8 +569,8 @@ class PyMdWizardMainForm(QMainWindow):
             except:
                 pass
 
-
         self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        self.metadata_root.add_children(self.metadata_root.spatial_tab, self.widget_lookup.metadata.idinfo)
         error_count = 0
         for error in errors:
 
@@ -766,22 +765,25 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets.append(widget_parent)
 
     def highlight_tab(self, widget):
-        pass
-    #         widget_parent = widget.parent()
-    #
-    #     while not widget_parent.
-    #         widget_parent = widget_parent.parent()
-    #
-    #     error_msg = "'Validation error in hidden contents, click to show'"
-    #     widget_parent.setToolTip(error_msg)
-    #     widget_parent.setStyleSheet(
-    #         """
-    # QTab#{widgetname}{{
-    # border: 2px solid red;
-    # }}
-    #     """.format(widgetname=widget_parent.objectName()))
-    #
-    #     self.error_widgets.append(widget_parent
+
+        widget_parent = widget.parent()
+        while not type(widget_parent) == QTabWidget:
+            widget_parent = widget_parent.parent()
+
+        error_msg = "'Validation error in hidden contents, click to show'"
+        widget_parent.setToolTip(error_msg)
+        widget_parent.setStyleSheet(
+            """
+    QTabBar {{
+    background-color: rgb(225,67,94);
+    qproperty-drawBase:0;
+
+}}
+        """)
+        #.format(widgetname=widget_parent.objectName()))
+
+        self.error_widgets.append(widget_parent)
+
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls:
             e.accept()
@@ -802,12 +804,12 @@ class PyMdWizardMainForm(QMainWindow):
         :return:
         """
         if e.mimeData().hasUrls:
-            e.setDropAction(Qt.MoveAction)
+            e.setDropAction(Qt.CopyAction)
 
             url = e.mimeData().urls()[0]
             fname = url.toLocalFile()
             if os.path.isfile(fname):
-                self.load_file(fname)
+                self.open_file(fname)
             e.accept()
         else:
             e.ignore()
