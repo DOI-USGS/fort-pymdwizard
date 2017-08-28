@@ -132,8 +132,9 @@ class DataQuality(WizardWidget):
         complete_node = self.complete._to_xml()
         dataqual_node.append(complete_node)
 
-        posacc_node = self.posacc._to_xml()
-        dataqual_node.append(posacc_node)
+        if self.posacc.has_content():
+            posacc_node = self.posacc._to_xml()
+            dataqual_node.append(posacc_node)
 
         if self.sourceinput.has_content():
             srcinfo_node = self.sourceinput._to_xml()

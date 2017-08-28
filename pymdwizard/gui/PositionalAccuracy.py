@@ -99,7 +99,22 @@ class PositionalAccuracy(WizardWidget): #
         else:
             e.ignore()
 
+    def has_content(self):
+        """
+        Checks for valid content in this widget
 
+        Returns
+        -------
+        Boolean
+        """
+        has_content = False
+
+        if self.ui.fgdc_horizpa.toPlainText():
+            has_content = True
+        if self.ui.fgdc_vertacc.toPlainText():
+            has_content = True
+
+        return has_content
          
                 
     def _to_xml(self):
