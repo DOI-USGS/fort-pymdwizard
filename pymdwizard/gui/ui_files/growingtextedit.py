@@ -18,11 +18,16 @@ class GrowingTextEdit(QPlainTextEdit):
 
     def sizeChange(self):
         docHeight = self.document().size().height()
-        factor = 14
+        factor = 13
         if self.heightMin <= docHeight*factor <= self.heightMax:
-            self.setMinimumHeight(docHeight*factor)
+            self.setMinimumHeight(docHeight*factor + 8)
         elif docHeight*factor > self.heightMax:
             self.setMinimumHeight(self.heightMax)
+
+        try:
+            self.item.setSizeHint(QSize(self.width(), self.minimumHeight()+120))
+        except:
+            pass
 
 
 if __name__ == "__main__":

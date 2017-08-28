@@ -52,10 +52,11 @@ class Edom(QWidget):  #
     drag_label = "Enumerated Domain <edom>"
     acceptable_tags = ['edom']
 
-    def __init__(self, xml=None, parent=None):
+    def __init__(self, xml=None, parent=None, item=None):
         QWidget.__init__(self, parent=parent)
-
+        self.item = item
         self.build_ui()
+
 
 
     def build_ui(self):
@@ -67,6 +68,7 @@ class Edom(QWidget):  #
         """
         self.ui = UI_edom.Ui_fgdc_attrdomv()
         self.ui.setupUi(self)
+        self.ui.fgdc_edomvd.item = self.item
 
     def dragEnterEvent(self, e):
         """

@@ -87,7 +87,7 @@ class EdomList(WizardWidget):  #
 
     def add_edom(self, edomv='', edomvd='', edomvds=''):
         item = QListWidgetItem()
-        e = edom.Edom()
+        e = edom.Edom(item=item)
         e.ui.fgdc_edomv.setText(edomv)
         if edomvd:
             e.ui.fgdc_edomvd.setPlainText(edomvd)
