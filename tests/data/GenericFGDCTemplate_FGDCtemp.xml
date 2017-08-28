@@ -1,63 +1,144 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <metadata>
- <idinfo>
-  <citation>
-   <citeinfo>
-    <title>Data Set Title MH</title>
-   </citeinfo>
-  </citation>
-  <descript>
-   <abstract>Abstract MH</abstract>
-   <purpose>Purpose MH</purpose>
-   <supplinf>Supplemental Information MH</supplinf>
-  </descript>
-  <timeperd>
-   <timeinfo>
-    <sngdate>
-     <caldate>20151019</caldate>
-    </sngdate>
-    <rngdates>
-     <begdate>20151020</begdate>
-     <enddate>20151021</enddate>
-    </rngdates>
-   </timeinfo>
-   <current>observed</current>
-  </timeperd>
-  <accconst>None. Please see 'Distribution Info' for details.</accconst>
-  <useconst>None. Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
-  <datacred>Data set Credits MH</datacred>
-  <native>Environment as of Metadata Creation: Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.3.1 (Build 4959) Service Pack N/A (Build N/A)</native>
- </idinfo>
- <dataqual>
-  <attracc>
-   <attraccr>No formal attribute accuracy tests were conducted.</attraccr>
-  </attracc>
-  <logic>No formal logical accuracy tests were conducted.</logic>
-  <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record carefully for additional details.</complete>
-  <posacc>
-   <horizpa>
-    <horizpar>A formal accuracy assessment of the horizontal positional information in the data set has not been conducted.</horizpar>
-   </horizpa>
-   <vertacc>
-    <vertaccr>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</vertaccr>
-   </vertacc>
-  </posacc>
-  <lineage>
-   <procstep>
-    <procdesc>Development of the data set by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</procdesc>
-    <procdate>Unknown</procdate>
-   </procstep>
-  </lineage>
- </dataqual>
- <distinfo>
-  <distliab>Distributor assumes no liability for misuse of data.</distliab>
-  <stdorder>
-   <fees>None. No fees are applicable for obtaining the data set.</fees>
-  </stdorder>
- </distinfo>
- <metainfo>
-  <metd>20170123</metd>
-  <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
-  <metstdv>FGDC-STD-001-1998</metstdv>
- </metainfo>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin/>
+        <pubdate/>
+        <title>Data Set Title MH</title>
+        <geoform/>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Abstract MH</abstract>
+      <purpose>Purpose MH</purpose>
+      <supplinf>Supplemental Information MH</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20151020</begdate>
+          <enddate>20151021</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>observed</current>
+    </timeperd>
+    <status>
+      <progress></progress>
+      <update></update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc/>
+        <eastbc/>
+        <northbc/>
+        <southbc/>
+      </bounding>
+    </spdom>
+    <keywords/>
+    <accconst>None. Please see 'Distribution Info' for details.</accconst>
+    <useconst>None. Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper/>
+        </cntperp>
+        <cntaddr>
+          <addrtype/>
+          <address/>
+          <city/>
+          <state/>
+          <postal/>
+        </cntaddr>
+        <cntvoice/>
+      </cntinfo>
+    </ptcontac>
+    <datacred>Data set Credits MH</datacred>
+    <native>Environment as of Metadata Creation: Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.3.1 (Build 4959) Service Pack N/A (Build N/A)</native>
+    <crossref>
+      <citeinfo>
+        <origin/>
+        <pubdate/>
+        <title/>
+        <geoform/>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>No formal attribute accuracy tests were conducted.</attraccr>
+    </attracc>
+    <logic>No formal logical accuracy tests were conducted. testing</logic>
+    <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record carefully for additional details.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>A formal accuracy assessment of the horizontal positional information in the data set has not been conducted.</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>Development of the data set by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</procdesc>
+        <procdate>Unknown</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg/>
+        </cntorgp>
+        <cntaddr>
+          <addrtype/>
+          <address/>
+          <city/>
+          <state/>
+          <postal/>
+        </cntaddr>
+        <cntvoice/>
+      </cntinfo>
+    </distrib>
+    <distliab>Distributor assumes no liability for misuse of data.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Digital Data</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr/>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None. No fees are applicable for obtaining the data set.</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20170123</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper/>
+        </cntperp>
+        <cntaddr>
+          <addrtype/>
+          <address/>
+          <city/>
+          <state/>
+          <postal/>
+        </cntaddr>
+        <cntvoice/>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <metuc>Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)</metuc>
+  </metainfo>
 </metadata>
