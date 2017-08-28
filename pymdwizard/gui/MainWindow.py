@@ -569,8 +569,8 @@ class PyMdWizardMainForm(QMainWindow):
             except:
                 pass
 
-        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
-        self.metadata_root.add_children(self.metadata_root.spatial_tab, self.widget_lookup.metadata.idinfo)
+        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        self.metadata_root.add_children(self.metadata_root.spatial_tab, widget_lookup.metadata.idinfo)
         error_count = 0
         for error in errors:
 
@@ -586,7 +586,7 @@ class PyMdWizardMainForm(QMainWindow):
                     marked_errors.append(xpath)
 
                     # widget = self.metadata_root.get_widget(xpath)
-                    widgets = self.widget_lookup.xpath_march(xpath, as_list=True)
+                    widgets = widget_lookup.xpath_march(xpath, as_list=True)
                     for widget in widgets:
                         if isinstance(widget, list):
                             for w in widget:
@@ -601,7 +601,7 @@ class PyMdWizardMainForm(QMainWindow):
                 msg += "\t" + xpath
                 msg += "\n\n" + traceback.format_exc()
                 QMessageBox.warning(self, "Bug encountered", msg)
-        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         if errors:
             msg = "There are {} errors in this record".format(error_count)
             self.statusBar().showMessage(msg, 20000)
@@ -655,8 +655,8 @@ class PyMdWizardMainForm(QMainWindow):
                 not sip.isdeleted(self.last_highlight):
             self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
 
-        self.widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
-        bad_widget = self.widget_lookup.xpath_march(xpath, as_list=True)
+        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
         self.last_highlight = bad_widget[0].widget
         self.highlight_error(bad_widget[0].widget, self.sender().text(), superhot=True)
 

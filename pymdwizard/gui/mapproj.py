@@ -86,10 +86,8 @@ class MapProj(WizardWidget):
 
     def clear_widget(self):
         layout = self.ui.mapproj_contents.layout()
-        while layout.count():
-            child = layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().setParent(None)
 
     def load_projection(self, shortname):
 
