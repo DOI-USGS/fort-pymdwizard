@@ -98,6 +98,8 @@
     var northEast = new L.latLng(north, east);
     var bounds = new L.latLngBounds(southWest, northEast);
     var rect = new L.rectangle(bounds, {color: 'blue', weight: 1})
+    var rect2 = new L.rectangle(bounds, {color: 'blue', weight: 1})
+
 
 
     ne_marker.on("dragend",function(ev){
@@ -138,6 +140,7 @@
         map.removeLayer(sw_marker);
         map.removeLayer(nw_marker);
         map.removeLayer(rect);
+        map.removeLayer(rect2);
     };
 
     function addRect(){
@@ -146,11 +149,16 @@
         map.addLayer(sw_marker);
         map.addLayer(nw_marker);
         map.addLayer(rect);
+
+        if (west > east) {
+            map.addLayer(rect2)
+        }
+
     };
 
-    function updateMap(){
+    function updateMap() {
         var southWest = new L.latLng(south, west);
-        var northEast = new L.latLng(north,east);
+        var northEast = new L.latLng(north, east);
         var southEast = new L.latLng(south, east);
         var northWest = new L.latLng(north, west);
 
@@ -160,8 +168,21 @@
         nw_marker.setLatLng(northWest)
 
         var bounds = new L.latLngBounds(southWest, northEast);
-        rect.setBounds(bounds);
 
+        if (west > east) {
+            var southNeg180 = new L.latLng(south, -180);
+            var north180 = new L.latLng(north, 180);
+
+            var bounds1 = new L.latLngBounds(southWest, north180);
+            var bounds2 = new L.latLngBounds(southNeg180, northEast);
+            map.addLayer(rect2)
+            rect.setBounds(bounds1);
+            rect2.setBounds(bounds2);
+        } else {
+            map.removeLayer(rect2);
+            var bounds = new L.latLngBounds(southWest, northEast);
+            rect.setBounds(bounds);
+        }
     }
 
     function fitMap(){
