@@ -302,6 +302,7 @@ class SpRef(WizardWidget):
 
             geograph = xml_utils.search_xpath(spref_node, 'horizsys/geograph')
             if geograph is not None:
+                self.ui.btn_planar.setChecked(True)
                 self.ui.btn_geographic.setChecked(True)
 
                 utils.populate_widget_element(self.ui.fgdc_latres, geograph, 'latres')
@@ -310,6 +311,7 @@ class SpRef(WizardWidget):
 
             local = xml_utils.search_xpath(spref_node, 'horizsys/local')
             if local is not None:
+                self.ui.btn_planar.setChecked(True)
                 self.ui.btn_local.setChecked(True)
 
                 utils.populate_widget_element(self.ui.fgdc_localdes, local, 'localdes')
@@ -317,6 +319,7 @@ class SpRef(WizardWidget):
 
             planar = xml_utils.search_xpath(spref_node, 'horizsys/planar')
             if planar is not None:
+                self.ui.btn_grid.setChecked(True)
                 self.ui.btn_planar.setChecked(True)
 
                 mapproj = xml_utils.search_xpath(planar, 'mapproj')
