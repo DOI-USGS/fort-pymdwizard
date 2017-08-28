@@ -38,17 +38,9 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+from copy import deepcopy
 
-from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QFormLayout, QLabel
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QRadioButton, QFrame
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QScrollArea, QGroupBox
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QMessageBox
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -57,6 +49,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_citeinfo
 from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
+
 
 class Citeinfo(WizardWidget): #
 
@@ -220,6 +213,11 @@ class Citeinfo(WizardWidget): #
             publish = xml_utils.xml_node('publish', parent_node=pubinfo,
                                          text=self.ui.fgdc_publish.text())
 
+        if self.original_xml is not None:
+            othercit = xml_utils.search_xpath(self.original_xml, 'citeinfo/othercit')
+            if othercit is not None:
+                citeinfo.append(deepcopy(othercit))
+
         for onlink in self.onlink_list.get_widgets():
             if onlink.added_line.text() != '':
                 onlink_node = xml_utils.xml_node('onlink',
@@ -245,6 +243,7 @@ class Citeinfo(WizardWidget): #
         -------
         None
         """
+        self.original_xml = citeinfo
         try:
             if citeinfo.tag == "citation":
                 citeinfo = citeinfo.xpath('citeinfo')[0]
