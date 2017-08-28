@@ -381,64 +381,7 @@ Short Name: cntper</string>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLineEdit" name="fgdc_common">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Contact Person -- the name of the individual to which the contact type applies.
-Type: text
-Domain: free text
-Short Name: cntper</string>
-          </property>
-          <property name="text">
-           <string extracomment="cntperp\cntper"/>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>15</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
+       <layout class="QHBoxLayout" name="horizontalLayout_4"/>
       </item>
       <item>
        <widget class="QWidget" name="child_taxoncl" native="true">
@@ -462,10 +405,6 @@ Short Name: cntper</string>
     </widget>
    </item>
   </layout>
-  <zorder>fgdc_taxonrn</zorder>
-  <zorder>required</zorder>
-  <zorder>fgdc_taxonrn_3</zorder>
-  <zorder>taxoncl_groupbox</zorder>
  </widget>
  <resources/>
  <connections/>

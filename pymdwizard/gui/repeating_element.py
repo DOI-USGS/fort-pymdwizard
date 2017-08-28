@@ -93,6 +93,12 @@ class DefaultWidget(QWidget):
         self.layout.setSpacing(6)
         self.setLayout(self.layout)
 
+    def setText(self, text):
+        self.added_line.setText(text)
+
+    def text(self):
+        return self.added_line.text()
+
 
 class RepeatingElement(QWidget):
 
@@ -136,7 +142,8 @@ class RepeatingElement(QWidget):
         self.connect_events()
 
         if not show_buttons:
-            self.ui.button_frame.hide()
+            self.ui.button_widget.hide()
+
         self.ui.addAnother.setText(add_text)
         self.ui.popOff.setText(remove_text)
 
@@ -200,7 +207,6 @@ class RepeatingElement(QWidget):
                 last_added.deleteLater()
         elif len(self.widgets) == 1:
             self.clear_widgets()
-
 
     def get_widgets(self):
         return self.widgets

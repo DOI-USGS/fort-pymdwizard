@@ -160,20 +160,6 @@ class Ui_fgdc_taxoncl(object):
         self.verticalLayout_3.addWidget(self.lbl_common)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.fgdc_common = QtWidgets.QLineEdit(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_common.sizePolicy().hasHeightForWidth())
-        self.fgdc_common.setSizePolicy(sizePolicy)
-        self.fgdc_common.setMinimumSize(QtCore.QSize(150, 0))
-        self.fgdc_common.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.fgdc_common.setText("")
-        self.fgdc_common.setPlaceholderText("")
-        self.fgdc_common.setObjectName("fgdc_common")
-        self.horizontalLayout_4.addWidget(self.fgdc_common)
-        spacerItem = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
         self.child_taxoncl = QtWidgets.QWidget(self.taxoncl_groupbox)
         self.child_taxoncl.setObjectName("child_taxoncl")
@@ -182,9 +168,6 @@ class Ui_fgdc_taxoncl(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout_3.addWidget(self.child_taxoncl)
         self.verticalLayout_2.addWidget(self.taxoncl_groupbox)
-        self.fgdc_taxonrn.raise_()
-        self.required.raise_()
-        self.taxoncl_groupbox.raise_()
 
         self.retranslateUi(fgdc_taxoncl)
         QtCore.QMetaObject.connectSlotsByName(fgdc_taxoncl)
@@ -211,8 +194,4 @@ class Ui_fgdc_taxoncl(object):
         self.required_2.setText(_translate("fgdc_taxoncl", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.lbl_common.setToolTip(_translate("fgdc_taxoncl", "The name of the person to contact"))
         self.lbl_common.setText(_translate("fgdc_taxoncl", "Common Name"))
-        self.fgdc_common.setToolTip(_translate("fgdc_taxoncl", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
 

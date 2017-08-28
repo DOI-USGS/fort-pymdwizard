@@ -33,22 +33,13 @@ responsibility is assumed by the USGS in connection therewith.
 import os
 from lxml import etree
 
-import pandas as pd
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton, QInputDialog
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
-
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_taxoncl
-
+from pymdwizard.gui.repeating_element import RepeatingElement
 
 class Taxoncl(WizardWidget):  #
 
@@ -64,6 +55,17 @@ class Taxoncl(WizardWidget):  #
         """
         self.ui = UI_taxoncl.Ui_fgdc_taxoncl()
         self.ui.setupUi(self)
+
+        widget_kwargs = {'line_name':'common',
+                         'required':False}
+
+        self.commons = RepeatingElement(add_text='Add Common',
+                                         remove_text='Remove last',
+                                         widget_kwargs=widget_kwargs,
+                                         show_buttons=False
+                                         )
+        self.commons.add_another()
+        self.ui.horizontalLayout_4.addWidget(self.commons)
 
         self.child_taxoncl = []
 
@@ -98,7 +100,7 @@ class Taxoncl(WizardWidget):  #
         """
         self.ui.fgdc_taxonrn.clear()
         self.ui.fgdc_taxonrv.clear()
-        self.ui.fgdc_common.clear()
+        self.commons.clear_widgets()
 
         for taxoncl in self.child_taxoncl:
             taxoncl.deleteLater()
@@ -117,10 +119,13 @@ class Taxoncl(WizardWidget):  #
                                     parent_node=taxoncl)
         taxonrv = xml_utils.xml_node('taxonrv', text=self.ui.fgdc_taxonrv.text(),
                                      parent_node=taxoncl)
-        if self.ui.fgdc_common.text():
-            common = xml_utils.xml_node('common',
-                                        text=self.ui.fgdc_common.text(),
-                                         parent_node=taxoncl)
+
+        common_names = [c.text() for c in self.commons.get_widgets()]
+        for common_name in common_names:
+            if common_name:
+                common = xml_utils.xml_node('common',
+                                            text=common_name,
+                                            parent_node=taxoncl)
 
         for child_taxoncl in self.child_taxoncl:
             taxoncl.append(child_taxoncl._to_xml())
@@ -142,8 +147,12 @@ class Taxoncl(WizardWidget):  #
                 self.ui.fgdc_taxonrn.setText(taxoncl.xpath('taxonrn')[0].text)
                 self.ui.fgdc_taxonrv.setText(taxoncl.xpath('taxonrv')[0].text)
 
-                if taxoncl.xpath('common'):
-                    self.ui.fgdc_common.setText(taxoncl.xpath('common')[0].text)
+                commons = xml_utils.search_xpath(taxoncl, 'common', only_first=False)
+                if commons:
+                    self.commons.clear_widgets(add_another=False)
+                    for common in commons:
+                        this_common = self.commons.add_another()
+                        this_common.setText(common.text)
 
                 children_taxoncl = taxoncl.xpath('taxoncl')
                 for child_taxoncl in children_taxoncl:
