@@ -116,6 +116,7 @@ class Attr(WizardWidget):  #
         return QComboBox.mousePressEvent(self.ui.comboBox, event)
 
     def clear_domain(self):
+        print('clear_domain')
         for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
@@ -124,6 +125,7 @@ class Attr(WizardWidget):  #
         self.series = series
 
     def guess_domain(self):
+        print('guess_domain')
         # given a series of data take a guess as to which
         # domain type is appropriate
         if self.series is not None:
@@ -139,6 +141,7 @@ class Attr(WizardWidget):  #
         return 3
 
     def store_current_content(self):
+        print('store_current_content')
         # take a snapshot of the current contents
         if self.domain is not None and not sip.isdeleted(self.domain):
             cur_xml = self.domain._to_xml()
@@ -152,7 +155,7 @@ class Attr(WizardWidget):  #
                 self._domain_content[0] = cur_xml
 
     def populate_domain_content(self, which='guess'):
-
+        print('populate_domain_content')
         self.clear_domain()
 
         if which == 'guess':
@@ -188,8 +191,14 @@ class Attr(WizardWidget):  #
             else:
                 self.domain.populate_from_list(uniques)
         elif self.series is not None and index == 1:
-            self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
-            self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+            try:
+                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+            except:
+                self.domain.ui.fgdc_rdommin.setText('')
+            try:
+                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+            except:
+                self.domain.ui.fgdc_rdommax.setText('')
 
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
