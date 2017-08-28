@@ -162,20 +162,6 @@ class Spdom(WizardWidget):
                     msg = 'North coordinate must be greater than South coordinate'
             except ValueError:
                 pass
-        elif cur_name == 'fgdc_westbc':
-            try:
-                east = float(self.ui.fgdc_eastbc.text())
-                if east <= cur_value:
-                    msg = 'West coordinate must be greater than East coordinate'
-            except ValueError:
-                pass
-        elif cur_name == 'fgdc_eastbc':
-            try:
-                west = float(self.ui.fgdc_westbc.text())
-                if west >= cur_value:
-                    msg = 'West coordinate must be greater than East coordinate'
-            except ValueError:
-                pass
 
         if msg:
                 QMessageBox.warning(self, "Problem bounding coordinates", msg)
@@ -254,8 +240,6 @@ class Spdom(WizardWidget):
             if -90 > float(self.ui.fgdc_northbc.text()) > 90:
                 return False
             if float(self.ui.fgdc_northbc.text()) <= float(self.ui.fgdc_southbc.text()):
-                return False
-            if float(self.ui.fgdc_eastbc.text()) <= float(self.ui.fgdc_westbc.text()):
                 return False
             return True
         except:
