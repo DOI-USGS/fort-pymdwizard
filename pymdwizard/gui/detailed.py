@@ -119,6 +119,7 @@ class Detailed(WizardWidget):  #
         shortname = os.path.split(fname)[1]
         ext = os.path.splitext(shortname)[1]
 
+        self.ui.fgdc_enttypds.setText('Producer defined')
         if ext.lower() == '.csv':
             try:
                 self.clear_widget()
