@@ -80,6 +80,12 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
     parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
     element = etree.fromstring(result.content, parser=parser)
 
+    try:
+        if element.xpath('cntperp/cntper')[0].text == 'GS ScienceBase':
+            element.xpath('cntperp')[0].tag = 'cntorgp'
+    except:
+        pass
+
     if as_dictionary:
         return xml_utils.node_to_dict(element)
     else:
