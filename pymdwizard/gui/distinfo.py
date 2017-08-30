@@ -51,8 +51,6 @@ from pymdwizard.gui.ui_files import UI_distinfo
 from pymdwizard.gui.ContactInfo import ContactInfo
 from pymdwizard.gui.metainfo import MetaInfo
 
-
-
 class DistInfo(WizardWidget):
 
     drag_label = "Distribution Information <distinfo>"
@@ -207,22 +205,6 @@ class DistInfo(WizardWidget):
                                               element=xml_distinfo,
                                               xpath='stdorder/fees')
 
-
-
-
-class GrowingTextEdit(QPlainTextEdit):
-
-    def __init__(self, *args, **kwargs):
-        super(GrowingTextEdit, self).__init__(*args, **kwargs)
-        self.document().contentsChanged.connect(self.sizeChange)
-
-        self.heightMin = 0
-        self.heightMax = 65000
-
-    def sizeChange(self):
-        docHeight = self.document().size().height()
-        if self.heightMin <= docHeight <= self.heightMax:
-            self.setMinimumHeight(docHeight)
 
 if __name__ == "__main__":
     utils.launch_widget(DistInfo, "DistInfo testing")

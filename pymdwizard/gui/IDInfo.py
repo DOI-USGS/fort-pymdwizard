@@ -298,7 +298,7 @@ class IdInfo(WizardWidget):
 
         native = xml_utils.search_xpath(xml_idinfo, 'native')
         if native is not None:
-            self.native._from_xml(xml_idinfo)
+            self.native._from_xml(native)
 
         crossref = xml_utils.search_xpath(xml_idinfo, 'crossref')
         if crossref is not None:

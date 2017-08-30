@@ -87,7 +87,7 @@
        </widget>
       </item>
       <item>
-       <widget class="GrowingTextEdit" name="fgdc_accconst">
+       <widget class="GrowingTextEdit" name="fgdc_native">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
           <horstretch>0</horstretch>

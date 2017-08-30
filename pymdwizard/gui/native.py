@@ -75,7 +75,7 @@ class Native(WizardWidget): #
                                     text=self.ui.fgdc_native.toPlainText())
         return native
 
-    def _from_xml(self, acconst):
+    def _from_xml(self, native):
         """
         parses the xml code into the relevant native elements
 
@@ -88,10 +88,10 @@ class Native(WizardWidget): #
         None
         """
         try:
-            if acconst.tag == 'native':
-               self.ui.fgdc_native.setPlainText(acconst.text)
+            if native.tag == 'native':
+               self.ui.fgdc_native.setPlainText(native.text)
             else:
-               print ("The tag is not native")
+               print("The tag is not native")
         except KeyError:
             pass
 

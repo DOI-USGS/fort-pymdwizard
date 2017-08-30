@@ -78,7 +78,6 @@ class Useconst(WizardWidget): #
         None
 
         """
-        print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
@@ -113,7 +112,7 @@ class Useconst(WizardWidget): #
         None
         """
         try:
-            if useconst.tag == 'native':
+            if useconst.tag == 'useconst':
                 self.ui.fgdc_useconst.setPlainText(useconst.text)
             else:
                 print ("The tag is not useconst")
