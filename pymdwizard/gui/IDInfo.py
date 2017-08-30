@@ -227,10 +227,11 @@ class IdInfo(WizardWidget):
                 native.tail = None
                 idinfo_node.append(deepcopy(native))
 
-            crossref_list = self.crossref._to_xml()
-            for crossref in crossref_list:
-                crossref.tail = None
-                idinfo_node.append(deepcopy(crossref))
+            if self.crossref.has_content():
+                crossref_list = self.crossref._to_xml()
+                for crossref in crossref_list:
+                    crossref.tail = None
+                    idinfo_node.append(deepcopy(crossref))
 
             tools = xml_utils.search_xpath(self.original_xml, 'tool', only_first=False)
             for tool in tools:
