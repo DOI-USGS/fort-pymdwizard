@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import textwrap
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -17,12 +18,12 @@ class GrowingTextEdit(QPlainTextEdit):
         self.setMinimumHeight(self.heightMin)
 
     def sizeChange(self):
-        doc_height = self.document().size().height()
-        factor = 14
+        char_width = int((self.width())/5.25)
+        contents = self.toPlainText()
+        lines = textwrap.wrap(contents, char_width)
+        adj_doc_height = (len(lines) + contents.count('\n')) * 13 + 20
 
-        adj_doc_height = doc_height * factor + 20
         if adj_doc_height <= self.heightMin:
-            # self.setMinimumHeight(self.heightMin)
             self.setFixedHeight(self.heightMin)
             size_hint = self.heightMin
         elif self.heightMin <= adj_doc_height <= self.heightMax:
