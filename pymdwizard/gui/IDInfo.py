@@ -66,6 +66,7 @@ from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.DataCredit import DataCredit
 from pymdwizard.gui.descript import Descript
 from pymdwizard.gui.supplinf import SupplInf
+from pymdwizard.gui.native import Native
 from pymdwizard.gui.abstract import Abstract
 from pymdwizard.gui.purpose import Purpose
 from pymdwizard.gui.crossref import CrossRef
