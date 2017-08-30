@@ -214,7 +214,7 @@ class Attr(WizardWidget):  #
             self.active = True
             self.animation = QPropertyAnimation(self, b"minimumSize")
             self.animation.setDuration(200)
-            self.animation.setEndValue(QSize(325, self.height()))
+            self.animation.setEndValue(QSize(345, self.height()))
             self.animation.start()
             self.ui.attrdomv_contents.show()
             self.ui.place_holder.hide()

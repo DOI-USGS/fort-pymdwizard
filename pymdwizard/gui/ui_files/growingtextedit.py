@@ -11,21 +11,29 @@ class GrowingTextEdit(QPlainTextEdit):
         super(GrowingTextEdit, self).__init__(*args, **kwargs)
         self.document().contentsChanged.connect(self.sizeChange)
 
-        self.heightMin = 25
-        self.heightMax = 400
+        self.heightMin = 45
+        self.heightMax = 300
 
         self.setMinimumHeight(self.heightMin)
 
     def sizeChange(self):
-        docHeight = self.document().size().height()
-        factor = 13
-        if self.heightMin <= docHeight*factor <= self.heightMax:
-            self.setMinimumHeight(docHeight*factor + 8)
-        elif docHeight*factor > self.heightMax:
-            self.setMinimumHeight(self.heightMax)
+        doc_height = self.document().size().height()
+        factor = 14
+
+        adj_doc_height = doc_height * factor + 20
+        if adj_doc_height <= self.heightMin:
+            # self.setMinimumHeight(self.heightMin)
+            self.setFixedHeight(self.heightMin)
+            size_hint = self.heightMin
+        elif self.heightMin <= adj_doc_height <= self.heightMax:
+            self.setFixedHeight(adj_doc_height)
+            size_hint = adj_doc_height
+        elif adj_doc_height > self.heightMax:
+            self.setFixedHeight(self.heightMax)
+            size_hint = self.heightMax
 
         try:
-            self.item.setSizeHint(QSize(self.width(), self.minimumHeight()+120))
+            self.item.setSizeHint(QSize(self.width(), size_hint + 100))
         except:
             pass
 

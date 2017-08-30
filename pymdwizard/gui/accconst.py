@@ -41,23 +41,16 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_AccessConstraints #
+from pymdwizard.gui.ui_files import UI_accconst
 
 
-class AccessConstraints(WizardWidget): #
+class Accconst(WizardWidget): #
 
     drag_label = "Access Constraints <accconst>"
     acceptable_tags = ['accconst']
@@ -70,7 +63,7 @@ class AccessConstraints(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_AccessConstraints.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_accconst.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -82,12 +75,11 @@ class AccessConstraints(WizardWidget): #
         -------
         accconst element tag in xml tree
         """
-        accconst = etree.Element('accconst')
-        accconst.text = self.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
-
+        accconst = xml_utils.xml_node('accconst',
+                                      text=self.ui.fgdc_accconst.toPlainText())
         return accconst
 
-    def _from_xml(self, access_constraints):
+    def _from_xml(self, acconst):
         """
         parses the xml code into the relevant accconst elements
 
@@ -100,9 +92,8 @@ class AccessConstraints(WizardWidget): #
         None
         """
         try:
-            if access_constraints.tag == 'accconst':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_accconst")
-               accost_box.setPlainText(access_constraints.text)
+            if acconst.tag == 'accconst':
+               self.ui.fgdc_accconst.setPlainText(acconst.text)
             else:
                print ("The tag is not accconst")
         except KeyError:
@@ -110,6 +101,6 @@ class AccessConstraints(WizardWidget): #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(AccessConstraints,
+    utils.launch_widget(Accconst,
                         "Access Constraints testing")
 

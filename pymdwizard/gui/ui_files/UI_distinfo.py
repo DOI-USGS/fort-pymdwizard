@@ -322,9 +322,7 @@ class Ui_fgdc_distinfo(object):
         self.label_10.setWordWrap(True)
         self.label_10.setObjectName("label_10")
         self.verticalLayout_8.addWidget(self.label_10)
-        self.fgdc_distliab = QtWidgets.QPlainTextEdit(self.groupBox)
-        self.fgdc_distliab.setEnabled(True)
-        self.fgdc_distliab.setMaximumSize(QtCore.QSize(16777215, 50000))
+        self.fgdc_distliab = GrowingTextEdit(self.groupBox)
         self.fgdc_distliab.setObjectName("fgdc_distliab")
         self.verticalLayout_8.addWidget(self.fgdc_distliab)
         self.verticalLayout_6.addWidget(self.groupBox)
@@ -386,3 +384,4 @@ class Ui_fgdc_distinfo(object):
         self.group_datafees.setTitle(_translate("fgdc_distinfo", "Data Fees"))
         self.label_12.setText(_translate("fgdc_distinfo", "Describe any fees associated with this data."))
 
+from growingtextedit import GrowingTextEdit

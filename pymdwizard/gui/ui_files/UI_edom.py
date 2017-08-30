@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_fgdc_attrdomv(object):
     def setupUi(self, fgdc_attrdomv):
         fgdc_attrdomv.setObjectName("fgdc_attrdomv")
-        fgdc_attrdomv.resize(326, 134)
+        fgdc_attrdomv.resize(256, 134)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

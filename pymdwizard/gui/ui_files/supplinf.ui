@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>592</width>
-    <height>133</height>
+    <height>109</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -19,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>133</height>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -46,12 +52,24 @@
    </property>
    <item>
     <widget class="QGroupBox" name="fgdc_descript">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Supplemental Information</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="font">
          <font>
           <italic>true</italic>
@@ -69,15 +87,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_supplinf">
-        <property name="acceptDrops">
-         <bool>false</bool>
+       <widget class="GrowingTextEdit" name="fgdc_supplinf">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="plainText">
-         <string/>
-        </property>
-        <property name="overwriteMode">
-         <bool>false</bool>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -86,6 +107,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

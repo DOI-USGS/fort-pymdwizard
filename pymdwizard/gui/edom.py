@@ -69,6 +69,9 @@ class Edom(QWidget):  #
         self.ui = UI_edom.Ui_fgdc_attrdomv()
         self.ui.setupUi(self)
         self.ui.fgdc_edomvd.item = self.item
+        self.ui.fgdc_edomvd.heightMin = 25
+        self.ui.fgdc_edomvd.heightMax = 150
+        self.ui.fgdc_edomvd.sizeChange()
 
     def dragEnterEvent(self, e):
         """
@@ -80,14 +83,6 @@ class Edom(QWidget):  #
         Returns
         -------
         """
-        # mime_data = e.mimeData()
-        # if e.mimeData().hasFormat('text/plain'):
-        #     parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        #     element = etree.fromstring(mime_data.text(), parser=parser)
-        #     if element.tag == 'udom':
-        #         e.accept()
-        # else:
-        #     e.ignore()
         e.ignore()
 
     def _to_xml(self):

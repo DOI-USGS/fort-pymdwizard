@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Data Credit <datacred> section
+Provide a pyqt widget for a Access Constraints <useconst> section
 
 
 SCRIPT DEPENDENCIES
@@ -41,25 +41,16 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
-
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_DataCredit #
+from pymdwizard.gui.ui_files import UI_useconst
 
 
-class DataCredit(WizardWidget): #
+class Useconst(WizardWidget): #
 
-    drag_label = "Data Credit <datacred>"
+    drag_label = "Use Constraints <useconst>"
     acceptable_tags = ['abstract']
 
     def build_ui(self):
@@ -70,16 +61,14 @@ class DataCredit(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_DataCredit.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_useconst.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
 
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'datacred'
+        a root tag called 'useconst'
         Parameters
         ----------
         e : qt event
@@ -94,51 +83,45 @@ class DataCredit(WizardWidget): #
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'datacred':
+            if element is not None and element.tag == 'useconst':
                 e.accept()
         else:
             e.ignore()
 
-
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
 
         Returns
         -------
-        datacred element tag in xml tree
+        useconst element tag in xml tree
         """
-        datacred = etree.Element('datacred')
+        useconst = xml_utils.xml_node('useconst',
+                                      text=self.ui.fgdc_useconst.toPlainText())
+        return useconst
 
-        datacred.text = self.findChild(QPlainTextEdit, "fgdc_datacred").toPlainText()
-
-        return datacred
-
-    def _from_xml(self, data_credit):
+    def _from_xml(self, useconst):
         """
-        parses the xml code into the relevant datacred elements
+        parses the xml code into the relevant useconst elements
 
         Parameters
         ----------
-        data_credit - the xml element status and its contents
+        use_constraints - the xml element status and its contents
 
         Returns
         -------
         None
         """
         try:
-            if data_credit.tag == 'datacred':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_datacred")
-               accost_box.setPlainText(data_credit.text)
+            if useconst.tag == 'native':
+                self.ui.fgdc_useconst.setPlainText(useconst.text)
             else:
-               print ("The tag is not datacred")
+                print ("The tag is not useconst")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(DataCredit,
-                        "Data Credit testing")
+    utils.launch_widget(Useconst,
+                        "Use Constraints testing")
 

@@ -782,17 +782,7 @@ acquiring the data. (Provide 'Distributor Contact' information.</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPlainTextEdit" name="fgdc_distliab">
-                     <property name="enabled">
-                      <bool>true</bool>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>50000</height>
-                      </size>
-                     </property>
-                    </widget>
+                    <widget class="GrowingTextEdit" name="fgdc_distliab"/>
                    </item>
                   </layout>
                  </widget>
@@ -879,6 +869,13 @@ acquiring the data. (Provide 'Distributor Contact' information.</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

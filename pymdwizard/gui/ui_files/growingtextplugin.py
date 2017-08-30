@@ -43,20 +43,6 @@ class GrowingTextEditPlugin(QPyDesignerCustomWidgetPlugin):
     def isContainer(self):
         return False
 
-    # Returns an XML description of a custom widget instance that describes
-    # default values for its properties. Each custom widget created by this
-    # plugin will be configured using this description.
-    # def domXml(self):
-    #     return '<widget class="PyAnalogClock" name="analogClock">\n' \
-    #            ' <property name="toolTip">\n' \
-    #            '  <string>The current time</string>\n' \
-    #            ' </property>\n' \
-    #            ' <property name="whatsThis">\n' \
-    #            '  <string>The analog clock widget displays the current ' \
-    #            'timewi.</string>\n' \
-    #            ' </property>\n' \
-    #            '</widget>\n'
-
     def includeFile(self):
         return "growingtextedit"
 

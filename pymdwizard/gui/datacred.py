@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Access Constraints <useconst> section
+Provide a pyqt widget for a Data Credit <datacred> section
 
 
 SCRIPT DEPENDENCIES
@@ -41,26 +41,16 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
-
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+from pymdwizard.core import utils, xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_UseConstraints #
+from pymdwizard.gui.ui_files import UI_datacred
 
 
-class UseConstraints(WizardWidget): #
+class Datacred(WizardWidget): #
 
-    drag_label = "Use Constraints <useconst>"
-    acceptable_tags = ['abstract']
+    drag_label = "Data Credit <datacred>"
+    acceptable_tags = ['datacred']
 
     def build_ui(self):
         """
@@ -70,16 +60,14 @@ class UseConstraints(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_UseConstraints.Ui_Form()
+        self.ui = UI_datacred.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
 
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'useconst'
+        a root tag called 'datacred'
         Parameters
         ----------
         e : qt event
@@ -89,57 +77,49 @@ class UseConstraints(WizardWidget): #
         None
 
         """
-        print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
             element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'useconst':
+            if element is not None and element.tag == 'datacred':
                 e.accept()
         else:
             e.ignore()
 
-
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
 
         Returns
         -------
-        useconst element tag in xml tree
+        datacred element tag in xml tree
         """
-        useconst = etree.Element('useconst')
-        useconst.text = self.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
+        datacred = xml_utils.xml_node('datacred',
+                                                    text=self.ui.fgdc_datacred.toPlainText())
+        return datacred
 
-        return useconst
-
-    def _from_xml(self, use_constraints):
+    def _from_xml(self, data_credit):
         """
-        parses the xml code into the relevant useconst elements
+        parses the xml code into the relevant datacred elements
 
         Parameters
         ----------
-        use_constraints - the xml element status and its contents
+        data_credit - the xml element status and its contents
 
         Returns
         -------
         None
         """
         try:
-            if use_constraints.tag == 'useconst':
-                accost_box = self.findChild(QPlainTextEdit, "fgdc_useconst")
-                useconst_str = xml_utils.get_text_content(use_constraints)
-                accost_box.setPlainText(useconst_str)
-                return True
+            if data_credit.tag == 'datacred':
+                self.ui.fgdc_datacred.setPlainText(data_credit.text)
             else:
-                return False
+               print ("The tag is not datacred")
         except KeyError:
-            return False
+            pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(UseConstraints,
-                        "Use Constraints testing")
+    utils.launch_widget(DataCredit,
+                        "Data Credit testing")
 
