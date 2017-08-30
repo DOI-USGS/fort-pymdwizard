@@ -192,6 +192,7 @@ class DistInfo(WizardWidget):
                 utils.populate_widget_element(widget=self.ui.fgdc_distliab,
                                               element=xml_distinfo,
                                               xpath='distliab')
+                self.ui.fgdc_distliab.sizeChange()
             if xml_distinfo.xpath('custom'):
                 self.ui.radio_otherdist.setChecked(True)
                 utils.populate_widget_element(widget=self.ui.fgdc_custom,
@@ -205,6 +206,8 @@ class DistInfo(WizardWidget):
                 utils.populate_widget_element(widget=self.ui.fgdc_fees,
                                               element=xml_distinfo,
                                               xpath='stdorder/fees')
+
+
 
 
 class GrowingTextEdit(QPlainTextEdit):

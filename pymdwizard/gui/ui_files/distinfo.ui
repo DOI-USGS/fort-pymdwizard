@@ -392,8 +392,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1085</width>
-        <height>716</height>
+        <width>1068</width>
+        <height>717</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -631,6 +631,12 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
              </item>
              <item>
               <widget class="QWidget" name="two_column_right" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">
                 <property name="spacing">
                  <number>1</number>
@@ -741,7 +747,7 @@ acquiring the data. (Provide 'Distributor Contact' information.</string>
                 <item>
                  <widget class="QGroupBox" name="groupBox">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
@@ -782,7 +788,14 @@ acquiring the data. (Provide 'Distributor Contact' information.</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="GrowingTextEdit" name="fgdc_distliab"/>
+                    <widget class="GrowingTextEdit" name="fgdc_distliab">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </widget>
