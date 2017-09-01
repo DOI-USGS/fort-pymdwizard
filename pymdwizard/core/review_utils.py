@@ -122,7 +122,14 @@ def _add_child_content(doc, node, indent=0.25):
         _add_child_content(doc, child, indent+0.25)
 
 def generate_review_report(xml_document, docx_fname):
+
     document = Document()
+
+    DOCX = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+    element = document.settings.element.find(DOCX + 'proofState')
+    element.attrib[DOCX + 'grammar'] = 'dirty'
+    element.attrib[DOCX + 'spelling'] = 'dirty'
+
     _load_styles(document)
 
     try:
