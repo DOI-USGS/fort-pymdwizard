@@ -92,7 +92,7 @@ class CrossRef(WizardWidget): #
             self.ui.crossref_widget.hide()
 
     def has_content(self):
-        return self.ui.radio_crossrefno.isChecked()
+        return self.ui.radio_crossrefyes.isChecked()
 
     def _to_xml(self):
         """
