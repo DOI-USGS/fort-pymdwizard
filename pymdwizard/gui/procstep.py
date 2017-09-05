@@ -78,7 +78,8 @@ class ProcStep(WizardWidget): #
 
         self.proc_step = RepeatingElement(which='tab',
                          tab_label='Step', add_text='Additional Step',
-                         widget=ProcessStep, remove_text='Remove Step', italic_text='Processing Steps Taken')
+                         widget=ProcessStep, remove_text='Remove Step', italic_text='Describe the methods performed to collect or generate the data.\n Provide as much detail as possible.')
+        
 
         #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
         self.proc_step.add_another()
