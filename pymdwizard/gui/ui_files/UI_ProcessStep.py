@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(435, 189)
+        Form.resize(435, 190)
         Form.setMinimumSize(QtCore.QSize(0, 175))
         Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(Form)
@@ -26,7 +26,7 @@ class Ui_Form(object):
         self.label = QtWidgets.QLabel(self.fgdc_procstep)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.fgdc_procdesc = QtWidgets.QPlainTextEdit(self.fgdc_procstep)
+        self.fgdc_procdesc = GrowingTextEdit(self.fgdc_procstep)
         self.fgdc_procdesc.setObjectName("fgdc_procdesc")
         self.verticalLayout.addWidget(self.fgdc_procdesc)
         self.verticalLayout_5.addLayout(self.verticalLayout)
@@ -98,13 +98,4 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Source Used Citation Abbreviation"))
         self.label_2.setText(_translate("Form", "Source Produced Citation Abbreviation"))
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
-
+from growingtextedit import GrowingTextEdit

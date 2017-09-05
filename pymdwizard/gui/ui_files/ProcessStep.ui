@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>435</width>
-    <height>189</height>
+    <height>190</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -39,7 +39,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="fgdc_procdesc">
+         <widget class="GrowingTextEdit" name="fgdc_procdesc">
           <property name="plainText">
            <string>Development of the dataset by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</string>
           </property>
@@ -187,6 +187,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
