@@ -9,10 +9,10 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QWidget, QPlainTextEdit
 
-from pymdwizard.gui import UseConstraints
+from pymdwizard.gui import useconst
 
 def test_useconstraints__from_xml(qtbot):
-    widget = UseConstraints.UseConstraints()
+    widget = useconst.Useconst()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
@@ -23,7 +23,7 @@ def test_useconstraints__from_xml(qtbot):
     assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == 'none'
 
 def test_useconstraints__to_xml(qtbot):
-    widget = UseConstraints.UseConstraints()
+    widget = useconst.Useconst()
     qtbot.addWidget(widget)
 
 

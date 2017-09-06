@@ -9,10 +9,10 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QWidget, QPlainTextEdit
 
-from pymdwizard.gui import DataCredit
+from pymdwizard.gui import datacred
 
 def test_datacredit__from_xml(qtbot):
-    widget = DataCredit.DataCredit()
+    widget = datacred.Datacred()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/GenericFGDCTemplate_FGDCtemp.xml"
@@ -23,7 +23,7 @@ def test_datacredit__from_xml(qtbot):
     assert widget.findChild(QPlainTextEdit, "fgdc_datacred").toPlainText() == 'Data set Credits MH'
 
 def test_datacredit__to_xml(qtbot):
-    widget = DataCredit.DataCredit()
+    widget = datacred.Datacred()
     qtbot.addWidget(widget)
 
     #test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"

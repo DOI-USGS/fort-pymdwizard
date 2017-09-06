@@ -9,10 +9,10 @@ from lxml import etree
 
 from PyQt5.QtWidgets import QPlainTextEdit
 
-from pymdwizard.gui import AccessConstraints
+from pymdwizard.gui import accconst
 
 def test_accessconstraints__from_xml(qtbot):
-    widget = AccessConstraints.AccessConstraints()
+    widget = accconst.Accconst()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
@@ -24,7 +24,7 @@ def test_accessconstraints__from_xml(qtbot):
 
 
 def test_accessconstraints__to_xml(qtbot):
-    widget = AccessConstraints.AccessConstraints()
+    widget = accconst.Accconst()
     qtbot.addWidget(widget)
 
     assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == "None.  Please see 'Distribution Info' for details."
