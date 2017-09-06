@@ -59,6 +59,7 @@ class Detailed(WizardWidget):  #
     acceptable_tags = ['detailed']
 
     def __init__(self, remove_function=None, parent=None):
+        self.EA = parent
         WizardWidget.__init__(self, parent=parent)
         if remove_function is None:
             self.ui.btn_remove.hide()
@@ -82,6 +83,7 @@ class Detailed(WizardWidget):  #
         self.setup_dragdrop(self)
 
         self.ui.btn_browse.clicked.connect(self.browse)
+        self.ui.fgdc_enttypl.textChanged.connect(self.update_tooltip)
 
     def browse(self):
         settings = QSettings('USGS', 'pymdwizard')
@@ -104,6 +106,14 @@ class Detailed(WizardWidget):  #
                 import traceback
                 msg = "Could not extract data from file %s:\n%s." % (fname, traceback.format_exc())
                 QMessageBox.warning(self, "Data file error", msg)
+
+    def update_tooltip(self):
+        try:
+            cur_text = self.ui.fgdc_enttypl.text()
+            cur_index = self.EA.ui.fgdc_eainfo.currentIndex()
+            self.EA.ui.fgdc_eainfo.setTabToolTip(cur_index, cur_text)
+        except:
+            pass
 
     def update_displayed_label(self):
         pass
