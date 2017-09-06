@@ -187,11 +187,12 @@ class EA(WizardWidget):  #
 
                 detailed = eainfo.xpath('detailed')
                 if detailed:
-                    self.detaileds[0]._from_xml(detailed[0])
                     self.ui.fgdc_eainfo.setCurrentIndex(1)
+                    self.detaileds[0]._from_xml(detailed[0])
 
-                    for additional_detailed in detailed[1:]:
+                    for i, additional_detailed in enumerate(detailed[1:]):
                         new_detailed = self.add_detailed()
+                        self.ui.fgdc_eainfo.setCurrentIndex(i+2)
                         new_detailed._from_xml(additional_detailed)
 
             else:
