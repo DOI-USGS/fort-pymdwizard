@@ -79,6 +79,7 @@ class DataQuality(WizardWidget):
 
         self.attraccr = AttributeAccuracy(parent=self)
         self.logic = LogicalAccuracy(parent=self)
+        # self.complete = Completeness(parent=self)
         self.complete = Completeness(parent=self)
         self.posacc = PositionalAccuracy(parent=self)
         self.sourceinput = SourceInput(parent=self)
@@ -92,7 +93,6 @@ class DataQuality(WizardWidget):
 
         self.ui.bottom_layout.layout().addWidget(self.sourceinput)
         self.ui.fgdc_lineage.layout().addWidget(self.procstep)
-
 
     def dragEnterEvent(self, e):
         """
@@ -118,6 +118,7 @@ class DataQuality(WizardWidget):
     def clear_widget(self):
         self.sourceinput.clear_widget()
         WizardWidget.clear_widget(self)
+        self.complete.ui.fgdc_complete.sizeChange()
 
     def _to_xml(self):
         # add code here to translate the form into xml representation

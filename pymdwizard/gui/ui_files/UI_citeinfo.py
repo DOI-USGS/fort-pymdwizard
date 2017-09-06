@@ -12,7 +12,45 @@ class Ui_parent_form(object):
     def setupUi(self, parent_form):
         parent_form.setObjectName("parent_form")
         parent_form.resize(1154, 360)
-        parent_form.setStyleSheet("")
+        parent_form.setStyleSheet("QGroupBox{\n"
+"    background-color: transparent;\n"
+"     subcontrol-position: top left; /* position at the top left*/\n"
+"     padding-top: 20px;\n"
+"    font: bold 12px;\n"
+"    color: rgba(90, 90, 90, 225);\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 2px;\n"
+"    border-color: rgba(90, 90, 90, 40);\n"
+"}\n"
+"QGroupBox::title {\n"
+"text-align: left;\n"
+"subcontrol-origin: padding;\n"
+"subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
+"}\n"
+"QLabel{\n"
+"font: 9pt \"Arial\";\n"
+"color: rgb(90, 90, 90);\n"
+"}\n"
+"QLineEdit, QComboBox {\n"
+"font: 9pt \"Arial\";\n"
+"color: rgb(50, 50, 50);\n"
+"}\n"
+"\n"
+"QGroupBox:Hover {\n"
+"    border-color: rgba(90, 90, 90, 240);\n"
+"}\n"
+"\n"
+"QHBoxLayout#import_doi_layout{\n"
+"subcontrol-position: top left; /* position at the top left*/\n"
+"     padding-top: 200px;\n"
+"}\n"
+"\n"
+".QFrame {\n"
+"    color: rgba(90, 90, 90, 225);\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 2px;\n"
+"    border-color: rgba(90, 90, 90, 75);\n"
+"}")
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout(parent_form)
         self.horizontalLayout_13.setContentsMargins(3, 0, 3, 0)
         self.horizontalLayout_13.setSpacing(2)
@@ -23,6 +61,7 @@ class Ui_parent_form(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.fgdc_citeinfo)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.first_hbox = QtWidgets.QHBoxLayout()
+        self.first_hbox.setContentsMargins(-1, -1, 6, -1)
         self.first_hbox.setObjectName("first_hbox")
         self.help_title = QtWidgets.QFrame(self.fgdc_citeinfo)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
@@ -108,6 +147,50 @@ class Ui_parent_form(object):
         self.pubdate_layout.addItem(spacerItem)
         self.verticalLayout_2.addLayout(self.pubdate_layout)
         self.first_hbox.addWidget(self.help_pubdate)
+        self.btn_import_doi = QtWidgets.QPushButton(self.fgdc_citeinfo)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_import_doi.sizePolicy().hasHeightForWidth())
+        self.btn_import_doi.setSizePolicy(sizePolicy)
+        self.btn_import_doi.setMinimumSize(QtCore.QSize(50, 0))
+        self.btn_import_doi.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.btn_import_doi.setStyleSheet("QGroupBox{\n"
+"    background-color: transparent;\n"
+"     subcontrol-position: top left; /* position at the top left*/\n"
+"     padding-top: 20px;\n"
+"    font: bold 12px;\n"
+"    color: rgba(90, 90, 90, 225);\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 2px;\n"
+"    border-color: rgba(90, 90, 90, 40);\n"
+"}\n"
+"QGroupBox::title {\n"
+"text-align: left;\n"
+"subcontrol-origin: padding;\n"
+"subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
+"}\n"
+"QLabel{\n"
+"font: 9pt \"Arial\";\n"
+"color: rgb(90, 90, 90);\n"
+"}\n"
+"QLineEdit, QComboBox {\n"
+"font: 9pt \"Arial\";\n"
+"color: rgb(50, 50, 50);\n"
+"}\n"
+"\n"
+"QGroupBox:Hover {\n"
+"    border-color: rgba(90, 90, 90, 240);\n"
+"}\n"
+"\n"
+".QFrame {\n"
+"    color: rgba(90, 90, 90, 225);\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 2px;\n"
+"    border-color: rgba(90, 90, 90, 75);\n"
+"}")
+        self.btn_import_doi.setObjectName("btn_import_doi")
+        self.first_hbox.addWidget(self.btn_import_doi)
         self.verticalLayout_4.addLayout(self.first_hbox)
         self.second_hbox = QtWidgets.QHBoxLayout()
         self.second_hbox.setSpacing(10)
@@ -494,6 +577,10 @@ class Ui_parent_form(object):
         self.label_5.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_46.setText(_translate("parent_form", "Publication Date"))
         self.label_38.setText(_translate("parent_form", "When was the dataset published or finalized?"))
+        self.btn_import_doi.setToolTip(_translate("parent_form", "Import contact information from USGS Active Directory"))
+        self.btn_import_doi.setText(_translate("parent_form", "Import \n"
+"from \n"
+"DOI"))
         self.label_47.setText(_translate("parent_form", "Dataset Author/ Originator"))
         self.label_35.setText(_translate("parent_form", "Who created the dataset? List the organization and/or person(s)"))
         self.label_52.setText(_translate("parent_form", "Dataset Format"))

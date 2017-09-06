@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'AttributeAccuracy.ui'
+# Form implementation generated from reading ui file 'attracc.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -12,8 +12,8 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(645, 133)
-        Form.setMinimumSize(QtCore.QSize(0, 110))
-        Form.setMaximumSize(QtCore.QSize(16777215, 160))
+        Form.setMinimumSize(QtCore.QSize(0, 0))
+        Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -35,9 +35,14 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.fgdc_attraccr = QtWidgets.QPlainTextEdit(self.help_attraccr)
-        self.fgdc_attraccr.setAcceptDrops(False)
-        self.fgdc_attraccr.setOverwriteMode(True)
+        self.fgdc_attraccr = GrowingTextEdit(self.help_attraccr)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.fgdc_attraccr.sizePolicy().hasHeightForWidth())
+        self.fgdc_attraccr.setSizePolicy(sizePolicy)
+        self.fgdc_attraccr.setMinimumSize(QtCore.QSize(0, 0))
+        self.fgdc_attraccr.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.fgdc_attraccr.setObjectName("fgdc_attraccr")
         self.verticalLayout_2.addWidget(self.fgdc_attraccr)
         self.verticalLayout.addWidget(self.help_attraccr)
@@ -52,3 +57,4 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "How accurate are the values in the dataset relative to \"true\" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info."))
         self.fgdc_attraccr.setPlainText(_translate("Form", "No formal attribute accuracy tests were conducted."))
 
+from growingtextedit import GrowingTextEdit

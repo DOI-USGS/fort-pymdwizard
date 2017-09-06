@@ -41,23 +41,18 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtWidgets import QPlainTextEdit
+
 
 
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_AttributeAccuracy #
+from pymdwizard.gui.ui_files import UI_attracc
 
 
-class AttributeAccuracy(WizardWidget): #
+class AttributeAccuracy(WizardWidget):
 
     drag_label = "Attribute Accuracy <attracc>"
     acceptable_tags = ['attracc']
@@ -70,9 +65,10 @@ class AttributeAccuracy(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_AttributeAccuracy.Ui_Form()
+        self.ui = UI_attracc.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
+        self.ui.fgdc_attraccr.setFixedHeight(55)
 
     def _to_xml(self):
         """

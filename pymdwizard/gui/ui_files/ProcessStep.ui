@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>435</width>
-    <height>190</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -30,22 +30,30 @@
     <widget class="QWidget" name="fgdc_procstep" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Describe the processing step or method below:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="GrowingTextEdit" name="fgdc_procdesc">
-          <property name="plainText">
-           <string>Development of the dataset by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Describe the processing step or method below:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="GrowingTextEdit" name="fgdc_procdesc">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="plainText">
+         <string>Development of the dataset by the agency / individuals identified in the 'Originator' element in the Identification Info section of the record.</string>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -89,12 +97,12 @@
              <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Maximum</enum>
+             <enum>QSizePolicy::Preferred</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>20</height>
+              <height>0</height>
              </size>
             </property>
            </spacer>

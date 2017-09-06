@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>191</height>
+    <height>131</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>100</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>191</height>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -69,15 +69,27 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_complete">
-        <property name="acceptDrops">
-         <bool>false</bool>
+       <widget class="GrowingTextEdit" name="fgdc_complete">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="plainText">
          <string>Dataset is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details.</string>
-        </property>
-        <property name="overwriteMode">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -86,6 +98,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>233</height>
+    <height>232</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>120</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>300</height>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -60,15 +60,15 @@
          </widget>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="fgdc_horizpa">
-          <property name="acceptDrops">
-           <bool>false</bool>
+         <widget class="GrowingTextEdit" name="fgdc_horizpa">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="plainText">
            <string>A formal accuracy assessment of the horizontal positional information in the dataset has not been conducted.</string>
-          </property>
-          <property name="overwriteMode">
-           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -80,15 +80,15 @@
          </widget>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="fgdc_vertacc">
-          <property name="acceptDrops">
-           <bool>false</bool>
+         <widget class="GrowingTextEdit" name="fgdc_vertacc">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="plainText">
            <string>A formal accuracy assessment of the vertical positional information in the dataset has either not been conducted, or is not applicable.</string>
-          </property>
-          <property name="overwriteMode">
-           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -99,6 +99,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>160</height>
+    <height>133</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>160</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>180</height>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -69,15 +69,21 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="fgdc_logic">
-        <property name="acceptDrops">
-         <bool>false</bool>
+       <widget class="GrowingTextEdit" name="fgdc_logic">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="plainText">
          <string>No formal logical accuracy tests were conducted.</string>
-        </property>
-        <property name="overwriteMode">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -86,6 +92,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GrowingTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>growingtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

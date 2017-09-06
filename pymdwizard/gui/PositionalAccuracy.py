@@ -41,20 +41,12 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_PositionalAccuracy #
+from pymdwizard.gui.ui_files import UI_posacc
 
 
 class PositionalAccuracy(WizardWidget): #
@@ -70,11 +62,9 @@ class PositionalAccuracy(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_PositionalAccuracy.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_posacc.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
 
     def dragEnterEvent(self, e):
         """

@@ -14,7 +14,45 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 12px;
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 40);
+}
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt &quot;Arial&quot;;
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt &quot;Arial&quot;;
+color: rgb(50, 50, 50);
+}
+
+QGroupBox:Hover {
+    border-color: rgba(90, 90, 90, 240);
+}
+
+QHBoxLayout#import_doi_layout{
+subcontrol-position: top left; /* position at the top left*/
+     padding-top: 200px;
+}
+
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_13">
    <property name="spacing">
@@ -46,6 +84,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <layout class="QHBoxLayout" name="first_hbox">
+        <property name="rightMargin">
+         <number>6</number>
+        </property>
         <item>
          <widget class="QFrame" name="help_title">
           <property name="sizePolicy">
@@ -242,6 +283,72 @@
             </layout>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_import_doi">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Import contact information from USGS Active Directory</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 12px;
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 40);
+}
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt &quot;Arial&quot;;
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt &quot;Arial&quot;;
+color: rgb(50, 50, 50);
+}
+
+QGroupBox:Hover {
+    border-color: rgba(90, 90, 90, 240);
+}
+
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}</string>
+          </property>
+          <property name="text">
+           <string>Import 
+from 
+DOI</string>
+          </property>
          </widget>
         </item>
        </layout>

@@ -41,20 +41,13 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_LogicalAccuracy #
+from pymdwizard.gui.ui_files import UI_logic
 
 
 class LogicalAccuracy(WizardWidget): #
@@ -70,11 +63,9 @@ class LogicalAccuracy(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_LogicalAccuracy.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_logic.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
 
     def dragEnterEvent(self, e):
         """
@@ -89,7 +80,6 @@ class LogicalAccuracy(WizardWidget): #
         None
 
         """
-        print("pc drag enter")
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
@@ -99,9 +89,6 @@ class LogicalAccuracy(WizardWidget): #
         else:
             e.ignore()
 
-
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag

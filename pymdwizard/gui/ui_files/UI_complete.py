@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Completeness.ui'
+# Form implementation generated from reading ui file 'complete.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(599, 191)
-        Form.setMinimumSize(QtCore.QSize(0, 145))
-        Form.setMaximumSize(QtCore.QSize(16777215, 191))
+        Form.resize(599, 131)
+        Form.setMinimumSize(QtCore.QSize(0, 0))
+        Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -33,9 +33,13 @@ class Ui_Form(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.fgdc_complete = QtWidgets.QPlainTextEdit(self.groupBox)
-        self.fgdc_complete.setAcceptDrops(False)
-        self.fgdc_complete.setOverwriteMode(True)
+        self.fgdc_complete = GrowingTextEdit(self.groupBox)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.fgdc_complete.sizePolicy().hasHeightForWidth())
+        self.fgdc_complete.setSizePolicy(sizePolicy)
+        self.fgdc_complete.setMinimumSize(QtCore.QSize(0, 0))
         self.fgdc_complete.setObjectName("fgdc_complete")
         self.verticalLayout_2.addWidget(self.fgdc_complete)
         self.verticalLayout.addWidget(self.groupBox)
@@ -50,13 +54,4 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "Does the dataset represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the dataset versus what is not.   See help for more info."))
         self.fgdc_complete.setPlainText(_translate("Form", "Dataset is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details."))
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
-
+from growingtextedit import GrowingTextEdit

@@ -41,26 +41,19 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Completeness #
+from pymdwizard.gui.ui_files import UI_complete
 
 
 class Completeness(WizardWidget): #
 
     drag_label = "Completeness <complete>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['complete']
 
     def build_ui(self):
         """
@@ -70,11 +63,9 @@ class Completeness(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_Completeness.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_complete.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
-
-
 
     def dragEnterEvent(self, e):
         """
@@ -99,9 +90,6 @@ class Completeness(WizardWidget): #
         else:
             e.ignore()
 
-
-         
-                
     def _to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag

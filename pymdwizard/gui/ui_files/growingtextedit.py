@@ -15,10 +15,12 @@ class GrowingTextEdit(QPlainTextEdit):
         self.heightMin = 45
         self.heightMax = 300
 
-        self.setMinimumHeight(self.heightMin)
+        self.setFixedHeight(self.heightMin)
 
     def sizeChange(self):
-        char_width = int((self.width())/5.25)
+        width = max(self.width(), 500)
+
+        char_width = int(width/5.25)
         contents = self.toPlainText()
         lines = textwrap.wrap(contents, char_width)
         adj_doc_height = (len(lines) + contents.count('\n')) * 13 + 20

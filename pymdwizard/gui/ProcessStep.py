@@ -74,6 +74,7 @@ class ProcessStep(WizardWidget): #
         """
         self.ui = UI_ProcessStep.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
+        self.ui.fgdc_procdesc.heightMin = 150
         self.setup_dragdrop(self)
 
         self.single_date = FGDCDate(show_format=False, required=True, label='', fgdc_name='fgdc_procdate')

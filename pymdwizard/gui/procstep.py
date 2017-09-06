@@ -41,17 +41,7 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
-
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_procstep
@@ -72,16 +62,14 @@ class ProcStep(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_procstep.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_procstep.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
         self.proc_step = RepeatingElement(which='tab',
                          tab_label='Step', add_text='Additional Step',
                          widget=ProcessStep, remove_text='Remove Step', italic_text='Describe the methods performed to collect or generate the data.\n Provide as much detail as possible.')
-        
 
-        #self.proc_step = RepeatingElement(params=params, which='tab', tab_label='Source',)
         self.proc_step.add_another()
         self.ui.widget_procstep.layout().addWidget(self.proc_step)
                 
