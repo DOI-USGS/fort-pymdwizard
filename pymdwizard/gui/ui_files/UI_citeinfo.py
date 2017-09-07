@@ -577,7 +577,7 @@ class Ui_parent_form(object):
         self.label_5.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
         self.label_46.setText(_translate("parent_form", "Publication Date"))
         self.label_38.setText(_translate("parent_form", "When was the dataset published or finalized?"))
-        self.btn_import_doi.setToolTip(_translate("parent_form", "Import contact information from USGS Active Directory"))
+        self.btn_import_doi.setToolTip(_translate("parent_form", "Import citation from Active (CrossRef) DOI"))
         self.btn_import_doi.setText(_translate("parent_form", "Import \n"
 "from \n"
 "DOI"))

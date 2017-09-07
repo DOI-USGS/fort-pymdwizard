@@ -306,7 +306,7 @@ subcontrol-position: top left; /* position at the top left*/
            </size>
           </property>
           <property name="toolTip">
-           <string>Import contact information from USGS Active Directory</string>
+           <string>Import citation from Active (CrossRef) DOI</string>
           </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox{

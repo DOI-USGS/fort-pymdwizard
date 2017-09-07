@@ -40,16 +40,23 @@ responsibility is assumed by the USGS in connection therewith.
 """
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDialog
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
+from pymdwizard.core import datacite
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_citeinfo
 from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.gui.ui_files import UI_DOICiteinfoImporter
 
+try:
+    import habanero
+    hananero_installed = True
+except ImportError:
+    hananero_installed = False
 
 class Citeinfo(WizardWidget): #
 
@@ -107,6 +114,9 @@ class Citeinfo(WizardWidget): #
 
         self.setup_dragdrop(self)
 
+        if not hananero_installed:
+            self.ui.btn_import_doi.hide()
+
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
@@ -119,7 +129,38 @@ class Citeinfo(WizardWidget): #
         self.ui.radio_seriesyes.toggled.connect(self.include_seriesext_change)
         self.ui.radio_pubinfoyes.toggled.connect(self.include_pubext_change)
 
+        self.ui.btn_import_doi.clicked.connect(self.get_doi_citation)
 
+    def get_doi_citation(self):
+        self.doi_lookup = QDialog(parent=self)
+        self.doi_lookup_ui = UI_DOICiteinfoImporter.Ui_ImportUsgsUser()
+        self.doi_lookup_ui.setupUi(self.doi_lookup)
+        self.doi_lookup_ui.btn_OK.clicked.connect(self.add_doi)
+        self.doi_lookup_ui.btn_cancel.clicked.connect(self.cancel)
+        utils.set_window_icon(self.doi_lookup)
+        self.doi_lookup.show()
+
+    def add_doi(self):
+        doi = self.doi_lookup_ui.le_doi.text()
+        citeinfo = datacite.get_doi_citation(doi)
+        if citeinfo is None:
+
+            msg = QMessageBox(self)
+            utils.set_window_icon(msg)
+            msg.setIcon(QMessageBox.Warning)
+            msg = "'{}' Not Found on DataCite".format(doi)
+            msg += '\nMake sure the DOI is valid and active.'
+            msg.setText(msg)
+            msg.setInformativeText("No matching citation found")
+            msg.setWindowTitle("DOI Not Found")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+
+        self._from_xml(citeinfo.to_xml())
+        self.cancel()
+
+    def cancel(self):
+        self.doi_lookup.deleteLater()
 
     def include_seriesext_change(self, b):
         """

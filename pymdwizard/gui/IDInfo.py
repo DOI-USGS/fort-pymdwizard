@@ -91,6 +91,7 @@ class IdInfo(WizardWidget):
         self.status = Status(parent=self)
         self.timeperd = Timeperd(parent=self)
         self.citation = Citeinfo(parent=self)
+        self.citation.ui.btn_import_doi.hide()
         self.datacredit = Datacred(parent=self)
 
         self.descript = Descript(parent=self)
