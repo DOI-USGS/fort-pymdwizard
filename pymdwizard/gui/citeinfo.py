@@ -38,9 +38,12 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import sys
 from copy import deepcopy
+from lxml import etree
 
 from PyQt5.QtWidgets import QMessageBox, QDialog
+from PyQt5.QtCore import Qt
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -144,23 +147,72 @@ class Citeinfo(WizardWidget): #
         doi = self.doi_lookup_ui.le_doi.text()
         citeinfo = datacite.get_doi_citation(doi)
         if citeinfo is None:
-
-            msg = QMessageBox(self)
-            utils.set_window_icon(msg)
-            msg.setIcon(QMessageBox.Warning)
+            msgbox = QMessageBox(self)
+            utils.set_window_icon(msgbox)
+            msgbox.setIcon(QMessageBox.Warning)
             msg = "'{}' Not Found on DataCite".format(doi)
             msg += '\nMake sure the DOI is valid and active.'
-            msg.setText(msg)
-            msg.setInformativeText("No matching citation found")
-            msg.setWindowTitle("DOI Not Found")
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
-
-        self._from_xml(citeinfo.to_xml())
+            msgbox.setText(msg)
+            msgbox.setInformativeText("No matching citation found")
+            msgbox.setWindowTitle("DOI Not Found")
+            msgbox.setStandardButtons(QMessageBox.Ok)
+            msgbox.exec_()
+        else:
+            self._from_xml(citeinfo.to_xml())
         self.cancel()
 
     def cancel(self):
         self.doi_lookup.deleteLater()
+
+    def dragEnterEvent(self, e):
+        """
+        Only accept Dragged items that can be converted to an xml object with
+        a root tag called in our list of acceptable_tags
+        Parameters
+        ----------
+        e : qt event
+        Returns
+        -------
+        """
+        mime_data = e.mimeData()
+
+        if e.mimeData().hasUrls():
+            if 'doi' in e.mimeData().urls()[0].url().lower():
+                e.accept()
+        elif e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element is not None and element.tag in self.acceptable_tags:
+                e.accept()
+        else:
+            e.ignore()
+
+    def dropEvent(self, e):
+        """
+        Updates the form with the contents of an xml node dropped onto it.
+        Parameters
+        ----------
+        e : qt event
+        Returns
+        -------
+        None
+        """
+        try:
+            e.setDropAction(Qt.CopyAction)
+            e.accept()
+            mime_data = e.mimeData()
+            if mime_data.hasUrls():
+                doi = e.mimeData().urls()[0].url()
+                citeinfo = datacite.get_doi_citation(doi)
+                self._from_xml(citeinfo.to_xml())
+            else:
+                element = xml_utils.string_to_node(mime_data.text())
+
+                self._from_xml(element)
+        except:
+            e = sys.exc_info()[0]
+            print('problem drop', e)
+
 
     def include_seriesext_change(self, b):
         """

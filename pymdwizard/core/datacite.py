@@ -34,7 +34,7 @@ def get_doi_citation(doi):
     doi = clean_doi(doi)
     try:
         cite_data = json.loads(cn.content_negotiation(ids=doi, format = "citeproc-json"))
-    except HTTPError:
+    except:
         return None
 
     citeinfo = XMLNode(tag='citeinfo')

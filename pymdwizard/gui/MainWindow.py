@@ -791,7 +791,7 @@ class PyMdWizardMainForm(QMainWindow):
             e.ignore()
 
     def dragMoveEvent(self, e):
-        if e.mimeData().hasUrls:
+        if e.mimeData().hasUrls() and e.mimeData().urls()[0].isLocalFile():
             e.accept()
         else:
             e.ignore()
@@ -806,7 +806,7 @@ class PyMdWizardMainForm(QMainWindow):
         if e.mimeData().hasUrls:
             e.setDropAction(Qt.CopyAction)
 
-            url = e.mimeData().urls()[0]
+            url = e.mimeData().urls()[0].url()
             fname = url.toLocalFile()
             if os.path.isfile(fname):
                 self.open_file(fname)
