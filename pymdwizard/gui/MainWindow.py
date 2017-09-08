@@ -806,7 +806,7 @@ class PyMdWizardMainForm(QMainWindow):
         if e.mimeData().hasUrls:
             e.setDropAction(Qt.CopyAction)
 
-            url = e.mimeData().urls()[0].url()
+            url = e.mimeData().urls()[0]
             fname = url.toLocalFile()
             if os.path.isfile(fname):
                 self.open_file(fname)
