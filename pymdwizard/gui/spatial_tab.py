@@ -108,24 +108,30 @@ class SpatialTab(WizardWidget):
             self.populate_from_fname(fname[0])
 
     def populate_from_fname(self, fname):
-
+        msg = ''
         try:
             spdom = spatial_utils.get_bounding(fname)
             self.spdom._from_xml(spdom)
         except:
+            msg = "Problem encountered extracting bounding coordinates"
             self.spdom.clear_widget()
 
         try:
             spdoinfo = spatial_utils.get_spdoinfo(fname)
             self.spdoinfo._from_xml(spdoinfo)
         except:
+            msg += "\nProblem encountered extracting spatial data organization"
             self.spdoinfo.clear_widget()
 
         try:
             spref = spatial_utils.get_spref(fname)
             self.spref._from_xml(spref)
         except:
+            msg += "\nProblem encountered extracting spatial reference"
             self.spref.clear_widget()
+
+        if msg:
+            QMessageBox.warning(self, "Problem encountered", msg)
 
     def dragEnterEvent(self, e):
         """
