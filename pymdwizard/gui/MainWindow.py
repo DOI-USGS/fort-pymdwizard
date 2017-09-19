@@ -906,7 +906,11 @@ class PyMdWizardMainForm(QMainWindow):
         jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
-            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname)
+
+            my_env = os.environ.copy()
+            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python35_64")
+
+            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
 
             msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
 
