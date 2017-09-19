@@ -372,6 +372,12 @@ class PyMdWizardMainForm(QMainWindow):
 
         if template_fname is None:
             template_fname = utils.get_resource_path('CSDGM_Template.xml')
+        elif not os.path.exists(template_fname):
+            msg = "The previous template file specified, {}, could not be found.".format(template_fname)
+            msg += "\nCheck that the file has not beed deleted, renamed or moved."
+            msg += "Defaulting to the built in template.".format(template_fname)
+            QMessageBox.warning(self, "Template file missing", msg)
+            template_fname = utils.get_resource_path('CSDGM_Template.xml')
 
         self.load_file_content(template_fname)
         self.cur_fname = ''
