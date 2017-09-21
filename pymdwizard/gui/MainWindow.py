@@ -145,8 +145,10 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionBrowseTemplate.triggered.connect(self.set_template)
         self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
-        self.ui.actionUpdate.triggered.connect(self.update_from_github)
         self.ui.generate_review.triggered.connect(self.generate_review_doc)
+        self.ui.actionLaunch_Help.triggered.connect(self.launch_help)
+        self.ui.actionCheck_for_Updates.triggered.connect(self.update_from_github)
+        self.ui.actionAbout.triggered.connect(self.about)
 
     def open_recent_file(self):
         """
@@ -845,6 +847,22 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.preview_dialog.exec_()
 
+    def launch_help(self):
+        this_fname = os.path.realpath(__file__)
+        gui_dname = os.path.dirname(this_fname)
+        pmdwiz_dname = os.path.dirname(gui_dname)
+        root_dname = os.path.dirname(pmdwiz_dname)
+        help_html = os.path.join(root_dname, 'docs', 'html_output', 'index.html')
+
+        self.preview = Preview(url=help_html)
+        os.path.dirname(this_fname)
+
+        self.preview_dialog = QDialog(self)
+        self.preview_dialog.setWindowTitle('MetadataWizard Help')
+        self.preview_dialog.setLayout(self.preview.layout())
+
+        self.preview_dialog.exec_()
+
     def generate_review_doc(self):
         if self.cur_fname:
             out_fname = self.cur_fname[:-4] + '_REVIEW.docx'
@@ -915,6 +933,21 @@ class PyMdWizardMainForm(QMainWindow):
             msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
 
             QMessageBox.information(self, "Launching Jupyter", msg)
+
+    def about(self):
+
+        msgbox = QMessageBox(self)
+        msgbox.setWindowTitle("About")
+        msgbox.setTextFormat(Qt.RichText)
+
+
+        msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
+        msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
+        msg += 'and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>'
+        msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
+        msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
+        msgbox.setText(msg)
+        msgbox.exec()
 
     def update_from_github(self):
         from subprocess import check_output
