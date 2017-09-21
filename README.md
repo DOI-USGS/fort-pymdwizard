@@ -12,8 +12,9 @@ The  is a useful tool designed to facilitate FGDC
 metadata creation for spatial and non-spatial data sets.  It is a cross-platform desktop application
 built using an open-source Python architecture.  
 
+Complete user documentation available [here](https://usgs.github.io/fort-pymdwizard)
 
-![Alt text](docs/screenshot.png?raw=true "Screen shot")
+![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
 It provides a pleasant and highly efficient environment for metadata creation, 
 editing, preview, and validation.  Built in tools automate and facilitate the creation of high quality 
@@ -23,13 +24,13 @@ metadata records.
 * Auto-population* of challenging sections such as the spatial reference, 
 spatial organization, and entity and attribute based on information contained in
 the data being documented (CSV, Excel, Shapefiles, etc.)
- ![Alt text](docs/EA_screenshot.png?raw=true "Screen shot") 
+ ![Alt text](docs/img/EA_screenshot.png?raw=true "Screen shot") 
 
 * Automate population of contact information for USGS affiliates, 
 Taxonomic information from itis, or keywords from USGS controlled vocabularies
- ![Alt text](docs/keywords_screenshot.png?raw=true "Screen shot") 
+ ![Alt text](docs/img/keywords_screenshot.png?raw=true "Screen shot") 
 * Built in FGDC validator which highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
- ![Alt text](docs/error_screenshot.png?raw=true "Screen shot") 
+ ![Alt text](docs/img/error_screenshot.png?raw=true "Screen shot") 
 * Copy/Paste or Drag-and-Drop of entire sections, subsections, or individual content
 between different records or other tools including XML-Notepad and text editors.
 * Built in help documentation which guides users through common and detailed questions about metadata.
