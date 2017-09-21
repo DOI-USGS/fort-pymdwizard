@@ -1,0 +1,486 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing from Source &mdash; MetadataWizard  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="MetadataWizard  documentation" href="index.html"/>
+        <link rel="next" title="Installing ArcMap Toolbox" href="Installing ArcMap Toolbox.html"/>
+        <link rel="prev" title="Windows Installation" href="Windows Installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MetadataWizard
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MetadataWizard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installing from Source</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Installing from Source.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-from-source">
+<h1>Installing from Source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h1>
+<p>Currently the only option for installation on Mac or Linux systems is to install the application from source.
+|
+Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someonewith minimal experience to follow.</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>Install Anaconda or Miniconda</dt>
+<dd>(<a class="reference external" href="https://www.continuum.io/downloads">https://www.continuum.io/downloads</a> or
+<a class="reference external" href="https://conda.io/miniconda.html">https://conda.io/miniconda.html</a>). While the code is 2-3 compatible
+I would recommend installing the Python 3 version (64x), as 2.7 is
+being phased out.
+:name: install-anaconda-or-miniconda-httpswww.continuum.iodownloads-or-httpsconda.iominiconda.html.-while-the-code-is-2-3-compatible-i-would-recommend-installing-the-python-3-version-64x-as-2.7-is-being-phased-out.</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><dl class="first docutils">
+<dt>Open the Anaconda command window</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">open-the-anaconda-command-window</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><dl class="first docutils">
+<dt>Add the conda-forge channel:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">add-the-conda-forge-channel</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--add</span> <span class="pre">channels</span> <span class="pre">conda-forge</span></code></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><dl class="first docutils">
+<dt>Install the optional conda developer tools</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-the-optional-conda-developer-tools</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">conda-build</span></code></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><dl class="first docutils">
+<dt>Create a pymdwizard environment:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">create-a-pymdwizard-environment</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>conda create –name pymdwizard python=3.5 pyqt=5.6.0</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><dl class="first docutils">
+<dt>Activate this environment:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">activate-this-environment</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line">| <em>(on Windows)</em>
+| <code class="docutils literal"><span class="pre">activate</span> <span class="pre">pymdwizard</span></code>
+| <em>(on Linux, Mac)</em>
+| <code class="docutils literal"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">pymdwizard</span></code></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><dl class="first docutils">
+<dt>Install git:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-git</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>conda install git</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><dl class="first docutils">
+<dt>CD to the directory you want to install the actual wizard</dt>
+<dd>in:
+:name: cd-to-the-directory-you-want-to-install-the-actual-wizard-in</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>cd c:\projects</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><dl class="first docutils">
+<dt>clone our pymdwizard project:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">clone-our-pymdwizard-project</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line">_git clone <a class="reference external" href="https://github.com/talbertc-usgs/">https://github.com/talbertc-usgs/</a><a href="#id1"><span class="problematic" id="id2">fort-pymdwizard.git_</span></a></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="10">
+<li><dl class="first docutils">
+<dt>CD into our project folder:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">cd-into-our-project-folder</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>cd fort-pymdwizard</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="11">
+<li><dl class="first docutils">
+<dt>Install the rest of our requirements:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-the-rest-of-our-requirements</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>conda install –yes –file requirements.txt</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="12">
+<li><dl class="first docutils">
+<dt>Add our git folder to the pythonpath:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">add-our-git-folder-to-the-pythonpath</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>conda develop C:\projects\fort-pymdwizard</em></div>
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="13">
+<li><dl class="first docutils">
+<dt>Launch the Wizard:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">launch-the-wizard</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><em>python pymdwizard\gui\MainWindow.py</em></div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="Installing ArcMap Toolbox" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Windows Installation.html" class="btn btn-neutral" title="Windows Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright None.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing ArcMap Toolbox &mdash; MetadataWizard  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="MetadataWizard  documentation" href="index.html"/>
+        <link rel="next" title="Reporting Bugs and Enhancement Ideas" href="Reporting Bugs and Enhancement Ideas.html"/>
+        <link rel="prev" title="Installing from Source" href="Installing from Source.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MetadataWizard
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing ArcMap Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MetadataWizard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installing ArcMap Toolbox</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Installing ArcMap Toolbox.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-arcmap-toolbox">
+<h1>Installing ArcMap Toolbox<a class="headerlink" href="#installing-arcmap-toolbox" title="Permalink to this headline">¶</a></h1>
+<p>Users who want to access the Metadata Wizard from ESRI in the same
+manner as the previous generation of the tool will need to manually add
+the Metadata Wizard toolbox to their ArcToolbox. When using the tool
+from ESRI some additional geospatial data types are supported for the
+auto-generation of spatial and entity and attribute info. Also the
+access to existing metadata tied to a geospatial dataset and the saving
+back out of the edited metadata is facilitated.</p>
+<p>The Windows installer provides all of the necessary components as part
+of the install package. Follow the steps below to add the toolbox to
+ArcToolbox</p>
+<ol class="arabic simple">
+<li>Find the Metadata Wizard installation directory. If you installed
+into the default location this will be either C:\Users\<strong>*your
+user name here*</strong>\AppData\Local\Programs\MetadataWizard or
+‘C:\Program Files\Metadata Wizard’ if you installed with elevated
+priveledges. Note that the ‘AppData’ directory in this path is hidden
+by default, you will either need to manually type it into the folder
+path window in Windows Explorer or change your settings to display
+these hidden directories, see:
+<a class="reference external" href="https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files">https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files</a></li>
+</ol>
+<p><img alt="image0" src="_images/DefaultInstallLocation.png" /></p>
+<ol class="arabic simple" start="2">
+<li>Start ArcMap or ArcCatalog and open the ArcToolbox pane. By
+right-clicking in the white space of the ArcToolbox pane and clicking
+‘Add Toolbox’, users are prompted to navigate to the folder
+containing the toolbox. This will be in
+‘..\MetadataWizard\pymdwizard\ArcToolbox’ under the folder
+identified above.</li>
+</ol>
+<p><img alt="image1" src="_images/AddToolbox.png" /></p>
+<p>3. Once the toolbox is installed, you will be able to access the tool using the previous
+ESRI interface:</p>
+<p><img alt="image2" src="_images/ArcToolbox.png" /></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Reporting Bugs and Enhancement Ideas.html" class="btn btn-neutral float-right" title="Reporting Bugs and Enhancement Ideas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Installing from Source.html" class="btn btn-neutral" title="Installing from Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright None.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
