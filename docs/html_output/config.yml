@@ -1,0 +1,1 @@
+keep_files:  ['.doctrees','_images', '_sources', '_static', 'objects.inv', 'searchindex.js', '.buidino']
