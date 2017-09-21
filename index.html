@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MetadataWizard User Guide &mdash; MetadataWizard  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="MetadataWizard  documentation" href="#"/>
+        <link rel="next" title="Windows Installation" href="Windows Installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> MetadataWizard
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MetadataWizard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>MetadataWizard User Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <a class="reference internal image-reference" href="_images/TitleBanner.png"><img alt="_images/TitleBanner.png" class="align-left" src="_images/TitleBanner.png" style="width: 600pt;" /></a>
+<div class="section" id="metadatawizard-user-guide">
+<h1>MetadataWizard User Guide<a class="headerlink" href="#metadatawizard-user-guide" title="Permalink to this headline">¶</a></h1>
+<p>The Metadata Wizard 2.0 is a user-friendly tool for creating, editing, and validating CSDGM/FGDC metadata. It is based on design principles of auto-capturing content from the data set being documented, pre-populating a record with reasonable defaults, and lowering the expertise level needed to make a high quality metadata record. The Metadata Wizard 2.0 provides an efficient and pleasant metadata experience for a wide range of users from scientists and data managers. It is being built and maintained by the data management team of the USGS Fort Collins Science Center with input from others in the USGS.</p>
+<p>It was engineered as an open-source evolution of the original <a class="reference external" href="https://www.sciencebase.gov/catalog/item/50ed7aa4e4b0438b00db080a">MetadataWizard</a> to allow for use outside of the ESRI ecosystem.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Windows Installation.html" class="btn btn-neutral float-right" title="Windows Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright None.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
