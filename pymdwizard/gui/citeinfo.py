@@ -145,20 +145,26 @@ class Citeinfo(WizardWidget): #
 
     def add_doi(self):
         doi = self.doi_lookup_ui.le_doi.text()
-        citeinfo = datacite.get_doi_citation(doi)
-        if citeinfo is None:
-            msgbox = QMessageBox(self)
-            utils.set_window_icon(msgbox)
-            msgbox.setIcon(QMessageBox.Warning)
-            msg = "'{}' Not Found on DataCite".format(doi)
-            msg += '\nMake sure the DOI is valid and active.'
-            msgbox.setText(msg)
-            msgbox.setInformativeText("No matching citation found")
-            msgbox.setWindowTitle("DOI Not Found")
-            msgbox.setStandardButtons(QMessageBox.Ok)
-            msgbox.exec_()
-        else:
-            self._from_xml(citeinfo.to_xml())
+        try:
+            citeinfo = datacite.get_doi_citation(doi)
+
+            if citeinfo is None:
+                msgbox = QMessageBox(self)
+                utils.set_window_icon(msgbox)
+                msgbox.setIcon(QMessageBox.Warning)
+                msg = "'{}' Not Found on DataCite".format(doi)
+                msg += '\nMake sure the DOI is valid and active.'
+                msgbox.setText(msg)
+                msgbox.setInformativeText("No matching citation found")
+                msgbox.setWindowTitle("DOI Not Found")
+                msgbox.setStandardButtons(QMessageBox.Ok)
+                msgbox.exec_()
+            else:
+                self._from_xml(citeinfo.to_xml())
+        except:
+            msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
+            msg += "Check the DOI and/or manually create the citation for it"
+            QMessageBox.warning(self, "Problem DOI", msg)
         self.cancel()
 
     def cancel(self):
@@ -203,8 +209,13 @@ class Citeinfo(WizardWidget): #
             mime_data = e.mimeData()
             if mime_data.hasUrls():
                 doi = e.mimeData().urls()[0].url()
-                citeinfo = datacite.get_doi_citation(doi)
-                self._from_xml(citeinfo.to_xml())
+                try:
+                    citeinfo = datacite.get_doi_citation(doi)
+                    self._from_xml(citeinfo.to_xml())
+                except:
+                    msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
+                    msg += "Check the DOI and/or manually create the citation for it"
+                    QMessageBox.warning(self, "Problem DOI", msg)
             else:
                 element = xml_utils.string_to_node(mime_data.text())
 

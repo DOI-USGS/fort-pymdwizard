@@ -38,7 +38,10 @@ def get_doi_citation(doi):
     try:
         cite_data = json.loads(cn.content_negotiation(ids=doi, format = "citeproc-json"))
         cite_data['geoform'] = 'publication'
-        cite_data['pubplace'] = 'n/a'
+        if 'publisher-location' in cite_data:
+            cite_data['pubplace'] = cite_data['publisher-location']
+        else:
+            cite_data['pubplace'] = 'n/a'
     except:
         try:
             endpoint = 'https://api.datacite.org/works'
