@@ -172,242 +172,148 @@
 <p>Currently the only option for installation on Mac or Linux systems is to install the application from source.
 |
 Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someonewith minimal experience to follow.</p>
-<ol class="arabic simple">
-<li><dl class="first docutils">
-<dt>Install Anaconda or Miniconda</dt>
-<dd>(<a class="reference external" href="https://www.continuum.io/downloads">https://www.continuum.io/downloads</a> or
-<a class="reference external" href="https://conda.io/miniconda.html">https://conda.io/miniconda.html</a>). While the code is 2-3 compatible
-I would recommend installing the Python 3 version (64x), as 2.7 is
-being phased out.
-:name: install-anaconda-or-miniconda-httpswww.continuum.iodownloads-or-httpsconda.iominiconda.html.-while-the-code-is-2-3-compatible-i-would-recommend-installing-the-python-3-version-64x-as-2.7-is-being-phased-out.</dd>
-</dl>
-</li>
-</ol>
+<p>1. Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
+<blockquote>
+<div><em>While the code for the MetadataWizard is 2-3 compatible, I would recommend installing the Python 3 version (64x), as 2.7 is being phased out.</em></div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><dl class="first docutils">
-<dt>Open the Anaconda command window</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">open-the-anaconda-command-window</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<li>Open the Anaconda command window.</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic" start="3">
+<li><p class="first">Add the conda-forge channel:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Install the optional conda developer tools</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build<span class="sb">``</span>
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><dl class="first docutils">
-<dt>Add the conda-forge channel:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">add-the-conda-forge-channel</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="5">
+<li><p class="first">Create a pymdwizard environment:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create –name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 </ol>
 <div class="line-block">
-<div class="line"><code class="docutils literal"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--add</span> <span class="pre">channels</span> <span class="pre">conda-forge</span></code></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><dl class="first docutils">
-<dt>Install the optional conda developer tools</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-the-optional-conda-developer-tools</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</li>
-</ol>
+<p>6. Activate this environment:
+|</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><em>(on Windows)</em></div>
+</div>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> activate pymdwizard
+</pre></div>
+</div>
+</div></blockquote>
 <div class="line-block">
-<div class="line"><code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">conda-build</span></code></div>
+<div class="line"><em>(on Linux, Mac)</em></div>
+</div>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> activate pymdwizard
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="5">
-<li><dl class="first docutils">
-<dt>Create a pymdwizard environment:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">create-a-pymdwizard-environment</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="7">
+<li><p class="first">Install git:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 </ol>
 <div class="line-block">
-<div class="line"><em>conda create –name pymdwizard python=3.5 pyqt=5.6.0</em></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="6">
-<li><dl class="first docutils">
-<dt>Activate this environment:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">activate-this-environment</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="8">
+<li><p class="first">CD to the directory you want to install the actual wizard in:</p>
+<blockquote>
+<div><blockquote>
+<div><p><em>Your directory below could be different depending on operating system or organization</em></p>
+</div></blockquote>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 </ol>
 <div class="line-block">
-<div class="line">| <em>(on Windows)</em>
-| <code class="docutils literal"><span class="pre">activate</span> <span class="pre">pymdwizard</span></code>
-| <em>(on Linux, Mac)</em>
-| <code class="docutils literal"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">pymdwizard</span></code></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="7">
-<li><dl class="first docutils">
-<dt>Install git:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-git</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="9">
+<li><p class="first">clone our pymdwizard project:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 </ol>
 <div class="line-block">
-<div class="line"><em>conda install git</em></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="8">
-<li><dl class="first docutils">
-<dt>CD to the directory you want to install the actual wizard</dt>
-<dd>in:
-:name: cd-to-the-directory-you-want-to-install-the-actual-wizard-in</dd>
-</dl>
+<ol class="arabic" start="10">
+<li><p class="first">CD into our project folder:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
+</pre></div>
+</div>
 </li>
 </ol>
 <div class="line-block">
-<div class="line"><em>cd c:\projects</em></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="9">
-<li><dl class="first docutils">
-<dt>clone our pymdwizard project:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">clone-our-pymdwizard-project</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="11">
+<li><p class="first">Install the rest of our requirements:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install –yes –file requirements.txt
+</pre></div>
+</div>
 </li>
 </ol>
 <div class="line-block">
-<div class="line">_git clone <a class="reference external" href="https://github.com/talbertc-usgs/">https://github.com/talbertc-usgs/</a><a href="#id1"><span class="problematic" id="id2">fort-pymdwizard.git_</span></a></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="10">
-<li><dl class="first docutils">
-<dt>CD into our project folder:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">cd-into-our-project-folder</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="12">
+<li><p class="first">Add our git folder to the pythonpath:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
+</pre></div>
+</div>
 </li>
 </ol>
 <div class="line-block">
-<div class="line"><em>cd fort-pymdwizard</em></div>
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="11">
-<li><dl class="first docutils">
-<dt>Install the rest of our requirements:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">install-the-rest-of-our-requirements</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
+<ol class="arabic" start="13">
+<li><p class="first">Launch the Wizard:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
+</pre></div>
+</div>
 </li>
 </ol>
-<div class="line-block">
-<div class="line"><em>conda install –yes –file requirements.txt</em></div>
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="12">
-<li><dl class="first docutils">
-<dt>Add our git folder to the pythonpath:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">add-our-git-folder-to-the-pythonpath</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</li>
-</ol>
-<div class="line-block">
-<div class="line"><em>conda develop C:\projects\fort-pymdwizard</em></div>
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="13">
-<li><dl class="first docutils">
-<dt>Launch the Wizard:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name:</th><td class="field-body">launch-the-wizard</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</li>
-</ol>
-<div class="line-block">
-<div class="line"><em>python pymdwizard\gui\MainWindow.py</em></div>
-</div>
 </div>
 
 
