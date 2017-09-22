@@ -64,6 +64,7 @@ from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
 from pymdwizard.core import xml_utils, utils, fgdc_utils, review_utils
 from pymdwizard.gui.Preview import Preview
+from pymdwizard.gui.error_list import ErrorList
 
 import sip
 
@@ -112,8 +113,6 @@ class PyMdWizardMainForm(QMainWindow):
             self.ui.menuRecent_Files.addAction(self.recent_file_actions[i])
         self.update_recent_file_actions()
 
-        self.ui.menuErrors.clear()
-
         settings = QSettings('USGS', 'pymdwizard')
         template_fname = settings.value('template_fname')
 
@@ -125,6 +124,13 @@ class PyMdWizardMainForm(QMainWindow):
             self.ui.generate_review.setEnabled(False)
 
         self.setAcceptDrops(True)
+
+        self.error_list = ErrorList(main_form=self)
+        self.error_list_dialog = QDialog(self)
+        self.error_list_dialog.setWindowTitle('FGDC Validation Errors')
+        self.error_list_dialog.setLayout(self.error_list.layout())
+        self.error_list_dialog.resize(600, 400)
+
 
     def connect_events(self):
         """
@@ -514,8 +520,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        self.ui.menuErrors.clear()
-
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         for widget in self.error_widgets:
@@ -532,6 +536,8 @@ class PyMdWizardMainForm(QMainWindow):
                     widget.setToolTip('')
 
         self.error_widgets = []
+        self.error_list.clear_errors()
+        self.error_list_dialog.hide()
 
     def validate(self):
         """
@@ -543,6 +549,8 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
+
+        self.error_list_dialog.show()
         if self.metadata_root.schema == 'bdp':
             xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
         else:
@@ -585,12 +593,7 @@ class PyMdWizardMainForm(QMainWindow):
             try:
                 xpath, error_msg, line_num = error
                 if xpath not in marked_errors:
-
-                    action = QAction(self, visible=True)
-                    action.setText(error_msg)
-                    action.setData(xpath)
-                    action.triggered.connect(self.goto_error)
-                    self.ui.menuErrors.addAction(action)
+                    self.error_list.add_error(error_msg, xpath)
                     marked_errors.append(xpath)
 
                     # widget = self.metadata_root.get_widget(xpath)
@@ -614,10 +617,11 @@ class PyMdWizardMainForm(QMainWindow):
             msg = "There are {} errors in this record".format(error_count)
             self.statusBar().showMessage(msg, 20000)
             msg += "\n\n These errors are highlighted in red in the form below."
-            msg += "\n\n These errors are also listed in the Validation Menu's Errors submenu item above."
+            msg += "\n\n These errors are also listed in the Validation Errors Form that just popped up."
             msg += "\n Clicking each error will take you to the section it is contained in."
             msg += "\n Note that some highlighed errors can be in collapsed items, scrolled out of view, or in non-selected tabs"
             QMessageBox.warning(self, "Validation", msg)
+            self.error_list_dialog.show()
         else:
             msg = "Congratulations there were No FGDC Errors!"
             self.statusBar().showMessage(msg, 20000)
@@ -637,7 +641,7 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-        xpath = self.sender().data()
+        xpath = sender.data(1)
         section = xpath.split('/')[1]
 
         if section == 'idinfo':
@@ -666,7 +670,7 @@ class PyMdWizardMainForm(QMainWindow):
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
         self.last_highlight = bad_widget[0].widget
-        self.highlight_error(bad_widget[0].widget, self.sender().text(), superhot=True)
+        self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
 
     def highlight_error(self, widget, error_msg, superhot=False):
         """

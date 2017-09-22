@@ -90,16 +90,8 @@
     <property name="title">
      <string>Validation</string>
     </property>
-    <widget class="QMenu" name="menuErrors">
-     <property name="title">
-      <string>Errors:</string>
-     </property>
-     <addaction name="actionErrorsListMenu"/>
-    </widget>
     <addaction name="actionRun_Validation"/>
     <addaction name="actionClear_validation"/>
-    <addaction name="separator"/>
-    <addaction name="menuErrors"/>
    </widget>
    <widget class="QMenu" name="menuPreview">
     <property name="title">
