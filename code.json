@@ -1,0 +1,35 @@
+{
+  "name": "Metadata Wizard",
+  "organization": "U.S. Geological Survey",
+  "description": "Tool for editing and validating FGDC metadata records",
+  "status": "Release Candidate",
+  "homepage": "https://usgs.github.io/fort-pymdwizard/",
+  "downloadURL": "https://github.com/usgs/best-practices/archive/master.zip",
+
+  "openSourceProject": 1,
+  "license": "https://github.com/usgs/fort-pymdwizard/blob/master/LICENSE.md",
+  "vcs": "git",
+  "repository": "https://github.com/usgs/fort-pymdwizard",
+
+  "tags": [
+    "metadata",
+    "FGDC",
+    "xml",
+    "BDP"
+  ],
+  "languages": [
+    "Python",
+    "JavaScript",
+    "XML",
+    "RST",
+    "HTML"
+  ],
+
+  "contact": {
+    "name": "Colin Talbert",
+    "email": "talbertc@usgs.gov"
+  },
+  "updated": {
+    "metadataLastUpdated": "2017-09-22"
+  }
+}
