@@ -10,6 +10,8 @@ from pymdwizard.core import xml_utils
 from pymdwizard.core import utils
 
 
+from collections import OrderedDict
+
 def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
     """
 
@@ -67,7 +69,7 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
             errors.append(('Unknown', clean_error_message(error.message),
                            error.line))
 
-    errors = list(set(errors))
+    errors = list(OrderedDict.fromkeys(errors))
 
     if as_dataframe:
         cols = ['xpath', 'message', 'line number']
