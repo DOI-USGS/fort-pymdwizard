@@ -317,10 +317,10 @@ class Citeinfo(WizardWidget): #
             publish = xml_utils.xml_node('publish', parent_node=pubinfo,
                                          text=self.ui.fgdc_publish.text())
 
-        if self.original_xml is not None:
-            othercit = xml_utils.search_xpath(self.original_xml, 'citeinfo/othercit')
-            if othercit is not None:
-                citeinfo.append(deepcopy(othercit))
+        if self.ui.fgdc_othercit.toPlainText():
+            othercit = xml_utils.xml_node("othercit",
+                                         self.ui.fgdc_othercit.toPlainText(),
+                                         parent_node=citeinfo)
 
         for onlink in self.onlink_list.get_widgets():
             if onlink.added_line.text() != '':
@@ -371,6 +371,8 @@ class Citeinfo(WizardWidget): #
             utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
             utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
+
+            utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'othercit')
 
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
