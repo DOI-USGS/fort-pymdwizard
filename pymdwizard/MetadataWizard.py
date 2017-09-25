@@ -14,6 +14,12 @@ def set_clean_path():
         root_dir = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
         python_dname = os.path.join(root_dir, 'Python35_64')
         os.environ['path'] = ";".join([python_dname, os.path.join(python_dname, 'Library', 'bin')])
+
+        from pymdwizard.core.utils import check_pem_file
+        pem_fname = check_pem_file()
+        os.environ['PIP_CERT'] = pem_fname
+        os.environ['SSL_CERT_FILE'] = pem_fname
+        os.environ['GIT_SSL_CAINFO'] = pem_fname
     else:
         pass
 

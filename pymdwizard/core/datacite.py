@@ -45,7 +45,7 @@ def get_doi_citation(doi):
     except:
         try:
             endpoint = 'https://api.datacite.org/works'
-            response = requests.get(endpoint + '/' + doi, verify=False)
+            response = requests.get(endpoint + '/' + doi)
             cite_data = json.loads(response.text)['data']['attributes']
             cite_data['publisher'] = cite_data['container-title']
             cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
