@@ -179,6 +179,14 @@ def changeXMLNodeText(XMLfile, path, text, addifmissing=True):#Updates the text 
 
     if etree.find(path)!= None:
         targetNode = etree.find(path)
+
+        try:
+            # remove all attributes
+            for attribute in targetNode.attrib:
+                del targetNode.attrib[attribute]
+        except:
+            pass
+
         targetNode.text = text
 
     elif addifmissing:
