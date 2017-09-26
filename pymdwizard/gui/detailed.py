@@ -151,6 +151,24 @@ class Detailed(WizardWidget):  #
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
 
+            fid_attr = self.attributes.get_attr('FID')
+            if fid_attr is not None:
+                fid_attr.populate_domain_content(3)
+                fid_attr.ui.fgdc_attrdef.setPlainText('Internal feature number.')
+                utils.set_text(fid_attr.ui.fgdc_attrdefs, 'ESRI')
+                fid_attr.domain.ui.fgdc_udom.setPlainText("Sequential unique whole numbers that are automatically generated.")
+                fid_attr.regularsize_me()
+                fid_attr.supersize_me()
+            shape_attr = self.attributes.get_attr('Shape')
+            if shape_attr is not None:
+                shape_attr.populate_domain_content(3)
+                shape_attr.ui.fgdc_attrdef.setPlainText('Feature geometry.')
+                utils.set_text(shape_attr.ui.fgdc_attrdefs, 'ESRI')
+                shape_attr.domain.ui.fgdc_udom.setPlainText("Coordinates defining the features.")
+                shape_attr.store_current_content()
+                shape_attr.supersize_me()
+                shape_attr.regularsize_me()
+
         elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
             if sheet_name is None:
                 sheets = data_io.get_sheet_names(fname)

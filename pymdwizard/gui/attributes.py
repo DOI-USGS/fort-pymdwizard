@@ -101,11 +101,15 @@ class Attributes(WizardWidget):  #
                 attr_i.set_series(s)
                 attr_i.ui.comboBox.setCurrentIndex(1)
             else:
-                attr_i.ui.comboBox.setCurrentIndex(1)
+                attr_i.populate_domain_content(3)
                 unrep = contents[col_label][b'contents']
 
                 utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
+                utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
                 utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
+                attr_i.store_current_content()
+                attr_i.supersize_me()
+                attr_i.regularsize_me()
             self.append_attr(attr_i)
 
         try:

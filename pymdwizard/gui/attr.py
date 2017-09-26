@@ -116,7 +116,6 @@ class Attr(WizardWidget):  #
         return QComboBox.mousePressEvent(self.ui.comboBox, event)
 
     def clear_domain(self):
-        print('clear_domain')
         for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
@@ -125,7 +124,6 @@ class Attr(WizardWidget):  #
         self.series = series
 
     def guess_domain(self):
-        print('guess_domain')
         # given a series of data take a guess as to which
         # domain type is appropriate
         if self.series is not None:
@@ -141,7 +139,6 @@ class Attr(WizardWidget):  #
         return 3
 
     def store_current_content(self):
-        print('store_current_content')
         # take a snapshot of the current contents
         if self.domain is not None and not sip.isdeleted(self.domain):
             cur_xml = self.domain._to_xml()
@@ -155,7 +152,6 @@ class Attr(WizardWidget):  #
                 self._domain_content[0] = cur_xml
 
     def populate_domain_content(self, which='guess'):
-        print('populate_domain_content')
         self.clear_domain()
 
         if which == 'guess':
@@ -243,37 +239,6 @@ class Attr(WizardWidget):  #
             if self.parent_ui is not None:
                 self.parent_ui.minimize_children()
             self.supersize_me()
-
-    # def eventFilter(self, obj, event):
-    #     """
-    #
-    #     Parameters
-    #     ----------
-    #     obj
-    #     event
-    #
-    #     Returns
-    #     -------
-    #
-    #     """
-    #     # you could be doing different groups of actions
-    #     # for different types of widgets and either filtering
-    #     # the event or not.
-    #     # Here we just check if its one of the layout widget
-    #     self.ef += 1
-    #     print("ef:{}".format(self.ef))
-    #     if event.type() == event.MouseButtonPress or \
-    #             event.type() == 207:
-    #
-    #         if self.active:
-    #             #we're already big so do nothing
-    #             pass
-    #         else:
-    #             if self.parent_ui is not None:
-    #                 self.parent_ui.minimize_children()
-    #             self.supersize_me()
-    #
-    #     return super(Attr, self).eventFilter(obj, event)
 
     def contextMenuEvent(self, event):
 
