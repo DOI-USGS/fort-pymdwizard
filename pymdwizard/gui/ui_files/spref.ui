@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>fgdc_spref</class>
+ <widget class="QWidget" name="fgdc_spref">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
-    <widget class="QGroupBox" name="horizontal_group_box">
+    <widget class="QGroupBox" name="fgdc_horizsys">
      <property name="title">
       <string/>
      </property>
@@ -107,7 +107,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <widget class="QFrame" name="fgdc_horizsys">
+          <widget class="QFrame" name="frame">
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
            </property>
@@ -161,7 +161,7 @@
               <item>
                <widget class="QStackedWidget" name="stack_definition">
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="fgdc_geograph">
                  <layout class="QFormLayout" name="formLayout">
@@ -345,7 +345,7 @@
                   <item>
                    <widget class="QStackedWidget" name="stack_planar">
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>1</number>
                     </property>
                     <widget class="QWidget" name="fgdc_mapproj">
                      <layout class="QVBoxLayout" name="verticalLayout_7">

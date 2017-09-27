@@ -64,7 +64,7 @@ from pymdwizard.gui.ui_files import UI_spdom
 class Spdom(WizardWidget):
     drag_label = "Spatial Domain <spdom>"
     acceptable_tags = ['spdom', 'bounding']
-    ui_class = UI_spdom.Ui_Form
+    ui_class = UI_spdom.Ui_fgdc_spdom
 
     def __init__(self, root_widget=None):
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>fgdc_spdom</class>
+ <widget class="QWidget" name="fgdc_spdom">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -179,7 +179,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_2">
+           <widget class="QGroupBox" name="fgdc_bounding">
             <property name="title">
              <string>Bounding Coordinates</string>
             </property>

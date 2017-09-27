@@ -58,7 +58,7 @@ class SpRef(WizardWidget):
     drag_label = "Spatial Refernce <spref>"
     acceptable_tags = ['abstract']
 
-    ui_class = UI_spref.Ui_Form
+    ui_class = UI_spref.Ui_fgdc_spref
 
     def build_ui(self):
         """
