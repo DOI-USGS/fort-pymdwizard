@@ -186,12 +186,18 @@ class Citeinfo(WizardWidget): #
             if 'doi' in e.mimeData().urls()[0].url().lower():
                 e.accept()
         elif e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag in self.acceptable_tags:
+            if self.is_doi_str(mime_data.text()):
                 e.accept()
+            else:
+                parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+                element = etree.fromstring(mime_data.text(), parser=parser)
+                if element is not None and element.tag in self.acceptable_tags:
+                    e.accept()
         else:
             e.ignore()
+
+    def is_doi_str(self, string):
+        return datacite.clean_doi(string).lower().strip().startswith('doi:')
 
     def dropEvent(self, e):
         """
@@ -207,8 +213,12 @@ class Citeinfo(WizardWidget): #
             e.setDropAction(Qt.CopyAction)
             e.accept()
             mime_data = e.mimeData()
-            if mime_data.hasUrls():
-                doi = e.mimeData().urls()[0].url()
+            if mime_data.hasUrls() or \
+                    self.is_doi_str(mime_data.text()):
+                if self.is_doi_str(mime_data.text()):
+                    doi = mime_data.text()
+                else:
+                    doi = e.mimeData().urls()[0].url()
                 try:
                     citeinfo = datacite.get_doi_citation(doi)
                     self._from_xml(citeinfo.to_xml())
@@ -348,6 +358,7 @@ class Citeinfo(WizardWidget): #
         None
         """
         self.original_xml = citeinfo
+        self.clear_widget()
         try:
             if citeinfo.tag == "citation":
                 citeinfo = citeinfo.xpath('citeinfo')[0]
