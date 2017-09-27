@@ -20,6 +20,7 @@ except ImportError:
 
 # internal package imports
 from pymdwizard.core import xml_utils
+from pymdwizard.core import utils
 
 ITIS_BASE_URL = 'http://www.itis.gov/ITISWebService/services/ITISService/'
 NS21 = {'ax21': 'http://data.itis_service.itis.usgs.gov/xsd'}
@@ -237,7 +238,7 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
 
 
 def _get_xml(url, payload, **kwargs):
-    out = requests.get(url, params=payload)
+    out = utils.requests_pem_get(url, params=payload)
     out.raise_for_status()
     xmlparser = etree.XMLParser()
     tt = etree.fromstring(out.content, xmlparser)

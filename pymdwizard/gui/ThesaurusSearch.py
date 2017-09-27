@@ -38,7 +38,7 @@ class ThesaurusSearch(QDialog):
         self.populate_thesauri_lookup()
 
         iso_url = "https://www2.usgs.gov/science/term.php?thcode=15&text=ISO 19115 Topic Category"
-        results = requests.get(iso_url).json()
+        results = utils.requests_pem_get(iso_url).json()
 
         thesaurus_name = "ISO 19115 Topic Category"
         branch = QStandardItem(thesaurus_name)
@@ -94,7 +94,7 @@ class ThesaurusSearch(QDialog):
 
             THESAURUS_DETAILS_URL = "https://www2.usgs.gov/science/thesaurus.php?format=json&thcode={}"
             thesaurus_details_url = THESAURUS_DETAILS_URL.format(thcode)
-            details = requests.get(thesaurus_details_url).json()
+            details = utils.requests_pem_get(thesaurus_details_url).json()
 
             details_msg = ''
             details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(thname)
@@ -106,7 +106,7 @@ class ThesaurusSearch(QDialog):
         else:
             thcode = self.thesauri_lookup_r[parent.text()]
             details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(thcode, clicked_item.text())
-            details = requests.get(details_url).json()
+            details = utils.requests_pem_get(details_url).json()
             if type(details) == dict:
                 details = [details]
 
@@ -173,7 +173,7 @@ class ThesaurusSearch(QDialog):
 
     def get_result(self, url):
         try:
-            return requests.get(url).json()
+            return utils.requests_pem_get(url).json()
         except requests.exceptions.ConnectionError:
             msg = "We're having trouble connecting to the controlled vocabularies service"
             msg += "\n Check that you have an internet connect, or try again latter"

@@ -17,9 +17,6 @@ def set_clean_path():
 
         from pymdwizard.core.utils import check_pem_file
         pem_fname = check_pem_file()
-        os.environ['PIP_CERT'] = pem_fname
-        os.environ['SSL_CERT_FILE'] = pem_fname
-        os.environ['GIT_SSL_CAINFO'] = pem_fname
     else:
         pass
 

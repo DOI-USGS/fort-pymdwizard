@@ -76,7 +76,7 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
         FGDC Contact Section as dictionary or lxml element
     """
 
-    result = requests.get(USGS_AD_URL.format(ad_username))
+    result = requests_pem_get(USGS_AD_URL.format(ad_username))
     parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
     element = etree.fromstring(result.content, parser=parser)
 
@@ -395,18 +395,34 @@ def get_install_dname(which='pymdwizard'):
         return python_dname
 
 
+def get_pem_fname():
+    return os.path.join(get_install_dname('pymdwizard'), 'pymdwizard', 'resources', 'DOIRootCA2.pem')
+
 def check_pem_file():
-    import wincertstore
+    try:
+        import wincertstore
+        pem_fname = get_pem_fname()
+        if not os.path.exists(pem_fname):
+            for storename in ("CA", "ROOT"):
+                with wincertstore.CertSystemStore(storename) as store:
+                    for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
+                        #             print(cert.get_pem())
+                        if 'DOIRootCA2' in cert.get_name():
+                            text_file = open(pem_fname, "w", encoding='ascii')
+                            text_file.write(cert.get_pem().encode().decode("ascii"))
+                            text_file.close()
+        return pem_fname
+        os.environ['PIP_CERT'] = pem_fname
+        os.environ['SSL_CERT_FILE'] = pem_fname
+        os.environ['GIT_SSL_CAINFO'] = pem_fname
+    except:
+        # this is an optional convenience function that will only work for windows
+        # if anything goes wrong pass silently
+        pass
 
-    pem_fname = os.path.join(get_install_dname('pymdwizard'), 'pymdwizard', 'resources', 'DOIRootCA2.pem')
-    if not os.path.exists(pem_fname):
-        for storename in ("CA", "ROOT"):
-            with wincertstore.CertSystemStore(storename) as store:
-                for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
-                    #             print(cert.get_pem())
-                    if 'DOIRootCA2' in cert.get_name():
-                        text_file = open(pem_fname, "w", encoding='ascii')
-                        text_file.write(cert.get_pem().encode().decode("ascii"))
-                        text_file.close()
-    return pem_fname
-
+def requests_pem_get(url):
+    try:
+        return requests.get(url)
+    except requests.exceptions.SSLError:
+        pem_fname = get_pem_fname()
+        return requests.get(url, verify=pem_fname)

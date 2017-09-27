@@ -8,6 +8,7 @@ except ImportError:
     habanero = None
 
 from pymdwizard.core.xml_utils import XMLNode
+from pymdwizard.core import utils
 
 def clean_doi(doi):
     """
@@ -45,13 +46,15 @@ def get_doi_citation(doi):
     except:
         try:
             endpoint = 'https://api.datacite.org/works'
-            response = requests.get(endpoint + '/' + doi)
+            response = utils.requests_pem_get(endpoint + '/' + doi)
             cite_data = json.loads(response.text)['data']['attributes']
             cite_data['publisher'] = cite_data['container-title']
             cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
-            if cite_data['resource-type-id'] == 'dataset':
+            if 'data-center-id' in cite_data and \
+                            'usgs' in cite_data['data-center-id']:
                 cite_data['container-title'] = None
                 cite_data['pubplace'] = 'https://www.sciencebase.gov'
+                cite_data['geoform'] = 'dataset'
             else:
                 cite_data['geoform'] = 'publication'
                 cite_data['pubplace'] = 'n/a'
@@ -70,7 +73,7 @@ def get_doi_citation(doi):
     elif 'published' in cite_data:
         pubdate_parts = [cite_data['published'], ]
 
-    pubdate_str = ''.join(['{:02d}'.format(part) for part in pubdate_parts])
+    pubdate_str = ''.join(['{:02d}'.format(int(part)) for part in pubdate_parts])
     pubdate = XMLNode(tag='pubdate', parent_node=citeinfo, text=pubdate_str)
 
     title = XMLNode(tag='title', parent_node=citeinfo, text=cite_data['title'])
