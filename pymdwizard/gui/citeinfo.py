@@ -372,7 +372,7 @@ class Citeinfo(WizardWidget): #
                                           citeinfo, 'pubdate')
             utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
 
-            utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'othercit')
+            utils.populate_widget_element(self.ui.fgdc_othercit, citeinfo, 'othercit')
 
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
