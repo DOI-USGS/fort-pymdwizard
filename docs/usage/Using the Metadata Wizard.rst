@@ -33,7 +33,7 @@ required and must be filled out.
 |
 
 Expanding a collapsed element
---------------------
+-----------------------------
 .. figure:: ../img/SeriesYes.png
 	:alt: Expanding a hidden element
 	
@@ -69,5 +69,5 @@ Using tools to auto-populate compound element
 	Active Directory username.
 	
 Other tools include adding keywords from controlled vocabularies,
-populating a citation section from a active DOI, generating a taxonomy
+populating a citation section from an active DOI, generating a taxonomy
 section from the Integrated Taxonomy Information Service (ITIS)

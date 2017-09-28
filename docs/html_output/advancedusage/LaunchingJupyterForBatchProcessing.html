@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changing Your Template &mdash; MetadataWizard  documentation</title>
+  <title>Launching Jupyter for Batch Processing &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -35,9 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="Batch Processing using Jupyter and Python" href="Launch Jupyter for Batch Processing.html"/>
-        <link rel="prev" title="Validating a Record" href="../usage/Validating a Record.html"/> 
+    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -102,9 +100,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage/Previewing a Record.html">Previewing a Record</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Validating a Record.html">Validating a Record</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing Your Template</a></li>
 </ul>
 
             
@@ -149,13 +146,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Changing Your Template</li>
+      <li>Launching Jupyter for Batch Processing</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/advancedusage/Changing Your Template.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/advancedusage/LaunchingJupyterForBatchProcessing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -168,17 +165,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="changing-your-template">
-<h1>Changing Your Template<a class="headerlink" href="#changing-your-template" title="Permalink to this headline">¶</a></h1>
-<p>When you select File-&gt;New the Wizard is opening a ‘template’ file and
-saving it to a new location. This template is just an FGDC record that
-contains default content which forms a solid starting point for a new record.
-For example the point of contact, distribution contact,
-disclaimers, etc. will often remain the same for most records created by
-an individual. Having to update these individually every time a new
-record is started can be inconvenient. Keep in mind that anything
-specified in the template can be overwritten individually when editing a new
-record, they are just the defaults that will pre-populate the application.</p>
+  <div class="section" id="launching-jupyter-for-batch-processing">
+<h1>Launching Jupyter for Batch Processing<a class="headerlink" href="#launching-jupyter-for-batch-processing" title="Permalink to this headline">¶</a></h1>
+<p>Some data management or metadata tasks can best be tackled by writing a script
+to automate processes that are repetitive or repeated regularly.
+Since the Metadata Wizard is built on, and ships with a fairly complete
+Python stack, we allow advanced users to leverage this using a Jupyter Notebook.
+A live instance of the Jupyter Notebook Kernel can be launch directly from
+the Metadata Wizard application by clicking <strong>Launch Jupyter</strong> in the <strong>Advanced</strong> menu.</p>
+<p>image:: ../img/JupyterLaunchMenu.png</p>
 <p>The default template record used by the Metadata Wizard is part of the
 standard installation but can be changed to suit the particular needs of
 individuals or organizations.</p>
@@ -201,6 +196,8 @@ and navigate to the xml file saved above.</li>
 <div class="line-block">
 <div class="line"><img alt="image0" src="../_images/BrowseToTemplate.png" /></div>
 <div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">BrowseToTemplate.png</div>
 </div>
 <p>The template selected will remain active after closing and reopening the
 application. If at any time you want to revert to the original Metadata
@@ -216,15 +213,6 @@ Advanced -&gt; Template menu,</p>
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral float-right" title="Batch Processing using Jupyter and Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../usage/Validating a Record.html" class="btn btn-neutral" title="Validating a Record" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

@@ -12,11 +12,12 @@ the application is being run with elevated privileges when updating.
 .. figure:: img/update.png
 	:alt: Getting software updates
 	
-	To update the application click ‘Update’ in the ‘Advanced’ menu item
+	To update the application click ‘Check for Updates’ in the ‘Help’ menu item
 	at the top of the application.** A message box will pop up notifying
 	you of the result of update. If an update was made, you’ll need to
 	restart the application to see it.
 
+|
 |
 |
 **Technical note:**

@@ -23,7 +23,8 @@ updating your template to streamline future metadata creation.
 
 If you would like to modify or extend an existing record click File ->
 Open and browse to a local .xml file. Make sure to click File -> Save
-as… if you want to save the output to a new file.
+as… if you want to save the output to a new file.  You can also drag-and-drop
+an xml file onto the application from a file browser to open it.
 
 A list of the last 10 files opened will be stored in the File -> Recent
 Files: menu item. Clicking on a file name in that menu list will open

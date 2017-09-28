@@ -45,7 +45,7 @@ Advanced Usage
    :maxdepth: 1
 
    advancedusage/Changing Your Template
-
+   advancedusage/Launch Jupyter for Batch Processing
 
 Indices and tables
 ==================

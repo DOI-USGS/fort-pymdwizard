@@ -35,11 +35,14 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
+    # 'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    # 'rst2pdf.pdfbuilder',
     'numpydoc',
 ]
+
+# pdf_documents = [('index', u'sample', u'Sample rst2pdf doc', u'Colin Talbert'),]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
