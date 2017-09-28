@@ -135,8 +135,10 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_5.setToolTip(_translate("Form", "Required"))
         self.label_5.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic; color:#55aaff;\">Provide Specific Information about the data content, organization, units, and values.</span></p></body></html>"))
-        self.label_2.setText(_translate("Form", "If this record describes a CSV, Shapefile, or other tabular or spatial dataset you must fill the Detailed section. Use the \'import from dataset\' functionality on the menubar to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. "))
-        self.label_4.setText(_translate("Form", "Use both if that provides more clarity to data users."))
+        self.label_2.setText(_translate("Form", "If this record describes a CSV, Shapefile, or other tabular or spatial dataset you need to fill out a Detailed section. Use the \'Browse to Dataset\' button on a detailed tab  to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. \n"
+"\n"
+"If this record describes multiple files or sheets, one Detailed section should be created for each, see below."))
+        self.label_4.setText(_translate("Form", "Use both the Overview and one or more Detailed sections if that provides more clarity to data users."))
         self.groupBox.setTitle(_translate("Form", "Additional \'Detailed\' tabs"))
         self.label_34.setText(_translate("Form", "In some cases more than one Detailed section is required.  This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel Workbook, or a data bundle consisting of multiple files."))
         self.label_35.setText(_translate("Form", "Use the button below to add additional Detailed sections.  These can be removed from their respective tab, using the \'Remove this Detailed\' Button"))

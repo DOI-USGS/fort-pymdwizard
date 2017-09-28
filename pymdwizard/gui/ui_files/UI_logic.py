@@ -39,7 +39,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_logic.sizePolicy().hasHeightForWidth())
         self.fgdc_logic.setSizePolicy(sizePolicy)
-        self.fgdc_logic.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.fgdc_logic.setMaximumSize(QtCore.QSize(16777215, 45))
         self.fgdc_logic.setObjectName("fgdc_logic")
         self.verticalLayout_2.addWidget(self.fgdc_logic)
         self.verticalLayout.addWidget(self.groupBox)
@@ -50,7 +50,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "Logical Accuracy Report"))
+        self.groupBox.setTitle(_translate("Form", "Logical Consistency Report"))
         self.label.setText(_translate("Form", "Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info."))
         self.fgdc_logic.setPlainText(_translate("Form", "No formal logical accuracy tests were conducted."))
 

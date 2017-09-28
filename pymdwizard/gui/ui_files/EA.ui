@@ -109,7 +109,9 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>If this record describes a CSV, Shapefile, or other tabular or spatial dataset you must fill the Detailed section. Use the 'import from dataset' functionality on the menubar to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. </string>
+          <string>If this record describes a CSV, Shapefile, or other tabular or spatial dataset you need to fill out a Detailed section. Use the 'Browse to Dataset' button on a detailed tab  to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. 
+
+If this record describes multiple files or sheets, one Detailed section should be created for each, see below.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -119,7 +121,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Use both if that provides more clarity to data users.</string>
+          <string>Use both the Overview and one or more Detailed sections if that provides more clarity to data users.</string>
          </property>
         </widget>
        </item>

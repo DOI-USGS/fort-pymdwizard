@@ -47,7 +47,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Logical Accuracy Report</string>
+      <string>Logical Consistency Report</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -79,7 +79,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>45</height>
          </size>
         </property>
         <property name="plainText">
