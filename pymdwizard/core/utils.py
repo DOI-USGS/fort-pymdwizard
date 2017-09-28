@@ -420,9 +420,9 @@ def check_pem_file():
         # if anything goes wrong pass silently
         pass
 
-def requests_pem_get(url):
+def requests_pem_get(url, params={}):
     try:
-        return requests.get(url)
+        return requests.get(url, params=params)
     except requests.exceptions.SSLError:
         pem_fname = get_pem_fname()
-        return requests.get(url, verify=pem_fname)
+        return requests.get(url, params=params, verify=pem_fname)
