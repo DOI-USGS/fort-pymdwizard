@@ -1,15 +1,23 @@
-Changing Your Template
+Launching Jupyter for Batch Processing
 ********
 
-When you select File->New the Wizard is opening a ‘template’ file and
-saving it to a new location. This template is just an FGDC record that
-contains default content which forms a solid starting point for a new record.
-For example the point of contact, distribution contact,
-disclaimers, etc. will often remain the same for most records created by
-an individual. Having to update these individually every time a new
-record is started can be inconvenient. Keep in mind that anything
-specified in the template can be overwritten individually when editing a new
-record, they are just the defaults that will pre-populate the application.
+Some data management or metadata tasks can best be tackled by writing a script
+to automate processes that are repetitive or repeated regularly.
+Since the Metadata Wizard is built on, and ships with a fairly complete
+Python stack, we allow advanced users to leverage this using a Jupyter Notebook.
+A live instance of the Jupyter Notebook Kernel can be launch directly from
+the Metadata Wizard application by clicking **Launch Jupyter** in the **Advanced** menu.
+
+image:: ../img/JupyterLaunchMenu.png
+
+
+
+
+
+
+
+
+
 
 The default template record used by the Metadata Wizard is part of the
 standard installation but can be changed to suit the particular needs of
@@ -31,7 +39,9 @@ individuals or organizations.
    and navigate to the xml file saved above.
 
 | |image0|
-|
+| 
+| 
+| BrowseToTemplate.png
 
 The template selected will remain active after closing and reopening the
 application. If at any time you want to revert to the original Metadata

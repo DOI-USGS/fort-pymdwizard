@@ -29,7 +29,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
     .. code-block:: console
 
-        $ conda install conda-build``
+        $ conda install conda-build
 		
 |
 5. Create a pymdwizard environment:
