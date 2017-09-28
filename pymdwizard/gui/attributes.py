@@ -88,34 +88,38 @@ class Attributes(WizardWidget):  #
     def load_pickle(self, contents):
         self.clear_children()
 
-        for col_label in contents.keys():
-            attr_i = attr.Attr(parent=self)
-            attr_i.ui.fgdc_attrlabl.setText(col_label)
+        if self.original_xml is not None:
+            self._from_xml(self.original_xml)
+        else:
 
-            if contents[col_label][b'type'] == 'String':
-                s = pd.Series(contents[col_label][b'contents'])
-                attr_i.set_series(s)
-                attr_i.guess_domain()
-            elif contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
-                s = pd.Series(contents[col_label][b'contents'])
-                attr_i.set_series(s)
-                attr_i.ui.comboBox.setCurrentIndex(1)
-            else:
-                attr_i.populate_domain_content(3)
-                unrep = contents[col_label][b'contents']
+            for col_label in contents.keys():
+                attr_i = attr.Attr(parent=self)
+                attr_i.ui.fgdc_attrlabl.setText(col_label)
 
-                utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
-                utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
-                utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
-                attr_i.store_current_content()
-                attr_i.supersize_me()
-                attr_i.regularsize_me()
-            self.append_attr(attr_i)
+                if contents[col_label][b'type'] == 'String':
+                    s = pd.Series(contents[col_label][b'contents'])
+                    attr_i.set_series(s)
+                    attr_i.guess_domain()
+                elif contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
+                    s = pd.Series(contents[col_label][b'contents'])
+                    attr_i.set_series(s)
+                    attr_i.ui.comboBox.setCurrentIndex(1)
+                else:
+                    attr_i.populate_domain_content(3)
+                    unrep = contents[col_label][b'contents']
 
-        try:
-            self.attrs[0].supersize_me()
-        except IndexError:
-            pass
+                    utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
+                    utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
+                    utils.set_text(attr_i.ui.fgdc_attrdefs, unrep[2].decode("utf-8"))
+                    attr_i.store_current_content()
+                    attr_i.supersize_me()
+                    attr_i.regularsize_me()
+                self.append_attr(attr_i)
+
+            try:
+                self.attrs[0].supersize_me()
+            except IndexError:
+                pass
 
     def clear_children(self):
         for attribute in self.attrs:
@@ -272,6 +276,7 @@ class Attributes(WizardWidget):  #
         """
         try:
             if detailed.tag == 'detailed':
+                self.original_xml = detailed
                 self.clear_children()
                 for attr_node in detailed.xpath('attr'):
                     attr_widget = attr.Attr(parent=self)

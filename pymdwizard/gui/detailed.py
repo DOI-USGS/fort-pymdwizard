@@ -208,10 +208,13 @@ class Detailed(WizardWidget):  #
         elif ext.lower() == ".p":
             p = pickle.load(open(fname, "rb"), encoding='bytes')
 
-            self.ui.fgdc_enttypl.setText('{}'.format(shortname[:-2]))
-            self.ui.fgdc_enttypd.setPlainText('Geospatial Dataset')
-
-            self.attributes.load_pickle(p)
+            if self.original_xml is not None:
+                original_content = xml_utils.XMLNode(self.original_xml)
+                self._from_xml(self.original_xml)
+            else:
+                self.ui.fgdc_enttypl.setText('{}'.format(shortname[:-2]))
+                self.ui.fgdc_enttypd.setPlainText('Geospatial Dataset')
+                self.attributes.load_pickle(p)
         else:
             msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
@@ -278,6 +281,7 @@ class Detailed(WizardWidget):  #
         """
         try:
             if detailed.tag == 'detailed':
+                self.original_xml = detailed
                 utils.populate_widget(self, detailed)
                 self.attributes._from_xml(detailed)
             else:
