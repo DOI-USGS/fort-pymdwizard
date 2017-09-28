@@ -1,3 +1,16 @@
+License
+=======
+
+Unless otherwise noted, This project is in the public domain in the United
+States because it contains materials that originally came from the United
+States Geological Survey, an agency of the United States Department of
+Interior. For more information, see the official USGS copyright policy at
+https://www2.usgs.gov/visual-id/credit_usgs.html#copyright
+
+Additionally, we waive copyright and related rights in the work
+worldwide through the CC0 4.0 Universal public domain dedication.
+
+
 Creative Commons Attribution 4.0 International Public License
 
 By exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution 4.0 International Public License ("Public License"). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.

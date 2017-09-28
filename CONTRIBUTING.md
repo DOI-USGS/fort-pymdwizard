@@ -12,6 +12,6 @@ into the project you can [fork this repository][2] and
 [submit a pull request][3] for review.
 
 
-[1]: https://github.com/usgs/best-practices/issues
+[1]: https://github.com/usgs/fort-pymdwizard/issues
 [2]: https://help.github.com/articles/fork-a-repo/
 [3]: https://help.github.com/articles/about-pull-requests/
