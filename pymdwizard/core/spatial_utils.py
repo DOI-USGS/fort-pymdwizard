@@ -1340,11 +1340,15 @@ def band_to_df(band):
     pandas dataframe
     """
     cols = ['Value']
-    stats = band.GetStatistics(True, False)
+    stats = band.GetStatistics(True, True)
     rows = [[stats[0]], [stats[1]]]
     df = pd.DataFrame.from_records(rows, columns=cols)
     df['Value'] = df['Value'].astype(float)
     return df
+
+def get_band_count(fname):
+    raster = get_layer(fname)
+    return raster.RasterCount
 
 def rat_to_df(rat):
     """
@@ -1407,18 +1411,28 @@ def get_raster_attribute_table(fname):
     raster = get_layer(fname)
     band = raster.GetRasterBand(1)
     rat = band.GetDefaultRAT()
-    if rat is None:
-        # check for a sidecar dbf vat
-        vatdbf = fname + ".vat.dbf"
-        if os.path.exists(vatdbf):
-            vat = data_io.read_dbf(vatdbf)
-            if 'OID' not in vat.columns:
-                vat.insert(0, 'OID', range(0, len(vat)))
-            return vat
-        else:
-            return band_to_df(band)
+
+    if rat is not None:
+        df = rat_to_df(rat)
+        if not df.columns == ['Histogram']:
+            return df
+
+    # check for a sidecar dbf vat
+    vatdbf = fname + ".vat.dbf"
+    if os.path.exists(vatdbf):
+        vat = data_io.read_dbf(vatdbf)
+        if 'OID' not in vat.columns:
+            vat.insert(0, 'OID', range(0, len(vat)))
+        return vat.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
     else:
-        return rat_to_df(rat)
+        dfs = []
+        for band_num in range(1, raster.RasterCount+1):
+            band = raster.GetRasterBand(band_num)
+            dfs.append(band_to_df(band))
+        df = pd.concat(dfs)
+
+        return df
+
 
 
 if __name__ == "__main__":

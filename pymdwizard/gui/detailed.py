@@ -32,20 +32,15 @@ responsibility is assumed by the USGS in connection therewith.
 """
 import os
 import pickle
-from lxml import etree
 
-import pandas as pd
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton, QInputDialog
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtCore import QSettings
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 from pymdwizard.core import data_io
+from pymdwizard.core import spatial_utils
 from pymdwizard.core.spatial_utils import get_raster_attribute_table
 
 from pymdwizard.gui.wiz_widget import WizardWidget
@@ -186,7 +181,13 @@ class Detailed(WizardWidget):  #
         elif ext.lower() in ['.tif', '.grd', '.png', '.img', '.jpg', '.hdr',
                              '.bmp', '.adf']:
             self.ui.fgdc_enttypl.setText(shortname)
-            self.ui.fgdc_enttypd.setPlainText('Raster geospatial data file.')
+
+            num_bands = spatial_utils.get_band_count(fname)
+            if num_bands == 1:
+                self.ui.fgdc_enttypd.setPlainText('Raster geospatial data file.')
+            else:
+                self.ui.fgdc_enttypd.setPlainText('{} band raster geospatial data file.'.format(num_bands))
+
             df = get_raster_attribute_table(fname)
             self.attributes.load_df(df)
             oid_attr = self.attributes.get_attr('OID')
