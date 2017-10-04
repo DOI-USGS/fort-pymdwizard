@@ -6,5 +6,5 @@ gdal
 geopandas
 PyQt >= 5.0
 xlrd
-docx
+python-docx
 habanero
