@@ -83,16 +83,24 @@ def get_doi_citation(doi):
         serinfo = XMLNode(tag='serinfo', parent_node=citeinfo)
         sername = XMLNode(tag='sername', parent_node=citeinfo.serinfo, text=cite_data['container-title'])
 
-        if 'volumne' in cite_data:
-            issue_str = 'vol.' + ' ' + str(cite_data['volume']) + ', issue ' + cite_data['issue'] + ', ppg. ' + cite_data['page']
+        if 'volume' in cite_data and 'issue' in cite_data:
+            issue_str = 'vol.' + ' ' + str(cite_data['volume']) + ', issue ' + cite_data['issue']
             issue = XMLNode(tag='issue', parent_node=citeinfo.serinfo, text=issue_str)
-        if 'issue' in cite_data:
-            issue_str = 'issue ' + cite_data['issue'] + ', ppg. ' + cite_data['page']
+        elif 'volume' in cite_data:
+            issue_str = 'vol.' + ' ' + str(cite_data['volume'])
+            issue = XMLNode(tag='issue', parent_node=citeinfo.serinfo, text=issue_str)
+        elif 'issue' in cite_data:
+            issue_str = 'issue ' + cite_data['issue']
             issue = XMLNode(tag='issue', parent_node=citeinfo.serinfo, text=issue_str)
 
     pubinfo = XMLNode(tag='pubinfo', parent_node=citeinfo)
     pubplace = XMLNode(tag='pubplace', parent_node=citeinfo.pubinfo, text=cite_data['pubplace'])
     publish = XMLNode(tag='publish', parent_node=citeinfo.pubinfo, text=cite_data['publisher'])
+
+    if 'page' in cite_data:
+        othercit_str = 'ppg. ' + cite_data['page']
+        othercit = XMLNode(tag='othercit', parent_node=citeinfo, text=othercit_str)
+
     onlink = XMLNode(tag='onlink', parent_node=citeinfo, text=cite_data['URL'])
 
     return citeinfo
