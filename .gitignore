@@ -63,16 +63,19 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-#pycharm
+# pycharm
 # User-specific stuff:
 .idea/*
 *.iml
 .idea
+_build/*
 
 examples
 pymdwizard/Scratch
 tests/data/projections
+*.pem
 
 #windows
 desktop.ini
 Thumbs.db
+~$*
