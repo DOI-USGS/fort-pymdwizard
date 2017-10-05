@@ -68,6 +68,7 @@ from pymdwizard.gui.error_list import ErrorList
 
 import sip
 
+
 class PyMdWizardMainForm(QMainWindow):
 
     max_recent_files = 10
@@ -921,6 +922,8 @@ class PyMdWizardMainForm(QMainWindow):
             jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from", last_jupyter_dname)
             if jupyter_dname:
                 settings.setValue('last_jupyter_dname', jupyter_dname)
+            else:
+                return
         else:
             return
 
