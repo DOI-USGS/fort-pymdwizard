@@ -62,7 +62,7 @@ from pymdwizard.gui.descript import Descript
 from pymdwizard.gui.supplinf import SupplInf
 from pymdwizard.gui.native import Native
 from pymdwizard.gui.purpose import Purpose
-from pymdwizard.gui.crossref import CrossRef
+from pymdwizard.gui.crossref_list import Crossref_list
 
 class IdInfo(WizardWidget):
 
@@ -120,8 +120,8 @@ class IdInfo(WizardWidget):
         self.ui.two_column_right.layout().insertWidget(0, self.purpose)
         self.ui.two_column_right.layout().insertWidget(0, self.descript)
 
-        self.crossref = CrossRef()
-        self.ui.fgdc_crossref.layout().addWidget(self.crossref)
+        self.crossref_list = Crossref_list()
+        self.ui.help_crossref.layout().addWidget(self.crossref_list)
 
 
     def dragEnterEvent(self, e):
@@ -228,8 +228,8 @@ class IdInfo(WizardWidget):
                 native.tail = None
                 idinfo_node.append(deepcopy(native))
 
-            if self.crossref.has_content():
-                crossref_list = self.crossref._to_xml()
+            if self.crossref_list.has_content():
+                crossref_list = self.crossref_list._to_xml()
                 for crossref in crossref_list:
                     crossref.tail = None
                     idinfo_node.append(deepcopy(crossref))
@@ -303,8 +303,7 @@ class IdInfo(WizardWidget):
 
         crossref = xml_utils.search_xpath(xml_idinfo, 'crossref')
         if crossref is not None:
-            self.crossref._from_xml(xml_idinfo)
-
+            self.crossref_list._from_xml(xml_idinfo)
 
 
 if __name__ == "__main__":

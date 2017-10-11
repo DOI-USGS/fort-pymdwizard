@@ -41,21 +41,12 @@ responsibility is assumed by the USGS in connection therewith.
 
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_sourceinput
-from pymdwizard.gui.SRCInfo import SRCInfo
+from pymdwizard.gui.srcinfo import SRCInfo
 from pymdwizard.gui.repeating_element import RepeatingElement
 
 
@@ -138,7 +129,6 @@ class SourceInput(WizardWidget):
     def clear_widget(self):
         self.ui.radio_sourceno_2.setChecked(True)
         WizardWidget.clear_widget(self)
-         
 
     def _to_xml(self):
         """

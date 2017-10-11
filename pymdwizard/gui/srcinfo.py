@@ -39,17 +39,15 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
-from lxml import etree
-
 from PyQt5.QtWidgets import QComboBox
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_SRCInfo
+from pymdwizard.gui.ui_files import UI_srcinfo
 from pymdwizard.gui.citeinfo import Citeinfo
-from pymdwizard.gui.timeperd import Timeperd
+from pymdwizard.gui.timeinfo import Timeinfo
 
 
 
@@ -66,13 +64,13 @@ class SRCInfo(WizardWidget): #
         -------
         None
         """
-        self.ui = UI_SRCInfo.Ui_Form()
+        self.ui = UI_srcinfo.Ui_Form()
         self.ui.setupUi(self)
-        self.timeperd = Timeperd()
+        self.timeinfo = Timeinfo()
         self.citation = Citeinfo(parent=self, include_lwork=False)
 
-        self.ui.widget_citation.layout().addWidget(self.citation)
-        self.ui.widget_timeperd.layout().addWidget(self.timeperd)
+        self.ui.fgdc_srccite.layout().addWidget(self.citation)
+        self.ui.fgdc_srctime.layout().insertWidget(0, self.timeinfo)
 
         self.setup_dragdrop(self)
 
@@ -128,13 +126,12 @@ class SRCInfo(WizardWidget): #
                                       parent_node=srcinfo)
 
         srctime = xml_utils.xml_node('srctime', parent_node=srcinfo)
-        time = self.timeperd._to_xml()
-        timeinfo = time.xpath('/timeperd/timeinfo')[0]
+        timeinfo = self.timeinfo._to_xml()
         srctime.append(timeinfo)
 
-        cur = time.xpath('/timeperd/current')[0]
-        cur.tag = 'srccurr'
-        srctime.append(cur)
+        srccurr = xml_utils.xml_node('srccurr',
+                                     text=self.ui.fgdc_srccurr.currentText(),
+                                     parent_node=srctime)
 
         srccitea = xml_utils.xml_node('srccitea',
                                       text=self.ui.fgdc_srccitea.text(),
@@ -182,14 +179,12 @@ class SRCInfo(WizardWidget): #
 
 
             if srcinfo.xpath('srctime'):
-                timeperd = etree.Element('timeperd')
+
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
                 srccurr = srcinfo.xpath('srctime/srccurr')[0]
-                srccurr.tag = 'current'
-                timeperd.append(timeinfo)
-                timeperd.append(srccurr)
-                self.timeperd._from_xml(timeperd)
+                self.timeinfo._from_xml(timeinfo)
 
+                self.ui.fgdc_srccurr.setCurrentText(srccurr.text)
 
 
         except KeyError:

@@ -588,6 +588,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         self.metadata_root.add_children(self.metadata_root.spatial_tab, widget_lookup.metadata.idinfo)
+        self.metadata_root.add_children(self.metadata_root.dataqual.sourceinput, widget_lookup.metadata.dataqual.lineage)
         error_count = 0
         for error in errors:
 

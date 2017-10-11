@@ -6,7 +6,7 @@ License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 PURPOSE
 ------------------------------------------------------------------------------
-Overview frame for Process Step element
+Provide a pyqt widget for a Citation <citation> section
 
 
 SCRIPT DEPENDENCIES
@@ -38,112 +38,97 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+import sys
 
 from lxml import etree
 
-from pymdwizard.core import utils, xml_utils
+from PyQt5.QtWidgets import QMessageBox, QDialog
+from PyQt5.QtCore import Qt
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_crossref
-from pymdwizard.gui.repeating_element import RepeatingElement
+from pymdwizard.core import utils
+from pymdwizard.core import xml_utils
+
 from pymdwizard.gui.citeinfo import Citeinfo
 
-
-class CrossRef(WizardWidget): #
+class Crossref(Citeinfo): #
 
     drag_label = "Cross Reference <crossref>"
-    acceptable_tags = ['idinfo']
+    acceptable_tags = ['crossref', 'citeinfo']
 
-    def build_ui(self):
-        """
-        Build and modify this widget's GUI
+    def build_ui(self, ):
+        Citeinfo.build_ui(self)
 
-        Returns
-        -------
-        None
-        """
-        self.ui = UI_crossref.Ui_Form()
-        self.ui.setupUi(self)
-        self.setup_dragdrop(self)
-
-        self.crossrefs = RepeatingElement(which='tab',
-                         tab_label='Crossref', add_text='   Add Additional Crossref   ',
-                         widget=Citeinfo, remove_text='   Remove Selected Crossref   ', italic_text='')
-
-        self.crossrefs.add_another()
-        self.ui.crossref_widget.layout().addWidget(self.crossrefs)
-
-        self.ui.crossref_widget.hide()
+        self.setObjectName("fgdc_crossref")
+        self.ui.fgdc_lworkcit.hide()
+        self.ui.lbl_dataset_title.setText('Crossref Title')
+        self.ui.label_34.hide()
+        self.ui.label_38.hide()
+        self.ui.label_47.setText('Author/Originator')
+        self.ui.label_53.setText('Format')
+        self.ui.fgdc_geoform.setCurrentText("publication")
+        self.ui.label_51.setText('Online Link to the Publication')
+        self.ui.label_39.hide()
+        self.ui.label_53.setText('Can you provide more publication information?')
+        self.ui.label_43.setText('Is this publication part of a series?')
 
     def connect_events(self):
         """
-            Connect the appropriate GUI components with the corresponding functions
-
-            Returns
-            -------
-            None
-            """
-        self.ui.radio_crossrefyes.toggled.connect(self.crossref_used_change)
-
-    def crossref_used_change(self, b):
-        if b:
-            self.ui.crossref_widget.show()
-        else:
-            self.ui.crossref_widget.hide()
-
-    def has_content(self):
-        return self.ui.radio_crossrefyes.isChecked()
-
-    def _to_xml(self):
-        """
-        encapsulates the etree process step in an element tag
-
-        Returns
-        -------
-        procstep portion of the lineageg element tag in xml tree
-        """
-        crossrefs = []
-        for citeinfo in self.crossrefs.get_widgets():
-            crossref = xml_utils.xml_node('crossref')
-            crossref.append(citeinfo._to_xml())
-            crossrefs.append(crossref)
-
-        return crossrefs
-
-    def _from_xml(self, xml_idinfo):
-        """
-        parses the xml code into the relevant accconst elements
-
-        Parameters
-        ----------
-        access_constraints - the xml element status and its contents
+        Connect the appropriate GUI components with the corresponding functions
 
         Returns
         -------
         None
         """
+        self.ui.radio_lworkyes.toggled.connect(self.include_lworkext_change)
+        self.ui.radio_seriesyes.toggled.connect(self.include_seriesext_change)
+        self.ui.radio_pubinfoyes.toggled.connect(self.include_pubext_change)
+
+        self.ui.btn_import_doi.clicked.connect(self.get_doi_citation)
+                
+    def _to_xml(self):
+        """
+        encapsulates the QLineEdit text in an element tag
+
+        Returns
+        -------
+        citation element tag in xml tree
+        """
+        citeinfo = Citeinfo._to_xml(self)
+        crossref = xml_utils.xml_node('crossref')
+        crossref.append(citeinfo)
+
+        return crossref
+
+    def _from_xml(self, citeinfo):
+        """
+        parses the xml code into the relevant citation elements
+
+        Parameters
+        ----------
+        citation - the xml element status and its contents
+
+        Returns
+        -------
+        None
+        """
+        self.original_xml = citeinfo
+        self.clear_widget()
         try:
-            if xml_idinfo.tag == 'idinfo':
-                self.crossrefs.clear_widgets(add_another=False)
+            if citeinfo.tag == "citation":
+                citeinfo = citeinfo.xpath('citeinfo')[0]
+            if citeinfo.tag == "crossref":
+                citeinfo = citeinfo.xpath('citeinfo')[0]
+            elif citeinfo.tag != 'citeinfo':
+                print("The tag is not 'citation' or 'citeinfo'")
+                return
 
-                crossrefs = xml_utils.search_xpath(xml_idinfo, 'crossref', only_first=False)
-
-                if crossrefs:
-                    self.ui.radio_crossrefyes.setChecked(True)
-                else:
-                    self.crossrefs.add_another()
-                    self.ui.radio_crossrefno.setChecked(True)
-
-                for crossref in crossrefs:
-                    crossref_widget = self.crossrefs.add_another()
-                    crossref_widget._from_xml(xml_utils.search_xpath(crossref, 'citeinfo'))
-
+            Citeinfo._from_xml(self, citeinfo)
 
         except KeyError:
-            self.ui.radio_crossrefno.setChecked(True)
+            pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(CrossRef,
-                        "Source Input testing")
+    utils.launch_widget(Crossref,
+                        "Crossref testing")
 

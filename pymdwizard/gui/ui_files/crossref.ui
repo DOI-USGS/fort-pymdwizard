@@ -30,7 +30,7 @@
     <number>3</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="fgdc_crossref">
+    <widget class="QGroupBox" name="help_crossref">
      <property name="title">
       <string>Cross Reference</string>
      </property>
@@ -102,7 +102,7 @@
            <string notr="true">font: italic;</string>
           </property>
           <property name="text">
-           <string> </string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
