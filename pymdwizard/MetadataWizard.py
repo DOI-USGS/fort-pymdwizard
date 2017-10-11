@@ -17,6 +17,9 @@ def set_clean_path():
 
         from pymdwizard.core.utils import check_pem_file
         pem_fname = check_pem_file()
+
+        from pymdwizard.core.spatial_utils import set_local_gdal_data
+        set_local_gdal_data()
     else:
         pass
 

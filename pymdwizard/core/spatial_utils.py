@@ -50,10 +50,6 @@ from pymdwizard.core import utils
 from pymdwizard.core import data_io
 
 try:
-    python_root = utils.get_install_dname('python')
-    gdal_data = os.path.join(python_root, 'Library', 'share', 'gdal')
-    os.environ['GDAL_DATA'] = gdal_data
-
     from osgeo import gdal, osr, ogr
     gdal.UseExceptions()
     gdal.AllRegister()
@@ -61,6 +57,13 @@ try:
 except ImportError:
     print('ERROR Importing GDAL, Spatial functionality limited')
     use_gdal = False
+
+
+def set_local_gdal_data():
+    python_root = utils.get_install_dname('python')
+    gdal_data = os.path.join(python_root, 'Library', 'share', 'gdal')
+    os.environ['GDAL_DATA'] = gdal_data
+
 
 def _get_raster_extent(src):
     """
