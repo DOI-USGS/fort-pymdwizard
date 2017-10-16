@@ -104,6 +104,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
 </ul>
 
             
@@ -169,12 +170,18 @@
             
   <div class="section" id="installing-from-source">
 <h1>Installing from Source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h1>
-<p>Currently the only option for installation on Mac or Linux systems is to install the application from source.
-|
-Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someonewith minimal experience to follow.</p>
-<p>1. Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
+<p>Currently the only option for installation on Mac or Linux systems is to install the application from source.</p>
+<p>Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someone with minimal experience to follow.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
 <blockquote>
-<div><em>While the code for the MetadataWizard is 2-3 compatible, I would recommend installing the Python 3 version (64x), as 2.7 is being phased out.</em></div></blockquote>
+<div><p><em>While the code for the MetadataWizard is 2-3 compatible, I would recommend installing the Python 3 version (64x), as 2.7 is being phased out.</em></p>
+</div></blockquote>
+</li>
+</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -184,41 +191,43 @@ Instructions for installing pymdwizard from source are intended for someone with
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="3">
-<li><p class="first">Add the conda-forge channel:</p>
+<ol class="arabic simple" start="3">
+<li>Add the conda-forge channel:</li>
+</ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-<li><p class="first">Install the optional conda developer tools</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Install the optional conda developer tools</li>
+</ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="5">
-<li><p class="first">Create a pymdwizard environment:</p>
+<ol class="arabic simple" start="5">
+<li>Create a pymdwizard environment:</li>
+</ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create –name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create -–name pymdwizard <span class="nv">python</span><span class="o">=</span>3.5 <span class="nv">pyqt</span><span class="o">=</span>5.6.0*
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>6. Activate this environment:
-|</p>
-<blockquote>
-<div><div class="line-block">
+<ol class="arabic simple" start="6">
+<li>Activate this environment:</li>
+</ol>
+<div class="line-block">
 <div class="line"><em>(on Windows)</em></div>
 </div>
 <blockquote>
@@ -234,86 +243,87 @@ Instructions for installing pymdwizard from source are intended for someone with
 </pre></div>
 </div>
 </div></blockquote>
-</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="7">
-<li><p class="first">Install git:</p>
+<ol class="arabic simple" start="7">
+<li>Install git:</li>
+</ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic" start="8">
 <li><p class="first">CD to the directory you want to install the actual wizard in:</p>
 <blockquote>
-<div><blockquote>
 <div><p><em>Your directory below could be different depending on operating system or organization</em></p>
-</div></blockquote>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
-</pre></div>
-</div>
 </div></blockquote>
 </li>
 </ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
+</pre></div>
+</div>
+</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="9">
-<li><p class="first">clone our pymdwizard project:</p>
+<ol class="arabic simple" start="9">
+<li>clone our pymdwizard project:</li>
+</ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="10">
-<li><p class="first">CD into our project folder:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
+<ol class="arabic simple" start="10">
+<li>CD into our project folder:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
 </pre></div>
 </div>
-</li>
-</ol>
+</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="11">
-<li><p class="first">Install the rest of our requirements:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install –yes –file requirements.txt
+<ol class="arabic simple" start="11">
+<li>Install the rest of our requirements:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install -–yes -–file requirements.txt
 </pre></div>
 </div>
-</li>
-</ol>
+</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="12">
-<li><p class="first">Add our git folder to the pythonpath:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
+<ol class="arabic simple" start="12">
+<li>Add our git folder to the pythonpath:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
 </pre></div>
 </div>
-</li>
-</ol>
+</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic" start="13">
-<li><p class="first">Launch the Wizard:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
+<ol class="arabic simple" start="13">
+<li>Launch the Wizard:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
 </pre></div>
 </div>
-</li>
-</ol>
+</div></blockquote>
 </div>
 
 

@@ -7,7 +7,7 @@
 ==========================================
 MetadataWizard User Guide
 ==========================================
-The Metadata Wizard 2.0 is a user-friendly tool for creating, editing, and validating CSDGM/FGDC metadata. It is based on design principles of auto-capturing content from the data set being documented, pre-populating a record with reasonable defaults, and lowering the expertise level needed to make a high quality metadata record. The Metadata Wizard 2.0 provides an efficient and pleasant metadata experience for a wide range of users from scientists and data managers. It is being built and maintained by the data management team of the USGS Fort Collins Science Center with input from others in the USGS.
+The Metadata Wizard 2.0 is a user-friendly tool for creating, editing, and validating CSDGM/FGDC metadata. It is based on design principles of auto-capturing content from the data set being documented, pre-populating a record with reasonable defaults, and lowering the expertise level needed to make a high quality metadata record. The Metadata Wizard 2.0 provides an efficient and pleasant metadata experience for a wide range of users from scientists to data managers. It is being built and maintained by the Data Management Team at the USGS Fort Collins Science Center with input from others in the USGS.
 
 It was engineered as an open-source evolution of the original `MetadataWizard <https://www.sciencebase.gov/catalog/item/50ed7aa4e4b0438b00db080a>`_ to allow for use outside of the ESRI ecosystem.
 

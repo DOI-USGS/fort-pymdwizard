@@ -104,6 +104,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
 </ul>
 
             
@@ -169,39 +170,36 @@
             
   <div class="section" id="installing-arcmap-toolbox">
 <h1>Installing ArcMap Toolbox<a class="headerlink" href="#installing-arcmap-toolbox" title="Permalink to this headline">¶</a></h1>
-<p>Users who want to access the Metadata Wizard from ESRI in the same
-manner as the previous generation of the tool will need to manually add
-the Metadata Wizard toolbox to their ArcToolbox. When using the tool
-from ESRI some additional geospatial data types are supported for the
-auto-generation of spatial and entity and attribute info. Also the
-access to existing metadata tied to a geospatial dataset and the saving
-back out of the edited metadata is facilitated.</p>
-<p>The Windows installer provides all of the necessary components as part
-of the install package. Follow the steps below to add the toolbox to
-ArcToolbox</p>
-<ol class="arabic simple">
-<li>Find the Metadata Wizard installation directory. If you installed
-into the default location this will be either C:\Users\<strong>*your
-user name here*</strong>\AppData\Local\Programs\MetadataWizard or
-‘C:\Program Files\Metadata Wizard’ if you installed with elevated
-priveledges. Note that the ‘AppData’ directory in this path is hidden
-by default, you will either need to manually type it into the folder
-path window in Windows Explorer or change your settings to display
-these hidden directories, see:
-<a class="reference external" href="https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files">https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files</a></li>
+<p>Users who want to access the Metadata Wizard 2.0 from ESRI in the same manner as the previous generation of the tool will need to manually add the Metadata Wizard 2.0 toolbox to their ArcToolbox. When using the tool from ESRI, some additional geospatial data types are supported for the auto-generation of spatial and entity and attribute information. Also, accessing existing metadata tied to a geospatial dataset, and saving and editing that metadata is facilitated.</p>
+<p>The Windows installer provides all of the necessary components as part of the install package. Follow the steps below to add the toolbox to ArcToolbox:</p>
+<ol class="arabic">
+<li><p class="first">Find the Metadata Wizard installation directory. If you installed into the default location this will be:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">C:\Users\***YourUserNameHere***\AppData\Local\Programs\MetadataWizard</span>
+</pre></div>
+</div>
+</li>
 </ol>
+<div class="line-block">
+<div class="line">if you installed with elevated privileges:</div>
+</div>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">C:\Program Files\Metadata Wizard</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="line-block">
+<div class="line">Note that the ‘AppData’ directory in this path is hidden by default, you will either need to manually type it into the folder path window in Windows Explorer or change your settings to display these hidden directories, see:
+<a class="reference external" href="https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files">https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files</a></div>
+<div class="line"><br /></div>
+</div>
 <p><img alt="image0" src="_images/DefaultInstallLocation.png" /></p>
 <ol class="arabic simple" start="2">
-<li>Start ArcMap or ArcCatalog and open the ArcToolbox pane. By
-right-clicking in the white space of the ArcToolbox pane and clicking
-‘Add Toolbox’, users are prompted to navigate to the folder
-containing the toolbox. This will be in
-‘..\MetadataWizard\pymdwizard\ArcToolbox’ under the folder
-identified above.</li>
+<li>Start ArcMap or ArcCatalog and open the ArcToolbox pane. By right-clicking in the white space of the ArcToolbox pane and clicking ‘Add Toolbox’, users are prompted to navigate to the folder containing the toolbox. This will be in ‘..\pymdwizard\ArcToolbox’ under the folder identified above.</li>
 </ol>
 <p><img alt="image1" src="_images/AddToolbox.png" /></p>
-<p>3. Once the toolbox is installed, you will be able to access the tool using the previous
-ESRI interface:</p>
+<ol class="arabic simple" start="3">
+<li>Once the toolbox is installed, you will be able to access Metadata Wizard 2.0 using the previous tool’s ESRI interface:</li>
+</ol>
 <p><img alt="image2" src="_images/ArcToolbox.png" /></p>
 </div>
 

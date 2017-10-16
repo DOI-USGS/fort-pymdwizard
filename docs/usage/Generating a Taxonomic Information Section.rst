@@ -7,7 +7,7 @@ about the species (or other level) being studied.
 Finding the taxonomy section
 ----------------------------
 
-Because it part of the Biological Data Profile it will not be available
+Because it part of the Biological Data Profile, the taxonomy section will not be available
 within the Metadata Wizard unless ‘FGDC Biological Data Profile of the
 CDGSM’ is selected in the Metadata Standard Name on the Metadata
 Reference Tab.
@@ -22,9 +22,8 @@ Reference Tab.
 Using the taxonomy section builder
 ----------------------------------
 
-Within the Metadata Wizard it is intended that users will be
-auto-generating a Taxonomy Section using the built in tool which pulls
-data from webservices hosted by the `Integrated Taxonomic Information
+It is suggested that users auto-generate Taxonomy Sections using the built in tool which pulls
+data from web services hosted by the `Integrated Taxonomic Information
 System (ITIS)`_
 
 To launch the Taxonomy builder click the button ‘Add Items from ITIS’
@@ -37,7 +36,7 @@ To launch the Taxonomy builder click the button ‘Add Items from ITIS’
    box. The term used can be from any level of the scientific heirarchy
    (order, family, species, sub-species, etc.).
 #. Make sure that ‘Search Type’ either ‘Scientific Name’ or ‘Common
-   Name’ matches the term used.
+   Name’ matches the search term used.
 #. Click ‘Search ITIS’ to get a list of search results which will be
    displayed below.
 #. Select one or more items from this list.
