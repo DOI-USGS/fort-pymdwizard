@@ -104,6 +104,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
 </ul>
 
             
@@ -169,38 +170,27 @@
             
   <div class="section" id="getting-software-updates">
 <h1>Getting Software Updates<a class="headerlink" href="#getting-software-updates" title="Permalink to this headline">¶</a></h1>
-<p>The Metadata Wizard is setup to easily download and install updates
-directly from this GitHub repository. For this to work the application
-must be installed in a location that the current user has write access
-to. If the application was installed with elevated or admin privileges
-(i.e. in the “C:\program files” directory) this will not work unless
-the application is being run with elevated privileges when updating.</p>
-<div class="figure" id="id1">
+<p>The Metadata Wizard is set up to easily download and install updates directly from this GitHub repository. For this to work, the application must be installed in a location that the current user has write access to. If the application was installed with elevated or admin privileges (i.e. in the “C:\Program Files” directory), this will not work unless the application is being run with elevated privileges when updating.</p>
+<div class="figure">
 <img alt="Getting software updates" src="_images/update.png" />
-<p class="caption"><span class="caption-text">To update the application click ‘Check for Updates’ in the ‘Help’ menu item
-at the top of the application.** A message box will pop up notifying
-you of the result of update. If an update was made, you’ll need to
-restart the application to see it.</span></p>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
 </div>
-<p><strong>Technical note:</strong>
-Updates are made using simple git commands to <strong>fetch</strong> and <strong>merge</strong>
-the master branch from this GitHub repository. The commands to execute
-this operation are stored in a file called “update_wizard.bat” in the
-application’s install folder. Other issues that might prevent this
-update from working include:</p>
+<p><strong>To update the application, click ‘Check for Updates’ in the ‘Help’ menu item at the top of the application.</strong> A message box will pop up notifying you of the result of update. If an update was made, you will need to restart the application to see it.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><strong>Technical note:</strong></div>
+</div>
+</div>
+<p>Updates are made using simple git commands to <strong>fetch</strong> and <strong>merge</strong> the master branch from this GitHub repository. The commands to execute this operation are stored in a file called “update_wizard.bat” in the application’s install folder. Other issues that might prevent this update from working include:</p>
 <ul class="simple">
-<li>Edited or otherwise changed files in the local installation directory
-(merge conflict)</li>
+<li>Edited or otherwise changed files in the local installation directory (merge conflict)</li>
 <li>Internet connectivity issues</li>
 <li>Firewalls or other security measures</li>
 </ul>
-<p>Users with knowledge of GIT can troubleshoot these problems directly in
-the project’s GIT repository.</p>
+<p>Users with knowledge of GIT can troubleshoot these problems directly in the project’s GIT repository.</p>
 </div>
 
 
