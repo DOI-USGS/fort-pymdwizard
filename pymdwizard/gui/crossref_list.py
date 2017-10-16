@@ -103,6 +103,10 @@ class Crossref_list(WizardWidget): #
 
         return children
 
+    def clear_widget(self):
+        super(Crossref_list, self).clear_widget()
+        self.ui.radio_crossrefno.setChecked(True)
+
     def _to_xml(self):
         """
         encapsulates the etree process step in an element tag
