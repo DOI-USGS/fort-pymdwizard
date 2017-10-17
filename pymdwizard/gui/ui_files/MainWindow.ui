@@ -92,6 +92,8 @@
     </property>
     <addaction name="actionRun_Validation"/>
     <addaction name="actionClear_validation"/>
+    <addaction name="separator"/>
+    <addaction name="generate_review"/>
    </widget>
    <widget class="QMenu" name="menuPreview">
     <property name="title">
@@ -113,8 +115,6 @@
      <addaction name="actionRestoreBuiltIn"/>
     </widget>
     <addaction name="menuTemplate_2"/>
-    <addaction name="separator"/>
-    <addaction name="generate_review"/>
     <addaction name="separator"/>
     <addaction name="actionLaunch_Jupyter"/>
    </widget>

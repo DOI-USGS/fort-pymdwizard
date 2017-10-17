@@ -873,6 +873,11 @@ class PyMdWizardMainForm(QMainWindow):
         if self.cur_fname:
             out_fname = self.cur_fname[:-4] + '_REVIEW.docx'
 
+            if self.metadata_root.schema == 'bdp':
+                which = 'bdp'
+            else:
+                which = 'fgdc'
+
             if time.time() - self.last_updated > 4:
                 msg = "Would you like to save the current file before continuing?"
                 alert = QDialog()
@@ -884,7 +889,8 @@ class PyMdWizardMainForm(QMainWindow):
                     return
             try:
                 cur_content = xml_utils.XMLRecord(self.cur_fname)
-                review_utils.generate_review_report(cur_content, out_fname)
+                review_utils.generate_review_report(cur_content, out_fname,
+                                                    which=which)
 
                 import subprocess
                 os.startfile('"{}"'.format(out_fname))
