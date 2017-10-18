@@ -70,6 +70,7 @@ class Citeinfo(WizardWidget): #
         self.include_lwork = include_lwork
         self.schema = 'bdp'
         WizardWidget.__init__(self, parent=parent)
+        self.doi_lookup = None
 
     def build_ui(self, ):
         """
@@ -135,12 +136,13 @@ class Citeinfo(WizardWidget): #
         self.ui.btn_import_doi.clicked.connect(self.get_doi_citation)
 
     def get_doi_citation(self):
-        self.doi_lookup = QDialog(parent=self)
-        self.doi_lookup_ui = UI_DOICiteinfoImporter.Ui_ImportUsgsUser()
-        self.doi_lookup_ui.setupUi(self.doi_lookup)
-        self.doi_lookup_ui.btn_OK.clicked.connect(self.add_doi)
-        self.doi_lookup_ui.btn_cancel.clicked.connect(self.cancel)
-        utils.set_window_icon(self.doi_lookup)
+        if self.doi_lookup is None:
+            self.doi_lookup = QDialog(parent=self)
+            self.doi_lookup_ui = UI_DOICiteinfoImporter.Ui_ImportUsgsUser()
+            self.doi_lookup_ui.setupUi(self.doi_lookup)
+            self.doi_lookup_ui.btn_OK.clicked.connect(self.add_doi)
+            self.doi_lookup_ui.btn_cancel.clicked.connect(self.cancel)
+            utils.set_window_icon(self.doi_lookup)
         self.doi_lookup.show()
 
     def add_doi(self):
@@ -169,6 +171,7 @@ class Citeinfo(WizardWidget): #
 
     def cancel(self):
         self.doi_lookup.deleteLater()
+        self.doi_lookup = None
 
     def dragEnterEvent(self, e):
         """
