@@ -47,9 +47,3 @@ Advanced Usage
    advancedusage/Changing Your Template
    advancedusage/Launch Jupyter for Batch Processing
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

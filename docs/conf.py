@@ -145,7 +145,7 @@ html_theme = 'sphinx_rtd_theme'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+# html_logo = 'img/duck.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -178,10 +178,10 @@ html_static_path = ['_static']
 #html_additional_pages = {}
 
 # If false, no module index is generated.
-#html_domain_indices = True
+# html_domain_indices = False
 
 # If false, no index is generated.
-#html_use_index = True
+# html_use_index = False
 
 # If true, the index is split into individual pages for each letter.
 #html_split_index = False
@@ -193,7 +193,7 @@ html_static_path = ['_static']
 #html_show_sphinx = True
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-#html_show_copyright = True
+html_show_copyright = False
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
@@ -218,7 +218,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'rasteriodoc'
+htmlhelp_basename = 'metadatawizard'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -239,10 +239,10 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'rasterio.tex', u'rasterio Documentation',
-     u'Sean Gillies', 'manual'),
-]
+# latex_documents = [
+#     (master_doc, 'rasterio.tex', u'rasterio Documentation',
+#      u'Sean Gillies', 'manual'),
+# ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -269,10 +269,10 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'rasterio', u'rasterio Documentation',
-     [author], 1)
-]
+# man_pages = [
+#     (master_doc, 'rasterio', u'rasterio Documentation',
+#      [author], 1)
+# ]
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
@@ -283,11 +283,11 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'rasterio', u'rasterio Documentation',
-     author, 'rasterio', 'One line description of project.',
-     'Miscellaneous'),
-]
+# texinfo_documents = [
+#     (master_doc, 'rasterio', u'rasterio Documentation',
+#      author, 'rasterio', 'One line description of project.',
+#      'Miscellaneous'),
+# ]
 
 # Documents to append as an appendix to all manuals.
 #texinfo_appendices = []
