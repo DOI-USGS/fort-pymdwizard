@@ -36,6 +36,7 @@ Usage
    usage/Generating a Taxonomic Information Section
    usage/Previewing a Record
    usage/Validating a Record
+   
 
 
 Advanced Usage
@@ -44,6 +45,7 @@ Advanced Usage
 .. toctree::
    :maxdepth: 1
 
+   advancedusage/Metadata Review Reprot
    advancedusage/Changing Your Template
    advancedusage/Launch Jupyter for Batch Processing
 
