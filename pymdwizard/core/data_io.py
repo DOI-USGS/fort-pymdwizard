@@ -20,7 +20,7 @@ import pandas as pd
 import geopandas as gpd
 import fiona
 
-def read_csv(filepath):
+def read_csv(filepath, delimiter=','):
     """
     converts a csv, specified by filename, into a pandas dataframe
 
@@ -34,12 +34,12 @@ def read_csv(filepath):
     pandas dataframe
     """
     try:
-        df = pd.read_csv(filepath, parse_dates=True)
+        df = pd.read_csv(filepath, parse_dates=True, delimiter=delimiter)
     except UnicodeDecodeError:
         try:
-            df = pd.read_csv(filepath, parse_dates=True, encoding='utf8')
+            df = pd.read_csv(filepath, parse_dates=True, encoding='utf8', delimiter=delimiter)
         except UnicodeDecodeError:
-            df = pd.read_csv(filepath, parse_dates=True, encoding = "ISO-8859-1")
+            df = pd.read_csv(filepath, parse_dates=True, encoding = "ISO-8859-1", delimiter=delimiter)
     return df
 
 
@@ -132,9 +132,11 @@ def read_excel(filepath, sheet_name):
     return df
 
 
-def read_data(filepath, sheet_name=''):
+def read_data(filepath, sheet_name='', delimiter=','):
     if filepath.lower().endswith(".csv"):
         return read_csv(filepath)
+    elif filepath.lower().endswith(".txt"):
+        return read_csv(filepath, delimiter)
     elif filepath.lower().endswith(".shp"):
         return read_shp(filepath)
     elif sheet_name:

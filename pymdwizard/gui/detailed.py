@@ -88,7 +88,7 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
-        filter = "data files (*.csv *.shp *.xls *.xlsm *.xlsx "
+        filter = "data files (*.csv *.txt *.shp *.xls *.xlsm *.xlsx "
         filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf)"
 
         fname = QFileDialog.getOpenFileName(self, fname, dname,
@@ -216,6 +216,29 @@ class Detailed(WizardWidget):  #
                 self.ui.fgdc_enttypl.setText('{}'.format(shortname[:-2]))
                 self.ui.fgdc_enttypd.setPlainText('Geospatial Dataset')
                 self.attributes.load_pickle(p)
+        elif ext.lower() == '.txt':
+            if sheet_name is None:
+                delimiters = {'comma': ',', 'tab': '\t',
+                              'pipe': '|', 'colon': ':'}
+
+                delimiter_str, ok = QInputDialog.getItem(self, "Select text delimiter",
+                                                      "Pick the delimiter used in this file",
+                                                      delimiters.keys(), 0, False)
+
+                delimiter = delimiters[delimiter_str]
+
+            if ok and delimiter:
+                try:
+                    self.clear_widget()
+                    self.ui.fgdc_enttypl.setText(shortname)
+                    self.ui.fgdc_enttypd.setPlainText('{} delimited text file.'.format(delimiter_str))
+
+                    df = data_io.read_data(fname, delimiter=delimiter)
+                    self.attributes.load_df(df)
+                except BaseException as e:
+                    import traceback
+                    msg = "Cannot read txt file %s:\n%s." % (fname, traceback.format_exc())
+                    QMessageBox.warning(self, "File load problem", msg)
         else:
             msg = "Can only read '.csv', '.shp', and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
