@@ -38,7 +38,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ conda create --name pymdwizard python=3.5 pyqt=5.6.0*
+        $ conda create --name pymdwizard python=3.6 pyqt=5.6.0*
 		
 |
 

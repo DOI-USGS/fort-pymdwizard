@@ -934,8 +934,9 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             return
 
-        root_dir = os.path.dirname(install_dir)
-        jupyterexe = os.path.join(root_dir, "Python35_64", "scripts", "jupyter.exe")
+        root_dir = utils.get_install_dname('root')
+        python_dir = utils.get_install_dname('python')
+        jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
 
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
 

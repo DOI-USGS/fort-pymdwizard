@@ -53,6 +53,9 @@ pymdwiz_dir = os.path.join(root_dir, 'pymdwizard')
 arcpy.AddWarning("pymdwiz_dir :" + pymdwiz_dir)
 
 python_dir = os.path.join(root_dir, 'Python35_64')
+if not os.path.exists(python_dir):
+    python_dir = os.path.join(root_dir, 'Python36_64')
+
 arcpy.AddWarning("python_dir :" + python_dir)
 
 python_exe = os.path.join(python_dir, 'pythonw.exe')

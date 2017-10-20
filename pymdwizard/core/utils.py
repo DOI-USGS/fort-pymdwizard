@@ -386,6 +386,11 @@ def get_install_dname(which='pymdwizard'):
     pymdwizard_dname = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
     root_dir = os.path.dirname(pymdwizard_dname)
     python_dname = os.path.join(root_dir, 'Python35_64')
+    if not os.path.exists(python_dname):
+        python_dname = os.path.join(root_dir, 'Python36_64')
+    if not os.path.exists(python_dname):
+        executable = sys.executable
+        python_dname = os.path.split(executable)[0]
 
     if which == 'root':
         return root_dir

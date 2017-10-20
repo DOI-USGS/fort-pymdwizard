@@ -10,13 +10,13 @@ import sys
 def set_clean_path():
 
     if os.name == 'nt':
-        this_fname = os.path.realpath(__file__)
-        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
-        python_dname = os.path.join(root_dir, 'Python35_64')
-        os.environ['path'] = ";".join([python_dname, os.path.join(python_dname, 'Library', 'bin')])
+        cur_python_exe = sys.executable
+        executable_dir = os.path.split(cur_python_exe)[0]
+        os.environ['path'] = ";".join([executable_dir,
+                                       os.path.join(executable_dir, 'Library', 'bin')])
 
         from pymdwizard.core.utils import check_pem_file
-        pem_fname = check_pem_file()
+        check_pem_file()
 
         from pymdwizard.core.spatial_utils import set_local_gdal_data
         set_local_gdal_data()
