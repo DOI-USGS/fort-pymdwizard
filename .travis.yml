@@ -19,12 +19,10 @@ before_install:
 
 install:
   - "pip install coveralls>=1.1"
-  - "pip install safety"
 before_script:
       - export DISPLAY=:99.0
       - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
 script:
     - py.test --cov=pymdwizard tests --cov-report term-missing
-    - safety check
 after_success:
     - coveralls
