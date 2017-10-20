@@ -240,7 +240,7 @@ class Detailed(WizardWidget):  #
                     msg = "Cannot read txt file %s:\n%s." % (fname, traceback.format_exc())
                     QMessageBox.warning(self, "File load problem", msg)
         else:
-            msg = "Can only read '.csv', '.shp', and Excel files here"
+            msg = "Can only read '.csv', '.txt', '.shp', raster files, and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
 
     def clear_widget(self):
