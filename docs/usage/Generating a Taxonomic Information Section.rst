@@ -1,5 +1,5 @@
 Generating a Taxonomic Information Section
-********
+******************************************
 
 In an FGDC record the Taxonomy section is used to record information
 about the species (or other level) being studied.

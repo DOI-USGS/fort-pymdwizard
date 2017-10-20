@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Record</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing Your Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
 </ul>
@@ -191,7 +192,6 @@ documented directly. Currently CSV, Excel, and Shapefile formats are
 supported, with additional geospatial formats available when calling the
 MetadataWizard 2.0 from the ArcToolbox.</p>
 <hr class="docutils" />
-<hr class="docutils" />
 <p><strong>Given the diversity of data that can be described in a single Entity and attribute metadata section, here are some options for how to fill out this section:</strong></p>
 <div class="section" id="data-described-elsewhere">
 <h2>Data described elsewhere<a class="headerlink" href="#data-described-elsewhere" title="Permalink to this headline">¶</a></h2>
@@ -239,9 +239,15 @@ Contents which will be one of:</div></blockquote>
 <div class="line-block">
 <div class="line">1.  <strong>Enumerated</strong> (Categorical/Factor data for which a definition will
 need to be provided for each unique value in the column.</div>
+</div>
+<div class="line-block">
 <div class="line">2.  <strong>Range</strong> for numerical, non-categorical data. A minimum value, maximum value, and the units of measure (where applicable) will be required.</div>
+</div>
+<div class="line-block">
 <div class="line">3.  <strong>Codeset</strong> for when the values can be obtained from a definitive
 source which is specified.</div>
+</div>
+<div class="line-block">
 <div class="line">4. <strong>Unrepresentable</strong> for every other case where you must provide a
 free text description of how to interpret the values in this column.</div>
 </div>

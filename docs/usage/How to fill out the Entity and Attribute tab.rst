@@ -1,5 +1,5 @@
 How to fill out the Entity and Attribute tab
-********
+********************************************
 
 |
 
@@ -9,7 +9,7 @@ appropriate way to interpret the data. Included are items such as what
 units the data are in, measurement resolution, what abbreviations stand
 for, and where you could look up the categorical values used.
 
---------------
+----------------------------------------------------------------------
 
 This tool facilitates a robust Entity and Attribute generation by
 auto-populating much of this content by introspecting the data being
@@ -17,9 +17,8 @@ documented directly. Currently CSV, Excel, and Shapefile formats are
 supported, with additional geospatial formats available when calling the
 MetadataWizard 2.0 from the ArcToolbox.
 
---------------
+----------------------------------------------------------------------
 
---------------
 
 **Given the diversity of data that can be described in a single Entity and attribute metadata section, here are some options for how to fill out this section:**
 
@@ -38,7 +37,7 @@ can be referenced in this record.
     | 
 
 Data in a proprietary or complex format
-----------------------------------
+---------------------------------------
 
 The data are in a proprietary format (Genbank format data), organized in
 a complex but non-tabular format (folder with individual files that
@@ -62,11 +61,15 @@ each observation forms a row, and each observational unit forms a table.
       each of the columns on the right, by providing a definition of
       what’s in that column. For each column also provide the Column
       Contents which will be one of:
+	  
     | 1.  **Enumerated** (Categorical/Factor data for which a definition will
       need to be provided for each unique value in the column.
+	  
     | 2.  **Range** for numerical, non-categorical data. A minimum value, maximum value, and the units of measure (where applicable) will be required.
+	
     | 3.  **Codeset** for when the values can be obtained from a definitive
       source which is specified.
+	  
     | 4. **Unrepresentable** for every other case where you must provide a
       free text description of how to interpret the values in this column.
     

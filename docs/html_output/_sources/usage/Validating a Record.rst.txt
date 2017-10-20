@@ -1,5 +1,5 @@
 Validating a Record
-********
+*******************
 
 A first quality check of a metadata record is to make sure it adheres to
 to the FGDC standard. Examples of items that can be flagged include:

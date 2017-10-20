@@ -1,5 +1,5 @@
 Changing Your Template
-********
+**********************
 
 When you select File->New the Wizard is opening a ‘template’ file and
 saving it to a new location. This template is just an FGDC record that

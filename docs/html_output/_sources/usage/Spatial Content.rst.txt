@@ -1,5 +1,5 @@
 Spatial Content
-********
+***************
 
 Many data have an inherent spatial context that needs to be captured in
 the metadata. At a minimum, one should record the geographic location where

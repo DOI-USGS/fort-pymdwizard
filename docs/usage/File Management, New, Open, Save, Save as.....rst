@@ -1,5 +1,5 @@
 File Management, New, Open, Save, Save as....
-********
+*********************************************
 
 The Extensible Markup Language (XML) file format is the only currently supported format for metadata used by the Metadata Wizard 2.0. The XML format is one of the most commonly used formats for CSDGM metadata and is the format expected by many repositories and tools. By convention, the metadata file will be named identically to the data file it describes, with the addition of a .xml extension. For example data.csv would have an associated metadata file called data.csv.xml.
 

@@ -4,6 +4,8 @@ Making a Metadata Review Report
 Many metadata vetting workflows require the creation of a review report 
 that documents issues identified in the record.  The MetadataWizard includes
 a metadata report builder that creates a review report in Microsoft Word (.docx) format. 
+This report will be saved into the same directory that contains the metadata file (.xml) current open.
+The output will be named identically as the .xml file, but with '.xml' replaced with '_Review.docx'
 
 Included in the report are:
 
