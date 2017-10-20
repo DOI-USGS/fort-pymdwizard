@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Previewing a Record &mdash; MetadataWizard  documentation</title>
+  <title>Making a Metadata Review Report &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -35,9 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="Validating a Record" href="Validating a Record.html"/>
-        <link rel="prev" title="Generating a Taxonomic Information Section" href="Generating a Taxonomic Information Section.html"/> 
+    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -93,19 +91,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Record</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Spatial Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Previewing a Record.html">Previewing a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Validating a Record.html">Validating a Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing Your Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
 </ul>
 
             
@@ -150,13 +147,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Previewing a Record</li>
+      <li>Making a Metadata Review Report</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/usage/Previewing a Record.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/advancedusage/Metadata Review Report.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -169,11 +166,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="previewing-a-record">
-<h1>Previewing a Record<a class="headerlink" href="#previewing-a-record" title="Permalink to this headline">¶</a></h1>
-<p>Sometimes it can be helpful to look over or read an entire record.  Within the Metadata Wizard 2.0 there is a built in Preview window that can be accessed at any time by selecting the “Preview” item in the Preview menu.</p>
-<p>The window that opens will contain a copy of the entire metadata record rendered using the default stylesheet.</p>
-<a class="reference internal image-reference" href="../_images/Preview.png"><img alt="../_images/Preview.png" class="align-left" src="../_images/Preview.png" style="width: 600pt;" /></a>
+  <div class="section" id="making-a-metadata-review-report">
+<h1>Making a Metadata Review Report<a class="headerlink" href="#making-a-metadata-review-report" title="Permalink to this headline">¶</a></h1>
+<p>Many metadata vetting workflows require the creation of a review report
+that documents issues identified in the record.  The MetadataWizard includes
+a metadata report builder that creates a review report in Microsoft Word (.docx) format.
+This report will be saved into the same directory that contains the metadata file (.xml) current open.
+The output will be named identically as the .xml file, but with ‘.xml’ replaced with ‘_Review.docx’</p>
+<p>Included in the report are:</p>
+<ul class="simple">
+<li>What file (xml) is being reviewed.</li>
+<li>The date the report was created.</li>
+<li>The person conducting the review.</li>
+<li>A section for general or summary comments.</li>
+<li>A list of FGDC errors encountered.</li>
+<li>The html version of the complete record.</li>
+</ul>
+<p>This report is generated by clicking the Generate Review Doc
+option in the Validation menu.</p>
+<p><img alt="image0" src="../_images/generate_review_doc.png" /></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Once generated the report opens in the default application for .docx files, typically Microsoft Word.
+The document can now be checked over for spelling errors and other issues and comments, clarifications, and suggestions can be added.</p>
+<p><img alt="image1" src="../_images/review_report.png" /></p>
+<p>It is beyond the scope of this document to provide detailed instructions on how to perform a comprehensive metadata review.
+See <a class="reference external" href="https://www2.usgs.gov/datamanagement/describe/metadata.php">https://www2.usgs.gov/datamanagement/describe/metadata.php</a>. for more details on the process.</p>
 </div>
 
 
@@ -183,15 +202,6 @@
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Validating a Record.html" class="btn btn-neutral float-right" title="Validating a Record" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="Generating a Taxonomic Information Section.html" class="btn btn-neutral" title="Generating a Taxonomic Information Section" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

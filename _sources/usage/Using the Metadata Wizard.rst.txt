@@ -1,5 +1,5 @@
 Using the Metadata Wizard
-********
+*************************
 
 |
 
@@ -34,7 +34,7 @@ Expanding a collapsed element
 |
 
 Adding or removing items in a list (repeating elements)
---------------------
+-------------------------------------------------------
 .. figure:: ../img/AddOriginator.png
 	:alt: Using a helper tool
 	
@@ -45,7 +45,7 @@ Adding or removing items in a list (repeating elements)
 |
 
 Using tools to auto-populate compound element
---------------------	
+---------------------------------------------
 .. figure:: ../img/ImportContact.png
 	:alt: Expanding a hidden element
 	
