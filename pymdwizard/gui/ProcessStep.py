@@ -81,7 +81,7 @@ class ProcessStep(WizardWidget): #
 
         self.proccont = ProcessContact()
 
-        self.ui.fgdc_procdate.setLayout(QVBoxLayout(self))
+        self.ui.fgdc_procdate.setLayout(QVBoxLayout())
         self.ui.fgdc_procdate.layout().insertWidget(0, self.single_date)
         self.ui.widget_proccont.layout().insertWidget(0, self.proccont)
 
