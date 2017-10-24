@@ -46,6 +46,7 @@ import numpy as np
 import pandas as pd
 
 from pymdwizard.core.xml_utils import xml_node
+from pymdwizard.core import xml_utils
 from pymdwizard.core import utils
 from pymdwizard.core import data_io
 
@@ -1186,10 +1187,10 @@ GRIDSYS_LOOKUP['Universal Transverse Mercator'] = {'shortname': 'utm',
 GRIDSYS_LOOKUP['Universal Polar Stereographic'] = {'shortname': 'ups',
                                                     'elements': ['upszone'],
                                                    'projection':'Transverse Mercator'}
-GRIDSYS_LOOKUP['State Plane Coordinate System 1927'] = {'shortname': 'spsc',
+GRIDSYS_LOOKUP['State Plane Coordinate System 1927'] = {'shortname': 'spcs',
                                                     'elements': ['spcszone'],
                                                    'projection':'Transverse Mercator'}
-GRIDSYS_LOOKUP['State Plane Coordinate System 1983'] = {'shortname': 'spsc',
+GRIDSYS_LOOKUP['State Plane Coordinate System 1983'] = {'shortname': 'spcs',
                                                         'elements': ['spcszone'],
                                                         'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['ARC Coordinate System'] = {'shortname': 'arcsys',
