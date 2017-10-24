@@ -86,11 +86,17 @@
           <pointsize>9</pointsize>
          </font>
         </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhNone</set>
+        </property>
         <property name="editable">
          <bool>true</bool>
         </property>
         <property name="currentText">
          <string>Complete</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
         </property>
         <item>
          <property name="text">
@@ -99,7 +105,7 @@
         </item>
         <item>
          <property name="text">
-          <string>In Work</string>
+          <string>In work</string>
          </property>
         </item>
         <item>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'status.ui'
+# Form implementation generated from reading ui file 'Status.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -40,7 +40,9 @@ class Ui_Form(object):
         font.setFamily("Arial")
         font.setPointSize(9)
         self.fgdc_progress.setFont(font)
+        self.fgdc_progress.setInputMethodHints(QtCore.Qt.ImhNone)
         self.fgdc_progress.setEditable(True)
+        self.fgdc_progress.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.fgdc_progress.setObjectName("fgdc_progress")
         self.fgdc_progress.addItem("")
         self.fgdc_progress.addItem("")
@@ -88,7 +90,7 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "Status"))
         self.fgdc_progress.setCurrentText(_translate("Form", "Complete"))
         self.fgdc_progress.setItemText(0, _translate("Form", "Complete"))
-        self.fgdc_progress.setItemText(1, _translate("Form", "In Work"))
+        self.fgdc_progress.setItemText(1, _translate("Form", "In work"))
         self.fgdc_progress.setItemText(2, _translate("Form", "Planned"))
         self.label_3.setText(_translate("Form", "Update Plans"))
         self.fgdc_update.setItemText(0, _translate("Form", "Continually"))
