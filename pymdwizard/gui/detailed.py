@@ -129,7 +129,7 @@ class Detailed(WizardWidget):  #
             try:
                 self.clear_widget()
                 self.ui.fgdc_enttypl.setText(shortname)
-                self.ui.fgdc_enttypd.setPlainText('Comma Separate Value (CSV) file containing data.')
+                self.ui.fgdc_enttypd.setPlainText('Comma Separated Value (CSV) file containing data.')
 
                 df = data_io.read_data(fname)
                 self.attributes.load_df(df)
