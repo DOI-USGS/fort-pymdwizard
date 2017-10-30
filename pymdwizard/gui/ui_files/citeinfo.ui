@@ -684,7 +684,7 @@ DOI</string>
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton_4">
+              <widget class="QRadioButton" name="radio_seriesno">
                <property name="text">
                 <string>No</string>
                </property>
@@ -949,7 +949,7 @@ DOI</string>
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton_8">
+              <widget class="QRadioButton" name="radio_pubinfono">
                <property name="text">
                 <string>No</string>
                </property>

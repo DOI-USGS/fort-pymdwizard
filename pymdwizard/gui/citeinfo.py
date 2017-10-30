@@ -288,7 +288,12 @@ class Citeinfo(WizardWidget): #
             self.ui.lworkcite_widget.show()
         else:
             self.ui.lworkcite_widget.hide()
-                
+
+    def clear_widget(self):
+        WizardWidget.clear_widget(self)
+        self.ui.radio_pubinfono.setChecked(True)
+        self.ui.radio_seriesno.setChecked(True)
+
     def _to_xml(self):
         """
         encapsulates the QLineEdit text in an element tag
@@ -407,7 +412,7 @@ class Citeinfo(WizardWidget): #
                 utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
-                self.ui.radioButton_8.setChecked(True)
+                self.ui.radio_pubinfono.setChecked(True)
 
             if citeinfo.xpath('lworkcit'):
                 try:
