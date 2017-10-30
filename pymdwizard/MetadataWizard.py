@@ -13,7 +13,8 @@ def set_clean_path():
         cur_python_exe = sys.executable
         executable_dir = os.path.split(cur_python_exe)[0]
         os.environ['path'] = ";".join([executable_dir,
-                                       os.path.join(executable_dir, 'Library', 'bin')])
+                                       os.path.join(executable_dir, 'Library', 'bin'),
+                                       os.environ['path']])
 
         from pymdwizard.core.utils import check_pem_file
         check_pem_file()
