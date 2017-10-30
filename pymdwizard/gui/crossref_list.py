@@ -49,7 +49,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.crossref import Crossref
 
 
-class Crossref_list(WizardWidget): #
+class Crossref_list(WizardWidget):
 
     drag_label = "Cross Reference <crossref>"
     acceptable_tags = ['idinfo']
@@ -94,7 +94,7 @@ class Crossref_list(WizardWidget): #
     def has_content(self):
         return self.ui.radio_crossrefyes.isChecked()
 
-    def get_children(self, widget):
+    def get_children(self, widget=None):
 
         children = []
 
