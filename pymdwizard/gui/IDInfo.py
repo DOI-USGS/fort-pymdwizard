@@ -223,10 +223,8 @@ class IdInfo(WizardWidget):
                 secinfo.tail = None
                 idinfo_node.append(deepcopy(secinfo))
 
-            native = xml_utils.search_xpath(self.original_xml, 'native')
-            if native is not None:
-                native.tail = None
-                idinfo_node.append(deepcopy(native))
+        if self.native.has_content():
+            idinfo_node.append(self.native._to_xml())
 
             if self.crossref_list.has_content():
                 crossref_list = self.crossref_list._to_xml()
@@ -234,6 +232,7 @@ class IdInfo(WizardWidget):
                     crossref.tail = None
                     idinfo_node.append(deepcopy(crossref))
 
+        if self.original_xml is not None:
             tools = xml_utils.search_xpath(self.original_xml, 'tool', only_first=False)
             for tool in tools:
                 tool.tail = None
