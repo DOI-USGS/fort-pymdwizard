@@ -964,6 +964,30 @@ class PyMdWizardMainForm(QMainWindow):
         msgbox.setText(msg)
         msgbox.exec()
 
+    def check_for_updates(self):
+        from subprocess import check_output
+
+        install_dir = utils.get_install_dname()
+        root_dir = os.path.dirname(install_dir)
+        git_exe = os.path.join(root_dir, 'Python36_64', 'Library', 'bin', 'git.exe')
+
+        try:
+            fetch = check_output([git_exe, 'fetch', 'usgs_root'], cwd=install_dir, shell=True)
+            updates = check_output([git_exe, 'log', 'HEAD..usgs_root/master'], cwd=install_dir, shell=True)
+            if updates:
+                msg = "An update(s) are available for the Metadata Wizard.\n"
+                msg += "Would you like to install these now?"
+
+                confirm = QMessageBox.question(self, "Updates Available", msg,
+                                               QMessageBox.Yes|QMessageBox.No)
+                if confirm == QMessageBox.Yes:
+                    self.update_from_github()
+        except BaseException as e:
+            pass
+            # import traceback
+            # msg = "Could not update application:\n{}".format(traceback.format_exc())
+            # QMessageBox.warning(self, "Recent Files", msg)
+
     def update_from_github(self):
         from subprocess import check_output
 
@@ -978,7 +1002,7 @@ class PyMdWizardMainForm(QMainWindow):
                     msg = 'Application already up to date.'
                 else:
                     msg = 'Application updated.\n\n'
-                    msg += 'Please close and restart for these updates to take effect'
+                    msg += 'Please close and restart the Wizard for these updates to take effect'
                 QApplication.restoreOverrideCursor()
             except BaseException as e:
                 import traceback
@@ -1028,6 +1052,8 @@ def launch_main(xml_fname=None, introspect_fname=None):
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
     splash.finish(mdwiz)
+
+    mdwiz.check_for_updates()
 
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)
