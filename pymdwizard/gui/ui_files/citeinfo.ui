@@ -490,11 +490,6 @@ DOI</string>
                  </item>
                  <item>
                   <property name="text">
-                   <string>spreadsheet</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
                    <string>application/service</string>
                   </property>
                  </item>
