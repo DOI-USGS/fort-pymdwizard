@@ -38,10 +38,8 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
 from lxml import etree
-
-from PyQt5.QtWidgets import QPlainTextEdit
+from copy import deepcopy
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -149,6 +147,12 @@ class DistInfo(WizardWidget):
         cntinfo = self.contactinfo._to_xml()
         dist.append(cntinfo)
 
+        if self.original_xml is not None:
+            resdesc = xml_utils.search_xpath(self.original_xml, 'resdesc')
+            if resdesc is not None:
+                resdesc.tail = None
+                distinfo_node.append(deepcopy(resdesc))
+
         if self.ui.radio_online.isChecked():
             liab = xml_utils.xml_node('distliab', text=self.ui.fgdc_distliab.toPlainText(),
                                       parent_node=distinfo_node)
@@ -172,8 +176,12 @@ class DistInfo(WizardWidget):
         if self.ui.radio_dist.isChecked():
             liab = xml_utils.xml_node('distliab', text=self.ui.fgdc_distliab.toPlainText(),
                                       parent_node=distinfo_node)
-            # other = xml_utils.xml_node('custom', text=self.ui.fgdc_custom.toPlainText(),
-            #                            parent_node=distinfo_node)
+
+        if self.original_xml is not None:
+            techpreq = xml_utils.search_xpath(self.original_xml, 'techpreq')
+            if techpreq is not None:
+                techpreq.tail = None
+                distinfo_node.append(deepcopy(techpreq))
 
         return distinfo_node
 
@@ -182,6 +190,7 @@ class DistInfo(WizardWidget):
         self.clear_widget()
 
         if xml_distinfo.tag == 'distinfo':
+            self.original_xml = xml_distinfo
             self.ui.radio_distyes.setChecked(True)
             if xml_distinfo.xpath('distrib/cntinfo'):
                 self.contactinfo._from_xml(xml_distinfo.xpath('distrib/cntinfo')[0])

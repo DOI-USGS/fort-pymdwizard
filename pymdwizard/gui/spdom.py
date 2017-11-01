@@ -39,19 +39,11 @@ responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
-import sys
-import tempfile
 from copy import deepcopy
 
-from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QUrl
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
@@ -60,6 +52,7 @@ from pymdwizard.core.xml_utils import xml_node
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spdom
+
 
 class Spdom(WizardWidget):
     drag_label = "Spatial Domain <spdom>"

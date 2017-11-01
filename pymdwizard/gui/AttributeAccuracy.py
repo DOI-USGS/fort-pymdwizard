@@ -40,12 +40,10 @@ responsibility is assumed by the USGS in connection therewith.
 """
 
 from lxml import etree
+from copy import deepcopy
 
 from PyQt5.QtWidgets import QPlainTextEdit
-
-
-
-
+from pymdwizard.core import xml_utils
 from pymdwizard.core import utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
@@ -82,6 +80,13 @@ class AttributeAccuracy(WizardWidget):
         attraccr = etree.Element('attraccr')
         attraccr.text = self.findChild(QPlainTextEdit, "fgdc_attraccr").toPlainText()
         attracc.append(attraccr)
+
+        if self.original_xml is not None:
+            qattracc = xml_utils.search_xpath(self.original_xml, 'qattracc')
+            if qattracc is not None:
+                qattracc.tail = None
+                attracc.append(deepcopy(qattracc))
+
         return attracc
 
     def _from_xml(self, attribute_accuracy):
@@ -98,11 +103,12 @@ class AttributeAccuracy(WizardWidget):
         """
         try:
             if attribute_accuracy.tag == 'attracc':
+                self.original_xml = attribute_accuracy
                 attraccr_text = attribute_accuracy.findtext("attraccr")
                 accost_box = self.findChild(QPlainTextEdit, "fgdc_attraccr")
                 accost_box.setPlainText(attraccr_text)
             else:
-                print ("The tag is not attracc")
+                print("The tag is not attracc")
         except KeyError:
             pass
 

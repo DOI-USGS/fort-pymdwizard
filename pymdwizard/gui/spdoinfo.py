@@ -38,16 +38,8 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
-
 from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from copy import deepcopy
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -156,6 +148,14 @@ class SpdoInfo(WizardWidget):
     def _to_xml(self):
         if self.ui.rbtn_yes.isChecked():
             spdoinfo = xml_utils.xml_node('spdoinfo')
+
+            if self.original_xml is not None:
+                indspref = xml_utils.search_xpath(self.original_xml, 'indspref')
+                if indspref is not None:
+                    indspref.tail = None
+                    spdoinfo.append(deepcopy(indspref))
+
+
             direct = xml_utils.xml_node('direct', text=self.ui.fgdc_direct.currentText(),
                                         parent_node=spdoinfo)
             if self.ui.fgdc_direct.currentText() == 'Raster':
@@ -192,8 +192,11 @@ class SpdoInfo(WizardWidget):
         return spdoinfo
 
     def _from_xml(self, spdoinfo):
+
         self.clear_widget()
         if spdoinfo.tag == 'spdoinfo':
+            self.original_xml = spdoinfo
+
             self.ui.rbtn_yes.setChecked(True)
 
             direct = xml_utils.get_text_content(spdoinfo, 'direct')

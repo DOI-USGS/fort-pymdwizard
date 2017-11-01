@@ -42,7 +42,7 @@ import sys
 from lxml import etree
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QHBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QHBoxLayout
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -231,7 +231,8 @@ class IdInfo(WizardWidget):
                 idinfo_node.append(crossref._to_xml())
 
         if self.original_xml is not None:
-            tools = xml_utils.search_xpath(self.original_xml, 'tool', only_first=False)
+            tools = xml_utils.search_xpath(self.original_xml, 'tool',
+                                           only_first=False)
             for tool in tools:
                 tool.tail = None
                 idinfo_node.append(deepcopy(tool))

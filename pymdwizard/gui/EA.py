@@ -30,21 +30,8 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import os
-from lxml import etree
-
-import pandas as pd
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox, QFileDialog
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit, QStackedWidget, QTabWidget, QDateEdit, QListWidget
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QGridLayout, QScrollArea, QListWidgetItem, QAbstractItemView
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, QDate, QSettings
-
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
-from pymdwizard.core import data_io
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_EA
@@ -174,6 +161,7 @@ class EA(WizardWidget):  #
             self.clear_widget()
 
             if eainfo.tag == 'eainfo':
+                self.original_xml = eainfo
                 overview = eainfo.xpath('overview')
                 if overview:
                     eaover = eainfo.xpath('overview/eaover')

@@ -38,16 +38,10 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
+from copy import deepcopy
 
-from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -88,13 +82,29 @@ class Keywords(WizardWidget):
 
     def _to_xml(self):
         keywords = self.theme_list._to_xml()
+
         place_keywords = self.place_list._to_xml()
         for child_node in place_keywords.xpath('place'):
             keywords.append(child_node)
 
+        if self.original_xml is not None:
+            stratums = xml_utils.search_xpath(self.original_xml, 'stratum',
+                                              only_first=False)
+            for stratum in stratums:
+                stratum.tail = None
+                keywords.append(deepcopy(stratum))
+
+            temporals = xml_utils.search_xpath(self.original_xml, 'temporal',
+                                               only_first=False)
+            for temporal in temporals:
+                temporal.tail = None
+                keywords.append(deepcopy(temporal))
+
         return keywords
 
     def _from_xml(self, keywords):
+
+        self.original_xml = keywords
 
         self.theme_list._from_xml(keywords)
         self.place_list._from_xml(keywords)

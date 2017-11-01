@@ -38,26 +38,16 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
+from copy import deepcopy
 
-from lxml import etree
-import pandas as pd
+from PyQt5.QtCore import QPoint
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-from pymdwizard.core import taxonomy
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_taxonomy2
 from pymdwizard.gui import taxonomy_gui
-from pymdwizard.gui.repeating_element import RepeatingElement
 
 from pymdwizard.gui.taxoncl import Taxoncl
 from pymdwizard.gui.keywtax import Keywordtax
@@ -114,12 +104,6 @@ class Taxonomy(WizardWidget):
         self.tax_gui.move(fg.topRight() - QPoint(150, -25))
         self.tax_gui.show()
 
-        # self.taxgui_dialog = QDialog(self)
-        # self.taxgui_dialog.setWindowTitle('Search Integrated Taxonomic Information System (ITIS)')
-        # self.taxgui_dialog.setLayout(self.tax_gui.layout())
-        #
-        # self.taxgui_dialog.exec_()
-
     def remove_selected(self):
         indexes = self.ui.table_include.selectionModel().selectedRows()
         selected_indices = [int(index.row()) for index in list(indexes)]
@@ -149,10 +133,24 @@ class Taxonomy(WizardWidget):
 
         taxonomy = xml_utils.xml_node('taxonomy')
         taxonomy.append(self.keywtax._to_xml())
+
+        if self.original_xml is not None:
+            taxonsys = xml_utils.search_xpath(self.original_xml, 'taxonsys')
+            if taxonsys is not None:
+                taxonsys.tail = None
+                taxonomy.append(deepcopy(taxonsys))
+
+            taxongen = xml_utils.search_xpath(self.original_xml, 'taxongen')
+            if taxongen is not None:
+                taxongen.tail = None
+                taxonomy.append(deepcopy(taxongen))
+
         taxonomy.append(self.taxoncl._to_xml())
         return taxonomy
 
     def _from_xml(self, taxonomy_element):
+        self.original_xml = taxonomy_element
+
         self.clear_widget()
         self.ui.rbtn_yes.setChecked(True)
 

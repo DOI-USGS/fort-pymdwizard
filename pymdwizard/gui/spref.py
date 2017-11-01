@@ -38,10 +38,11 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+from lxml import etree
+from copy import deepcopy
+
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QLabel, QComboBox
-
-from lxml import etree
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -292,12 +293,19 @@ class SpRef(WizardWidget):
             denflat_str = self.findChild(QLineEdit, "fgdc_denflat").text()
             denflat = xml_utils.xml_node('denflat', denflat_str, geodetic)
 
-        return spref_node
+            if self.original_xml is not None:
+                vertdef = xml_utils.search_xpath(self.original_xml, 'vertdef')
+                if vertdef is not None:
+                    vertdef.tail = None
+                    spref_node.append(deepcopy(vertdef))
 
+        return spref_node
 
     def _from_xml(self, spref_node):
         self.clear_widget()
         if spref_node.tag == 'spref':
+            self.original_xml = spref_node
+
             self.ui.rbtn_yes.setChecked(True)
 
             geograph = xml_utils.search_xpath(spref_node, 'horizsys/geograph')

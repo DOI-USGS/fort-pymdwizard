@@ -38,15 +38,7 @@ nor shall the fact of distribution constitute any such warranty, and no
 responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
-from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle, QSpacerItem
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint, Qt
+from copy import deepcopy
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -113,6 +105,17 @@ class MetaInfo(WizardWidget):
         metd = xml_utils.xml_node('metd', text=self.metd.get_date(),
                                   parent_node=metainfo_node)
 
+        if self.original_xml is not None:
+            metrd = xml_utils.search_xpath(self.original_xml, 'metrd')
+            if metrd is not None:
+                metrd.tail = None
+                metainfo_node.append(deepcopy(metrd))
+        if self.original_xml is not None:
+            metfrd = xml_utils.search_xpath(self.original_xml, 'metfrd')
+            if metfrd is not None:
+                metfrd.tail = None
+                metainfo_node.append(deepcopy(metfrd))
+
         metc = xml_utils.xml_node('metc', parent_node=metainfo_node)
         cntinfo = self.contactinfo._to_xml()
         metc.append(cntinfo)
@@ -124,15 +127,39 @@ class MetaInfo(WizardWidget):
                                      text=self.ui.fgdc_metstdv.currentText(),
                                      parent_node=metainfo_node)
 
+        if self.original_xml is not None:
+            mettc = xml_utils.search_xpath(self.original_xml, 'mettc')
+            if mettc is not None:
+                mettc.tail = None
+                metainfo_node.append(deepcopy(mettc))
+        if self.original_xml is not None:
+            metac = xml_utils.search_xpath(self.original_xml, 'metac')
+            if metac is not None:
+                metac.tail = None
+                metainfo_node.append(deepcopy(metac))
+
+        metuc_str = "Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)"
+        if self.original_xml is not None:
+            metuc = xml_utils.search_xpath(self.original_xml, 'metuc')
+            if metuc is not None:
+                metuc_str = xml_utils.get_text_content(self.original_xml, 'metuc')
         metuc = xml_utils.xml_node('metuc',
-                                   text="Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)",
+                                   text=metuc_str,
                                    parent_node=metainfo_node)
+
+        if self.original_xml is not None:
+            metextns = xml_utils.search_xpath(self.original_xml, 'metextns')
+            if metextns is not None:
+                metextns.tail = None
+                metainfo_node.append(deepcopy(metextns))
 
         return metainfo_node
 
     def _from_xml(self, xml_metainfo):
 
         if xml_metainfo.tag == 'metainfo':
+            self.original_xml = xml_metainfo
+
             if xml_metainfo.xpath('metc/cntinfo'):
                 self.contactinfo._from_xml(xml_metainfo.xpath('metc/cntinfo')[0])
 
