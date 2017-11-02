@@ -97,8 +97,8 @@
     var southWest = new L.latLng(south, west);
     var northEast = new L.latLng(north, east);
     var bounds = new L.latLngBounds(southWest, northEast);
-    var rect = new L.rectangle(bounds, {color: 'blue', weight: 1})
-    var rect2 = new L.rectangle(bounds, {color: 'blue', weight: 1})
+    var rect = new L.rectangle(bounds, {color: 'blue', weight: 1});
+    var rect2 = new L.rectangle(bounds, {color: 'blue', weight: 1});
 
 
 
@@ -141,8 +141,7 @@
         map.removeLayer(nw_marker);
         map.removeLayer(rect);
         map.removeLayer(rect2);
-    };
-
+    }
     function addRect(){
         map.addLayer(se_marker);
         map.addLayer(ne_marker);
@@ -154,18 +153,17 @@
             map.addLayer(rect2)
         }
 
-    };
-
+    }
     function updateMap() {
         var southWest = new L.latLng(south, west);
         var northEast = new L.latLng(north, east);
         var southEast = new L.latLng(south, east);
         var northWest = new L.latLng(north, west);
 
-        se_marker.setLatLng(southEast)
-        ne_marker.setLatLng(northEast)
-        sw_marker.setLatLng(southWest)
-        nw_marker.setLatLng(northWest)
+        se_marker.setLatLng(southEast);
+        ne_marker.setLatLng(northEast);
+        sw_marker.setLatLng(southWest);
+        nw_marker.setLatLng(northWest);
 
         var bounds = new L.latLngBounds(southWest, northEast);
 
@@ -175,7 +173,7 @@
 
             var bounds1 = new L.latLngBounds(southWest, north180);
             var bounds2 = new L.latLngBounds(southNeg180, northEast);
-            map.addLayer(rect2)
+            map.addLayer(rect2);
             rect.setBounds(bounds1);
             rect2.setBounds(bounds2);
         } else {

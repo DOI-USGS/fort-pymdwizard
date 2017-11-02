@@ -1,21 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt application for the main pymdwizard application
+Provide a pyqt widget for the FGDC component with a shortname matching this
+file's name.
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,37 +45,35 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys, os
-import json
+
+import sys
+import os
 import tempfile
 import time
 import datetime
 import shutil
 from subprocess import Popen
 
-from lxml import etree
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QSplashScreen
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QAction
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QMessageBox, QAction
-from PyQt5.QtWidgets import QWidget, QPushButton
-from PyQt5.QtWidgets import QFileDialog, QDialog, QTabWidget
-from PyQt5.QtCore import QFile, QFileInfo
-from PyQt5.QtCore import Qt, QSettings, QFileSystemWatcher
-from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFileInfo
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QFileSystemWatcher
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPixmap
 
 try:
     import docx
@@ -62,9 +82,13 @@ except ImportError:
 
 from pymdwizard.gui.ui_files import UI_MainWindow
 from pymdwizard.gui.MetadataRoot import MetadataRoot
-from pymdwizard.core import xml_utils, utils, fgdc_utils, review_utils
+from pymdwizard.core import xml_utils
+from pymdwizard.core import utils
+from pymdwizard.core import fgdc_utils
+from pymdwizard.core import review_utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
+from pymdwizard.gui.wiz_widget import WizardWidget
 
 import sip
 
@@ -85,7 +109,9 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_widgets = []
         # the last error widget that was highlighted
         self.last_highlight = None
-
+        self.last_updated = None
+        self.ui = None
+        self.metadata_root = None
         self.build_ui()
         self.connect_events()
 
@@ -109,8 +135,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         for i in range(PyMdWizardMainForm.max_recent_files):
             self.recent_file_actions.append(
-                QAction(self, visible=False,
-                        triggered=self.open_recent_file))
+                QAction(self, visible=False, triggered=self.open_recent_file))
             self.ui.menuRecent_Files.addAction(self.recent_file_actions[i])
         self.update_recent_file_actions()
 
@@ -131,7 +156,6 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_list_dialog.setWindowTitle('FGDC Validation Errors')
         self.error_list_dialog.setLayout(self.error_list.layout())
         self.error_list_dialog.resize(600, 400)
-
 
     def connect_events(self):
         """
@@ -154,8 +178,12 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
         self.ui.generate_review.triggered.connect(self.generate_review_doc)
         self.ui.actionLaunch_Help.triggered.connect(self.launch_help)
-        self.ui.actionCheck_for_Updates.triggered.connect(self.update_from_github)
+        self.ui.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
         self.ui.actionAbout.triggered.connect(self.about)
+        self.ui.actionData_Quality.triggered.connect(self.use_dataqual)
+        self.ui.actionSpatial.triggered.connect(self.use_spatial)
+        self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
+        self.ui.actionDistribution.triggered.connect(self.use_distinfo)
 
     def open_recent_file(self):
         """
@@ -230,7 +258,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.clear_validation()
 
-        #check that we have read write access to the file
+        # check that we have read write access to the file
         file = QFile(fname)
         if not file.open(QFile.ReadOnly | QFile.Text):
             msg = "Cannot read file %s:\n%s." % (fname, file.errorString())
@@ -243,18 +271,17 @@ class PyMdWizardMainForm(QMainWindow):
     def load_file_content(self, fname):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
-        exc_info = sys.exc_info()
         self.metadata_root.clear_widget()
         try:
-            new_record = etree.parse(fname)
-            self.metadata_root._from_xml(new_record)
+            new_record = xml_utils.fname_to_node(fname)
+            self.metadata_root.from_xml(new_record)
             self.statusBar().showMessage("File loaded", 10000)
         except BaseException as e:
             import traceback
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
+            QApplication.restoreOverrideCursor()
             QMessageBox.warning(self, "Recent Files", msg)
         QApplication.restoreOverrideCursor()
-
 
     def file_updated(self):
         """
@@ -267,10 +294,12 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
         if time.time() - self.last_updated > 4:
-            msg = "The file you are editing has been changed on disk.  Would you like to reload this File?"
+            msg = "The file you are editing has been changed on disk.  " \
+                  "Would you like to reload this File?"
             alert = QDialog()
             self.last_updated = time.time()
-            confirm = QMessageBox.question(self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No)
+            confirm = QMessageBox.question(self, "File Changed", msg,
+                                           QMessageBox.Yes | QMessageBox.No)
             if confirm == QMessageBox.Yes:
                 self.load_file(self.cur_fname)
 
@@ -332,7 +361,7 @@ class PyMdWizardMainForm(QMainWindow):
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        xml_utils.save_to_file(self.metadata_root._to_xml(), fname)
+        xml_utils.save_to_file(self.metadata_root.to_xml(), fname)
         self.last_updated = time.time()
 
         self.set_current_file(fname)
@@ -382,8 +411,10 @@ class PyMdWizardMainForm(QMainWindow):
         if template_fname is None:
             template_fname = utils.get_resource_path('CSDGM_Template.xml')
         elif not os.path.exists(template_fname):
-            msg = "The previous template file specified, {}, could not be found.".format(template_fname)
-            msg += "\nCheck that the file has not beed deleted, renamed or moved."
+            msg = "The previous template file specified, {}, could not be " \
+                  "found.".format(template_fname)
+            msg += "\nCheck that the file has not beed deleted, renamed " \
+                   "or moved."
             msg += "Defaulting to the built in template.".format(template_fname)
             QMessageBox.warning(self, "Template file missing", msg)
             template_fname = utils.get_resource_path('CSDGM_Template.xml')
@@ -411,7 +442,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-
         self.cur_fname = fname
         if fname:
             stripped_name = QFileInfo(fname).fileName()
@@ -462,9 +492,10 @@ class PyMdWizardMainForm(QMainWindow):
             self.recent_file_actions[j].setVisible(False)
 
     def check_for_changes(self):
-        if self.cur_fname and os.path.exists(self.cur_fname):
-            cur_xml = xml_utils.node_to_string(self.metadata_root._to_xml())
-            disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
+        try:
+            if self.cur_fname and os.path.exists(self.cur_fname):
+                cur_xml = xml_utils.node_to_string(self.metadata_root.to_xml())
+                disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
 
             if cur_xml != disk_xml:
                 msg = "Do you want to save your changes?"
@@ -472,10 +503,12 @@ class PyMdWizardMainForm(QMainWindow):
                 self.last_updated = time.time()
                 confirm = QMessageBox.question(self, "Save Changes", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
                 if confirm == QMessageBox.Yes:
-                    xml_utils.save_to_file(self.metadata_root._to_xml(), self.cur_fname)
+                    xml_utils.save_to_file(self.metadata_root.to_xml(), self.cur_fname)
                 elif confirm == QMessageBox.Cancel:
                     return 'Cancel'
                 self.cur_fname = ''
+        except:
+            pass
         return None
 
     def exit(self):
@@ -512,6 +545,18 @@ class PyMdWizardMainForm(QMainWindow):
             event.accept()
         else:
             event.ignore()
+
+    def use_dataqual(self, sender=None):
+        self.metadata_root.use_section('dataqual', sender)
+
+    def use_spatial(self, sender=None):
+        self.metadata_root.use_section('spatial', sender)
+
+    def use_eainfo(self, sender=None):
+        self.metadata_root.use_section('eainfo', sender)
+
+    def use_distinfo(self, sender=None):
+        self.metadata_root.use_section('distinfo', sender)
 
     def clear_validation(self):
         """
@@ -550,14 +595,13 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-
         self.error_list_dialog.show()
         if self.metadata_root.schema == 'bdp':
             xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
         else:
             xsl_fname = utils.get_resource_path('FGDC/fgdc-std-001-1998-annotated.xsd')
         from pymdwizard.core import fgdc_utils
-        errors = fgdc_utils.validate_xml(self.metadata_root._to_xml(), xsl_fname)
+        errors = fgdc_utils.validate_xml(self.metadata_root.to_xml(), xsl_fname)
 
         self.clear_validation()
 
@@ -580,7 +624,6 @@ class PyMdWizardMainForm(QMainWindow):
                     except IndexError:
                         attr_index = 0
 
-                    # self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
                     self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].regular_me()
                     self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
             except:
@@ -649,28 +692,38 @@ class PyMdWizardMainForm(QMainWindow):
         if section == 'idinfo':
             subsection = xpath.split('/')[2]
             if subsection == 'spdom':
-                self.metadata_root.switch_section(2)
+                parent_section = self.metadata_root.switch_section(2)
             else:
-                self.metadata_root.switch_section(0)
+                parent_section = self.metadata_root.switch_section(0)
         elif section == 'dataqual':
-            self.metadata_root.switch_section(1)
+            parent_section = self.metadata_root.switch_section(1)
         elif section == 'spdoinfo' or section == 'spref':
-            self.metadata_root.switch_section(2)
+            parent_section = self.metadata_root.switch_section(2)
         elif section == 'eainfo':
-            self.metadata_root.switch_section(3)
+            parent_section = self.metadata_root.switch_section(3)
         elif section == 'eainfo':
-            self.metadata_root.switch_section(3)
+            parent_section = self.metadata_root.switch_section(3)
         elif section == 'distinfo':
-            self.metadata_root.switch_section(4)
+            parent_section = self.metadata_root.switch_section(4)
         elif section == 'metainfo':
-            self.metadata_root.switch_section(5)
+            parent_section = self.metadata_root.switch_section(5)
 
         if self.last_highlight is not None and \
                 not sip.isdeleted(self.last_highlight):
-            self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+            self.highlight_error(self.last_highlight,
+                                          self.last_highlight.toolTip())
 
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
+
+        try:
+            parent_wizwidget = [thing for thing in parent_section.children()
+                                if isinstance(thing, WizardWidget)][0]
+            parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
+        except:
+            pass
+
+
         self.last_highlight = bad_widget[0].widget
         self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
 
@@ -794,7 +847,6 @@ class PyMdWizardMainForm(QMainWindow):
 
 }}
         """)
-        #.format(widgetname=widget_parent.objectName()))
 
         self.error_widgets.append(widget_parent)
 
@@ -838,8 +890,8 @@ class PyMdWizardMainForm(QMainWindow):
         """
 
         xsl_fname = utils.get_resource_path("FGDC/FGDC_Stylesheet.xsl")
-        transform = etree.XSLT(etree.parse(xsl_fname))
-        result = transform(self.metadata_root._to_xml())
+        transform = xml_utils.load_xslt(xsl_fname)
+        result = transform(self.metadata_root.to_xml())
 
         tmp = tempfile.NamedTemporaryFile(suffix='.html')
         tmp.close()
@@ -882,7 +934,9 @@ class PyMdWizardMainForm(QMainWindow):
                 msg = "Would you like to save the current file before continuing?"
                 alert = QDialog()
                 self.last_updated = time.time()
-                confirm = QMessageBox.question(self, "File save", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                confirm = QMessageBox.question(self, "File save", msg,
+                                               QMessageBox.Yes | QMessageBox.No
+                                               | QMessageBox.Cancel)
                 if confirm == QMessageBox.Yes:
                     self.save_file()
                 elif confirm == QMessageBox.Cancel:
@@ -897,11 +951,10 @@ class PyMdWizardMainForm(QMainWindow):
                 msg = 'Review document available at: {}'.format(out_fname)
                 msg += '\n\nReview document now opening in default application...'
                 QMessageBox.information(self, "Review finished", msg)
-            except BaseException as e:
+            except BaseException:
                 import traceback
-                msg = "Problem encountered generateing review document:\n{}".format(traceback.format_exc())
+                msg = "Problem encountered generating review document:\n{}".format(traceback.format_exc())
                 QMessageBox.warning(self, "Problem encountered", msg)
-
 
     def launch_jupyter(self):
         """
@@ -926,7 +979,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             if last_jupyter_dname is None:
                 last_jupyter_dname = os.path.join(install_dir, 'examples')
-            jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from", last_jupyter_dname)
+            jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from",
+                                                             last_jupyter_dname)
             if jupyter_dname:
                 settings.setValue('last_jupyter_dname', jupyter_dname)
             else:
@@ -954,7 +1008,6 @@ class PyMdWizardMainForm(QMainWindow):
         msgbox = QMessageBox(self)
         msgbox.setWindowTitle("About")
         msgbox.setTextFormat(Qt.RichText)
-
 
         msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
         msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
@@ -984,9 +1037,6 @@ class PyMdWizardMainForm(QMainWindow):
                     self.update_from_github()
         except BaseException as e:
             pass
-            # import traceback
-            # msg = "Could not update application:\n{}".format(traceback.format_exc())
-            # QMessageBox.warning(self, "Recent Files", msg)
 
     def update_from_github(self):
         from subprocess import check_output
@@ -1007,11 +1057,12 @@ class PyMdWizardMainForm(QMainWindow):
             except BaseException as e:
                 import traceback
                 msg = "Could not update application:\n{}".format(traceback.format_exc())
+                QApplication.restoreOverrideCursor()
                 QMessageBox.warning(self, "Recent Files", msg)
 
         else:
             msg = 'Could not find the batch file to update the application'
-
+        QApplication.restoreOverrideCursor()
         QMessageBox.information(self, "Update results", msg)
 
 

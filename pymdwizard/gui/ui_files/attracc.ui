@@ -45,7 +45,7 @@
     <number>3</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="help_attraccr">
+    <widget class="QGroupBox" name="fgdc_attracc">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -91,13 +91,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>45</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>45</height>
          </size>
         </property>
         <property name="plainText">

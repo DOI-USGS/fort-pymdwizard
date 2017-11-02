@@ -1,10 +1,59 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-import pandas as pd
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+"""
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
 
+License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
+                    http://creativecommons.org/licenses/by/4.0/
+
+PURPOSE
+------------------------------------------------------------------------------
+Provide a pyqt widget for the FGDC component with a shortname matching this
+file's name.
+
+
+SCRIPT DEPENDENCIES
+------------------------------------------------------------------------------
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
+
+
+U.S. GEOLOGICAL SURVEY DISCLAIMER
+------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
+Any use of trade, product or firm names is for descriptive purposes only and
+does not imply endorsement by the U.S. Geological Survey.
+
+Although this information product, for the most part, is in the public domain,
+it also contains copyrighted material as noted in the text. Permission to
+reproduce copyrighted items for other than personal use must be secured from
+the copyright owner.
+------------------------------------------------------------------------------
+"""
+
+import pandas as pd
+import requests
 
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
 
 from pymdwizard.core import taxonomy
@@ -27,7 +76,7 @@ class ItisMainForm(QWidget):
         self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
 
-        self._from_xml(xml)
+        self.from_xml(xml)
         self.fgdc_function = fgdc_function
 
     def build_ui(self):
@@ -59,18 +108,27 @@ class ItisMainForm(QWidget):
         self.ui.button_remove_selected.clicked.connect(self.remove_selected)
         self.ui.table_include.doubleClicked.connect(self.remove_selected)
 
-
     def search_itis(self):
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if str(self.ui.combo_search_type.currentText()) == 'Scientific name':
-            results = taxonomy.search_by_scientific_name(str(self.ui.search_term.text()))
-        else:
-            results = taxonomy.search_by_common_name(str(self.ui.search_term.text()))
+        try:
+            if str(self.ui.combo_search_type.currentText()) == \
+                    'Scientific name':
+                results = taxonomy.search_by_scientific_name(str(
+                    self.ui.search_term.text()))
+            else:
+                results = taxonomy.search_by_common_name(str(
+                    self.ui.search_term.text()))
 
-        model = utils.PandasModel(results)
-        self.ui.table_results.setModel(model)
-        QApplication.restoreOverrideCursor()
+            model = utils.PandasModel(results)
+            self.ui.table_results.setModel(model)
+            QApplication.restoreOverrideCursor()
+        except requests.exceptions.ConnectionError:
+            QApplication.restoreOverrideCursor()
+            msg = "This functionality requires an internet connection."
+            msg += "\n Please retry latter."
+            QMessageBox.information(None, "No internet connection", msg)
+            self.close()
 
     def add_tsn(self, index):
         try:
@@ -94,7 +152,8 @@ class ItisMainForm(QWidget):
                 except KeyError:
                     msg = "Error, No taxon was selected in the Search Results table!"
                     msg += '\nMake sure the ITIS search returned results and select one before clicking Add Selection. '
-                    QMessageBox.information(self, "Problem adding tason", msg)
+                    QMessageBox.information(None, "Problem adding taxon", msg,
+                                            parent=self)
 
                     return None
 
@@ -107,7 +166,6 @@ class ItisMainForm(QWidget):
             self.ui.table_include.setModel(self.selected_model)
         except AttributeError:
             pass
-
 
     def remove_selected(self, index):
         indexes = self.ui.table_include.selectionModel().selectedRows()
@@ -129,7 +187,7 @@ class ItisMainForm(QWidget):
         """
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        fgdc_taxonomy = self._to_xml()
+        fgdc_taxonomy = self.to_xml()
         self.fgdc_function(fgdc_taxonomy)
         QApplication.restoreOverrideCursor()
 
@@ -138,8 +196,7 @@ class ItisMainForm(QWidget):
 
         self.close()
 
-
-    def _to_xml(self):
+    def to_xml(self):
 
         df = self.ui.table_include.model().dataframe()
         include_common = self.ui.check_include_common.isChecked()
@@ -150,7 +207,7 @@ class ItisMainForm(QWidget):
 
         return fgdc_taxonomy
 
-    def _from_xml(self, taxonomy_element):
+    def from_xml(self, taxonomy_element):
 
         if taxonomy_element is not None:
             i = 0
@@ -163,7 +220,6 @@ class ItisMainForm(QWidget):
 
             self.selected_model = utils.PandasModel(self.selected_items_df)
             self.ui.table_include.setModel(self.selected_model)
-
 
 
 if __name__ == '__main__':

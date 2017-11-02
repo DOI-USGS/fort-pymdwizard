@@ -1,33 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
+
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Metadata Date <timeperd> section
+Provide a pyqt widget for the FGDC component with a shortname matching this
+files name.
+
+
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
+
+
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
+
 Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
@@ -36,8 +53,13 @@ import numpy as np
 import sip
 
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget, QMenu, QComboBox, QLineEdit, QPlainTextEdit
-from PyQt5.QtCore import QPropertyAnimation, QSize
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtCore import QPropertyAnimation
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 
 from pymdwizard.core import utils
@@ -45,10 +67,13 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_attr
-from pymdwizard.gui import udom, rdom, codesetd, edom_list
+from pymdwizard.gui import udom
+from pymdwizard.gui import rdom
+from pymdwizard.gui import codesetd
+from pymdwizard.gui import edom_list
 
 
-class Attr(WizardWidget):  #
+class Attr(WizardWidget):
 
     drag_label = "Attribute <attr>"
     acceptable_tags = ['attr']
@@ -59,15 +84,13 @@ class Attr(WizardWidget):  #
         self.ef = 0
         WizardWidget.__init__(self, parent=parent)
 
-
-        # an in memory record of all of the contents that were selected
+        # an in memory record of all  the contents that were selected
         self._previous_index = -1
         cbo = self.ui.comboBox
         self._domain_content = dict.fromkeys(range(cbo.count()), None)
 
         self.parent_ui = parent
         self.series = None
-
 
     def build_ui(self):
         """
@@ -76,7 +99,7 @@ class Attr(WizardWidget):  #
         -------
         None
         """
-        self.ui = UI_attr.Ui_attribute_widget()  # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_attr.Ui_attribute_widget()
         self.ui.setupUi(self)
 
         # self.ui.fgdc_attrdef.installEventFilter(self)
@@ -94,7 +117,6 @@ class Attr(WizardWidget):  #
         self.ui.comboBox.mousePressEvent = self.combo_press
         self.domain = None
         self.ui.comboBox.setCurrentIndex(3)
-
 
     def mousePressEvent(self, event):
         self.activate()
@@ -121,9 +143,33 @@ class Attr(WizardWidget):  #
                 child.deleteLater()
 
     def set_series(self, series):
+        """
+        store a series with this attri
+        Parameters
+        ----------
+        series : pandas series
+
+        Returns
+        -------
+        None
+        """
         self.series = series
 
     def guess_domain(self):
+        """
+        return the index of the domain the associated series is thought to
+        best match.
+
+        if there are less than twenty unique items in the series the guess
+        is enumerated
+        if it's numeric the guess is range.
+        else it's unrepresentable
+
+        Returns
+        -------
+        int : index of the domain the associated series is
+            thought to best match
+        """
         # given a series of data take a guess as to which
         # domain type is appropriate
         if self.series is not None:
@@ -139,9 +185,15 @@ class Attr(WizardWidget):  #
         return 3
 
     def store_current_content(self):
-        # take a snapshot of the current contents
+        """
+        Save the current contents (xml format) into our domain contents dict
+
+        Returns
+        -------
+        None
+        """
         if self.domain is not None and not sip.isdeleted(self.domain):
-            cur_xml = self.domain._to_xml()
+            cur_xml = self.domain.to_xml()
             if cur_xml.tag == 'udom':
                 self._domain_content[3] = cur_xml
             elif cur_xml.tag == 'codesetd':
@@ -152,6 +204,19 @@ class Attr(WizardWidget):  #
                 self._domain_content[0] = cur_xml
 
     def populate_domain_content(self, which='guess'):
+        """
+        Fill out this widget with the content from it's associated series
+
+        Parameters
+        ----------
+        which : str, optional, one of 'guess' or the index to force
+            if guess introspect the series associated with this attribute
+            and make a best guess as to which domain to use.
+
+        Returns
+        -------
+        None
+        """
         self.clear_domain()
 
         if which == 'guess':
@@ -170,18 +235,20 @@ class Attr(WizardWidget):  #
         else:
             self.domain = udom.Udom(parent=self)
 
-
         if self._domain_content[index] is not None:
             # This domain has been used before, display previous content
-            self.domain._from_xml(self._domain_content[index])
+            self.domain.from_xml(self._domain_content[index])
         elif self.series is not None and index == 0:
             uniques = self.series.unique()
             if len(uniques) > 100:
                 msg = "There are more than 100 unique values in this field."
-                msg += "\n This tool cannot smoothly display that many entries. "
-                msg += "\nTypically an enumerated domain is not used with that many unique entries."
+                msg += "\n This tool cannot smoothly display that many " \
+                       "entries. "
+                msg += "\nTypically an enumerated domain is not used with " \
+                       "that many unique entries."
                 msg += "\n\nOnly the first one hundred are displayed below!"
-                msg += "\nYou will likely want to change the domain to one of the other options."
+                msg += "\nYou will likely want to change the domain to one " \
+                       "of the other options."
                 QMessageBox.warning(self, "Too many unique entries", msg)
                 self.domain.populate_from_list(uniques[:101])
             else:
@@ -198,7 +265,15 @@ class Attr(WizardWidget):  #
 
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
-    def change_domain(self, index):
+    def change_domain(self):
+        """
+        When changing the domain we must first store the current contents
+        in our internal contents dictionary before loading the next.
+
+        Returns
+        -------
+        None
+        """
         if self.active:
             self.store_current_content()
             self.clear_domain()
@@ -206,6 +281,13 @@ class Attr(WizardWidget):  #
             self.populate_domain_content(self.ui.comboBox.currentIndex())
 
     def supersize_me(self):
+        """
+        Expand this attribute and display it's contents
+
+        Returns
+        -------
+        None
+        """
         if not self.active:
             self.active = True
             self.animation = QPropertyAnimation(self, b"minimumSize")
@@ -219,6 +301,13 @@ class Attr(WizardWidget):  #
             self.populate_domain_content(cbo.currentIndex())
 
     def regularsize_me(self):
+        """
+        Collapse this attribute and hide it's content
+
+        Returns
+        -------
+        None
+        """
         if self.active:
             self.store_current_content()
             self.animation = QPropertyAnimation(self, b"minimumSize")
@@ -232,6 +321,14 @@ class Attr(WizardWidget):  #
         self.active = False
 
     def activate(self):
+        """
+        When an attribute is activated minimize all the other attributes
+        in the parent attribute list
+
+        Returns
+        -------
+        None
+        """
         if self.active:
             #we're already big so do nothing
             pass
@@ -241,7 +338,6 @@ class Attr(WizardWidget):  #
             self.supersize_me()
 
     def contextMenuEvent(self, event):
-
 
         self.in_context = True
         clicked_widget = self.childAt(event.pos())
@@ -256,10 +352,12 @@ class Attr(WizardWidget):  #
 
         menu.addSeparator()
         insert_before = menu.addAction(QIcon('paste.png'), 'Insert before')
-        insert_before.setStatusTip('insert an empty attribute (column) before this one')
+        insert_before.setStatusTip('insert an empty attribute (column) '
+                                   'before this one')
 
         insert_after = menu.addAction(QIcon('paste.png'), 'Insert After')
-        insert_after.setStatusTip('insert an empty attribute (column) after this one')
+        insert_after.setStatusTip('insert an empty attribute (column) after'
+                                  ' this one')
 
         delete_action = menu.addAction(QIcon('delete.png'), '&Delete')
         delete_action.setStatusTip('Delete this atttribute (column)')
@@ -321,22 +419,25 @@ class Attr(WizardWidget):  #
             msg.show()
         self.in_context = False
 
-    def _to_xml(self):
+    def to_xml(self):
         """
-        encapsulates the QTabWidget text for Metadata Time in an element tag
+        return an XML element with the contents of this widget,
+        augmented with any original content not displayed on the widget
+        if applicable.
+
         Returns
         -------
-        timeperd element tag in xml tree
+        XML Element
         """
         cur_index = self.ui.comboBox.currentIndex()
 
         if self.active:
-            domain = self.domain._to_xml()
+            domain = self.domain.to_xml()
         elif self._domain_content[cur_index] is not None:
             domain = self._domain_content[cur_index]
         else:
             self.populate_domain_content(cur_index)
-            domain = self.domain._to_xml()
+            domain = self.domain.to_xml()
 
         if self.ui.comboBox.currentIndex() == 0:
             attr = xml_utils.XMLNode(domain)
@@ -361,12 +462,14 @@ class Attr(WizardWidget):  #
 
         return attr
 
-    def _from_xml(self, attr):
+    def from_xml(self, attr):
         """
-        parses the xml code into the relevant timeperd elements
+        Populate widget with a representation of the passed XML element
+
         Parameters
         ----------
-        metadata_date - the xml element timeperd and its contents
+        attr : XML Element
+
         Returns
         -------
         None
@@ -395,7 +498,7 @@ class Attr(WizardWidget):  #
                 else:
                     self.ui.comboBox.setCurrentIndex(3)
             else:
-                print ("The tag is not attr")
+                print("The tag is not attr")
         except KeyError:
             pass
 

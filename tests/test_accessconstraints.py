@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.gui import accconst
 
-def test_accessconstraints__from_xml(qtbot):
+def test_accessconstraints_from_xml(qtbot):
     widget = accconst.Accconst()
     qtbot.addWidget(widget)
 
@@ -19,16 +19,16 @@ def test_accessconstraints__from_xml(qtbot):
     test_record = etree.parse(test_record_fname)
     acc_const = test_record.xpath("idinfo/accconst")[0]
 
-    widget._from_xml(acc_const)
+    widget.from_xml(acc_const)
     assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == 'none'
 
 
-def test_accessconstraints__to_xml(qtbot):
+def test_accessconstraints_to_xml(qtbot):
     widget = accconst.Accconst()
     qtbot.addWidget(widget)
 
     assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == "None.  Please see 'Distribution Info' for details."
-    ac = widget._to_xml()
+    ac = widget.to_xml()
     assert str(etree.tostring(ac, pretty_print=True).decode()) \
     == """<accconst>None.  Please see 'Distribution Info' for details.</accconst>
 """
