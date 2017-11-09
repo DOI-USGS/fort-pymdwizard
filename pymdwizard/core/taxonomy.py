@@ -1,61 +1,16 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-"""
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
-
-License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
-
-PURPOSE
-------------------------------------------------------------------------------
-Module contains methods for querying the ITIS webservice
+"""Methods for querying the ITIS webservice
 and formatting the results into XML formatted FGDC taxonomy sections.
 
 Attributes
 ----------
 ITIS_BASE_URL : str
     ITIS service base url
-
-
-SCRIPT DEPENDENCIES
-------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
 """
-
 import collections
 import requests
 import warnings
+
+from lxml import etree
 
 try:
     import pandas as pd
@@ -276,7 +231,7 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
         dfs = collections.OrderedDict()
         for child in results.getchildren():
             df = xml_utils.element_to_df([child]).dropna()
-            dfs[xml_utils.parse_tag(child.tag)] = df
+            dfs[xml_utils._parse_tag(child.tag)] = df
         return dfs
     else:
         return xml_utils.node_to_dict(results, add_fgdc=False)
@@ -285,7 +240,8 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
 def _get_xml(url, payload, **kwargs):
     out = utils.requests_pem_get(url, params=payload)
     out.raise_for_status()
-    tt = xml_utils.string_to_node(out.content)
+    xmlparser = etree.XMLParser()
+    tt = etree.fromstring(out.content, xmlparser)
     return tt
 
 
@@ -483,15 +439,16 @@ def merge_taxons(tsns):
 
 
 def gen_taxonomy_section(keywords, tsns, include_common_names=False):
-    taxonomy = xml_utils.xml_node(tag="taxonomy")
-    keywtax = xml_utils.xml_node(tag="keywtax")
-    taxonkt = xml_utils.xml_node(tag="taxonkt", text='None',
-                                 parent_node=keywtax)
-
+    taxonomy = etree.Element("taxonomy")
+    keywtax = etree.Element("keywtax")
+    taxonkt = etree.Element("taxonkt")
+    taxonkt.text = 'None'
+    keywtax.append(taxonkt)
 
     for keyword in keywords:
-        taxonkey = xml_utils.xml_node(tag="taxonkey", text=keyword,
-                                      parent_node=taxonkey)
+        taxonkey = etree.Element("taxonkey")
+        taxonkey.text = keyword
+        keywtax.append(taxonkey)
 
     taxonomy.append(keywtax)
 
@@ -507,12 +464,12 @@ def gen_fgdc_taxoncl(tsns, include_common_names=False, include_tsns=[]):
 
 def _gen_fgdc_taxonomy_section(taxon, include_common_names=False,
                                include_tsns=[]):
-    taxonomicclassification = xml_utils.xml_node(tag="taxoncl")
-    taxrankname = xml_utils.xml_node(tag="taxonrn")
+    taxonomicclassification = etree.Element("taxoncl")
+    taxrankname = etree.Element("taxonrn")
     taxrankname.text = taxon.taxon_name
     taxonomicclassification.append(taxrankname)
 
-    taxrankvalue = xml_utils.xml_node(tag="taxonrv")
+    taxrankvalue = etree.Element("taxonrv")
     taxrankvalue.text = taxon.taxon_value
     taxonomicclassification.append(taxrankvalue)
 
@@ -521,14 +478,14 @@ def _gen_fgdc_taxonomy_section(taxon, include_common_names=False,
             df = get_common_names_tsn(taxon.tsn)
             if 'language' in df.columns:
                 for common_name in df.query('language == "English"').commonName:
-                    applicable_common_name = xml_utils.xml_node(tag="common")
+                    applicable_common_name = etree.Element("common")
                     applicable_common_name.text = common_name
                     taxonomicclassification.append(applicable_common_name)
         except (ValueError, IndexError):
             pass
 
     if str(taxon.tsn) in include_tsns:
-        tsn_common_name = xml_utils.xml_node(tag="common")
+        tsn_common_name = etree.Element("common")
         tsn_common_name.text = "TSN: {}".format(taxon.tsn)
         taxonomicclassification.append(tsn_common_name)
 
@@ -538,10 +495,4 @@ def _gen_fgdc_taxonomy_section(taxon, include_common_names=False,
         taxonomicclassification.append(child_node)
 
     return taxonomicclassification
-
-
-
-
-
-
 

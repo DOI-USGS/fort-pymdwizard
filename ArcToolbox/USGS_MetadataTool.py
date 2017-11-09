@@ -223,7 +223,7 @@ def ProcessRoutine(ArgVariables):
 
         #Get/Update Geospatial Presentation Form. Also updates Format Name (within Distribution Info).
         #(Skip this step and leave existing content if tool input is XML).
-        if not InputIsXML:
+        if InputIsXML == False:
             MDTools.WriteGeospatialForm(FGDCXML, myDataType, myFeatType)
 
         #Get/Update Native Environment Details
@@ -251,7 +251,7 @@ def ProcessRoutine(ArgVariables):
         MDTools.ReRunFGDCTranslator(FGDCXML)
 
         #Re-import new metadata to the data set to capture E/A tool changes. If input file is a stand alone .xml this step is skipped
-        if not InputIsXML:
+        if InputIsXML == False:
             try:
                 arcpy.MetadataImporter_conversion(FGDCXML, InputData) # This imports only: does not convert and does not sync
             except:

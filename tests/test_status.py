@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QWidget, QComboBox
 
 from pymdwizard.gui import Status
 
-def test_status_from_xml(qtbot):
+def test_status__from_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
@@ -19,18 +19,21 @@ def test_status_from_xml(qtbot):
     test_record = etree.parse(test_record_fname)
     status = test_record.xpath("idinfo/status")[0]
 
-    widget.from_xml(status)
+    widget._from_xml(status)
     assert widget.findChild(QComboBox, 'fgdc_progress').currentText() == 'complete'
     assert widget.findChild(QComboBox, 'fgdc_update').currentText() == 'none planned'
 
-def test_status_to_xml(qtbot):
+def test_status__to_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
-    widget.findChild(QComboBox, 'fgdc_progress').currentText()
-    widget.findChild(QComboBox, 'fgdc_update').currentText()
 
-    stat = widget.to_xml()
+    widget._to_xml#(status)
+    #assert type(progress) == 'lxml.etree._Element'
+    widget.findChild(QComboBox, 'fgdc_progress').currentText()# == 'Complete'
+    widget.findChild(QComboBox, 'fgdc_update').currentText()# == 'Continually'
+
+    stat = widget._to_xml()
 
     assert etree.tostring(stat, pretty_print=True).decode() \
     == """<status>

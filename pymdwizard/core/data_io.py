@@ -1,51 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-"""
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
-
-License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
-
-PURPOSE
-------------------------------------------------------------------------------
-Module for reading data from various formats into a Pandas dataframe
-
-
-SCRIPT DEPENDENCIES
-------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
-"""
+#TODO add input handlers for all the types of data we want to handle
+import os
 
 import struct
 import datetime
@@ -66,56 +20,33 @@ import pandas as pd
 import geopandas as gpd
 import fiona
 
-
-MAX_ROWS = 1000000
-
-def read_csv(fname, delimiter=','):
+def read_csv(filepath, delimiter=','):
     """
     converts a csv, specified by filename, into a pandas dataframe
 
     Parameters
     ----------
-    fname : string
-            Full fname to the csv to return
-    delimiter : str, optional, defaults to comma
-            the character used to delimit the data in a txt file
+    filepath : string
+            Full filepath to the csv to return
 
     Returns
     -------
     pandas dataframe
     """
     try:
-        df = pd.read_csv(fname, parse_dates=True, delimiter=delimiter,
-                         nrows=MAX_ROWS)
+        df = pd.read_csv(filepath, parse_dates=True, delimiter=delimiter)
     except UnicodeDecodeError:
         try:
-            df = pd.read_csv(fname, parse_dates=True, encoding='utf8',
-                             delimiter=delimiter, nrows=MAX_ROWS)
+            df = pd.read_csv(filepath, parse_dates=True, encoding='utf8', delimiter=delimiter)
         except UnicodeDecodeError:
-            df = pd.read_csv(fname, parse_dates=True,
-                             encoding="ISO-8859-1", delimiter=delimiter,
-                             nrows=MAX_ROWS)
-
+            df = pd.read_csv(filepath, parse_dates=True, encoding = "ISO-8859-1", delimiter=delimiter)
     return df
 
 
-def read_shp(fname):
-    """
-    Returns a pandas dataframe of the attribute in a shapefile's dbf
-     specified as a file path/name
-
-    Parameters
-    ----------
-    fname : str
-            file path/name to the shapefile being returned
-
-    Returns
-    -------
-        pandas dataframe
-    """
-    df = gpd.read_file(fname)
-    c = fiona.open(fname)
-    list(c.schema['properties'].keys())
+def read_shp(filepath):
+    df = gpd.read_file(filepath)
+    c = fiona.open(filepath)
+    col_names = list(c.schema['properties'].keys())
 
     df = df[[c for c in df.columns if c != 'geometry']]
     df.insert(0, 'Shape', c.schema['geometry'])
@@ -123,6 +54,7 @@ def read_shp(fname):
     return df
 
 
+#  taken from http://code.activestate.com/recipes/362715-dbf-reader-and-writer/
 def dbfreader(f):
     """Returns an iterator over records in a Xbase DBF file.
     The first row returned contains the field names.
@@ -130,13 +62,9 @@ def dbfreader(f):
     Subsequent rows contain the data records.
     If a record is marked as deleted, it is skipped.
     File should be opened for binary reads.
-
-    originally taken from:
-        http://code.activestate.com/recipes/362715-dbf-reader-and-writer/
-
-    See DBF format spec at:
-        http://www.pgts.com.au/download/public/xbase.htm#DBF_STRUCT
     """
+    #  See DBF format spec at:
+    #     http://www.pgts.com.au/download/public/xbase.htm#DBF_STRUCT
 
     numrec, lenheader = struct.unpack('<xxxxLH22x', f.read(32))
     numfields = (lenheader - 33) // 32
@@ -187,84 +115,29 @@ def dbfreader(f):
         yield result
 
 
-def read_dbf(fname):
-    """
-    Returns a pandas dataframe of the dbf
-     specified as a file path/name
-
-    Parameters
-    ----------
-    fname : str
-            file path/name to the dbf being returned
-
-    Returns
-    -------
-        pandas dataframe
-    """
-    f = open(fname, 'rb')
+def read_dbf(filepath):
+    f = open(filepath, 'rb')
     vat = list(dbfreader(f))
     return pd.DataFrame(vat[2:], columns=[c.decode("utf-8") for c in vat[0]])
 
 
-def get_sheet_names(fname):
-    """
-    Returns list of sheets in an Excel file
-
-    Parameters
-    ----------
-    fname : str
-            file path/name to the Excel file being returned
-
-    Returns
-    -------
-    list of strings
-    """
+def get_sheet_names(filepath):
     import xlrd as xl
-    workbook = xl.open_workbook(fname)
+    workbook = xl.open_workbook(filepath)
     return workbook.sheet_names()
 
 
-def read_excel(fname, sheet_name):
-    """
-    Returns a pandas dataframe of an Excel file and sheet
-
-    Parameters
-    ----------
-    fname : str
-            file path/name to the Excel file
-    sheet_name : str
-
-    Returns
-    -------
-        pandas dataframe
-    """
-    df = pd.read_excel(fname, sheet_name)
+def read_excel(filepath, sheet_name):
+    df = pd.read_excel(filepath, sheet_name)
     return df
 
 
-def read_data(fname, sheet_name='', delimiter=','):
-    """
-    Returns pandas dataframe from a file (csv, txt, Excel, or shp)
-
-    Parameters
-    ----------
-    fname : str
-            file path/name to the Excel file
-    sheet_name : str, optional
-            sheet name
-    delimiter : str, optional
-            the character used to delimit the data in a txt file
-
-    Returns
-    -------
-        pandas dataframe
-    """
-    if fname.lower().endswith(".csv"):
-        return read_csv(fname)
-    elif fname.lower().endswith(".txt"):
-        return read_csv(fname, delimiter)
-    elif fname.lower().endswith(".shp"):
-        return read_shp(fname)
+def read_data(filepath, sheet_name='', delimiter=','):
+    if filepath.lower().endswith(".csv"):
+        return read_csv(filepath)
+    elif filepath.lower().endswith(".txt"):
+        return read_csv(filepath, delimiter)
+    elif filepath.lower().endswith(".shp"):
+        return read_shp(filepath)
     elif sheet_name:
-        return read_excel(fname, sheet_name)
-
+        return read_excel(filepath, sheet_name)

@@ -1,43 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
-
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for the FGDC component with a shortname matching this
-file's name.
+Provide a pyqt widget for a Citation <citation> section
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
+    None
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -45,18 +23,31 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
+
+Although these data have been processed successfully on a computer system at
+the U.S. Geological Survey, no warranty, expressed or implied is made
+regarding the display or utility of the data on any other system, or for
+general or scientific purposes, nor shall the act of distribution constitute
+any such warranty. The U.S. Geological Survey shall not be held liable for
+improper or incorrect use of the data described and/or contained herein.
+
+Although this program has been used by the U.S. Geological Survey (USGS), no
+warranty, expressed or implied, is made by the USGS or the U.S. Government as
+to the accuracy and functioning of the program and related program material
+nor shall the fact of distribution constitute any such warranty, and no
+responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
 import sys
+from copy import deepcopy
+from lxml import etree
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QMessageBox, QDialog
 from PyQt5.QtCore import Qt
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
-from pymdwizard.core import doi_utils
+from pymdwizard.core import datacite
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_citeinfo
@@ -157,7 +148,7 @@ class Citeinfo(WizardWidget): #
     def add_doi(self):
         doi = self.doi_lookup_ui.le_doi.text()
         try:
-            citeinfo = doi_utils.get_doi_citation(doi)
+            citeinfo = datacite.get_doi_citation(doi)
 
             if citeinfo is None:
                 msgbox = QMessageBox(self)
@@ -171,7 +162,7 @@ class Citeinfo(WizardWidget): #
                 msgbox.setStandardButtons(QMessageBox.Ok)
                 msgbox.exec_()
             else:
-                self.from_xml(citeinfo.to_xml())
+                self._from_xml(citeinfo.to_xml())
         except:
             msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
             msg += "Check the DOI and/or manually create the citation for it"
@@ -201,14 +192,15 @@ class Citeinfo(WizardWidget): #
             if self.is_doi_str(mime_data.text()):
                 e.accept()
             else:
-                element = xml_utils.string_to_node(mime_data.text())
+                parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+                element = etree.fromstring(mime_data.text(), parser=parser)
                 if element is not None and element.tag in self.acceptable_tags:
                     e.accept()
         else:
             e.ignore()
 
     def is_doi_str(self, string):
-        return doi_utils.clean_doi(string).lower().strip().startswith('doi:')
+        return datacite.clean_doi(string).lower().strip().startswith('doi:')
 
     def dropEvent(self, e):
         """
@@ -231,8 +223,8 @@ class Citeinfo(WizardWidget): #
                 else:
                     doi = e.mimeData().urls()[0].url()
                 try:
-                    citeinfo = doi_utils.get_doi_citation(doi)
-                    self.from_xml(citeinfo.to_xml())
+                    citeinfo = datacite.get_doi_citation(doi)
+                    self._from_xml(citeinfo.to_xml())
                 except:
                     msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
                     msg += "Check the DOI and/or manually create the citation for it"
@@ -240,10 +232,11 @@ class Citeinfo(WizardWidget): #
             else:
                 element = xml_utils.string_to_node(mime_data.text())
 
-                self.from_xml(element)
+                self._from_xml(element)
         except:
             e = sys.exc_info()[0]
             print('problem drop', e)
+
 
     def include_seriesext_change(self, b):
         """
@@ -301,7 +294,7 @@ class Citeinfo(WizardWidget): #
         self.ui.radio_pubinfono.setChecked(True)
         self.ui.radio_seriesno.setChecked(True)
 
-    def to_xml(self):
+    def _to_xml(self):
         """
         encapsulates the QLineEdit text in an element tag
 
@@ -355,12 +348,12 @@ class Citeinfo(WizardWidget): #
 
         if self.include_lwork and self.ui.radio_lworkyes.isChecked():
             lworkcit = xml_utils.xml_node('lworkcit', parent_node=citeinfo)
-            lwork = self.lworkcit_widget.to_xml()
+            lwork = self.lworkcit_widget._to_xml()
             lworkcit.append(lwork)
 
         return citeinfo
 
-    def from_xml(self, citeinfo):
+    def _from_xml(self, citeinfo):
         """
         parses the xml code into the relevant citation elements
 
@@ -424,7 +417,7 @@ class Citeinfo(WizardWidget): #
             if citeinfo.xpath('lworkcit'):
                 try:
                     self.ui.radio_lworkyes.setChecked(True)
-                    self.lworkcit_widget.from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                    self.lworkcit_widget._from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
                 except AttributeError:
                     msg = 'you pasted a citation element into the larger work citation area'
                     msg += '\n that contained a larger work citation'
@@ -442,10 +435,4 @@ class Citeinfo(WizardWidget): #
 if __name__ == "__main__":
     utils.launch_widget(Citeinfo,
                         "Citation testing")
-
-
-
-
-
-
 

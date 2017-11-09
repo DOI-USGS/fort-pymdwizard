@@ -1,43 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
-
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for the FGDC component with a shortname matching this
-file's name.
+Provide a pyqt widget for a Distribution Information <distinfo> section
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
+    None
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -45,12 +23,23 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
+
+Although these data have been processed successfully on a computer system at
+the U.S. Geological Survey, no warranty, expressed or implied is made
+regarding the display or utility of the data on any other system, or for
+general or scientific purposes, nor shall the act of distribution constitute
+any such warranty. The U.S. Geological Survey shall not be held liable for
+improper or incorrect use of the data described and/or contained herein.
+
+Although this program has been used by the U.S. Geological Survey (USGS), no
+warranty, expressed or implied, is made by the USGS or the U.S. Government as
+to the accuracy and functioning of the program and related program material
+nor shall the fact of distribution constitute any such warranty, and no
+responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
+from lxml import etree
 from copy import deepcopy
-
-from PyQt5.QtWidgets import QMessageBox
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -60,18 +49,16 @@ from pymdwizard.gui.ui_files import UI_distinfo
 from pymdwizard.gui.ContactInfo import ContactInfo
 from pymdwizard.gui.metainfo import MetaInfo
 
-
 class DistInfo(WizardWidget):
 
     drag_label = "Distribution Information <distinfo>"
-    acceptable_tags = ['distinfo']
+    acceptable_tags = ['abstract']
 
     ui_class = UI_distinfo.Ui_fgdc_distinfo
 
     def __init__(self, root_widget=None):
         super(self.__class__, self).__init__()
         self.root_widget = root_widget
-        self.scroll_area = self.ui.scrollArea
 
     def build_ui(self):
 
@@ -124,23 +111,40 @@ class DistInfo(WizardWidget):
             self.ui.widget_distinfo.hide()
 
     def pull_datasetcontact(self):
-        try:
-            sb_info = utils.get_usgs_contact_info('sciencebase',
-                                                  as_dictionary=False)
-            self.contactinfo.from_xml(sb_info)
-        except:
-            msg = "Having trouble getting sciencebase contact info now.\n"
-            msg += "Check internet connection or try again latter."
-            QMessageBox.warning(self, "Problem encountered", msg)
+        sb_info = utils.get_usgs_contact_info('sciencebase',
+                                              as_dictionary=False)
+        self.contactinfo._from_xml(sb_info)
+
+
+    def dragEnterEvent(self, e):
+        """
+
+        Parameters
+        ----------
+        e : qt event
+
+        Returns
+        -------
+
+        """
+        print("distinfo drag enter")
+        mime_data = e.mimeData()
+        if e.mimeData().hasFormat('text/plain'):
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            element = etree.fromstring(mime_data.text(), parser=parser)
+            if element is not None and element.tag == 'distinfo':
+                e.accept()
+        else:
+            e.ignore()
 
     def has_content(self):
         return self.ui.radio_distyes.isChecked()
 
-    def to_xml(self):
+    def _to_xml(self):
         distinfo_node = xml_utils.xml_node('distinfo')
 
         dist = xml_utils.xml_node('distrib', parent_node=distinfo_node)
-        cntinfo = self.contactinfo.to_xml()
+        cntinfo = self.contactinfo._to_xml()
         dist.append(cntinfo)
 
         if self.original_xml is not None:
@@ -181,7 +185,7 @@ class DistInfo(WizardWidget):
 
         return distinfo_node
 
-    def from_xml(self, xml_distinfo):
+    def _from_xml(self, xml_distinfo):
 
         self.clear_widget()
 
@@ -189,7 +193,7 @@ class DistInfo(WizardWidget):
             self.original_xml = xml_distinfo
             self.ui.radio_distyes.setChecked(True)
             if xml_distinfo.xpath('distrib/cntinfo'):
-                self.contactinfo.from_xml(xml_distinfo.xpath('distrib/cntinfo')[0])
+                self.contactinfo._from_xml(xml_distinfo.xpath('distrib/cntinfo')[0])
             if xml_distinfo.xpath('distliab'):
                 self.ui.radio_dist.setChecked(True)
                 utils.populate_widget_element(widget=self.ui.fgdc_distliab,

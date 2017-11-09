@@ -1,43 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
-
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Module provide a variety of spatial introspection functions.
-Produces FGDC spatial elements from spatial data sets
+Provide a variety of spatial introspection functions.
+Produces FGDC spatial elements from spatial datasets
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
+    None
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -45,24 +24,34 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
+
+Although these data have been processed successfully on a computer system at
+the U.S. Geological Survey, no warranty, expressed or implied is made
+regarding the display or utility of the data on any other system, or for
+general or scientific purposes, nor shall the act of distribution constitute
+any such warranty. The U.S. Geological Survey shall not be held liable for
+improper or incorrect use of the data described and/or contained herein.
+
+Although this program has been used by the U.S. Geological Survey (USGS), no
+warranty, expressed or implied, is made by the USGS or the U.S. Government as
+to the accuracy and functioning of the program and related program material
+nor shall the fact of distribution constitute any such warranty, and no
+responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-
 import os
 import collections
-import math
 
 import numpy as np
 import pandas as pd
 
 from pymdwizard.core.xml_utils import xml_node
+from pymdwizard.core import xml_utils
 from pymdwizard.core import utils
 from pymdwizard.core import data_io
 
 try:
-    from osgeo import gdal
-    from osgeo import osr
-    from osgeo import ogr
+    from osgeo import gdal, osr, ogr
     gdal.UseExceptions()
     gdal.AllRegister()
     use_gdal = True
@@ -72,13 +61,6 @@ except ImportError:
 
 
 def set_local_gdal_data():
-    """
-    Sets the path variable to the local gdal instance
-
-    Returns
-    -------
-    None
-    """
     python_root = utils.get_install_dname('python')
     gdal_data = os.path.join(python_root, 'Library', 'share', 'gdal')
     os.environ['GDAL_DATA'] = gdal_data
@@ -97,7 +79,7 @@ def _get_raster_extent(src):
     -------
     (min_x, max_x, min_y, max_y)
     """
-    ulx, xres, xskew, uly, yskew, yres = src.GetGeoTransform()
+    ulx, xres, xskew, uly, yskew, yres  = src.GetGeoTransform()
     lrx = ulx + (src.RasterXSize * xres)
     lry = uly + (src.RasterYSize * yres)
     return ulx, lrx, lry, uly
@@ -178,17 +160,14 @@ def get_ref(layer):
 
 
 def get_latlong_res(extent):
-    # D. Ignizio : This function is a modified approach to calculating
-    # latitudinal and longitudinal resolution in a GCS.
-    # Use in lieu of Vincenty's algorithm due to complexity/issues with
-    # incorrect results.
-    # The formula calculates values against the WGS 84 spheroid.
-    # The mid-point of the latitudinal extent of the dataset is used to
-    # calculate values, as they change depending on where on the globe
-    # we are considering.
+    #D. Ignizio : This function is a modified approach to calculating latitudinal and longitudinal resolution in a GCS.
+    #Use in lieu of Vincenty's algorithm due to complexity/issues with incorrect results.
+    #The formula calculates values against the WGS 84 spheroid.
+    #The mid-point of the latitudinal extent of the dataset is used to calculate values, as they change depending on where on the globe we are considering.
 
     ### Find GCS bounding coordinates of DS
     min_lon, max_lon, min_lat, max_lat = extent
+    #print "min_lon, min_lat, max_lon, max_lat:", min_lon, min_lat, max_lon, max_lat
 
     ### Find mid-latitude position while handling Hemisphere
     mid = 0
@@ -199,10 +178,9 @@ def get_latlong_res(extent):
     mid_lat = mid
 
     ##########################################################
-    # For a WGS 84 Spheroid. See: http://en.wikipedia.org/wiki/Latitude
-    # Also see: pg. 71 of the Biological Data Profile Workbook (FGDC, 2001)
-    # The following points were plotted and a third-order polynomial
-    # equation was generated in MS Excel.
+    #For a WGS 84 Spheroid. See: http://en.wikipedia.org/wiki/Latitude
+    #Also see: pg. 71 of the Biological Data Profile Workbook (FGDC, 2001)
+    #The following points were plotted and a third-order polynomial equation was generated in MS Excel.
 
     # @ Degree    1 Degree Latitude (= to km)    1 Degree Longitude (= to km)
     #       0         110.574                       111.32
@@ -214,87 +192,77 @@ def get_latlong_res(extent):
     #       90        111.694                       0
     ##########################################################
 
-    # Length of 1 degree of Latitude in kilometers @ Latitude(y) on the globe.
-    # y = -3E-06x^3 + 0.0005x^2 - 0.0013x + 110.57
+    #Length of 1 degree of Latitude in kilometers @ Latitude(y) on the globe.
+    #y = -3E-06x^3 + 0.0005x^2 - 0.0013x + 110.57
     x = mid_lat
-    len1_degree_lat = (-3E-06*pow(x, 3)) + (0.0005*pow(x, 2)) -\
-                      (0.0013*x) + 110.57
-    len1_minute_lat = len1_degree_lat/60
-    len1_second_lat = len1_minute_lat/60
+    len1DegreeLat = (-3E-06*pow(x,3)) + (0.0005*pow(x,2)) - (0.0013*x) + 110.57
+    len1MinuteLat = len1DegreeLat/60
+    len1SecondLat = len1MinuteLat/60
 
-    data_scale = 24000
-    dig_precision = 0.001
+    DataScale = 24000
+    DigPrecision = 0.001
 
-    latlat_reses = float((1/len1_second_lat) * (1/3280.84) *
-                         float(data_scale) * float(1.0/12.0) *
-                         float(dig_precision))
-    latlat_reses = str(format(latlat_reses, '.10f'))
+    latRes = float((1/len1SecondLat) * (1/3280.84) * float(DataScale) * float(1.0/12.0) * float(DigPrecision))
+    latRes = str(format(latRes, '.10f'))
 
-    # Length of 1 degree of Longitude in kilometers @ Latitude(y) on the globe.
-    # y = 7E-05x^3 - 0.0203x^2 + 0.0572x + 111.24
+    #Length of 1 degree of Longitude in kilometers @ Latitude(y) on the globe.
+    #y = 7E-05x^3 - 0.0203x^2 + 0.0572x + 111.24
 
-    len1_degree_long = (7E-05*pow(x, 3)) - (0.0203*pow(x, 2)) + \
-                       (0.0572*x) + 111.24
-    len1_minute_long = len1_degree_long/60
-    len1_second_long = len1_minute_long/60
+    len1DegreeLong = (7E-05*pow(x,3)) - (0.0203*pow(x,2)) + (0.0572*x) + 111.24
+    len1MinuteLong = len1DegreeLong/60
+    len1SecondLong = len1MinuteLong/60
 
-    long_res = float((1/len1_second_long) * (1/3280.84) *
-                     float(data_scale) * float(1.0/12) * float(dig_precision))
-    long_res = str(format(long_res, '.10f'))
+    longRes = float((1/len1SecondLong) * (1/3280.84) * float(DataScale) * float(1.0/12) * float(DigPrecision))
+    longRes = str(format(longRes, '.10f'))
 
-    return latlat_reses, long_res
+    #     print "Latitude Midpoint = " + str(mid_lat)
+    #     print "Latitudinal Resolution = " + latRes
+    #     print "Longitudinal Resolution = " + longRes + "\n"
+
+    return(latRes, longRes)
 
 
 def get_abs_resolution(src, params):
 
-    # The minimum difference between X (abscissa) and Y (ordinate) values in
-    #  the planar data set
+    # The minimum difference between X (abscissa) and Y (ordinate) values in the
+    #   planar data set
     # The values usually indicate the ?fuzzy tolerance? or ?clustering? setting
     #   that establishes the minimum distance at which two points will NOT be
     #   automatically converged by the data collection device (digitizer,
     #   GPS, etc.). NOTE: units of measures are provided under element Planar
     #   Distance Units
     # Raster data: Abscissa/ordinate res equals cell resolution
-    # Vector data: Abscissa/ordinate res is the smallest measurable distance
+    # Vector data: Abscissa/ordinate res is the smallest measurable distance between
     try:
-        # this will only work for raster data
+        #this will only work for raster data
         xform = src.GetGeoTransform()
-        params['absres'] = math.fabs(xform[1])
-        params['latres'] = math.fabs(xform[1])
-        params['ordres'] = math.fabs(xform[5])
-        params['longres'] = math.fabs(xform[5])
+        params['absres'] = xform[1]
+        params['latres'] = xform[1]
+        params['ordres'] = xform[5]
+        params['longres'] = xform[5]
         
     except:
-        # otherwise we will calculate these from our projection parameters
+        #otherwise we will calculate these from our projection parameters
         if params['mapprojn'] != "Unknown":
             data_scale = 24000
             dig_precision = 0.001
 
             # Industry-standard digitizer precision of 0.001"
             if params['plandu'].lower() == "feet":
-                params['absres'] = str(float(data_scale) *
-                                       float(dig_precision)/12.0)
-                params['ordres'] = str(float(data_scale) *
-                                       float(dig_precision)/12.0)
+                params['absres'] = str(float(data_scale) * float(dig_precision)/12.0)
+                params['ordres'] = str(float(data_scale) * float(dig_precision)/12.0)
             elif params['plandu'].lower() == "meter":
-                params['absres'] = str(float(data_scale) *
-                                       (float(dig_precision)/12.0) * 0.3048)
-                params['ordres'] = str(float(data_scale) *
-                                       (float(dig_precision)/12.0) * 0.3048)
+                params['absres'] = str(float(data_scale) * (float(dig_precision)/12.0) * 0.3048)
+                params['ordres'] = str(float(data_scale) * (float(dig_precision)/12.0) * 0.3048)
             else:
-                # default to meters?
-                params['absres'] = str(float(data_scale) *
-                                       (float(dig_precision)/12.0) * 0.3048)
-                params['ordres'] = str(float(data_scale) *
-                                       (float(dig_precision)/12.0) * 0.3048)
-        else:
-            params['absres'] = params['latres']
-            params['ordres'] = params['longres']
+                #default to meters?
+                params['absres'] = str(float(data_scale) * (float(dig_precision)/12.0) * 0.3048)
+                params['ordres'] = str(float(data_scale) * (float(dig_precision)/12.0) * 0.3048)
 
 
 def get_params(layer):
 
-    # get the spatial reference and extent
+    #get the spatial reference and extent
     ref = get_ref(layer)
     projected_extent = get_extent(layer)
     geographic_extent = get_geographic_extent(layer)
@@ -324,7 +292,7 @@ def get_params(layer):
     params['obqlpt'] = 'Unknown'
     params['obqllat'] = 'Unknown'
     params['obqllong'] = 'Unknown'
-    params['svlong'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_ORIGIN)
+    params['svlong'] = 'Unknown'
     params['sfprjorg'] = 'Unknown'
     params['landsat'] = ref.GetProjParm(osr.SRS_PP_LANDSAT_NUMBER)
     params['pathnum'] = ref.GetProjParm(osr.SRS_PP_PATH_NUMBER)
@@ -339,10 +307,9 @@ def get_params(layer):
     params['othergrd'] = 'Unknown'
     params['localpd'] = 'Unknown'
     params['localpgi'] = 'Unknown'
-    if isinstance(layer, gdal.Dataset):
-        params['plance'] = 'row and column'
-    else:
-        params['plance'] = 'coordinate pair'
+    params['plance'] = 'Unknown'
+    params['absres'] = 'Unknown'
+    params['ordres'] = 'Unknown'
     params['distres'] = 'Unknown'
     params['bearres'] = 'Unknown'
     params['bearunit'] = 'Unknown'
@@ -369,7 +336,7 @@ def get_params(layer):
         if params[k] is None:
             params[k] = 'Unknown'
 
-    get_abs_resolution(layer, params)
+    get_abs_resolution(ref, params)
 
     #SPCS_Zone
     if params['mapprojn'] is not None and \
@@ -378,19 +345,13 @@ def get_params(layer):
         params['spcszone'] = parts[parts.index('FIPS')+1]
     else:
         params['spcszone'] = 'Unknown'
-
-    #ARC_Zone
-    if params['mapprojn'] is not None and \
-                    '_arc_system' in params['mapprojn'].lower():
-        parts = params['mapprojn'].split('_')
-        params['arczone'] = parts[-1]
-    else:
-        params['arczone'] = 'Unknown'
-
     #PCS_Units
+
     params['upzone'] = 'Unknown'
+    params['arczone'] = 'Unknown'
 
     return params
+
 
 
 def transform_point(xy, from_srs, to_srs):
@@ -510,8 +471,7 @@ def geographic(params):
 def mapproj(params):
     mapproj_node = xml_node('mapproj')
 
-    fgdc_name, function = lookup_fdgc_projname(params['projection_name'],
-                                               params['mapprojn'])
+    fgdc_name, function = lookup_fdgc_projname(params['projection_name'])
     if fgdc_name is None:
         fgdc_name = params['projection_name']
         prj_node = unknown_projection(params)
@@ -521,29 +481,25 @@ def mapproj(params):
     mapproj_node.append(prj_node)
     return mapproj_node
 
-
 def planar(params):
     planar = xml_node('planar')
     if params['utmzone'] != 'Unknown':
         top_node = utm(params)
     elif params['spcszone'] != 'Unknown':
         top_node = spcs(params)
-    elif params['arczone'] != 'Unknown':
-        top_node = arc(params)
     elif params['mapprojn'] != 'Unknown':
         top_node = mapproj(params)
 
     planar.append(top_node)
 
     planci = xml_node('planci', parent_node=planar)
-    plance = xml_node('plance', text=params['plance'], parent_node=planci)
+    plance = xml_node('plance', parent_node=planci)
     coordrep = xml_node('coordrep', parent_node=planci)
     absres = xml_node('absres', text=params['absres'], parent_node=coordrep)
     ordres = xml_node('ordres', text=params['ordres'], parent_node=coordrep)
     plandu = xml_node('plandu', text=params['plandu'], parent_node=planci)
 
     return planar
-
 
 def geodetic(params):
     """
@@ -558,18 +514,15 @@ def geodetic(params):
     fgdc <geograph> element
     """
     geodetic = xml_node("geodetic")
-    xml_node("horizdn", params['horizdn'], geodetic)
-    xml_node("ellips", params['ellips'], geodetic)
-    xml_node("semiaxis", params['semiaxis'], geodetic)
-    xml_node("denflat", params['denflat'], geodetic)
+    horizdn = xml_node("horizdn", params['horizdn'], geodetic)
+    ellips = xml_node("ellips", params['ellips'], geodetic)
+    semiaxis = xml_node("semiaxis", params['semiaxis'], geodetic)
+    denflat = xml_node("denflat", params['denflat'], geodetic)
     return geodetic
 
-
 def albers_conic_equal_area(params):
-
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Albers Conic Equal Area projection
+    returns lxml nodes that contain projection parameters for fgdc Albers Conic Equal Area projection
 
     stdparll = First standard parallel
     stdparl_2 = Second standard parallel (if exists)
@@ -601,8 +554,7 @@ def albers_conic_equal_area(params):
 
 def azimuthal_equidistant(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Azimuthal Equidistant projection
+    returns lxml nodes that contain projection parameters for fgdc Azimuthal Equidistant projection
 
     longcm = Longitude of Central Meridian
     latprjo = Latitude of Projection Origin
@@ -633,8 +585,7 @@ def azimuthal_equidistant(params):
 
 def equidistant_conic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Equidistant Conic projection
+    returns lxml nodes that contain projection parameters for fgdc Equidistant Conic projection
 
     stdparll = First standard parallel
     stdparl_2 = Second standard parallel (if exists)
@@ -671,8 +622,7 @@ def unknown_projection(params):
         stdparll_2 = xml_node('stdparll', params['stdparll_2'], mapprojp)
 
     for k in ['longcm', 'latprjo', 'feast', 'fnorth', 'sfequat', 'heightpt',
-              'longpc', 'latprjc', 'sfctrlin', 'obqlazim', 'azimangl',
-              'azimptl']:
+              'longpc', 'latprjc', 'sfctrlin', 'obqlazim', 'azimangl', 'azimptl']:
         print(k)
         if params[k] not in ['Unknown', 'unknown']:
             xml_node(k, params[k], mapprojp)
@@ -680,8 +630,7 @@ def unknown_projection(params):
 
 def equirectangular(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Equirectangular projection
+    returns lxml nodes that contain projection parameters for fgdc Equirectangular projection
 
     stdparll = First standard parallel
     longcm = Longitude of Central Meridian
@@ -707,8 +656,7 @@ def equirectangular(params):
 
 def general_vertical_near_sided_perspective(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    General Vertical Near-sided Perspective projection
+    returns lxml nodes that contain projection parameters for fgdc General Vertical Near-sided Perspective projection
 
     heightpc = Height of perspective point above surface
     longpc = Longitude of projection center
@@ -736,8 +684,7 @@ def general_vertical_near_sided_perspective(params):
 
 def gnomonic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Gnomonic projection
+    returns lxml nodes that contain projection parameters for fgdc Gnomonic projection
 
     longpc = Longitude of Projection Center
     latprjc = Latitude of Projection Center
@@ -763,8 +710,7 @@ def gnomonic(params):
 
 def lambert_azimuthal_equal_area(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Lambert Azimuthal Equal Area projection
+    returns lxml nodes that contain projection parameters for fgdc Lambert Azimuthal Equal Area projection
 
     longpc = Longitude of Projection Center
     latprjc = Latitude of Projection Center
@@ -790,8 +736,7 @@ def lambert_azimuthal_equal_area(params):
 
 def lambert_conformal_conic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-     Lambert Conformal Conic projection
+    returns lxml nodes that contain projection parameters for fgdc Lambert Conformal Conic projection
 
     stdparll = First standard parallel
     stdparl_2 = Second standard parallel (if exists)
@@ -819,37 +764,13 @@ def lambert_conformal_conic(params):
     return lambertc
 
 
-def mercator(params):
-    """
-    returns lxml nodes that contain projection parameters for fgdc
-    Equirectangular projection
-
-    stdparll = First standard parallel
-    longcm = Longitude of Central Meridian
-    feast = False Easting
-    fnorth = False Northing
-
-    Parameters
-    ----------
-    params : dictionary
-            geospatial parameters returned from get_params
-
-    Returns
-    -------
-    lxml nodes for fgdc Mercator projection
-    """
-    mercator = xml_node('mercator')
-    stdparll = xml_node('stdparll', params['stdparll'], mercator)
-    longcm = xml_node('longcm', params['longcm'], mercator)
-    feast = xml_node('feast', params['feast'], mercator)
-    fnorth = xml_node('fnorth', params['fnorth'], mercator)
-    return mercator
+###def mercator(params):
+    # how to handle 'stdparll' OR 'sfequat'?
 
 
 def modified_stereograhic_for_alaska(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-     Modified Stereographic for Alaska projection
+    returns lxml nodes that contain projection parameters for fgdc Modified Stereographic for Alaska projection
 
     feast = False Easting
     fnorth = False Northing
@@ -871,8 +792,7 @@ def modified_stereograhic_for_alaska(params):
 
 def miller_cylindrical(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Miller Cylindrical projection
+    returns lxml nodes that contain projection parameters for fgdc Miller Cylindrical projection
 
     longcm = Longitude of Central Meridian
     feast = False Easting
@@ -901,8 +821,7 @@ def miller_cylindrical(params):
 
 def orthographic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Orthographic projection
+    returns lxml nodes that contain projection parameters for fgdc Orthographic projection
 
     longpc = Longitude of Projection Center
     latprjc = Latitude of Projection Center
@@ -926,38 +845,13 @@ def orthographic(params):
     return orthogr
 
 
-def polar_stereographic(params):
-    """
-    returns lxml nodes that contain projection parameters for fgdc
-    Stereographic projection
-
-    longpc = Longitude of Projection Center
-    latprjc = Latitude of Projection Center
-    feast = False Easting
-    fnorth - False Northing
-
-    Parameters
-    ----------
-    params : dictionary
-            geospatial parameters returned from get_params
-
-    Returns
-    -------
-    xml nodes for fgdc Stereographic projection
-    """
-    polarst = xml_node('polarst')
-    xml_node('svlong', params['svlong'], polarst)
-    xml_node('longpc', params['longpc'], polarst)
-    xml_node('latprjc', params['latprjc'], polarst)
-    xml_node('feast', params['feast'], polarst)
-    xml_node('fnorth', params['fnorth'], polarst)
-    return polarst
+# def polar_stereographic(params):
+   #how to handle 'stdparll' OR 'sfprjorg'
 
 
 def polyconic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-     Polyconic projection
+    returns lxml nodes that contain projection parameters for fgdc Polyconic projection
 
     longcm = Longitude of Central Meridian
     latprjc = Latitude of Projection Origin
@@ -983,8 +877,7 @@ def polyconic(params):
 
 def robinson(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Robinson projection
+    returns lxml nodes that contain projection parameters for fgdc Robinson projection
 
     longpc = Longitude of Projection Center
     feast = False Easting
@@ -1008,8 +901,7 @@ def robinson(params):
 
 def sinusoidal(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Sinusoidal projection
+    returns lxml nodes that contain projection parameters for fgdc Sinusoidal projection
 
     longcm = Longitude of Central Meridian
     feast = False Easting
@@ -1033,8 +925,7 @@ def sinusoidal(params):
 
 def space_oblique_mercator(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Space Oblique Mercator projection
+    returns lxml nodes that contain projection parameters for fgdc Space Oblique Mercator projection
 
     landsat = Landsat Number
     pathnum = Path Number
@@ -1060,8 +951,7 @@ def space_oblique_mercator(params):
 
 def stereographic(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Stereographic projection
+    returns lxml nodes that contain projection parameters for fgdc Stereographic projection
 
     longpc = Longitude of Projection Center
     latprjc = Latitude of Projection Center
@@ -1087,8 +977,7 @@ def stereographic(params):
 
 def transverse_mercator(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Transverse Mercator projection
+    returns lxml nodes that contain projection parameters for fgdc Transverse Mercator projection
 
     sfctrmer = Scale Factor at Central Meridian
     longcm = Longitude of Central Meridian
@@ -1116,8 +1005,7 @@ def transverse_mercator(params):
 
 def van_der_grinten(params):
     """
-    returns lxml nodes that contain projection parameters for fgdc
-    Van der Grinten projection
+    returns lxml nodes that contain projection parameters for fgdc Van der Grinten projection
 
     longcm = Longitude of Central Meridian
     feast = False Easting
@@ -1156,45 +1044,21 @@ def spcs(params):
 
     gridsys = xml_node('gridsys')
     if '1983' in params['geogcs']:
-        gridsysn = xml_node('gridsysn',
-                            text='State Plane Coordinate System 1983',
-                            parent_node=gridsys)
+        gridsysn = xml_node('gridsysn', text='State Plane Coordinate System 1983',
+                        parent_node=gridsys)
     else:
-        gridsysn = xml_node('gridsysn',
-                            text='State Plane Coordinate System 1927',
+        gridsysn = xml_node('gridsysn', text='State Plane Coordinate System 1927',
                             parent_node=gridsys)
 
     spcs_node = xml_node('spcs', parent_node=gridsys)
-    utmzone = xml_node('spcszone', text=params['spcszone'],
-                       parent_node=spcs_node)
+    utmzone = xml_node('spcszone', text=params['spcszone'], parent_node=spcs_node)
 
     mapproj_node = mapproj(params)
     spcs_node.append(mapproj_node)
 
     return gridsys
 
-
-def arc(params):
-
-    gridsys = xml_node('gridsys')
-    gridsysn = xml_node('gridsysn', text='ARC Coordinate System',
-                        parent_node=gridsys)
-
-    arc_node = xml_node('arcsys', parent_node=gridsys)
-    utmzone = xml_node('arczone', text=params['arczone'],
-                       parent_node=arc_node)
-
-    mapproj_node = mapproj(params)
-    arc_node.append(mapproj_node)
-
-    return gridsys
-
-def lookup_fdgc_projname(gdal_name, mapprojn=''):
-
-    if gdal_name == 'Stereographic' and 'polar' in mapprojn.lower():
-        gdal_name = 'Polar_Stereographic'
-
-
+def lookup_fdgc_projname(gdal_name):
     for k, v in PROJECTION_LOOKUP.items():
         if v['gdal_name'] == gdal_name:
             return k, v['function']
@@ -1206,8 +1070,7 @@ def lookup_fdgc_projname(gdal_name, mapprojn=''):
     print("!"*79)
     print("!"*79)
     print("!"*79)
-    return None, None # this will blow up!
-
+    return None, None #this will blow up!
 
 def lookup_shortname(shortname):
     for k, v in PROJECTION_LOOKUP.items():
@@ -1220,9 +1083,9 @@ PROJECTION_LOOKUP = collections.OrderedDict()
 PROJECTION_LOOKUP['Albers Conical Equal Area'] = {'shortname': 'albers',
                                                  'gdal_name': 'Albers_Conic_Equal_Area',
                                                  'function': albers_conic_equal_area,
-                                                 'elements': ['stdparll', 'stdparll_2',
-                                                              'longcm', 'latprjo',
-                                                              'feast', 'fnorth']}
+                                  'elements': ['stdparll', 'stdparll_2',
+                                               'longcm',
+                                               'latprjo', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Azimuthal Equidistant'] = {'shortname': 'azimequi',
                                               'gdal_name': 'Azimuthal_Equidistant',
@@ -1259,11 +1122,6 @@ PROJECTION_LOOKUP['Lambert Conformal Conic'] = {'shortname': 'lambertc',
                                                 'function': lambert_conformal_conic,
                                     'elements': ['stdparll', 'stdparll_2', 'longcm', 'latprjo', 'feast', 'fnorth']}
 
-PROJECTION_LOOKUP['Mercator'] = {'shortname': 'mercator',
-                                        'gdal_name': 'Mercator_2SP',
-                                        'function': equirectangular,
-                                        'elements': ['stdparll', 'longcm', 'feast', 'fnorth']}
-
 PROJECTION_LOOKUP['Modified Stereographic for Alaska'] = {'shortname': 'modsak',
                                                           'gdal_name': 'Modified_Stereographic_for_Alaska',
                                                           'function': modified_stereograhic_for_alaska,
@@ -1278,11 +1136,6 @@ PROJECTION_LOOKUP['Orthographic'] = {'shortname': 'orthogr',
                                      'gdal_name': 'Orthographic',
                                      'function': orthographic,
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
-
-PROJECTION_LOOKUP['Polar_Stereographic'] = {'shortname': 'polarst',
-                                      'gdal_name': 'Polar_Stereographic',
-                                      'function': polar_stereographic,
-                                      'elements': ['svlong', 'longpc', 'latprjc', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Polyconic'] = {'shortname': 'polycon',
                                   'gdal_name': 'Polyconic',
@@ -1305,7 +1158,7 @@ PROJECTION_LOOKUP['Space Oblique Mercator'] = {'shortname': 'spaceobq',
                                     'elements': ['landsat', 'pathnum', 'feast', 'fnorth']}
 
 PROJECTION_LOOKUP['Stereographic'] = {'shortname': 'stereo',
-                                     'gdal_name': 'World_Stereographic',
+                                     'gdal_name': ' ',
                                      'function': stereographic,
                                     'elements': ['longpc', 'latprjc', 'feast', 'fnorth']}
 
@@ -1333,7 +1186,7 @@ GRIDSYS_LOOKUP['Universal Transverse Mercator'] = {'shortname': 'utm',
                                                    'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['Universal Polar Stereographic'] = {'shortname': 'ups',
                                                     'elements': ['upszone'],
-                                                   'projection':'Polar_Stereographic'}
+                                                   'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['State Plane Coordinate System 1927'] = {'shortname': 'spcs',
                                                     'elements': ['spcszone'],
                                                    'projection':'Transverse Mercator'}
@@ -1342,21 +1195,20 @@ GRIDSYS_LOOKUP['State Plane Coordinate System 1983'] = {'shortname': 'spcs',
                                                         'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['ARC Coordinate System'] = {'shortname': 'arcsys',
                                                     'elements': ['arczone'],
-                                           'projection': 'Azimuthal Equidistant'}
+                                           'projection':'Transverse Mercator'}
 GRIDSYS_LOOKUP['other grid system'] = {'shortname': 'othergrd',
                                                     'elements': ['othergrd'],
-                                       'projection': 'Transverse Mercator'}
+                                       'projection':'Transverse Mercator'}
 
-DATUM_LOOKUP = {'North American Datum of 1927 (NAD 27)': {'ellips': 'Clarke 1866',
-                                                          'semiaxis': '6378206.400000',
-                                                          'denflat': '294.978698'},
-                'North American Datum of 1983 (NAD 83)': {'ellips': 'Geodetic Reference System 1980',
-                                                          'semiaxis': '6378137.000000',
-                                                          'denflat': '298.257222'},
-                'World Geodetic System 1984 (WGS 84)': {'ellips': 'WGS_1984',
-                                                        'semiaxis': '6378137.000000',
-                                                        'denflat': '298.257224'}}
-
+DATUM_LOOKUP = {'North American Datum of 1927 (NAD 27)':{'ellips':'Clarke 1866',
+                                                         'semiaxis':'6378206.400000',
+                                                         'denflat':'294.978698'},
+                'North American Datum of 1983 (NAD 83)':{'ellips':'Geodetic Reference System 1980',
+                                                         'semiaxis':'6378137.000000',
+                                                         'denflat':'298.257222'},
+                'World Geodetic System 1984 (WGS 84)':{'ellips':'WGS_1984',
+                                                       'semiaxis':'6378137.000000',
+                                                       'denflat':'298.257224'}}
 
 def get_bounding(fname):
     """
@@ -1437,15 +1289,12 @@ def vector_spdoinfo(layer):
     ptvctinf = xml_node('ptvctinf', parent_node=spdoinfo)
     sdtsterm = xml_node('sdtsterm', parent_node=ptvctinf)
 
-    if geo_type in [3, 6, 2003, 3003, 2006, 3006]:
+    if geo_type == 3:
         sdtstype = xml_node('sdtstype', text='G-polygon', parent_node=sdtsterm)
-    elif geo_type in [2, 5, 2005, 3005]:
+    elif geo_type == 2:
         sdtstype = xml_node('sdtstype', text='String', parent_node=sdtsterm)
-    elif geo_type in [1, 4, 2001, 3001, 2004, 3004]:
+    elif geo_type == 1:
         sdtstype = xml_node('sdtstype', text='Entity point',
-                            parent_node=sdtsterm)
-    else:
-        sdtstype = xml_node('sdtstype', text='Unknown',
                             parent_node=sdtsterm)
 
     xml_node('ptvctcnt', text = feature_count, parent_node=sdtsterm)
@@ -1589,6 +1438,8 @@ def get_raster_attribute_table(fname):
         return df
 
 
+
 if __name__ == "__main__":
-    fname = r"wgs84.shp"
+    fname = r"C:\Projects\pymdwizard\tests\data\projections\wgs84.shp"
     get_spref(fname)
+    pass
