@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changing the Template &mdash; MetadataWizard  documentation</title>
+  <title>Include/Exclude Optional Metadata Sections &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html"/>
-        <link rel="prev" title="Making a Metadata Review Report" href="Metadata Review Report.html"/> 
+        <link rel="next" title="Reporting Bugs and Enhancement Ideas" href="../Reporting Bugs and Enhancement Ideas.html"/>
+        <link rel="prev" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -103,9 +103,9 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Metadata Review Report.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Include/Exclude Optional Metadata Sections</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -153,13 +153,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Changing the Template</li>
+      <li>Include/Exclude Optional Metadata Sections</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/advancedusage/Changing Your Template.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/advancedusage/Include Sections.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,52 +172,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="changing-the-template">
-<h1>Changing the Template<a class="headerlink" href="#changing-the-template" title="Permalink to this headline">¶</a></h1>
-<p>When <strong>File -&gt; New</strong> is selected, the Metadata Wizard opens a template file and
-saves it to a new, user-specified location. This template is an FGDC record that
-contains default content which forms a solid starting point for a new record.
-For example, the point of contact, distribution contact,
-disclaimers. will often remain the same for most records created by
-an individual. Having to update these individually every time a new
-record is started can be inconvenient. Keep in mind that anything
-specified in the template can be overwritten individually when editing a new
-record, they are just the defaults that will pre-populate in the application.</p>
-<p>The default template record used by the Metadata Wizard is part of the
-standard installation but can be changed to suit the particular needs of
-individuals or organizations.</p>
-<ol class="arabic simple">
-<li>Open the Metadata Wizard and create a new record, saved to a location where it
-will not be overwritten or inaccessible.</li>
-<li>Edit this record in the Metadata Wizard to contain the content needed in
-subsequent new records. Sections to consider customizing might
-include some or all of:<ul>
-<li>Dataset Point of Contact</li>
-<li>Metadata Contact</li>
-<li>Metadata Standard Name</li>
-<li>Distribution Information</li>
-<li>ISO 19115 Keywords</li>
-<li>Place Keywords</li>
-<li>Bounding Coordinates</li>
-<li>Attribute Accuracy Report</li>
-<li>Logical Accuracy Report</li>
-<li>Completeness Report</li>
-<li>Positional Accuracy</li>
-</ul>
-</li>
-<li>Save this record.</li>
-<li>In the top menu bar click <strong>Advanced -&gt; Template -&gt; Browse</strong> to new template,
-and navigate to the XML file saved above.</li>
-</ol>
-<div class="line-block">
-<div class="line"><img alt="image0" src="../_images/BrowseToTemplate.png" /></div>
-<div class="line"><br /></div>
-</div>
-<p>The selected template will remain active after closing and reopening the
-application.</p>
-<p>To revert back to the original Metadata Wizard template, click the
-<strong>Advanced -&gt; Template -&gt; Restore Built-in item</strong>. The current template file
-name will be displayed at the top of the <strong>Advanced -&gt; Template</strong> menu.</p>
+  <div class="section" id="include-exclude-optional-metadata-sections">
+<h1>Include/Exclude Optional Metadata Sections<a class="headerlink" href="#include-exclude-optional-metadata-sections" title="Permalink to this headline">¶</a></h1>
+<p>Some scenarios when creating metadata do not require the use of all available FGDC
+metadata sections, such as when creating a project-level metadata record, which can
+be used to summarize a collection of metadata records relating to a project.</p>
+<p>Creating such a metadata record can be accomplished in Metadata Wizard by using the
+<strong>Include Sections</strong> feature.  This feature is located on the Advanced menu.</p>
+<p><img alt="image0" src="../_images/IncludeSections.png" /></p>
+<p>The default is for all sections to be active, designated by a checkmark to the left of
+each section.  To deactivate a section, click that section.  The section’s checkmark
+will be removed, and the section’s tab in the main window of the tool will be blank.</p>
+<p><strong>Users should be advised that generally, all sections are required when creating metadata
+at the dataset level.</strong></p>
 </div>
 
 
@@ -230,10 +197,10 @@ name will be displayed at the top of the <strong>Advanced -&gt; Template</strong
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral float-right" title="Batch Processing Using Jupyter and Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../Reporting Bugs and Enhancement Ideas.html" class="btn btn-neutral float-right" title="Reporting Bugs and Enhancement Ideas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Metadata Review Report.html" class="btn btn-neutral" title="Making a Metadata Review Report" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral" title="Batch Processing Using Jupyter and Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
