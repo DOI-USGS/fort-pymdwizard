@@ -1,17 +1,20 @@
-Validating a Record
-*******************
+============================
+Validating a Metadata Record
+============================
 
-A first quality check of a metadata record is to make sure it adheres to
-to the FGDC standard. Examples of items that can be flagged include:
+To ensure metadata adheres to the FGDC standard, we can evaluate the syntax 
+and the content. The Metadata Wizard handles the syntax validation, but the 
+quality of the content requires an individual to validate accuracy of the content. 
+Examples of items that can be flagged as syntax errors can include the following:
 
 - missing content in required fields 
 - incorrectly formatted items 
 - values outside an acceptable range
 - other violations
 
-These errors can be identified directly in the tool by clicking ‘Run
-Validation’ in the Validation item on the menu bar. The record will be
-validated and a message box will pop up alerting you to the number of
+These errors can be identified directly in the tool by clicking **Run
+Validation** in the Validation item on the menu bar. The record will be
+validated and a message box will notify the user of the number of
 errors found.
 
 |image0|
@@ -21,10 +24,10 @@ Metadata Wizard.
 
 |image1|
 
-There is also a window that will pop up, showing a list of all the errors
-found.  Clicking on one of these will take you to the tab/section that contains
-the error and outline it in black.  But keep in mind that some errors might be
-hidden until you scroll up or down in the application or select the appropriate tab.
+A second window will display a list of all the errors found. Clicking on one of 
+the errors will take the user to the tab/section that contains the error and outline it in 
+black. Keep in mind that some errors might be hidden until the user scrolls up or 
+down in the application, or selects the appropriate tab.
 
 |image2|
 

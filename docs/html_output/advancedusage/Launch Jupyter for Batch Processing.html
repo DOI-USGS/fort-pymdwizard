@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Batch Processing using Jupyter and Python &mdash; MetadataWizard  documentation</title>
+  <title>Batch Processing Using Jupyter and Python &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -36,7 +36,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="prev" title="Changing Your Template" href="Changing Your Template.html"/> 
+        <link rel="next" title="Include/Exclude Optional Metadata Sections" href="Include Sections.html"/>
+        <link rel="prev" title="Changing the Template" href="Changing Your Template.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -86,30 +87,33 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Batch Processing using Jupyter and Python</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Batch Processing Using Jupyter and Python</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#launching-jupyter-from-the-wizard">Launching Jupyter from the Wizard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-jupyter-from-the-metadata-wizard">Launching Jupyter From the Metadata Wizard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-notebooks">Example Notebooks</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -154,7 +158,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Batch Processing using Jupyter and Python</li>
+      <li>Batch Processing Using Jupyter and Python</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -174,7 +178,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="batch-processing-using-jupyter-and-python">
-<h1>Batch Processing using Jupyter and Python<a class="headerlink" href="#batch-processing-using-jupyter-and-python" title="Permalink to this headline">¶</a></h1>
+<h1>Batch Processing Using Jupyter and Python<a class="headerlink" href="#batch-processing-using-jupyter-and-python" title="Permalink to this headline">¶</a></h1>
 <p>Some data management or metadata tasks can best be tackled by writing a script
 to automate processes that are repetitive or repeated regularly.
 Since the Metadata Wizard is built on, and ships with a fairly complete
@@ -182,20 +186,19 @@ Python stack, we allow advanced users to leverage this functionality using a Jup
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>Use of scripting, as described below, will require a basic knowledge of
-the <a class="reference external" href="https://www.python.org/">Python programing language</a> as well as how to use <a class="reference external" href="http://jupyter.org/">Jupyter Notebooks</a>.
+the <a class="reference external" href="https://www.python.org/">Python programing language</a> as well as how to use
+<a class="reference external" href="http://jupyter.org/">Jupyter Notebooks</a>.
 There are many excellent resources for learning these powerful tools such as:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://swcarpentry.github.io/python-novice-inflammation/">Software Carpentry</a></li>
-<li><a class="reference external" href="https://www.codecademy.com/learn/learn-python">Code Acadamy</a></li>
+<li><a class="reference external" href="https://www.codecademy.com/learn/learn-python">Code Academy</a></li>
 <li><a class="reference external" href="https://developers.google.com/edu/python/">Google’s Python Class</a></li>
 </ul>
-<div class="line-block">
-<div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="launching-jupyter-from-the-wizard">
-<h2>Launching Jupyter from the Wizard<a class="headerlink" href="#launching-jupyter-from-the-wizard" title="Permalink to this headline">¶</a></h2>
-<p>A live instance of a Jupyter Notebook kernel can be launched directly from the Metadata Wizard 2.0 application by clicking <strong>Launch Jupyter</strong> in the <strong>Advanced</strong> menu.</p>
+<div class="section" id="launching-jupyter-from-the-metadata-wizard">
+<h2>Launching Jupyter From the Metadata Wizard<a class="headerlink" href="#launching-jupyter-from-the-metadata-wizard" title="Permalink to this headline">¶</a></h2>
+<p>A live instance of a Jupyter Notebook kernel can be launched directly from the Metadata
+Wizard application by clicking <strong>Launch Jupyter</strong> in the Advanced menu.</p>
 <div class="figure" id="id1">
 <img alt="Launch Jupyter Menu Item" src="../_images/JupyterLaunchMenu.png" />
 <p class="caption"><span class="caption-text">Menu item to Launch Jupyter</span></p>
@@ -203,10 +206,10 @@ There are many excellent resources for learning these powerful tools such as:</p
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>The user will be asked where they would like to open Jupyter.  If you are just
-getting started or want to take a look at the examples, choose the default directory.
-If you are working on a project, you can browse to a different directory.
-The Notebooks you produce will get written to this location.</p>
+<p>The user will be asked where they would like to open Jupyter.  The default directory
+contains notebooks that are detailed below. Choose <strong>Browse to different folder</strong> to
+to navigate to a specific project folder. The Notebooks produced will get written to
+the chosen location.</p>
 <div class="figure" id="id2">
 <img alt="Launch Jupyter Browse" src="../_images/JupyterBrowse.png" />
 <p class="caption"><span class="caption-text">Prompt for choosing where to start the Notebook server</span></p>
@@ -214,12 +217,12 @@ The Notebooks you produce will get written to this location.</p>
 </div>
 <div class="section" id="example-notebooks">
 <h2>Example Notebooks<a class="headerlink" href="#example-notebooks" title="Permalink to this headline">¶</a></h2>
-<p>The Metadata Wizard 2.0 ships with a set of example Notebooks that are intended to
-provide a demonstration of how one might use these capabilities.  Each is self
-documenting, in that it contains internal explanations of the code contained in
+<p>The Metadata Wizard ships with a set of example Notebooks that are intended to
+provide a demonstration of how one might use these capabilities.  Each is
+self-documenting, in that it contains internal explanations of the code contained in
 it’s cells.</p>
-<p><strong>pymdwizard scripting (Start Here).ipynb</strong>  – Provides a introduction to
-general opening, searching, editing, saving, and validation of FGDC metadata.
+<p><strong>pymdwizard scripting (Start Here).ipynb</strong>  – Provides an introduction to
+opening, searching, editing, saving, and validating FGDC metadata.
 It uses the pymdwizard’s core functionality and is probably where most users
 will want to start.</p>
 <p><strong>Report on all metadata in a directory.ipynb</strong>  – Provides an example of how one might
@@ -227,12 +230,12 @@ generate a report on all the metadata contained in a directory including the FGD
 errors in each file.</p>
 <p><strong>FGDC ITIS Taxonomy generation.ipynb</strong>  – Provides an example of how to use the
 core functionality to search the Integrated Taxonomic Information System (ITIS)
-by scientific and common name and generate FGDC taxonomy sections in code.</p>
-<p><strong>BatchUpdateAuthorsDatesEtc.ipynb</strong>  – Provides a real world example of how the
+by scientific and common name and generate FGDC taxonomy sections using code.</p>
+<p><strong>BatchUpdateAuthorsDatesEtc.ipynb</strong>  – A use case for how the
 above techniques were used to update a large batch of existing metadata records.</p>
-<p><strong>—TBD—.ipynb</strong>  – Provides a real world example of how we extended the
-above techniques to generate metadata for multiple datasets and moved the associated
-data and metadata up to an online repository (A Data Release on the USGS ScienceBase system).</p>
+<p><strong>—TBD—.ipynb</strong>  – A use case for how the above techniques were extended
+to generate metadata for multiple datasets and move the associated
+data and metadata up to an online repository (a data release on the USGS ScienceBase system).</p>
 </div>
 </div>
 
@@ -246,8 +249,10 @@ data and metadata up to an online repository (A Data Release on the USGS Science
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="Include Sections.html" class="btn btn-neutral float-right" title="Include/Exclude Optional Metadata Sections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="Changing Your Template.html" class="btn btn-neutral" title="Changing Your Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="Changing Your Template.html" class="btn btn-neutral" title="Changing the Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

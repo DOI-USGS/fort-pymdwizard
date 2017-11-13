@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing ArcMap Toolbox &mdash; MetadataWizard  documentation</title>
+  <title>ESRI ArcGIS Toolbox (Windows Only) &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="index.html"/>
-        <link rel="next" title="Reporting Bugs and Enhancement Ideas" href="Reporting Bugs and Enhancement Ideas.html"/>
-        <link rel="prev" title="Installing from Source" href="Installing from Source.html"/> 
+        <link rel="next" title="File Management, New, Open, Save, Save as…." href="usage/File Management, New, Open, Save, Save as.....html"/>
+        <link rel="prev" title="Source Code (Windows, Macintosh, Linux)" href="Installing from Source.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -87,25 +87,32 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ESRI ArcGIS Toolbox (Windows Only)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-features">Additional Features</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -150,7 +157,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing ArcMap Toolbox</li>
+      <li>ESRI ArcGIS Toolbox (Windows Only)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -169,12 +176,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installing-arcmap-toolbox">
-<h1>Installing ArcMap Toolbox<a class="headerlink" href="#installing-arcmap-toolbox" title="Permalink to this headline">¶</a></h1>
-<p>Users who want to access the Metadata Wizard 2.0 from ESRI in the same manner as the previous generation of the tool will need to manually add the Metadata Wizard 2.0 toolbox to their ArcToolbox. When using the tool from ESRI, some additional geospatial data types are supported for the auto-generation of spatial and entity and attribute information. Also, accessing existing metadata tied to a geospatial dataset, and saving and editing that metadata is facilitated.</p>
-<p>The Windows installer provides all of the necessary components as part of the install package. Follow the steps below to add the toolbox to ArcToolbox:</p>
+  <div class="section" id="esri-arcgis-toolbox-windows-only">
+<h1>ESRI ArcGIS Toolbox (Windows Only)<a class="headerlink" href="#esri-arcgis-toolbox-windows-only" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://pubs.usgs.gov/of/2014/1132/">original Metadata Wizard tool</a> was only available as an ArcGIS Toolbox.  While the dependency on ESRI software has been eliminated with Metadata Wizard 2.0, an ArcToolbox in still included in order to maintain functionality with ESRI proprietary data formats such as file geodatabases, as well as to accommodate users who prefer to use to tool in ArcGIS. Users who want to access the tool in this manner need to manually add the Metadata Wizard 2.0 toolbox to their ArcToolbox. In order to run the ArcToolbox, ArcGIS Desktop will need to be installed. The toolbox is compatible with all 10.x versions.</p>
 <ol class="arabic">
-<li><p class="first">Find the Metadata Wizard installation directory. If you installed into the default location this will be:</p>
+<li><p class="first">Find the Metadata Wizard installation directory. The default installtion directory is here:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">C:\Users\***YourUserNameHere***\AppData\Local\Programs\MetadataWizard</span>
 </pre></div>
 </div>
@@ -184,8 +192,8 @@
 <div class="line"><br /></div>
 </div>
 <blockquote>
-<div><p>if you installed with elevated privileges:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">C:\Program Files\Metadata Wizard</span>
+<div><p>if elevated privileges (administrative) were used for installation:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">C:\Program Files\MetadataWizard</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -193,8 +201,7 @@
 <div class="line"><br /></div>
 </div>
 <blockquote>
-<div>Note that the ‘AppData’ directory in this path is hidden by default, you will either need to manually type it into the folder path window in Windows Explorer or change your settings to display these hidden directories, see:
-<a class="reference external" href="https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files">https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files</a></div></blockquote>
+<div>Note that the ‘AppData’ directory in this path is hidden by default, the path will either need to be manually typed into the folder path window in Windows Explorer or the settings will be to be <a class="reference external" href="https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files">changed to display these hidden directories</a>.</div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -204,9 +211,14 @@
 </ol>
 <p><img alt="image1" src="_images/AddToolbox.png" /></p>
 <ol class="arabic simple" start="3">
-<li>Once the toolbox is installed, you will be able to access Metadata Wizard 2.0 using the previous tool’s ESRI interface:</li>
+<li>Once the toolbox is installed, Metadata Wizard 2.0 can be accessed using the previous tool’s ESRI interface. Information on the ESRI interface can be found in the <a class="reference external" href="https://pubs.usgs.gov/of/2014/1132/">Open File Report</a> for the previous tool.</li>
 </ol>
 <p><img alt="image2" src="_images/ArcToolbox.png" /></p>
+</div>
+<div class="section" id="additional-features">
+<h2>Additional Features<a class="headerlink" href="#additional-features" title="Permalink to this headline">¶</a></h2>
+<p>When using the tool from ESRI, some additional geospatial data types (feature classes and other data contained within file geodatabases) are supported for the auto-generation of spatial and entity and attribute information. Also, accessing existing metadata tied to a geospatial dataset, and saving and editing that metadata is facilitated.</p>
+</div>
 </div>
 
 
@@ -219,10 +231,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Reporting Bugs and Enhancement Ideas.html" class="btn btn-neutral float-right" title="Reporting Bugs and Enhancement Ideas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="usage/File Management, New, Open, Save, Save as.....html" class="btn btn-neutral float-right" title="File Management, New, Open, Save, Save as…." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Installing from Source.html" class="btn btn-neutral" title="Installing from Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Installing from Source.html" class="btn btn-neutral" title="Source Code (Windows, Macintosh, Linux)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

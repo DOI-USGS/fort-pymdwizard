@@ -36,8 +36,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="Previewing a Record" href="Previewing a Record.html"/>
-        <link rel="prev" title="How to fill out the Entity and Attribute tab" href="How to fill out the Entity and Attribute tab.html"/> 
+        <link rel="next" title="Previewing a Metadata Record" href="Previewing a Record.html"/>
+        <link rel="prev" title="Populating the Entity and Attribute Tab" href="How to fill out the Entity and Attribute tab.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -87,30 +87,33 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Generating a Taxonomic Information Section</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#finding-the-taxonomy-section">Finding the taxonomy section</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-the-taxonomy-section-builder">Using the taxonomy section builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-the-taxonomy-section">Enabling the Taxonomy Section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-taxonomy-section-builder">Using the Taxonomy Section Builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -176,17 +179,17 @@
             
   <div class="section" id="generating-a-taxonomic-information-section">
 <h1>Generating a Taxonomic Information Section<a class="headerlink" href="#generating-a-taxonomic-information-section" title="Permalink to this headline">¶</a></h1>
-<p>In an FGDC record the Taxonomy section is used to record information
-about the species (or other level) being studied.</p>
-<div class="section" id="finding-the-taxonomy-section">
-<h2>Finding the taxonomy section<a class="headerlink" href="#finding-the-taxonomy-section" title="Permalink to this headline">¶</a></h2>
-<p>Because it part of the Biological Data Profile, the taxonomy section will not be available
-within the Metadata Wizard unless ‘FGDC Biological Data Profile of the
-CDGSM’ is selected in the Metadata Standard Name on the Metadata
-Reference Tab.</p>
+<p>In an FGDC record, the Taxonomy section is used to record information
+about the species (or other nomenclatural level) represented in the data.</p>
+<div class="section" id="enabling-the-taxonomy-section">
+<h2>Enabling the Taxonomy Section<a class="headerlink" href="#enabling-the-taxonomy-section" title="Permalink to this headline">¶</a></h2>
+<p>The taxonomy section is not available within the Metadata Wizard unless
+‘FGDC Biological Data Profile of the CDGSM’ is selected in the Metadata
+Standard Name, located on the Metadata Reference tab.</p>
 <div class="line-block">
-<div class="line">To add a Taxonomy section to a record select ‘Yes’ to expand the
-Taxonomy box on the Identification Tab (halfway down on the left).</div>
+<div class="line">In order to add a Taxonomy section to a record, navigate to the Identification tab
+(halfway down on the left), select the <strong>Yes</strong> button to expand the Taxonomy box, and then
+use the builder described below (the information cannot be added without using the builder).</div>
 <div class="line"><img alt="image0" src="../_images/taxonomy_no.png" /></div>
 </div>
 <div class="line-block">
@@ -195,41 +198,37 @@ Taxonomy box on the Identification Tab (halfway down on the left).</div>
 </div>
 </div>
 <div class="section" id="using-the-taxonomy-section-builder">
-<h2>Using the taxonomy section builder<a class="headerlink" href="#using-the-taxonomy-section-builder" title="Permalink to this headline">¶</a></h2>
+<h2>Using the Taxonomy Section Builder<a class="headerlink" href="#using-the-taxonomy-section-builder" title="Permalink to this headline">¶</a></h2>
 <p>It is suggested that users auto-generate Taxonomy Sections using the built in tool which pulls
 data from web services hosted by the <a class="reference external" href="https://www.itis.gov/">Integrated Taxonomic Information
-System (ITIS)</a></p>
-<p>To launch the Taxonomy builder click the button ‘Add Items from ITIS’</p>
-<div class="line-block">
-<div class="line">A form for searching and selecting taxonomic items to include in the
-record will pop up:</div>
-<div class="line"><img alt="image1" src="../_images/taxonomy_builder.png" /></div>
-</div>
+System (ITIS)</a> (note that this tool requires internet access).</p>
+<p>To launch the Taxonomy builder, click the button <strong>Add Items from ITIS</strong></p>
+<p>A form for searching and selecting taxonomic items to include in the record will open:
+| <img alt="image1" src="../_images/taxonomy_builder.png" /></p>
 <ol class="arabic simple">
-<li>Start by entering a scientific or common name into the ‘Search Term’
-box. The term used can be from any level of the scientific heirarchy
+<li>Start by entering a scientific or common name into the Search Term
+box. The term used can be from any level of the scientific hierarchy
 (order, family, species, sub-species, etc.).</li>
-<li>Make sure that ‘Search Type’ either ‘Scientific Name’ or ‘Common
-Name’ matches the search term used.</li>
-<li>Click ‘Search ITIS’ to get a list of search results which will be
-displayed below.</li>
-<li>Select one or more items from this list.</li>
-<li>Click ‘Add Selection’ to add the selected item to the list of
-taxonomic items that will be included.</li>
+<li>Make sure that for Search Type either Scientific Name or Common
+Name matches the search term used.</li>
+<li>Click <strong>Search ITIS</strong> to get a list of search results which will be
+displayed in the Search Results section.</li>
+<li>Select one or more items from the Search Results list.</li>
+<li>Click <strong>Add Selection</strong> to add the selected item to the list of
+taxonomic items that will be included (displayed on the right panel of the window).</li>
 <li>Steps 1-5 can be run as many times as needed to complete the list of
 items to include. If any item needs to be removed from this list,
-select the item and click the ‘Remove Selection’ button below.</li>
-<li>If you would like to include the common names in your taxonomy
-section check this box.</li>
-<li>Click the ‘Generate Taxonomy Section’ button to create a taxonomy
-section based on the the list in the ‘Items to include:’ box above.</li>
+select the item and click the <strong>Remove Selection</strong> button below.</li>
+<li>If common names should be included in the taxonomy section, check this box.</li>
+<li>Click the <strong>Generate Taxonomy Section</strong> button to create a taxonomy
+section based on the list in the <strong>Items to include:</strong> box above.</li>
 </ol>
 </div>
 <div class="section" id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
 <p><strong>Be aware that currently the Taxonomy section in the Metadata Wizard
-does not contain the ‘Taxonomic System’ section of the standard, nor is
-it intended to allow for creating a record manually from scratch.</strong></p>
+does not contain the Taxonomic System section of the standard, nor is
+the tool intended for creating a Taxonomy section manually, without using the Taxonomy Builder tool.</strong></p>
 </div>
 </div>
 
@@ -243,10 +242,10 @@ it intended to allow for creating a record manually from scratch.</strong></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Previewing a Record.html" class="btn btn-neutral float-right" title="Previewing a Record" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Previewing a Record.html" class="btn btn-neutral float-right" title="Previewing a Metadata Record" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral" title="How to fill out the Entity and Attribute tab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral" title="Populating the Entity and Attribute Tab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
