@@ -1,16 +1,16 @@
-======================
-Installing from Source
-======================
+=======================================
+Source Code (Windows, Macintosh, Linux)
+=======================================
 
-Currently the only option for installation on Mac or Linux systems is to install the application from source.
+Currently the only option for installation on Macintosh or Linux systems is to install the application from source.
 
-Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someone with minimal experience to follow.
+Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python installations.
 
 |
 
 1.  Install `Anaconda <https://www.continuum.io/downloads>`_ or `Miniconda <https://conda.io/miniconda.html>`_.
 
-	 *While the code for the MetadataWizard is 2-3 compatible, I would recommend installing the Python 3 version (64x), as 2.7 is being phased out.*
+	 *While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.*
 	  
 |
 
@@ -67,9 +67,9 @@ Instructions for installing pymdwizard from source are intended for someone with
 		
 |
 
-8. CD to the directory you want to install the actual wizard in:
+8. Navigate to the directory where the Metadata Wizard will be installed:
 
-	*Your directory below could be different depending on operating system or organization*
+	*The example directory below could be different depending on operating system or organization*
 
   .. code-block:: console
 
@@ -77,7 +77,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 		
 |
 
-9. clone our pymdwizard project:
+9. Clone our pymdwizard project:
 
   .. code-block:: console
 
@@ -85,7 +85,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 		
 |
 
-10. CD into our project folder:
+10. Navigate to our project folder:
 
   .. code-block:: console
 
@@ -93,7 +93,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 		
 |
 
-11. Install the rest of our requirements:
+11. Install the remaining software requirements (library dependencies):
 
   .. code-block:: console
 
@@ -109,7 +109,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 		
 |
 
-13. Launch the Wizard:
+13. Launch Metadata Wizard:
 
   .. code-block:: console
 

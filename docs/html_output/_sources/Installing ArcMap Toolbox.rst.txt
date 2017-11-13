@@ -1,12 +1,13 @@
-=========================
-Installing ArcMap Toolbox
-=========================
+==================================
+ESRI ArcGIS Toolbox (Windows Only)
+==================================
 
-Users who want to access the Metadata Wizard 2.0 from ESRI in the same manner as the previous generation of the tool will need to manually add the Metadata Wizard 2.0 toolbox to their ArcToolbox. When using the tool from ESRI, some additional geospatial data types are supported for the auto-generation of spatial and entity and attribute information. Also, accessing existing metadata tied to a geospatial dataset, and saving and editing that metadata is facilitated.
+Installation
+------------
 
-The Windows installer provides all of the necessary components as part of the install package. Follow the steps below to add the toolbox to ArcToolbox:
+The `original Metadata Wizard tool <https://pubs.usgs.gov/of/2014/1132/>`_ was only available as an ArcGIS Toolbox.  While the dependency on ESRI software has been eliminated with Metadata Wizard 2.0, an ArcToolbox in still included in order to maintain functionality with ESRI proprietary data formats such as file geodatabases, as well as to accommodate users who prefer to use to tool in ArcGIS. Users who want to access the tool in this manner need to manually add the Metadata Wizard 2.0 toolbox to their ArcToolbox. In order to run the ArcToolbox, ArcGIS Desktop will need to be installed. The toolbox is compatible with all 10.x versions.
 
-1. Find the Metadata Wizard installation directory. If you installed into the default location this will be:
+1. Find the Metadata Wizard installation directory. The default installtion directory is here:
    
    .. code-block:: console
 
@@ -14,16 +15,16 @@ The Windows installer provides all of the necessary components as part of the in
 		
 |
 
-   if you installed with elevated privileges:
+   if elevated privileges (administrative) were used for installation:
    
    .. code-block:: console
 
-        C:\Program Files\Metadata Wizard
+        C:\Program Files\MetadataWizard
 		
 |
 		
-   Note that the ‘AppData’ directory in this path is hidden by default, you will either need to manually type it into the folder path window in Windows Explorer or change your settings to display these hidden directories, see:
-   https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files
+   Note that the ‘AppData’ directory in this path is hidden by default, the path will either need to be manually typed into the folder path window in Windows Explorer or the settings will be to be `changed to display these hidden directories <https://support.microsoft.com/en-us/help/14201/windows-show-hidden-files>`_.
+   
    
 |
 
@@ -33,9 +34,14 @@ The Windows installer provides all of the necessary components as part of the in
 
 |image1|
 
-3. Once the toolbox is installed, you will be able to access Metadata Wizard 2.0 using the previous tool's ESRI interface:
+3. Once the toolbox is installed, Metadata Wizard 2.0 can be accessed using the previous tool's ESRI interface. Information on the ESRI interface can be found in the `Open File Report <https://pubs.usgs.gov/of/2014/1132/>`_ for the previous tool.
 
 |image2|
+
+Additional Features
+-------------------
+
+When using the tool from ESRI, some additional geospatial data types (feature classes and other data contained within file geodatabases) are supported for the auto-generation of spatial and entity and attribute information. Also, accessing existing metadata tied to a geospatial dataset, and saving and editing that metadata is facilitated.
 
 .. |image0| image:: img/DefaultInstallLocation.png
 .. |image1| image:: img/AddToolbox.png

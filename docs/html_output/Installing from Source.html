@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing from Source &mdash; MetadataWizard  documentation</title>
+  <title>Source Code (Windows, Macintosh, Linux) &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="index.html"/>
-        <link rel="next" title="Installing ArcMap Toolbox" href="Installing ArcMap Toolbox.html"/>
-        <link rel="prev" title="Windows Installation" href="Windows Installation.html"/> 
+        <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html"/>
+        <link rel="prev" title="Software Installer (Windows Only)" href="Windows Installation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -87,25 +87,28 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -150,7 +153,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing from Source</li>
+      <li>Source Code (Windows, Macintosh, Linux)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -169,17 +172,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installing-from-source">
-<h1>Installing from Source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h1>
-<p>Currently the only option for installation on Mac or Linux systems is to install the application from source.</p>
-<p>Instructions for installing pymdwizard from source are intended for someone with at least a basic familiarity with Python and Python installations, but should be possible for someone with minimal experience to follow.</p>
+  <div class="section" id="source-code-windows-macintosh-linux">
+<h1>Source Code (Windows, Macintosh, Linux)<a class="headerlink" href="#source-code-windows-macintosh-linux" title="Permalink to this headline">¶</a></h1>
+<p>Currently the only option for installation on Macintosh or Linux systems is to install the application from source.</p>
+<p>Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python installations.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic">
 <li><p class="first">Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
 <blockquote>
-<div><p><em>While the code for the MetadataWizard is 2-3 compatible, I would recommend installing the Python 3 version (64x), as 2.7 is being phased out.</em></p>
+<div><p><em>While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.</em></p>
 </div></blockquote>
 </li>
 </ol>
@@ -218,7 +221,7 @@
 <li>Create a pymdwizard environment:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span>3.6 <span class="nv">pyqt</span><span class="o">=</span>5.6.0*
 </pre></div>
 </div>
 </div></blockquote>
@@ -259,9 +262,9 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic" start="8">
-<li><p class="first">CD to the directory you want to install the actual wizard in:</p>
+<li><p class="first">Navigate to the directory where the Metadata Wizard will be installed:</p>
 <blockquote>
-<div><p><em>Your directory below could be different depending on operating system or organization</em></p>
+<div><p><em>The example directory below could be different depending on operating system or organization</em></p>
 </div></blockquote>
 </li>
 </ol>
@@ -274,7 +277,7 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="9">
-<li>clone our pymdwizard project:</li>
+<li>Clone our pymdwizard project:</li>
 </ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
@@ -285,7 +288,7 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="10">
-<li>CD into our project folder:</li>
+<li>Navigate to our project folder:</li>
 </ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
@@ -296,7 +299,7 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="11">
-<li>Install the rest of our requirements:</li>
+<li>Install the remaining software requirements (library dependencies):</li>
 </ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file requirements.txt
@@ -318,7 +321,7 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="13">
-<li>Launch the Wizard:</li>
+<li>Launch Metadata Wizard:</li>
 </ol>
 <blockquote>
 <div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
@@ -337,10 +340,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="Installing ArcMap Toolbox" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="ESRI ArcGIS Toolbox (Windows Only)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Windows Installation.html" class="btn btn-neutral" title="Windows Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Windows Installation.html" class="btn btn-neutral" title="Software Installer (Windows Only)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
