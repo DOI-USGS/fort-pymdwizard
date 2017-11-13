@@ -67,9 +67,21 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
+   </property>
    <widget class="QMenu" name="menuFile">
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <widget class="QMenu" name="menuRecent_Files">
      <property name="title">
@@ -88,7 +100,10 @@
    </widget>
    <widget class="QMenu" name="menuValidate">
     <property name="title">
-     <string>Validation</string>
+     <string>&amp;Validation</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <addaction name="actionRun_Validation"/>
     <addaction name="actionClear_validation"/>
@@ -96,14 +111,26 @@
     <addaction name="generate_review"/>
    </widget>
    <widget class="QMenu" name="menuPreview">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="title">
-     <string>Preview</string>
+     <string>&amp;Preview</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAdvanced">
     <property name="title">
-     <string>Advanced</string>
+     <string>&amp;Advanced</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <widget class="QMenu" name="menuTemplate_2">
      <property name="title">
@@ -114,13 +141,30 @@
      <addaction name="actionBrowseTemplate"/>
      <addaction name="actionRestoreBuiltIn"/>
     </widget>
+    <widget class="QMenu" name="menuOptional_Sections">
+     <property name="toolTip">
+      <string>Choose which optional sections to remove from the output record altogether.</string>
+     </property>
+     <property name="title">
+      <string>Include Sections</string>
+     </property>
+     <addaction name="actionData_Quality"/>
+     <addaction name="actionSpatial"/>
+     <addaction name="actionEntity_and_Attribute"/>
+     <addaction name="actionDistribution"/>
+    </widget>
     <addaction name="menuTemplate_2"/>
     <addaction name="separator"/>
     <addaction name="actionLaunch_Jupyter"/>
+    <addaction name="separator"/>
+    <addaction name="menuOptional_Sections"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <addaction name="actionLaunch_Help"/>
     <addaction name="separator"/>
@@ -143,20 +187,56 @@
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="toolTip">
+    <string>Open existing XML document.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string> Save current document to disk.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionSave_as">
    <property name="text">
     <string>Save as ...</string>
    </property>
+   <property name="toolTip">
+    <string>Save the current document to a different file name on disk</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit the MetadataWizard</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionItem_1">
@@ -213,15 +293,42 @@
    <property name="text">
     <string>Run Validation</string>
    </property>
+   <property name="toolTip">
+    <string>Validate current document against FGDC/BDP schema.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionClear_validation">
    <property name="text">
     <string>Clear validation</string>
    </property>
+   <property name="toolTip">
+    <string>Clear validation errors highlighted currently.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionPreview">
    <property name="text">
     <string>Preview</string>
+   </property>
+   <property name="toolTip">
+    <string>Open preview window with current document contents.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionPull_From_Data">
@@ -237,6 +344,15 @@
   <action name="actionNew">
    <property name="text">
     <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new metadata document, based on current template.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionBrowseTemplate">
@@ -261,6 +377,15 @@
    <property name="text">
     <string>Launch Jupyter</string>
    </property>
+   <property name="toolTip">
+    <string>Launch Jupyter Notebook in browser, with MetadataWizard Python kernel.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionUpdate">
    <property name="enabled">
@@ -274,20 +399,100 @@
    <property name="text">
     <string>Generate Review Doc</string>
    </property>
+   <property name="toolTip">
+    <string>Generate a review documnet (.docx format) of current record</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionLaunch_Help">
    <property name="text">
     <string>Launch Help</string>
+   </property>
+   <property name="toolTip">
+    <string>Launch local MetadataWizard Help browser</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionCheck_for_Updates">
    <property name="text">
     <string>Check for Updates</string>
    </property>
+   <property name="toolTip">
+    <string>Check for application updates</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>More information about the MetadataWizard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionData_Quality">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Data Quality</string>
+   </property>
+  </action>
+  <action name="actionEntity_and_Attribute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Entity and Attribute</string>
+   </property>
+  </action>
+  <action name="actionDistribution">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Distribution</string>
+   </property>
+  </action>
+  <action name="actionSpatial">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Spatial</string>
    </property>
   </action>
  </widget>

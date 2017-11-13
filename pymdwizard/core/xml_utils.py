@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
@@ -11,11 +18,25 @@ Provide a variety of xml processing functions.
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,34 +44,23 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+
 # built in Python imports
 import os
 import collections
 import warnings
 
-# external library imports
-from lxml import etree
+from defusedxml import lxml
+from lxml import etree as etree
 
 try:
     import pandas as pd
 except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
+
 
 def xml_document_loader(xml_locator):
     """
@@ -103,7 +113,8 @@ def node_to_dict(node, add_fgdc=True):
     Parameters
     ----------
     node : lxml element
-
+    add_fgdc : bool
+            if true prepend 'fgdc_' to the front of all tags
     Returns
     -------
         dictionary contain a key value pair for each child item in the node
@@ -112,13 +123,13 @@ def node_to_dict(node, add_fgdc=True):
     node_dict = collections.OrderedDict()
 
     if len(node.getchildren()) == 0:
-        tag = _parse_tag(node.tag)
+        tag = parse_tag(node.tag)
         if add_fgdc:
             tag = 'fgdc_' + tag
         node_dict[tag] = node.text
     else:
         for child in node.getchildren():
-            tag = _parse_tag(child.tag)
+            tag = parse_tag(child.tag)
             if add_fgdc:
                 tag = 'fgdc_' + tag
             if len(child.getchildren()) > 0:
@@ -129,7 +140,7 @@ def node_to_dict(node, add_fgdc=True):
     return node_dict
 
 
-def _parse_tag(tag):
+def parse_tag(tag):
     """
     strips namespace declaration from xml tag string
 
@@ -184,8 +195,8 @@ def search_xpath(node, xpath, only_first=True):
     list of lxml nodes
     """
 
-    if type(node) == etree._Element or \
-            type(node) == etree._ElementTree:
+    if type(node) in [lxml._etree._Element, lxml._etree._ElementTree,
+                      lxml.RestrictedElement]:
         matches = node.xpath(xpath)
         if len(matches) == 0:
             if only_first:
@@ -203,7 +214,6 @@ def search_xpath(node, xpath, only_first=True):
             return None
         else:
             return []
-
 
 
 def get_text_content(node, xpath=''):
@@ -272,12 +282,13 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return etree.tostring(node, pretty_print=True, with_tail=False,
-                          encoding='UTF-8', xml_declaration=True).decode()
+    return lxml.tostring(node, pretty_print=True, with_tail=False,
+                         encoding='UTF-8', xml_declaration=True).decode()
 
 
 def fname_to_node(fname):
     """
+    parse the contents of local filename into an lxml node object
 
     Parameters
     ----------
@@ -287,17 +298,12 @@ def fname_to_node(fname):
     -------
     lxml node
     """
-    try:
-        return etree.parse(fname)
-    except:
-        msg = "Error encounterd opening the selected file"
-        msg += "\n Please make sure file exists and is valid FGDC XML"
-
+    return lxml.parse(fname)
 
 
 def string_to_node(str_node):
     """
-    covert an string representation of a node into an lxml node
+    covert a string representation of a node into an lxml node object
 
     Parameters
     ----------
@@ -309,7 +315,7 @@ def string_to_node(str_node):
     lxml node
     """
     parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-    element = etree.fromstring(str_node, parser=parser)
+    element = lxml.fromstring(str_node, parser=parser)
     return element
 
 
@@ -348,12 +354,20 @@ def xml_node(tag, text='', parent_node=None, index=-1):
     return node
 
 
+def load_xslt(fname):
+    return etree.XSLT(fname_to_node(fname))
+
+
+def load_schema(fname):
+    return etree.XMLSchema(fname_to_node(fname))
+
+
 def clear_children(element):
     """
     Removes all child elements from the element passed
     Parameters
     ----------
-    xml_node : lxml element
+    element : lxml element
 
     Returns
     -------
@@ -362,25 +376,23 @@ def clear_children(element):
     for child in element.getchildren():
         element.remove(child)
 
-###############################################################################
-# Experimental xml convenience classes
-###############################################################################
 
 class XMLRecord(object):
     def __init__(self, contents):
         try:
             if os.path.exists(contents[:255]):
                 self.fname = contents
-                #they passed us a file path
-                self.record = etree.parse(self.fname)
+                # they passed us a file path
+                self.record = lxml.parse(self.fname)
                 self._root = self.record.getroot()
             else:
+                # they pased us a string containing the xml record
                 self.fname = None
                 self._root = string_to_node(contents)
                 self.record = etree.ElementTree(self._root)
         except etree.XMLSyntaxError:
             self.fname = None
-            self.record = etree.fromstring(contents)
+            self.record = lxml.fromstring(contents)
             self._root = self.record.getroot()
 
         self.tag = self._root.tag
@@ -406,17 +418,40 @@ class XMLRecord(object):
     def validate(self, schema='fgdc', as_dataframe=True):
         from pymdwizard.core import fgdc_utils
 
-        return fgdc_utils.validate_xml(self._contents.to_xml(), xsl_fname=schema,
-                                as_dataframe=as_dataframe)
+        return fgdc_utils.validate_xml(self._contents.to_xml(),
+                                       xsl_fname=schema,
+                                       as_dataframe=as_dataframe)
 
 
 class XMLNode(object):
-    def __init__(self, element=None, tag='', text='', parent_node=None, index=-1):
+    """
+    Class used to dynamically create an object containing the contents of an
+    XML node, along with functions for manipulating and itrospecting it.
+    """
+    def __init__(self, element=None, tag='', text='', parent_node=None,
+                 index=-1):
+        """
+        Initialization function.
+
+        Parameters
+        ----------
+        element : xml element, optional (one of tag or element must be used)
+
+        tag : str, optional (one of tag or element must be used)
+              The string to use for the element tag
+        text : str
+               The text contents of the element
+        parent_node : XMLNode, optional
+                      if provided add this XMLNode to the parent node
+        index : int, optional
+                if provided insert this XMLNdde into the parent node at this
+                position
+        """
         self.text = text
         self.tag = tag
         self.children = []
 
-        if type(element) == etree._Element:
+        if isinstance(element, etree._Element):
             self.from_xml(element)
         elif tag:
             element = xml_node(tag=tag, text=text)
@@ -428,12 +463,33 @@ class XMLNode(object):
             parent_node.add_child(self, index=index, deepcopy=False)
 
     def __repr__(self):
+        """
+        return representation of this object
+
+        Returns
+        -------
+        str representation of this element, pretty print of entire contents.
+        """
         return self.__str__()
 
     def __str__(self, level=0):
+        """
+
+        Parameters
+        ----------
+        level : int
+                Number of double spaces "  " to indent the resulting output to
+
+        Returns
+        -------
+        str representation of this element, pretty print of entire contents.
+        """
         if self.text:
             cur_node = xml_node(self.tag, self.text)
-            result = "{}{}".format("  "*level, etree.tostring(cur_node, pretty_print=True).decode()).rstrip()
+            result = "{}{}".format("  "*level,
+                                   lxml.tostring(cur_node,
+                                                 pretty_print=True).decode())
+            result = result.rstrip()
         else:
             result = "{}<{}>".format("  "*level, self.tag, self.tag)
             for child in self.children:
@@ -444,11 +500,33 @@ class XMLNode(object):
         return result
 
     def __eq__(self, other):
+        """
+        Check equality of XMLNode objects by comparing
+        their string representations
+
+        Parameters
+        ----------
+        other : Second XMLNode object to compare self to
+
+        Returns
+        -------
+        bool
+        """
         if isinstance(other, self.__class__):
             return self.to_str() == other.to_str()
         return False
 
     def from_xml(self, element):
+        """
+
+        Parameters
+        ----------
+        element
+
+        Returns
+        -------
+
+        """
         self.element = element
         self.tag = element.tag
         self.add_attr(self.tag, self)
@@ -464,6 +542,22 @@ class XMLNode(object):
             self.add_attr(child_node.tag, child_object)
 
     def add_attr(self, tag, child_object):
+        """
+        Add a child XMLNode to this object's attributes.
+        If there is already a child with this tag, make that
+        child a list containing the previous item, and append this chils
+
+
+        Parameters
+        ----------
+        tag : str
+              the tag of the XMLNode
+        child_object : XMLNode
+                       The node to add to this object
+        Returns
+        -------
+        None
+        """
         if tag in self.__dict__:
             cur_contents = self.__dict__[tag]
             if type(cur_contents) == list:
@@ -474,20 +568,57 @@ class XMLNode(object):
             self.__dict__[tag] = child_object
 
     def to_xml(self):
+        """
+        Return lxml element version of self
+
+        Returns
+        -------
+        lxml element
+        """
         str_element = self.to_str()
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(str_element, parser=parser)
+        element = string_to_node(str_element)
         return element
 
     def from_str(self, str_element):
+        """
+
+        Parameters
+        ----------
+        str_element : str
+                      xml element serialized as a string
+        Returns
+        -------
+
+        """
         parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        element = etree.fromstring(str_element, parser=parser)
+        element = lxml.fromstring(str_element, parser=parser)
         self.from_xml(element)
 
     def to_str(self):
+        """
+        return __str__ representation of self
+
+        Returns
+        -------
+        str
+        """
         return self.__str__()
 
     def search_xpath(self, xpath=''):
+        """
+        Parses an xpath and recursively searches this object for matching
+        elements
+
+        Parameters
+        ----------
+        xpath : str
+                The xpath that will be searched, can contain tags and indexes
+                only
+
+        Returns
+        -------
+        list of matching elements
+        """
         if not xpath:
             return self
 
@@ -517,6 +648,25 @@ class XMLNode(object):
             return []
 
     def xpath(self, xpath='', as_list=True, as_text=False):
+        """
+        Convenience function for calling self.xpath but specifying the format
+        to return results in
+
+        Parameters
+        ----------
+        xpath : str
+                the xpath to search
+        as_list : bool
+                 Whether to return a list regardless of how many matching
+                 elements are found
+        as_text : bool
+                  Whether to return the text of the first matching element
+                  only
+
+        Returns
+        -------
+        XMLNode, list of XMLNodes, or str
+        """
         results = self.search_xpath(xpath)
         if as_list and not type(results) == list:
             results = [results]
@@ -530,12 +680,15 @@ class XMLNode(object):
         """
         for a given xpath, return the most distant matching element
         iteratively searches an xpath until a match is found removing the last
-        element each time
+        element each time.  An iterative version of xpath.
 
         Parameters
         ----------
-        xpath
-        as_list
+        xpath : str
+                the xpath to search
+        as_list : bool
+                  Whether to return the text of the first matching element
+                  only
 
         Returns
         -------
@@ -544,7 +697,7 @@ class XMLNode(object):
         xpath_items = xpath.split('/')
 
         while xpath_items:
-            result = self.xpath('/'.join(xpath_items))
+            result = self.xpath('/'.join(xpath_items), as_list=as_list)
             if result:
                 return result
             xpath_items.pop()
@@ -552,6 +705,20 @@ class XMLNode(object):
         return []
 
     def clear_children(self, tag=None):
+        """
+        Remove the children of this object.  If tag==None all children will be
+        removed.  If a specific tag is passed only the children with a matching
+        tag will be removed.
+
+        Parameters
+        ----------
+        tag : str, optional
+              The tag to lookfor and remove.  Non-matching tags will be kept
+
+        Returns
+        -------
+        None
+        """
         if tag is not None:
             self.children = [c for c in self.children if c.tag != tag]
         else:
@@ -559,14 +726,18 @@ class XMLNode(object):
 
     def replace_child(self, new_child, tag=None, deepcopy=True):
         """
-        replaces the
+        Replaces a given child
 
         Parameters
         ----------
         tag : Str (optional)
             The child node tag that will be replaced.
             If not supplied the tag of the child node will be used.
-        child : XMLNode
+        new_child : XMLNode
+            The child to swap into this object
+        deepcopy : bool
+            Whether to use the exact child object passed or
+            a copy of it.
 
         Returns
         -------
@@ -580,6 +751,23 @@ class XMLNode(object):
                 self.add_child(new_child, i, deepcopy=deepcopy)
 
     def add_child(self, child, index=-1, deepcopy=True):
+        """
+        Add a child element to this object.
+
+        Parameters
+        ----------
+        child : XML element
+            The child element to be added to this object
+        index : int, optional
+            What position (zero based) to add the child element at
+        deepcopy : bool
+            Whether to use the exact child object passed or
+            a copy of it.
+
+        Returns
+        -------
+        None
+        """
         if index == -1:
             index = len(self.children)
         if index < -1:
@@ -598,6 +786,13 @@ class XMLNode(object):
         self.add_attr(child.tag, child)
 
     def copy(self):
+        """
+        Return a duplicate (deepcopy) of this object
+
+        Returns
+        -------
+        XMLNode
+        """
         node_str = self.to_str()
         self_copy = XMLNode(node_str)
         return self_copy
@@ -606,6 +801,7 @@ class XMLNode(object):
 def split_tag(tag):
     """
     parse an xml tag into the tag itself and the tag index
+
     Parameters
     ----------
     tag : str
@@ -622,5 +818,11 @@ def split_tag(tag):
         fgdc_tag = tag
         index = 0
     return fgdc_tag, index
+
+
+
+
+
+
 
 

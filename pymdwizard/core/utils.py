@@ -1,21 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Contains a variety of miscellaneous functions used in the the metadata wizard
+Module contains a variety of miscellaneous functions
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey (USGS).
+Although the software has been subjected to rigorous review, 
+the USGS reserves the right to update the software as needed pursuant to 
+further analysis and review. No warranty, expressed or implied, is made by 
+the USGS or the U.S. Government as to the functionality of the software and 
+related material nor shall the fact of release constitute any such warranty. 
+Furthermore, the software is released on condition that neither the USGS nor 
+the U.S. Government shall be held liable for any damages resulting from 
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,37 +44,30 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+
 import sys
 import os
+from os.path import dirname
 import datetime
 import traceback
 import pkg_resources
 
-from lxml import etree
 import requests
 
 import pandas as pd
 
-from PyQt5.QtWidgets import QLineEdit, QTextEdit, QTextBrowser, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow, QApplication, QComboBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QTextBrowser
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap, QIcon
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QIcon
 
 from pymdwizard.core import xml_utils
 
@@ -77,8 +91,7 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
     """
 
     result = requests_pem_get(USGS_AD_URL.format(ad_username))
-    parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-    element = etree.fromstring(result.content, parser=parser)
+    element = xml_utils.string_to_node(result.content)
 
     try:
         if element.xpath('cntperp/cntper')[0].text == 'GS ScienceBase':
@@ -203,6 +216,7 @@ def populate_widget_element(widget, element, xpath):
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 
+
 def my_exception_hook(exctype, value, traceback):
     # Print the error and traceback
     print(exctype, value, traceback)
@@ -254,10 +268,12 @@ def get_resource_path(fname):
             the full file path to the resource specified
     """
     return pkg_resources.resource_filename('pymdwizard',
+
                                            'resources/{}'.format(fname))
 def set_window_icon(widget):
     icon = QIcon(get_resource_path('icons/Ducky.ico'))
     widget.setWindowIcon(icon)
+
 
 class PandasModel(QAbstractTableModel):
     """
@@ -313,10 +329,6 @@ class PandasModel(QAbstractTableModel):
         self.df = self.df[cols] if horizontal else self.df.T[cols].T
         return True
 
-    #    def filter(self, filt=None):
-    #        self.df = self.df_full if filt is None else self.df[filt]
-    #        self.layoutChanged.emit()
-
     def headerData(self, section, orientation, role):
         if role != Qt.DisplayRole: return
         label = getattr(self.df, ("columns", "index")[orientation!=Qt.Horizontal])[section]
@@ -334,6 +346,7 @@ class PandasModel(QAbstractTableModel):
                                 inplace=True, na_position=na_pos)
             self.layoutChanged.emit()
 
+
 def check_fname(fname):
     """
     Check that the given fname is in a directory that exists and the current
@@ -343,7 +356,7 @@ def check_fname(fname):
     Parameters
     ----------
     fname : str
-
+            file path and name to check
     Returns
     -------
     str :
@@ -378,12 +391,19 @@ def check_fname(fname):
 def get_install_dname(which='pymdwizard'):
     """
     get the full path to the installation directory
+
+    Parameters
+    ----------
+    which : str, optional
+            which subdirectory to return (
+            one of: 'root', 'pymdwizard', or 'python'
+
     Returns
     -------
     str : path and directory name of the directory pymdwizard is in
     """
     this_fname = os.path.realpath(__file__)
-    pymdwizard_dname = os.path.dirname(os.path.dirname(os.path.dirname(this_fname)))
+    pymdwizard_dname = dirname(dirname(dirname(this_fname)))
     root_dir = os.path.dirname(pymdwizard_dname)
     python_dname = os.path.join(root_dir, 'Python35_64')
     if not os.path.exists(python_dname):
@@ -401,9 +421,19 @@ def get_install_dname(which='pymdwizard'):
 
 
 def get_pem_fname():
-    return os.path.join(get_install_dname('pymdwizard'), 'pymdwizard', 'resources', 'DOIRootCA2.pem')
+    return os.path.join(get_install_dname('pymdwizard'), 'pymdwizard',
+                        'resources', 'DOIRootCA2.pem')
+
 
 def check_pem_file():
+    """
+    Convenience USGS only function that checks if the DOI PEM file is stored
+    in the wincertstore and export a local copy for use in the application.
+
+    Returns
+    -------
+    None
+    """
     try:
         import wincertstore
         pem_fname = get_pem_fname()
@@ -411,21 +441,39 @@ def check_pem_file():
             for storename in ("CA", "ROOT"):
                 with wincertstore.CertSystemStore(storename) as store:
                     for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
-                        #             print(cert.get_pem())
                         if 'DOIRootCA2' in cert.get_name():
                             text_file = open(pem_fname, "w", encoding='ascii')
-                            text_file.write(cert.get_pem().encode().decode("ascii"))
+                            contents = cert.get_pem().encode().decode("ascii")
+                            text_file.write(contents)
                             text_file.close()
-        return pem_fname
+
         os.environ['PIP_CERT'] = pem_fname
         os.environ['SSL_CERT_FILE'] = pem_fname
         os.environ['GIT_SSL_CAINFO'] = pem_fname
+        return pem_fname
     except:
-        # this is an optional convenience function that will only work for windows
+        # this is an optional convenience function that will only work
+        # on the Windows platform, for USGS users.
         # if anything goes wrong pass silently
         pass
 
+
 def requests_pem_get(url, params={}):
+    """
+    Make a get requests.get call but use the local PEM fname if you hit an
+    SSL error
+
+    Parameters
+    ----------
+    url : str
+          url to use
+    params: dict
+            parameters to pass on to the function
+
+    Returns
+    -------
+        the results of the requests call
+    """
     try:
         return requests.get(url, params=params)
     except requests.exceptions.SSLError:

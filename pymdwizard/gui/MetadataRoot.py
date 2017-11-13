@@ -1,21 +1,44 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a completer FGDC record
+The widget for the main metadata root item.
+This is the container for an FGDC record without the application wrapper,
+menu bar, etc.
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,35 +46,14 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
-import lxml
 from lxml import etree
 
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QToolButton
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-from PyQt5.QtCore import Qt, QMimeData, QObject, QTimeLine
-
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QEvent, QCoreApplication
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QTimeLine
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -76,6 +78,11 @@ class MetadataRoot(WizardWidget):
     def __init__(self, parent=None):
         self.schema = 'bdp'
         super(self.__class__, self).__init__(parent=parent)
+        self.use_dataqual = True
+        self.use_spatial = True
+        self.use_eainfo = True
+        self.use_distinfo = True
+
 
     def build_ui(self):
         """
@@ -92,9 +99,8 @@ class MetadataRoot(WizardWidget):
         self.idinfo = IdInfo(root_widget=self, parent=self)
         self.ui.page_idinfo.layout().addWidget(self.idinfo)
 
-        self.dataqual =DataQuality()
+        self.dataqual = DataQuality()
         self.ui.page_dataqual.layout().addWidget(self.dataqual)
-        # self.ui.page_dataqual.setLayout(self.dataqual.layout())
 
         self.spatial_tab = SpatialTab(root_widget=self)
         self.ui.page_spatial.layout().addWidget(self.spatial_tab)
@@ -124,6 +130,14 @@ class MetadataRoot(WizardWidget):
         self.ui.metainfo_button.pressed.connect(self.section_changed)
 
     def section_changed(self):
+        """
+        The event which switches the currently displayed main section
+        when a user clicks on one of the top level section header buttons.
+
+        Returns
+        -------
+        None
+        """
 
         button_name = self.sender().objectName()
 
@@ -138,6 +152,19 @@ class MetadataRoot(WizardWidget):
         self.switch_section(which_index=new_index)
 
     def switch_section(self, which_index):
+        """
+        sub funtion that does the actual switching, creating a fader widget,
+        etc.
+
+        Parameters
+        ----------
+        which_index : int
+            The index of the section to display
+
+        Returns
+        -------
+        None
+        """
         if which_index == 0:
             self.ui.idinfo_button.setChecked(True)
         elif which_index == 1:
@@ -154,47 +181,92 @@ class MetadataRoot(WizardWidget):
         old_widget = self.ui.fgdc_metadata.currentWidget()
         new_widget = self.ui.fgdc_metadata.widget(which_index)
 
-        fader_widget = FaderWidget(old_widget, new_widget)
+        FaderWidget(old_widget, new_widget)
         self.ui.fgdc_metadata.setCurrentIndex(which_index)
 
+        return new_widget
+
     def switch_schema(self, schema):
+        """
+        Switch the displayed schema between straight FGDC and BDP
+
+        Parameters
+        ----------
+        schema : str
+
+        Returns
+        -------
+
+        """
         self.schema = schema
         self.idinfo.switch_schema(schema)
         self.spatial_tab.switch_schema(schema)
 
-    def _to_xml(self):
-        metadata_node = etree.Element('metadata')
-        idinfo = self.idinfo._to_xml()
+    def use_section(self, which, value):
+        """
+        enable or disable top optional top level sections
+
+        Parameters
+        ----------
+        which : str
+                Which section to change: ['dataqual', 'spatial', 'ea',
+                                          'distinfo']
+        value : bool
+                Whether to enable (True) or disable (False)
+
+        Returns
+        -------
+        None
+        """
+        if which == 'dataqual':
+            self.use_dataqual = value
+            self.dataqual.setVisible(value)
+        if which == 'spatial':
+            self.use_spatial = value
+            self.spatial_tab.setVisible(value)
+        if which == 'eainfo':
+            self.use_eainfo = value
+            self.eainfo.setVisible(value)
+        if which == 'distinfo':
+            self.use_distinfo = value
+            self.distinfo.setVisible(value)
+
+    def to_xml(self):
+        metadata_node = xml_utils.xml_node(tag='metadata')
+        idinfo = self.idinfo.to_xml()
         metadata_node.append(idinfo)
 
-        dataqual = self.dataqual._to_xml()
-        metadata_node.append(dataqual)
+        if self.use_dataqual:
+            dataqual = self.dataqual.to_xml()
+            metadata_node.append(dataqual)
 
-        if self.spatial_tab.spdoinfo.has_content():
-            spdoinfo = self.spatial_tab.spdoinfo._to_xml()
+        if self.spatial_tab.spdoinfo.has_content() and self.use_spatial:
+            spdoinfo = self.spatial_tab.spdoinfo.to_xml()
             metadata_node.append(spdoinfo)
 
-        if self.spatial_tab.spref.has_content():
-            spref = self.spatial_tab.spref._to_xml()
+        if self.spatial_tab.spref.has_content() and self.use_spatial:
+            spref = self.spatial_tab.spref.to_xml()
             metadata_node.append(spref)
 
-        if self.eainfo.has_content():
-            eainfo = self.eainfo._to_xml()
+        if self.eainfo.has_content() and self.use_eainfo:
+            eainfo = self.eainfo.to_xml()
             metadata_node.append(eainfo)
 
-        distinfo = self.distinfo._to_xml()
-        metadata_node.append(distinfo)
+        if self.use_distinfo:
+            distinfo = self.distinfo.to_xml()
+            metadata_node.append(distinfo)
 
-        metainfo = self.metainfo._to_xml()
+        metainfo = self.metainfo.to_xml()
         metadata_node.append(metainfo)
         return metadata_node
 
+    def from_xml(self, metadata_element):
 
-    def _from_xml(self, metadata_element):
+        self.populate_section(metadata_element, 'spdoinfo',
+                              self.spatial_tab.spdoinfo)
 
-        self.populate_section(metadata_element, 'spdoinfo', self.spatial_tab.spdoinfo)
-        #
-        self.populate_section(metadata_element, 'spref', self.spatial_tab.spref)
+        self.populate_section(metadata_element, 'spref',
+                              self.spatial_tab.spref)
 
         self.populate_section(metadata_element, 'idinfo', self.idinfo)
 
@@ -207,7 +279,21 @@ class MetadataRoot(WizardWidget):
         self.populate_section(metadata_element, 'metainfo', self.metainfo)
 
     def populate_section(self, metadata_element, section_name, widget):
+        """
+        Since the content of top level sections might contain items that
+        need to go to separate top level items, this function handles the
+        divvying up of sub-content.
 
+        Parameters
+        ----------
+        metadata_element : XML Element
+        section_name : Section tag to populate
+        widget :  The section widget
+
+        Returns
+        -------
+
+        """
         just_this_one = type(metadata_element) == etree._Element
 
         if just_this_one and metadata_element.tag == section_name:
@@ -215,16 +301,18 @@ class MetadataRoot(WizardWidget):
         elif just_this_one:
             return True
         else:
-            section =  xml_utils.search_xpath(metadata_element, section_name)
+            section = xml_utils.search_xpath(metadata_element, section_name)
 
         if section is not None:
-            widget._from_xml(section)
+            widget.from_xml(section)
         elif not just_this_one:
             widget.clear_widget()
 
 
 class FaderWidget(QWidget):
-
+    """
+    A QWidget that allows for fading in and out on display.
+    """
     def __init__(self, old_widget, new_widget):
 
         QWidget.__init__(self, new_widget)
@@ -256,3 +344,4 @@ class FaderWidget(QWidget):
 
 if __name__ == "__main__":
     utils.launch_widget(MetadataRoot, "MetadataRoot testing")
+

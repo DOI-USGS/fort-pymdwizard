@@ -1,5 +1,10 @@
 requests
-defusedxml
 lxml
 pandas
+jupyter
+gdal
+geopandas
 PyQt >= 5.0
+xlrd
+python-docx
+habanero

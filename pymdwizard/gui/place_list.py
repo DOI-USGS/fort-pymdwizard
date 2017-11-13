@@ -1,21 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Process Step <procstep> section
+Provide a pyqt widget for the FGDC component with a shortname matching this
+file's name.
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,32 +45,10 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
-from lxml import etree
-
-from PyQt5.QtGui import QPainter, QFont, QPalette, QBrush, QColor, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLineEdit, QSizePolicy, QComboBox, QTableView
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPlainTextEdit
-from PyQt5.QtWidgets import QStyleOptionHeader, QHeaderView, QStyle
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QSize, QRect, QPoint
-
-
+from PyQt5.QtCore import QPoint
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -57,7 +57,6 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_place_list
 from pymdwizard.gui import ThesaurusSearch
 from pymdwizard.gui.theme import Theme
-from pymdwizard.gui.repeating_element import RepeatingElement
 
 
 class PlaceList(WizardWidget): #
@@ -174,35 +173,8 @@ class PlaceList(WizardWidget): #
 
         theme_widget.add_keyword(keyword)
         return theme_widget
-
-
-    def dragEnterEvent(self, e):
-        """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'procstep'
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-        None
-
-        """
-        print("pc drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'keywords':
-                e.accept()
-        else:
-            e.ignore()
-
-
-         
                 
-    def _to_xml(self):
+    def to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
 
@@ -214,12 +186,12 @@ class PlaceList(WizardWidget): #
 
         if self.ui.rbtn_yes.isChecked():
             for place in self.thesauri:
-                place_xml = place._to_xml()
+                place_xml = place.to_xml()
                 keywords.append(place_xml)
 
         return keywords
 
-    def _from_xml(self, keywords_xml):
+    def from_xml(self, keywords_xml):
         """
         parses the xml code into the relevant procstep elements
 
@@ -240,7 +212,7 @@ class PlaceList(WizardWidget): #
 
             for place_xml in place_kws:
                 place = self.add_another(tab_label='x')
-                place._from_xml(place_xml)
+                place.from_xml(place_xml)
 
             if place_kws:
                 self.ui.rbtn_yes.setChecked(True)
@@ -251,4 +223,10 @@ class PlaceList(WizardWidget): #
 if __name__ == "__main__":
     utils.launch_widget(PlaceList,
                         "ThemeList Step testing")
+
+
+
+
+
+
 

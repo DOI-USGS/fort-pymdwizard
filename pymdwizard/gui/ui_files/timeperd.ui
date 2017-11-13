@@ -85,39 +85,92 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="fgdc_current">
-          <property name="focusPolicy">
-           <enum>Qt::ClickFocus</enum>
-          </property>
-          <property name="editable">
-           <bool>true</bool>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <property name="text">
-            <string/>
-           </property>
+           <widget class="QComboBox" name="fgdc_current">
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ground condition</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>observed</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>publication date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>See Supplemental Info</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item>
-           <property name="text">
-            <string>ground condition</string>
-           </property>
+           <widget class="QLabel" name="label_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>9</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Required</string>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#55aaff;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="indent">
+             <number>0</number>
+            </property>
+           </widget>
           </item>
-          <item>
-           <property name="text">
-            <string>observed</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>publication date</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>See Supplemental Info</string>
-           </property>
-          </item>
-         </widget>
+         </layout>
         </item>
        </layout>
       </item>

@@ -1,66 +1,98 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
+
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt base class for all the widgets that that make up the Wizard GUI
-Provides standardized functionality to enable input and output of xml content
-drop and drop functionality for xml content, xpath navigation cross walking,
-and widget collapse/expand.
+This module provides the base class for most gui components in the
+MetadataWizard.
+
+
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
+
+
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
+
 Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
+
 import sys
 from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMenu, QMessageBox
-from PyQt5.QtWidgets import QWidget, QLabel, QComboBox, QTabWidget
-from PyQt5.QtWidgets import QSpacerItem, QToolButton, QGroupBox, QPlainTextEdit
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QToolButton
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtGui import QFont
-from PyQt5.QtGui import QColor, QDrag, QPainter, QIcon
-from PyQt5.QtCore import Qt, QMimeData, QObject, QByteArray, QRegExp, QEvent
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QDrag
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QByteArray
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QEvent
 
 from pymdwizard.core import utils
-from pymdwizard.core import xml_utils, fgdc_utils
+from pymdwizard.core import xml_utils
+from pymdwizard.core import fgdc_utils
 
 
 class WizardWidget(QWidget):
     """
     The base class all pymdwizard GUI components should inherit from.
     Parameters
-    ----------C
+    ----------
     xml : lxml node
           The original in memory xml node being displayed by the widget.
           This node can contain content that does not get displayed in which
-          case care should be taken to ensure that the _from_xml and _to_xml
+          case care should be taken to ensure that the from_xml and to_xml
           functions do not erase or overwrite this content.
-    parent : PyQt4 QWidget
+    parent : PyQt5 QWidget
     original_xml : lxml node
                    The original xml node contents before any changes were made.
-                   Note: This is not currently implemented
     """
     # Preferred widget size constants
     # if widget doesn't collapse use -1 for COLLAPSED_HEIGHT
@@ -80,7 +112,7 @@ class WizardWidget(QWidget):
             QMainWindow.__init__(self, parent)
 
         self.in_context = False
-
+        self.ui = None
         self.build_ui()
         self.connect_events()
 
@@ -112,15 +144,17 @@ class WizardWidget(QWidget):
     def connect_events(self):
         """
         Connect the appropriate GUI components with the corresponding functions
+
         Returns
         -------
         None
         """
         pass
 
-    def _to_xml(self):
+    def to_xml(self):
         """
         subclass specific logic to convert the widget instance to xml element.
+
         Returns
         -------
             lxml element with the contents of this form
@@ -128,7 +162,7 @@ class WizardWidget(QWidget):
         """
         print("_to_xml method Must be overridden in subclass")
 
-    def _from_xml(self, xml_element):
+    def from_xml(self, xml_element):
         """
         subclass specific logic to update the widget contents from xml element.
         Parameters
@@ -160,19 +194,44 @@ class WizardWidget(QWidget):
                 self.make_tree(child_widget)
 
     def get_children(self, widget):
+        """
+        Returns a list of all the widgets on the widget passed
+
+        Parameters
+        ----------
+        widget : PyQt5 widget
+
+        Returns
+        -------
+        list of all widgets on the widget passed
+        """
         try:
             if type(widget) == QTabWidget:
-                widget_children = [widget.widget(i) for i in range(widget.count())]
+                widget_children = [widget.widget(i) for i in
+                                   range(widget.count())]
             else:
                 widget_children = widget.children()
         except AttributeError:
             try:
-                widget_children = [widget.itemAt(i) for i in range(widget.count())]
+                widget_children = [widget.itemAt(i) for i in
+                                   range(widget.count())]
             except AttributeError:
                 widget_children = []
         return widget_children
 
     def add_children(self, widget, parent_node):
+        """
+        add child widgets to a parent XMLNode object.
+
+        Parameters
+        ----------
+        widget : PyQt5 widget
+        parent_node : XMLNode object
+                The node that will be
+        Returns
+        -------
+
+        """
         if isinstance(widget, WizardWidget):
             widget_children = widget.get_children(widget)
         else:
@@ -205,10 +264,13 @@ class WizardWidget(QWidget):
         """
         mime_data = e.mimeData()
         if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag in self.acceptable_tags:
-                e.accept()
+            try:
+                element = xml_utils.string_to_node(mime_data.text())
+                if element is not None and element.tag in self.acceptable_tags:
+                    e.accept()
+            except AttributeError:
+                e.ignore()
+
         else:
             e.ignore()
 
@@ -228,31 +290,52 @@ class WizardWidget(QWidget):
             mime_data = e.mimeData()
             element = xml_utils.string_to_node(mime_data.text())
 
-            self._from_xml(element)
+            self.from_xml(element)
         except:
             e = sys.exc_info()[0]
             print('problem drop', e)
 
     def get_mime(self):
+        """
+        return a copy of this widget's mime data
+
+        Returns
+        -------
+        Qt Mime data from this widget
+        """
         mime_data = QMimeData()
-        pretty_xml = etree.tostring(self._to_xml(), pretty_print=True).decode()
+        pretty_xml = etree.tostring(self.to_xml(), pretty_print=True).decode()
         mime_data.setText(pretty_xml)
         mime_data.setData('application/x-qt-windows-mime;value="XML"',
                           QByteArray(pretty_xml.encode()))
         return mime_data
 
     def copy_mime(self):
+        """
+        Copy this objects mime data onto the system clipboard
+
+        Returns
+        -------
+        None
+        """
         clipboard = QApplication.clipboard()
         clipboard.setMimeData(self.get_mime())
 
     def paste_mime(self):
+        """
+        Grab the last mime data off the clipboard and attempt to paste it
+        into this widget.
+
+        Returns
+        -------
+        None
+        """
         clipboard = QApplication.clipboard()
         mime_data = clipboard.mimeData()
         if mime_data.hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
+            element = xml_utils.string_to_node(mime_data.text())
             if element is not None:
-                self._from_xml(element)
+                self.from_xml(element)
             else:
                 msg = "There was a problem pasting that content."
                 msg += "\n that content being drops does not appear to be an xml element"
@@ -281,8 +364,6 @@ class WizardWidget(QWidget):
         modifiers = QApplication.keyboardModifiers()
         if not modifiers == Qt.ControlModifier:
             return
-
-
 
         mime_data = self.get_mime()
 
@@ -346,6 +427,14 @@ class WizardWidget(QWidget):
         self.set_stylesheet()
 
     def populate_tooltips(self):
+        """
+        For this widget and any child widgets populate the tooltips
+        for any with names that begin with FGDC_ or Help_
+
+        Returns
+        -------
+        None
+        """
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         if self.objectName().startswith('fgdc_'):
@@ -356,6 +445,19 @@ class WizardWidget(QWidget):
             self.populate_tooltip(widget, annotation_lookup)
 
     def populate_tooltip(self, widget, annotation_lookup):
+        """
+        Format and add a tooltip a single widget
+
+        Parameters
+        ----------
+        widget : PyQt5 widget to add a tooltip to.
+        annotation_lookup : dict
+            The dictionary to use for looking up help documentation
+
+        Returns
+        -------
+        None
+        """
         if widget.objectName().startswith('fgdc_') or \
                 widget.objectName().startswith('help_'):
             shortname = widget.objectName()[5:]
@@ -373,6 +475,7 @@ class WizardWidget(QWidget):
     def clear_widget(self):
         """
         Clears all content from this widget
+
         Returns
         -------
         None
@@ -400,6 +503,7 @@ class WizardWidget(QWidget):
         written out to xml
         By default this is always true but should be implement in each
         subclass with logic to check based on contents
+
         Returns
         -------
         bool : True if there is content, False if no
@@ -419,7 +523,16 @@ class WizardWidget(QWidget):
         self.setStyleSheet(FOCUS_STYLE)
 
     def contextMenuEvent(self, event):
+        """
 
+        Parameters
+        ----------
+        event
+
+        Returns
+        -------
+
+        """
 
         self.in_context = True
         clicked_widget = self.childAt(event.pos())
@@ -483,7 +596,6 @@ class WizardWidget(QWidget):
             msg.show()
         self.in_context = False
 
-
     def set_stylesheet(self):
         self.setStyleSheet(NORMAL_STYLE)
 
@@ -515,6 +627,7 @@ class WizardWidget(QWidget):
 
         return super(WizardWidget, self).eventFilter(obj, event)
 
+# TODO: move these into an external config file
 NORMAL_STYLE = """
 QGroupBox{
     background-color: transparent;
