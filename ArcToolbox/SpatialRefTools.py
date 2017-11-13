@@ -542,7 +542,7 @@ def Get_SpatialRef(SR_InDS, myDataType, myFeatType, GCS_ExtentList, desc, InDS):
             #Get the State Plane Coordinate System Zone number. 
             try:
                 termCt = 0
-                while isinstance(SPCS_Zone, int) == False:
+                while not isinstance(SPCS_Zone, int):
                     termCt +=1
                     try:
                         SPCS_Zone = int(Name2[len_Name-termCt])#Count back from the end.

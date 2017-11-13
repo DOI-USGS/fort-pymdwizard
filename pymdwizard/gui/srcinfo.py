@@ -1,21 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a SRCInfo <srcinfo> section
+Provide a pyqt widget for the FGDC component with a shortname matching this
+file's name.
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,19 +45,6 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
 
@@ -102,7 +111,7 @@ class SRCInfo(WizardWidget): #
         except:
             pass
 
-    def _to_xml(self):
+    def to_xml(self):
         """
         encapsulates the QLineEdit text in an element tag
 
@@ -113,7 +122,7 @@ class SRCInfo(WizardWidget): #
         srcinfo = xml_utils.xml_node('srcinfo')
         srccite = xml_utils.xml_node('srccite', parent_node=srcinfo)
 
-        cite = self.citation._to_xml()
+        cite = self.citation.to_xml()
         srccite.append(cite)
 
         if self.ui.fgdc_srcscale.text():
@@ -126,7 +135,7 @@ class SRCInfo(WizardWidget): #
                                       parent_node=srcinfo)
 
         srctime = xml_utils.xml_node('srctime', parent_node=srcinfo)
-        timeinfo = self.timeinfo._to_xml()
+        timeinfo = self.timeinfo.to_xml()
         srctime.append(timeinfo)
 
         srccurr = xml_utils.xml_node('srccurr',
@@ -143,7 +152,7 @@ class SRCInfo(WizardWidget): #
 
         return srcinfo
 
-    def _from_xml(self, srcinfo):
+    def from_xml(self, srcinfo):
         """
         parses the xml code into the relevant srcinfo elements
 
@@ -164,7 +173,7 @@ class SRCInfo(WizardWidget): #
                 print("The tag is not 'srcinfo'")
                 return
 
-            self.citation._from_xml(citeinfo)
+            self.citation.from_xml(citeinfo)
 
             utils.populate_widget_element(self.ui.fgdc_srcscale, srcinfo, 'srcscale')
             self.format_scale()
@@ -182,10 +191,9 @@ class SRCInfo(WizardWidget): #
 
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
                 srccurr = srcinfo.xpath('srctime/srccurr')[0]
-                self.timeinfo._from_xml(timeinfo)
+                self.timeinfo.from_xml(timeinfo)
 
                 self.ui.fgdc_srccurr.setCurrentText(srccurr.text)
-
 
         except KeyError:
             pass
@@ -194,4 +202,3 @@ class SRCInfo(WizardWidget): #
 if __name__ == "__main__":
     utils.launch_widget(SRCInfo,
                         "SRCInfo testing")
-

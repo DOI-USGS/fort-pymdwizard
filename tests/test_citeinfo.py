@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QWidget, QComboBox, QLineEdit
 
 from pymdwizard.gui import citeinfo
 
-# def test_citation__from_xml(qtbot):
+# def test_citation_from_xml(qtbot):
 #     widget = Citation.Citation()
 #     qtbot.addWidget(widget)
 #
@@ -19,12 +19,12 @@ from pymdwizard.gui import citeinfo
 #     test_record = etree.parse(test_record_fname)
 #     citation = test_record.xpath("idinfo/citation/citeinfo")[0]
 #
-#     widget._from_xml(citation)
+#     widget.from_xml(citation)
 #     #assert widget.findChild(QComboBox, 'fgdc_geoform').currentText() == 'Tabular Digital Data'
 #     assert widget.findChild(QLineEdit, 'fgdc_pubdate').text() == '20101231'
 
 
-def test_citation__to_xml(qtbot):
+def test_citation_to_xml(qtbot):
     widget = citeinfo.Citeinfo()
     qtbot.addWidget(widget)
 
@@ -39,7 +39,7 @@ def test_citation__to_xml(qtbot):
     series.setText('Name 25')
     series2.setText('Issue 45')
 
-    cit = widget._to_xml()
+    cit = widget.to_xml()
 
     assert etree.tostring(cit, pretty_print=True).decode() \
     == """<citeinfo>

@@ -1,21 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
+The MetadataWizard(pymdwizard) software was developed by the
+U.S. Geological Survey Fort Collins Science Center.
+See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
+See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    for examples of use in other scripts
+
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
                     http://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
-Provide a pyqt widget for a Identification Information <idinfo> section
+Provide a pyqt widget for the FGDC component with a shortname matching this
+file's name.
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    None
+    This script is part of the pymdwizard package and is not intented to be
+    used independently.  All pymdwizard package requirements are needed.
+    
+    See imports section for external packages used in this script as well as
+    inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
+This software has been approved for release by the U.S. Geological Survey 
+(USGS). Although the software has been subjected to rigorous review,
+the USGS reserves the right to update the software as needed pursuant to
+further analysis and review. No warranty, expressed or implied, is made by
+the USGS or the U.S. Government as to the functionality of the software and
+related material nor shall the fact of release constitute any such warranty.
+Furthermore, the software is released on condition that neither the USGS nor
+the U.S. Government shall be held liable for any damages resulting from
+its authorized or unauthorized use.
+
 Any use of trade, product or firm names is for descriptive purposes only and
 does not imply endorsement by the U.S. Geological Survey.
 
@@ -23,23 +45,9 @@ Although this information product, for the most part, is in the public domain,
 it also contains copyrighted material as noted in the text. Permission to
 reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
-
-Although these data have been processed successfully on a computer system at
-the U.S. Geological Survey, no warranty, expressed or implied is made
-regarding the display or utility of the data on any other system, or for
-general or scientific purposes, nor shall the act of distribution constitute
-any such warranty. The U.S. Geological Survey shall not be held liable for
-improper or incorrect use of the data described and/or contained herein.
-
-Although this program has been used by the U.S. Geological Survey (USGS), no
-warranty, expressed or implied, is made by the USGS or the U.S. Government as
-to the accuracy and functioning of the program and related program material
-nor shall the fact of distribution constitute any such warranty, and no
-responsibility is assumed by the USGS in connection therewith.
 ------------------------------------------------------------------------------
 """
-import sys
-from lxml import etree
+
 from copy import deepcopy
 
 from PyQt5.QtWidgets import QHBoxLayout
@@ -64,10 +72,11 @@ from pymdwizard.gui.native import Native
 from pymdwizard.gui.purpose import Purpose
 from pymdwizard.gui.crossref_list import Crossref_list
 
+
 class IdInfo(WizardWidget):
 
     drag_label = "Identification Information <idinfo>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ['idinfo']
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
@@ -75,6 +84,7 @@ class IdInfo(WizardWidget):
         super(self.__class__, self).__init__(parent=parent)
         self.schema = 'bdp'
         self.root_widget = root_widget
+        self.scroll_area = self.ui.idinfo_scroll_area
 
     def build_ui(self):
 
@@ -123,28 +133,6 @@ class IdInfo(WizardWidget):
         self.crossref_list = Crossref_list()
         self.ui.help_crossref.layout().addWidget(self.crossref_list)
 
-
-    def dragEnterEvent(self, e):
-        """
-
-        Parameters
-        ----------
-        e : qt event
-
-        Returns
-        -------
-
-        """
-        print("idinfo drag enter")
-        mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            element = etree.fromstring(mime_data.text(), parser=parser)
-            if element is not None and element.tag == 'idinfo':
-                e.accept()
-        else:
-            e.ignore()
-
     def children(self):
         return super(IdInfo, self).children() + [self.root_widget.spatial_tab.spdom]
 
@@ -161,50 +149,51 @@ class IdInfo(WizardWidget):
         self.taxonomy.ui.rbtn_no.setChecked(True)
         WizardWidget.clear_widget(self)
 
-    def _to_xml(self):
+    def to_xml(self):
         # add code here to translate the form into xml representation
         idinfo_node = xml_utils.xml_node('idinfo')
 
         citation_node = xml_utils.xml_node('citation', parent_node=idinfo_node)
-        citeinfo_node = self.citation._to_xml()
+        citeinfo_node = self.citation.to_xml()
         citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
         descript_node = xml_utils.xml_node('descript', parent_node=idinfo_node)
-        abstract_node = self.descript._to_xml()
+        abstract_node = self.descript.to_xml()
         descript_node.append(abstract_node)
-        purpose_node = self.purpose._to_xml()
+        purpose_node = self.purpose.to_xml()
         descript_node.append(purpose_node)
-        supplinf_node = self.supplinf._to_xml()
+        supplinf_node = self.supplinf.to_xml()
         if supplinf_node.text is not None:
             descript_node.append(supplinf_node)
 
         idinfo_node.append(descript_node)
 
-        timeperd_node = self.timeperd._to_xml()
+        timeperd_node = self.timeperd.to_xml()
         idinfo_node.append(timeperd_node)
 
-        status_node = self.status._to_xml()
+        status_node = self.status.to_xml()
         idinfo_node.append(status_node)
 
-        spdom_node = self.root_widget.spatial_tab.spdom._to_xml()
-        idinfo_node.append(spdom_node)
+        if self.root_widget.use_spatial:
+            spdom_node = self.root_widget.spatial_tab.spdom.to_xml()
+            idinfo_node.append(spdom_node)
 
-        keywords = self.keywords._to_xml()
+        keywords = self.keywords.to_xml()
         idinfo_node.append(keywords)
 
         if self.schema == 'bdp' and self.taxonomy.has_content():
-            taxonomy = self.taxonomy._to_xml()
+            taxonomy = self.taxonomy.to_xml()
             idinfo_node.append(taxonomy)
 
-        accconst_node = self.accconst._to_xml()
+        accconst_node = self.accconst.to_xml()
         idinfo_node.append(accconst_node)
 
-        useconst_node = self.useconst._to_xml()
+        useconst_node = self.useconst.to_xml()
         idinfo_node.append(useconst_node)
 
         if self.ptcontac.has_content():
-            ptcontac = self.ptcontac._to_xml()
+            ptcontac = self.ptcontac.to_xml()
             idinfo_node.append(ptcontac)
 
         if self.original_xml is not None:
@@ -213,7 +202,7 @@ class IdInfo(WizardWidget):
                 browse.tail = None
                 idinfo_node.append(deepcopy(browse))
 
-        datacredit_node = self.datacredit._to_xml()
+        datacredit_node = self.datacredit.to_xml()
         if datacredit_node.text:
             idinfo_node.append(datacredit_node)
 
@@ -224,11 +213,11 @@ class IdInfo(WizardWidget):
                 idinfo_node.append(deepcopy(secinfo))
 
         if self.native.has_content():
-            idinfo_node.append(self.native._to_xml())
+            idinfo_node.append(self.native.to_xml())
 
         if self.crossref_list.has_content():
             for crossref in self.crossref_list.get_children():
-                idinfo_node.append(crossref._to_xml())
+                idinfo_node.append(crossref.to_xml())
 
         if self.original_xml is not None:
             tools = xml_utils.search_xpath(self.original_xml, 'tool',
@@ -239,69 +228,69 @@ class IdInfo(WizardWidget):
 
         return idinfo_node
 
-    def _from_xml(self, xml_idinfo):
+    def from_xml(self, xml_idinfo):
 
         self.original_xml = xml_idinfo
 
         citation = xml_utils.search_xpath(xml_idinfo, 'citation')
         if citation is not None:
-            self.citation._from_xml(citation)
+            self.citation.from_xml(citation)
 
         abstract = xml_utils.search_xpath(xml_idinfo, 'descript/abstract')
         if abstract is not None:
-            self.descript._from_xml(abstract)
+            self.descript.from_xml(abstract)
 
         purpose = xml_utils.search_xpath(xml_idinfo, 'descript/purpose')
         if purpose is not None:
-            self.purpose._from_xml(purpose)
+            self.purpose.from_xml(purpose)
 
         supplinf = xml_utils.search_xpath(xml_idinfo, 'descript/supplinf')
         if supplinf is not None:
-            self.supplinf._from_xml(supplinf)
+            self.supplinf.from_xml(supplinf)
 
         timeperd = xml_utils.search_xpath(xml_idinfo, 'timeperd')
         if timeperd is not None:
-            self.timeperd._from_xml(timeperd)
+            self.timeperd.from_xml(timeperd)
 
         status = xml_utils.search_xpath(xml_idinfo, 'status')
         if status is not None:
-            self.status._from_xml(status)
+            self.status.from_xml(status)
 
         spdom = xml_utils.search_xpath(xml_idinfo, 'spdom')
         if spdom is not None:
-            self.root_widget.spatial_tab.spdom._from_xml(spdom)
+            self.root_widget.spatial_tab.spdom.from_xml(spdom)
 
         keywords = xml_utils.search_xpath(xml_idinfo, 'keywords')
         if keywords is not None:
-            self.keywords._from_xml(keywords)
+            self.keywords.from_xml(keywords)
 
         taxonomy = xml_utils.search_xpath(xml_idinfo, 'taxonomy')
         if taxonomy is not None:
-            self.taxonomy._from_xml(taxonomy)
+            self.taxonomy.from_xml(taxonomy)
 
         accconst = xml_utils.search_xpath(xml_idinfo, 'accconst')
         if accconst is not None:
-            self.accconst._from_xml(accconst)
+            self.accconst.from_xml(accconst)
 
         useconst =xml_utils.search_xpath(xml_idinfo, 'useconst')
         if useconst is not None:
-            self.useconst._from_xml(useconst)
+            self.useconst.from_xml(useconst)
 
         ptcontac = xml_utils.search_xpath(xml_idinfo, 'ptcontac')
         if ptcontac is not None:
-            self.ptcontac._from_xml(ptcontac)
+            self.ptcontac.from_xml(ptcontac)
 
         datacred = xml_utils.search_xpath(xml_idinfo, 'datacred')
         if datacred is not None:
-            self.datacredit._from_xml(datacred)
+            self.datacredit.from_xml(datacred)
 
         native = xml_utils.search_xpath(xml_idinfo, 'native')
         if native is not None:
-            self.native._from_xml(native)
+            self.native.from_xml(native)
 
         crossref = xml_utils.search_xpath(xml_idinfo, 'crossref')
         if crossref is not None:
-            self.crossref_list._from_xml(xml_idinfo)
+            self.crossref_list.from_xml(xml_idinfo)
 
 
 if __name__ == "__main__":
