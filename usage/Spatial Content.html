@@ -36,7 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="How to fill out the Entity and Attribute tab" href="How to fill out the Entity and Attribute tab.html"/>
+        <link rel="next" title="Populating the Entity and Attribute Tab" href="How to fill out the Entity and Attribute tab.html"/>
         <link rel="prev" title="Using the Metadata Wizard" href="Using the Metadata Wizard.html"/> 
 
   
@@ -87,29 +87,32 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spatial Content</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#setting-the-bounding-coordinates-manually">Setting the bounding coordinates manually.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#auto-populating-spatial-content-from-data">Auto-populating spatial content from data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manually-setting-the-bounding-coordinates">Manually Setting the Bounding Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#auto-populating-spatial-content-from-data">Auto-Populating Spatial Content From Data</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -179,28 +182,26 @@
 the metadata. At a minimum, one should record the geographic location where
 the data were collected, generally called the extent or bounding box.</p>
 <p>If the data are in a spatial data format, for example a shapefile or
-raster, you will also need to document the spatial reference or
+raster, the user will also need to document the spatial reference or map
 projection and how the data are organized spatially.</p>
-<div class="section" id="setting-the-bounding-coordinates-manually">
-<h2>Setting the bounding coordinates manually.<a class="headerlink" href="#setting-the-bounding-coordinates-manually" title="Permalink to this headline">¶</a></h2>
-<p>If your data are in a non-spatial format, a .csv for example, you can
-manually specify the bounding box interactively in the Spatial Tab. By
-default new records in the Metadata Wizard 2.0 start with an extent set to
-the whole world. This can be changed by editing the East, West, North, and
+<div class="section" id="manually-setting-the-bounding-coordinates">
+<h2>Manually Setting the Bounding Coordinates<a class="headerlink" href="#manually-setting-the-bounding-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>If the data are in a non-spatial format, for example a Comma Separated Values (CSV) file,
+the bounding box can be manually specified interactively in the Spatial tab. By
+default, new records in the Metadata Wizard start with a global geographic extent.
+This can be changed by editing the East, West, North, and
 South coordinates in the text boxes to the left of the map. The map will
 update to show the extent as specified in the text boxes.</p>
-<p>If you do not know your bounding coordinates or would like to
-interactively edit them, you can do so in the map to the right of the
-text boxes. Click and drag one of the corner markers to resize the box.
+<p>Alternatively, the user can use the map to define or edit the bounding coordinates.
+Click and drag one of the corner markers to resize the box.
 The mouse wheel or +/- buttons in the upper left of the map can be used
 to zoom the map. Clicking and dragging anywhere other than the corner
-markers can be used to recenter the map. As you zoom the map in and
-refine your extent additional detail will be displayed on the map to
-help locate your study area. The layer button in the upper right can be
-used to switch to a satellite imagery background.</p>
-<p>When using the Biological Data Profile extension don’t forget to update the
+markers can be used to center the map. As the map is zoomed in, refining the extent,
+additional detail will be displayed to help locate the study area. The layer
+button in the upper right can be used to toggle between satellite imagery and the OpenStreetMap background.</p>
+<p>When using the Biological Data Profile extension do not forget to update the
 Description of Geographic Extent element to match the bounding coordinates
-displayed, e.g. Southwest United States, Colorado, Key West Florida, etc.</p>
+displayed, for example, Southwest United States, Colorado, Key West, Florida.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -213,13 +214,23 @@ displayed, e.g. Southwest United States, Colorado, Key West Florida, etc.</p>
 </div>
 </div>
 <div class="section" id="auto-populating-spatial-content-from-data">
-<h2>Auto-populating spatial content from data<a class="headerlink" href="#auto-populating-spatial-content-from-data" title="Permalink to this headline">¶</a></h2>
-<p>If your data are in a spatial data format the information for this
-section can be auto-populated by pointing to the appropriate file. The
-currently supported file types are: .shp, .tif, .jpg, .bmp, .img, .png,
-.grd. In addition to extracting the data’s extent the coordinate
-system/projection and spatial data organization will be extracted. For
-this functionality to work the data must have a defined projection. Note
+<h2>Auto-Populating Spatial Content From Data<a class="headerlink" href="#auto-populating-spatial-content-from-data" title="Permalink to this headline">¶</a></h2>
+<p>If the data are in a spatial data format, the information for this
+section can be auto-populated by pointing to the appropriate file.</p>
+<p>File types that are currently supported for auto-populating spatial content are:</p>
+<ul class="simple">
+<li>Shapefile (.shp)</li>
+<li>GeoTIFF (.tif)</li>
+<li>JPEG (.jpg)</li>
+<li>Bitmap (.bmp)</li>
+<li>Disk Image File (.img)</li>
+<li>Portable Network Graphics (.png)</li>
+<li>ASCII Grid (.grd)</li>
+</ul>
+<p>In addition to extracting the data’s extent, the coordinate
+system/map projection and spatial data organization will be extracted. For
+this functionality to work, the data must have a defined coordinate system
+(a reference system used to represent the locations of geographic features). Note
 that some less common projections might display incorrectly, so do check
 that the values imported are appropriate.</p>
 </div>
@@ -235,7 +246,7 @@ that the values imported are appropriate.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral float-right" title="How to fill out the Entity and Attribute tab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral float-right" title="Populating the Entity and Attribute Tab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Using the Metadata Wizard.html" class="btn btn-neutral" title="Using the Metadata Wizard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

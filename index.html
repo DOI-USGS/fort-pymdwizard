@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="#"/>
-        <link rel="next" title="Windows Installation" href="Windows Installation.html"/> 
+        <link rel="next" title="Software Installer (Windows Only)" href="Windows Installation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,24 +86,28 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -170,31 +174,63 @@
   <a class="reference internal image-reference" href="_images/TitleBanner.png"><img alt="_images/TitleBanner.png" class="align-left" src="_images/TitleBanner.png" style="width: 600pt;" /></a>
 <div class="section" id="metadatawizard-user-guide">
 <h1>MetadataWizard User Guide<a class="headerlink" href="#metadatawizard-user-guide" title="Permalink to this headline">¶</a></h1>
-<p>The Metadata Wizard 2.0 is a user-friendly tool for creating, editing, and validating CSDGM/FGDC metadata. It is based on design principles of auto-capturing content from the data set being documented, pre-populating a record with reasonable defaults, and lowering the expertise level needed to make a high quality metadata record. The Metadata Wizard 2.0 provides an efficient and pleasant metadata experience for a wide range of users from scientists to data managers. It is being built and maintained by the Data Management Team at the USGS Fort Collins Science Center with input from others in the USGS.</p>
-<p>It was engineered as an open-source evolution of the original <a class="reference external" href="https://www.sciencebase.gov/catalog/item/50ed7aa4e4b0438b00db080a">MetadataWizard</a> to allow for use outside of the ESRI ecosystem.</p>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The Metadata Wizard is a user-friendly desktop application for creating, editing,
+and validating metadata that conforms to the Content Standard for Digital
+Geospatial Metadata (CSDGM) version 2.0. The Federal Geographic Data Committee
+(FGDC) has authored and endorsed this metadata standard as well as other standards.
+Metadata provides information about a data set, allowing data users to understand
+and appropriately use the data in different contexts. Metadata is crucial to support
+searchable information about data that otherwise is not directly incorporated within
+data and therefore undiscoverable. Metadata in its most basic form includes
+information about the data’s origin, creators, accuracy, availability, and
+distribution. Metadata is necessary for the appropriate interpretation and reuse of
+the data, and importantly provides the necessary definitions of data content. The
+<a class="reference external" href="https://www2.usgs.gov/datamanagement/describe/metadata.php">Metadata section</a>
+of the USGS Data Management website has information on helpful metadata resources,
+as well as best practices for metadata creation.</p>
+<p>The Metadata Wizard is designed to better standardize the workflow of metadata creation
+and decrease the user’s level of effort to develop high quality and compliant CSDGM
+metadata. We accomplish this, in part by auto-capturing content from a dataset,
+pre-populating a record with reasonable defaults, and reducing the expertise level
+needed to create a high-quality metadata record. It provides an efficient and pleasant
+metadata experience for a wide range of users from scientists to data managers.</p>
+<p>Users should be advised that information not stored in CSDGM elements (such as custom
+elements, or elements belonging to different standards) will be lost upon saving in the
+Metadata Wizard. Users should also exercise caution with metadata records that contain
+information in less-used CSDGM elements that are not accessible in the tool. <a class="reference external" href="https://github.com/usgs/fort-pymdwizard/issues/6">Effort has
+been made</a> to retain information
+stored in some of these elements, but no guarantee can be made that information stored in
+elements not accessible in the tool will be retained.</p>
+<p>This software was engineered as an open-source evolution of the original
+<a class="reference external" href="https://www.sciencebase.gov/catalog/item/50ed7aa4e4b0438b00db080a">MetadataWizard</a>
+to support metadata creation outside of the Environmental Systems Research Institute
+(ESRI) software environment.</p>
+<p>The Metadata Wizard software was developed and is currently maintained by the Data
+Management Team at the U.S. Geological Survey (USGS) Fort Collins Science Center.
+We also worked with incorporating feedback from within other USGS science centers
+during the software’s infancy.</p>
+<div class="section" id="installation-methods">
+<h2>Installation Methods<a class="headerlink" href="#installation-methods" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="standard-usage">
+<h2>Standard Usage<a class="headerlink" href="#standard-usage" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Metadata Record</a></li>
 </ul>
 </div>
 </div>
@@ -202,8 +238,18 @@
 <h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="help-improve-the-tool">
+<h2>Help Improve the Tool<a class="headerlink" href="#help-improve-the-tool" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 </div>
 </div>
@@ -219,7 +265,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Windows Installation.html" class="btn btn-neutral float-right" title="Windows Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Windows Installation.html" class="btn btn-neutral float-right" title="Software Installer (Windows Only)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

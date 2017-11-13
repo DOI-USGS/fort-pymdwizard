@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Validating a Record &mdash; MetadataWizard  documentation</title>
+  <title>Validating a Metadata Record &mdash; MetadataWizard  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
-        <link rel="next" title="Making a Metadata Review Report" href="../advancedusage/Metadata Review Reprot.html"/>
-        <link rel="prev" title="Previewing a Record" href="Previewing a Record.html"/> 
+        <link rel="next" title="Making a Metadata Review Report" href="../advancedusage/Metadata Review Report.html"/>
+        <link rel="prev" title="Previewing a Metadata Record" href="Previewing a Record.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -87,25 +87,28 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Windows Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Installing from Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">Installing ArcMap Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">How to fill out the Entity and Attribute tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Record</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Validating a Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Reprot.html">Making a Metadata Review Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing Your Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
             
@@ -150,7 +153,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Validating a Record</li>
+      <li>Validating a Metadata Record</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -169,28 +172,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="validating-a-record">
-<h1>Validating a Record<a class="headerlink" href="#validating-a-record" title="Permalink to this headline">¶</a></h1>
-<p>A first quality check of a metadata record is to make sure it adheres to
-to the FGDC standard. Examples of items that can be flagged include:</p>
+  <div class="section" id="validating-a-metadata-record">
+<h1>Validating a Metadata Record<a class="headerlink" href="#validating-a-metadata-record" title="Permalink to this headline">¶</a></h1>
+<p>To ensure metadata adheres to the FGDC standard, we can evaluate the syntax
+and the content. The Metadata Wizard handles the syntax validation, but the
+quality of the content requires an individual to validate accuracy of the content.
+Examples of items that can be flagged as syntax errors can include the following:</p>
 <ul class="simple">
 <li>missing content in required fields</li>
 <li>incorrectly formatted items</li>
 <li>values outside an acceptable range</li>
 <li>other violations</li>
 </ul>
-<p>These errors can be identified directly in the tool by clicking ‘Run
-Validation’ in the Validation item on the menu bar. The record will be
-validated and a message box will pop up alerting you to the number of
+<p>These errors can be identified directly in the tool by clicking <strong>Run
+Validation</strong> in the Validation item on the menu bar. The record will be
+validated and a message box will notify the user of the number of
 errors found.</p>
 <p><img alt="image0" src="../_images/run_validation.png" /></p>
 <p>The items that are causing validation errors will be highlighted in red on the
 Metadata Wizard.</p>
 <p><img alt="image1" src="../_images/highlighted_errors.png" /></p>
-<p>There is also a window that will pop up, showing a list of all the errors
-found.  Clicking on one of these will take you to the tab/section that contains
-the error and outline it in black.  But keep in mind that some errors might be
-hidden until you scroll up or down in the application or select the appropriate tab.</p>
+<p>A second window will display a list of all the errors found. Clicking on one of
+the errors will take the user to the tab/section that contains the error and outline it in
+black. Keep in mind that some errors might be hidden until the user scrolls up or
+down in the application, or selects the appropriate tab.</p>
 <p><img alt="image2" src="../_images/error_screenshot.png" /></p>
 </div>
 
@@ -204,10 +209,10 @@ hidden until you scroll up or down in the application or select the appropriate 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../advancedusage/Metadata Review Reprot.html" class="btn btn-neutral float-right" title="Making a Metadata Review Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../advancedusage/Metadata Review Report.html" class="btn btn-neutral float-right" title="Making a Metadata Review Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Previewing a Record.html" class="btn btn-neutral" title="Previewing a Record" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Previewing a Record.html" class="btn btn-neutral" title="Previewing a Metadata Record" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

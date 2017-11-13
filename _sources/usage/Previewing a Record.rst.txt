@@ -1,9 +1,10 @@
-Previewing a Record
-*******************
+============================
+Previewing a Metadata Record
+============================
 
-Sometimes it can be helpful to look over or read an entire record.  Within the Metadata Wizard 2.0 there is a built in Preview window that can be accessed at any time by selecting the "Preview" item in the Preview menu.
+Sometimes it can be helpful to review an entire record as one might read a standard text document. Within the Metadata Wizard there is a built in Preview window that can be accessed at any time by selecting the **Preview** item in the Preview menu.
 
-The window that opens will contain a copy of the entire metadata record rendered using the default stylesheet.
+The preview results display the metadata record using Hyper Text Markup Language (HTML) for readability.
 
 
 .. image:: ../img/Preview.png
