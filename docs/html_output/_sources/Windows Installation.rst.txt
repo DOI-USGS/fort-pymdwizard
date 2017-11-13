@@ -2,9 +2,9 @@
 Software Installer (Windows Only)
 ====================
 
-| Download a copy of the pre-compiled Windows installer from ScienceBase:
-`metadatawizard_setup_2.0.0.exe
-<https://www.sciencebase.gov/catalog/item/590ca827e4b0e541a038e3f7>`_.
+| Download a copy of the latest Windows installer (`metadatawizard_setup_2.x.x.exe) from
+`the releases page
+<https://github.com/usgs/fort-pymdwizard/releases>`_.
 
 |
 Once the download is complete, double click on the .exe file in the web browser to begin the installation.
