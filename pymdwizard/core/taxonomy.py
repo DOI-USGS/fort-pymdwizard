@@ -491,7 +491,7 @@ def gen_taxonomy_section(keywords, tsns, include_common_names=False):
 
     for keyword in keywords:
         taxonkey = xml_utils.xml_node(tag="taxonkey", text=keyword,
-                                      parent_node=taxonkey)
+                                      parent_node=keywtax)
 
     taxonomy.append(keywtax)
 

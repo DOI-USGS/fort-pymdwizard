@@ -1,5 +1,6 @@
 requests
 lxml
+defusedxml
 pandas
 jupyter
 gdal

@@ -20,7 +20,7 @@ def test_status_from_xml(qtbot):
     status = test_record.xpath("idinfo/status")[0]
 
     widget.from_xml(status)
-    assert widget.findChild(QComboBox, 'fgdc_progress').currentText() == 'complete'
+    assert widget.findChild(QComboBox, 'fgdc_progress').currentText() == 'Complete'
     assert widget.findChild(QComboBox, 'fgdc_update').currentText() == 'none planned'
 
 def test_status_to_xml(qtbot):

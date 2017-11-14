@@ -29,7 +29,7 @@ def test_search_scientific_name():
                                 'unitName1', 'unitName2', 'unitName3',
                                 'unitName4']
 
-    results = pymdwizard.core.search_by_scientific_name("gulo gulo",
+    results = taxonomy.search_by_scientific_name("gulo gulo",
                                                         as_dataframe=False)
     assert list(results[0].keys()) == ['tsn', 'author', 'combinedName',
                                        'kingdom', 'unitInd1', 'unitInd2',
