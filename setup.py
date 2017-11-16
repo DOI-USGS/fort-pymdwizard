@@ -26,7 +26,7 @@ print(walk_subpkg('pymdwizard'))
 
 setup(
     name='pymdwizard',
-    version='2.0.0',
+    version='2.0.1',
     description='A CSDGM Metadata Editor',
     long_description=long_description,
     url='https://github.com/usgs/fort-pymdwizard',
