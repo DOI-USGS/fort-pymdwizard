@@ -108,7 +108,44 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
     tree_node = xml_utils.string_to_node(xml_str.encode('utf-8'))
     lxml._etree._ElementTree(tree_node)
 
-    if xmlschema.validate(tree_node):
+    errors = []
+    src_xpath = 'dataqual/lineage/srcinfo/srccitea'
+    src_nodes = tree_node.xpath(src_xpath)
+
+    srcciteas = []
+    for i, src in enumerate(src_nodes):
+        srcciteas.append(src.text)
+        if src.text is None:
+            if len(src_nodes) == 1:
+                errors.append(('metadata/' + src_xpath,
+                               "source citation abbreviation cannot be empty",
+                               1))
+            else:
+                xpath = 'metadata/dataqual/lineage/srcinfo[{}]/srccitea'
+                errors.append((xpath.format(i + 1),
+                               "source citation abbreviation cannot be empty",
+                               1))
+
+    srcused_xpath = 'dataqual/lineage/procstep/srcused'
+    srcused_nodes = tree_node.xpath(srcused_xpath)
+    for i, src in enumerate(srcused_nodes):
+        if src.text not in srcciteas:
+            if len(srcused_nodes) == 1:
+                errors.append(('metadata/' + srcused_xpath,
+                               "Source Used Citation Abbreviation {} "
+                               "not found in Source inputs "
+                               "used".format(src.text),
+                               1))
+            else:
+                xpath = 'metadata/dataqual/lineage/procstep[{}]/srcused'
+                errors.append((xpath.format(i + 1),
+                               "source citation abbreviation cannot be empty",
+                               "Source Used Citation Abbreviation {} "
+                               "not found in Source inputs "
+                               "used".format(src.text),
+                               1))
+
+    if xmlschema.validate(tree_node) and not errors:
         return []
 
     line_lookup = dict([(e.sourceline, tree_node.getroottree().getpath(e))
@@ -118,7 +155,7 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
 
     fgdc_lookup = get_fgdc_lookup()
 
-    errors = []
+
     for error in xmlschema.error_log:
         error_msg = clean_error_message(error.message, fgdc_lookup)
         try:
@@ -173,7 +210,7 @@ def clean_error_message(message, fgdc_lookup=None):
     if 'Missing child element' in message:
         clean_message = "The {} is missing the expected element(s) '{}'"
         clean_message.format(parts[1][:-1], parts[-2])
-    elif r"'' is not accepted by the pattern '\s*\S(.|\n|\r)*'" in message or \
+    elif r"' is not accepted by the pattern '\s*\S(.|\n|\r)*'" in message or \
             "'' is not a valid value of the atomic type" in message:
         shortname = parts[1][:-1].replace("'", '')
         try:
@@ -185,7 +222,6 @@ def clean_error_message(message, fgdc_lookup=None):
             name = shortname
         else:
             name = "{} ({})".format(longname, shortname)
-
 
         clean_message = "The value for {} cannot be empty"
         clean_message = clean_message.format(name)
