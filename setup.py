@@ -1,15 +1,28 @@
 from setuptools import setup, find_packages
 from codecs import open
-from os import path
+import os
 
-here = path.abspath(path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 with open('requirements.txt') as f:
     tests_require = f.readlines()
 install_requires = [t.strip() for t in tests_require]
+
+def walk_subpkg(name):
+    data_files = []
+    package_dir = 'pymdwizard'
+    for parent, dirs, files in os.walk(os.path.join(package_dir, name)):
+        # Remove package_dir from the path.
+        sub_dir = os.sep.join(parent.split(os.sep)[1:])
+        for f in files:
+            data_files.append(os.path.join(sub_dir, f))
+    return data_files
+
+pkg_data = {'': walk_subpkg('resources') + walk_subpkg('gui')}
+print(walk_subpkg('pymdwizard'))
 
 setup(
     name='pymdwizard',
@@ -34,6 +47,8 @@ setup(
     ],
     keywords='metadata FGDC BDP CSDGM',
     packages=find_packages(exclude=['tests']),
+    package_data=pkg_data,
     extras_require={'testing': ['pytest'], },
     install_requires=install_requires,
+    zip_safe=False,
 )
