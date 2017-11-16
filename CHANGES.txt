@@ -1,0 +1,19 @@
+Changes
+=======
+
+2.0.1 (11/16/2017)
+-----
+
+New features:
+
+- None
+
+
+Bug fixes:
+
+- Fix validation not catching source used citation empty errors.
+- Update the setup.py to include the resources folder.
+
+
+2.0.0 (11/13/2017)
+-----
