@@ -207,7 +207,16 @@ class ThemeList(WizardWidget): #
 
         for theme in self.thesauri:
             theme_xml = theme.to_xml()
-            keywords.append(theme_xml)
+            if theme_xml.xpath('themekt')[0].text == 'None' and \
+                    len(theme_xml.xpath('themekey')) == 1 and \
+                    theme_xml.xpath('themekey')[0].text is None and \
+                    len(self.thesauri) >= 2:
+                # Skip themes that still have the default thesaurus ('None')
+                # with no keywords entered,
+                # when they added an additional thesaurus
+                pass
+            else:
+                keywords.append(theme_xml)
 
         return keywords
 
