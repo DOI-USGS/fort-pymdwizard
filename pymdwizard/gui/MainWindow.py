@@ -178,7 +178,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
         self.ui.generate_review.triggered.connect(self.generate_review_doc)
         self.ui.actionLaunch_Help.triggered.connect(self.launch_help)
-        self.ui.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
+        self.ui.actionCheck_for_Updates.triggered.connect(self.update_from_github)
         self.ui.actionAbout.triggered.connect(self.about)
         self.ui.actionData_Quality.triggered.connect(self.use_dataqual)
         self.ui.actionSpatial.triggered.connect(self.use_spatial)
