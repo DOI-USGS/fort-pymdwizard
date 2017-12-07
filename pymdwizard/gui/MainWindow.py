@@ -995,7 +995,7 @@ class PyMdWizardMainForm(QMainWindow):
         if os.path.exists(jupyterexe) and os.path.exists(root_dir):
 
             my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python35_64")
+            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
             p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
 
