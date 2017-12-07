@@ -151,7 +151,7 @@ class Ui_ItisSearchWidget(object):
         self.label_search_term.setText(_translate("ItisSearchWidget", "Search Term:"))
         self.search_term.setToolTip(_translate("ItisSearchWidget", "terms to search ITIS for"))
         self.button_search.setToolTip(_translate("ItisSearchWidget", "Perform search of ITIS"))
-        self.button_search.setText(_translate("ItisSearchWidget", "Seach ITIS"))
+        self.button_search.setText(_translate("ItisSearchWidget", "Search ITIS"))
         self.label_search_type.setToolTip(_translate("ItisSearchWidget", "The type of ITIS search to perform (Scientific or Common name)"))
         self.label_search_type.setText(_translate("ItisSearchWidget", "Search Type:"))
         self.combo_search_type.setToolTip(_translate("ItisSearchWidget", "Search ITIS on common or scientific name"))
