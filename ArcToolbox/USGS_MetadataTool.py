@@ -52,11 +52,21 @@ arcpy.AddWarning("root_dir :" + root_dir)
 pymdwiz_dir = os.path.join(root_dir, 'pymdwizard')
 arcpy.AddWarning("pymdwiz_dir :" + pymdwiz_dir)
 
-python_dir = os.path.join(root_dir, 'Python35_64')
+python_dir = os.path.join(root_dir, 'Python36_64')
 if not os.path.exists(python_dir):
-    python_dir = os.path.join(root_dir, 'Python36_64')
-
-arcpy.AddWarning("python_dir :" + python_dir)
+    python_dir = os.path.join(root_dir, 'Python35_64')
+    if not os.path.exists(python_dir):
+        # The Python installation that ships with the application is missing
+        msg = '\n\n' + '!'*79
+        msg += "\nCould not find the version of Python installed with the "
+        msg += "MetadataWizard.\n{}\n\nPlease verify that the application"
+        msg += " was installed correctly, and the toolbox has not been moved."
+        msg += '\n' + '!'*79 + "\n\n"
+        msg = msg.format(os.path.join(root_dir, 'Python36_64'))
+        arcpy.AddError(msg)
+        sys.exit(1)
+else:
+    arcpy.AddWarning("python_dir :" + python_dir)
 
 python_exe = os.path.join(python_dir, 'pythonw.exe')
 arcpy.AddWarning("python_exe :" + python_exe)
