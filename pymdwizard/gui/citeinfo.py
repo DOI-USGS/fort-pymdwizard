@@ -402,8 +402,10 @@ class Citeinfo(WizardWidget): #
 
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
+                self.onlink_list.clear_widgets(add_another=False)
                 for onlink in citeinfo.findall('onlink'):
-                    onlink_widget = self.onlink_list.widgets[0]
+                    self.onlink_list.add_another()
+                    onlink_widget = self.onlink_list.widgets[-1]
                     onlink_widget.added_line.setText(onlink.text)
 
             if citeinfo.xpath('serinfo'):
