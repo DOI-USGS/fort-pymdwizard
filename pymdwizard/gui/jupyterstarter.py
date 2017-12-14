@@ -72,7 +72,7 @@ class JupyterStarter(QDialog):
         self.build_ui()
         self.connect_events()
 
-        self.kernels = []
+        self.kernels = {}
         self.previous_dnames = previous_dnames
         if previous_dnames:
             self.ui.dname.setCurrentText(previous_dnames[0])
@@ -105,16 +105,20 @@ class JupyterStarter(QDialog):
 
     def populate_kernels(self):
         self.ui.kernel.addItem('pymdwizard <<default>>')
-        self.kernels.append('pymdwizard <<default>>')
+        self.kernels['pymdwizard <<default>>'] = \
+                             utils.get_install_dname('python')
 
         kernels = subprocess.check_output(['conda', 'env', 'list'])
         for line in kernels.split(b'\n'):
             if line and not line.strip().startswith(b'#'):
                 try:
-                    name, path = line.split()
+                    parts = line.split()
+                    if parts[1] == b'*':
+                        parts = [parts[0], parts[2]]
+                    name, path = parts
                     self.ui.kernel.addItem(str(name)[2:-1])
-                    self.kernels.append(str(name)[2:-1])
-                except ValueError:
+                    self.kernels[str(name)[2:-1]] = str(path)
+                except (ValueError, IndexError):
                     pass
 
     def connect_events(self):
@@ -175,14 +179,21 @@ class JupyterStarter(QDialog):
 
         else:
             root_dname, envs_dname = self.get_conda_root()
-            activate_fname = os.path.join(root_dname, 'Scripts', 'activate.bat')
-            jupyter_exe_name = os.path.join(envs_dname, self.ui.kernel.currentText(), 'Scripts', 'jupyter.exe')
-            if not os.path.exists(jupyter_dname):
-                jupyter_exe_name = os.path.join(root_dname, 'Scripts', 'jupyter.exe')
+            activate_fname = os.path.join(root_dname, 'Scripts',
+                                          'activate.bat')
+            jupyter_exe_name = os.path.join(envs_dname,
+                                            self.ui.kernel.currentText(),
+                                            'Scripts', 'jupyter.exe')
+            if not os.path.exists(jupyter_exe_name):
+                jupyter_exe_name = os.path.join(root_dname, 'Scripts',
+                                                'jupyter.exe')
 
-        cmds = ['"{}"'.format(activate_fname), self.ui.kernel.currentText(),
-                   '&&', '"{}"'.format(jupyter_exe_name), 'notebook']
-        Popen(" ".join(cmds), cwd=jupyter_dname)
+            if self.ui.kernel.currentText() == 'root':
+                cmds = ['"{}"'.format(jupyter_exe_name), 'notebook']
+            else:
+                cmds = ['"{}"'.format(activate_fname), self.ui.kernel.currentText(),
+                        '&&', '"{}"'.format(jupyter_exe_name), 'notebook']
+            Popen(" ".join(cmds), cwd=jupyter_dname)
 
         msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
         QMessageBox.information(self, "Launching Jupyter", msg)
