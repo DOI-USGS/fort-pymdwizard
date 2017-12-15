@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <metadata>
   <idinfo>
     <citation>
@@ -106,10 +106,9 @@
     <useconst>None. Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
     <ptcontac>
       <cntinfo>
-        <cntorgp>
-          <cntorg></cntorg>
-          <cntper>George M Durner</cntper>
-        </cntorgp>
+        <cntperp>
+          <cntper/>
+        </cntperp>
         <cntaddr>
           <addrtype>mailing address</addrtype>
           <address>4210 University Drive</address>
@@ -204,72 +203,57 @@
         <attrlabl>VerbatimModified</attrlabl>
         <attrdef>The date and time value of the modified term, recorded in the exact format that the data originator provided it, for purposes of audit trail, since OBIS-USA will convert this to ISO 8601:2004(E) for operational purposes.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>DatasetID</attrlabl>
-        <attrdef>An abbreviated name for the dataset that contains the occurrence record.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>USGS_ASC_PolarBearMaternalDens</edomv>
-            <edomvd>United States Geological Survey Alaska Science Center Polar Bear Maternal Dens</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>DatasetID</attrlabl><attrdef>An abbreviated name for the dataset that contains the occurrence record.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>USGS_ASC_PolarBearMaternalDens</edomv>
+      <edomvd>United States Geological Survey Alaska Science Center Polar Bear Maternal Dens</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>HigherInstitutionCode</attrlabl>
-        <attrdef>Institution codes, in the form of abbreviated institution names, separated by semicolons, that define the hierarchy of institutions within which the data originator operates. Includes the originating institution as the lowest level (rightmost) code.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>DOI;USGS</edomv>
-            <edomvd>Department of the Interior; United States Geological Survey</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>HigherInstitutionCode</attrlabl><attrdef>Institution codes, in the form of abbreviated institution names, separated by semicolons, that define the hierarchy of institutions within which the data originator operates. Includes the originating institution as the lowest level (rightmost) code.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>DOI;USGS</edomv>
+      <edomvd>Department of the Interior; United States Geological Survey</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>InstitutionCode</attrlabl>
-        <attrdef>An abbreviation for the institution that is the originator of this data resource; the institution involved in research, data collection and/or data management that most directly produced this dataset.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>USGS</edomv>
-            <edomvd>United States Geological Survey</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>InstitutionCode</attrlabl><attrdef>An abbreviation for the institution that is the originator of this data resource; the institution involved in research, data collection and/or data management that most directly produced this dataset.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>USGS</edomv>
+      <edomvd>United States Geological Survey</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>OwnerInstitutionCode</attrlabl>
-        <attrdef>An abbreviation that identifies the institution, within the higherInstitutionCode hierarchy, that is considered the owner or controller of the data.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>USGS</edomv>
-            <edomvd>United States Geological Survey</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>OwnerInstitutionCode</attrlabl><attrdef>An abbreviation that identifies the institution, within the higherInstitutionCode hierarchy, that is considered the owner or controller of the data.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>USGS</edomv>
+      <edomvd>United States Geological Survey</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>CollectionCode</attrlabl>
         <attrdef>An identifier for a subset(s) of data within the dataset, partitioned by methods or parameters meaningful to the data originators.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>CatalogNumber</attrlabl>
         <attrdef>A record identifier provided by the data originator.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>1</rdommin>
             <rdommax>392</rdommax>
           </rdom>
@@ -279,8 +263,7 @@
         <attrlabl>ObservationDateTime</attrlabl>
         <attrdef>The date and time of observation expressed in local time using the standard ISO 8601:2004(E).</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>1910</rdommin>
             <rdommax>2010</rdommax>
           </rdom>
@@ -290,24 +273,21 @@
         <attrlabl>ObservationTimeZone</attrlabl>
         <attrdef>The time zone of the observation event, expressed as +/- hh:mm offset from UTC.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>ObservationDateTimeAnnotation</attrlabl>
         <attrdef>Explains information about date and time that may not be evident in verbatim, ISO 8601, or nominal forms of the date and time.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>VerbatimObservationDateTime</attrlabl>
         <attrdef>The expression of the date and time of the observation in language identical to the originator's description of the date and time of observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>1910</rdommin>
             <rdommax>2010</rdommax>
           </rdom>
@@ -317,8 +297,7 @@
         <attrlabl>NominalObservationDateTime</attrlabl>
         <attrdef>This term identifies a specific instant chosen to represent the date and time of the observation, in Coordinated Universal Time (UTC).</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>1910-07-02T00:00:00Z</rdommin>
             <rdommax>2010-07-02T00:00:00Z</rdommax>
           </rdom>
@@ -328,8 +307,7 @@
         <attrlabl>NominalObservationDateTimeUncertainty</attrlabl>
         <attrdef>This is the uncertainty in seconds before and after the (the term) time, as a result of both precision and accuracy factors in determining observation time. This use of uncertainty makes (the term) time the mid-point in the range of uncertainty equal to twice the value of this term.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>15811200</rdommin>
             <rdommax>15811200</rdommax>
           </rdom>
@@ -339,8 +317,7 @@
         <attrlabl>Latitude</attrlabl>
         <attrdef>The position of the observation north or south of the equator in decimal degrees.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>63.3667</rdommin>
             <rdommax>83.921</rdommax>
           </rdom>
@@ -350,8 +327,7 @@
         <attrlabl>Longitude</attrlabl>
         <attrdef>The position of the observation east or west of the prime meridian in decimal degrees.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>-178.9167</rdommin>
             <rdommax>178.2167</rdommax>
           </rdom>
@@ -361,404 +337,344 @@
         <attrlabl>FootprintWKT</attrlabl>
         <attrdef>A Well-Known Text (WKT) representation of geometry associated with the observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>CoordinateUncertaintyInMeters</attrlabl>
         <attrdef>An expression in meters of the overall uncertainty of the georeference provided by the latitude and longitude data.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>VerbatimCoordinates</attrlabl>
         <attrdef>Record original coordinate information here (both latitude and longitude) for audit trail purposes where necessary.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>VerbatimCoordinateSystem</attrlabl>
         <attrdef>The spatial coordinate system for the verbatimCoordinates.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>VerbatimSRS</attrlabl>
         <attrdef>The ellipsoid, geodetic datum, or spatial reference system (SRS) upon which coordinates given in verbatimCoordinates are based.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>GeodeticDatum</attrlabl>
-        <attrdef>The ellipsoid, geodetic datum, or spatial reference system used in (the terms) latitude and longitude.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>EPSG:4326 WGS 84</edomv>
-            <edomvd>World Geodetic System 1984</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>GeodeticDatum</attrlabl><attrdef>The ellipsoid, geodetic datum, or spatial reference system used in (the terms) latitude and longitude.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>EPSG:4326 WGS 84</edomv>
+      <edomvd>World Geodetic System 1984</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>GeoreferencedBy</attrlabl>
         <attrdef>The name or other identifier of individual(s) or institution(s) that determined the georeference.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>GeoreferenceProtocol</attrlabl>
-        <attrdef>A description or reference to the methods used to determine the spatial footprint, coordinates, and uncertainties. Georeference methods, including determination of coordinates and uncertainty, should be explained in metadata.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>CONVENTIONAL</edomv>
-            <edomvd>Encountered during other Alaska Science Center polar bear field research efforts</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>FLIR</edomv>
-            <edomvd>Encountered with Forward-looking Infrared</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>REPORT</edomv>
-            <edomvd>Reported to Alaska Science Center from other individuals or agencies</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>SATELLITE</edomv>
-            <edomvd>Encountered through satellite telemetry</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>VHF_RADIO</edomv>
-            <edomvd>Encountered through VHF telemetry</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>GeoreferenceProtocol</attrlabl><attrdef>A description or reference to the methods used to determine the spatial footprint, coordinates, and uncertainties. Georeference methods, including determination of coordinates and uncertainty, should be explained in metadata.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>CONVENTIONAL</edomv>
+      <edomvd>Encountered during other Alaska Science Center polar bear field research efforts</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>FLIR</edomv>
+      <edomvd>Encountered with Forward-looking Infrared</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>REPORT</edomv>
+      <edomvd>Reported to Alaska Science Center from other individuals or agencies</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>SATELLITE</edomv>
+      <edomvd>Encountered through satellite telemetry</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>VHF_RADIO</edomv>
+      <edomvd>Encountered through VHF telemetry</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>MinimumElevationInMeters</attrlabl>
         <attrdef>minimumElevationInMeters and maximumElevationInMeters express the elevation range in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>MaximumElevationInMeters</attrlabl>
         <attrdef>minimumElevationInMeters and maximumElevationInMeters express the elevation range in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>MinimumDepthInMeters</attrlabl>
         <attrdef>minimumDepthInMeters and maximumDepthInMeters express the depth range in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>MaximumDepthInMeters</attrlabl>
         <attrdef>minimumDepthInMeters and maximumDepthInMeters express the depth range in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>BasisOfRecord</attrlabl>
-        <attrdef>Identifies the source of information or observation that generated the biological occurrence record.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>HumanObservation</edomv>
-            <edomvd>Observation made by a human observer</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>BasisOfRecord</attrlabl><attrdef>Identifies the source of information or observation that generated the biological occurrence record.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>HumanObservation</edomv>
+      <edomvd>Observation made by a human observer</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>RecordedBy</attrlabl>
-        <attrdef>The name or other identifier of individual(s) or institution(s) responsible for making the observation and recording it in electronic form.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>ADFG</edomv>
-            <edomvd>Alaska Department of Fish and Game</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>ASC</edomv>
-            <edomvd>Alaska Science Center</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>INDUSTRY</edomv>
-            <edomvd>Petroleum and related industry personnel</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>LOCAL</edomv>
-            <edomvd>Residents of coastal villages and homesteads</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>MMM</edomv>
-            <edomvd>United States Fish and Wildlife Service, Marine Mammals Management</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>RecordedBy</attrlabl><attrdef>The name or other identifier of individual(s) or institution(s) responsible for making the observation and recording it in electronic form.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>ADFG</edomv>
+      <edomvd>Alaska Department of Fish and Game</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>ASC</edomv>
+      <edomvd>Alaska Science Center</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>INDUSTRY</edomv>
+      <edomvd>Petroleum and related industry personnel</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>LOCAL</edomv>
+      <edomvd>Residents of coastal villages and homesteads</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>MMM</edomv>
+      <edomvd>United States Fish and Wildlife Service, Marine Mammals Management</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>Source</attrlabl>
         <attrdef>Literature citation for when the occurrence record is derived from literature.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>Aggregator</attrlabl>
-        <attrdef>The name of an institution also involved in gathering or developing this data, in between the data originator and OBIS-USA.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>USGS;ASC</edomv>
-            <edomvd>United States Geological Survey; Alaska Science Center</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>Aggregator</attrlabl><attrdef>The name of an institution also involved in gathering or developing this data, in between the data originator and OBIS-USA.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>USGS;ASC</edomv>
+      <edomvd>United States Geological Survey; Alaska Science Center</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>OriginatorResourceUrl</attrlabl>
         <attrdef>URL provided by the data originator that links to a resource specific to this individual record, for example, an image file or web page devoted to this observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>OriginatorResourceUrlLabel</attrlabl>
         <attrdef>This term is only used as a companion to the originatorResourceUrl term. The label term contains the label information to be displayed to a web user in relation to the corresponding URL.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>VernacularName</attrlabl>
-        <attrdef>A common or vernacular name for the taxon observed.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>polar bear</edomv>
-            <edomvd>common name</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>VernacularName</attrlabl><attrdef>A common or vernacular name for the taxon observed.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>polar bear</edomv>
+      <edomvd>common name</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>ScientificName</attrlabl>
-        <attrdef>The taxonomic identification of the observation as either 1) Genus and species (and subspecies if provided) in Latin binomial nomenclature form, or 2) the lowest-level taxonomic name to which the observation is identified, expressed in Latin form.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>Ursus maritimus</edomv>
-            <edomvd>polar bear</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>ScientificName</attrlabl><attrdef>The taxonomic identification of the observation as either 1) Genus and species (and subspecies if provided) in Latin binomial nomenclature form, or 2) the lowest-level taxonomic name to which the observation is identified, expressed in Latin form.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>Ursus maritimus</edomv>
+      <edomvd>polar bear</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
-        <attrlabl>TaxonRank</attrlabl>
-        <attrdef>taxonRank identifies the taxonomic level of the lowest-level name in the scientificName term, if the scientificName refers to a level above genus.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>Species</edomv>
-            <edomvd>Species that are recorded at the species level in the taxonomic hierarchy</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>TaxonRank</attrlabl><attrdef>taxonRank identifies the taxonomic level of the lowest-level name in the scientificName term, if the scientificName refers to a level above genus.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>Species</edomv>
+      <edomvd>Species that are recorded at the species level in the taxonomic hierarchy</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>TypeStatus</attrlabl>
         <attrdef>A list (concatenated and separated by semicolons) of nomenclatural types (type status, typified scientific name, publication) applied to the subject.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>Genus</attrlabl>
-        <attrdef>The full scientific name of the genus in which the taxon is classified.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>Ursus</edomv>
-            <edomvd>genus</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>Genus</attrlabl><attrdef>The full scientific name of the genus in which the taxon is classified.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>Ursus</edomv>
+      <edomvd>genus</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>Subgenus</attrlabl>
         <attrdef>The full scientific name of the subgenus in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>Species</attrlabl>
-        <attrdef>The full scientific name of the species in which the taxon is classified.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>maritimus</edomv>
-            <edomvd>species</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>Species</attrlabl><attrdef>The full scientific name of the species in which the taxon is classified.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>maritimus</edomv>
+      <edomvd>species</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>InfraspecificEpithet</attrlabl>
         <attrdef>The full scientific name of the subspecies, variant or other finer level identification.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>ScientificNameAuthorship</attrlabl>
-        <attrdef>The authorship information for the scientificName.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>Phipps, 1774</edomv>
-            <edomvd>Author for Ursus maritimus</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>ScientificNameAuthorship</attrlabl><attrdef>The authorship information for the scientificName.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>Phipps, 1774</edomv>
+      <edomvd>Author for Ursus maritimus</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>IdentifiedBy</attrlabl>
         <attrdef>The name or other identifier of individual(s) or institution(s) that assigned the taxonomic name.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IdentificationDate</attrlabl>
         <attrdef>The date the identification on this record was made, expressed in ISO 8601 date format.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IdentificationQualifier</attrlabl>
         <attrdef>A brief phrase or a standard term ("cf.", "aff.") to express the determiner's uncertainty about the identification.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IdentificationRemarks</attrlabl>
         <attrdef>Comments or notes about the identification, including any applicable reference to process, authorities, keys, uncertainties, or special conventions used in making the identification and assigning the name and/or formatting the name.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IndividualCount</attrlabl>
         <attrdef>The number of individuals represented in the observation record.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>WeightInKg</attrlabl>
         <attrdef>The recorded weight in kilograms of the individuals in the observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Sex</attrlabl>
         <attrdef>The sex of biological individuals represented in the observation record.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>LifeStage</attrlabl>
         <attrdef>An expression or description of age or lifestage of biological individual(s) in the observation record.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Preparations</attrlabl>
         <attrdef>A list (concatenated and separated by semicolons) of preparations and preservation methods for a specimen.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>OccurrenceRemarks</attrlabl>
         <attrdef>Information, that is not addressed elsewhere in MBG, about the observation event and biological or other context details about what was observed.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IndividualID</attrlabl>
         <attrdef>An identifier for a recognizable individual or group of individuals potentially being observed more than once.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <rdom>
+        <attrdomv><rdom>
             <rdommin>126</rdommin>
             <rdommax>993</rdommax>
           </rdom>
@@ -768,296 +684,261 @@
         <attrlabl>ReceiverID</attrlabl>
         <attrdef>The identifier of any form of technology used in tracking an individual, such as a satellite or radio transceiver, that helps document how the observation was made and known to be a consistent individual.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>TrackHomeRecord</attrlabl>
         <attrdef>trackHomeRecord identifies the single record and location to consider home for the individual or group identified by the individualID.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>TrackSequenceNumber</attrlabl>
         <attrdef>The combination of individuaID and the eventDate should capture information about multiple observations as well as the sequence of observations, representing the track covered by the individual. The sequence number term will be generated, in coordination with the data originator, as a series of ordinal integers</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>SurveyEventID</attrlabl>
         <attrdef>surveyEventID identifies a tow, trawl, cast, cruise, transect or other event or unit that survey operators, data gatherers and data managers want to treat as a single consistent event or unit.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>SampleID</attrlabl>
         <attrdef>A unique identifier for a unit of material, or other medium of observation, gathered at a discrete point in time, that serves as a sample for a survey of biological occurrence (presence, quantification, absence, or derived value).</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>SubsampleID</attrlabl>
         <attrdef>If a sample is further divided by the data originator for purposes of organization, handling, or analysis, and if the data originator wants to maintain the identity of the subsample, capture the ID of the subsample here.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Equipment</attrlabl>
         <attrdef>Identifies the equipment or type of equipment used to obtain or gather the sample or otherwise make the observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>SamplingProtocol</attrlabl>
-        <attrdef>Information about the intended sampling method as defined by the data originator.</attrdef>
-        <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <edom>
-            <edomv>CONVENTIONAL</edomv>
-            <edomvd>Encountered during other ASC polar bear field research efforts</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>FLIR</edomv>
-            <edomvd>Encountered with Forward-looking Infrared</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>REPORT</edomv>
-            <edomvd>Reported to ASC from other individuals or agencies</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>SATELLITE</edomv>
-            <edomvd>Encountered through satellite telemetry</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-        <attrdomv>
-          <edom>
-            <edomv>VHF_RADIO</edomv>
-            <edomvd>Encountered through VHF telemetry</edomvd>
-            <edomvds>Producer defined</edomvds>
-          </edom>
-        </attrdomv>
-      </attr>
+  <attrlabl>SamplingProtocol</attrlabl><attrdef>Information about the intended sampling method as defined by the data originator.</attrdef><attrdefs>Producer defined</attrdefs><attrdomv>
+    <edom>
+      <edomv>CONVENTIONAL</edomv>
+      <edomvd>Encountered during other ASC polar bear field research efforts</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>FLIR</edomv>
+      <edomvd>Encountered with Forward-looking Infrared</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>REPORT</edomv>
+      <edomvd>Reported to ASC from other individuals or agencies</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>SATELLITE</edomv>
+      <edomvd>Encountered through satellite telemetry</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>VHF_RADIO</edomv>
+      <edomvd>Encountered through VHF telemetry</edomvd>
+      <edomvds>Producer defined</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
       <attr>
         <attrlabl>SamplingEffort</attrlabl>
         <attrdef>Information about the extent, duration or other variable aspects of the sampling activity, as conducted by the data originator, that occurred at the time of the sampling event.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>SamplingConditions</attrlabl>
         <attrdef>Information about the state of the sampling location, determined by external factors such as weather, water conditions, lighting and visibility, etc., at the time of the sampling event.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Habitat</attrlabl>
         <attrdef>A description or identifier of general information about the habitat in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationType</attrlabl>
         <attrdef>This is a one-character string with enumerated values indicating what type of quantification this record represents.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationVocabulary</attrlabl>
         <attrdef>The names for derived values, referred to as quantification, can be drawn from a controlled vocabulary or vocabularies of quantification names. Or they can be reported using the verbatim name given by the data originator. Either the name of the controlled vocabulary or the word “verbatim” should be used in this term to record the level of control over names.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationName</attrlabl>
         <attrdef>A name for a derived value or processed data about the occurrence, for example, "Biomass".</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationValue</attrlabl>
         <attrdef>The value of the derived information product, such as the numerical value for biomass. This term does not include units. Units are contained in another term.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationUnit</attrlabl>
         <attrdef>The units in which the value expresses the quantification</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationUncertainty</attrlabl>
         <attrdef>An estimate of the uncertainty, positive and negative (+/-) offset of the stated value, that expresses the uncertainty of the value as calculated and reported.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationDeterminedDate</attrlabl>
         <attrdef>The date the quantification was determined, expressed in ISO 8601 date format.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationDeterminedBy</attrlabl>
         <attrdef>The name or ID of person(s) or institution(s) that determined the quantification.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>QuantificationMethod</attrlabl>
         <attrdef>A reference to the method used to determine the quantification.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>WaterBody</attrlabl>
         <attrdef>The name of the water body in which the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>IslandGroup</attrlabl>
         <attrdef>The name of an island group associated with the location where the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Island</attrlabl>
         <attrdef>The name of an island associated with the location where the observation was made.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Locality</attrlabl>
         <attrdef>The locality is the most specific named place to identify the location of the observation.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Country</attrlabl>
         <attrdef>The name of the country in which the observation location occurs.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>StateProvince</attrlabl>
         <attrdef>The name of the state or province in which the observation location occurs.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>County</attrlabl>
         <attrdef>The name of the county or other comparable geographic unit in which the observation location occurs.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Municipality</attrlabl>
         <attrdef>The name of the municipality in which the observation location occurs.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>NULL for this dataset</udom>
+        <attrdomv><udom>NULL for this dataset</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Kingdom</attrlabl>
         <attrdef>The full scientific name of the kingdom in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>taxonomy</udom>
+        <attrdomv><udom>taxonomy</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Phylum</attrlabl>
         <attrdef>The full scientific name of the phylum in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>taxonomy</udom>
+        <attrdomv><udom>taxonomy</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Class</attrlabl>
         <attrdef>The full scientific name of the class in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>taxonomy</udom>
+        <attrdomv><udom>taxonomy</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Order_</attrlabl>
         <attrdef>The full scientific name of the order in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>taxonomy</udom>
+        <attrdomv><udom>taxonomy</udom>
         </attrdomv>
       </attr>
       <attr>
         <attrlabl>Family</attrlabl>
         <attrdef>The full scientific name of the family in which the taxon is classified.</attrdef>
         <attrdefs>Producer defined</attrdefs>
-        <attrdomv>
-          <udom>taxonomy</udom>
+        <attrdomv><udom>taxonomy</udom>
         </attrdomv>
       </attr>
     </detailed>
@@ -1091,7 +972,7 @@
     <stdorder>
       <digform>
         <digtinfo>
-          <formname>Tabular Digital Data</formname>
+          <formname>Digital Data</formname>
         </digtinfo>
         <digtopt>
           <onlinopt>
@@ -1128,7 +1009,8 @@
         <cntemail>albenson@usgs.gov</cntemail>
       </cntinfo>
     </metc>
-    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
-    <metstdv>FGDC-STD-001-1998</metstdv>
+    <metstdn>FGDC Biological Data Profile of the CSDGM</metstdn>
+    <metstdv>FGDC-STD-001.1-1999</metstdv>
+    <metuc>Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)</metuc>
   </metainfo>
 </metadata>
