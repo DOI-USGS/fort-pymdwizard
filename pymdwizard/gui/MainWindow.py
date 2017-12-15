@@ -54,7 +54,6 @@ import tempfile
 import time
 import datetime
 import shutil
-from subprocess import Popen
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication
@@ -63,7 +62,6 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QAction
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QTabWidget
@@ -90,6 +88,7 @@ from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.jupyterstarter import JupyterStarter
+from pymdwizard import __version__
 
 import sip
 
@@ -1059,28 +1058,44 @@ class PyMdWizardMainForm(QMainWindow):
         QMessageBox.information(self, "Update results", msg)
 
 
-def launch_main(xml_fname=None, introspect_fname=None):
-    app = QApplication(sys.argv)
-
-    import time
-    start = time.time()
+def show_splash(version=''):
     splash_fname = utils.get_resource_path('icons/splash.jpg')
     splash_pix = QPixmap(splash_fname)
 
     size = splash_pix.size()*.35
     splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
+                                   transformMode=Qt.SmoothTransformation)
+    numbers = {}
+    for number in list(range(10)) + ['point']:
+        fname = utils.get_resource_path('icons/{}.png'.format(number))
+        pix = QPixmap(fname)
+        size = pix.size() * .65
+        numbers[str(number)] = pix.scaled(size, Qt.KeepAspectRatio,
                                 transformMode=Qt.SmoothTransformation)
+    numbers['.'] = numbers['point']
 
-    # # below makes the pixmap half transparent
     painter = QPainter(splash_pix)
-    painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
+    painter.begin(splash_pix)
+
+    x, y = 470, 70
+    for digit in version:
+        painter.drawPixmap(x, y, numbers[digit])
+        x += numbers[digit].rect().width()/3
+
     painter.end()
 
-    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnBottomHint)
     splash.show()
+    return splash
+
+
+def launch_main(xml_fname=None, introspect_fname=None):
+    app = QApplication(sys.argv)
+
+    splash = show_splash(__version__)
+
     app.processEvents()
     time.sleep(2)
-
     app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
