@@ -1007,7 +1007,7 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
         msgbox.setText(msg)
-        msgbox.exec()
+        msgbox.exec_()
 
     def check_for_updates(self):
         from subprocess import check_output

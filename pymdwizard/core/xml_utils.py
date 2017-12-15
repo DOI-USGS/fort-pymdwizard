@@ -283,7 +283,7 @@ def node_to_string(node):
     Pretty string representation of node
     """
     return lxml.tostring(node, pretty_print=True, with_tail=False,
-                         encoding='UTF-8', xml_declaration=True).decode()
+                         encoding='UTF-8', xml_declaration=True).decode("utf-8")
 
 
 def fname_to_node(fname):
@@ -342,8 +342,8 @@ def xml_node(tag, text='', parent_node=None, index=-1):
     """
 
     node = etree.Element(tag)
-    if str(text):
-        node.text = str(text)
+    if text:
+        node.text = text
 
     if parent_node is not None:
         if index == -1:
