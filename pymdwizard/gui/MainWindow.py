@@ -89,6 +89,7 @@ from pymdwizard.core import review_utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
+from pymdwizard.gui.jupyterstarter import JupyterStarter
 
 import sip
 
@@ -965,43 +966,35 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-        jupyter_dialog = JupyterLocationDialog()
-        utils.set_window_icon(jupyter_dialog.msgBox)
-        jupyter_dialog.msgBox.setWindowTitle("Where do you want to launch Jupyter?")
-        ret = jupyter_dialog.msgBox.exec_()
 
-        install_dir = utils.get_install_dname()
-        if ret == 0:
-            jupyter_dname = os.path.join(install_dir, 'examples')
-        elif ret == 1:
-            settings = QSettings('USGS', 'pymdwizard')
-            last_jupyter_dname = settings.value('last_jupyter_dname')
+        settings = QSettings('USGS', 'pymdwizard')
+        last_kernel = settings.value('last_kernel', '')
+        jupyter_dnames = settings.value('jupyter_dnames', [])
+        if not jupyter_dnames:
+            install_dir = utils.get_install_dname()
+            jupyter_dnames = [os.path.join(install_dir, 'examples')]
+            settings.setValue('jupyter_dnames', jupyter_dnames)
 
-            if last_jupyter_dname is None:
-                last_jupyter_dname = os.path.join(install_dir, 'examples')
-            jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from",
-                                                             last_jupyter_dname)
-            if jupyter_dname:
-                settings.setValue('last_jupyter_dname', jupyter_dname)
-            else:
-                return
-        else:
-            return
+        self.jupyter_dialog = JupyterStarter(last_kernel=last_kernel,
+                                             previous_dnames=jupyter_dnames,
+                                    update_function=self.update_jupyter_dnames)
+        utils.set_window_icon(self.jupyter_dialog)
+        self.jupyter_dialog.show()
 
-        root_dir = utils.get_install_dname('root')
-        python_dir = utils.get_install_dname('python')
-        jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
+    def update_jupyter_dnames(self, kernel, dname):
+        settings = QSettings('USGS', 'pymdwizard')
+        jupyter_dnames = settings.value('jupyter_dnames', [])
 
-        if os.path.exists(jupyterexe) and os.path.exists(root_dir):
+        try:
+            jupyter_dnames.remove(dname)
+        except ValueError:
+            pass
 
-            my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+        jupyter_dnames.insert(0, dname)
+        del jupyter_dnames[PyMdWizardMainForm.max_recent_files:]
+        settings.setValue('jupyter_dnames', jupyter_dnames)
 
-            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
-
-            msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
-
-            QMessageBox.information(self, "Launching Jupyter", msg)
+        settings.setValue('last_kernel', kernel)
 
     def about(self):
 
@@ -1064,17 +1057,6 @@ class PyMdWizardMainForm(QMainWindow):
             msg = 'Could not find the batch file to update the application'
         QApplication.restoreOverrideCursor()
         QMessageBox.information(self, "Update results", msg)
-
-
-class JupyterLocationDialog(QDialog):
-    def __init__(self, parent=None):
-        super(JupyterLocationDialog, self).__init__(parent)
-
-        self.msgBox = QMessageBox()
-        self.msgBox.setText('Choose option below:')
-        self.msgBox.addButton(QPushButton('Default (MetadataWizard examples folder)'), QMessageBox.YesRole)
-        self.msgBox.addButton(QPushButton('Browse to different folder'), QMessageBox.NoRole)
-        self.msgBox.addButton(QPushButton('Cancel'), QMessageBox.RejectRole)
 
 
 def launch_main(xml_fname=None, introspect_fname=None):
