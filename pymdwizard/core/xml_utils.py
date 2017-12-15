@@ -343,7 +343,7 @@ def xml_node(tag, text='', parent_node=None, index=-1):
 
     node = etree.Element(tag)
     if text:
-        node.text = text
+        node.text = u'{}'.format(text)
 
     if parent_node is not None:
         if index == -1:
