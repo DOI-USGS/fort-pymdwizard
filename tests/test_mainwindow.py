@@ -45,7 +45,6 @@ def test_mainwindow_to_xml(qtbot):
 
     assert dc.xpath('dataqual/logic')[0].text == 'this is a test'
 
-
 def test_validation(qtbot, mock):
 
     widget = MainWindow.PyMdWizardMainForm()
