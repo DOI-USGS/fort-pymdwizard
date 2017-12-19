@@ -386,7 +386,10 @@ class XMLRecord(object):
                 self.record = lxml.parse(self.fname)
                 self._root = self.record.getroot()
             else:
-                # they pased us a string containing the xml record
+                from pymdwizard.core import utils
+                if utils.url_validator(contents):
+                    print('is url')
+                    contents = utils.requests_pem_get(contents).text
                 self.fname = None
                 self._root = string_to_node(contents)
                 self.record = etree.ElementTree(self._root)
