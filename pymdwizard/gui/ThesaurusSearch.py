@@ -60,6 +60,10 @@ from pymdwizard.core import utils
 
 from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urlib import quote
 
 class ThesaurusSearch(QDialog):
 
@@ -154,57 +158,62 @@ class ThesaurusSearch(QDialog):
             details_msg += details['vocabulary']['scope']
         else:
             thcode = self.thesauri_lookup_r[parent.text()]
-            details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(thcode, clicked_item.text())
-            details = utils.requests_pem_get(details_url).json()
-            if type(details) == dict:
-                details = [details]
+            item_text = clicked_item.text().split(' (use: ')[0]
+            details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(thcode, quote(item_text))
 
-            details_msg = ''
-            search_term = self.ui.search_term.text()
-            prefered_shown = False
-            for detail in details:
+            try:
+                details = utils.requests_pem_get(details_url).json()
+                if type(details) == dict:
+                    details = [details]
 
-                term = detail["term"]
-                uf = detail["uf"]
-                bt = detail["bt"]
-                nt = detail["nt"]
-                rt = detail["rt"]
+                details_msg = ''
+                search_term = self.ui.search_term.text()
+                prefered_shown = False
+                for detail in details:
 
-                if term['name'].lower() != search_term and \
-                        not prefered_shown:
-                    term_count = 0
-                    prefered_shown = True
-                    for alt_term in uf:
-                        if alt_term['name'].lower() in search_term.lower():
-                            term_count += 1
-                            if term_count == 1:
-                                details_msg += "The query matches the following non-preferred terms: "
-                            else:
-                                details_msg += ', '
-                            details_msg += "<u>{}</u>".format(alt_term['name'])
+                    term = detail["term"]
+                    uf = detail["uf"]
+                    bt = detail["bt"]
+                    nt = detail["nt"]
+                    rt = detail["rt"]
 
-                    if term_count > 0:
-                        details_msg += '<br><br>'
+                    if term['name'].lower() != search_term and \
+                            not prefered_shown:
+                        term_count = 0
+                        prefered_shown = True
+                        for alt_term in uf:
+                            if alt_term['name'].lower() in search_term.lower():
+                                term_count += 1
+                                if term_count == 1:
+                                    details_msg += "The query matches the following non-preferred terms: "
+                                else:
+                                    details_msg += ', '
+                                details_msg += "<u>{}</u>".format(alt_term['name'])
 
-                details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(term['name'])
-                details_msg += '<font size="4" face="arial">{}<br><br>'.format(term['scope'])
+                        if term_count > 0:
+                            details_msg += '<br><br>'
 
-
-                if bt:
-                    details_msg += "Broader terms: "
-                    details_msg += " > ".join(['<u>{}</u>'.format(item['name']) for item in bt[::-1]])
-                    details_msg += '<br>'
+                    details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(term['name'])
+                    details_msg += '<font size="4" face="arial">{}<br><br>'.format(term['scope'])
 
 
-                if nt:
-                    details_msg += " Narrower terms: "
-                    details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in nt])
-                    details_msg += '<br>'
+                    if bt:
+                        details_msg += "Broader terms: "
+                        details_msg += " > ".join(['<u>{}</u>'.format(item['name']) for item in bt[::-1]])
+                        details_msg += '<br>'
 
-                if rt:
-                    details_msg += " Related terms: "
-                    details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in rt])
-                    details_msg += '<br>'
+
+                    if nt:
+                        details_msg += " Narrower terms: "
+                        details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in nt])
+                        details_msg += '<br>'
+
+                    if rt:
+                        details_msg += " Related terms: "
+                        details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in rt])
+                        details_msg += '<br>'
+            except:
+                details_msg = 'error getting details'
 
         self.ui.textBrowser.setText(details_msg)
 
@@ -236,7 +245,6 @@ class ThesaurusSearch(QDialog):
 
         search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(self.ui.search_term.text())
 
-
         results = self.get_result(search_url)
         if results is None:
             return False
@@ -255,7 +263,11 @@ class ThesaurusSearch(QDialog):
                item['thcode'] == '1' and self.place:
                 branch = branch_lookup.get(thesaurus_name, QStandardItem(thesaurus_name))
                 branch.setFont(QFont('Arial', 11))
-                childnode = QStandardItem(item['value'])
+                if item['label'] != item['value']:
+                    childnode = QStandardItem('{} (use: {})'.format(item['label'], \
+                                                               item['value']))
+                else:
+                    childnode = QStandardItem(item['label'])
                 childnode.setFont(QFont('Arial', 9))
                 if (thesaurus_name, item['value']) not in unique_children:
                     branch.appendRow([childnode])
@@ -284,7 +296,15 @@ class ThesaurusSearch(QDialog):
                 pass
             else:
                 thesaurus = parent.text()
-                self.add_term_function(keyword=keyword, thesaurus=thesaurus)
+                accepted_terms = []
+                if " (use: " in keyword:
+                    to_use = keyword.split(" (use: ")[1][:-1]
+                    accepted_terms = to_use.split(" AND ")
+                else:
+                    accepted_terms = [keyword]
+
+                for keyword in accepted_terms:
+                    self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
     def close_form(self):
         self.parent = None
