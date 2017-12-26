@@ -57,6 +57,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_metainfo
 from pymdwizard.gui.ContactInfo import ContactInfo
 from pymdwizard.gui.fgdc_date import FGDCDate
+from pymdwizard import __version__
 
 
 class MetaInfo(WizardWidget):
@@ -148,7 +149,9 @@ class MetaInfo(WizardWidget):
                 metac.tail = None
                 metainfo_node.append(deepcopy(metac))
 
-        metuc_str = "Record created using USGS Metadata Wizard tool. (https://github.com/usgs/fort-pymdwizard)"
+        metuc_str = "Record created using version {} of the USGS Metadata " \
+                    "Wizard tool. (https://github.com/usgs/" \
+                    "fort-pymdwizard)".format(__version__)
         if self.original_xml is not None:
             metuc = xml_utils.search_xpath(self.original_xml, 'metuc')
             if metuc is not None:
