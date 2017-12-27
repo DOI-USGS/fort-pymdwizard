@@ -139,7 +139,6 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
             else:
                 xpath = 'metadata/dataqual/lineage/procstep[{}]/srcused'
                 errors.append((xpath.format(i + 1),
-                               "source citation abbreviation cannot be empty",
                                "Source Used Citation Abbreviation {} "
                                "not found in Source inputs "
                                "used".format(src.text),
