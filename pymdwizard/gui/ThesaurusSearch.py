@@ -65,6 +65,7 @@ try:
 except ImportError:
     from urlib import quote
 
+
 class ThesaurusSearch(QDialog):
 
     def __init__(self, add_term_function=None, parent=None, place=False):
@@ -102,13 +103,11 @@ class ThesaurusSearch(QDialog):
             branch.appendRow([childnode])
 
         model = QStandardItemModel(0, 0)
-        # model.setHorizontalHeaderLabels(['Theme Keywords (thesaurus/keywords)'])
 
         rootNode = model.invisibleRootItem()
         rootNode.appendRow(branch)
 
         self.ui.treeview_results.setModel(model)
-        # self.ui.treeview_results.setColumnWidth(0, 150)
         self.ui.treeview_results.expandAll()
 
     def build_ui(self):
@@ -121,6 +120,8 @@ class ThesaurusSearch(QDialog):
         """
         self.ui = UI_ThesaurusSearch.Ui_ThesaurusSearch()
         self.ui.setupUi(self)
+        self.ui.textBrowser.setOpenLinks(False)
+        self.ui.textBrowser.setOpenExternalLinks(False)
 
     def connect_events(self):
         """
@@ -136,6 +137,7 @@ class ThesaurusSearch(QDialog):
         self.ui.treeview_results.clicked.connect(self.show_details)
         self.ui.btn_add_term.clicked.connect(self.add_term)
         self.ui.btn_close.clicked.connect(self.close_form)
+        self.ui.textBrowser.anchorClicked.connect(self.text_clicked)
 
     def show_details(self, index):
         clicked_item = self.ui.treeview_results.model().itemFromIndex(index)
@@ -199,18 +201,18 @@ class ThesaurusSearch(QDialog):
 
                     if bt:
                         details_msg += "Broader terms: "
-                        details_msg += " > ".join(['<u>{}</u>'.format(item['name']) for item in bt[::-1]])
+                        details_msg += " > ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in bt[::-1]])
                         details_msg += '<br>'
 
 
                     if nt:
                         details_msg += " Narrower terms: "
-                        details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in nt])
+                        details_msg += ", ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in nt])
                         details_msg += '<br>'
 
                     if rt:
                         details_msg += " Related terms: "
-                        details_msg += ", ".join(['<u>{}</u>'.format(item['name']) for item in rt])
+                        details_msg += ", ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in rt])
                         details_msg += '<br>'
             except:
                 details_msg = 'error getting details'
@@ -255,35 +257,50 @@ class ThesaurusSearch(QDialog):
             QMessageBox.information(self, "Search Term Not Found", msg, QMessageBox.Ok)
             return False
 
-        branch_lookup = {}
+        self.branch_lookup = {}
         unique_children = []
         for item in results:
             thesaurus_name = self.thesauri_lookup[item['thcode']]
             if item['thcode'] != '1' and not self.place or \
                item['thcode'] == '1' and self.place:
-                branch = branch_lookup.get(thesaurus_name, QStandardItem(thesaurus_name))
+                branch = self.branch_lookup.get(thesaurus_name,
+                                                QStandardItem(thesaurus_name))
                 branch.setFont(QFont('Arial', 11))
                 if item['label'] != item['value']:
                     childnode = QStandardItem('{} (use: {})'.format(item['label'], \
                                                                item['value']))
                 else:
                     childnode = QStandardItem(item['label'])
+
                 childnode.setFont(QFont('Arial', 9))
                 if (thesaurus_name, item['value']) not in unique_children:
-                    branch.appendRow([childnode])
+                    branch.appendRow([childnode, None])
                     unique_children.append((thesaurus_name, item['value']))
 
-                branch_lookup[thesaurus_name] = branch
+                self.branch_lookup[thesaurus_name] = branch
 
         model = QStandardItemModel(0, 0)
 
         rootNode = model.invisibleRootItem()
 
-        for thesaurus_node in branch_lookup.items():
+        for thesaurus_node in self.branch_lookup.items():
             rootNode.appendRow(thesaurus_node[1])
 
         self.ui.treeview_results.setModel(model)
         self.ui.treeview_results.expandAll()
+
+    def get_thesaurus(self):
+        model = self.ui.treeview_results.model()
+        for i in self.ui.treeview_results.selectedIndexes():
+            clicked_item = model.itemFromIndex(i)
+            parent = clicked_item.parent()
+            keyword = clicked_item.text()
+
+            if clicked_item.hasChildren():
+                return None
+            else:
+                thesaurus = parent.text()
+                return thesaurus
 
     def add_term(self, index):
         model = self.ui.treeview_results.model()
@@ -296,7 +313,6 @@ class ThesaurusSearch(QDialog):
                 pass
             else:
                 thesaurus = parent.text()
-                accepted_terms = []
                 if " (use: " in keyword:
                     to_use = keyword.split(" (use: ")[1][:-1]
                     accepted_terms = to_use.split(" AND ")
@@ -305,6 +321,32 @@ class ThesaurusSearch(QDialog):
 
                 for keyword in accepted_terms:
                     self.add_term_function(keyword=keyword, thesaurus=thesaurus)
+
+    def text_clicked(self, link):
+        """
+        Update the form with the value clicked on in the details/definition
+
+        Parameters
+        ----------
+        link : Qt url
+
+        Returns
+        -------
+        None
+        """
+        parent = self.get_thesaurus()
+
+        self.ui.search_term.setText(link.url())
+        self.search_thesaurus()
+
+        parent_item = self.branch_lookup[parent]
+
+        model = self.ui.treeview_results.model()
+        for irow in range(parent_item.rowCount()):
+            child = parent_item.child(irow)
+            if child.text() == link.url():
+                self.ui.treeview_results.setCurrentIndex(child.index())
+                self.show_details(child.index())
 
     def close_form(self):
         self.parent = None
