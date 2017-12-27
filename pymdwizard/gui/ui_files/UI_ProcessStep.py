@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(435, 376)
+        Form.resize(545, 376)
         Form.setMinimumSize(QtCore.QSize(0, 175))
         Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         Form.setStyleSheet("QGroupBox{\n"
@@ -132,9 +132,6 @@ class Ui_Form(object):
         self.lbl_dataset_title_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.lbl_dataset_title_2.setObjectName("lbl_dataset_title_2")
         self.srcprod_layout.addWidget(self.lbl_dataset_title_2)
-        self.label_2 = QtWidgets.QLabel(self.srcprod_groupbox)
-        self.label_2.setObjectName("label_2")
-        self.srcprod_layout.addWidget(self.label_2)
         self.label_35 = QtWidgets.QLabel(self.srcprod_groupbox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -172,7 +169,6 @@ class Ui_Form(object):
         self.lbl_dataset_title.setText(_translate("Form", "Source Used Citation Abbreviation(s)"))
         self.label_34.setText(_translate("Form", "List any data sources used in this step.  These can be either listed in sources section below or from previous processing steps."))
         self.lbl_dataset_title_2.setText(_translate("Form", "Source Produced Citation Abbreviation (s)"))
-        self.label_2.setText(_translate("Form", "Source Produced Citation Abbreviation (s)"))
         self.label_35.setText(_translate("Form", "List any data produced from this step."))
 
 from growingtextedit import GrowingTextEdit

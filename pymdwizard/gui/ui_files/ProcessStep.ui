@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
+    <width>545</width>
     <height>376</height>
    </rect>
   </property>
@@ -232,13 +232,6 @@ subcontrol-position: top left; /* position at the top left*/
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="text">
-               <string>Source Produced Citation Abbreviation (s)</string>
               </property>
              </widget>
             </item>
