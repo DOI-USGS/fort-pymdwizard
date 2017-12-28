@@ -63,7 +63,7 @@ from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 try:
     from urllib.parse import quote
 except ImportError:
-    from urlib import quote
+    from urllib import quote
 
 
 class ThesaurusSearch(QDialog):
