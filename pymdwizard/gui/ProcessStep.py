@@ -123,8 +123,9 @@ class ProcessStep(WizardWidget): #
         procstep.append(procdesc)
 
         for srcused in self.srcused_list.get_widgets():
-            xml_utils.xml_node('srcused', text=srcused.added_line.text(),
-                               parent_node=procstep)
+            if srcused.added_line.text():
+                xml_utils.xml_node('srcused', text=srcused.added_line.text(),
+                                   parent_node=procstep)
 
         procdate = xml_utils.xml_node(tag='procdate')
         date_var = self.single_date.findChild(QLineEdit, "fgdc_procdate").text()
@@ -132,8 +133,9 @@ class ProcessStep(WizardWidget): #
         procstep.append(procdate)
 
         for srcprod in self.srcprod_list.get_widgets():
-            xml_utils.xml_node('srcprod', text=srcprod.added_line.text(),
-                               parent_node=procstep)
+            if srcprod.added_line.text():
+                xml_utils.xml_node('srcprod', text=srcprod.added_line.text(),
+                                   parent_node=procstep)
 
         if self.proccont.ui.rbtn_yes.isChecked():
             proccont = self.proccont.to_xml()

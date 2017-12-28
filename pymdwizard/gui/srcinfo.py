@@ -95,7 +95,7 @@ class SRCInfo(WizardWidget): #
         self.ui.fgdc_srcscale.editingFinished.connect(self.format_scale)
 
     def update_tab_label(self):
-        new_label = "Source: {}".format(self.ui.fgdc_srccitea.text())
+        new_label = "Source: {}".format(self.ui.fgdc_srccitea.text()[:15])
         tab_widget = self.ui.fgdc_srccitea.parent().parent().parent().parent()
         current_index = tab_widget.currentIndex()
         tab_widget.setTabText(current_index, new_label)
@@ -186,14 +186,13 @@ class SRCInfo(WizardWidget): #
 
             utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, 'srccontr')
 
-
             if srcinfo.xpath('srctime'):
-
                 timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
                 srccurr = srcinfo.xpath('srctime/srccurr')[0]
                 self.timeinfo.from_xml(timeinfo)
-
                 self.ui.fgdc_srccurr.setCurrentText(srccurr.text)
+
+            self.update_tab_label()
 
         except KeyError:
             pass

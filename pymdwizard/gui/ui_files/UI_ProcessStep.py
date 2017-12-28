@@ -101,7 +101,7 @@ class Ui_Form(object):
         self.src_layout = QtWidgets.QHBoxLayout(self.src_widget)
         self.src_layout.setContentsMargins(0, 0, 0, 0)
         self.src_layout.setObjectName("src_layout")
-        self.srcused_groupbox = QtWidgets.QGroupBox(self.src_widget)
+        self.srcused_groupbox = QtWidgets.QFrame(self.src_widget)
         self.srcused_groupbox.setObjectName("srcused_groupbox")
         self.srcused_layout = QtWidgets.QVBoxLayout(self.srcused_groupbox)
         self.srcused_layout.setObjectName("srcused_layout")
@@ -123,7 +123,7 @@ class Ui_Form(object):
         spacerItem2 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.srcused_layout.addItem(spacerItem2)
         self.src_layout.addWidget(self.srcused_groupbox)
-        self.srcprod_groupbox = QtWidgets.QGroupBox(self.src_widget)
+        self.srcprod_groupbox = QtWidgets.QFrame(self.src_widget)
         self.srcprod_groupbox.setObjectName("srcprod_groupbox")
         self.srcprod_layout = QtWidgets.QVBoxLayout(self.srcprod_groupbox)
         self.srcprod_layout.setObjectName("srcprod_layout")
@@ -167,8 +167,8 @@ class Ui_Form(object):
         self.fgdc_procdesc.setPlainText(_translate("Form", "Development of the dataset by the agency / individuals identified in the \'Originator\' element in the Identification Info section of the record."))
         self.label_37.setText(_translate("Form", "Process Date (YYYYMMDD)"))
         self.lbl_dataset_title.setText(_translate("Form", "Source Used Citation Abbreviation(s)"))
-        self.label_34.setText(_translate("Form", "List any data sources used in this step.  These can be either listed in sources section below or from previous processing steps."))
+        self.label_34.setText(_translate("Form", "List any data sources used in this step.  These can be listed in sources section below."))
         self.lbl_dataset_title_2.setText(_translate("Form", "Source Produced Citation Abbreviation (s)"))
-        self.label_35.setText(_translate("Form", "List any data produced from this step."))
+        self.label_35.setText(_translate("Form", "List data produced from this step that was used in a subsequent step.  These must also be added to the source inputs below. "))
 
 from growingtextedit import GrowingTextEdit

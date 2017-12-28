@@ -169,7 +169,7 @@ subcontrol-position: top left; /* position at the top left*/
        <widget class="QWidget" name="src_widget" native="true">
         <layout class="QHBoxLayout" name="src_layout">
          <item>
-          <widget class="QGroupBox" name="srcused_groupbox">
+          <widget class="QFrame" name="srcused_groupbox">
            <layout class="QVBoxLayout" name="srcused_layout">
             <item>
              <widget class="QLabel" name="lbl_dataset_title">
@@ -196,7 +196,7 @@ subcontrol-position: top left; /* position at the top left*/
                <string notr="true">font: italic;</string>
               </property>
               <property name="text">
-               <string>List any data sources used in this step.  These can be either listed in sources section below or from previous processing steps.</string>
+               <string>List any data sources used in this step.  These can be listed in sources section below.</string>
               </property>
               <property name="wordWrap">
                <bool>true</bool>
@@ -220,7 +220,7 @@ subcontrol-position: top left; /* position at the top left*/
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="srcprod_groupbox">
+          <widget class="QFrame" name="srcprod_groupbox">
            <layout class="QVBoxLayout" name="srcprod_layout">
             <item>
              <widget class="QLabel" name="lbl_dataset_title_2">
@@ -247,7 +247,7 @@ subcontrol-position: top left; /* position at the top left*/
                <string notr="true">font: italic;</string>
               </property>
               <property name="text">
-               <string>List any data produced from this step.</string>
+               <string>List data produced from this step that was used in a subsequent step.  These must also be added to the source inputs below. </string>
               </property>
               <property name="wordWrap">
                <bool>true</bool>
