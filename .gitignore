@@ -22,6 +22,9 @@ sdist/
 var/
 venv/
 
+# Documentation build files
+docs/html_output
+
 *.egg-info/
 .installed.cfg
 *.egg

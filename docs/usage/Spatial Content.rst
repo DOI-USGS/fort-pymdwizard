@@ -41,6 +41,13 @@ displayed, for example, Southwest United States, Colorado, Key West, Florida.
 	
 |
 
+Auto-Populating Bounding Coordinates from Place Name
+----------------------------------------------------
+When a common place name (Country, State, County, Park, Lake, Management unit, etc.)
+is entered in the 'Description of Geographic Extent' the cooresponding
+bounding box is auto-populated with known coordinates.  These can be manually
+updated afterwards, as described above, to fine-tune the bounding box.
+
 Auto-Populating Spatial Content From Data
 -----------------------------------------
 

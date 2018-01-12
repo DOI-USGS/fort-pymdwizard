@@ -1,0 +1,17 @@
+requests
+lxml
+defusedxml
+pandas
+jupyter
+gdal
+geopandas
+PyQt >= 5.0
+xlrd
+python-docx
+habanero
+
+# development specific requirements
+pytest>=3.1.0
+pytest-cov>=2.2.0
+sphinx
+sphinx-rtd-theme
