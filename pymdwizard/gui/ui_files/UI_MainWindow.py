@@ -157,8 +157,12 @@ class Ui_MainWindow(object):
         self.actionSpatial.setCheckable(True)
         self.actionSpatial.setChecked(True)
         self.actionSpatial.setObjectName("actionSpatial")
+        self.actionOpen_sb = QtWidgets.QAction(MainWindow)
+        self.actionOpen_sb.setObjectName("actionOpen_sb")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionOpen_sb)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_as)
@@ -268,4 +272,5 @@ class Ui_MainWindow(object):
         self.actionEntity_and_Attribute.setText(_translate("MainWindow", "Entity and Attribute"))
         self.actionDistribution.setText(_translate("MainWindow", "Distribution"))
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
+        self.actionOpen_sb.setText(_translate("MainWindow", "Open ScienceBase item"))
 

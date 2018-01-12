@@ -88,6 +88,7 @@ from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.jupyterstarter import JupyterStarter
+from pymdwizard.gui.sb_locator import SBLocator
 from pymdwizard import __version__
 
 import sip
@@ -114,6 +115,9 @@ class PyMdWizardMainForm(QMainWindow):
         self.metadata_root = None
         self.build_ui()
         self.connect_events()
+
+        self.sb_file = False
+        self.sb_locator = SBLocator(mainform=self)
 
         self.load_default()
 
@@ -184,6 +188,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSpatial.triggered.connect(self.use_spatial)
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
+        self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
 
     def open_recent_file(self):
         """
@@ -228,6 +233,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        self.sb_file = False
         if fname is None or not fname:
             fname = self.get_xml_fname()
 
@@ -235,6 +241,20 @@ class PyMdWizardMainForm(QMainWindow):
             self.load_file(fname)
             self.set_current_file(fname)
             self.update_recent_file_actions()
+
+    def open_sb_file(self, hash=None):
+        """
+        download a
+        Parameters
+        ----------
+        hash : str
+            Tag of item to be edited on SB
+
+        Returns
+        -------
+        None
+        """
+        self.sb_locator.show()
 
     def load_file(self, fname):
         """
@@ -366,6 +386,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
+
+        if self.sb_file:
+            self.sb_locator.put_fgdc_file()
 
     def new_record(self):
         """
