@@ -1004,6 +1004,7 @@ class PyMdWizardMainForm(QMainWindow):
         msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
         msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
         msg += 'and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>'
+        msg += '<br>Version: {}<br>'.format(__version__)
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
         msgbox.setText(msg)
