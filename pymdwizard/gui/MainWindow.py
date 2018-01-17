@@ -118,6 +118,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.sb_file = False
         self.sb_locator = SBLocator(mainform=self)
+        utils.set_window_icon(self.sb_locator)
 
         self.load_default()
 
@@ -292,6 +293,12 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
         self.metadata_root.clear_widget()
+        self.ui.actionData_Quality.setChecked(True)
+        self.ui.actionSpatial.setChecked(True)
+        self.ui.actionEntity_and_Attribute.setChecked(True)
+        self.ui.actionDistribution.setChecked(True)
+
+
         try:
             new_record = xml_utils.fname_to_node(fname)
             self.metadata_root.from_xml(new_record)
