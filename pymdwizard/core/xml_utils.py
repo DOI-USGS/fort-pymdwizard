@@ -429,7 +429,7 @@ class XMLRecord(object):
 class XMLNode(object):
     """
     Class used to dynamically create an object containing the contents of an
-    XML node, along with functions for manipulating and itrospecting it.
+    XML node, along with functions for manipulating and introspecting it.
     """
     def __init__(self, element=None, tag='', text='', parent_node=None,
                  index=-1):
@@ -447,7 +447,7 @@ class XMLNode(object):
         parent_node : XMLNode, optional
                       if provided add this XMLNode to the parent node
         index : int, optional
-                if provided insert this XMLNdde into the parent node at this
+                if provided insert this XMLNode into the parent node at this
                 position
         """
         self.text = text

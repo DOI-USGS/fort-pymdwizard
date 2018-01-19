@@ -19,7 +19,7 @@ file's name.
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
+    This script is part of the pymdwizard package and is not intended to be
     used independently.  All pymdwizard package requirements are needed.
     
     See imports section for external packages used in this script as well as
@@ -67,7 +67,7 @@ from pymdwizard.gui.mapproj import MapProj
 
 class SpRef(WizardWidget):
 
-    drag_label = "Spatial Refernce <spref>"
+    drag_label = "Spatial Reference <spref>"
     acceptable_tags = ['spref']
 
     ui_class = UI_spref.Ui_fgdc_spref
