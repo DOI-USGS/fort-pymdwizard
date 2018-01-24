@@ -72,9 +72,12 @@ class SBLocator(QWidget):
         self.mainform = mainform
 
         if username is None:
-            username = getpass.getuser()
-            contact = utils.get_usgs_contact_info(username, True)
-            self.username = contact['fgdc_cntemail']
+            try:
+                username = getpass.getuser()
+                contact = utils.get_usgs_contact_info(username, True)
+                self.username = contact['fgdc_cntemail']
+            except:
+                self.username = ''
         else:
             self.username = username
 
