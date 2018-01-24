@@ -128,7 +128,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        utils.set_window_icon(self)
+        utils.set_window_icon(self, remove_help=False)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)

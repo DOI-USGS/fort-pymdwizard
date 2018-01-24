@@ -281,10 +281,16 @@ def get_resource_path(fname):
     return pkg_resources.resource_filename('pymdwizard',
 
                                            'resources/{}'.format(fname))
-def set_window_icon(widget):
+
+def set_window_icon(widget, remove_help=True):
     icon = QIcon(get_resource_path('icons/Ducky.ico'))
     widget.setWindowIcon(icon)
-
+    if remove_help:
+        widget.setWindowFlags(Qt.Window |
+                              Qt.CustomizeWindowHint |
+                              Qt.WindowTitleHint |
+                              Qt.WindowCloseButtonHint |
+                              Qt.WindowStaysOnTopHint)
 
 class PandasModel(QAbstractTableModel):
     """
