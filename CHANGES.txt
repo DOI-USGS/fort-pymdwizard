@@ -1,6 +1,30 @@
 Changes
 =======
 
+2.0.2 (1/25/2018)
+-----
+
+New features:
+
+- Type in a place name in the Description of Geographic Extent to auto-populate bounding Coordinates.
+- Allow Navigation of controlled vocabularies by clicking on broader, narrower and related terms in Details text box.
+- Launch Jupyter now remembers last 10 previously used directories, and allows one to specify
+which Anaconda env to use.
+- Added check that srcused and srcprod have matching definitions in record.
+- Add current version to 'About' message.
+
+
+Bug fixes:
+
+- Fix multiple online linkages getting stripped on load.
+- Strip empty theme keywords elements that have the 'None' Thesaurus.
+- Fix several typos in UI.
+- Fix DOI tool crashing application when string did not start with 'DOI'.
+- Remove unused window help question marks.
+- Move Tool and Version info to XML comment instead of FGDC metuc element.
+
+
+
 2.0.1 (11/16/2017)
 -----
 
