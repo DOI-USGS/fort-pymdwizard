@@ -1,10 +1,13 @@
 =======================================
-Source Code (Windows, Macintosh, Linux)
+Installing from Source (Windows, Linux)
 =======================================
 
-Currently the only option for installation on Macintosh or Linux systems is to install the application from source.
+These instructions do not currently work on Mac computers, but will be updated
+in a subsequent release to support Macs.
 
-Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python installations.
+Currently the only option for installation on Linux systems is to install the application from source.
+
+Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python Package installations.
 
 |
 
