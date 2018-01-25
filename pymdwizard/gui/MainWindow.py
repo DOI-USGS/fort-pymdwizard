@@ -946,8 +946,16 @@ class PyMdWizardMainForm(QMainWindow):
                 review_utils.generate_review_report(cur_content, out_fname,
                                                     which=which)
 
-                import subprocess
-                os.startfile('"{}"'.format(out_fname))
+                import os, sys, subprocess
+
+                def open_file(filename):
+                    if sys.platform == "win32":
+                        os.startfile(filename)
+                    else:
+                        opener = "open" if sys.platform == "darwin" else "xdg-open"
+                        subprocess.call([opener, filename])
+                open_file('"{}"'.format(out_fname))
+
                 msg = 'Review document available at: {}'.format(out_fname)
                 msg += '\n\nReview document now opening in default application...'
                 QMessageBox.information(self, "Review finished", msg)

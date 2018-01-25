@@ -53,7 +53,15 @@ from copy import deepcopy
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5 import QtCore
+
+
+try:
+    from PyQt5.QtWebKitWidgets import QWebView
+except ImportError:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
+    from PyQt5.QtWebEngineWidgets import QWebEnginePage
+    from PyQt5.QtWebChannel import QWebChannel
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -94,14 +102,23 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-        self.view = QWebView()
-        self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
         map_fname = utils.get_resource_path('leaflet/map.html')
+        try:
+            self.view = QWebView()
+            self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
+            self.view.setUrl(QUrl.fromLocalFile(map_fname))
+            self.frame = self.view.page().mainFrame()
+        except AttributeError:
+            self.view = QWebView(self.ui.map_display)
+            self.page = QWebEnginePage()
+            self.channel = QWebChannel(self.view.page())
+            self.view.page().setWebChannel(self.channel)
+            self.channel.registerObject("Spdom", self)
+
+            self.view.load(QtCore.QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
 
 
-        self.view.setUrl(QUrl.fromLocalFile(map_fname))
 
-        self.frame = self.view.page().mainFrame()
         self.ui.verticalLayout_3.addWidget(self.view)
 
         # this is where more complex build information would go such as
@@ -188,17 +205,29 @@ class Spdom(WizardWidget):
                       'northbc': self.ui.fgdc_northbc.text(),
                       'southbc': self.ui.fgdc_southbc.text(),
                       })
-        self.frame.evaluateJavaScript(jstr)
+        self.evaluate_js(jstr)
 
     def add_rect(self):
         jstr = """addRect();"""
-        self.frame.evaluateJavaScript(jstr)
+        self.evaluate_js(jstr)
 
     def remove_rect(self):
         if self.has_rect:
             self.has_rect = False
             jstr = """removeRect()"""
+            self.evaluate_js(jstr)
+
+    def evaluate_js(self, jstr):
+        """
+
+        :param jstr:
+        :return:
+        """
+        try:
             self.frame.evaluateJavaScript(jstr)
+        except:
+            self.page.runJavaScript(jstr)
+
 
     @pyqtSlot(float, float)
     def on_ne_move(self, lat, lng):
@@ -259,7 +288,7 @@ class Spdom(WizardWidget):
            self.add_rect()
            self.update_map()
            jstr = "sw_marker.openPopup();"
-           self.frame.evaluateJavaScript(jstr)
+           self.evaluate_js(jstr)
            self.after_load = True
 
     def to_xml(self):
