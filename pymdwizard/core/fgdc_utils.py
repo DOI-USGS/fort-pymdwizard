@@ -102,8 +102,8 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
         xsl_fname = xsl_fname
 
     xmlschema = xml_utils.load_schema(xsl_fname)
-
-    xml_str = xml_utils.node_to_string(xml_utils.xml_document_loader(xml))
+    xml_doc = xml_utils.xml_document_loader(xml)
+    xml_str = xml_utils.node_to_string(xml_doc)
 
     tree_node = xml_utils.string_to_node(xml_str.encode('utf-8'))
     lxml._etree._ElementTree(tree_node)

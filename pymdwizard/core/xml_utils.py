@@ -282,7 +282,10 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    tree = etree.ElementTree(node)
+    if not type(node) == etree._ElementTree:
+        tree = etree.ElementTree(node)
+    else:
+        tree = node
 
     return lxml.tostring(tree, pretty_print=True, with_tail=False,
                          encoding='UTF-8', xml_declaration=True).decode("utf-8")
