@@ -366,7 +366,15 @@ class PyMdWizardMainForm(QMainWindow):
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        xml_utils.save_to_file(self.metadata_root.to_xml(), fname)
+
+        tool_comment = "Record created using version {} of the " \
+                       "USGS Metadata Wizard tool. (https://github.com/usgs/" \
+                       "fort-pymdwizard)".format(__version__)
+        xml_contents = self.metadata_root.to_xml()
+        comment = xml_utils.xml_node(tag='', text=tool_comment,
+                                     index=0, comment=True)
+        xml_contents.addprevious(comment)
+        xml_utils.save_to_file(xml_contents, fname)
         self.last_updated = time.time()
 
         self.set_current_file(fname)

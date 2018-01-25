@@ -282,7 +282,9 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return lxml.tostring(node, pretty_print=True, with_tail=False,
+    tree = etree.ElementTree(node)
+
+    return lxml.tostring(tree, pretty_print=True, with_tail=False,
                          encoding='UTF-8', xml_declaration=True).decode("utf-8")
 
 
@@ -319,7 +321,7 @@ def string_to_node(str_node):
     return element
 
 
-def xml_node(tag, text='', parent_node=None, index=-1):
+def xml_node(tag, text='', parent_node=None, index=-1, comment=False):
     """
     convenience function for creating an xml node
 
@@ -341,7 +343,11 @@ def xml_node(tag, text='', parent_node=None, index=-1):
         the lxml node created by the function.
     """
 
-    node = etree.Element(tag)
+    if comment:
+        node = etree.Comment()
+    else:
+        node = etree.Element(tag)
+
     if text:
         node.text = u'{}'.format(text)
 
