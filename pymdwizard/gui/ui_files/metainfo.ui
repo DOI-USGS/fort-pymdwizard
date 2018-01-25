@@ -632,19 +632,19 @@
                          <bool>true</bool>
                         </property>
                         <property name="currentText">
-                         <string>FGDC Biological Data Profile of the CSDGM</string>
+                         <string>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</string>
                         </property>
                         <property name="currentIndex">
                          <number>1</number>
                         </property>
                         <item>
                          <property name="text">
-                          <string>FGDC CSDGM</string>
+                          <string>FGDC Content Standard for Digital Geospatial Metadata</string>
                          </property>
                         </item>
                         <item>
                          <property name="text">
-                          <string>FGDC Biological Data Profile of the CSDGM</string>
+                          <string>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</string>
                          </property>
                         </item>
                        </widget>
