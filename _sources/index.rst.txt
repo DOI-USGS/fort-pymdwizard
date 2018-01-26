@@ -52,6 +52,7 @@ Installation Methods
    :maxdepth: 1
 
    Windows Installation
+   Mac Installation
    Installing from Source
    Installing ArcMap Toolbox
    

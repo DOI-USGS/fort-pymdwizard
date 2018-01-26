@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Batch Processing Using Jupyter and Python &mdash; MetadataWizard  documentation</title>
+  <title>Batch Processing Using Jupyter and Python &mdash; MetadataWizard 2.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
+    <link rel="top" title="MetadataWizard 2.0.2 documentation" href="../index.html"/>
         <link rel="next" title="Include/Exclude Optional Metadata Sections" href="Include Sections.html"/>
         <link rel="prev" title="Changing the Template" href="Changing Your Template.html"/> 
 
@@ -65,6 +65,10 @@
           
             
             
+              <div class="version">
+                2.0.2
+              </div>
+            
           
 
           
@@ -88,7 +92,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Linux)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
@@ -206,13 +210,16 @@ Wizard application by clicking <strong>Launch Jupyter</strong> in the Advanced m
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>The user will be asked where they would like to open Jupyter.  The default directory
-contains notebooks that are detailed below. Choose <strong>Browse to different folder</strong> to
-to navigate to a specific project folder. The Notebooks produced will get written to
-the chosen location.</p>
+<p>The user will be then need to specify what directory would like to open Jupyter in.  This
+will be a project workspace or other folder containing the notebook files (.ipynb) they would like to run or edit.
+The default directory contains example notebooks that are described below. Choose <strong>Browse</strong> to
+to navigate to a specific project folder or specify one of the last 10 directories used from the dropdown box.
+If you have Anaconda installed and have set up environments with specific packages installed,
+you can choose one from the combobox below to use for this Jupyter session.</p>
+<p>Click <strong>Launch</strong> to start Jupyter, which will appear momentarily in your default web browser.</p>
 <div class="figure" id="id2">
 <img alt="Launch Jupyter Browse" src="../_images/JupyterBrowse.png" />
-<p class="caption"><span class="caption-text">Prompt for choosing where to start the Notebook server</span></p>
+<p class="caption"><span class="caption-text">Prompt for choosing where to start the Notebook server and optionally which Anaconda env to use.</span></p>
 </div>
 </div>
 <div class="section" id="example-notebooks">
@@ -233,7 +240,7 @@ core functionality to search the Integrated Taxonomic Information System (ITIS)
 by scientific and common name and generate FGDC taxonomy sections using code.</p>
 <p><strong>BatchUpdateAuthorsDatesEtc.ipynb</strong>  – A use case for how the
 above techniques were used to update a large batch of existing metadata records.</p>
-<p><strong>—TBD—.ipynb</strong>  – A use case for how the above techniques were extended
+<p><strong>MD_Propogation_and_SB_DataUpload.ipynb</strong>  – A use case for how the above techniques were extended
 to generate metadata for multiple datasets and move the associated
 data and metadata up to an online repository (a data release on the USGS ScienceBase system).</p>
 </div>
@@ -282,7 +289,7 @@ data and metadata up to an online repository (a data release on the USGS Science
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'',
+            VERSION:'2.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
