@@ -59,7 +59,7 @@ from pymdwizard.gui import ThesaurusSearch
 from pymdwizard.gui.theme import Theme
 
 
-class PlaceList(WizardWidget): #
+class PlaceList(WizardWidget):
 
     drag_label = "Place Keywords <keywords>"
     acceptable_tags = ['keywords', 'place']
@@ -120,9 +120,20 @@ class PlaceList(WizardWidget): #
             self.thesauri.append(theme_widget)
         return theme_widget
 
-    def changed_thesaurus(self, s):
-            current_index = self.ui.theme_tabs.currentIndex()
-            current_tab = self.ui.theme_tabs.setTabText(current_index, 'Thesaurus: ' + s)
+    def changed_thesaurus(self, thesaurus_name):
+        """
+        Update the current thesaurus label to mirror the current thesaurus text
+
+        Parameters
+        ----------
+        thesaurus_name : str
+
+        Returns
+        -------
+        None
+        """
+        cur_index = self.ui.theme_tabs.currentIndex()
+        self.ui.theme_tabs.setTabText(cur_index, 'Thesaurus: ' + thesaurus_name)
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()

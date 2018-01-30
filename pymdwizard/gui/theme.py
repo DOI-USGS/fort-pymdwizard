@@ -74,10 +74,22 @@ class Theme(KeywordsRepeater):  #
         else:
             self.setObjectName('fgdc_theme')
 
-    def changed_thesaurus(self, s):
-        self.change_tab_label(s)
-
     def add_keyword(self, keyword, locked=False):
+        """
+        Adds a given keyword to the current list of keywords,
+        if it is not currently in the list.
+
+        Parameters
+        ----------
+        keyword : str
+                  String to add to the list.
+        locked : bool
+                 Flag specifying if the added item will be editable
+
+        Returns
+        -------
+        None
+        """
         existing_kws = self.get_keywords()
         if existing_kws[0] == '':
             kw = self.keywords.get_widgets()[0]
@@ -89,6 +101,13 @@ class Theme(KeywordsRepeater):  #
             kw.added_line.setReadOnly(locked)
 
     def get_thesaurus_name(self):
+        """
+        Return the current thesaurus name for this widget.
+
+        Returns
+        -------
+        str
+        """
         return self.kt.text()
 
     def to_xml(self):
