@@ -155,7 +155,10 @@ class JupyterStarter(QDialog):
                 pass
 
         envs_dname = info['envs directories']
-        root_dname = info["root environment"].replace('(writable)', '').strip()
+        try:
+            root_dname = info["root environment"].replace('(writable)', '').strip()
+        except KeyError:
+            root_dname = info["base environment"].replace('(writable)', '').strip()
         return str(root_dname), str(envs_dname)
 
     def launch(self):
