@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Spatial Content &mdash; MetadataWizard  documentation</title>
+  <title>Spatial Content &mdash; MetadataWizard 2.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetadataWizard  documentation" href="../index.html"/>
+    <link rel="top" title="MetadataWizard 2.0.2 documentation" href="../index.html"/>
         <link rel="next" title="Populating the Entity and Attribute Tab" href="How to fill out the Entity and Attribute tab.html"/>
         <link rel="prev" title="Using the Metadata Wizard" href="Using the Metadata Wizard.html"/> 
 
@@ -65,6 +65,10 @@
           
             
             
+              <div class="version">
+                2.0.2
+              </div>
+            
           
 
           
@@ -88,7 +92,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Software Installer (Windows Only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Macintosh, Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Source Code (Windows, Linux)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul class="current">
@@ -97,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spatial Content</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#manually-setting-the-bounding-coordinates">Manually Setting the Bounding Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#auto-populating-bounding-coordinates-from-place-name">Auto-Populating Bounding Coordinates from Place Name</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#auto-populating-spatial-content-from-data">Auto-Populating Spatial Content From Data</a></li>
 </ul>
 </li>
@@ -213,6 +218,13 @@ displayed, for example, Southwest United States, Colorado, Key West, Florida.</p
 <div class="line"><br /></div>
 </div>
 </div>
+<div class="section" id="auto-populating-bounding-coordinates-from-place-name">
+<h2>Auto-Populating Bounding Coordinates from Place Name<a class="headerlink" href="#auto-populating-bounding-coordinates-from-place-name" title="Permalink to this headline">¶</a></h2>
+<p>When a common place name (Country, State, County, Park, Lake, Management unit, etc.)
+is entered in the ‘Description of Geographic Extent’ the cooresponding
+bounding box is auto-populated with known coordinates.  These can be manually
+updated afterwards, as described above, to fine-tune the bounding box.</p>
+</div>
 <div class="section" id="auto-populating-spatial-content-from-data">
 <h2>Auto-Populating Spatial Content From Data<a class="headerlink" href="#auto-populating-spatial-content-from-data" title="Permalink to this headline">¶</a></h2>
 <p>If the data are in a spatial data format, the information for this
@@ -279,7 +291,7 @@ that the values imported are appropriate.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'',
+            VERSION:'2.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

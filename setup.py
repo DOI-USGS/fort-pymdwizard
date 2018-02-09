@@ -24,9 +24,18 @@ def walk_subpkg(name):
 pkg_data = {'': walk_subpkg('resources') + walk_subpkg('gui')}
 print(walk_subpkg('pymdwizard'))
 
+# Parse the version from the pymdwizard module.
+with open('pymdwizard/__init__.py') as f:
+    for line in f:
+        if line.find("__version__") >= 0:
+            version = line.split("=")[1].strip()
+            version = version.strip('"')
+            version = version.strip("'")
+
+
 setup(
     name='pymdwizard',
-    version='2.0.1',
+    version=version,
     description='A CSDGM Metadata Editor',
     long_description=long_description,
     url='https://github.com/usgs/fort-pymdwizard',

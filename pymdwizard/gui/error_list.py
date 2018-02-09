@@ -74,6 +74,7 @@ class ErrorList(QWidget):
         action.setData(1, xpath)
 
         self.ui.listWidget.addItem(action)
+        self.errors.append((error_msg, xpath))
 
     def clear_errors(self):
         self.ui.listWidget.clear()

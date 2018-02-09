@@ -102,17 +102,17 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
         xsl_fname = xsl_fname
 
     xmlschema = xml_utils.load_schema(xsl_fname)
-
-    xml_str = xml_utils.node_to_string(xml_utils.xml_document_loader(xml))
+    xml_doc = xml_utils.xml_document_loader(xml)
+    xml_str = xml_utils.node_to_string(xml_doc)
 
     tree_node = xml_utils.string_to_node(xml_str.encode('utf-8'))
     lxml._etree._ElementTree(tree_node)
 
     errors = []
+    srcciteas = []
+
     src_xpath = 'dataqual/lineage/srcinfo/srccitea'
     src_nodes = tree_node.xpath(src_xpath)
-
-    srcciteas = []
     for i, src in enumerate(src_nodes):
         srcciteas.append(src.text)
         if src.text is None:
@@ -125,6 +125,22 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
                 errors.append((xpath.format(i + 1),
                                "source citation abbreviation cannot be empty",
                                1))
+    procstep_xpath = 'dataqual/lineage/procstep'
+    procstep_nodes = tree_node.xpath(procstep_xpath)
+    for proc_i, proc in enumerate(procstep_nodes):
+        srcprod_nodes = proc.xpath('srcprod')
+        for srcprod_i, srcprod in enumerate(srcprod_nodes):
+            srcciteas.append(srcprod.text)
+            if srcprod.text is None:
+                error_xpath = procstep_xpath
+                if len(procstep_nodes) > 1:
+                    error_xpath += "[{}]".format(proc_i + 1)
+                error_xpath += "/srcprod"
+                if len(srcprod_nodes) > 1:
+                    error_xpath += "[{}]".format(proc_i + 1)
+                errors.append(('metadata/' + error_xpath,
+                                   "source produced abbreviation cannot be empty",
+                                   1))
 
     srcused_xpath = 'dataqual/lineage/procstep/srcused'
     srcused_nodes = tree_node.xpath(srcused_xpath)
@@ -139,7 +155,6 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
             else:
                 xpath = 'metadata/dataqual/lineage/procstep[{}]/srcused'
                 errors.append((xpath.format(i + 1),
-                               "source citation abbreviation cannot be empty",
                                "Source Used Citation Abbreviation {} "
                                "not found in Source inputs "
                                "used".format(src.text),

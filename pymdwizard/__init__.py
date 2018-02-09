@@ -52,6 +52,8 @@ from __future__ import absolute_import
 import os
 import sys
 
+__version__ = "2.0.2"
+
 try:
     import core
     import gui

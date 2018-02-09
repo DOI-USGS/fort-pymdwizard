@@ -54,7 +54,6 @@ import tempfile
 import time
 import datetime
 import shutil
-from subprocess import Popen
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication
@@ -63,7 +62,6 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QAction
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QTabWidget
@@ -89,6 +87,8 @@ from pymdwizard.core import review_utils
 from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
+from pymdwizard.gui.jupyterstarter import JupyterStarter
+from pymdwizard import __version__
 
 import sip
 
@@ -128,7 +128,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        utils.set_window_icon(self)
+        utils.set_window_icon(self, remove_help=False)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)
@@ -272,6 +272,11 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
         self.metadata_root.clear_widget()
+        self.ui.actionData_Quality.setChecked(True)
+        self.ui.actionSpatial.setChecked(True)
+        self.ui.actionEntity_and_Attribute.setChecked(True)
+        self.ui.actionDistribution.setChecked(True)
+
         try:
             new_record = xml_utils.fname_to_node(fname)
             self.metadata_root.from_xml(new_record)
@@ -361,7 +366,15 @@ class PyMdWizardMainForm(QMainWindow):
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        xml_utils.save_to_file(self.metadata_root.to_xml(), fname)
+
+        tool_comment = "Record created using version {} of the " \
+                       "USGS Metadata Wizard tool. (https://github.com/usgs/" \
+                       "fort-pymdwizard)".format(__version__)
+        xml_contents = self.metadata_root.to_xml()
+        comment = xml_utils.xml_node(tag='', text=tool_comment,
+                                     index=0, comment=True)
+        xml_contents.addprevious(comment)
+        xml_utils.save_to_file(xml_contents, fname)
         self.last_updated = time.time()
 
         self.set_current_file(fname)
@@ -973,43 +986,35 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-        jupyter_dialog = JupyterLocationDialog()
-        utils.set_window_icon(jupyter_dialog.msgBox)
-        jupyter_dialog.msgBox.setWindowTitle("Where do you want to launch Jupyter?")
-        ret = jupyter_dialog.msgBox.exec_()
 
-        install_dir = utils.get_install_dname()
-        if ret == 0:
-            jupyter_dname = os.path.join(install_dir, 'examples')
-        elif ret == 1:
-            settings = QSettings('USGS', 'pymdwizard')
-            last_jupyter_dname = settings.value('last_jupyter_dname')
+        settings = QSettings('USGS', 'pymdwizard')
+        last_kernel = settings.value('last_kernel', '')
+        jupyter_dnames = settings.value('jupyter_dnames', [])
+        if not jupyter_dnames:
+            install_dir = utils.get_install_dname()
+            jupyter_dnames = [os.path.join(install_dir, 'examples')]
+            settings.setValue('jupyter_dnames', jupyter_dnames)
 
-            if last_jupyter_dname is None:
-                last_jupyter_dname = os.path.join(install_dir, 'examples')
-            jupyter_dname = QFileDialog.getExistingDirectory(self, "Select Directory to launch Jupyter from",
-                                                             last_jupyter_dname)
-            if jupyter_dname:
-                settings.setValue('last_jupyter_dname', jupyter_dname)
-            else:
-                return
-        else:
-            return
+        self.jupyter_dialog = JupyterStarter(last_kernel=last_kernel,
+                                             previous_dnames=jupyter_dnames,
+                                    update_function=self.update_jupyter_dnames)
+        utils.set_window_icon(self.jupyter_dialog)
+        self.jupyter_dialog.show()
 
-        root_dir = utils.get_install_dname('root')
-        python_dir = utils.get_install_dname('python')
-        jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
+    def update_jupyter_dnames(self, kernel, dname):
+        settings = QSettings('USGS', 'pymdwizard')
+        jupyter_dnames = settings.value('jupyter_dnames', [])
 
-        if os.path.exists(jupyterexe) and os.path.exists(root_dir):
+        try:
+            jupyter_dnames.remove(dname)
+        except ValueError:
+            pass
 
-            my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python35_64")
+        jupyter_dnames.insert(0, dname)
+        del jupyter_dnames[PyMdWizardMainForm.max_recent_files:]
+        settings.setValue('jupyter_dnames', jupyter_dnames)
 
-            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
-
-            msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'
-
-            QMessageBox.information(self, "Launching Jupyter", msg)
+        settings.setValue('last_kernel', kernel)
 
     def about(self):
 
@@ -1020,10 +1025,11 @@ class PyMdWizardMainForm(QMainWindow):
         msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
         msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
         msg += 'and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>'
+        msg += '<br>Version: {}<br>'.format(__version__)
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
         msgbox.setText(msg)
-        msgbox.exec()
+        msgbox.exec_()
 
     def check_for_updates(self):
         from subprocess import check_output
@@ -1074,39 +1080,44 @@ class PyMdWizardMainForm(QMainWindow):
         QMessageBox.information(self, "Update results", msg)
 
 
-class JupyterLocationDialog(QDialog):
-    def __init__(self, parent=None):
-        super(JupyterLocationDialog, self).__init__(parent)
-
-        self.msgBox = QMessageBox()
-        self.msgBox.setText('Choose option below:')
-        self.msgBox.addButton(QPushButton('Default (MetadataWizard examples folder)'), QMessageBox.YesRole)
-        self.msgBox.addButton(QPushButton('Browse to different folder'), QMessageBox.NoRole)
-        self.msgBox.addButton(QPushButton('Cancel'), QMessageBox.RejectRole)
-
-
-def launch_main(xml_fname=None, introspect_fname=None):
-    app = QApplication(sys.argv)
-
-    import time
-    start = time.time()
+def show_splash(version=''):
     splash_fname = utils.get_resource_path('icons/splash.jpg')
     splash_pix = QPixmap(splash_fname)
 
     size = splash_pix.size()*.35
     splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
+                                   transformMode=Qt.SmoothTransformation)
+    numbers = {}
+    for number in list(range(10)) + ['point']:
+        fname = utils.get_resource_path('icons/{}.png'.format(number))
+        pix = QPixmap(fname)
+        size = pix.size() * .65
+        numbers[str(number)] = pix.scaled(size, Qt.KeepAspectRatio,
                                 transformMode=Qt.SmoothTransformation)
+    numbers['.'] = numbers['point']
 
-    # # below makes the pixmap half transparent
     painter = QPainter(splash_pix)
-    painter.setCompositionMode(painter.CompositionMode_DestinationAtop)
+    painter.begin(splash_pix)
+
+    x, y = 470, 70
+    for digit in version:
+        painter.drawPixmap(x, y, numbers[digit])
+        x += numbers[digit].rect().width()/3
+
     painter.end()
 
-    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnBottomHint)
     splash.show()
+    return splash
+
+
+def launch_main(xml_fname=None, introspect_fname=None):
+    app = QApplication(sys.argv)
+
+    splash = show_splash(__version__)
+
     app.processEvents()
     time.sleep(2)
-
     app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()

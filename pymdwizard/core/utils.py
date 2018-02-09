@@ -54,6 +54,11 @@ import datetime
 import traceback
 import pkg_resources
 
+try:
+    from urllib.parse import urlparse
+except:
+    from urlparse import urlparse
+
 import requests
 
 import pandas as pd
@@ -270,10 +275,16 @@ def get_resource_path(fname):
     return pkg_resources.resource_filename('pymdwizard',
 
                                            'resources/{}'.format(fname))
-def set_window_icon(widget):
+
+def set_window_icon(widget, remove_help=True):
     icon = QIcon(get_resource_path('icons/Ducky.ico'))
     widget.setWindowIcon(icon)
-
+    if remove_help:
+        widget.setWindowFlags(Qt.Window |
+                              Qt.CustomizeWindowHint |
+                              Qt.WindowTitleHint |
+                              Qt.WindowCloseButtonHint |
+                              Qt.WindowStaysOnTopHint)
 
 class PandasModel(QAbstractTableModel):
     """
@@ -386,6 +397,29 @@ def check_fname(fname):
             return 'good'
         except:
             return 'not writable file'
+
+
+def url_validator(url, qualifying=None):
+    """
+    Check whether a given string is in a valid url syntax
+
+    Parameters
+    ----------
+    url : str
+        The string to check for url syntax
+    qualifying : list
+        url attributes to check for as list of strings
+        defaults to 'scheme' and 'netloc'
+
+    Returns
+    -------
+        Bool
+    """
+    min_attributes = ('scheme', 'netloc')
+    qualifying = min_attributes if qualifying is None else qualifying
+    token = urlparse(url)
+    return all([getattr(token, qualifying_attr)
+                for qualifying_attr in qualifying])
 
 
 def get_install_dname(which='pymdwizard'):

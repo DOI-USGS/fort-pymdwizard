@@ -32,15 +32,19 @@ Wizard application by clicking **Launch Jupyter** in the Advanced menu.
 
 |
 
-The user will be asked where they would like to open Jupyter.  The default directory
-contains notebooks that are detailed below. Choose **Browse to different folder** to 
-to navigate to a specific project folder. The Notebooks produced will get written to 
-the chosen location.
+The user will be then need to specify what directory would like to open Jupyter in.  This
+will be a project workspace or other folder containing the notebook files (.ipynb) they would like to run or edit.
+The default directory contains example notebooks that are described below. Choose **Browse** to
+to navigate to a specific project folder or specify one of the last 10 directories used from the dropdown box.
+If you have Anaconda installed and have set up environments with specific packages installed,
+you can choose one from the combobox below to use for this Jupyter session.
+
+Click **Launch** to start Jupyter, which will appear momentarily in your default web browser.
 
 .. figure:: ../img/JupyterBrowse.png
 	:alt: Launch Jupyter Browse
 
-	Prompt for choosing where to start the Notebook server
+	Prompt for choosing where to start the Notebook server and optionally which Anaconda env to use.
 
 Example Notebooks
 -----------------
@@ -67,6 +71,6 @@ by scientific and common name and generate FGDC taxonomy sections using code.
 **BatchUpdateAuthorsDatesEtc.ipynb**  -- A use case for how the
 above techniques were used to update a large batch of existing metadata records.
 
-**---TBD---.ipynb**  -- A use case for how the above techniques were extended 
+**MD_Propogation_and_SB_DataUpload.ipynb**  -- A use case for how the above techniques were extended
 to generate metadata for multiple datasets and move the associated
 data and metadata up to an online repository (a data release on the USGS ScienceBase system).

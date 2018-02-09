@@ -201,14 +201,23 @@ class Citeinfo(WizardWidget): #
             if self.is_doi_str(mime_data.text()):
                 e.accept()
             else:
-                element = xml_utils.string_to_node(mime_data.text())
-                if element is not None and element.tag in self.acceptable_tags:
-                    e.accept()
+                try:
+                    element = xml_utils.string_to_node(mime_data.text())
+                    if element is not None and element.tag in self.acceptable_tags:
+                        e.accept()
+                except AttributeError:
+                    e.ignore()
         else:
             e.ignore()
 
     def is_doi_str(self, string):
-        return doi_utils.clean_doi(string).lower().strip().startswith('doi:')
+        cleaned_doi = doi_utils.clean_doi(string).lower().strip()
+        if cleaned_doi != string:
+            return True
+        elif cleaned_doi.startswith('doi:'):
+            return True
+        else:
+            return False
 
     def dropEvent(self, e):
         """
@@ -402,8 +411,10 @@ class Citeinfo(WizardWidget): #
 
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
+                self.onlink_list.clear_widgets(add_another=False)
                 for onlink in citeinfo.findall('onlink'):
-                    onlink_widget = self.onlink_list.widgets[0]
+                    self.onlink_list.add_another()
+                    onlink_widget = self.onlink_list.widgets[-1]
                     onlink_widget.added_line.setText(onlink.text)
 
             if citeinfo.xpath('serinfo'):

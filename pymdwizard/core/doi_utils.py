@@ -184,7 +184,11 @@ def get_doi_citation(doi):
     geoform = XMLNode(tag='geoform', parent_node=citeinfo,
                       text=cite_data['geoform'])
 
-    if cite_data['container-title'] is not None:
+    has_container = 'container-title' in cite_data and cite_data['container-title']
+    has_volume = 'volume' in cite_data and cite_data['volume']
+    has_issue = 'issue' in cite_data and cite_data['issue']
+
+    if has_container and (has_volume or has_issue):
         serinfo = XMLNode(tag='serinfo', parent_node=citeinfo)
         sername = XMLNode(tag='sername', parent_node=citeinfo.serinfo,
                           text=cite_data['container-title'])

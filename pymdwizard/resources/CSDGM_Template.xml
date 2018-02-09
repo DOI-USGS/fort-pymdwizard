@@ -69,16 +69,16 @@
   </idinfo>
   <dataqual>
     <attracc>
-      <attraccr>No formal attribute accuracy tests were conducted.</attraccr>
+      <attraccr></attraccr>
     </attracc>
-    <logic>No formal logical accuracy tests were conducted.</logic>
-    <complete>Data set is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details.</complete>
+    <logic></logic>
+    <complete></complete>
     <posacc>
       <horizpa>
-        <horizpar>A formal accuracy assessment of the horizontal positional information in the data set has not been conducted.</horizpar>
+        <horizpar></horizpar>
       </horizpa>
       <vertacc>
-        <vertaccr>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</vertaccr>
+        <vertaccr></vertaccr>
       </vertacc>
     </posacc>
     <lineage>
@@ -143,7 +143,7 @@
         <cntvoice/>
       </cntinfo>
     </metc>
-    <metstdn>FGDC Biological Data Profile of the CDGSM</metstdn>
+    <metstdn>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</metstdn>
     <metstdv>FGDC-STD-001.1-1999</metstdv>
   </metainfo>
 </metadata>

@@ -72,7 +72,7 @@
               <string>Perform search of ITIS</string>
              </property>
              <property name="text">
-              <string>Seach ITIS</string>
+              <string>Search ITIS</string>
              </property>
             </widget>
            </item>

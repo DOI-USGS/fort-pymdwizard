@@ -50,7 +50,9 @@ the copyright owner.
 
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QMessageBox
+import pandas as pd
+
+from PyQt5.QtWidgets import QMessageBox, QCompleter
 from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore
@@ -63,6 +65,8 @@ except ImportError:
     from PyQt5.QtWebChannel import QWebChannel
     from PyQt5.QtWebEngineWidgets import QWebEngineView
     from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QStringListModel
+from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -91,6 +95,17 @@ class Spdom(WizardWidget):
 
         self.after_load = False
         self.has_rect = True
+
+        completer = QCompleter()
+        self.ui.fgdc_descgeog.setCompleter(completer)
+
+        model = QStringListModel()
+        completer.setModel(model)
+        completer.setCaseSensitivity(0)
+
+        fname = utils.get_resource_path("spatial/BNDCoords.csv")
+        self.bnds_df = pd.read_csv(fname)
+        model.setStringList(self.bnds_df['Name'])
 
     def build_ui(self):
         """
@@ -145,6 +160,22 @@ class Spdom(WizardWidget):
         self.ui.fgdc_westbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_northbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_southbc.editingFinished.connect(self.coord_updated)
+        self.ui.fgdc_descgeog.editingFinished.connect(self.descgeog_updated)
+
+    def descgeog_updated(self):
+        cur_descgeog = self.ui.fgdc_descgeog.text()
+        try:
+            if self.bnds_df['Name'].str.contains(cur_descgeog).any():
+                self.ui.fgdc_eastbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['east'])))
+                self.ui.fgdc_westbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['west'])))
+                self.ui.fgdc_northbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['north'])))
+                self.ui.fgdc_southbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['south'])))
+                self.add_rect()
+                self.update_map()
+        except:
+            pass
+            # this is a convenience function.
+            # If anything at all happens pass silently
 
     def complete_name(self):
         self.view.page().runJavaScript('addRect();', js_callback)

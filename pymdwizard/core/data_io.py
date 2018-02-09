@@ -67,8 +67,8 @@ try:
     import geopandas as gpd
     import fiona
 except:
-    gpd is None
-    fiona is None
+    gpd = None
+    fiona = None
 
 
 MAX_ROWS = 1000000

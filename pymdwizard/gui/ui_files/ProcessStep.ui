@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
-    <height>321</height>
+    <width>545</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,6 +24,47 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QGroupBox{
+    background-color: transparent;
+     subcontrol-position: top left; /* position at the top left*/
+     padding-top: 20px;
+    font: bold 12px;
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 40);
+}
+QGroupBox::title {
+text-align: left;
+subcontrol-origin: padding;
+subcontrol-position: top left; /* position at the top center */padding: 3 3px;
+}
+QLabel{
+font: 9pt &quot;Arial&quot;;
+color: rgb(90, 90, 90);
+}
+QLineEdit, QComboBox {
+font: 9pt &quot;Arial&quot;;
+color: rgb(50, 50, 50);
+}
+
+QGroupBox:Hover {
+    border-color: rgba(90, 90, 90, 240);
+}
+
+QHBoxLayout#import_doi_layout{
+subcontrol-position: top left; /* position at the top left*/
+     padding-top: 200px;
+}
+
+.QFrame {
+    color: rgba(90, 90, 90, 225);
+    border: 1px solid gray;
+    border-radius: 2px;
+    border-color: rgba(90, 90, 90, 75);
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
@@ -47,7 +88,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>155</height>
          </size>
         </property>
         <property name="plainText">
@@ -125,36 +166,112 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Source Used Citation Abbreviation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="fgdc_srcused"/>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Source Produced Citation Abbreviation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="fgdc_srcprod"/>
-          </item>
-         </layout>
-        </item>
-       </layout>
+       <widget class="QWidget" name="src_widget" native="true">
+        <layout class="QHBoxLayout" name="src_layout">
+         <item>
+          <widget class="QFrame" name="srcused_groupbox">
+           <layout class="QVBoxLayout" name="srcused_layout">
+            <item>
+             <widget class="QLabel" name="lbl_dataset_title">
+              <property name="styleSheet">
+               <string notr="true">font: bold;</string>
+              </property>
+              <property name="text">
+               <string>Source Used Citation Abbreviation(s)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_34">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: italic;</string>
+              </property>
+              <property name="text">
+               <string>List any data sources used in this step.  These can be listed in sources section below.</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="srcprod_groupbox">
+           <layout class="QVBoxLayout" name="srcprod_layout">
+            <item>
+             <widget class="QLabel" name="lbl_dataset_title_2">
+              <property name="styleSheet">
+               <string notr="true">font: bold;</string>
+              </property>
+              <property name="text">
+               <string>Source Produced Citation Abbreviation (s)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_35">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: italic;</string>
+              </property>
+              <property name="text">
+               <string>List data produced from this step that was used in a subsequent step.  These must also be added to the source inputs below. </string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
        <widget class="QWidget" name="widget_proccont" native="true">
@@ -185,7 +302,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>0</height>
          </size>
         </property>
        </spacer>

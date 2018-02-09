@@ -16,6 +16,7 @@ before_install:
     - travis_retry conda install --yes pytest
     - travis_retry conda install --yes pytest-cov
     - travis_retry conda install --yes pytest-qt
+    - travis_retry conda install --yes pytest-mock
 
 install:
   - "pip install coveralls>=1.1"

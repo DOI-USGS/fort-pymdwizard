@@ -282,8 +282,13 @@ def node_to_string(node):
     str :
     Pretty string representation of node
     """
-    return lxml.tostring(node, pretty_print=True, with_tail=False,
-                         encoding='UTF-8', xml_declaration=True).decode()
+    if not type(node) == etree._ElementTree:
+        tree = etree.ElementTree(node)
+    else:
+        tree = node
+
+    return lxml.tostring(tree, pretty_print=True, with_tail=False,
+                         encoding='UTF-8', xml_declaration=True).decode("utf-8")
 
 
 def fname_to_node(fname):
@@ -319,7 +324,7 @@ def string_to_node(str_node):
     return element
 
 
-def xml_node(tag, text='', parent_node=None, index=-1):
+def xml_node(tag, text='', parent_node=None, index=-1, comment=False):
     """
     convenience function for creating an xml node
 
@@ -341,9 +346,13 @@ def xml_node(tag, text='', parent_node=None, index=-1):
         the lxml node created by the function.
     """
 
-    node = etree.Element(tag)
-    if str(text):
-        node.text = str(text)
+    if comment:
+        node = etree.Comment()
+    else:
+        node = etree.Element(tag)
+
+    if text:
+        node.text = u'{}'.format(text)
 
     if parent_node is not None:
         if index == -1:
@@ -386,7 +395,10 @@ class XMLRecord(object):
                 self.record = lxml.parse(self.fname)
                 self._root = self.record.getroot()
             else:
-                # they pased us a string containing the xml record
+                from pymdwizard.core import utils
+                if utils.url_validator(contents):
+                    print('is url')
+                    contents = utils.requests_pem_get(contents).text
                 self.fname = None
                 self._root = string_to_node(contents)
                 self.record = etree.ElementTree(self._root)
@@ -426,7 +438,7 @@ class XMLRecord(object):
 class XMLNode(object):
     """
     Class used to dynamically create an object containing the contents of an
-    XML node, along with functions for manipulating and itrospecting it.
+    XML node, along with functions for manipulating and introspecting it.
     """
     def __init__(self, element=None, tag='', text='', parent_node=None,
                  index=-1):
@@ -444,7 +456,7 @@ class XMLNode(object):
         parent_node : XMLNode, optional
                       if provided add this XMLNode to the parent node
         index : int, optional
-                if provided insert this XMLNdde into the parent node at this
+                if provided insert this XMLNode into the parent node at this
                 position
         """
         self.text = text

@@ -1,5 +1,5 @@
 ====================
-Software Installer (Windows Only)
+Installing on Windows
 ====================
 
 | Download a copy of the latest Windows installer (`metadatawizard_setup_2.x.x.exe) from

@@ -130,7 +130,6 @@ class SourceInput(WizardWidget):
                 lineage.append(srcinfo.to_xml())
         return lineage
 
-
     def from_xml(self, xml_srcinput):
         """
         parses the xml code into the relevant accconst elements

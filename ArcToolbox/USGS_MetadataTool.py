@@ -52,11 +52,21 @@ arcpy.AddWarning("root_dir :" + root_dir)
 pymdwiz_dir = os.path.join(root_dir, 'pymdwizard')
 arcpy.AddWarning("pymdwiz_dir :" + pymdwiz_dir)
 
-python_dir = os.path.join(root_dir, 'Python35_64')
+python_dir = os.path.join(root_dir, 'Python36_64')
 if not os.path.exists(python_dir):
-    python_dir = os.path.join(root_dir, 'Python36_64')
-
-arcpy.AddWarning("python_dir :" + python_dir)
+    python_dir = os.path.join(root_dir, 'Python35_64')
+    if not os.path.exists(python_dir):
+        # The Python installation that ships with the application is missing
+        msg = '\n\n' + '!'*79
+        msg += "\nCould not find the version of Python installed with the "
+        msg += "MetadataWizard.\n{}\n\nPlease verify that the application"
+        msg += " was installed correctly, and the toolbox has not been moved."
+        msg += '\n' + '!'*79 + "\n\n"
+        msg = msg.format(os.path.join(root_dir, 'Python36_64'))
+        arcpy.AddError(msg)
+        sys.exit(1)
+else:
+    arcpy.AddWarning("python_dir :" + python_dir)
 
 python_exe = os.path.join(python_dir, 'pythonw.exe')
 arcpy.AddWarning("python_exe :" + python_exe)
@@ -112,6 +122,9 @@ elif '.xls\\' in InputData or '.xlsx\\' in InputData or '.xlsm\\' in InputData:
 elif os.path.splitext(InputData)[-1] == ".csv":
     InputIsCSV = True
     desc = "CSV File"
+elif InputData.lower().endswith('.gdb'):
+    InputIsGDB = True
+    desc = 'file gdb'
 else:
     print(InputData)
     try:
@@ -125,7 +138,8 @@ else:
 
 
     #-----------
-    if desc.DatasetType != "Table":
+    arcpy.AddMessage(InputData)
+    if not InputData.lower().endswith('.gdb') and desc.DatasetType != "Table":
         try:
             SR_InDS = desc.SpatialReference
         except:
@@ -133,7 +147,7 @@ else:
             arcpy.AddMessage(arcpy.GetMessages())
             sys.exit(1)
     else:
-        arcpy.AddMessage("\nA table was passed as the input. No spatial reference will be defined for the data set.")
+        arcpy.AddMessage("\nA table or GDB was passed as the input. No spatial reference will be defined for the data set.")
     #-----------
     try:
         SR_GCS = arcpy.SpatialReference(GCS_PrjFile)
@@ -141,6 +155,7 @@ else:
         arcpy.AddMessage("Error trying to define spatial reference for geographic file.")
         arcpy.AddMessage(arcpy.GetMessages())
         sys.exit(1)
+
 
 def ProcessRoutine(ArgVariables):
     """Main Function that operates the logic of the script."""
@@ -188,7 +203,9 @@ def ProcessRoutine(ArgVariables):
         MDTools.CheckMasterNodes(FGDCXML)#Ensure all the key FGDC-CSDGM nodes are present in the record.
 
 
-        if not InputIsXML and not InputIsCSV and not InputIsExcel and desc.DatasetType != "Table": #Only attempt to extract/update spatial properties from spatial data sets.
+        if not InputIsXML and not InputIsCSV \
+                and not InputIsExcel and not InputIsGDB \
+                and desc.DatasetType != "Table": #Only attempt to extract/update spatial properties from spatial data sets.
 
             try:
                 GCS_ExtentList = Get_LatLon_BndBox()[1]
@@ -239,10 +256,10 @@ def ProcessRoutine(ArgVariables):
         #Update Entity/Attribute Section
         if InputIsCSV or InputIsExcel:
             contents_fname = InputData
-        elif not InputIsXML:
+        elif not InputIsXML and not InputIsGDB:
             data_contents = introspector.introspect_dataset(InputData)
             input_fname = os.path.split(InputData)[1]
-            contents_fname = os.path.join(WorkingDir, input_fname+".p")
+            contents_fname = os.path.join(WorkingDir, input_fname + ".p")
             pickle.dump(data_contents, open(contents_fname, "wb" ))
         else:
             contents_fname = ''
@@ -254,8 +271,9 @@ def ProcessRoutine(ArgVariables):
         if not InputIsXML:
             try:
                 arcpy.MetadataImporter_conversion(FGDCXML, InputData) # This imports only: does not convert and does not sync
-            except:
-                print "There was a problem during the metadata importation process."
+            except BaseException as e:
+                arcpy.AddWarning("There was a problem during the metadata"
+                                 " importation process.\n{}".format(str(e)))
 
 
         #Open up Metadata Editor and allow user to review/update
@@ -274,8 +292,19 @@ def ProcessRoutine(ArgVariables):
             winsound.PlaySound(r"C:\Windows\Media\Cityscape\Windows Exclamation.wav", winsound.SND_FILENAME)
         except:
             pass
-        #os.popen(Arg)
-        p = subprocess.Popen(Arg)
+
+        p = subprocess.Popen(Arg, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = p.communicate()
+
+        if output:
+            arcpy.AddMessage("MetadataWizard output:\n  {}".format(output))
+        if error:
+            arcpy.AddWarning(sys.executable)
+            arcpy.AddWarning("An error was encountered opening "
+                             "the MetadataWizard application:\n")
+            arcpy.AddWarning("Error> error  {}".format(error.strip()))
+            sys.exit(1)
+
         p.wait()
 
 
@@ -334,6 +363,9 @@ def Get_Data_Type():#Determine what type of data set is being evaluated
         myFeatType = "None"
     elif InputIsExcel:
         myDataType = "CSV File"
+        myFeatType = "None"
+    elif InputIsGDB:
+        myDataType = "File GDB"
         myFeatType = "None"
     else:
         if desc.DatasetType == "RasterDataset":
