@@ -9,4 +9,3 @@ PyQt5==5.9
 xlrd
 python-docx
 habanero
--e git+https://code.chs.usgs.gov/sciencebase/pysb.git#egg=pysb
