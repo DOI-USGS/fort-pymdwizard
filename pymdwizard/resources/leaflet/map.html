@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="leaflet/leaflet.css" integrity="" crossorigin=""/>
     <script src="leaflet/leaflet.js" integrity="" crossorigin=""></script>
-    <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
 </head>
@@ -19,6 +19,12 @@
 
 
 <script>
+
+var spdom;
+
+new QWebChannel(qt.webChannelTransport, function (channel) {
+    spdom = channel.objects.spdom;
+});
 
 
 var east = 180.0;
@@ -156,25 +162,25 @@ var east = 180.0;
         var bounds = new L.latLngBounds(southWest, northEast);
         map.fitBounds(bounds);
     }
-    if(typeof spdom != 'undefined') {
-        var onNEMove = function () {
-            Spdom.on_ne_move(ne_marker.getLatLng().lat, ne_marker.getLatLng().lng)
 
-        };
-        ne_marker.on('move', onNEMove);
-        var onNWMove = function () {
-            Spdom.on_nw_move(nw_marker.getLatLng().lat, nw_marker.getLatLng().lng)
-        };
-        nw_marker.on('move', onNWMove);
-        var onSEMove = function () {
-            Spdom.on_se_move(se_marker.getLatLng().lat, se_marker.getLatLng().lng)
-        };
-        se_marker.on('move', onSEMove);
-        var onSWMove = function () {
-            Spdom.on_sw_move(sw_marker.getLatLng().lat, sw_marker.getLatLng().lng)
-        };
-        sw_marker.on('move', onSWMove);
-    }
+    var onNEMove = function () {
+        spdom.on_ne_move(ne_marker.getLatLng().lat, ne_marker.getLatLng().lng)
+
+    };
+    ne_marker.on('move', onNEMove);
+    var onNWMove = function () {
+        spdom.on_nw_move(nw_marker.getLatLng().lat, nw_marker.getLatLng().lng)
+    };
+    nw_marker.on('move', onNWMove);
+    var onSEMove = function () {
+        spdom.on_se_move(se_marker.getLatLng().lat, se_marker.getLatLng().lng)
+    };
+    se_marker.on('move', onSEMove);
+    var onSWMove = function () {
+        spdom.on_sw_move(sw_marker.getLatLng().lat, sw_marker.getLatLng().lng)
+    };
+    sw_marker.on('move', onSWMove);
+
 
     <!--sw_marker.openPopup();-->
 

@@ -66,7 +66,6 @@ except ImportError:
     from PyQt5.QtWebEngineWidgets import QWebEngineView
     from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtCore import pyqtSlot, QStringListModel
-from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -124,8 +123,10 @@ class Spdom(WizardWidget):
             self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
             self.view.setUrl(QUrl.fromLocalFile(map_fname))
             self.frame = self.view.page().mainFrame()
+            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
         except AttributeError:
             self.view = QWebView()
+            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
             channel = QWebChannel(self.view.page())
 
             jstr="""
@@ -137,18 +138,11 @@ class Spdom(WizardWidget):
 
             self.view.page().setWebChannel(channel)
             self.evaluate_js(jstr)
-            channel.registerObject("Spdom", self)
+            channel.registerObject("spdom", self)
 
-        self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
+
 
         self.ui.verticalLayout_3.addWidget(self.view)
-
-
-        # this is where more complex build information would go such as
-        # instantiating child widgets, inserting them into the layout,
-        # tweaking the layout or individual widget properties, etc.
-        # If you are using this base class as intended this should not
-        # include extensive widget building from scratch.
 
         # setup drag-drop functionality for this widget and all it's children.
         self.setup_dragdrop(self)
