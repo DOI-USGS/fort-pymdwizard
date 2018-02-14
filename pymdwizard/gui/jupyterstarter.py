@@ -49,6 +49,7 @@ the copyright owner.
 """
 
 import os
+import platform
 import subprocess
 from subprocess import Popen
 
@@ -164,18 +165,22 @@ class JupyterStarter(QDialog):
             msg = 'The selected directory to lauch jupyter in does not exists.'
             msg += '\nPlease check the location before launching Jupyter.'
             QMessageBox.information(self, "Missing Directory", msg)
+            return
 
         if self.ui.kernel.currentText() == self.default_kernel:
             # this is pymdwizard specific
-            # TODO:refactor to make this widget more generalizable
-            root_dir = utils.get_install_dname('root')
-            python_dir = utils.get_install_dname('python')
-            jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
 
-            my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+            if platform.system() == 'Darwin':
+                jupyterexe = 'jupyter'
+                p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname)
+            else:
+                root_dir = utils.get_install_dname('root')
+                python_dir = utils.get_install_dname('python')
+                jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
+                my_env = os.environ.copy()
+                my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
-            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
+                p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
 
         else:
             root_dname, envs_dname = self.get_conda_root()
