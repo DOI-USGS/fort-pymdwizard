@@ -84,6 +84,8 @@ class ContactInfo(WizardWidget):
 
     def find_usgs_contact(self):
         self.usgs_contact = QDialog(parent=self)
+        utils.set_window_icon(self.usgs_contact)
+
         self.usgs_contact_ui = UI_USGSContactImporter.Ui_ImportUsgsUser()
         self.usgs_contact_ui.setupUi(self.usgs_contact)
         self.usgs_contact_ui.btn_OK.clicked.connect(self.add_contact)

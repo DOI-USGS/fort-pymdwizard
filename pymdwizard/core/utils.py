@@ -98,12 +98,6 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
     result = requests_pem_get(USGS_AD_URL.format(ad_username))
     element = xml_utils.string_to_node(result.content)
 
-    if not element.xpath('cntperp/cntper')[0].text.strip():
-        # nothing was returned.  Try for contractor.
-        result = requests_pem_get(USGS_AD_URL.format(ad_username +
-                                                     '@contractor.usgs.gov'))
-        element = xml_utils.string_to_node(result.content)
-
     try:
         if element.xpath('cntperp/cntper')[0].text == 'GS ScienceBase':
             element.xpath('cntperp')[0].tag = 'cntorgp'
@@ -281,10 +275,16 @@ def get_resource_path(fname):
     return pkg_resources.resource_filename('pymdwizard',
 
                                            'resources/{}'.format(fname))
-def set_window_icon(widget):
+
+def set_window_icon(widget, remove_help=True):
     icon = QIcon(get_resource_path('icons/Ducky.ico'))
     widget.setWindowIcon(icon)
-
+    if remove_help:
+        widget.setWindowFlags(Qt.Window |
+                              Qt.CustomizeWindowHint |
+                              Qt.WindowTitleHint |
+                              Qt.WindowCloseButtonHint |
+                              Qt.WindowStaysOnTopHint)
 
 class PandasModel(QAbstractTableModel):
     """

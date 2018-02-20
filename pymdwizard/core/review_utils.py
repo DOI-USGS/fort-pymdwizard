@@ -227,14 +227,13 @@ def generate_review_report(xml_document, docx_fname, which='bdp'):
     try:
         username = getpass.getuser()
         contact = utils.get_usgs_contact_info(username, True)
+        reviewer_str = "{} ({})".format(contact['fgdc_cntperp']['fgdc_cntper'],
+                                        contact['fgdc_cntemail'])
     except:
         # something when wrong getting the contact info
         # (no internet, non USGS, etc), just insert placeholcers
-        contact = {'fgdc_cntperp':{'fgdc_cntper':'<<insert reviewer name>>'},
-                   'fgdc_cntemail':'<<insert reviewer email>>'}
+        reviewer_str ="<<insert reviewer name>> (<<insert reviewer email>>)"
 
-    reviewer_str = "{} ({})".format(contact['fgdc_cntperp']['fgdc_cntper'],
-                                    contact['fgdc_cntemail'])
     _add_tag(document, "Reviewer", reviewer_str,
              tag_style='fgdc bold')
     _add_tag(document, "Review Date", time.strftime("%m/%d/%Y"),

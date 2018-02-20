@@ -304,7 +304,11 @@ class Attributes(WizardWidget):  #
                     self.main_layout.insertWidget(len(self.main_layout) - 1, attr_widget)
 
                 self.minimize_children()
-                self.attrs[0].supersize_me()
+                try:
+                    self.attrs[0].supersize_me()
+                except IndexError:
+                    pass
+
             else:
                 print ("The tag is not udom")
         except KeyError:

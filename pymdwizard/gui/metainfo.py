@@ -149,16 +149,14 @@ class MetaInfo(WizardWidget):
                 metac.tail = None
                 metainfo_node.append(deepcopy(metac))
 
-        metuc_str = "Record created using version {} of the USGS Metadata " \
-                    "Wizard tool. (https://github.com/usgs/" \
-                    "fort-pymdwizard)".format(__version__)
+
         if self.original_xml is not None:
             metuc = xml_utils.search_xpath(self.original_xml, 'metuc')
             if metuc is not None:
                 metuc_str = xml_utils.get_text_content(self.original_xml, 'metuc')
-        metuc = xml_utils.xml_node('metuc',
-                                   text=metuc_str,
-                                   parent_node=metainfo_node)
+                metuc = xml_utils.xml_node('metuc',
+                                           text=metuc_str,
+                                           parent_node=metainfo_node)
 
         if self.original_xml is not None:
             metextns = xml_utils.search_xpath(self.original_xml, 'metextns')

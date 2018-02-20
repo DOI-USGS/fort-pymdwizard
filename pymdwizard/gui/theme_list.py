@@ -117,8 +117,8 @@ class ThemeList(WizardWidget): #
         return theme_widget
 
     def changed_thesaurus(self, s):
-            current_index = self.ui.theme_tabs.currentIndex()
-            current_tab = self.ui.theme_tabs.setTabText(current_index, 'Thesaurus: ' + s)
+        current_index = self.ui.theme_tabs.currentIndex()
+        self.ui.theme_tabs.setTabText(current_index, 'Thesaurus: ' + s)
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
@@ -171,9 +171,13 @@ class ThemeList(WizardWidget): #
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
         theme_widget = None
-        for theme in self.thesauri:
+        for i, theme in enumerate(self.thesauri):
             if theme.ui.fgdc_themekt.text() == thesaurus:
                 theme_widget = theme
+                try:
+                    self.ui.theme_tabs.setCurrentIndex(i+1)
+                except IndexError:
+                    pass
 
         if theme_widget is None:
             shortname = thesaurus.split(' ')[0]

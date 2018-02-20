@@ -479,20 +479,40 @@ class Attr(WizardWidget):
             if attr.tag == 'attr':
 
                 utils.populate_widget(self, attr)
-                attr_dict = xml_utils.node_to_dict(attr)
+                attr_node = xml_utils.XMLNode(attr)
+                attrdomvs = attr_node.xpath('attrdomv', as_list=True)
+                attr_domains = [a.children[0].tag for a in attrdomvs]
 
-                if not 'fgdc_attrdomv' in attr_dict.keys():
+                if len(set(attr_domains)) > 1:
+                    # multiple domain types present in this attr
+                    msg = "Multiple domain types found in the attribute/column '{}'."
+                    msg += "\ni.e. more than one of Enumerated, Range, "
+                    msg += "Codeset, and Unrepresentable was used to "
+                    msg += "was used to describe a single column.\n\n"
+                    msg += "While this is valid in the FGDC schema the "
+                    msg += "MetadataWizard is not designed to handle this."
+                    msg += "\n\nOnly the first of these domains will be displayed "
+                    msg += "and retained in the output saved from this tool."
+                    msg += "\n\nIf having this structure is import please use"
+                    msg += " a different tool for editing this section."
+                    msg = msg.format(self.ui.fgdc_attrlabl.text())
+                    msgbox = QMessageBox(QMessageBox.Warning, "Too many domain types",
+                                         msg)
+                    utils.set_window_icon(msgbox)
+                    msgbox.exec_()
+
+                if len(attrdomvs) == 0:
                     self.ui.comboBox.setCurrentIndex(3)
-                elif 'fgdc_udom' in attr_dict['fgdc_attrdomv'].keys():
-                    self.ui.comboBox.setCurrentIndex(3)
-                    self._domain_content[3] = attr.xpath('attrdomv/udom')[0]
-                elif 'fgdc_rdom' in attr_dict['fgdc_attrdomv'].keys():
-                    self.ui.comboBox.setCurrentIndex(1)
-                    self._domain_content[1] = attr.xpath('attrdomv/rdom')[0]
-                elif 'fgdc_edom' in attr_dict['fgdc_attrdomv'].keys():
+                elif attr_domains[0] == 'edom':
                     self.ui.comboBox.setCurrentIndex(0)
                     self._domain_content[0] = attr
-                elif 'fgdc_codesetd' in attr_dict['fgdc_attrdomv'].keys():
+                elif attr_domains[0] == 'udom':
+                    self.ui.comboBox.setCurrentIndex(3)
+                    self._domain_content[3] = attr.xpath('attrdomv/udom')[0]
+                elif attr_domains[0] == 'rdom':
+                    self.ui.comboBox.setCurrentIndex(1)
+                    self._domain_content[1] = attr.xpath('attrdomv/rdom')[0]
+                elif attr_domains[0] == 'codesetd':
                     self.ui.comboBox.setCurrentIndex(2)
                     self._domain_content[2] = attr.xpath('attrdomv/codesetd')[0]
                 else:

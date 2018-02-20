@@ -9,6 +9,8 @@ be used to summarize a collection of metadata records relating to a project.
 Creating such a metadata record can be accomplished in Metadata Wizard by using the 
 **Include Sections** feature.  This feature is located on the Advanced menu.
 
+These are reset to include all sections whenever a new record is opened.
+
 |image0|
 
 The default is for all sections to be active, designated by a checkmark to the left of

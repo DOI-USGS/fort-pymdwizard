@@ -133,7 +133,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui = UI_MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        utils.set_window_icon(self)
+        utils.set_window_icon(self, remove_help=False)
 
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)
@@ -298,7 +298,6 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionEntity_and_Attribute.setChecked(True)
         self.ui.actionDistribution.setChecked(True)
 
-
         try:
             new_record = xml_utils.fname_to_node(fname)
             self.metadata_root.from_xml(new_record)
@@ -388,7 +387,15 @@ class PyMdWizardMainForm(QMainWindow):
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-        xml_utils.save_to_file(self.metadata_root.to_xml(), fname)
+
+        tool_comment = "Record created using version {} of the " \
+                       "USGS Metadata Wizard tool. (https://github.com/usgs/" \
+                       "fort-pymdwizard)".format(__version__)
+        xml_contents = self.metadata_root.to_xml()
+        comment = xml_utils.xml_node(tag='', text=tool_comment,
+                                     index=0, comment=True)
+        xml_contents.addprevious(comment)
+        xml_utils.save_to_file(xml_contents, fname)
         self.last_updated = time.time()
 
         self.set_current_file(fname)
