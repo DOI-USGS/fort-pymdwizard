@@ -8,8 +8,9 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
-    <link rel="stylesheet" href="leaflet/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
-    <script src="leaflet/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script>
+    <link rel="stylesheet" href="leaflet/leaflet.css" integrity="" crossorigin=""/>
+    <script src="leaflet/leaflet.js" integrity="" crossorigin=""></script>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
 </head>
@@ -18,13 +19,18 @@
 
 
 <script>
-    var east = 180.0;
+
+var spdom;
+
+new QWebChannel(qt.webChannelTransport, function (channel) {
+    spdom = channel.objects.spdom;
+});
+
+
+var east = 180.0;
     var west = -180.0;
     var north = 90.0;
     var south = -90.0;
-
-
-
 
     var OpenStreetMap_Mapnik = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -37,7 +43,6 @@
                 detectRetina: false
             }
     );
-
     var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         continuousWorld: true,
@@ -45,7 +50,6 @@
         minZoom: 0,
         maxZoom: 20,
     });
-
     var Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.{ext}', {
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
@@ -53,87 +57,63 @@
         maxZoom: 20,
         ext: 'png'
     });
-
     var map = L.map('map', {
         layers: [OpenStreetMap_Mapnik]
     });
-
-
-
     var baseMaps = {
         "OpenStreetMap": OpenStreetMap_Mapnik,
         "Imagery": Esri_WorldImagery,
     };
-
     var overlayMaps = {
         "Labels": Stamen_TonerLabels
     };
-
     L.control.layers(baseMaps, overlayMaps).addTo(map);
-
     map.setView([51.505, -0.09], 1);
-
     var ne_marker = new L.marker([north, east],{
         draggable: true
     });
     ne_marker.bindPopup("move to resize");
-
     var nw_marker = new L.marker([north, west],{
         draggable: true
     });
     nw_marker.bindPopup("move to resize");
-
     var se_marker = new L.marker([south, east],{
         draggable: true
     });
     se_marker.bindPopup("move to resize");
-
     var sw_marker = new L.marker([south, west],{
         draggable: true
     });
     sw_marker.bindPopup("move corner markers to resize");
-
-
     var southWest = new L.latLng(south, west);
     var northEast = new L.latLng(north, east);
     var bounds = new L.latLngBounds(southWest, northEast);
     var rect = new L.rectangle(bounds, {color: 'blue', weight: 1});
     var rect2 = new L.rectangle(bounds, {color: 'blue', weight: 1});
-
-
-
     ne_marker.on("dragend",function(ev){
         var changedPos = ev.target.getLatLng();
         east = changedPos.lng;
         north = changedPos.lat;
-
         updateMap();
     });
-
     se_marker.on("dragend",function(ev){
         var changedPos = ev.target.getLatLng();
         east = changedPos.lng;
         south = changedPos.lat;
-
         updateMap();
     });
-
     nw_marker.on("dragend",function(ev){
         var changedPos = ev.target.getLatLng();
         west = changedPos.lng;
         north = changedPos.lat;
-
         updateMap();
     });
-
     sw_marker.on("dragend",function(ev){
         var changedPos = ev.target.getLatLng();
         west = changedPos.lng;
         south = changedPos.lat;
-
         updateMap();
     });
-
     function removeRect(){
         map.removeLayer(se_marker);
         map.removeLayer(ne_marker);
@@ -148,29 +128,23 @@
         map.addLayer(sw_marker);
         map.addLayer(nw_marker);
         map.addLayer(rect);
-
         if (west > east) {
             map.addLayer(rect2)
         }
-
     }
     function updateMap() {
         var southWest = new L.latLng(south, west);
         var northEast = new L.latLng(north, east);
         var southEast = new L.latLng(south, east);
         var northWest = new L.latLng(north, west);
-
         se_marker.setLatLng(southEast);
         ne_marker.setLatLng(northEast);
         sw_marker.setLatLng(southWest);
         nw_marker.setLatLng(northWest);
-
         var bounds = new L.latLngBounds(southWest, northEast);
-
         if (west > east) {
             var southNeg180 = new L.latLng(south, -180);
             var north180 = new L.latLng(north, 180);
-
             var bounds1 = new L.latLngBounds(southWest, north180);
             var bounds2 = new L.latLngBounds(southNeg180, northEast);
             map.addLayer(rect2);
@@ -182,7 +156,6 @@
             rect.setBounds(bounds);
         }
     }
-
     function fitMap(){
         var southWest = new L.latLng(south, west);
         var northEast = new L.latLng(north,east);
@@ -190,29 +163,27 @@
         map.fitBounds(bounds);
     }
 
-    if(typeof Spdom != 'undefined') {
-        var onNEMove = function () {
-            Spdom.on_ne_move(ne_marker.getLatLng().lat, ne_marker.getLatLng().lng)
-        };
-        ne_marker.on('move', onNEMove);
+    var onNEMove = function () {
+        spdom.on_ne_move(ne_marker.getLatLng().lat, ne_marker.getLatLng().lng)
 
-        var onNWMove = function () {
-            Spdom.on_nw_move(nw_marker.getLatLng().lat, nw_marker.getLatLng().lng)
-        };
-        nw_marker.on('move', onNWMove);
+    };
+    ne_marker.on('move', onNEMove);
+    var onNWMove = function () {
+        spdom.on_nw_move(nw_marker.getLatLng().lat, nw_marker.getLatLng().lng)
+    };
+    nw_marker.on('move', onNWMove);
+    var onSEMove = function () {
+        spdom.on_se_move(se_marker.getLatLng().lat, se_marker.getLatLng().lng)
+    };
+    se_marker.on('move', onSEMove);
+    var onSWMove = function () {
+        spdom.on_sw_move(sw_marker.getLatLng().lat, sw_marker.getLatLng().lng)
+    };
+    sw_marker.on('move', onSWMove);
 
-        var onSEMove = function () {
-            Spdom.on_se_move(se_marker.getLatLng().lat, se_marker.getLatLng().lng)
-        };
-        se_marker.on('move', onSEMove);
 
-        var onSWMove = function () {
-            Spdom.on_sw_move(sw_marker.getLatLng().lat, sw_marker.getLatLng().lng)
-        };
-        sw_marker.on('move', onSWMove);
-    }
+    <!--sw_marker.openPopup();-->
 
-    sw_marker.openPopup();
 </script>
 
 

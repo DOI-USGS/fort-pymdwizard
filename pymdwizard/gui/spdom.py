@@ -47,7 +47,7 @@ reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
 ------------------------------------------------------------------------------
 """
-
+import platform
 from copy import deepcopy
 
 import pandas as pd
@@ -117,7 +117,12 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-        map_fname = utils.get_resource_path('leaflet/map.html')
+
+        if platform.system() == 'Darwin':
+            map_fname = utils.get_resource_path('leaflet/map_mac.html')
+        else:
+            map_fname = utils.get_resource_path('leaflet/map.html')
+
         try:
             self.view = QWebView()
             self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
