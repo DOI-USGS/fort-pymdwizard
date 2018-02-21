@@ -87,6 +87,7 @@ def set_clean_path():
     else:
         pass
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Metadata Wizard")
     parser.add_argument("xml_fname", help="The FGDC (or BDP) XML file to load",
