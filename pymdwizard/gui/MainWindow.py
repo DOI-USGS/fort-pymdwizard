@@ -923,6 +923,7 @@ class PyMdWizardMainForm(QMainWindow):
         root_dname = utils.get_install_dname('pymdwizard')
 
         help_html = os.path.join(root_dname, 'docs', 'html_output', 'index.html')
+
         if not os.path.exists(help_html):
             gui_fname = os.path.dirname(os.path.realpath(__file__))
             help_html = os.path.join(gui_fname, '..', '..',
@@ -988,14 +989,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-
-        root_dir = utils.get_install_dname('root')
-        python_dir = utils.get_install_dname('python')
-        jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
-
-        if not os.path.exists(jupyterexe):
-            jupyterexe = 'jupyter'
-
         settings = QSettings('USGS', 'pymdwizard')
         last_kernel = settings.value('last_kernel', '')
         jupyter_dnames = settings.value('jupyter_dnames', [])
@@ -1006,7 +999,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.jupyter_dialog = JupyterStarter(last_kernel=last_kernel,
                                              previous_dnames=jupyter_dnames,
-                                    update_function=self.update_jupyter_dnames)
+                                             update_function=self.update_jupyter_dnames)
         utils.set_window_icon(self.jupyter_dialog)
         self.jupyter_dialog.show()
 
@@ -1068,9 +1061,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         if platform.system() == 'Darwin':
             install_dir = utils.get_install_dname()
-            cmd = ['pip', 'install', '-U', 'git+https://github.com/usgs/fort-pymdwizard.git@macbuild']
+            cmd = ['pip', 'install', '-U', 'git+https://github.com/usgs/fort-pymdwizard.git]
             p = check_output(cmd)
-            QMessageBox.warning(self, str(p), str(p))
+            msg =  "Updated from GitHub"
 
         else:
             install_dir = utils.get_install_dname()
