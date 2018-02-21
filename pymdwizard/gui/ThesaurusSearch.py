@@ -320,7 +320,8 @@ class ThesaurusSearch(QDialog):
                     accepted_terms = [keyword]
 
                 for keyword in accepted_terms:
-                    self.add_term_function(keyword=keyword, thesaurus=thesaurus)
+                    if keyword:
+                        self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
     def text_clicked(self, link):
         """
