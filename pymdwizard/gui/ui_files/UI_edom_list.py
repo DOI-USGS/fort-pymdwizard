@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_edom_contents(object):
     def setupUi(self, edom_contents):
         edom_contents.setObjectName("edom_contents")
-        edom_contents.resize(620, 740)
+        edom_contents.resize(539, 740)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -68,6 +68,6 @@ class Ui_edom_contents(object):
         _translate = QtCore.QCoreApplication.translate
         edom_contents.setWindowTitle(_translate("edom_contents", "Form"))
         self.label.setText(_translate("edom_contents", "For each unique value contained in this column, provide a definition below."))
-        self.btn_addone.setText(_translate("edom_contents", "Add"))
-        self.btn_delete.setText(_translate("edom_contents", "Delete"))
+        self.btn_addone.setText(_translate("edom_contents", "Add Value"))
+        self.btn_delete.setText(_translate("edom_contents", "Delete Selected"))
 

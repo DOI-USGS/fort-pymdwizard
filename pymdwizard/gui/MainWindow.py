@@ -50,6 +50,7 @@ the copyright owner.
 
 import sys
 import os
+import platform
 import tempfile
 import time
 import datetime
@@ -919,14 +920,16 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.exec_()
 
     def launch_help(self):
-        this_fname = os.path.realpath(__file__)
-        gui_dname = os.path.dirname(this_fname)
-        pmdwiz_dname = os.path.dirname(gui_dname)
-        root_dname = os.path.dirname(pmdwiz_dname)
+        root_dname = utils.get_install_dname('pymdwizard')
+
         help_html = os.path.join(root_dname, 'docs', 'html_output', 'index.html')
 
+        if not os.path.exists(help_html):
+            gui_fname = os.path.dirname(os.path.realpath(__file__))
+            help_html = os.path.join(gui_fname, '..', '..',
+                                     'docs', 'html_output', 'index.html')
+
         self.preview = Preview(url=help_html)
-        os.path.dirname(this_fname)
 
         self.preview_dialog = QDialog(self)
         self.preview_dialog.setWindowTitle('MetadataWizard Help')
@@ -959,8 +962,17 @@ class PyMdWizardMainForm(QMainWindow):
                 review_utils.generate_review_report(cur_content, out_fname,
                                                     which=which)
 
-                import subprocess
-                os.startfile('"{}"'.format(out_fname))
+                import os, sys, subprocess
+
+                def open_file(filename):
+                    if sys.platform == "win32":
+                        os.startfile('"{}"'.format(filename))
+                    else:
+                        opener = "open" if sys.platform == "darwin" else "xdg-open"
+                        subprocess.call([opener, filename])
+
+                open_file(out_fname)
+
                 msg = 'Review document available at: {}'.format(out_fname)
                 msg += '\n\nReview document now opening in default application...'
                 QMessageBox.information(self, "Review finished", msg)
@@ -977,8 +989,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-
-
         settings = QSettings('USGS', 'pymdwizard')
         last_kernel = settings.value('last_kernel', '')
         jupyter_dnames = settings.value('jupyter_dnames', [])
@@ -989,7 +999,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.jupyter_dialog = JupyterStarter(last_kernel=last_kernel,
                                              previous_dnames=jupyter_dnames,
-                                    update_function=self.update_jupyter_dnames)
+                                             update_function=self.update_jupyter_dnames)
         utils.set_window_icon(self.jupyter_dialog)
         self.jupyter_dialog.show()
 
@@ -1001,6 +1011,8 @@ class PyMdWizardMainForm(QMainWindow):
             jupyter_dnames.remove(dname)
         except ValueError:
             pass
+            my_env = os.environ.copy()
+            # my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
         jupyter_dnames.insert(0, dname)
         del jupyter_dnames[PyMdWizardMainForm.max_recent_files:]
@@ -1047,27 +1059,35 @@ class PyMdWizardMainForm(QMainWindow):
     def update_from_github(self):
         from subprocess import check_output
 
-        install_dir = utils.get_install_dname()
-        root_dir = os.path.dirname(install_dir)
-        update_bat = os.path.join(root_dir, 'update_wizard.bat')
-        if os.path.exists(update_bat) and os.path.exists(root_dir):
-            try:
-                QApplication.setOverrideCursor(Qt.WaitCursor)
-                p = check_output([update_bat], cwd=root_dir, shell=False)
-                if p.splitlines()[-1] == b'Already up-to-date.':
-                    msg = 'Application already up to date.'
-                else:
-                    msg = 'Application updated.\n\n'
-                    msg += 'Please close and restart the Wizard for these updates to take effect'
-                QApplication.restoreOverrideCursor()
-            except BaseException as e:
-                import traceback
-                msg = "Could not update application:\n{}".format(traceback.format_exc())
-                QApplication.restoreOverrideCursor()
-                QMessageBox.warning(self, "Recent Files", msg)
+        if platform.system() == 'Darwin':
+            install_dir = utils.get_install_dname()
+            cmd = ['pip', 'install', '-U', 'git+https://github.com/usgs/fort-pymdwizard.git']
+            p = check_output(cmd)
+            msg =  "Updated from GitHub"
 
         else:
-            msg = 'Could not find the batch file to update the application'
+            install_dir = utils.get_install_dname()
+            root_dir = os.path.dirname(install_dir)
+            update_bat = os.path.join(root_dir, 'update_wizard.bat')
+            if os.path.exists(update_bat) and os.path.exists(root_dir):
+                try:
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    p = check_output([update_bat], cwd=root_dir, shell=False)
+                    if p.splitlines()[-1] == b'Already up-to-date.':
+                        msg = 'Application already up to date.'
+                    else:
+                        msg = 'Application updated.\n\n'
+                        msg += 'Please close and restart the Wizard for these updates to take effect'
+                    QApplication.restoreOverrideCursor()
+                except BaseException as e:
+                    import traceback
+                    msg = "Could not update application:\n{}".format(traceback.format_exc())
+                    QApplication.restoreOverrideCursor()
+                    QMessageBox.warning(self, "Recent Files", msg)
+
+            else:
+                msg = 'Could not find the batch file to update the application'
+
         QApplication.restoreOverrideCursor()
         QMessageBox.information(self, "Update results", msg)
 

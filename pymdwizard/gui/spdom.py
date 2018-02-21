@@ -21,14 +21,14 @@ SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
     This script is part of the pymdwizard package and is not intented to be
     used independently.  All pymdwizard package requirements are needed.
-    
+
     See imports section for external packages used in this script as well as
     inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
+This software has been approved for release by the U.S. Geological Survey
 (USGS). Although the software has been subjected to rigorous review,
 the USGS reserves the right to update the software as needed pursuant to
 further analysis and review. No warranty, expressed or implied, is made by
@@ -47,15 +47,25 @@ reproduce copyrighted items for other than personal use must be secured from
 the copyright owner.
 ------------------------------------------------------------------------------
 """
-
+import platform
 from copy import deepcopy
 
 import pandas as pd
 
 from PyQt5.QtWidgets import QMessageBox, QCompleter
 from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSlot
+from PyQt5 import QtCore
+
+try:
+    from PyQt5.QtWebKitWidgets import QWebView
+except ImportError:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
+    from PyQt5.QtWebEngineWidgets import QWebEnginePage
+    from PyQt5.QtWebChannel import QWebChannel
+    from PyQt5.QtWebEngineWidgets import QWebEngineView
+    from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtCore import pyqtSlot, QStringListModel
-from PyQt5.QtWebKitWidgets import QWebView
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
@@ -107,21 +117,37 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-        self.view = QWebView()
-        self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
-        map_fname = utils.get_resource_path('leaflet/map.html')
+
+        if platform.system() == 'Darwin':
+            map_fname = utils.get_resource_path('leaflet/map_mac.html')
+        else:
+            map_fname = utils.get_resource_path('leaflet/map.html')
+
+        try:
+            self.view = QWebView()
+            self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
+            self.view.setUrl(QUrl.fromLocalFile(map_fname))
+            self.frame = self.view.page().mainFrame()
+            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
+        except AttributeError:
+            self.view = QWebView()
+            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
+            channel = QWebChannel(self.view.page())
+
+            jstr="""
+            var spdom;
+
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                spdom = channel.objects.spdom;
+            });"""
+
+            self.view.page().setWebChannel(channel)
+            self.evaluate_js(jstr)
+            channel.registerObject("spdom", self)
 
 
-        self.view.setUrl(QUrl.fromLocalFile(map_fname))
 
-        self.frame = self.view.page().mainFrame()
         self.ui.verticalLayout_3.addWidget(self.view)
-
-        # this is where more complex build information would go such as
-        # instantiating child widgets, inserting them into the layout,
-        # tweaking the layout or individual widget properties, etc.
-        # If you are using this base class as intended this should not
-        # include extensive widget building from scratch.
 
         # setup drag-drop functionality for this widget and all it's children.
         self.setup_dragdrop(self)
@@ -150,6 +176,9 @@ class Spdom(WizardWidget):
             # this is a convenience function.
             # If anything at all happens pass silently
 
+    def complete_name(self):
+        self.view.page().runJavaScript('addRect();', js_callback)
+
     def coord_updated(self):
 
         good_coords = self.all_good_coords()
@@ -174,7 +203,7 @@ class Spdom(WizardWidget):
         elif cur_value == '':
             msg = ''
         elif cur_name in ['fgdc_westbc', 'fgdc_eastbc'] \
-            and -180 >= cur_value >= 180:
+                and -180 >= cur_value >= 180:
             msg = 'East or West coordinate must be within -180 and 180'
         elif cur_name in ['fgdc_southbc', 'fgdc_northbc'] \
                 and -90 >= cur_value >= 90:
@@ -195,7 +224,7 @@ class Spdom(WizardWidget):
                 pass
 
         if msg:
-                QMessageBox.warning(self, "Problem bounding coordinates", msg)
+            QMessageBox.warning(self, "Problem bounding coordinates", msg)
 
         if good_coords:
             self.add_rect()
@@ -217,17 +246,28 @@ class Spdom(WizardWidget):
                       'northbc': self.ui.fgdc_northbc.text(),
                       'southbc': self.ui.fgdc_southbc.text(),
                       })
-        self.frame.evaluateJavaScript(jstr)
+        self.evaluate_js(jstr)
 
     def add_rect(self):
         jstr = """addRect();"""
-        self.frame.evaluateJavaScript(jstr)
+        self.evaluate_js(jstr)
 
     def remove_rect(self):
         if self.has_rect:
             self.has_rect = False
             jstr = """removeRect()"""
+            self.evaluate_js(jstr)
+
+    def evaluate_js(self, jstr):
+        """
+
+        :param jstr:
+        :return:
+        """
+        try:
             self.frame.evaluateJavaScript(jstr)
+        except:
+            self.view.page().runJavaScript(jstr, js_callback)
 
     @pyqtSlot(float, float)
     def on_ne_move(self, lat, lng):
@@ -285,11 +325,11 @@ class Spdom(WizardWidget):
 
     def showEvent(self, e):
         if not self.after_load:
-           self.add_rect()
-           self.update_map()
-           jstr = "sw_marker.openPopup();"
-           self.frame.evaluateJavaScript(jstr)
-           self.after_load = True
+            self.add_rect()
+            self.update_map()
+            jstr = "sw_marker.openPopup();"
+            self.evaluate_js(jstr)
+            self.after_load = True
 
     def to_xml(self):
         spdom = xml_node('spdom')
@@ -334,6 +374,10 @@ class Spdom(WizardWidget):
             self.remove_rect()
 
 
+def js_callback(result):
+    print(result)
+
+
 if __name__ == "__main__":
-    utils.launch_widget(Spdom)
+    w = utils.launch_widget(Spdom)
 

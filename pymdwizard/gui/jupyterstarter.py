@@ -49,6 +49,7 @@ the copyright owner.
 """
 
 import os
+import platform
 import subprocess
 from subprocess import Popen
 
@@ -108,18 +109,21 @@ class JupyterStarter(QDialog):
         self.kernels['pymdwizard <<default>>'] = \
                              utils.get_install_dname('python')
 
-        kernels = subprocess.check_output(['conda', 'env', 'list'])
-        for line in kernels.split(b'\n'):
-            if line and not line.strip().startswith(b'#'):
-                try:
-                    parts = line.split()
-                    if parts[1] == b'*':
-                        parts = [parts[0], parts[2]]
-                    name, path = parts
-                    self.ui.kernel.addItem(str(name)[2:-1])
-                    self.kernels[str(name)[2:-1]] = str(path)
-                except (ValueError, IndexError):
-                    pass
+        try:
+            kernels = subprocess.check_output(['conda', 'env', 'list'])
+            for line in kernels.split(b'\n'):
+                if line and not line.strip().startswith(b'#'):
+                    try:
+                        parts = line.split()
+                        if parts[1] == b'*':
+                            parts = [parts[0], parts[2]]
+                        name, path = parts
+                        self.ui.kernel.addItem(str(name)[2:-1])
+                        self.kernels[str(name)[2:-1]] = str(path)
+                    except (ValueError, IndexError):
+                        pass
+        except:
+            pass
 
     def connect_events(self):
         """
@@ -145,18 +149,25 @@ class JupyterStarter(QDialog):
             self.ui.dname.setCurrentText(jupyter_dname)
 
     def get_conda_root(self):
-        conda_info = subprocess.check_output(['conda', 'info']).decode("utf-8")
-        info = {}
-        for line in conda_info.split('\n')[1:]:
-            try:
-                key, value = line.strip().split(' : ')
-                info[key] = value
-            except ValueError:
-                pass
+        try:
+            conda_info = subprocess.check_output(['conda', 'info']).decode("utf-8")
+            info = {}
+            for line in conda_info.split('\n')[1:]:
+                try:
+                    key, value = line.strip().split(' : ')
+                    info[key] = value
+                except ValueError:
+                    pass
 
-        envs_dname = info['envs directories']
-        root_dname = info["root environment"].replace('(writable)', '').strip()
-        return str(root_dname), str(envs_dname)
+            envs_dname = info['envs directories']
+            try:
+                root_dname = info["root environment"].replace('(writable)', '').strip()
+            except KeyError:
+                root_dname = info["base environment"].replace('(writable)', '').strip()
+
+            return str(root_dname), str(envs_dname)
+        except:
+            return "", ""
 
     def launch(self):
         jupyter_dname = self.ui.dname.currentText()
@@ -164,18 +175,23 @@ class JupyterStarter(QDialog):
             msg = 'The selected directory to lauch jupyter in does not exists.'
             msg += '\nPlease check the location before launching Jupyter.'
             QMessageBox.information(self, "Missing Directory", msg)
+            return
 
         if self.ui.kernel.currentText() == self.default_kernel:
             # this is pymdwizard specific
-            # TODO:refactor to make this widget more generalizable
-            root_dir = utils.get_install_dname('root')
+
             python_dir = utils.get_install_dname('python')
-            jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
+            if platform.system() == 'Darwin':
+                jupyterexe = os.path.join(python_dir, 'jupyter')
+                p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname)
+            else:
+                root_dir = utils.get_install_dname('root')
 
-            my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+                jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
+                my_env = os.environ.copy()
+                my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
-            p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
+                p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
 
         else:
             root_dname, envs_dname = self.get_conda_root()

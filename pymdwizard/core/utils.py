@@ -50,6 +50,7 @@ the copyright owner.
 import sys
 import os
 from os.path import dirname
+import platform
 import datetime
 import traceback
 import pkg_resources
@@ -254,6 +255,7 @@ def launch_widget(Widget, title="", **kwargs):
         widget.setWindowTitle(title)
         widget.show()
         sys.exit(app.exec_())
+        return widget
     except:
         e = sys.exc_info()[0]
         print('problem encountered', e)
@@ -437,14 +439,21 @@ def get_install_dname(which='pymdwizard'):
     str : path and directory name of the directory pymdwizard is in
     """
     this_fname = os.path.realpath(__file__)
-    pymdwizard_dname = dirname(dirname(dirname(this_fname)))
-    root_dir = os.path.dirname(pymdwizard_dname)
-    python_dname = os.path.join(root_dir, 'Python35_64')
-    if not os.path.exists(python_dname):
-        python_dname = os.path.join(root_dir, 'Python36_64')
-    if not os.path.exists(python_dname):
+    if platform.system() == 'Darwin':
+        # This is the path to the 'content' folder in the MetadataWizard.app
+        pymdwizard_dname = os.path.abspath(os.path.join(dirname(this_fname), *['..']*7))
+        root_dir = pymdwizard_dname
         executable = sys.executable
         python_dname = os.path.split(executable)[0]
+    else:
+        pymdwizard_dname = dirname(dirname(dirname(this_fname)))
+        root_dir = os.path.dirname(pymdwizard_dname)
+        python_dname = os.path.join(root_dir, 'Python35_64')
+        if not os.path.exists(python_dname):
+            python_dname = os.path.join(root_dir, 'Python36_64')
+        if not os.path.exists(python_dname):
+            executable = sys.executable
+            python_dname = os.path.split(executable)[0]
 
     if which == 'root':
         return root_dir

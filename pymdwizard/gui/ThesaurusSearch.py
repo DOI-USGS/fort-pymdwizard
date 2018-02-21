@@ -303,6 +303,18 @@ class ThesaurusSearch(QDialog):
                 return thesaurus
 
     def add_term(self, index):
+        """
+        Adds the acce[ted keyword associated with the
+        selected item in this widget to the parent theme keywords list.
+
+        Parameters
+        ----------
+        index : int
+
+        Returns
+        -------
+        None
+        """
         model = self.ui.treeview_results.model()
         for i in self.ui.treeview_results.selectedIndexes():
             clicked_item = model.itemFromIndex(i)
@@ -320,7 +332,8 @@ class ThesaurusSearch(QDialog):
                     accepted_terms = [keyword]
 
                 for keyword in accepted_terms:
-                    self.add_term_function(keyword=keyword, thesaurus=thesaurus)
+                    if keyword:
+                        self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
     def text_clicked(self, link):
         """
