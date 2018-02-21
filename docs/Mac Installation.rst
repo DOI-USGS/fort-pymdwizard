@@ -2,9 +2,18 @@
 Installing on Mac
 ====================
 
-Coming soon...
+| Download a copy of the latest Mac installer (`metadatawizard_setup_2.x.x.exe) from
+`the releases page
+<https://github.com/usgs/fort-pymdwizard/releases>`_.
 
-The MetadataWizard is not currently set up to be run directly on a Mac.
-We're working on updating the code to support Macs and building a Mac installer.
+|
+Once the download is complete, double click on the .exe file in the web browser to begin the installation.
 
-In the meantime you would need to install the Windows version on a Windows emulator on your Mac.
+.. image:: img/Download.png
+:width: 600pt
+   :align: left
+
+    Installation **does not** require elevated (administrative) privileges. Most users will want to select the defaults as they step through the installation process. When the installation finishes, the application can be launched from the duck icon (|duck|) on the user’s desktop or start menu.
+
+.. |duck| image:: img/duck.png
+:width: 18pt
