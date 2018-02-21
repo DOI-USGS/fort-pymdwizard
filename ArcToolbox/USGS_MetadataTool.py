@@ -93,8 +93,8 @@ if not os.path.exists(mdwiz_py_fname):
 
 ###Spatial Reference (reference objects set at global level)-----------------------------------------------
 GeogCoordUnits = ["Decimal degrees", "Decimal minutes", "Decimal seconds",
-    "Degrees and decimal minutes", "Degrees, minutes, and decimal seconds",
-    "Radians", "Grads"]
+                  "Degrees and decimal minutes", "Degrees, minutes, and decimal seconds",
+                  "Radians", "Grads"]
 
 ###WGS 84 GCS File used to get lat/long bounding coordinates. Shipped with ToolBox.
 GCS_PrjFile = WGS84file
@@ -113,6 +113,7 @@ mdwiz_data = {}
 InputIsXML = False
 InputIsCSV = False
 InputIsExcel = False
+InputIsGDB = False
 if os.path.splitext(InputData)[-1] == ".xml":
     InputIsXML = True
     desc = "XML File"
@@ -122,7 +123,7 @@ elif '.xls\\' in InputData or '.xlsx\\' in InputData or '.xlsm\\' in InputData:
 elif os.path.splitext(InputData)[-1] == ".csv":
     InputIsCSV = True
     desc = "CSV File"
-elif InputData.lower().endswith('.gdb'):
+elif os.path.splitext(InputData.lower())[-1] == '.gdb':
     InputIsGDB = True
     desc = 'file gdb'
 else:
@@ -337,7 +338,7 @@ def ProcessRoutine(ArgVariables):
                 arcpy.AddMessage("The Wizard will now remove the stand-alone FGDC XML, as requested in the tool interface...\n")
             except:
                 arcpy.AddMessage("There was a problem removing the stand-alone XML file. Try removing the file (%s) manually from the working directory.\n" % FGDCXML)
-                
+
         #Remove the 'ArcpyTranslate.xml' temp file that gets created when exporting from ESRI metadata to FGDC.
         try:
             os.remove(os.path.join(WorkingDir, 'ArcpyTranslate.xml'))
@@ -443,10 +444,10 @@ def Get_LatLon_BndBox(): # Determine lat/long bounding coordinates for input dat
     extent = desc.Extent
 
     Local_ExtentList = [float(extent.XMin), float(extent.YMin), \
-        float(extent.XMax), float(extent.YMax)]
+                        float(extent.XMax), float(extent.YMax)]
 
     if float(extent.XMin) >= -180 and float(extent.XMax) <= 180 and \
-        float(extent.YMin) >= -90 and float(extent.YMax) <= 90:
+                    float(extent.YMin) >= -90 and float(extent.YMax) <= 90:
         GCS_ExtentList = Local_ExtentList
         # Local extent is GCS so do not need to project coords in order to obtain GCS values
         return Local_ExtentList, GCS_ExtentList
@@ -473,22 +474,22 @@ def Get_LatLon_BndBox(): # Determine lat/long bounding coordinates for input dat
         #
         # 1  16  15  14   13
         PtList = [[float(extent.XMin), float(extent.YMin)],
-                [float(extent.XMin), y_mid2],
-                [float(extent.XMin), y_mid3],
-                [float(extent.XMin), y_mid4],
-                [float(extent.XMin), float(extent.YMax)],
-                [x_mid6, float(extent.YMax)],
-                [x_mid7, float(extent.YMax)],
-                [x_mid8, float(extent.YMax)],
-                [float(extent.XMax), float(extent.YMax)],
-                [float(extent.XMax), y_mid4],
-                [float(extent.XMax), y_mid3],
-                [float(extent.XMax), y_mid3],
-                [float(extent.XMax), float(extent.YMin)],
-                [x_mid8, float(extent.YMin)],
-                [x_mid7, float(extent.YMin)],
-                [x_mid6, float(extent.YMin)],
-                [float(extent.XMin), float(extent.YMin)]]
+                  [float(extent.XMin), y_mid2],
+                  [float(extent.XMin), y_mid3],
+                  [float(extent.XMin), y_mid4],
+                  [float(extent.XMin), float(extent.YMax)],
+                  [x_mid6, float(extent.YMax)],
+                  [x_mid7, float(extent.YMax)],
+                  [x_mid8, float(extent.YMax)],
+                  [float(extent.XMax), float(extent.YMax)],
+                  [float(extent.XMax), y_mid4],
+                  [float(extent.XMax), y_mid3],
+                  [float(extent.XMax), y_mid3],
+                  [float(extent.XMax), float(extent.YMin)],
+                  [x_mid8, float(extent.YMin)],
+                  [x_mid7, float(extent.YMin)],
+                  [x_mid6, float(extent.YMin)],
+                  [float(extent.XMin), float(extent.YMin)]]
 
         # Create an empty Point object
         point = arcpy.Point()
@@ -518,7 +519,7 @@ def Get_LatLon_BndBox(): # Determine lat/long bounding coordinates for input dat
 
         # Get boundary extent
         GCS_XMin, GCS_YMin, GCS_XMax, GCS_YMax = float(GCSextent.XMin), float(GCSextent.YMin), \
-            float(GCSextent.XMax), float(GCSextent.YMax)
+                                                 float(GCSextent.XMax), float(GCSextent.YMax)
         #print "GCS_XMin, GCS_YMin, GCS_XMax, GCS_YMax:", GCS_XMin, GCS_YMin, GCS_XMax, GCS_YMax
         GCS_ExtentList = [GCS_XMin, GCS_YMin, GCS_XMax, GCS_YMax]
         del pointGeometry, PtList, point, OutSR, GCSextent, boundaryPolygon, boundaryPolygon2, array
@@ -569,19 +570,19 @@ def Get_Spatial_Data_OrgInfo(InputDS, myDataType, myFeatType):
 
         if ObjCount != 0:
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
 
         elif ObjCount == 0:#Omit object count if we cound't obtain it.
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
@@ -596,19 +597,19 @@ def Get_Spatial_Data_OrgInfo(InputDS, myDataType, myFeatType):
 
         if ObjCount != 0:
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
 
         elif ObjCount == 0:#Omit object count if we cound't obtain it.
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
@@ -640,19 +641,19 @@ def Get_Spatial_Data_OrgInfo(InputDS, myDataType, myFeatType):
 
         if ObjCount != 0:
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "<ptvctcnt>" + ObjCount + "</ptvctcnt>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
 
         elif ObjCount == 0:#Omit object count if we cound't obtain it.
             PVOI = \
-            "<ptvctinf><sdtsterm>" + \
-            "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
-            "</sdtsterm></ptvctinf>"
+                "<ptvctinf><sdtsterm>" + \
+                "<sdtstype>" + SDTS_Type + "</sdtstype>" + \
+                "</sdtsterm></ptvctinf>"
 
             SpatialDataOrgInfo = DirectSpatialRef + PVOI
             return SpatialDataOrgInfo
@@ -668,12 +669,12 @@ def Get_Spatial_Data_OrgInfo(InputDS, myDataType, myFeatType):
             BandCount = str(arcpy.GetRasterProperties_management(InputDS, "BANDCOUNT"))
 
             ROI = \
-            "<rastinfo>" + \
-            "<rasttype>" + RasterType + "</rasttype>" + \
-            "<rowcount>" + RowCount + "</rowcount>" + \
-            "<colcount>" + ColCount + "</colcount>" + \
-            "<vrtcount>" + BandCount + "</vrtcount>" + \
-            "</rastinfo>"
+                "<rastinfo>" + \
+                "<rasttype>" + RasterType + "</rasttype>" + \
+                "<rowcount>" + RowCount + "</rowcount>" + \
+                "<colcount>" + ColCount + "</colcount>" + \
+                "<vrtcount>" + BandCount + "</vrtcount>" + \
+                "</rastinfo>"
 
             SpatialDataOrgInfo = DirectSpatialRef + ROI
             return SpatialDataOrgInfo
@@ -683,9 +684,9 @@ def Get_Spatial_Data_OrgInfo(InputDS, myDataType, myFeatType):
 
             #Omit row, column, and band count if unable to extract.
             ROI = \
-            "<rastinfo>" + \
-            "<rasttype>" + RasterType + "</rasttype>" + \
-            "</rastinfo>"
+                "<rastinfo>" + \
+                "<rasttype>" + RasterType + "</rasttype>" + \
+                "</rastinfo>"
 
             SpatialDataOrgInfo = DirectSpatialRef + ROI
             return SpatialDataOrgInfo
@@ -796,15 +797,15 @@ def Get_NativeEnvironment():
             ESRI_SP = "[N/A]"
             ESRI_SP_Build = "[N/A]"
     except:
-            desktopVer = "[Unknown]"
-            desktopBuildVer = "[Unknown]"
-            ESRI_SP = "[Unknown]"
-            ESRI_SP_Build = "[Unknown]"
+        desktopVer = "[Unknown]"
+        desktopBuildVer = "[Unknown]"
+        ESRI_SP = "[Unknown]"
+        ESRI_SP_Build = "[Unknown]"
 
     NativeStr = "Environment as of Metadata Creation: Microsoft %s Version %s (Build %s) %s; " % (
         OS_Str, OS_VerStr, OS_Build, OS_SP)
     NativeStr += "Esri ArcGIS %s (Build %s) Service Pack %s (Build %s)" % (
-            desktopVer, desktopBuildVer, ESRI_SP, ESRI_SP_Build)
+        desktopVer, desktopBuildVer, ESRI_SP, ESRI_SP_Build)
 
     return NativeStr
 
@@ -835,7 +836,7 @@ def pythonError():
     tbinfo = traceback.format_tb(tb)[0]
     # Concatenate information together concerning the error into a string
     pymsg = "PYTHON ERRORS:\nTraceback info:\n" + tbinfo + \
-             "\nError Info:\n" + str(sys.exc_info()[1])
+            "\nError Info:\n" + str(sys.exc_info()[1])
     msgs = "Arcpy Errors:\n" + arcpy.GetMessages(2) + "\n"
     # Return python error messages for use in script tool or Python Window
     msg(pymsg, 1)
