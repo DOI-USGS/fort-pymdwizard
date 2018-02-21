@@ -50,7 +50,7 @@ class Ui_Form(object):
         self.fgdc_themekey.setItemText(0, _translate("Form", "farming"))
         self.fgdc_themekey.setItemText(1, _translate("Form", "biota"))
         self.fgdc_themekey.setItemText(2, _translate("Form", "boundaries"))
-        self.fgdc_themekey.setItemText(3, _translate("Form", "climateologyMeteorologyAtmosphere"))
+        self.fgdc_themekey.setItemText(3, _translate("Form", "climatologyMeteorologyAtmosphere"))
         self.fgdc_themekey.setItemText(4, _translate("Form", "economy"))
         self.fgdc_themekey.setItemText(5, _translate("Form", "elevation"))
         self.fgdc_themekey.setItemText(6, _translate("Form", "environment"))
