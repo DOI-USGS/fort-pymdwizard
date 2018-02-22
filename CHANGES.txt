@@ -1,5 +1,22 @@
 Changes
 =======
+2.0.3 (2/22/2018)
+-----
+
+New features:
+
+- Updates to allow cross platform (Mac) compatibility.
+- Mac installer.
+- Moved MetadataWizard Tool version identifier to an XML Comment.
+- MP compatible FGDC version name string defaults.
+- Allow for empty Detailed sections in the Entity and Attribute.
+
+
+Bug fixes:
+- Feature classes in a file GDB can now be run from the Arc toolbox version.
+- Add warning message when opening a file with multiple domain types.
+
+
 
 2.0.2 (1/25/2018)
 -----
@@ -8,8 +25,7 @@ New features:
 
 - Type in a place name in the Description of Geographic Extent to auto-populate bounding Coordinates.
 - Allow Navigation of controlled vocabularies by clicking on broader, narrower and related terms in Details text box.
-- Launch Jupyter now remembers last 10 previously used directories, and allows one to specify
-which Anaconda env to use.
+- Launch Jupyter now remembers last 10 previously used directories, and allows one to specify which Anaconda env to use.
 - Added check that srcused and srcprod have matching definitions in record.
 - Add current version to 'About' message.
 
