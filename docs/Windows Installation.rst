@@ -1,6 +1,6 @@
-====================
+=====================
 Installing on Windows
-====================
+=====================
 
 | Download a copy of the latest Windows installer (`metadatawizard_setup_2.x.x.exe) from
 `the releases page

@@ -65,6 +65,7 @@ class DefaultWidget(QWidget):
     It's a simple line edit with a label and an option required astrix.
     """
     def __init__(self, label='', line_name='na', required=False,
+                 placeholder_text=None,
                  parent=None):
         """
 
@@ -83,6 +84,8 @@ class DefaultWidget(QWidget):
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
         self.added_line = QLineEdit()
+        if not placeholder_text is None:
+            self.added_line.setPlaceholderText(placeholder_text)
         self.added_line.setObjectName(line_name)
         self.layout.addWidget(self.qlbl)
         self.layout.addWidget(self.added_line)
