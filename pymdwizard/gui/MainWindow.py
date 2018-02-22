@@ -402,6 +402,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             today = fgdc_utils.format_date(datetime.datetime.now())
             self.metadata_root.metainfo.metd.set_date(today)
+            this_year = today[:4]
+            self.metadata_root.idinfo.citation.ui.pubdate_widget.set_date(this_year)
 
     def set_template(self):
         fname = self.get_xml_fname()
