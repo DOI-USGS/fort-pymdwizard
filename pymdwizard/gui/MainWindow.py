@@ -274,10 +274,13 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.processEvents()
         self.metadata_root.clear_widget()
         self.ui.actionData_Quality.setChecked(True)
+        self.use_dataqual(True)
         self.ui.actionSpatial.setChecked(True)
+        self.use_spatial(True)
         self.ui.actionEntity_and_Attribute.setChecked(True)
+        self.use_eainfo(True)
         self.ui.actionDistribution.setChecked(True)
-
+        self.use_distinfo(True)
         try:
             new_record = xml_utils.fname_to_node(fname)
             self.metadata_root.from_xml(new_record)
