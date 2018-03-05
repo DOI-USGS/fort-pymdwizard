@@ -76,7 +76,7 @@ class Citeinfo(WizardWidget): #
     acceptable_tags = ['citation', 'citeinfo']
 
     def __init__(self, parent=None, include_lwork=True):
-        self.origin_hint = 'Suggested format "FIRST, M. LAST"'
+        self.origin_hint = 'Suggested format "FIRST M. LAST"'
         self.include_lwork = include_lwork
         self.schema = 'bdp'
         WizardWidget.__init__(self, parent=parent)
