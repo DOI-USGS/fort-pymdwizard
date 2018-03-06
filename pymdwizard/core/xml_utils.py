@@ -61,7 +61,6 @@ except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
 
-
 def xml_document_loader(xml_locator):
     """
 
@@ -103,6 +102,7 @@ def save_to_file(element, fname):
     """
     import codecs
     file = codecs.open(fname, "w", "utf-8")
+
     file.write(node_to_string(element))
     file.close()
 
@@ -424,8 +424,7 @@ class XMLRecord(object):
         if not fname:
             fname = self.fname
 
-        with open(fname, "w") as text_file:
-            text_file.write(self.__str__())
+        save_to_file(self._root, fname)
 
     def validate(self, schema='fgdc', as_dataframe=True):
         from pymdwizard.core import fgdc_utils
