@@ -24,7 +24,7 @@ metadata records.
 * Auto-population* of challenging sections such as the spatial reference, 
 spatial organization, and entity and attribute based on information contained in
 the data being documented (CSV, Excel, Shapefiles, etc.)
- ![Alt text](docs/img/EA_screenshot.png?raw=true "Screen shot") 
+ ![Alt text](./docs/img/EA_screenshot.png?raw=true "Screen shot") 
 
 * Automate population of contact information for USGS affiliates, 
 Taxonomic information from itis, or keywords from USGS controlled vocabularies

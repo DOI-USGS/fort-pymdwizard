@@ -183,7 +183,6 @@ class SRCInfo(WizardWidget): #
             self.findChild(QComboBox, "fgdc_typesrc").setCurrentText(typesrc_text)
 
             utils.populate_widget_element(self.ui.fgdc_srccitea, srcinfo, 'srccitea')
-
             utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, 'srccontr')
 
             if srcinfo.xpath('srctime'):

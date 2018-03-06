@@ -5,7 +5,7 @@ pandas
 jupyter
 gdal
 geopandas
-PyQt >= 5.0
+pyqt>=5.6.0
 xlrd
 python-docx
 habanero

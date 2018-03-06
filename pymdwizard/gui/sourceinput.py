@@ -150,9 +150,11 @@ class SourceInput(WizardWidget):
                 xml_srcinput = xml_srcinput.findall('srcinfo')
                 if xml_srcinput:
                     for srcinput in xml_srcinput:
-                        srcinfo_widget = self.src_info.add_another()
-                        srcinfo_widget.from_xml(srcinput)
-
+                        try:
+                            srcinfo_widget = self.src_info.add_another()
+                            srcinfo_widget.from_xml(srcinput)
+                        except:
+                            pass
                 else:
                     self.ui.radio_sourceno_2.setChecked(True)
                     self.src_info.add_another()

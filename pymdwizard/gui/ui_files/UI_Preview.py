@@ -15,7 +15,7 @@ class Ui_Form(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(4, 4, 4, 4)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.webView = QtWebKitWidgets.QWebView(Form)
+        self.webView = QWebView(Form)
         self.webView.setUrl(QtCore.QUrl("about:blank"))
         self.webView.setObjectName("webView")
         self.verticalLayout.addWidget(self.webView)
@@ -27,4 +27,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Metadata Preview"))
 
-from PyQt5 import QtWebKitWidgets
+try:
+    from PyQt5.QtWebKitWidgets import QWebView
+except ImportError:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
