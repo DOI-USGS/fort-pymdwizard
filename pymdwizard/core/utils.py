@@ -278,7 +278,20 @@ def get_resource_path(fname):
 
                                            'resources/{}'.format(fname))
 
+
 def set_window_icon(widget, remove_help=True):
+    """
+    Add our default ducky icon to a widget
+
+    Parameters
+    ----------
+    widget : PyQt widget
+    remove_help : Bool
+                  Whether to show the help question mark icon.
+    Returns
+    -------
+    None
+    """
     icon = QIcon(get_resource_path('icons/Ducky.ico'))
     widget.setWindowIcon(icon)
     if remove_help:
@@ -288,12 +301,13 @@ def set_window_icon(widget, remove_help=True):
                               Qt.WindowCloseButtonHint |
                               Qt.WindowStaysOnTopHint)
 
+
 class PandasModel(QAbstractTableModel):
     """
     Class to populate a table view with a pandas dataframe
     """
-    options = {"striped": True, "stripesColor": "#fafafa", "na_values": "least",
-               "tooltip_min_len": 21}
+    options = {"striped": True, "stripesColor": "#fafafa",
+               "na_values": "least", "tooltip_min_len": 21}
 
     def __init__(self, dataframe, parent=None):
         QAbstractTableModel.__init__(self, parent)

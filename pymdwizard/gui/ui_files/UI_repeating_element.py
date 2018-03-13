@@ -19,6 +19,7 @@ class Ui_Form(object):
         Form.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_2.setContentsMargins(3, 3, 3, 0)
+        self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.button_widget = QtWidgets.QWidget(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
@@ -70,7 +71,7 @@ class Ui_Form(object):
         self.vertical_widget.setObjectName("vertical_widget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.vertical_widget)
         self.verticalLayout_4.setContentsMargins(3, 3, 3, 3)
-        self.verticalLayout_4.setSpacing(3)
+        self.verticalLayout_4.setSpacing(2)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.verticalLayout_2.addWidget(self.vertical_widget)
 

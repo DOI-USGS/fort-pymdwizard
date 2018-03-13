@@ -108,7 +108,7 @@ class DefaultWidget(QWidget):
             self.layout.addWidget(self.required_label)
 
         self.layout.setContentsMargins(1, 1, 1, 1)
-        self.layout.setSpacing(6)
+        self.layout.setSpacing(0)
         self.setLayout(self.layout)
 
     def setText(self, text):
@@ -179,6 +179,8 @@ class RepeatingElement(QWidget):
         """
         self.ui = UI_repeating_element.Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.vertical_widget.layout().setSpacing(0)
 
     def connect_events(self):
         """
