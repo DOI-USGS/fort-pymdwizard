@@ -159,6 +159,11 @@ class MetaInfo(WizardWidget):
                                            parent_node=metainfo_node)
 
         if self.original_xml is not None:
+            metsi = xml_utils.search_xpath(self.original_xml, 'metsi')
+            if metsi is not None:
+                metsi.tail = None
+                metainfo_node.append(deepcopy(metsi))
+
             metextns = xml_utils.search_xpath(self.original_xml, 'metextns')
             if metextns is not None:
                 metextns.tail = None
