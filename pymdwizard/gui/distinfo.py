@@ -155,7 +155,11 @@ class DistInfo(WizardWidget):
             stdorder = xml_utils.xml_node('stdorder', parent_node=distinfo_node)
             digform = xml_utils.xml_node('digform', parent_node=stdorder)
             digtinfo = xml_utils.xml_node('digtinfo', parent_node=digform)
-            formname = xml_utils.xml_node('formname', parent_node=digtinfo, text='Digital Data')
+            if self.original_xml is not None and \
+               self.original_xml.xpath('stdorder/digtinfo/formname'):
+                formname = xml_utils.xml_node('formname', parent_node=digtinfo, text='Digital Data')
+            else:
+                formname = xml_utils.xml_node('formname', parent_node=digtinfo, text='Digital Data')
             digtopt = xml_utils.xml_node('digtopt', parent_node=digform)
             onlinopt = xml_utils.xml_node('onlinopt', parent_node=digtopt)
             computer = xml_utils.xml_node('computer', parent_node=onlinopt)
@@ -183,6 +187,7 @@ class DistInfo(WizardWidget):
 
     def from_xml(self, xml_distinfo):
 
+        self.original_xml = xml_distinfo
         self.clear_widget()
 
         if xml_distinfo.tag == 'distinfo':
