@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
+    <width>529</width>
     <height>354</height>
    </rect>
   </property>
@@ -264,6 +264,9 @@ color: rgb(50, 50, 50);
                </property>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_13">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_34">
                    <property name="text">
@@ -272,9 +275,9 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_altdatum">
+                  <widget class="QComboBox" name="fgdc_altdatum">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -285,9 +288,25 @@ color: rgb(50, 50, 50);
                      <height>0</height>
                     </size>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="currentText">
+                    <string>National Geodetic Vertical Datum of 1929</string>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>National Geodetic Vertical Datum of 1929</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>North American Vertical Datum of 1988</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -343,6 +362,9 @@ color: rgb(50, 50, 50);
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_36">
                    <property name="text">
@@ -351,16 +373,29 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_altunits">
+                  <widget class="QComboBox" name="fgdc_altunits">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>meters</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>feet</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -416,6 +451,9 @@ color: rgb(50, 50, 50);
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_38">
                    <property name="text">
@@ -424,16 +462,34 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_altenc">
+                  <widget class="QComboBox" name="fgdc_altenc">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>Explicit elevation coordinate included with horizontal coordinates</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Implicit coordinate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Attribute values</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -641,6 +697,9 @@ color: rgb(50, 50, 50);
                </property>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_9">
                    <property name="text">
@@ -649,9 +708,9 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_depthdn">
+                  <widget class="QComboBox" name="fgdc_depthdn">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -662,9 +721,192 @@ color: rgb(50, 50, 50);
                      <height>0</height>
                     </size>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>Local surface</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Chart datum; datum for sounding reduction</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Lowest astronomical tide</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Highest astronomical tide</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean high water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean sea level</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Land survey datum</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean low water springs</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean high water springs</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean low water neap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean high water neap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean lower low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean lower low water springs</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean higher high water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean higher low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean lower high water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Spring tide</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tropic lower low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Neap tide</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>High water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Higher high water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Low-water datum</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Lowest low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Lower low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Lowest normal low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mean tide level</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Indian spring low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>High-water full and charge</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Low-water full and charge</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Columbia River datum</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Gulf Coast low water datum</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Equatorial springs low water</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Approximate lowest astronomical tide</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>No correction</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -720,6 +962,9 @@ color: rgb(50, 50, 50);
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_12">
                    <property name="text">
@@ -728,16 +973,29 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_depthdu">
+                  <widget class="QComboBox" name="fgdc_depthdu">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>meters</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>feet</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -793,6 +1051,9 @@ color: rgb(50, 50, 50);
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="spacing">
+                  <number>15</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="label_13">
                    <property name="text">
@@ -801,16 +1062,34 @@ color: rgb(50, 50, 50);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="fgdc_depthem">
+                  <widget class="QComboBox" name="fgdc_depthem">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="text">
+                   <property name="editable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text" stdset="0">
                     <string/>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>Explicit depth coordinate included with horizontal coordinates</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Implicit coordinate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Attribute values</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>

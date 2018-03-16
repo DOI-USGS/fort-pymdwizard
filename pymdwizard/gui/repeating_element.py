@@ -108,7 +108,7 @@ class DefaultWidget(QWidget):
             self.layout.addWidget(self.required_label)
 
         self.layout.setContentsMargins(1, 1, 1, 1)
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(10)
         self.setLayout(self.layout)
 
     def setText(self, text):
