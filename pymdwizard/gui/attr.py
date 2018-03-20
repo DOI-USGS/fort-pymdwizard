@@ -255,13 +255,24 @@ class Attr(WizardWidget):
                 self.domain.populate_from_list(uniques)
         elif self.series is not None and index == 1:
             try:
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.min()))
+                self.domain.ui.fgdc_rdommin.setText(str(self.series.dropna().min()))
             except:
                 self.domain.ui.fgdc_rdommin.setText('')
             try:
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.max()))
+                self.domain.ui.fgdc_rdommax.setText(str(self.series.dropna().max()))
             except:
                 self.domain.ui.fgdc_rdommax.setText('')
+
+            if not np.issubdtype(self.series.dtype, np.number):
+                msg = 'Caution! The contents of this column are stored in the' \
+                      ' data source as "text".  The use of a range domain ' \
+                      'type on text columns might give unexpected results, ' \
+                      'especially for columns that contain date information.'
+                msgbox = QMessageBox(QMessageBox.Warning, "Range domain on text field",
+                                     msg)
+                utils.set_window_icon(msgbox)
+                msgbox.exec_()
+
 
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
