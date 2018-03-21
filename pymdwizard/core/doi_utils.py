@@ -173,7 +173,7 @@ def get_doi_citation(doi):
         if 'literal' not in author:
             author['literal'] = author['given'] + ' ' + author['family']
         origin = XMLNode(tag='origin', parent_node=citeinfo,
-                         text=author['given'] + ' ' + author['family'])
+                         text=author['literal'])
 
     if 'published-online' in cite_data:
         pubdate_parts = cite_data['published-online']['date-parts'][0]
