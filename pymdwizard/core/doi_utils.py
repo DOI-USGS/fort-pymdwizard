@@ -126,6 +126,10 @@ def get_doi_citation_datacite(doi):
     endpoint = 'https://api.datacite.org/works'
     response = utils.requests_pem_get(endpoint + '/' + doi)
     cite_data = json.loads(response.text)['data']['attributes']
+
+    if cite_data['container_title'] not in cite_data:
+        cite_data['container-title'] = cite_data.pop('container_title')
+
     cite_data['publisher'] = cite_data['container-title']
     cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
     if 'data-center-id' in cite_data and \
@@ -166,8 +170,10 @@ def get_doi_citation(doi):
 
     citeinfo = XMLNode(tag='citeinfo')
     for author in cite_data['author']:
+        if 'literal' not in author:
+            author['literal'] = author['given'] + ' ' + author['family']
         origin = XMLNode(tag='origin', parent_node=citeinfo,
-                         text=author['given'] + ' ' + author['family'])
+                         text=author['literal'])
 
     if 'published-online' in cite_data:
         pubdate_parts = cite_data['published-online']['date-parts'][0]
