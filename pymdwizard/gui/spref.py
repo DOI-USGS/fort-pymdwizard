@@ -336,9 +336,9 @@ class SpRef(WizardWidget):
 
                     utils.populate_widget_element(self.ui.fgdc_mapprojn, 
                                                   mapproj, 'mapprojn')
-                    if mapproj.getchildren():
-                        mapproj_contents = mapproj.getchildren()[1]
-                        self.mapproj.from_xml(mapproj_contents)
+                    mapproj_children = mapproj.getchildren()
+                    if len(mapproj_children) > 1:
+                        self.mapproj.from_xml(mapproj_children[1])
 
                 gridsys = xml_utils.search_xpath(planar, 'gridsys')
                 if gridsys is not None:
@@ -347,22 +347,25 @@ class SpRef(WizardWidget):
                     utils.populate_widget_element(self.ui.fgdc_gridsysn,
                                                   gridsys, 'gridsysn')
 
-                    if gridsys.getchildren():
+                    gridsys_children = gridsys.getchildren()
+                    if len(gridsys_children) > 1:
                         gridsys_contents = gridsys.getchildren()[1]
-                        for item in gridsys_contents.getchildren():
-                            tag = item.tag
-                            if spatial_utils.lookup_shortname(tag) is not None:
-                                self.grid_mapproj.from_xml(item)
-                            elif tag == 'mapproj':
-                                mapprojn = xml_utils.search_xpath(item, 
-                                                                  'mapprojn')
-                                if mapprojn.text in \
-                                        spatial_utils.PROJECTION_LOOKUP:
-                                    self.grid_mapproj.from_xml(item.getchildren()[1])
-                            else:
-                                item_widget = self.findChild(QLineEdit, 
-                                                             "fgdc_"+tag)
-                                utils.set_text(item_widget, item.text)
+                    else:
+                        gridsys_contents = []
+                    for item in gridsys_contents.getchildren():
+                        tag = item.tag
+                        if spatial_utils.lookup_shortname(tag) is not None:
+                            self.grid_mapproj.from_xml(item)
+                        elif tag == 'mapproj':
+                            mapprojn = xml_utils.search_xpath(item,
+                                                              'mapprojn')
+                            if mapprojn.text in \
+                                    spatial_utils.PROJECTION_LOOKUP:
+                                self.grid_mapproj.from_xml(item.getchildren()[1])
+                        else:
+                            item_widget = self.findChild(QLineEdit,
+                                                         "fgdc_"+tag)
+                            utils.set_text(item_widget, item.text)
 
                     grid_proj = gridsys.xpath('proj')
 
