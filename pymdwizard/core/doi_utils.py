@@ -83,9 +83,10 @@ def clean_doi(doi):
     else:
         return doi
 
+
 def get_doi_citation_crossref(doi):
     """
-    B
+    get
 
     Parameters
     ----------
@@ -132,8 +133,8 @@ def get_doi_citation_datacite(doi):
 
     cite_data['publisher'] = cite_data['container-title']
     cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
-    if 'data-center-id' in cite_data and \
-                    'usgs' in cite_data['data-center-id']:
+    if 'data_center_id' in cite_data and \
+                    'usgs' in cite_data['data_center_id']:
         cite_data['container-title'] = None
         cite_data['pubplace'] = 'https://www.sciencebase.gov'
         cite_data['geoform'] = 'dataset'
