@@ -91,6 +91,7 @@ class Attr(WizardWidget):
 
         self.parent_ui = parent
         self.series = None
+        self.nodata = None
 
     def build_ui(self):
         """
@@ -115,8 +116,28 @@ class Attr(WizardWidget):
         self.ui.fgdc_attrdef.mousePressEvent = self.attrdef_press
         self.ui.fgdc_attrdefs.mousePressEvent = self.attrdefs_press
         self.ui.comboBox.mousePressEvent = self.combo_press
+        self.ui.rbtn_nodata_yes.toggled.connect(self.include_nodata_change)
         self.domain = None
+        self.ui.nodata_content.hide()
+        self.ui.rbtn_nodata_no.setChecked(True)
         self.ui.comboBox.setCurrentIndex(3)
+
+    def include_nodata_change(self, b):
+        """
+            The user has changed the nodata present selection
+
+            Parameters
+            ----------
+            b: qt event
+
+            Returns
+            -------
+            None
+            """
+        if b:
+            self.ui.nodata_section.show()
+        else:
+            self.ui.nodata_section.hide()
 
     def mousePressEvent(self, event):
         self.activate()
@@ -203,6 +224,23 @@ class Attr(WizardWidget):
             elif cur_xml.tag == 'attr':
                 self._domain_content[0] = cur_xml
 
+    def sniff_nodata(self):
+        uniques = self.series.unique()
+
+        self.nodata = None
+        for nd in ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
+                    '-nan', '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN',
+                    'n/a', 'nan', 'null', -9999, '-9999', '', 'Nan']:
+            if nd in uniques:
+                self.nodata = nd
+
+        if self.nodata is not None:
+            self.ui.rbtn_nodata_yes.setChecked(True)
+            if self.nodata == '':
+                self.ui.nodata_value.setText('<< empty cell >>')
+            else:
+                self.ui.nodata_value.setText(str(self.nodata))
+
     def populate_domain_content(self, which='guess'):
         """
         Fill out this widget with the content from it's associated series
@@ -221,6 +259,7 @@ class Attr(WizardWidget):
 
         if which == 'guess':
             index = self.guess_domain()
+            self.sniff_nodata()
         else:
             index = which
 
@@ -239,7 +278,7 @@ class Attr(WizardWidget):
             # This domain has been used before, display previous content
             self.domain.from_xml(self._domain_content[index])
         elif self.series is not None and index == 0:
-            uniques = self.series.unique()
+            uniques = self.series[self.series != self.nodata].unique()
             if len(uniques) > 100:
                 msg = "There are more than 100 unique values in this field."
                 msg += "\n This tool cannot smoothly display that many " \
@@ -254,16 +293,26 @@ class Attr(WizardWidget):
             else:
                 self.domain.populate_from_list(uniques)
         elif self.series is not None and index == 1:
+            clean_series = self.series[self.series != self.nodata]
             try:
-                self.domain.ui.fgdc_rdommin.setText(str(self.series.dropna().min()))
+                clean_series = clean_series.astype('int64')
+            except ValueError:
+                try:
+                    clean_series = clean_series.astype('float64')
+                except ValueError:
+                    pass
+
+
+            try:
+                self.domain.ui.fgdc_rdommin.setText(str(clean_series.min()))
             except:
                 self.domain.ui.fgdc_rdommin.setText('')
             try:
-                self.domain.ui.fgdc_rdommax.setText(str(self.series.dropna().max()))
+                self.domain.ui.fgdc_rdommax.setText(str(clean_series.max()))
             except:
                 self.domain.ui.fgdc_rdommax.setText('')
 
-            if not np.issubdtype(self.series.dtype, np.number):
+            if not np.issubdtype(clean_series.dtype, np.number):
                 msg = 'Caution! The contents of this column are stored in the' \
                       ' data source as "text".  The use of a range domain ' \
                       'type on text columns might give unexpected results, ' \
@@ -306,8 +355,8 @@ class Attr(WizardWidget):
             self.animation.setEndValue(QSize(345, self.height()))
             self.animation.start()
             self.ui.attrdomv_contents.show()
+            self.ui.nodata_content.show()
             self.ui.place_holder.hide()
-
             cbo = self.ui.comboBox
             self.populate_domain_content(cbo.currentIndex())
 
@@ -325,7 +374,7 @@ class Attr(WizardWidget):
             self.animation.setDuration(200)
             self.animation.setEndValue(QSize(100, self.height()))
             self.animation.start()
-
+            self.ui.nodata_content.hide()
             self.clear_domain()
             self.ui.place_holder.show()
 

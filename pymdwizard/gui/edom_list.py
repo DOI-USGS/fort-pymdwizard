@@ -90,10 +90,11 @@ class EdomList(WizardWidget):  #
         self.ui.listWidget.clear()
 
         for item_label in items:
-            if pd.isnull(item_label) or \
+            if (pd.isnull(item_label) or \
                     str(item_label) == '' or \
-                    (type(item_label) != str and math.isnan(item_label)):
-                self.add_edom("<< empty cell >>")
+                    (type(item_label) != str and math.isnan(item_label))):
+                if not self.parent().nodata == "<< empty cell >>":
+                    self.add_edom("<< empty cell >>")
             else:
                 self.add_edom(str(item_label))
 
