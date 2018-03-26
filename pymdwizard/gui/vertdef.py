@@ -98,6 +98,20 @@ class Vertdef(WizardWidget):  #
         self.ui.rbtn_yes_alt.toggled.connect(self.include_alt_change)
         self.ui.rbtn_yes_depth.toggled.connect(self.include_depth_change)
 
+    def has_content(self):
+        """
+        Returns if the widget contains legitimate content that should be
+        written out to xml
+
+        By default this is always true but should be implement in each
+        subclass with logic to check based on contents
+
+        Returns
+        -------
+        bool : True if there is content, False if no
+        """
+        return self.ui.rbtn_yes.isChecked()
+
     def include_vertdef_change(self, b):
         """
         Extended vertical definition section.
@@ -207,7 +221,9 @@ class Vertdef(WizardWidget):  #
                                             text=self.ui.fgdc_depthem.text(),
                                             parent_node=depth)
 
-        return vertdef
+            return vertdef
+        else:
+            return None
 
     def from_xml(self, vertdef):
         """
