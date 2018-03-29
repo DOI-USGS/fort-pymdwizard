@@ -424,7 +424,7 @@ class XMLRecord(object):
         if not fname:
             fname = self.fname
 
-        save_to_file(self._root, fname)
+        save_to_file(self._contents.to_xml(), fname)
 
     def validate(self, schema='fgdc', as_dataframe=True):
         from pymdwizard.core import fgdc_utils
