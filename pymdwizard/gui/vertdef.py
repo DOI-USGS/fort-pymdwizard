@@ -194,31 +194,31 @@ class Vertdef(WizardWidget):  #
             if self.ui.rbtn_yes_alt.isChecked():
                 altsys = xml_utils.xml_node('altsys', parent_node=vertdef)
                 altdatum = xml_utils.xml_node('altdatum',
-                                              text=self.ui.fgdc_altdatum.text(),
+                                              text=self.ui.fgdc_altdatum.currentText(),
                                               parent_node=altsys)
                 for widget in self.altres_list.get_widgets():
                     altres = xml_utils.xml_node('altres', widget.added_line.text(),
                                                 parent_node=altsys)
                 altunits = xml_utils.xml_node('altunits',
-                                              text=self.ui.fgdc_altunits.text(),
+                                              text=self.ui.fgdc_altunits.currentText(),
                                               parent_node=altsys)
                 altenc = xml_utils.xml_node('altenc',
-                                              text=self.ui.fgdc_altenc.text(),
+                                              text=self.ui.fgdc_altenc.currentText(),
                                               parent_node=altsys)
 
             if self.ui.rbtn_yes_depth.isChecked():
                 depth = xml_utils.xml_node('depthsys', parent_node=vertdef)
                 depthdn = xml_utils.xml_node('depthdn',
-                                              text=self.ui.fgdc_depthdn.text(),
+                                              text=self.ui.fgdc_depthdn.currentText(),
                                               parent_node=depth)
                 for widget in self.depthres_list.get_widgets():
                     depthres = xml_utils.xml_node('depthres', widget.added_line.text(),
                                                 parent_node=depth)
                 depthdu = xml_utils.xml_node('depthdu',
-                                              text=self.ui.fgdc_depthdu.text(),
+                                              text=self.ui.fgdc_depthdu.currentText(),
                                               parent_node=depth)
                 depthem = xml_utils.xml_node('depthem',
-                                            text=self.ui.fgdc_depthem.text(),
+                                            text=self.ui.fgdc_depthem.currentText(),
                                             parent_node=depth)
 
             return vertdef
