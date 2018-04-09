@@ -388,20 +388,43 @@ def clear_children(element):
 
 class XMLRecord(object):
     def __init__(self, contents):
+        """
+        contents must be one of the following
+
+        1) File path/name on the local filesystem that exists and can be read
+        2) String containing an XML Record.
+        3) URL containing an XML record
+
+        Parameters
+        ----------
+        contents : str, lxml node
+                url, file path, string xml snippet
+        """
         try:
             if os.path.exists(contents[:255]):
                 self.fname = contents
-                # they passed us a file path
+                # they passde us a file path
                 self.record = lxml.parse(self.fname)
                 self._root = self.record.getroot()
             else:
                 from pymdwizard.core import utils
-                if utils.url_validator(contents):
-                    print('is url')
-                    contents = utils.requests_pem_get(contents).text
+                try:
+                    if utils.url_validator(contents):
+                        contents = utils.requests_pem_get(contents).text
+                except:
+                    pass
                 self.fname = None
+
+                if contents[:3] == 'ï»¿':
+                    # string contents start with the BOM strip this
+                    contents = contents[3:]
+                if type(contents) == str:
+                    # we need bytes not string
+                    contents = contents.encode('utf-8')
+
                 self._root = string_to_node(contents)
                 self.record = etree.ElementTree(self._root)
+
         except etree.XMLSyntaxError:
             self.fname = None
             self.record = lxml.fromstring(contents)
@@ -423,7 +446,6 @@ class XMLRecord(object):
     def save(self, fname=''):
         if not fname:
             fname = self.fname
-
         save_to_file(self._contents.to_xml(), fname)
 
     def validate(self, schema='fgdc', as_dataframe=True):
