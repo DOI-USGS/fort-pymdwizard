@@ -610,7 +610,7 @@ class Ui_parent_form(object):
         self.label_47.setText(_translate("parent_form", "Dataset Author/ Originator"))
         self.label_35.setText(_translate("parent_form", "Who created the dataset? List the organization and/or person(s)"))
         self.label_53.setText(_translate("parent_form", "Dataset Format"))
-        self.label_36.setText(_translate("parent_form", "Type directly in the box below for items not in list."))
+        self.label_36.setText(_translate("parent_form", "Type directly in box below for items not in list."))
         self.fgdc_geoform.setCurrentText(_translate("parent_form", "tabular digital data"))
         self.fgdc_geoform.setItemText(0, _translate("parent_form", "tabular digital data"))
         self.fgdc_geoform.setItemText(1, _translate("parent_form", "vector digital data"))

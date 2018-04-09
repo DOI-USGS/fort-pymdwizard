@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
+    <width>336</width>
     <height>226</height>
    </rect>
   </property>
@@ -81,6 +81,22 @@
           </property>
           <property name="text">
            <string>Currentness Reference</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_36">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: italic;</string>
+          </property>
+          <property name="text">
+           <string>Type directly in box below for items not in list.</string>
           </property>
          </widget>
         </item>
