@@ -302,33 +302,34 @@ def get_params(layer):
     params = {}
 
     params['latres'], params['longres'] = get_latlong_res(geographic_extent)
+    params['latres'], params['longres'] = str(params['latres']), str(params['longres'])
     params['geogunit'] = 'Decimal seconds' #we will always use Decimal Seconds'
     params['mapprojn'] = ref.GetAttrValue('projcs')
     params['projection_name'] = ref.GetAttrValue('projection')
     params['geogcs'] = ref.GetAttrValue('geogcs')
-    params['stdparll'] = ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_1)
-    params['stdparll_2'] = ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_2)
-    params['longcm'] = ref.GetProjParm(osr.SRS_PP_CENTRAL_MERIDIAN)
-    params['latprjo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_ORIGIN)
-    params['feast'] = ref.GetProjParm(osr.SRS_PP_FALSE_EASTING)
-    params['fnorth'] = ref.GetProjParm(osr.SRS_PP_FALSE_NORTHING)
-    params['sfequat'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
-    params['heightpt'] = ref.GetProjParm(osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT)
-    params['longpc'] = ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_CENTER)
-    params['latprjc'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
-    params['latprjo'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER)
-    params['sfctrlin'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
+    params['stdparll'] = str(ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_1))
+    params['stdparll_2'] = str(ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_2))
+    params['longcm'] = str(ref.GetProjParm(osr.SRS_PP_CENTRAL_MERIDIAN))
+    params['latprjo'] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_ORIGIN))
+    params['feast'] = str(ref.GetProjParm(osr.SRS_PP_FALSE_EASTING))
+    params['fnorth'] = str(ref.GetProjParm(osr.SRS_PP_FALSE_NORTHING))
+    params['sfequat'] = str(ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR))
+    params['heightpt'] = str(ref.GetProjParm(osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT))
+    params['longpc'] = str(ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_CENTER))
+    params['latprjc'] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER))
+    params['latprjo'] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER))
+    params['sfctrlin'] = str(ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR))
     params['obqlazim'] = 'Unknown'
-    params['azimangl'] = ref.GetProjParm(osr.SRS_PP_AZIMUTH)
-    params['azimptl'] = ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_ORIGIN)
+    params['azimangl'] = str(ref.GetProjParm(osr.SRS_PP_AZIMUTH))
+    params['azimptl'] = str(ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_ORIGIN))
     params['obqlpt'] = 'Unknown'
     params['obqllat'] = 'Unknown'
     params['obqllong'] = 'Unknown'
-    params['svlong'] = ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_ORIGIN)
+    params['svlong'] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_ORIGIN))
     params['sfprjorg'] = 'Unknown'
-    params['landsat'] = ref.GetProjParm(osr.SRS_PP_LANDSAT_NUMBER)
-    params['pathnum'] = ref.GetProjParm(osr.SRS_PP_PATH_NUMBER)
-    params['sfctrmer'] = ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR)
+    params['landsat'] = str(ref.GetProjParm(osr.SRS_PP_LANDSAT_NUMBER))
+    params['pathnum'] = str(ref.GetProjParm(osr.SRS_PP_PATH_NUMBER))
+    params['sfctrmer'] = str(ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR))
     params['gridsysn'] = 'Unknown'
     params['utmzone'] = ref.GetUTMZone()
     if params['utmzone'] == 0:
@@ -354,8 +355,8 @@ def get_params(layer):
     params['horizdn'] = ref.GetAttrValue('datum')
     params['ellips'] = ref.GetAttrValue('spheroid')
     params['localpd'] = 'Unknown'
-    params['semiaxis'] = ref.GetSemiMajor()
-    params['denflat'] = ref.GetInvFlattening()
+    params['semiaxis'] = str(ref.GetSemiMajor())
+    params['denflat'] = str(ref.GetInvFlattening())
     params['altdatum'] = ref.GetAttrValue('VertCSName')
     params['altres'] = 'Unknown'
     params['altunits'] = 'Unknown'
@@ -375,7 +376,7 @@ def get_params(layer):
     if params['mapprojn'] is not None and \
                 'stateplane' in params['mapprojn'].lower():
         parts = params['mapprojn'].split('_')
-        params['spcszone'] = parts[parts.index('FIPS')+1]
+        params['spcszone'] = str(parts[parts.index('FIPS')+1])
     else:
         params['spcszone'] = 'Unknown'
 
@@ -383,7 +384,7 @@ def get_params(layer):
     if params['mapprojn'] is not None and \
                     '_arc_system' in params['mapprojn'].lower():
         parts = params['mapprojn'].split('_')
-        params['arczone'] = parts[-1]
+        params['arczone'] = str(parts[-1])
     else:
         params['arczone'] = 'Unknown'
 
