@@ -69,6 +69,7 @@ from PyQt5.QtCore import pyqtSlot, QStringListModel
 
 from pymdwizard.core import utils
 from pymdwizard.core import xml_utils
+from pymdwizard.core import spatial_utils
 from pymdwizard.core.xml_utils import xml_node
 
 from pymdwizard.gui.wiz_widget import WizardWidget
@@ -93,6 +94,7 @@ class Spdom(WizardWidget):
         self.root_widget = root_widget
 
         self.after_load = False
+        self.in_xml_load = False
         self.has_rect = True
 
         completer = QCompleter()
@@ -271,23 +273,47 @@ class Spdom(WizardWidget):
 
     @pyqtSlot(float, float)
     def on_ne_move(self, lat, lng):
-        self.ui.fgdc_eastbc.setText(str(lng))
-        self.ui.fgdc_northbc.setText(str(lat))
+        if self.in_xml_load:
+            n, e = lat, lng
+            s = float(self.ui.fgdc_southbc.text())
+            w = float(self.ui.fgdc_westbc.text())
+            bounds = spatial_utils.format_bounding((w, e, n, s))
+
+            self.ui.fgdc_eastbc.setText(bounds[1])
+            self.ui.fgdc_northbc.setText(bounds[2])
 
     @pyqtSlot(float, float)
     def on_nw_move(self, lat, lng):
-        self.ui.fgdc_westbc.setText(str(lng))
-        self.ui.fgdc_northbc.setText(str(lat))
+        if self.in_xml_load:
+            n, w = lat, lng
+            s = float(self.ui.fgdc_southbc.text())
+            e = float(self.ui.fgdc_eastbc.text())
+            bounds = spatial_utils.format_bounding((w, e, n, s))
+
+            self.ui.fgdc_westbc.setText(bounds[0])
+            self.ui.fgdc_northbc.setText(bounds[2])
 
     @pyqtSlot(float, float)
     def on_se_move(self, lat, lng):
-        self.ui.fgdc_eastbc.setText(str(lng))
-        self.ui.fgdc_southbc.setText(str(lat))
+        if self.in_xml_load:
+            s, e = lat, lng
+            n = float(self.ui.fgdc_northbc.text())
+            w = float(self.ui.fgdc_westbc.text())
+            bounds = spatial_utils.format_bounding((w, e, n, s))
+
+            self.ui.fgdc_eastbc.setText(bounds[1])
+            self.ui.fgdc_southbc.setText(bounds[3])
 
     @pyqtSlot(float, float)
     def on_sw_move(self, lat, lng):
-        self.ui.fgdc_westbc.setText(str(lng))
-        self.ui.fgdc_southbc.setText(str(lat))
+        if self.in_xml_load:
+            s, w = lat, lng
+            n = float(self.ui.fgdc_northbc.text())
+            e = float(self.ui.fgdc_eastbc.text())
+            bounds = spatial_utils.format_bounding((w, e, n, s))
+
+            self.ui.fgdc_westbc.setText(bounds[0])
+            self.ui.fgdc_southbc.setText(bounds[3])
 
     def switch_schema(self, schema):
         self.schema = schema
@@ -356,6 +382,7 @@ class Spdom(WizardWidget):
         return spdom
 
     def from_xml(self, spdom):
+        self.in_xml_load = False
         self.original_xml = spdom
         self.clear_widget()
         utils.populate_widget(self, spdom)
@@ -372,6 +399,7 @@ class Spdom(WizardWidget):
                 self.remove_rect()
         except KeyError:
             self.remove_rect()
+        self.in_xml_load = True
 
 
 def js_callback(result):

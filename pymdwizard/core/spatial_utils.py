@@ -1190,6 +1190,7 @@ def arc(params):
 
     return gridsys
 
+
 def lookup_fdgc_projname(gdal_name, mapprojn=''):
 
     if gdal_name == 'Stereographic' and 'polar' in mapprojn.lower():
@@ -1374,6 +1375,8 @@ def get_bounding(fname):
     layer = get_layer(fname)
     extent = get_geographic_extent(layer)
 
+    extent = format_bounding(extent)
+
     bounding = xml_node('bounding')
     westbc = xml_node('westbc', extent[0], bounding)
     eastbc = xml_node('eastbc', extent[1], bounding)
@@ -1381,6 +1384,54 @@ def get_bounding(fname):
     southbc = xml_node('southbc', extent[2], bounding)
 
     return bounding
+
+
+def num_sig_digits(f, min_num=4):
+    """
+    Determine the number of significant digits to display
+
+    Parameters
+    ----------
+    f : float
+        The number used to determine the appropriate number of digits to
+        return
+    min_num : int
+            The minimum number of digits to return
+
+    Returns
+    -------
+    int
+    """
+    try:
+        if f > .9999:
+            return min_num
+        else:
+            digit_list = list(str(f))[2:]
+            first_nonzero = next((i for i, x in enumerate(digit_list) if x!='0'), None)
+            return first_nonzero + min_num
+    except:
+        return min_num
+
+
+def format_bounding(extent):
+    """
+    convert to formated string strings with reasonable number of places
+
+    Parameters
+    ----------
+    bounding : tuple
+            (west, east, north, south)
+
+    Returns :
+        tuple : ("west", "east", "north", "south")
+    -------
+
+    """
+    w, e, n, s = extent
+    smallest_dim = min((e-w), (n-s))
+    decimals = num_sig_digits(smallest_dim)
+    return ["{num:.{decimals}f}".format(num=coord, decimals=decimals)
+            for coord in extent]
 
 
 def get_spdoinfo(fname, feature_class=None):
