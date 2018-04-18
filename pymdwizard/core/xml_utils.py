@@ -51,6 +51,7 @@ the copyright owner.
 import os
 import collections
 import warnings
+from pathlib import Path
 
 from defusedxml import lxml
 from lxml import etree as etree
@@ -269,7 +270,7 @@ def element_to_df(results):
     return pd.DataFrame.from_dict(results_list)
 
 
-def node_to_string(node):
+def node_to_string(node, encoding=True):
     """
 
     Parameters
@@ -288,7 +289,7 @@ def node_to_string(node):
         tree = node
 
     return lxml.tostring(tree, pretty_print=True, with_tail=False,
-                         encoding='UTF-8', xml_declaration=True).decode("utf-8")
+                         encoding='UTF-8', xml_declaration=encoding).decode("utf-8")
 
 
 def fname_to_node(fname):
@@ -401,8 +402,9 @@ class XMLRecord(object):
                 url, file path, string xml snippet
         """
         try:
-            if os.path.exists(contents[:255]):
-                self.fname = contents
+            contents_path = Path(contents)
+            if contents_path.exists:
+                self.fname = str(contents_path.absolute())
                 # they passde us a file path
                 self.record = lxml.parse(self.fname)
                 self._root = self.record.getroot()
@@ -807,7 +809,7 @@ class XMLNode(object):
             index += 1
 
         if type(child) == etree._Element:
-            node_str = node_to_string(child)
+            node_str = node_to_string(child, encoding=False)
         else:
             node_str = child.to_str()
         child_copy = XMLNode(node_str)
