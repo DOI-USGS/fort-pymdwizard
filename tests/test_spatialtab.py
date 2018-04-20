@@ -23,6 +23,6 @@ def test_import(qtbot):
     fname = "tests/data/projections/wgs84.shp"
     widget.populate_from_fname(fname)
 
-    assert widget.spdom.ui.fgdc_northbc.text() == '39.3367364'
+    assert widget.spdom.ui.fgdc_northbc.text() == '39.3367'
 
 

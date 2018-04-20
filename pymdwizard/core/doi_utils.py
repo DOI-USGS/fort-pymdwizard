@@ -128,13 +128,15 @@ def get_doi_citation_datacite(doi):
     response = utils.requests_pem_get(endpoint + '/' + doi)
     cite_data = json.loads(response.text)['data']['attributes']
 
-    if cite_data['container_title'] not in cite_data:
+    if 'container-title' not in cite_data:
         cite_data['container-title'] = cite_data.pop('container_title')
+    if 'data-center-id' not in cite_data:
+        cite_data['data-center-id'] = cite_data.pop('data_center_id')
 
     cite_data['publisher'] = cite_data['container-title']
     cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
-    if 'data_center_id' in cite_data and \
-                    'usgs' in cite_data['data_center_id']:
+    if 'data-center-id' in cite_data and \
+                    'usgs' in cite_data['data-center-id']:
         cite_data['container-title'] = None
         cite_data['pubplace'] = 'https://www.sciencebase.gov'
         cite_data['geoform'] = 'dataset'

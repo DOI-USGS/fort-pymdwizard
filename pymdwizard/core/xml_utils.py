@@ -403,7 +403,12 @@ class XMLRecord(object):
         """
         try:
             contents_path = Path(contents)
-            if contents_path.exists:
+            try:
+                exists = contents_path.exists()
+            except OSError:
+                exists = False
+
+            if exists:
                 self.fname = str(contents_path.absolute())
                 # they passde us a file path
                 self.record = lxml.parse(self.fname)
