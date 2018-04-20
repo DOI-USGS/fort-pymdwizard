@@ -6,7 +6,10 @@ import re
 from pymdwizard.core import utils
 
 fname = utils.get_resource_path("spelling/words.txt")
-wordup = set(line.strip() for line in open(fname, 'r'))
+try:
+    wordup = set(line.strip() for line in open(fname, 'r'))
+except:
+    wordup = set(line.strip() for line in open(fname, 'r', encoding='latin-1'))
 
 
 class Highlighter(QtGui.QSyntaxHighlighter):

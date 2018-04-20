@@ -53,7 +53,7 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_udom
-
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class Udom(WizardWidget):
 
@@ -70,6 +70,7 @@ class Udom(WizardWidget):
         self.ui = UI_udom.Ui_fgdc_attrdomv() # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
+        self.highlighter = Highlighter(self.ui.fgdc_udom.document())
 
     def to_xml(self):
         """

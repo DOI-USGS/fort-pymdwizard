@@ -72,6 +72,7 @@ from pymdwizard.gui import rdom
 from pymdwizard.gui import codesetd
 from pymdwizard.gui import edom_list
 
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class Attr(WizardWidget):
 
@@ -92,6 +93,7 @@ class Attr(WizardWidget):
         self.parent_ui = parent
         self.series = None
         self.nodata = None
+        self.highlighter = Highlighter(self.ui.fgdc_attrdef.document())
 
     def build_ui(self):
         """

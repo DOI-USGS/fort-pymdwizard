@@ -63,8 +63,6 @@ from pymdwizard.gui.ui_files import UI_citeinfo
 from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.ui_files import UI_DOICiteinfoImporter
-
-
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 try:
