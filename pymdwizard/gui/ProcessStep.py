@@ -123,8 +123,8 @@ class ProcessStep(WizardWidget): #
         procstep.append(procdesc)
 
         for srcused in self.srcused_list.get_widgets():
-            if srcused.added_line.text():
-                xml_utils.xml_node('srcused', text=srcused.added_line.text(),
+            if srcused.text():
+                xml_utils.xml_node('srcused', text=srcused.text(),
                                    parent_node=procstep)
 
         procdate = xml_utils.xml_node(tag='procdate')
@@ -133,8 +133,8 @@ class ProcessStep(WizardWidget): #
         procstep.append(procdate)
 
         for srcprod in self.srcprod_list.get_widgets():
-            if srcprod.added_line.text():
-                xml_utils.xml_node('srcprod', text=srcprod.added_line.text(),
+            if srcprod.text():
+                xml_utils.xml_node('srcprod', text=srcprod.text(),
                                    parent_node=procstep)
 
         if self.proccont.ui.rbtn_yes.isChecked():
@@ -174,7 +174,7 @@ class ProcessStep(WizardWidget): #
                     self.srcused_list.clear_widgets(add_another=False)
                     for srcused in srcuseds:
                         srcused_widget = self.srcused_list.add_another()
-                        srcused_widget.added_line.setText(srcused.text)
+                        srcused_widget.setText(srcused.text)
                 else:
                     self.srcused_list.clear_widgets(add_another=True)
 
@@ -183,7 +183,7 @@ class ProcessStep(WizardWidget): #
                     self.srcprod_list.clear_widgets(add_another=False)
                     for srcprod in srcprods:
                         srcprod_widget = self.srcprod_list.add_another()
-                        srcprod_widget.added_line.setText(srcprod.text)
+                        srcprod_widget.setText(srcprod.text)
                 else:
                     self.srcprod_list.clear_widgets(add_another=True)
 

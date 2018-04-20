@@ -93,11 +93,11 @@ class Theme(KeywordsRepeater):  #
         existing_kws = self.get_keywords()
         if existing_kws[0] == '':
             kw = self.keywords.get_widgets()[0]
-            kw.added_line.setText(keyword)
+            kw.setText(keyword)
             kw.added_line.setReadOnly(locked)
         elif keyword not in existing_kws:
             kw = self.keywords.add_another()
-            kw.added_line.setText(keyword)
+            kw.setText(keyword)
             kw.added_line.setReadOnly(locked)
 
     def get_thesaurus_name(self):
@@ -146,12 +146,12 @@ class Theme(KeywordsRepeater):  #
 
                 keywords = keywtax.xpath("{}key".format(self.which))
                 for kw in keywords:
-                    if self.keywords.get_widgets()[0].added_line.text() == '':
+                    if self.keywords.get_widgets()[0].text() == '':
                         kw_widget = self.get_widgets()[0]
                     else:
                         kw_widget = self.keywords.add_another()
 
-                    kw_widget.added_line.setText(kw.text)
+                    kw_widget.setText(kw.text)
 
             else:
                 print ("The tag is not theme")

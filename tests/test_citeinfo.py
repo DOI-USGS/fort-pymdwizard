@@ -29,7 +29,7 @@ def test_citation_to_xml(qtbot):
     qtbot.addWidget(widget)
 
     #assert type(progress) == 'lxml.etree._Element'
-    widget.ui.fgdc_title.setText("test title")
+    widget.ui.fgdc_title.setPlainText("test title")
     widget.ui.pubdate_widget.set_date('1234')
     widget.ui.fgdc_geoform.setCurrentText('book')
 

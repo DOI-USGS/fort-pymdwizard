@@ -64,6 +64,9 @@ from pymdwizard.gui.fgdc_date import FGDCDate
 from pymdwizard.gui.repeating_element import RepeatingElement
 from pymdwizard.gui.ui_files import UI_DOICiteinfoImporter
 
+
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+
 try:
     import habanero
     hananero_installed = True
@@ -81,6 +84,7 @@ class Citeinfo(WizardWidget): #
         self.schema = 'bdp'
         WizardWidget.__init__(self, parent=parent)
         self.doi_lookup = None
+        self.highlighter = Highlighter(self.ui.fgdc_title.document())
 
     def build_ui(self, ):
         """
@@ -123,7 +127,8 @@ class Citeinfo(WizardWidget): #
                                             widget_kwargs={'label': 'Originator',
                                                            'line_name':'fgdc_origin',
                                                            'required':True,
-                                                           'placeholder_text':self.origin_hint})
+                                                           'placeholder_text':self.origin_hint,
+                                                            'spellings':False},)
 
         self.ui.originator_layout.addWidget(self.fgdc_origin)
         self.fgdc_origin.add_another()
@@ -324,13 +329,13 @@ class Citeinfo(WizardWidget): #
         citeinfo = xml_utils.xml_node('citeinfo')
 
         for origin in self.fgdc_origin.get_widgets():
-            xml_utils.xml_node('origin', text=origin.added_line.text(),
+            xml_utils.xml_node('origin', text=origin.text(),
                                parent_node=citeinfo)
 
         pubdate = xml_utils.xml_node("pubdate",
                                      text=self.ui.pubdate_widget.get_date(),
                                      parent_node=citeinfo)
-        title = xml_utils.xml_node("title", self.ui.fgdc_title.text(),
+        title = xml_utils.xml_node("title", self.ui.fgdc_title.toPlainText(),
                                    parent_node=citeinfo)
 
         geoform = xml_utils.xml_node("geoform",
@@ -356,14 +361,14 @@ class Citeinfo(WizardWidget): #
 
         if self.ui.fgdc_othercit.toPlainText():
             othercit = xml_utils.xml_node("othercit",
-                                         self.ui.fgdc_othercit.toPlainText(),
-                                         parent_node=citeinfo)
+                                          self.ui.fgdc_othercit.toPlainText(),
+                                          parent_node=citeinfo)
 
         for onlink in self.onlink_list.get_widgets():
-            if onlink.added_line.text() != '':
+            if onlink.text() != '':
                 onlink_node = xml_utils.xml_node('onlink',
                                                  parent_node=citeinfo,
-                                                 text=onlink.added_line.text())
+                                                 text=onlink.text())
 
         if self.include_lwork and self.ui.radio_lworkyes.isChecked():
             lworkcit = xml_utils.xml_node('lworkcit', parent_node=citeinfo)
@@ -400,7 +405,7 @@ class Citeinfo(WizardWidget): #
                 self.fgdc_origin.clear_widgets(add_another=False)
                 for origin in citeinfo.findall('origin'):
                     origin_widget = self.fgdc_origin.add_another()
-                    origin_widget.added_line.setText(origin.text)
+                    origin_widget.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
 
@@ -419,7 +424,7 @@ class Citeinfo(WizardWidget): #
                 for onlink in citeinfo.findall('onlink'):
                     self.onlink_list.add_another()
                     onlink_widget = self.onlink_list.widgets[-1]
-                    onlink_widget.added_line.setText(onlink.text)
+                    onlink_widget.setText(onlink.text)
 
             if citeinfo.xpath('serinfo'):
                 self.ui.radio_seriesyes.setChecked(True)

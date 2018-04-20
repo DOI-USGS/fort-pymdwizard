@@ -49,15 +49,17 @@ the copyright owner.
 
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QTextEdit
+
 
 from pymdwizard.core import utils
 
 from pymdwizard.gui.ui_files import UI_repeating_element
-
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class DefaultWidget(QWidget):
     """
@@ -65,7 +67,7 @@ class DefaultWidget(QWidget):
     It's a simple line edit with a label and an option required astrix.
     """
     def __init__(self, label='', line_name='na', required=False,
-                 placeholder_text=None,
+                 placeholder_text=None, spellings=True,
                  parent=None):
         """
 
@@ -83,7 +85,14 @@ class DefaultWidget(QWidget):
         QWidget.__init__(self, parent=parent)
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
-        self.added_line = QLineEdit()
+        self.added_line = QPlainTextEdit()
+        self.added_line.setMaximumHeight(21)
+        self.added_line.setMaximumBlockCount(1)
+        self.added_line.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.added_line.setLineWrapMode(QPlainTextEdit.NoWrap)
+        if spellings:
+            self.highlighter = Highlighter(self.added_line.document())
+
         if not placeholder_text is None:
             self.added_line.setPlaceholderText(placeholder_text)
         self.added_line.setObjectName(line_name)
@@ -112,10 +121,13 @@ class DefaultWidget(QWidget):
         self.setLayout(self.layout)
 
     def setText(self, text):
-        self.added_line.setText(text)
+        utils.set_text(self.added_line, text)
+        cursor = self.added_line.textCursor()
+        cursor.setPosition(0)
+        self.added_line.setTextCursor(cursor)
 
     def text(self):
-        return self.added_line.text()
+        return self.added_line.toPlainText()
 
 
 class RepeatingElement(QWidget):
@@ -125,6 +137,7 @@ class RepeatingElement(QWidget):
                       'Add text': 'button add me',
                       'Remove text': 'button del me',
                       'widget': DefaultWidget,
+                      'spellings': True,
                       'widget_kwargs': {'label': 'add a text label'}}
 
     def __init__(self, which='vertical', tab_label='tab',

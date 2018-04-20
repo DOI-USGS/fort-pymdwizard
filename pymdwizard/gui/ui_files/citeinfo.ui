@@ -160,7 +160,21 @@ subcontrol-position: top left; /* position at the top left*/
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
-                <widget class="QLineEdit" name="fgdc_title"/>
+                <widget class="QPlainTextEdit" name="fgdc_title">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>23</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">font: 11pt &quot;Arial&quot;;
+color: rgb(50, 50, 50);</string>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_5">

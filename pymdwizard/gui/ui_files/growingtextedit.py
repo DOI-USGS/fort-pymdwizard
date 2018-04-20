@@ -5,13 +5,14 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class GrowingTextEdit(QPlainTextEdit):
 
     def __init__(self, *args, **kwargs):
         super(GrowingTextEdit, self).__init__(*args, **kwargs)
         self.document().contentsChanged.connect(self.sizeChange)
-
+        self.highlighter = Highlighter(self.document())
         self.heightMin = 45
         self.heightMax = 300
 
@@ -39,6 +40,7 @@ class GrowingTextEdit(QPlainTextEdit):
             self.item.setSizeHint(QSize(self.width(), size_hint + 100))
         except:
             pass
+
 
 
 if __name__ == "__main__":

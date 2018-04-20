@@ -61,7 +61,7 @@ class Keywordtax(KeywordsRepeater):
 
     def __init__(self, parent=None):
         KeywordsRepeater.__init__(self, keywords_label='Taxonomic keywords',
-                                  parent=parent)
+                                  spellings=False, parent=parent)
         self.ui.fgdc_themekt.name = 'fgdc_taxonkt'
 
     def clear_widget(self):
@@ -105,7 +105,7 @@ class Keywordtax(KeywordsRepeater):
                 self.keywords.clear_widgets(add_another=False)
                 for kw in keywords:
                     kw_widget = self.keywords.add_another()
-                    kw_widget.added_line.setText(kw.text)
+                    kw_widget.setText(kw.text)
 
             else:
                 print ("The tag is not keywtax")

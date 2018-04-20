@@ -94,7 +94,11 @@ class Ui_parent_form(object):
         self.verticalLayout_10.addWidget(self.label_34)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.fgdc_title = QtWidgets.QLineEdit(self.help_title)
+        self.fgdc_title = QtWidgets.QPlainTextEdit(self.help_title)
+        self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 23))
+        self.fgdc_title.setStyleSheet("font: 11pt \"Arial\";\n"
+"color: rgb(50, 50, 50);")
+        self.fgdc_title.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.fgdc_title.setObjectName("fgdc_title")
         self.horizontalLayout_4.addWidget(self.fgdc_title)
         self.label_5 = QtWidgets.QLabel(self.help_title)

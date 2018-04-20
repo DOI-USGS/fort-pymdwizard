@@ -60,11 +60,12 @@ class KeywordsRepeater(WizardWidget):
     drag_label = "NA <NA>"
 
     def __init__(self, thesaurus_label='Thesaurus', keywords_label='Keywords:',
-                 line_name='kw', parent=None):
+                 line_name='kw', spellings=True, parent=None):
         self.thesaurus_label = thesaurus_label
         self.keywords_label = keywords_label
         self.line_name = line_name
         self.keywords = None
+        self.spellings = spellings
 
         WizardWidget.__init__(self, parent=parent)
 
@@ -84,7 +85,8 @@ class KeywordsRepeater(WizardWidget):
 
         widget_kwargs = {'label': self.keywords_label,
                          'line_name': self.line_name,
-                         'required': True}
+                         'required': True,
+                         'spellings': self.spellings}
 
         self.keywords = RepeatingElement(add_text='Add keyword',
                                          remove_text='Remove last',
@@ -100,7 +102,7 @@ class KeywordsRepeater(WizardWidget):
         self.keywords.ui.addAnother.setEnabled(False)
 
     def get_keywords(self):
-        return [kw.added_line.text() for kw in self.keywords.get_widgets()]
+        return [kw.text() for kw in self.keywords.get_widgets()]
 
     def add_another(self, locked=False):
         widget = self.keywords.add_another()
