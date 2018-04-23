@@ -73,6 +73,7 @@ except:
 
 MAX_ROWS = 1000000
 
+
 def read_csv(fname, delimiter=','):
     """
     converts a csv, specified by filename, into a pandas dataframe
@@ -273,3 +274,39 @@ def read_data(fname, sheet_name='', delimiter=','):
     elif sheet_name:
         return read_excel(fname, sheet_name)
 
+
+def sniff_nodata(series):
+    """
+    Attempt to guess the nodata value associated with a series
+
+    Parameters
+    ----------
+    series : pandas series
+
+    Returns
+    -------
+    str : the nodata placeholder in a series
+    """
+    uniques = series.uniques()
+
+    for nd in ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
+               '-nan', '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN',
+               'n/a', 'nan', 'null', -9999, '-9999', '', 'Nan']:
+        if nd in list(uniques):
+            return nd
+
+    return None
+
+def clean_nodata(series, nodata=None):
+    """
+    Given a series
+
+    Parameters
+    ----------
+    series : pandas series
+    nodata : string, int, or float Nodata placeholder
+
+    Returns
+    -------
+    series
+    """

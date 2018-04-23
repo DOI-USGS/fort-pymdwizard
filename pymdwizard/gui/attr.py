@@ -71,7 +71,7 @@ from pymdwizard.gui import udom
 from pymdwizard.gui import rdom
 from pymdwizard.gui import codesetd
 from pymdwizard.gui import edom_list
-
+from pymdwizard.gui import edom
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class Attr(WizardWidget):
@@ -83,6 +83,10 @@ class Attr(WizardWidget):
         # This changes to true when this attribute is being viewed/edited
         self.active = False
         self.ef = 0
+
+        self.nodata = None
+        self.nodata_edom = edom.Edom()
+
         WizardWidget.__init__(self, parent=parent)
 
         # an in memory record of all  the contents that were selected
@@ -92,7 +96,7 @@ class Attr(WizardWidget):
 
         self.parent_ui = parent
         self.series = None
-        self.nodata = None
+        self.ui.nodata_section.hide()
         self.highlighter = Highlighter(self.ui.fgdc_attrdef.document())
 
     def build_ui(self):
@@ -121,6 +125,7 @@ class Attr(WizardWidget):
         self.ui.rbtn_nodata_yes.toggled.connect(self.include_nodata_change)
         self.domain = None
         self.ui.nodata_content.hide()
+        self.ui.nodata_content.layout().addWidget(self.nodata_edom)
         self.ui.rbtn_nodata_no.setChecked(True)
         self.ui.comboBox.setCurrentIndex(3)
 
@@ -137,9 +142,13 @@ class Attr(WizardWidget):
             None
             """
         if b:
-            self.ui.nodata_section.show()
+            # self.ui.nodata_section.show()
+            self.nodata
+            self.nodata_edom.show()
         else:
-            self.ui.nodata_section.hide()
+            # self.ui.nodata_section.hide()
+            self.nodata_edom.hide()
+            self.nodata = None
 
     def mousePressEvent(self, event):
         self.activate()
@@ -198,14 +207,14 @@ class Attr(WizardWidget):
         if self.series is not None:
             uniques = self.series.unique()
             if len(uniques) < 20:
-                return 0
+                return 0  # enumerated
             elif np.issubdtype(self.series.dtype, np.number):
-                return 1
+                return 1  # range
             else:
-                return 3
+                return 3  # unrepresentable
 
         # without a series to introspect we're going to default to udom
-        return 3
+        return 3  # unrepresentable
 
     def store_current_content(self):
         """
@@ -227,21 +236,26 @@ class Attr(WizardWidget):
                 self._domain_content[0] = cur_xml
 
     def sniff_nodata(self):
-        uniques = self.series.unique()
+        uniques = self.clean_nodata(self.series).uniques()
 
         self.nodata = None
         for nd in ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
                     '-nan', '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN',
                     'n/a', 'nan', 'null', -9999, '-9999', '', 'Nan']:
-            if nd in uniques:
+            if nd in list(uniques):
                 self.nodata = nd
 
-        if self.nodata is not None:
-            self.ui.rbtn_nodata_yes.setChecked(True)
-            if self.nodata == '':
-                self.ui.nodata_value.setText('<< empty cell >>')
-            else:
-                self.ui.nodata_value.setText(str(self.nodata))
+
+
+
+        # if self.nodata is not None:
+        #     self.ui.rbtn_nodata_yes.setChecked(True)
+        #     if self.nodata == '':
+        #         self.nodata_edom.ui.fgdc_edomv.setText('<< empty cell >>')
+        #     else:
+        #         self.nodata_edom.ui.fgdc_edomv.setText(str(self.nodata))
+        #
+        #     self.nodata_edom.ui.fgdc_edomvd.setPlainText('No Data')
 
     def populate_domain_content(self, which='guess'):
         """
@@ -260,9 +274,12 @@ class Attr(WizardWidget):
         self.clear_domain()
 
         if which == 'guess':
+            self.nodata = self.sniff_nodata()
             index = self.guess_domain()
             self.sniff_nodata()
         else:
+            if str(self.nodata) != self.nodata_edom.ui.fgdc_edomv.text():
+                self.nodata =  self.nodata_edom.ui.fgdc_edomv.text()
             index = which
 
         self.ui.comboBox.setCurrentIndex(index)
@@ -280,7 +297,19 @@ class Attr(WizardWidget):
             # This domain has been used before, display previous content
             self.domain.from_xml(self._domain_content[index])
         elif self.series is not None and index == 0:
-            uniques = self.series[self.series != self.nodata].unique()
+            clean_series = self.clean_nodata()
+            try:
+                uniques = self.series[self.series != self.nodata].unique()
+            except TypeError:
+                try:
+                    uniques = self.series[self.series != int(self.nodata)].unique()
+                except ValueError:
+                    try:
+                        uniques = self.series[self.series != float(self.nodata)].unique()
+                    except:
+                        pass
+
+            uniques = self.series.unique()
             if len(uniques) > 100:
                 msg = "There are more than 100 unique values in this field."
                 msg += "\n This tool cannot smoothly display that many " \
@@ -295,16 +324,7 @@ class Attr(WizardWidget):
             else:
                 self.domain.populate_from_list(uniques)
         elif self.series is not None and index == 1:
-            clean_series = self.series[self.series != self.nodata]
-            try:
-                clean_series = clean_series.astype('int64')
-            except ValueError:
-                try:
-                    clean_series = clean_series.astype('float64')
-                except ValueError:
-                    pass
-
-
+            clean_series = self.clean_nodata()
             try:
                 self.domain.ui.fgdc_rdommin.setText(str(clean_series.min()))
             except:
@@ -323,9 +343,32 @@ class Attr(WizardWidget):
                                      msg)
                 utils.set_window_icon(msgbox)
                 msgbox.exec_()
-
-
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
+
+    def clean_nodata(self, series):
+        """
+        returns series with the nodata values removed and converted to a
+        numeric data type if possible
+
+        Parameters
+        ----------
+        series : pandas series
+
+        Returns
+        -------
+        pandas series
+        """
+        clean_series = self.series[self.series != self.nodata]
+        try:
+            clean_series = clean_series.astype('int64')
+        except ValueError:
+            try:
+                clean_series = clean_series.astype('float64')
+            except ValueError:
+                pass
+
+        return clean_series
+
 
     def change_domain(self):
         """
@@ -501,6 +544,9 @@ class Attr(WizardWidget):
             self.populate_domain_content(cur_index)
             domain = self.domain.to_xml()
 
+
+
+
         if self.ui.comboBox.currentIndex() == 0:
             attr = xml_utils.XMLNode(domain)
             attr.clear_children(tag='attrlabl')
@@ -521,6 +567,12 @@ class Attr(WizardWidget):
         attrdefs = xml_utils.xml_node('attrdefs',
                                       text=self.ui.fgdc_attrdefs.text(),
                                       parent_node=attr, index=2)
+
+        if self.ui.rbtn_nodata_yes.isChecked():
+            attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr,
+                                          index=0)
+            edom = xml_utils.xml_node('attrdomv', parent_node=attr,
+                                      index=0)
 
         return attr
 
