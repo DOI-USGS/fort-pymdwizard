@@ -157,6 +157,8 @@ class Ui_MainWindow(object):
         self.actionSpatial.setCheckable(True)
         self.actionSpatial.setChecked(True)
         self.actionSpatial.setObjectName("actionSpatial")
+        self.actionSpelling_flag = QtWidgets.QAction(MainWindow)
+        self.actionSpelling_flag.setObjectName("actionSpelling_flag")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
@@ -168,6 +170,8 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuValidate.addAction(self.actionRun_Validation)
         self.menuValidate.addAction(self.actionClear_validation)
+        self.menuValidate.addSeparator()
+        self.menuValidate.addAction(self.actionSpelling_flag)
         self.menuValidate.addSeparator()
         self.menuValidate.addAction(self.generate_review)
         self.menuPreview.addAction(self.actionPreview)
@@ -268,4 +272,5 @@ class Ui_MainWindow(object):
         self.actionEntity_and_Attribute.setText(_translate("MainWindow", "Entity and Attribute"))
         self.actionDistribution.setText(_translate("MainWindow", "Distribution"))
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
+        self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
 
