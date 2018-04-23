@@ -8,7 +8,7 @@ from pymdwizard.core import utils
 fname = utils.get_resource_path("spelling/words.txt")
 try:
     wordup = set(line.strip() for line in open(fname, 'r'))
-except:
+except UnicodeDecodeError:
     wordup = set(line.strip() for line in open(fname, 'r', encoding='latin-1'))
 
 
@@ -21,7 +21,12 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         self.errorFormat.setForeground(QtCore.Qt.red)
         self.errorFormat.setBackground(QtCore.Qt.yellow)
 
+        self.enabled = True
+
     def highlightBlock(self, text):
+        if not self.enabled:
+            return None
+
         words = re.findall(r"[\w]+", text)
 
         for word in words:

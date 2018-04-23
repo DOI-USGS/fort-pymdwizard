@@ -185,6 +185,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSpatial.triggered.connect(self.use_spatial)
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
+        self.ui.actionSpelling_flag.triggered.connect(self.switch_spelling)
 
     def open_recent_file(self):
         """
@@ -868,6 +869,55 @@ class PyMdWizardMainForm(QMainWindow):
         """)
 
         self.error_widgets.append(widget_parent)
+
+    def switch_spelling(self, e):
+        """
+        Handle click event of the Turn Spelling (OFF | ON) action
+        Changes the action's label and updates the widget's highlighter.
+
+        Parameters
+        ----------
+        e : Qt event, not used
+
+        Returns
+        -------
+        None
+        """
+        if self.ui.actionSpelling_flag.text() == 'Turn Spelling OFF':
+            self.ui.actionSpelling_flag.setText('Turn Spelling ON')
+            which = False
+        else:
+            self.ui.actionSpelling_flag.setText('Turn Spelling OFF')
+            which = True
+
+        self.recursive_spell(self.metadata_root, which)
+
+    def recursive_spell(self, widget, which):
+        """
+        Turn on or off the spelling highlighter for this widget and
+        iterate through the widget's child widgets to recursively do the
+        same for them.
+
+        Parameters
+        ----------
+        widget : Qwidget
+        which : bool
+                flag to turn spelling on or off
+                True = turn spelling highlighting on
+                False = turn spelling highlighting off
+
+        Returns
+        -------
+            None
+        """
+        try:
+            widget.highlighter.enabled = which
+            widget.highlighter.rehighlight()
+        except:
+            pass
+
+        for child_widget in self.metadata_root.get_children(widget):
+            self.recursive_spell(child_widget, which)
 
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls:

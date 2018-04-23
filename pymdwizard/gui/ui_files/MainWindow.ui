@@ -108,6 +108,8 @@
     <addaction name="actionRun_Validation"/>
     <addaction name="actionClear_validation"/>
     <addaction name="separator"/>
+    <addaction name="actionSpelling_flag"/>
+    <addaction name="separator"/>
     <addaction name="generate_review"/>
    </widget>
    <widget class="QMenu" name="menuPreview">
@@ -493,6 +495,11 @@
    </property>
    <property name="text">
     <string>Spatial</string>
+   </property>
+  </action>
+  <action name="actionSpelling_flag">
+   <property name="text">
+    <string>Turn Spelling OFF</string>
    </property>
   </action>
  </widget>
