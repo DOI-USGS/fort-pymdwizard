@@ -470,7 +470,7 @@ DOI</string>
                 <string notr="true">font: italic;</string>
                </property>
                <property name="text">
-                <string>Type directly in the box below for items not in list.</string>
+                <string>Type directly in box below for items not in list.</string>
                </property>
               </widget>
              </item>
