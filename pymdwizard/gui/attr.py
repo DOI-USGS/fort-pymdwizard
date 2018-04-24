@@ -170,6 +170,7 @@ class Attr(WizardWidget):
         return QComboBox.mousePressEvent(self.ui.comboBox, event)
 
     def clear_domain(self):
+        self.nodata = None
         for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
@@ -236,7 +237,7 @@ class Attr(WizardWidget):
                 self._domain_content[0] = cur_xml
 
     def sniff_nodata(self):
-        uniques = self.clean_nodata(self.series).uniques()
+        uniques = self.clean_nodata().unique()
 
         self.nodata = None
         for nd in ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
@@ -245,17 +246,14 @@ class Attr(WizardWidget):
             if nd in list(uniques):
                 self.nodata = nd
 
+        if self.nodata is not None:
+            self.ui.rbtn_nodata_yes.setChecked(True)
+            if self.nodata == '':
+                self.nodata_edom.ui.fgdc_edomv.setText('<< empty cell >>')
+            else:
+                self.nodata_edom.ui.fgdc_edomv.setText(str(self.nodata))
 
-
-
-        # if self.nodata is not None:
-        #     self.ui.rbtn_nodata_yes.setChecked(True)
-        #     if self.nodata == '':
-        #         self.nodata_edom.ui.fgdc_edomv.setText('<< empty cell >>')
-        #     else:
-        #         self.nodata_edom.ui.fgdc_edomv.setText(str(self.nodata))
-        #
-        #     self.nodata_edom.ui.fgdc_edomvd.setPlainText('No Data')
+            self.nodata_edom.ui.fgdc_edomvd.setPlainText('No Data')
 
     def populate_domain_content(self, which='guess'):
         """
@@ -274,12 +272,14 @@ class Attr(WizardWidget):
         self.clear_domain()
 
         if which == 'guess':
-            self.nodata = self.sniff_nodata()
-            index = self.guess_domain()
             self.sniff_nodata()
+            index = self.guess_domain()
         else:
-            if str(self.nodata) != self.nodata_edom.ui.fgdc_edomv.text():
-                self.nodata =  self.nodata_edom.ui.fgdc_edomv.text()
+            if self.ui.rbtn_nodata_yes.isChecked() and \
+               str(self.nodata) != self.nodata_edom.ui.fgdc_edomv.text() and  \
+               (self.nodata == '' and \
+               self.nodata_edom.ui.fgdc_edomv.text() == '<< empty cell >>'):
+                self.nodata = self.nodata_edom.ui.fgdc_edomv.text()
             index = which
 
         self.ui.comboBox.setCurrentIndex(index)
@@ -345,7 +345,7 @@ class Attr(WizardWidget):
                 msgbox.exec_()
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
-    def clean_nodata(self, series):
+    def clean_nodata(self):
         """
         returns series with the nodata values removed and converted to a
         numeric data type if possible
@@ -358,6 +358,9 @@ class Attr(WizardWidget):
         -------
         pandas series
         """
+        if self.nodata is None:
+            return self.series
+
         clean_series = self.series[self.series != self.nodata]
         try:
             clean_series = clean_series.astype('int64')
