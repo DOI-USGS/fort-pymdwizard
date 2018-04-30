@@ -97,6 +97,7 @@ class Attr(WizardWidget):
         self.parent_ui = parent
         self.series = None
         self.ui.nodata_section.hide()
+        self.ui.nodata_content.hide()
         self.highlighter = Highlighter(self.ui.fgdc_attrdef.document())
 
     def build_ui(self):
@@ -141,14 +142,15 @@ class Attr(WizardWidget):
             -------
             None
             """
-        if b:
-            # self.ui.nodata_section.show()
-            self.nodata
-            self.nodata_edom.show()
-        else:
-            # self.ui.nodata_section.hide()
-            self.nodata_edom.hide()
-            self.nodata = None
+        return
+        # if b:
+        #     # self.ui.nodata_section.show()
+        #     self.nodata
+        #     self.nodata_edom.show()
+        # else:
+        #     # self.ui.nodata_section.hide()
+        #     self.nodata_edom.hide()
+        #     self.nodata = None
 
     def mousePressEvent(self, event):
         self.activate()
@@ -372,7 +374,6 @@ class Attr(WizardWidget):
 
         return clean_series
 
-
     def change_domain(self):
         """
         When changing the domain we must first store the current contents
@@ -403,7 +404,7 @@ class Attr(WizardWidget):
             self.animation.setEndValue(QSize(345, self.height()))
             self.animation.start()
             self.ui.attrdomv_contents.show()
-            self.ui.nodata_content.show()
+            # self.ui.nodata_content.show()
             self.ui.place_holder.hide()
             cbo = self.ui.comboBox
             self.populate_domain_content(cbo.currentIndex())
@@ -422,7 +423,7 @@ class Attr(WizardWidget):
             self.animation.setDuration(200)
             self.animation.setEndValue(QSize(100, self.height()))
             self.animation.start()
-            self.ui.nodata_content.hide()
+            # self.ui.nodata_content.hide()
             self.clear_domain()
             self.ui.place_holder.show()
 
@@ -546,9 +547,6 @@ class Attr(WizardWidget):
         else:
             self.populate_domain_content(cur_index)
             domain = self.domain.to_xml()
-
-
-
 
         if self.ui.comboBox.currentIndex() == 0:
             attr = xml_utils.XMLNode(domain)
