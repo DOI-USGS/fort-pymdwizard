@@ -1,3 +1,14 @@
+dendrochronology
+borers
+intraguild
+quantifications
+quantification
+herbivory
+generalist
+json
+javascript
+covariates
+covariate
 nhd
 taxa
 flowline

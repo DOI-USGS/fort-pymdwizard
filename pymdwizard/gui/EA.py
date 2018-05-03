@@ -54,7 +54,7 @@ from pymdwizard.core import xml_utils
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_EA
 from pymdwizard.gui.detailed import Detailed
-
+from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 class EA(WizardWidget):  #
 
@@ -75,6 +75,8 @@ class EA(WizardWidget):  #
         detailed = self.add_detailed()
 
         self.setup_dragdrop(self)
+        self.highlighter = Highlighter(self.ui.fgdc_eaover.document())
+        self.highlighter2 = Highlighter(self.ui.fgdc_eadetcit.document())
         return None
 
     def connect_events(self):

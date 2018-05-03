@@ -55,6 +55,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_udom
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
+
 class Udom(WizardWidget):
 
     drag_label = "Unrepresentable Domain <udom>"
