@@ -180,6 +180,12 @@ class Vertdef(WizardWidget):  #
         else:
             self.ui.depthsys_contents.hide()
 
+    def clear_widget(self):
+        WizardWidget.clear_widget(self)
+        self.ui.rbtn_no.setChecked(True)
+        self.ui.rbtn_no_alt.setChecked(True)
+        self.ui.rbtn_no_depth.setChecked(True)
+
     def to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -255,7 +261,7 @@ class Vertdef(WizardWidget):  #
                     self.depthres_list.clear_widgets(add_another=False)
                     for depthres in vertdef.xpath('depthsys/depthres'):
                         depthres_widget = self.depthres_list.add_another()
-                        depthres_widget.added_line.setText(depthres.text)
+                        depthres_widget.added_line.setPlainText(depthres.text)
                     if len(vertdef.xpath('depthsys/depthres')) == 0:
                         self.depthres_list.add_another()
 
