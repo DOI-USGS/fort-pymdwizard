@@ -297,9 +297,11 @@ def sniff_nodata(series):
 
     return None
 
+
 def clean_nodata(series, nodata=None):
     """
-    Given a series
+    Given a series remove the values that match the specified nodata value
+    and convert it to an int or float if possible
 
     Parameters
     ----------
@@ -308,5 +310,23 @@ def clean_nodata(series, nodata=None):
 
     Returns
     -------
-    series
+    pandas series
     """
+    if nodata is None:
+        return series
+
+    clean_series = series[series != nodata]
+
+    try:
+        clean_series = clean_series.astype('int64')
+    except ValueError:
+        try:
+            clean_series = clean_series.astype('float64')
+        except ValueError:
+            pass
+
+    return clean_series
+
+
+
+

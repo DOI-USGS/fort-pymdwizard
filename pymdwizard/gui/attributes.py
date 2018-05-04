@@ -94,8 +94,8 @@ class Attributes(WizardWidget):  #
             attr_i.ui.fgdc_attrlabl.setText(str(col_label))
 
             attr_i.set_series(col)
-            attr_i.ui.comboBox.setCurrentIndex(attr_i.guess_domain())
             attr_i.sniff_nodata()
+            attr_i.ui.comboBox.setCurrentIndex(attr_i.guess_domain())
             self.append_attr(attr_i)
 
         self.attrs[0].supersize_me()
