@@ -87,7 +87,7 @@ class Attr(WizardWidget):
         self.ef = 0
 
         self.nodata = None
-        self.nodata_edom = edom.Edom()
+        self.nodata_content = (False, None) # nodata checked, last nodata node
 
         WizardWidget.__init__(self, parent=parent)
 
@@ -129,10 +129,9 @@ class Attr(WizardWidget):
         self.ui.fgdc_attrdefs.mousePressEvent = self.attrdefs_press
         self.ui.comboBox.mousePressEvent = self.combo_press
         self.ui.rbtn_nodata_yes.toggled.connect(self.include_nodata_change)
-        self.nodata_edom.ui.fgdc_edomv.textChanged.connect(self.nodata_changed)
+
         self.domain = None
         self.ui.nodata_content.hide()
-        self.ui.nodata_content.layout().addWidget(self.nodata_edom)
         self.ui.rbtn_nodata_no.setChecked(True)
         self.ui.comboBox.setCurrentIndex(3)
 
@@ -149,13 +148,12 @@ class Attr(WizardWidget):
             None
             """
         if b:
-            # self.ui.nodata_section.show()
-            self.nodata
-            self.nodata_edom.show()
+            self.ui.nodata_section.show()
+            # self.nodata
+            # self.nodata_edom.show()
         else:
-            # self.ui.nodata_section.hide()
-            self.nodata_edom.hide()
-            self.nodata = None
+            self.ui.nodata_section.hide()
+            # self.nodata = None
 
     def mousePressEvent(self, event):
         self.activate()
@@ -180,6 +178,11 @@ class Attr(WizardWidget):
         for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
+
+        try:
+            self.nodata_edom.deleteLater()
+        except:
+            pass
 
     def set_series(self, series):
         """
@@ -247,6 +250,12 @@ class Attr(WizardWidget):
                 self._domain_content[1] = cur_xml
             elif cur_xml.tag == 'attr':
                 self._domain_content[0] = cur_xml
+
+        if self.ui.rbtn_nodata_yes.isChecked():
+            self.nodata_content = (True, self.nodata_edom.to_xml())
+        else:
+            self.nodata_content = (False, self.nodata_edom.to_xml())
+
 
     def populate_domain_content(self, which='guess'):
         """
@@ -353,10 +362,18 @@ class Attr(WizardWidget):
             self.animation.setEndValue(QSize(345, self.height()))
             self.animation.start()
             self.ui.attrdomv_contents.show()
-            self.ui.nodata_content.show()
             self.ui.place_holder.hide()
             cbo = self.ui.comboBox
             self.populate_domain_content(cbo.currentIndex())
+
+            self.ui.nodata_content.show()
+            self.nodata_edom = edom.Edom()
+            self.ui.rbtn_nodata_yes.setChecked(self.nodata_content[0])
+            if self.nodata_content[1] is not None:
+                self.nodata_edom.from_xml(self.nodata_content[1])
+
+            self.nodata_edom.ui.fgdc_edomv.textChanged.connect(self.nodata_changed)
+            self.ui.nodata_section.layout().addWidget(self.nodata_edom)
 
     def regularsize_me(self):
         """
@@ -419,15 +436,18 @@ class Attr(WizardWidget):
             if nd in list(uniques):
                 self.nodata = nd
 
-        if self.nodata is not None:
-            self.ui.rbtn_nodata_yes.setChecked(True)
+        if self.nodata is None:
+            self.nodata_content = (False, self.nodata_content[1])
+        else:
+            temp_edom = edom.Edom()
             if self.nodata == '':
-                self.nodata_edom.ui.fgdc_edomv.setText('<< empty cell >>')
+                temp_edom.ui.fgdc_edomv.setText('<< empty cell >>')
             else:
-                self.nodata_edom.ui.fgdc_edomv.setText(str(self.nodata))
+                temp_edom.ui.fgdc_edomv.setText(str(self.nodata))
 
-            self.nodata_edom.ui.fgdc_edomvd.setPlainText('No Data')
-            self.clean_domain_nodata()
+            temp_edom.ui.fgdc_edomvd.setPlainText('No Data')
+            self.nodata_content = (True, temp_edom.to_xml())
+            temp_edom.deleteLater()
 
     def contextMenuEvent(self, event):
 
@@ -586,7 +606,7 @@ class Attr(WizardWidget):
                     if attrdomv.children[0].tag == 'edom' and \
                             (attrdomv.children[0].children[0].text in self.nodata_matches or \
                             attrdomv.children[0].children[1].text.lower() in ['nodata', 'no data']
-                            or attr_domains.count('edom')==1):
+                            or (attr_domains.count('edom')==1) and len(attr_domains) > 1):
                         self.ui.rbtn_nodata_yes.setChecked(True)
                         self.nodata_edom.from_xml(attrdomv.children[0].to_xml())
                         attrdomvs.remove(attrdomv)
