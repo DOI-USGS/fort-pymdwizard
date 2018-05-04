@@ -85,9 +85,35 @@ class Attributes(WizardWidget):  #
         self.minimize_children()
 
     def load_df(self, df):
+        if len(df.columns) > 100:
+            msgbox = QMessageBox(self)
+            utils.set_window_icon(msgbox)
+            msgbox.setIcon(QMessageBox.Question)
+
+            msg = "There are more than 100 columns in the dataset you are"
+            msg += " trying to build an Entity and Attribute section for!\n\n"
+            msg += "The application can become sluggish or unresponsive when "
+            msg += " loading and displaying that many columns.\n\n"
+            msg += "Displaying more than 250 columns can cause the application"
+            msg += " to crash.\n\n"
+            msg += "Often datasets with that many columns are documented with"
+            msg += " an overview instead of a detailed section, or using a "
+            msg += " external data dictionary.\n\n"
+            msg += "You have {} columns in this dataset.".format(len(df.columns))
+            msg += "\n\nAre you sure you want to continue?"
+
+            msgbox.setText(msg)
+            msgbox.setWindowTitle("Too Many Columns Warning")
+            msgbox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            confirm = msgbox.exec_()
+
+            if confirm == QMessageBox.No:
+                return
+
         self.clear_children()
 
         i = 0
+
         for col_label in df.columns:
             col = df[col_label]
             attr_i = attr.Attr(parent=self)
