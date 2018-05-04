@@ -1,3 +1,11 @@
+microhabitats
+microhabitat
+geodatabase
+georeferenced
+arcgis
+translocation
+translocations
+email
 dendrochronology
 borers
 intraguild
