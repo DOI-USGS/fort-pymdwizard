@@ -117,6 +117,10 @@ class PyMdWizardMainForm(QMainWindow):
         self.connect_events()
 
         self.load_default()
+        settings = QSettings('USGS', 'pymdwizard')
+        use_spelling = settings.value('use_spelling', True)
+        use_spelling = eval(use_spelling.capitalize())
+        self.switch_spelling(use_spelling)
 
     def build_ui(self):
         """
@@ -185,7 +189,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionSpatial.triggered.connect(self.use_spatial)
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
-        self.ui.actionSpelling_flag.triggered.connect(self.switch_spelling)
+        self.ui.actionSpelling_flag.triggered.connect(self.spelling_switch_triggered)
 
     def open_recent_file(self):
         """
@@ -870,7 +874,12 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.error_widgets.append(widget_parent)
 
-    def switch_spelling(self, e):
+    def spelling_switch_triggered(self, e):
+        spelling_action_text = self.ui.actionSpelling_flag.text()
+        use_spelling = spelling_action_text == 'Turn Spelling OFF'
+        self.switch_spelling(not use_spelling)
+
+    def switch_spelling(self, use_spelling):
         """
         Handle click event of the Turn Spelling (OFF | ON) action
         Changes the action's label and updates the widget's highlighter.
@@ -883,14 +892,15 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        if self.ui.actionSpelling_flag.text() == 'Turn Spelling OFF':
-            self.ui.actionSpelling_flag.setText('Turn Spelling ON')
-            which = False
-        else:
+        if use_spelling:
             self.ui.actionSpelling_flag.setText('Turn Spelling OFF')
-            which = True
+        else:
+            self.ui.actionSpelling_flag.setText('Turn Spelling ON')
 
-        self.recursive_spell(self.metadata_root, which)
+        self.recursive_spell(self.metadata_root, use_spelling)
+
+        settings = QSettings('USGS', 'pymdwizard')
+        settings.setValue('use_spelling', use_spelling)
 
     def recursive_spell(self, widget, which):
         """
@@ -938,16 +948,21 @@ class PyMdWizardMainForm(QMainWindow):
         :param e:
         :return:
         """
-        if e.mimeData().hasUrls:
-            e.setDropAction(Qt.CopyAction)
+        try:
+            if e.mimeData().hasUrls:
+                e.setDropAction(Qt.CopyAction)
 
-            url = e.mimeData().urls()[0]
-            fname = url.toLocalFile()
-            if os.path.isfile(fname):
-                self.open_file(fname)
-            e.accept()
-        else:
-            e.ignore()
+                url = e.mimeData().urls()[0]
+                fname = url.toLocalFile()
+                if os.path.isfile(fname):
+                    self.open_file(fname)
+                e.accept()
+            else:
+                e.ignore()
+        except:
+            # if anything goes wrong at all, pass silently.
+            # This is just a convenience function
+            pass
 
     def preview(self):
         """
