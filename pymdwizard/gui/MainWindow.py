@@ -402,7 +402,11 @@ class PyMdWizardMainForm(QMainWindow):
         self.load_default()
         save_as_fname = self.get_save_name()
         if save_as_fname:
-            template_fname = utils.get_resource_path('CSDGM_Template.xml')
+            settings = QSettings('USGS', 'pymdwizard')
+            template_fname = settings.value('template_fname')
+            if not os.path.exists(template_fname):
+                template_fname = utils.get_resource_path('CSDGM_Template.xml')
+
             shutil.copyfile(template_fname, save_as_fname)
             self.load_file(save_as_fname)
             self.set_current_file(save_as_fname)
@@ -1091,19 +1095,22 @@ class PyMdWizardMainForm(QMainWindow):
         settings.setValue('last_kernel', kernel)
 
     def about(self):
+        """
+        Display an 'about' message box with contanct info and current
+        version number
 
-        msgbox = QMessageBox(self)
-        msgbox.setWindowTitle("About")
-        msgbox.setTextFormat(Qt.RichText)
-
+        Returns
+        -------
+        None
+        """
         msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
         msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
         msg += 'and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>'
         msg += '<br>Version: {}<br>'.format(__version__)
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
-        msgbox.setText(msg)
-        msgbox.exec_()
+
+        msgbox = QMessageBox.about(self, 'About', msg)
 
     def check_for_updates(self):
         from subprocess import check_output
@@ -1120,7 +1127,7 @@ class PyMdWizardMainForm(QMainWindow):
                 msg += "Would you like to install these now?"
 
                 confirm = QMessageBox.question(self, "Updates Available", msg,
-                                               QMessageBox.Yes|QMessageBox.No)
+                                               QMessageBox.Yes | QMessageBox.No)
                 if confirm == QMessageBox.Yes:
                     self.update_from_github()
         except BaseException as e:
@@ -1162,7 +1169,7 @@ class PyMdWizardMainForm(QMainWindow):
         QMessageBox.information(self, "Update results", msg)
 
 
-def show_splash(version=''):
+def show_splash(version='2.x.x'):
     splash_fname = utils.get_resource_path('icons/splash.jpg')
     splash_pix = QPixmap(splash_fname)
 
@@ -1170,7 +1177,7 @@ def show_splash(version=''):
     splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
                                    transformMode=Qt.SmoothTransformation)
     numbers = {}
-    for number in list(range(10)) + ['point']:
+    for number in list(range(10)) + ['point', 'x']:
         fname = utils.get_resource_path('icons/{}.png'.format(number))
         pix = QPixmap(fname)
         size = pix.size() * .65
