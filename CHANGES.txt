@@ -1,37 +1,51 @@
 Changes
 =======
-2.0.3 (2/22/2018)
+2.0.4 (5/7/2018)
 -----
 
 New features:
+- Misspelled words are now highlighted in most text boxes.
+  See:
+- Added Vertical Coordinate Definition Source element.
+- Add No Data attribute domain type (single enumerated) to EA detailed sections.
+- Added ability to 'sniff' common no data values from input data columns.
+- Now bounding box values only display 4 significant digits.
+- Warning msg for loading datasets with > 100 columns.
+- Warning msg for changing domain type to range on text column.
 
+Bug fixes:
+- Dropped support for legacy Python (2.7)
+- Spatial domain parameters equal to 0 or 0.0 are displayed correctly.
+- Allow for incomplete mapproj content when reading records.
+- Show previously skipped sections when opening a new record.
+- Show remaining source infos if a malformed source info is encountered.
+- Fix for citeinfo DOIs not loading correctly.
+
+
+2.0.3 (2/22/2018)
+-----
+New features:
 - Updates to allow cross platform (Mac) compatibility.
 - Mac installer.
 - Moved MetadataWizard Tool version identifier to an XML Comment.
 - MP compatible FGDC version name string defaults.
 - Allow for empty Detailed sections in the Entity and Attribute.
 
-
 Bug fixes:
 - Feature classes in a file GDB can now be run from the Arc toolbox version.
 - Add warning message when opening a file with multiple domain types.
 
 
-
 2.0.2 (1/25/2018)
 -----
-
 New features:
-
 - Type in a place name in the Description of Geographic Extent to auto-populate bounding Coordinates.
 - Allow Navigation of controlled vocabularies by clicking on broader, narrower and related terms in Details text box.
 - Launch Jupyter now remembers last 10 previously used directories, and allows one to specify which Anaconda env to use.
 - Added check that srcused and srcprod have matching definitions in record.
 - Add current version to 'About' message.
 
-
 Bug fixes:
-
 - Fix multiple online linkages getting stripped on load.
 - Strip empty theme keywords elements that have the 'None' Thesaurus.
 - Fix several typos in UI.
@@ -40,17 +54,12 @@ Bug fixes:
 - Move Tool and Version info to XML comment instead of FGDC metuc element.
 
 
-
 2.0.1 (11/16/2017)
 -----
-
 New features:
-
 - None
 
-
 Bug fixes:
-
 - Fix validation not catching source used citation empty errors.
 - Update the setup.py to include the resources folder.
 
