@@ -118,8 +118,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.load_default()
         settings = QSettings('USGS', 'pymdwizard')
-        use_spelling = settings.value('use_spelling', True)
-        use_spelling = eval(use_spelling.capitalize())
+        use_spelling = settings.value('use_spelling', "true")
+        if isinstance(use_spelling, str):
+            use_spelling = eval(use_spelling.capitalize())
         self.switch_spelling(use_spelling)
 
     def build_ui(self):
@@ -1041,8 +1042,8 @@ class PyMdWizardMainForm(QMainWindow):
                 def open_file(filename):
                     if sys.platform == "win32":
                         os.startfile('"{}"'.format(filename))
-                    else:
-                        opener = "open" if sys.platform == "darwin" else "xdg-open"
+                    elif sys.platform == "darwin":
+                        opener = "open"
                         subprocess.call([opener, filename])
 
                 open_file(out_fname)
