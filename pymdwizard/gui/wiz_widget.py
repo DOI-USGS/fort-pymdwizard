@@ -333,7 +333,10 @@ class WizardWidget(QWidget):
         clipboard = QApplication.clipboard()
         mime_data = clipboard.mimeData()
         if mime_data.hasFormat('text/plain'):
-            element = xml_utils.string_to_node(mime_data.text())
+            try:
+                element = xml_utils.string_to_node(mime_data.text())
+            except:
+                element = None
             if element is not None:
                 self.from_xml(element)
             else:
