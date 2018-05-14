@@ -184,7 +184,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
         self.ui.generate_review.triggered.connect(self.generate_review_doc)
         self.ui.actionLaunch_Help.triggered.connect(self.launch_help)
-        self.ui.actionCheck_for_Updates.triggered.connect(self.update_from_github)
+        self.ui.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
         self.ui.actionAbout.triggered.connect(self.about)
         self.ui.actionData_Quality.triggered.connect(self.use_dataqual)
         self.ui.actionSpatial.triggered.connect(self.use_spatial)
@@ -1113,17 +1113,29 @@ class PyMdWizardMainForm(QMainWindow):
 
         msgbox = QMessageBox.about(self, 'About', msg)
 
-    def check_for_updates(self):
-        from subprocess import check_output
+    def check_for_updates(self, e=None, show_uptodate_msg=True):
+        """
+        Check if the usgs_root repo is at the same commit as this installation
 
-        install_dir = utils.get_install_dname()
-        root_dir = os.path.dirname(install_dir)
-        git_exe = os.path.join(root_dir, 'Python36_64', 'Library', 'bin', 'git.exe')
+        Parameters
+        ----------
+        e : qt event
+            
+        show_uptodate_msg : bool
+           Whether to display a msg if no updates found
 
+        Returns
+        -------
+        None
+        """
         try:
-            fetch = check_output([git_exe, 'fetch', 'usgs_root'], cwd=install_dir, shell=True)
-            updates = check_output([git_exe, 'log', 'HEAD..usgs_root/master'], cwd=install_dir, shell=True)
-            if updates:
+            from git import Repo
+            install_dir = utils.get_install_dname('pymdwizard')
+            repo = Repo(install_dir)
+            fetch = [r for r in repo.remotes if r.name=='usgs_root'][0].fetch()
+            master = [f for f in fetch if f.name=='usgs_root/master'][0]
+
+            if repo.head.commit != master.commit:
                 msg = "An update(s) are available for the Metadata Wizard.\n"
                 msg += "Would you like to install these now?"
 
@@ -1131,46 +1143,56 @@ class PyMdWizardMainForm(QMainWindow):
                                                QMessageBox.Yes | QMessageBox.No)
                 if confirm == QMessageBox.Yes:
                     self.update_from_github()
+            elif show_uptodate_msg:
+                msg = "MetadataWizard already up to date."
+                QMessageBox.information(self, "No Update Needed", msg)
+
         except BaseException as e:
-            pass
+            if not no_update_msg:
+                msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
+                msg += str(e)
+                QMessageBox.information(self, "Update results", msg)
 
     def update_from_github(self):
-        from subprocess import check_output
+        """
+        Merge the latest version of the Wizard into the local repo
 
-        if platform.system() == 'Darwin':
-            install_dir = utils.get_install_dname()
-            cmd = ['pip', 'install', '-U', 'git+https://github.com/usgs/fort-pymdwizard.git']
-            p = check_output(cmd)
-            msg =  "Updated from GitHub"
+        Returns
+        -------
+        None
+        """
 
-        else:
-            install_dir = utils.get_install_dname()
-            root_dir = os.path.dirname(install_dir)
-            update_bat = os.path.join(root_dir, 'update_wizard.bat')
-            if os.path.exists(update_bat) and os.path.exists(root_dir):
-                try:
-                    QApplication.setOverrideCursor(Qt.WaitCursor)
-                    p = check_output([update_bat], cwd=root_dir, shell=False)
-                    if p.splitlines()[-1] == b'Already up-to-date.':
-                        msg = 'Application already up to date.'
-                    else:
-                        msg = 'Application updated.\n\n'
-                        msg += 'Please close and restart the Wizard for these updates to take effect'
-                    QApplication.restoreOverrideCursor()
-                except BaseException as e:
-                    import traceback
-                    msg = "Could not update application:\n{}".format(traceback.format_exc())
-                    QApplication.restoreOverrideCursor()
-                    QMessageBox.warning(self, "Recent Files", msg)
+        try:
+            from git import Repo
+            install_dir = utils.get_install_dname('pymdwizard')
+            repo = Repo(install_dir)
+            fetch = [r for r in repo.remotes if r.name == 'usgs_root'][0].fetch()
+            master = [f for f in fetch if f.name == 'usgs_root/master'][0]
 
-            else:
-                msg = 'Could not find the batch file to update the application'
+            msg = 'Updated from GitHub\n\nUpdate Message:\n'
+            msg += repo.git.merge(master.name)
+            QMessageBox.information(self, "Update results", msg)
+        except BaseException as e:
+            msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
+            msg += str(e)
+            QMessageBox.information(self, "Update results", msg)
 
         QApplication.restoreOverrideCursor()
-        QMessageBox.information(self, "Update results", msg)
 
 
 def show_splash(version='2.x.x'):
+    """
+    Show the applications splash screen
+
+    Parameters
+    ----------
+    version : str
+            Version number as a string (only numerals, period or x supported)
+
+    Returns
+    -------
+    None
+    """
     splash_fname = utils.get_resource_path('icons/splash.jpg')
     splash_pix = QPixmap(splash_fname)
 
@@ -1213,7 +1235,7 @@ def launch_main(xml_fname=None, introspect_fname=None):
     mdwiz.show()
     splash.finish(mdwiz)
 
-    mdwiz.check_for_updates()
+    mdwiz.check_for_updates(show_uptodate_msg=False)
 
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)
