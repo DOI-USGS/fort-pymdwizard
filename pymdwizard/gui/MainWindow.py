@@ -1169,8 +1169,7 @@ class PyMdWizardMainForm(QMainWindow):
             fetch = [r for r in repo.remotes if r.name == 'usgs_root'][0].fetch()
             master = [f for f in fetch if f.name == 'usgs_root/master'][0]
 
-            msg = 'Updated from GitHub\n\nUpdate Message:\n'
-            msg += repo.git.merge(master.name)
+            msg = 'Updated Successfully from GitHub.'
             QMessageBox.information(self, "Update results", msg)
         except BaseException as e:
             msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
