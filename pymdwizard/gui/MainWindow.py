@@ -1148,7 +1148,7 @@ class PyMdWizardMainForm(QMainWindow):
                 QMessageBox.information(self, "No Update Needed", msg)
 
         except BaseException as e:
-            if not no_update_msg:
+            if not show_uptodate_msg:
                 msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
                 msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
@@ -1174,7 +1174,11 @@ class PyMdWizardMainForm(QMainWindow):
             msg = 'Updated Successfully from GitHub.'
             QMessageBox.information(self, "Update results", msg)
         except BaseException as e:
-            msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
+            msg = 'Problem Encountered Updating from GitHub\n\n' \
+                  'Please upgrade to the latest release by reinstalling the ' \
+                  'application from GitHub ' \
+                  '\n(https://github.com/usgs/fort-pymdwizard/releases)\n\n' \
+                  'Error Message:\n'
             msg += str(e)
             QMessageBox.information(self, "Update results", msg)
 
