@@ -245,7 +245,13 @@ class ThesaurusSearch(QDialog):
         if not self.populate_thesauri_lookup():
             return False
 
-        search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(self.ui.search_term.text())
+        term = self.ui.search_term.text()
+        if term.startswith('http'):
+            import webbrowser
+            webbrowser.open(term, new=0, autoraise=True)
+            return False
+
+        search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(term)
 
         results = self.get_result(search_url)
         if results is None:
@@ -351,6 +357,9 @@ class ThesaurusSearch(QDialog):
 
         self.ui.search_term.setText(link.url())
         self.search_thesaurus()
+
+        if parent is None:
+            return
 
         parent_item = self.branch_lookup[parent]
 
