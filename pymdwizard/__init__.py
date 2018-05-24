@@ -52,7 +52,7 @@ from __future__ import absolute_import
 import os
 import sys
 
-__version__ = "2.0.4"
+__version__ = "2.0.5"
 
 try:
     import core
