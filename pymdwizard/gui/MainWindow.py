@@ -405,7 +405,7 @@ class PyMdWizardMainForm(QMainWindow):
         if save_as_fname:
             settings = QSettings('USGS', 'pymdwizard')
             template_fname = settings.value('template_fname')
-            if not os.path.exists(template_fname):
+            if template_fname is None or not os.path.exists(template_fname):
                 template_fname = utils.get_resource_path('CSDGM_Template.xml')
 
             shutil.copyfile(template_fname, save_as_fname)
