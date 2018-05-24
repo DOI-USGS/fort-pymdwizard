@@ -154,12 +154,16 @@ class DistInfo(WizardWidget):
                                       parent_node=distinfo_node)
             stdorder = xml_utils.xml_node('stdorder', parent_node=distinfo_node)
             digform = xml_utils.xml_node('digform', parent_node=stdorder)
-            digtinfo = xml_utils.xml_node('digtinfo', parent_node=digform)
+
             if self.original_xml is not None and \
-               self.original_xml.xpath('stdorder/digtinfo/formname'):
-                formname = xml_utils.xml_node('formname', parent_node=digtinfo, text='Digital Data')
+               self.original_xml.xpath('stdorder/digform/digtinfo/formname'):
+                digtinfo = self.original_xml.xpath('stdorder/digform/digtinfo')
+                digform.append(deepcopy(digtinfo[0]))
             else:
-                formname = xml_utils.xml_node('formname', parent_node=digtinfo, text='Digital Data')
+                digtinfo = xml_utils.xml_node('digtinfo', parent_node=digform)
+                formname = xml_utils.xml_node('formname', parent_node=digtinfo,
+                                              text='Digital Data')
+
             digtopt = xml_utils.xml_node('digtopt', parent_node=digform)
             onlinopt = xml_utils.xml_node('onlinopt', parent_node=digtopt)
             computer = xml_utils.xml_node('computer', parent_node=onlinopt)
