@@ -9,3 +9,4 @@ pyqt>=5.6.0
 xlrd
 python-docx
 habanero
+gitpython
