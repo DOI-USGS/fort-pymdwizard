@@ -153,7 +153,8 @@ class ThesaurusSearch(QDialog):
 
             details_msg = ''
             details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(thname)
-            uri = details['vocabulary']['uri']
+            # uri = details['vocabulary']['uri']
+            uri = "https://www2.usgs.gov/science/about/thesaurus-full.php?thcode={}".format(thcode)
             if uri:
                 details_msg += '<a href="{}"><u><i><font size="4" face="arial" style="color:#386EC4">{}</font></i></u></a><br><br>'.format(uri, uri)
 
@@ -246,10 +247,6 @@ class ThesaurusSearch(QDialog):
             return False
 
         term = self.ui.search_term.text()
-        if term.startswith('http'):
-            import webbrowser
-            webbrowser.open(term, new=0, autoraise=True)
-            return False
 
         search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(term)
 
@@ -355,7 +352,13 @@ class ThesaurusSearch(QDialog):
         """
         parent = self.get_thesaurus()
 
-        self.ui.search_term.setText(link.url())
+        if link.url().startswith('http'):
+            import webbrowser
+            webbrowser.open(link.url(), new=0, autoraise=True)
+            return
+        else:
+            self.ui.search_term.setText(link.url())
+
         self.search_thesaurus()
 
         if parent is None:
