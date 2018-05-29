@@ -203,7 +203,7 @@ class Vertdef(WizardWidget):  #
                                               text=self.ui.fgdc_altdatum.currentText(),
                                               parent_node=altsys)
                 for widget in self.altres_list.get_widgets():
-                    altres = xml_utils.xml_node('altres', widget.added_line.text(),
+                    altres = xml_utils.xml_node('altres', widget.added_line.toPlainText(),
                                                 parent_node=altsys)
                 altunits = xml_utils.xml_node('altunits',
                                               text=self.ui.fgdc_altunits.currentText(),
@@ -218,7 +218,7 @@ class Vertdef(WizardWidget):  #
                                               text=self.ui.fgdc_depthdn.currentText(),
                                               parent_node=depth)
                 for widget in self.depthres_list.get_widgets():
-                    depthres = xml_utils.xml_node('depthres', widget.added_line.text(),
+                    depthres = xml_utils.xml_node('depthres', widget.added_line.toPlainText(),
                                                 parent_node=depth)
                 depthdu = xml_utils.xml_node('depthdu',
                                               text=self.ui.fgdc_depthdu.currentText(),
