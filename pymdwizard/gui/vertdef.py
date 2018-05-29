@@ -250,8 +250,8 @@ class Vertdef(WizardWidget):  #
                     self.altres_list.clear_widgets(add_another=False)
                     for altres in vertdef.xpath('altsys/altres'):
                         altres_widget = self.altres_list.add_another()
-                        altres_widget.added_line.setText(altres.text)
-                    if len(vertdef.xpath('depthsys/altres')) == 0:
+                        altres_widget.added_line.setPlainText(altres.text)
+                    if len(vertdef.xpath('altsys/altres')) == 0:
                         self.altres_list.add_another()
                 else:
                     self.ui.rbtn_no_alt.setChecked(True)
