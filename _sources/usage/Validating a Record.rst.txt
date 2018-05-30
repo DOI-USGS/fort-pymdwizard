@@ -31,8 +31,20 @@ down in the application, or selects the appropriate tab.
 
 |image2|
 
+Potential Spelling errors within relevant text boxes will be highlighted in
+red with a yellow background.
+
+|image3|
+
+This functionality can be turned ON or OFF by clicking the Turn Spelling (ON | OFF)
+item in the validation menu.
+
+|image4|
+
 
 
 .. |image0| image:: ../img/run_validation.png
 .. |image1| image:: ../img/highlighted_errors.png
 .. |image2| image:: ../img/error_screenshot.png
+.. |image3| image:: ../img/spelling_highlights.png
+.. |image4| image:: ../img/TurnOnOffSpelling.png

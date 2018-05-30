@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.0.2 documentation</title>
+  <title>Installing from Source &mdash; MetadataWizard 2.0.4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetadataWizard 2.0.2 documentation" href="index.html"/>
+    <link rel="top" title="MetadataWizard 2.0.4 documentation" href="index.html"/>
         <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html"/>
         <link rel="prev" title="Installing on Mac" href="Mac Installation.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2.0.2
+                2.0.4
               </div>
             
           
@@ -93,7 +93,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Installing on Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mac Installation.html">Installing on Mac</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source (Windows, Linux)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
@@ -158,7 +158,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing from Source (Windows, Linux)</li>
+      <li>Installing from Source</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -177,8 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installing-from-source-windows-linux">
-<h1>Installing from Source (Windows, Linux)<a class="headerlink" href="#installing-from-source-windows-linux" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="installing-from-source">
+<h1>Installing from Source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h1>
 <p>These instructions do not currently work on Mac computers, but will be updated
 in a subsequent release to support Macs.</p>
 <p>Currently the only option for installation on Linux systems is to install the application from source.</p>
@@ -306,6 +306,17 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="11">
+<li>Rename the remote to match the name provided by the installer:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git remote rename origin usgs_root
+</pre></div>
+</div>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="12">
 <li>Install the remaining software requirements (library dependencies):</li>
 </ol>
 <blockquote>
@@ -316,7 +327,7 @@ in a subsequent release to support Macs.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="12">
+<ol class="arabic simple" start="13">
 <li>Add our git folder to the pythonpath:</li>
 </ol>
 <blockquote>
@@ -327,7 +338,7 @@ in a subsequent release to support Macs.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="13">
+<ol class="arabic simple" start="14">
 <li>Launch Metadata Wizard:</li>
 </ol>
 <blockquote>
@@ -380,7 +391,7 @@ in a subsequent release to support Macs.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.2',
+            VERSION:'2.0.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
