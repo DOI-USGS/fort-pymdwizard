@@ -790,6 +790,69 @@ class XMLNode(object):
                 del self.children[i]
                 self.add_child(new_child, i, deepcopy=deepcopy)
 
+    def find_string(self, string, ignorecase=False):
+        """
+        Return a list of all nodes that contain a string match of 'string'
+
+        Parameters
+        ----------
+        string : str
+                 The string to search for in record.
+        ignorecase : bool
+                     Flag to match case or not
+
+        Returns
+        -------
+
+        list of XMLNodes with text elements containing string
+        """
+        found = []
+        if ignorecase and string.lower() in self.text.lower():
+            found.append(self)
+        elif string in self.text:
+            found.append(self)
+
+        for child in self.children:
+            found += child.find_string(string, ignorecase)
+
+        return found
+
+    def replace_string(self, old, new, maxreplace=None, deep=True):
+        """
+        String replacement function for the text of a node.
+
+        Parameters
+        ----------
+        old : str
+              The string to find
+        new : str
+              The string to replace 'old' with
+        maxreplace : int (optional)
+                     The first maxreplace occurrences are replace (per node)
+                     if not provided then all occurrences are replaced.
+        deep : bool
+               To apply replace on all child nodes as well (recursive).
+
+        Returns
+        -------
+        int : The number of occurrences found
+
+        """
+        count_found = self.text.count(old)
+
+        if maxreplace is None:
+            self.text = self.text.replace(old, new)
+        else:
+            if count_found > maxreplace:
+                count_found = maxreplace
+            self.text = self.text.replace(old, new, maxreplace)
+
+        if deep:
+            for child in self.children:
+                count_found += child.replace_string(old, new, maxreplace, deep)
+
+        return count_found
+
     def add_child(self, child, index=-1, deepcopy=True):
         """
         Add a child element to this object.

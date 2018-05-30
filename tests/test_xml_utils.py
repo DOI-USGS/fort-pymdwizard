@@ -51,6 +51,23 @@ def test_open_save():
 
     assert new_geoform == 'testing'
 
+def test_find_replace():
+    fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+    md = xml_utils.XMLRecord(fname)
+    assert len(md.metadata.find_string('asc', ignorecase=True)) == 7
+    assert len(md.metadata.find_string('asc', ignorecase=False)) == 0
+    assert len(md.metadata.find_string('ASC')) == 7
+
+    assert md.metadata.replace_string('Polar Bear', "Honey Badger", deep=False) == 0
+    assert md.metadata.replace_string('Polar Bear', "Honey Badger") == 4
+    assert 'Honey Badger' in md.metadata.idinfo.citation.citeinfo.title.text
+    assert md.metadata.idinfo.descript.abstract.replace_string('polar', 'big white') == 4
+    assert md.metadata.idinfo.descript.abstract.text.count('polar') == 0
+
+    md = xml_utils.XMLRecord(fname)
+    assert md.metadata.idinfo.descript.abstract.replace_string('polar', 'big white', maxreplace=2) == 2
+    assert md.metadata.idinfo.descript.abstract.text.count('polar') == 2
+
 
 
 
