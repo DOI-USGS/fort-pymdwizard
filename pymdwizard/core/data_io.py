@@ -91,16 +91,16 @@ def read_csv(fname, delimiter=','):
     """
     try:
         df = pd.read_csv(fname, parse_dates=True, delimiter=delimiter,
-                         nrows=MAX_ROWS, na_filter=False)
+                         nrows=MAX_ROWS, na_filter=False, comment='#')
     except UnicodeDecodeError:
         try:
             df = pd.read_csv(fname, parse_dates=True, encoding='utf8',
                              delimiter=delimiter, nrows=MAX_ROWS,
-                             na_filter=False)
+                             na_filter=False, comment='#')
         except UnicodeDecodeError:
             df = pd.read_csv(fname, parse_dates=True,
                              encoding="ISO-8859-1", delimiter=delimiter,
-                             nrows=MAX_ROWS, na_filter=False)
+                             nrows=MAX_ROWS, na_filter=False, comment='#')
 
     return df
 
