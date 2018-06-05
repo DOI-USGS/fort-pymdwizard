@@ -83,6 +83,16 @@ class Citeinfo(WizardWidget): #
         WizardWidget.__init__(self, parent=parent)
         self.doi_lookup = None
         self.highlighter = Highlighter(self.ui.fgdc_title.document())
+        self.ui.fgdc_title.textChanged.connect(self.remove_returns)
+
+    def remove_returns(self):
+        self.ui.fgdc_title.textChanged.disconnect()
+        cursor = self.ui.fgdc_title.textCursor()
+        curtext = self.ui.fgdc_title.toPlainText()
+        newtext = curtext.replace('\n', ' ')
+        self.ui.fgdc_title.setPlainText(newtext)
+        self.ui.fgdc_title.setTextCursor(cursor)
+        self.ui.fgdc_title.textChanged.connect(self.remove_returns)
 
     def build_ui(self, ):
         """
@@ -115,6 +125,7 @@ class Citeinfo(WizardWidget): #
 
         self.onlink_list = RepeatingElement(add_text='Add online link',
                                             remove_text='Remove last',
+                                            italic_text='Is there a link to the data or the agency that produced it? if so, provide the URL(s) ',
                                             widget_kwargs={'label': 'Link',
                                                            'line_name':'fgdc_onlink'})
         self.onlink_list.add_another()
@@ -122,6 +133,7 @@ class Citeinfo(WizardWidget): #
 
         self.fgdc_origin = RepeatingElement(add_text='Add originator',
                                             remove_text='Remove last',
+                                            italic_text='Who created the dataset? List the organization and/or person(s)',
                                             widget_kwargs={'label': 'Originator',
                                                            'line_name':'fgdc_origin',
                                                            'required':True,

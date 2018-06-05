@@ -54,7 +54,7 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QTextEdit
-
+from PyQt5.QtCore import Qt
 
 from pymdwizard.core import utils
 
@@ -86,10 +86,12 @@ class DefaultWidget(QWidget):
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
         self.added_line = QPlainTextEdit()
-        self.added_line.setMaximumHeight(21)
-        self.added_line.setMaximumBlockCount(1)
-        self.added_line.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        max_line_height = self.added_line.fontMetrics().height()+10
+        self.added_line.setMaximumHeight(max_line_height)
+        self.added_line.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.added_line.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.added_line.setLineWrapMode(QPlainTextEdit.NoWrap)
+        self.added_line.textChanged.connect(self.remove_returns)
         if spellings:
             self.highlighter = Highlighter(self.added_line.document())
 
@@ -113,12 +115,24 @@ class DefaultWidget(QWidget):
                                              QtCore.Qt.AlignVCenter)
             self.required_label.setIndent(0)
 
-            self.required_label.setText(QtCore.QCoreApplication.translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+            self.required_label.setText(QtCore.QCoreApplication.translate("",
+                    "<html><head/><body><p align=\"center\">"
+                    "<span style=\" font-size:18pt; color:#55aaff;\">*"
+                    "</span></p></body></html>"))
             self.layout.addWidget(self.required_label)
 
         self.layout.setContentsMargins(1, 1, 1, 1)
         self.layout.setSpacing(10)
         self.setLayout(self.layout)
+
+    def remove_returns(self):
+        self.added_line.textChanged.disconnect()
+        cursor = self.added_line.textCursor()
+        curtext = self.added_line.toPlainText()
+        newtext = curtext.replace('\n', ' ')
+        self.added_line.setPlainText(newtext)
+        self.added_line.setTextCursor(cursor)
+        self.added_line.textChanged.connect(self.remove_returns)
 
     def setText(self, text):
         utils.set_text(self.added_line, text)

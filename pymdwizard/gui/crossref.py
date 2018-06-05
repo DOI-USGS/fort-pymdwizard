@@ -71,7 +71,6 @@ class Crossref(Citeinfo):
         self.ui.label_53.setText('Format')
         self.ui.fgdc_geoform.setCurrentText("publication")
         self.ui.label_51.setText('Online Link to the Publication')
-        self.ui.label_39.hide()
         self.ui.label_53.setText('Can you provide more publication information?')
         self.ui.label_43.setText('Is this publication part of a series?')
 
