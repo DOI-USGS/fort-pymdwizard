@@ -97,16 +97,20 @@ class Spdom(WizardWidget):
         self.in_xml_load = False
         self.has_rect = True
 
-        completer = QCompleter()
-        self.ui.fgdc_descgeog.setCompleter(completer)
+        self.completer = QCompleter()
+        self.ui.fgdc_descgeog.setCompleter(self.completer)
 
-        model = QStringListModel()
-        completer.setModel(model)
-        completer.setCaseSensitivity(0)
+        self.model = QStringListModel()
+        self.completer.setModel(self.model)
+        self.completer.setCaseSensitivity(0)
 
         fname = utils.get_resource_path("spatial/BNDCoords.csv")
         self.bnds_df = pd.read_csv(fname)
-        model.setStringList(self.bnds_df['Name'])
+        self.model.setStringList(self.bnds_df['Name'])
+
+        self.completer.popup().clicked.connect(self.on_completer_activated)
+        self.completer.popup().selectionModel().selectionChanged.connect(self.on_completer_activated)
+        # self.completer.popup().activated.connect(self.on_completer_activated)
 
     def build_ui(self):
         """
@@ -161,10 +165,17 @@ class Spdom(WizardWidget):
         self.ui.fgdc_westbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_northbc.editingFinished.connect(self.coord_updated)
         self.ui.fgdc_southbc.editingFinished.connect(self.coord_updated)
-        self.ui.fgdc_descgeog.editingFinished.connect(self.descgeog_updated)
 
-    def descgeog_updated(self):
-        cur_descgeog = self.ui.fgdc_descgeog.text()
+    def on_completer_activated(self, model_index):
+
+        try:
+            cur_descgeog = model_index.data()
+        except AttributeError:
+            try:
+                cur_descgeog = model_index.indexes()[0].data()
+            except:
+                return
+
         try:
             if self.bnds_df['Name'].str.contains(cur_descgeog).any():
                 self.ui.fgdc_eastbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['east'])))
