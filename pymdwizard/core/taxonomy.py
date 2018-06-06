@@ -163,7 +163,10 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
     if as_dataframe and pd:
         df = xml_utils.element_to_df(hierarchy)
         if not include_children:
-            df = df[df.parentTsn!=str(tsn)]
+            try:
+                df = df[df.parentTsn!=str(tsn)]
+            except:
+                pass
         return df
     else:
         d = xml_utils.element_to_list(hierarchy)
@@ -461,7 +464,10 @@ def merge_taxons(tsns):
     """
     heirarchies  = []
     for tsn in tsns:
-        hierarchy = get_full_hierarchy_from_tsn(tsn, include_children=False)
+        accepted_tsn = get_accepted_tsn(tsn)
+
+        hierarchy = get_full_hierarchy_from_tsn(accepted_tsn,
+                                                include_children=False)
         heirarchies.append(hierarchy)
 
     kingdoms = list(set([get_kingdom(h) for h in heirarchies]))
@@ -480,6 +486,28 @@ def merge_taxons(tsns):
                 parent.add_child(child_taxon)
 
     return root_taxon
+
+
+def get_accepted_tsn(tsn):
+    """
+    Runs a web service query to identify the accepted tsn for a given tsn.
+    If anything goes wrong, the original tsn is returned.
+
+    Parameters
+    ----------
+    tsn : str
+          A taxonomic serial number (ITIS identifier)
+
+    Returns
+    -------
+    str
+    """
+    try:
+        return _get_xml(ITIS_BASE_URL + 'getAcceptedNamesFromTSN',
+                        payload={'tsn': tsn}).xpath('//ax21:acceptedTsn',
+                                                    namespaces=NS21)[0].text
+    except:
+        return tsn
 
 
 def gen_taxonomy_section(keywords, tsns, include_common_names=False):
