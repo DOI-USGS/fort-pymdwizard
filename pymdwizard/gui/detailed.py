@@ -191,7 +191,7 @@ class Detailed(WizardWidget):  #
                 shape_attr.populate_domain_content(3)
                 shape_attr.ui.fgdc_attrdef.setPlainText('Feature geometry.')
                 utils.set_text(shape_attr.ui.fgdc_attrdefs, 'ESRI')
-                shape_attr.domain.ui.fgdc_udom.setPlainText("Coordinates defining the features.")
+                shape_attr.domain.ui.fgdc_udom.setPlainText("The spatial entity type of the features.")
                 shape_attr.store_current_content()
                 shape_attr.supersize_me()
                 shape_attr.regularsize_me()
