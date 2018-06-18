@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_USGSContactInfoWidget(object):
     def setupUi(self, USGSContactInfoWidget):
         USGSContactInfoWidget.setObjectName("USGSContactInfoWidget")
-        USGSContactInfoWidget.resize(508, 321)
+        USGSContactInfoWidget.resize(563, 360)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -767,9 +767,9 @@ class Ui_USGSContactInfoWidget(object):
 "Type: text\n"
 "Domain: \"mailing\" \"physical\" \"mailing and physical\", free text\n"
 "Short Name: addrtype"))
-        self.fgdc_addrtype.setItemText(0, _translate("USGSContactInfoWidget", "Mailing"))
-        self.fgdc_addrtype.setItemText(1, _translate("USGSContactInfoWidget", "Physical"))
-        self.fgdc_addrtype.setItemText(2, _translate("USGSContactInfoWidget", "Mailing and Physical"))
+        self.fgdc_addrtype.setItemText(0, _translate("USGSContactInfoWidget", "mailing"))
+        self.fgdc_addrtype.setItemText(1, _translate("USGSContactInfoWidget", "physical"))
+        self.fgdc_addrtype.setItemText(2, _translate("USGSContactInfoWidget", "mailing and physical"))
         self.label_34.setToolTip(_translate("USGSContactInfoWidget", "Required"))
         self.label_34.setText(_translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
 
