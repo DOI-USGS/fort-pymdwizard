@@ -23,6 +23,10 @@ class GrowingTextEdit(QPlainTextEdit):
 
         self.setFixedHeight(self.heightMin)
 
+    def resizeEvent(self, e):
+        super(GrowingTextEdit, self).resizeEvent(e)
+        self.sizeChange()
+
     def sizeChange(self):
         """
         When the string in this widget is updated resize to contain the
@@ -30,7 +34,7 @@ class GrowingTextEdit(QPlainTextEdit):
 
         returns: None
         """
-
+        self.setUpdatesEnabled(False)
         contents = self.toPlainText()
         lines = contents.split('\n')
 
@@ -56,6 +60,8 @@ class GrowingTextEdit(QPlainTextEdit):
             self.item.setSizeHint(QSize(self.width(), size_hint + 100))
         except:
             pass
+
+        self.setUpdatesEnabled(True)
 
 if __name__ == "__main__":
 

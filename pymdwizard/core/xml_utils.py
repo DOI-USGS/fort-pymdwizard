@@ -456,6 +456,30 @@ class XMLRecord(object):
         save_to_file(self._contents.to_xml(), fname)
 
     def validate(self, schema='fgdc', as_dataframe=True):
+        """
+        Returns a list of schema validation errors for a given CSDGM XML file.
+
+        Parameters
+        ----------
+        xsl_fname : str (optional)
+            can be one of:
+            'fgdc' - uses the standard fgdc schema
+                    ../resources/FGDC/fgdc-std-001-1998-annotated.xsd
+            'bdp' = use the Biological Data profile schema,
+                    ../resources/FGDC/BDPfgdc-std-001-1998-annotated.xsd
+            full file path to another local schema.
+
+            if not specified defaults to 'fgdc'
+        as_dataframe : bool
+            used to specify return format (list of tuples or dataframe)
+
+        Returns
+        -------
+            list of tuples
+            (xpath, error message, line number)
+            or
+            pandas dataframe
+        """
         from pymdwizard.core import fgdc_utils
 
         return fgdc_utils.validate_xml(self._contents.to_xml(),
