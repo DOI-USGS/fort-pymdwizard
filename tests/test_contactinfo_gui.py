@@ -47,7 +47,7 @@ def test_contactinfo_to_xml(qtbot):
     <cntper>Jay Diffendorfer</cntper>
   </cntperp>
   <cntaddr>
-    <addrtype>Mailing</addrtype>
+    <addrtype>mailing</addrtype>
     <address/>
     <city/>
     <state/>
