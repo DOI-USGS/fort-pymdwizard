@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -55,8 +55,6 @@ class Ui_MainWindow(object):
         self.menuAdvanced = QtWidgets.QMenu(self.menubar)
         self.menuAdvanced.setToolTipsVisible(True)
         self.menuAdvanced.setObjectName("menuAdvanced")
-        self.menuTemplate_2 = QtWidgets.QMenu(self.menuAdvanced)
-        self.menuTemplate_2.setObjectName("menuTemplate_2")
         self.menuOptional_Sections = QtWidgets.QMenu(self.menuAdvanced)
         self.menuOptional_Sections.setObjectName("menuOptional_Sections")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
@@ -159,6 +157,8 @@ class Ui_MainWindow(object):
         self.actionSpatial.setObjectName("actionSpatial")
         self.actionSpelling_flag = QtWidgets.QAction(MainWindow)
         self.actionSpelling_flag.setObjectName("actionSpelling_flag")
+        self.actionSettings = QtWidgets.QAction(MainWindow)
+        self.actionSettings.setObjectName("actionSettings")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
@@ -175,15 +175,11 @@ class Ui_MainWindow(object):
         self.menuValidate.addSeparator()
         self.menuValidate.addAction(self.generate_review)
         self.menuPreview.addAction(self.actionPreview)
-        self.menuTemplate_2.addAction(self.actionCurrentTemplate)
-        self.menuTemplate_2.addSeparator()
-        self.menuTemplate_2.addAction(self.actionBrowseTemplate)
-        self.menuTemplate_2.addAction(self.actionRestoreBuiltIn)
         self.menuOptional_Sections.addAction(self.actionData_Quality)
         self.menuOptional_Sections.addAction(self.actionSpatial)
         self.menuOptional_Sections.addAction(self.actionEntity_and_Attribute)
         self.menuOptional_Sections.addAction(self.actionDistribution)
-        self.menuAdvanced.addAction(self.menuTemplate_2.menuAction())
+        self.menuAdvanced.addAction(self.actionSettings)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.actionLaunch_Jupyter)
         self.menuAdvanced.addSeparator()
@@ -210,7 +206,6 @@ class Ui_MainWindow(object):
         self.menuValidate.setTitle(_translate("MainWindow", "&Validation"))
         self.menuPreview.setTitle(_translate("MainWindow", "&Preview"))
         self.menuAdvanced.setTitle(_translate("MainWindow", "&Advanced"))
-        self.menuTemplate_2.setTitle(_translate("MainWindow", "Template"))
         self.menuOptional_Sections.setToolTip(_translate("MainWindow", "Choose which optional sections to remove from the output record altogether."))
         self.menuOptional_Sections.setTitle(_translate("MainWindow", "Include Sections"))
         self.menuHelp.setTitle(_translate("MainWindow", "&Help"))
@@ -273,4 +268,5 @@ class Ui_MainWindow(object):
         self.actionDistribution.setText(_translate("MainWindow", "Distribution"))
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
         self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
+        self.actionSettings.setText(_translate("MainWindow", "Settings"))
 

@@ -91,6 +91,7 @@ from pymdwizard.gui.Preview import Preview
 from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.jupyterstarter import JupyterStarter
+from pymdwizard.gui.settings import Settings
 from pymdwizard import __version__
 
 import sip
@@ -185,8 +186,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionClear_validation.triggered.connect(self.clear_validation)
         self.ui.actionPreview.triggered.connect(self.preview)
         self.ui.actionNew.triggered.connect(self.new_record)
-        self.ui.actionBrowseTemplate.triggered.connect(self.set_template)
-        self.ui.actionRestoreBuiltIn.triggered.connect(self.restore_template)
+        self.ui.actionSettings.triggered.connect(self.set_settings)
         self.ui.actionLaunch_Jupyter.triggered.connect(self.launch_jupyter)
         self.ui.generate_review.triggered.connect(self.generate_review_doc)
         self.ui.actionLaunch_Help.triggered.connect(self.launch_help)
@@ -421,18 +421,11 @@ class PyMdWizardMainForm(QMainWindow):
             this_year = today[:4]
             self.metadata_root.idinfo.citation.ui.pubdate_widget.set_date(this_year)
 
-    def set_template(self):
-        fname = self.get_xml_fname()
-
-        if fname:
-            self.settings.setValue('template_fname', fname)
-            just_fname = os.path.split(fname)[-1]
-            self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
-
-    def restore_template(self):
-        fname = utils.get_resource_path('CSDGM_Template.xml')
-        self.settings.setValue('template_fname', None)
-        self.ui.actionCurrentTemplate.setText('Current: Built-in')
+    def set_settings(self):
+        self.settings_dialog = Settings(mainform=self)
+        self.settings_dialog.setWindowTitle('MetadataWizard Settings')
+        utils.set_window_icon(self.settings_dialog)
+        self.settings_dialog.show()
 
     def load_default(self):
         template_fname = self.settings.value('template_fname')
@@ -1143,7 +1136,7 @@ class PyMdWizardMainForm(QMainWindow):
                 QMessageBox.information(self, "No Update Needed", msg)
 
         except BaseException as e:
-            if not show_uptodate_msg:
+            if show_uptodate_msg:
                 msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
                 msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
@@ -1235,7 +1228,10 @@ def launch_main(xml_fname=None, introspect_fname=None):
     mdwiz.show()
     splash.finish(mdwiz)
 
-    mdwiz.check_for_updates(show_uptodate_msg=False)
+    try:
+        mdwiz.check_for_updates(show_uptodate_msg=False)
+    except:
+        pass
 
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)

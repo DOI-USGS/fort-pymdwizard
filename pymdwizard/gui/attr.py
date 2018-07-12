@@ -75,6 +75,7 @@ from pymdwizard.gui import edom
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 from pymdwizard.core import data_io
 
+default_def_source = utils.get_setting('defsource', 'Producer Defined')
 
 class Attr(WizardWidget):
 
@@ -134,6 +135,8 @@ class Attr(WizardWidget):
         self.ui.nodata_content.hide()
         self.ui.rbtn_nodata_no.setChecked(True)
         self.ui.comboBox.setCurrentIndex(3)
+
+        self.ui.fgdc_attrdefs.setText(default_def_source)
 
     def include_nodata_change(self, b):
         """
@@ -257,7 +260,7 @@ class Attr(WizardWidget):
            not sip.isdeleted(self.nodata_edom):
             self.nodata_content = (True, self.nodata_edom.to_xml())
         else:
-            self.nodata_content = (False, self.nodata_edom.to_xml())
+            self.nodata_content = (False, None)
 
 
     def populate_domain_content(self, which='guess'):

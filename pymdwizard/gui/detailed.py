@@ -66,6 +66,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_detailed
 from pymdwizard.gui import attributes
 
+default_def_source = utils.get_setting('defsource', 'Producer Defined')
 
 class Detailed(WizardWidget):  #
 
@@ -98,6 +99,7 @@ class Detailed(WizardWidget):  #
 
         self.ui.btn_browse.clicked.connect(self.browse)
         self.ui.fgdc_enttypl.textChanged.connect(self.update_tooltip)
+        self.ui.fgdc_enttypds.setText(default_def_source)
 
     def browse(self):
         settings = QSettings('USGS', 'pymdwizard')
@@ -143,7 +145,7 @@ class Detailed(WizardWidget):  #
         shortname = os.path.split(fname)[1]
         ext = os.path.splitext(shortname)[1]
 
-        self.ui.fgdc_enttypds.setText('Producer defined')
+        self.ui.fgdc_enttypds.setText(default_def_source)
         if ext.lower() == '.csv':
             try:
                 self.clear_widget()
@@ -152,14 +154,16 @@ class Detailed(WizardWidget):  #
 
                 df = data_io.read_data(fname)
 
-                if df.shape[0] == data_io.MAX_ROWS:
+                max_rows = int(utils.get_setting('maxrows', 1000000))
+
+                if df.shape[0] == max_rows:
                     msg = "This CSV file contains more than" \
                           " {:,} rows!".format(data_io.MAX_ROWS)
                     msg += "\n\n Due to speed and memory constraints, " \
                            "\ndata from rows past\nthe first {:,} rows" \
-                           "".format(data_io.MAX_ROWS)
+                           "".format(max_rows)
                     msg += "\nwere not used " \
-                           "to populate this section.".format(data_io.MAX_ROWS)
+                           "to populate this section.".format(max_rows)
                     msg += '\n\nCheck that the values displayed are ' \
                            'complete \nand appropriate for the entire record.'
                     QMessageBox.warning(self, "Large File Warning", msg)

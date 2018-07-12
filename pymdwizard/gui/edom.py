@@ -80,6 +80,9 @@ class Edom(QWidget):  #
         self.ui.fgdc_edomvd.heightMax = 150
         self.ui.fgdc_edomvd.sizeChange()
 
+        defsource = utils.get_setting('defsource', 'Producer defined')
+        self.ui.fgdc_edomvds.setText(defsource)
+
     def dragEnterEvent(self, e):
         """
         Only accept Dragged items that can be converted to an xml object with

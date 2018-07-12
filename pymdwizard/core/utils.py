@@ -74,6 +74,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSettings
 
 from pymdwizard.core import xml_utils
 
@@ -535,3 +536,24 @@ def requests_pem_get(url, params={}):
     except requests.exceptions.SSLError:
         pem_fname = get_pem_fname()
         return requests.get(url, params=params, verify=pem_fname)
+
+
+def get_setting(which, default=None):
+    """
+    return a pymdwizard application setting
+
+    Parameters
+    ----------
+    which: str
+            name of setting to return
+
+    Returns
+    -------
+        setting in native format, string, integer, etc
+
+    """
+    settings = QSettings('USGS', 'pymdwizard')
+    if default is None:
+        return settings.value(which)
+    else:
+        return settings.value(which, default)
