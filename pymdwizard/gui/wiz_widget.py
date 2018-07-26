@@ -105,6 +105,7 @@ class WizardWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
+
         self.help_text = ''
 
         # for standalone testing and debugging
@@ -114,6 +115,8 @@ class WizardWidget(QWidget):
         self.in_context = False
         self.ui = None
         self.build_ui()
+        self.set_stylesheet()
+
         self.connect_events()
 
         self.original_xml = None
@@ -140,6 +143,7 @@ class WizardWidget(QWidget):
         # Any child widgets that have a separate drag-drop interactivity
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
+
 
     def connect_events(self):
         """
@@ -518,12 +522,12 @@ class WizardWidget(QWidget):
             return
 
         if not self.in_context:
-            self.setStyleSheet(NORMAL_STYLE)
+            self.setStyleSheet(self.normal_style)
 
     def enterEvent(self, QEvent):
         if self.objectName() == 'attribute_widget':
             return
-        self.setStyleSheet(FOCUS_STYLE)
+        self.setStyleSheet(self.focus_style)
 
     def contextMenuEvent(self, event):
         """
@@ -599,8 +603,26 @@ class WizardWidget(QWidget):
             msg.show()
         self.in_context = False
 
-    def set_stylesheet(self):
-        self.setStyleSheet(NORMAL_STYLE)
+    def set_stylesheet(self, recursive=False):
+        fontsize_i = utils.get_setting('fontsize')
+        fontsize = str(fontsize_i)
+        fontsizeplus = str(fontsize_i+3)
+        self.normal_style = NORMAL_STYLE.replace("{fontsize}", fontsize)
+        self.focus_style = FOCUS_STYLE.replace("{fontsize}", fontsize)
+        self.normal_style = self.normal_style.replace("{fontsizeplus}", fontsizeplus)
+        self.focus_style = self.focus_style.replace("{fontsizeplus}", fontsizeplus)
+
+        fontfamily = utils.get_setting('fontfamily', 'Arial')
+        self.normal_style = self.normal_style.replace('Arial', fontfamily)
+        self.focus_style = self.focus_style.replace('Arial', fontfamily)
+
+        self.setStyleSheet(self.normal_style)
+
+        if recursive:
+            widgets = self.findChildren(QWidget, QRegExp(r'.*'))
+            for widget in widgets:
+                if isinstance(widget, WizardWidget):
+                    widget.set_stylesheet(recursive=recursive)
 
     def eventFilter(self, obj, event):
         """
@@ -636,7 +658,7 @@ QGroupBox{
     background-color: transparent;
      subcontrol-position: top left; /* position at the top left*/
      padding-top: 20px;
-    font: bold 12px;
+    font: bold {fontsizeplus}pt "Arial";
     color: rgba(90, 90, 90, 225);
     border: 1px solid gray;
     border-radius: 2px;
@@ -648,11 +670,11 @@ subcontrol-origin: padding;
 subcontrol-position: top left; /* position at the top center */padding: 3 3px;
 }
 QLabel{
-font: 9pt "Arial";
+font: {fontsize}pt "Arial";
 color: rgb(90, 90, 90);
 }
-QLineEdit, QComboBox {
-font: 9pt "Arial";
+QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QRadioButton {
+font: {fontsize}pt "Arial";
 color: rgb(50, 50, 50);
 }
 
@@ -673,7 +695,7 @@ QGroupBox{
     background-color: transparent;
      subcontrol-position: top left; /* position at the top left*/
      padding-top: 20px;
-    font: bold 12px;
+    font: bold {fontsizeplus}pt "Arial";
     color: rgba(90, 90, 90);
     border: 1px solid gray;
     border-radius: 2px;
@@ -685,11 +707,11 @@ subcontrol-origin: padding;
 subcontrol-position: top left; /* position at the top center */padding: 3 3px;
 }
 QLabel{
-font: 9pt "Arial";
+font: {fontsize}pt "Arial";
 color: rgb(90, 90, 90);
 }
-QLineEdit, QComboBox {
-font: 9pt "Arial";
+QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QRadioButton {
+font: {fontsize}pt "Arial";
 color: rgb(50, 50, 50);
 }
 

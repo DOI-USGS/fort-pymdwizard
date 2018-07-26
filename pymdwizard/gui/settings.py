@@ -52,6 +52,7 @@ import os
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QFont
 
 from pymdwizard.core import utils
 
@@ -105,6 +106,13 @@ class Settings(QWidget):
         defsource = self.settings.value('defsource', 'Producer defined')
         self.ui.defsource.setText(defsource)
 
+        fontfamily = self.settings.value('fontfamily', 'Arial')
+        self.ui.font.setFont(QFont(fontfamily))
+        self.ui.font.setCurrentFont(QFont(fontfamily))
+
+        fontsize = self.settings.value('fontsize', 9)
+        self.ui.font_size.setValue(fontsize)
+
     def save_settings(self):
         template_fname = self.ui.template_fname.text()
         if not os.path.exists(template_fname):
@@ -129,6 +137,11 @@ class Settings(QWidget):
         self.settings.setValue('maxrows', self.ui.maxrows.text())
         self.settings.setValue('defsource', self.ui.defsource.text())
 
+        self.settings.setValue('fontfamily', self.ui.font.currentFont().family())
+
+        self.settings.setValue('fontsize', self.ui.font_size.value())
+        self.mainform.metadata_root.set_stylesheet(recursive=True)
+
         self.deleteLater()
         self.close()
 
@@ -137,6 +150,7 @@ class Settings(QWidget):
         self.ui.spelling_on.setChecked(True)
         self.ui.defsource.setText('Producer defined')
         self.ui.maxrows.setText('1000000')
+        self.ui.font_size.setValue(9)
 
     def restore_template(self):
         template_fname = utils.get_resource_path('CSDGM_Template.xml')
