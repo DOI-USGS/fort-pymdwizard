@@ -41,7 +41,7 @@ class GrowingTextEdit(QPlainTextEdit):
         adj_doc_height = 25
         for line in lines:
             width = self.fontMetrics().boundingRect(line).width()
-            if width:
+            if width and (self.width()-10) > 0:
                 adj_doc_height += (round(width/(self.width()-10))+1) * self.fontMetrics().height()
             else:
                 adj_doc_height += self.fontMetrics().height()

@@ -604,7 +604,7 @@ class WizardWidget(QWidget):
         self.in_context = False
 
     def set_stylesheet(self, recursive=False):
-        fontsize_i = utils.get_setting('fontsize')
+        fontsize_i = utils.get_setting('fontsize', 9)
         fontsize = str(fontsize_i)
         fontsizeplus = str(fontsize_i+3)
         self.normal_style = NORMAL_STYLE.replace("{fontsize}", fontsize)

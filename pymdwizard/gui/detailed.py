@@ -117,6 +117,7 @@ class Detailed(WizardWidget):  #
         if fname[0]:
             settings.setValue('lastDataFname', fname[0])
             try:
+
                 self.populate_from_fname(fname[0])
             except BaseException as e:
                 import traceback

@@ -90,7 +90,7 @@ color: rgb(60, 60, 60);</string>
          </font>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your dataset.;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your dataset.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>

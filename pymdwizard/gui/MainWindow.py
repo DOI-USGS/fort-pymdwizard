@@ -248,7 +248,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.set_current_file(fname)
             self.update_recent_file_actions()
 
-    def load_file(self, fname):
+    def load_file(self, fname, check_for_changes=True):
         """
         load a file's content into the application.
 
@@ -256,13 +256,17 @@ class PyMdWizardMainForm(QMainWindow):
         ----------
         fname : str
                 full file path and name of the file to load
+        check_for_changes : bool
+                flag to check for save prompt if file has unsaved changes
         Returns
         -------
         None
         """
-        changed = self.check_for_changes()
-        if changed == 'Cancel':
-            return changed
+
+        if check_for_changes:
+            changed = self.check_for_changes()
+            if changed == 'Cancel':
+                return changed
 
         self.file_watcher = QFileSystemWatcher([fname])
         self.file_watcher.fileChanged.connect(self.file_updated)
@@ -526,7 +530,6 @@ class PyMdWizardMainForm(QMainWindow):
                     xml_utils.save_to_file(self.metadata_root.to_xml(), self.cur_fname)
                 elif confirm == QMessageBox.Cancel:
                     return 'Cancel'
-                self.cur_fname = ''
         except:
             pass
         return None
