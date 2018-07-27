@@ -1,5 +1,15 @@
 Changes
 =======
+2.0.5 (7/27/2018)
+New features:
+- Application settings form to easily change template file, definition source text, max rows read, and font size.
+
+Bug fixes:
+- Reading shapefiles not working.
+- Replace invalid TSNs with valid ones in taxonomy section.
+- Find updates not working on Macs.
+- Minor formatting and other bugs.
+
 2.0.4 (5/7/2018)
 -----
 

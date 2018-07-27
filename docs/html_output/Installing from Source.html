@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.0.4 documentation</title>
+  <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.0.5 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetadataWizard 2.0.4 documentation" href="index.html"/>
-        <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html"/>
-        <link rel="prev" title="Installing on Mac" href="Mac Installation.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html" />
+    <link rel="prev" title="Installing on Mac" href="Mac Installation.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                2.0.4
+                2.0.5
               </div>
             
           
@@ -125,7 +117,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">MetadataWizard</a>
@@ -133,9 +125,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -206,7 +199,7 @@ in a subsequent release to support Macs.</p>
 <li>Add the conda-forge channel:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
 </pre></div>
 </div>
 </div></blockquote>
@@ -217,7 +210,7 @@ in a subsequent release to support Macs.</p>
 <li>Install the optional conda developer tools</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
 </pre></div>
 </div>
 </div></blockquote>
@@ -228,7 +221,7 @@ in a subsequent release to support Macs.</p>
 <li>Create a pymdwizard environment:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
 </pre></div>
 </div>
 </div></blockquote>
@@ -242,7 +235,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><em>(on Windows)</em></div>
 </div>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> activate pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> activate pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -250,7 +243,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><em>(on Linux, Mac)</em></div>
 </div>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> activate pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> activate pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -261,7 +254,7 @@ in a subsequent release to support Macs.</p>
 <li>Install git:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
 </pre></div>
 </div>
 </div></blockquote>
@@ -276,7 +269,7 @@ in a subsequent release to support Macs.</p>
 </li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
 </pre></div>
 </div>
 </div></blockquote>
@@ -287,7 +280,7 @@ in a subsequent release to support Macs.</p>
 <li>Clone our pymdwizard project:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
 </pre></div>
 </div>
 </div></blockquote>
@@ -298,7 +291,7 @@ in a subsequent release to support Macs.</p>
 <li>Navigate to our project folder:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -309,7 +302,7 @@ in a subsequent release to support Macs.</p>
 <li>Install the remaining software requirements (library dependencies):</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file requirements.txt
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file requirements.txt
 </pre></div>
 </div>
 </div></blockquote>
@@ -320,7 +313,7 @@ in a subsequent release to support Macs.</p>
 <li>Add our git folder to the pythonpath:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -331,7 +324,7 @@ in a subsequent release to support Macs.</p>
 <li>Launch Metadata Wizard:</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
 </pre></div>
 </div>
 </div></blockquote>
@@ -339,9 +332,7 @@ in a subsequent release to support Macs.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -362,7 +353,7 @@ in a subsequent release to support Macs.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -380,7 +371,8 @@ in a subsequent release to support Macs.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.4',
+            VERSION:'2.0.5',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -393,19 +385,13 @@ in a subsequent release to support Macs.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

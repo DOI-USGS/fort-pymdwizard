@@ -80,6 +80,7 @@ Advanced Usage
    :maxdepth: 1
 
    advancedusage/Metadata Review Report
+   advancedusage/Settings
    advancedusage/Changing Your Template
    advancedusage/Launch Jupyter for Batch Processing
    advancedusage/Include Sections

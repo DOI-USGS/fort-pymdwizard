@@ -92,3 +92,11 @@ The data consists of multiple distinct tabular datasets, for example,
 several CSVs that contain related data or multiple sheets in an Excel workbook.
 
     Click the **Add Detailed** button at the bottom of the Instructions tab.
+
+
+Changing Default Definition Source Text
+---------------------------------------
+
+When auto-generating an Entity and Attribute from a file the value that is inserted
+into each "Definition Source" element defaults to "Producer defined".  This default text
+can be changed in the application settings form available from the Advanced menu (<../Installing%20ArcMap%20Toolbox.html>`_).
