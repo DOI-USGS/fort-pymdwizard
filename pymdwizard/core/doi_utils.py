@@ -80,6 +80,10 @@ def clean_doi(doi):
         return doi.replace('doi.org/', '')
     elif doi.startswith('http://dx.doi.org'):
         return doi.replace('http://dx.doi.org/', '')
+    elif doi.startswith('doi: '):
+        return doi.replace('doi: ', '')
+    elif doi.startswith('doi:'):
+        return doi.replace('doi:', '')
     else:
         return doi
 
@@ -172,11 +176,15 @@ def get_doi_citation(doi):
             return None
 
     citeinfo = XMLNode(tag='citeinfo')
-    for author in cite_data['author']:
-        if 'literal' not in author:
-            author['literal'] = author['given'] + ' ' + author['family']
+    if 'author' in cite_data:
+        for author in cite_data['author']:
+            if 'literal' not in author:
+                author['literal'] = author['given'] + ' ' + author['family']
+            origin = XMLNode(tag='origin', parent_node=citeinfo,
+                             text=author['literal'])
+    else:
         origin = XMLNode(tag='origin', parent_node=citeinfo,
-                         text=author['literal'])
+                         text='')
 
     if 'published-online' in cite_data:
         pubdate_parts = cite_data['published-online']['date-parts'][0]
@@ -227,6 +235,6 @@ def get_doi_citation(doi):
         XMLNode(tag='othercit', parent_node=citeinfo,
                            text=othercit_str)
 
-    XMLNode(tag='onlink', parent_node=citeinfo, text=cite_data['URL'])
+    XMLNode(tag='onlink', parent_node=citeinfo, text=cite_data['URL'].replace('http://dx.doi.org', 'https://doi.org'))
 
     return citeinfo

@@ -229,13 +229,22 @@ class Citeinfo(WizardWidget): #
             e.ignore()
 
     def is_doi_str(self, string):
+
+        if string.startswith('https://doi.org'):
+            return True
+        if string.startswith('doi.org'):
+            return True
+        if string.startswith('http://dx.doi.org'):
+            return True
+        if string.startswith('doi:'):
+            return True
+
         cleaned_doi = doi_utils.clean_doi(string).lower().strip()
-        if cleaned_doi != string:
+
+        if cleaned_doi.startswith('doi:'):
             return True
-        elif cleaned_doi.startswith('doi:'):
-            return True
-        else:
-            return False
+
+        return False
 
     def dropEvent(self, e):
         """
