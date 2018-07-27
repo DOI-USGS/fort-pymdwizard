@@ -1,15 +1,14 @@
 Changing the Template
 **********************
 
-When **File -> New** is selected, the Metadata Wizard opens a template file and
-saves it to a new, user-specified location. This template is an FGDC record that
-contains default content which forms a solid starting point for a new record.
-For example, the point of contact, distribution contact,
-disclaimers. will often remain the same for most records created by
-an individual. Having to update these individually every time a new
-record is started can be inconvenient. Keep in mind that anything
+When an individual, project, or organization has particular metadata content needs that are expected in every
+record, it can be inefficient to populate these every time a record is started.  To allow users to prepopulate these
+fields easily the MetadataWizard allows for users to specify a 'Template' file to use as the starting point for any new
+records.
+
+This template is simply an FGDC record that contains default content.  Keep in mind that anything
 specified in the template can be overwritten individually when editing a new
-record, they are just the defaults that will pre-populate in the application.
+record, they are just the default values that will pre-populate elements in the application.
 
 The default template record used by the Metadata Wizard is part of the
 standard installation but can be changed to suit the particular needs of
@@ -34,17 +33,20 @@ individuals or organizations.
    -  Positional Accuracy
 
 #. Save this record.
-#. In the top menu bar click **Advanced -> Template -> Browse** to new template,
-   and navigate to the XML file saved above.
+#. In the top menu bar click **Advanced -> settings** to open the settings form,
+   and browse to the XML temple file saved above.
 
 | |image0|
 |
+| |image1|
+|
+
 
 The selected template will remain active after closing and reopening the
 application. 
 
-To revert back to the original Metadata Wizard template, click the 
-**Advanced -> Template -> Restore Built-in item**. The current template file 
-name will be displayed at the top of the **Advanced -> Template** menu.
+If at any time you want to return to the default template that comes with the wizard
+just click the 'Use Default' button on the settings form.
 
-.. |image0| image:: ../img/BrowseToTemplate.png
+.. |image0| image:: ../img/open_settings.png
+.. |image1| image:: ../img/settings.png

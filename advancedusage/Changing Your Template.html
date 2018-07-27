@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changing the Template &mdash; MetadataWizard 2.0.4 documentation</title>
+  <title>Changing the Template &mdash; MetadataWizard 2.0.5 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetadataWizard 2.0.4 documentation" href="../index.html"/>
-        <link rel="next" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html"/>
-        <link rel="prev" title="Making a Metadata Review Report" href="Metadata Review Report.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html" />
+    <link rel="prev" title="Changing Application Settings" href="Settings.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                2.0.4
+                2.0.5
               </div>
             
           
@@ -108,6 +100,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
@@ -125,7 +118,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetadataWizard</a>
@@ -133,9 +126,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -179,15 +173,13 @@
             
   <div class="section" id="changing-the-template">
 <h1>Changing the Template<a class="headerlink" href="#changing-the-template" title="Permalink to this headline">¶</a></h1>
-<p>When <strong>File -&gt; New</strong> is selected, the Metadata Wizard opens a template file and
-saves it to a new, user-specified location. This template is an FGDC record that
-contains default content which forms a solid starting point for a new record.
-For example, the point of contact, distribution contact,
-disclaimers. will often remain the same for most records created by
-an individual. Having to update these individually every time a new
-record is started can be inconvenient. Keep in mind that anything
+<p>When an individual, project, or organization has particular metadata content needs that are expected in every
+record, it can be inefficient to populate these every time a record is started.  To allow users to prepopulate these
+fields easily the MetadataWizard allows for users to specify a ‘Template’ file to use as the starting point for any new
+records.</p>
+<p>This template is simply an FGDC record that contains default content.  Keep in mind that anything
 specified in the template can be overwritten individually when editing a new
-record, they are just the defaults that will pre-populate in the application.</p>
+record, they are just the default values that will pre-populate elements in the application.</p>
 <p>The default template record used by the Metadata Wizard is part of the
 standard installation but can be changed to suit the particular needs of
 individuals or organizations.</p>
@@ -211,25 +203,24 @@ include some or all of:<ul>
 </ul>
 </li>
 <li>Save this record.</li>
-<li>In the top menu bar click <strong>Advanced -&gt; Template -&gt; Browse</strong> to new template,
-and navigate to the XML file saved above.</li>
+<li>In the top menu bar click <strong>Advanced -&gt; settings</strong> to open the settings form,
+and browse to the XML temple file saved above.</li>
 </ol>
 <div class="line-block">
-<div class="line"><img alt="image0" src="../_images/BrowseToTemplate.png" /></div>
+<div class="line"><img alt="image0" src="../_images/open_settings.png" /></div>
+<div class="line"><br /></div>
+<div class="line"><img alt="image1" src="../_images/settings.png" /></div>
 <div class="line"><br /></div>
 </div>
 <p>The selected template will remain active after closing and reopening the
 application.</p>
-<p>To revert back to the original Metadata Wizard template, click the
-<strong>Advanced -&gt; Template -&gt; Restore Built-in item</strong>. The current template file
-name will be displayed at the top of the <strong>Advanced -&gt; Template</strong> menu.</p>
+<p>If at any time you want to return to the default template that comes with the wizard
+just click the ‘Use Default’ button on the settings form.</p>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -238,7 +229,7 @@ name will be displayed at the top of the <strong>Advanced -&gt; Template</strong
         <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral float-right" title="Batch Processing Using Jupyter and Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Metadata Review Report.html" class="btn btn-neutral" title="Making a Metadata Review Report" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Settings.html" class="btn btn-neutral" title="Changing Application Settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -250,7 +241,7 @@ name will be displayed at the top of the <strong>Advanced -&gt; Template</strong
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -268,7 +259,8 @@ name will be displayed at the top of the <strong>Advanced -&gt; Template</strong
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'2.0.4',
+            VERSION:'2.0.5',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -281,19 +273,13 @@ name will be displayed at the top of the <strong>Advanced -&gt; Template</strong
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
