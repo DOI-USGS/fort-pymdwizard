@@ -290,7 +290,7 @@
     <string>Validate current document against FGDC/BDP schema.</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+V</string>
+    <string>Ctrl+Shift+V</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -304,7 +304,7 @@
     <string>Clear validation errors highlighted currently.</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>Ctrl+Shift+C</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
