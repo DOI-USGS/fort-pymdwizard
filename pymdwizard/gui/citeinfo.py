@@ -21,14 +21,14 @@ SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
     This script is part of the pymdwizard package and is not intented to be
     used independently.  All pymdwizard package requirements are needed.
-    
+
     See imports section for external packages used in this script as well as
     inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
+This software has been approved for release by the U.S. Geological Survey
 (USGS). Although the software has been subjected to rigorous review,
 the USGS reserves the right to update the software as needed pursuant to
 further analysis and review. No warranty, expressed or implied, is made by
@@ -52,6 +52,7 @@ import sys
 
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtCore import Qt
 
 from pymdwizard.core import utils
@@ -84,13 +85,44 @@ class Citeinfo(WizardWidget): #
         self.doi_lookup = None
         self.highlighter = Highlighter(self.ui.fgdc_title.document())
         self.ui.fgdc_title.textChanged.connect(self.remove_returns)
+        self.ui.fgdc_title.mouseMoveEvent = self.mouse_move
+
+    def mouse_move(self, e):
+        """
+        over ride the mouse move event to ignore mouse movement (scrolling),
+        but only in the vertical dimension.  Makes this plain text edit look and
+        feel like a line edit.
+
+        Parameters
+        ----------
+        e : pyqt event
+
+        Returns
+        -------
+        None
+        """
+        if e.y() < self.ui.fgdc_title.height()-3 and \
+           e.x() < self.ui.fgdc_title.width()-3:
+            QPlainTextEdit.mouseMoveEvent(self.ui.fgdc_title, e)
+        self.ui.fgdc_title.verticalScrollBar().setValue(
+            self.ui.fgdc_title.verticalScrollBar().minimum())
 
     def remove_returns(self):
+        """
+        After changes to the title, we need to make sure that the user has not entered any line returns, since the
+        title is not intended to be a multiline string.  Any line returns "\n" will be replace with a ' '
+
+        Returns
+        -------
+        None
+        """
         self.ui.fgdc_title.textChanged.disconnect()
-        cursor = self.ui.fgdc_title.textCursor()
+        old_position = self.ui.fgdc_title.textCursor().position()
         curtext = self.ui.fgdc_title.toPlainText()
         newtext = curtext.replace('\n', ' ')
         self.ui.fgdc_title.setPlainText(newtext)
+        cursor = self.ui.fgdc_title.textCursor()
+        cursor.setPosition(old_position)
         self.ui.fgdc_title.setTextCursor(cursor)
         self.ui.fgdc_title.textChanged.connect(self.remove_returns)
 
@@ -117,8 +149,8 @@ class Citeinfo(WizardWidget): #
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
         self.ui.pubdate_widget = FGDCDate(label='YYYYMMDD  ',
-                                            show_format=False, required=True,
-                                            fgdc_name='fgdc_pubdate')
+                                          show_format=False, required=True,
+                                          fgdc_name='fgdc_pubdate')
 
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
@@ -138,7 +170,7 @@ class Citeinfo(WizardWidget): #
                                                            'line_name':'fgdc_origin',
                                                            'required':True,
                                                            'placeholder_text':self.origin_hint,
-                                                            'spellings':False},)
+                                                           'spellings':False},)
 
         self.ui.originator_layout.addWidget(self.fgdc_origin)
         self.fgdc_origin.add_another()
@@ -358,8 +390,8 @@ class Citeinfo(WizardWidget): #
                                    parent_node=citeinfo)
 
         geoform = xml_utils.xml_node("geoform",
-                                         self.ui.fgdc_geoform.currentText(),
-                                         parent_node=citeinfo)
+                                     self.ui.fgdc_geoform.currentText(),
+                                     parent_node=citeinfo)
 
         if self.ui.radio_seriesyes.isChecked():
             serinfo = xml_utils.xml_node('serinfo', parent_node=citeinfo)
@@ -481,10 +513,3 @@ class Citeinfo(WizardWidget): #
 if __name__ == "__main__":
     utils.launch_widget(Citeinfo,
                         "Citation testing")
-
-
-
-
-
-
-

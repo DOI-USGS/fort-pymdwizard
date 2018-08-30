@@ -90,6 +90,7 @@ class DefaultWidget(QWidget):
         self.added_line.setMaximumHeight(max_line_height)
         self.added_line.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.added_line.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.added_line.mouseMoveEvent = self.mouse_move
         self.added_line.setLineWrapMode(QPlainTextEdit.NoWrap)
         self.added_line.textChanged.connect(self.remove_returns)
         if spellings:
@@ -125,12 +126,42 @@ class DefaultWidget(QWidget):
         self.layout.setSpacing(10)
         self.setLayout(self.layout)
 
+    def mouse_move(self, e):
+        """
+        over ride the mouse move event to ignore mouse movement (scrolling),
+        but only in the vertical dimension.  Makes this plain text edit look and
+        feel like a line edit.
+
+        Parameters
+        ----------
+        e : pyqt event
+
+        Returns
+        -------
+        None
+        """
+        if e.y() < self.added_line.height()-3 and \
+           e.x() < self.added_line.width()-3:
+            QPlainTextEdit.mouseMoveEvent(self.added_line, e)
+        self.added_line.verticalScrollBar().setValue(
+            self.added_line.verticalScrollBar().minimum())
+
     def remove_returns(self):
+        """
+        After changes to the line, we need to make sure that the user has not entered any line returns, since the
+        single line is not intended to be a multiline string.  Any line returns "\n" will be replace with a ' '
+
+        Returns
+        -------
+        None
+        """
         self.added_line.textChanged.disconnect()
-        cursor = self.added_line.textCursor()
+        old_position = self.added_line.textCursor().position()
         curtext = self.added_line.toPlainText()
         newtext = curtext.replace('\n', ' ')
         self.added_line.setPlainText(newtext)
+        cursor = self.added_line.textCursor()
+        cursor.setPosition(old_position)
         self.added_line.setTextCursor(cursor)
         self.added_line.textChanged.connect(self.remove_returns)
 
