@@ -52,6 +52,7 @@ import os
 import collections
 import warnings
 from pathlib import Path
+import unicodedata
 
 from defusedxml import lxml
 from lxml import etree as etree
@@ -250,6 +251,21 @@ def get_text_content(node, xpath=''):
         return ''
 
 
+def remove_control_characters(str):
+    """
+    Removes control characters from string
+
+    Parameters
+    ----------
+    str: string
+
+    Returns
+    -------
+    string
+    """
+    return "".join(ch for ch in str if unicodedata.category(ch)[0] != "C")
+
+
 def element_to_df(results):
     """
     Returns the results (etree) formatted into a pandas dataframe.
@@ -353,7 +369,7 @@ def xml_node(tag, text='', parent_node=None, index=-1, comment=False):
         node = etree.Element(tag)
 
     if text:
-        node.text = u'{}'.format(text)
+        node.text = u'{}'.format(remove_control_characters(text))
 
     if parent_node is not None:
         if index == -1:
