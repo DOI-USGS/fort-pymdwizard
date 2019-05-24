@@ -286,45 +286,57 @@ class Spdom(WizardWidget):
     def on_ne_move(self, lat, lng):
         if self.in_xml_load:
             n, e = lat, lng
-            s = float(self.ui.fgdc_southbc.text())
-            w = float(self.ui.fgdc_westbc.text())
-            bounds = spatial_utils.format_bounding((w, e, n, s))
+            try:
+                s = float(self.ui.fgdc_southbc.text())
+                w = float(self.ui.fgdc_westbc.text())
+                bounds = spatial_utils.format_bounding((w, e, n, s))
 
-            self.ui.fgdc_eastbc.setText(bounds[1])
-            self.ui.fgdc_northbc.setText(bounds[2])
+                self.ui.fgdc_eastbc.setText(bounds[1])
+                self.ui.fgdc_northbc.setText(bounds[2])
+            except:
+                pass
 
     @pyqtSlot(float, float)
     def on_nw_move(self, lat, lng):
         if self.in_xml_load:
             n, w = lat, lng
-            s = float(self.ui.fgdc_southbc.text())
-            e = float(self.ui.fgdc_eastbc.text())
-            bounds = spatial_utils.format_bounding((w, e, n, s))
+            try:
+                s = float(self.ui.fgdc_southbc.text())
+                e = float(self.ui.fgdc_eastbc.text())
+                bounds = spatial_utils.format_bounding((w, e, n, s))
 
-            self.ui.fgdc_westbc.setText(bounds[0])
-            self.ui.fgdc_northbc.setText(bounds[2])
+                self.ui.fgdc_westbc.setText(bounds[0])
+                self.ui.fgdc_northbc.setText(bounds[2])
+            except:
+                pass
 
     @pyqtSlot(float, float)
     def on_se_move(self, lat, lng):
         if self.in_xml_load:
             s, e = lat, lng
-            n = float(self.ui.fgdc_northbc.text())
-            w = float(self.ui.fgdc_westbc.text())
-            bounds = spatial_utils.format_bounding((w, e, n, s))
+            try:
+                n = float(self.ui.fgdc_northbc.text())
+                w = float(self.ui.fgdc_westbc.text())
+                bounds = spatial_utils.format_bounding((w, e, n, s))
 
-            self.ui.fgdc_eastbc.setText(bounds[1])
-            self.ui.fgdc_southbc.setText(bounds[3])
+                self.ui.fgdc_eastbc.setText(bounds[1])
+                self.ui.fgdc_southbc.setText(bounds[3])
+            except:
+                pass
 
     @pyqtSlot(float, float)
     def on_sw_move(self, lat, lng):
         if self.in_xml_load:
             s, w = lat, lng
-            n = float(self.ui.fgdc_northbc.text())
-            e = float(self.ui.fgdc_eastbc.text())
-            bounds = spatial_utils.format_bounding((w, e, n, s))
+            try:
+                n = float(self.ui.fgdc_northbc.text())
+                e = float(self.ui.fgdc_eastbc.text())
+                bounds = spatial_utils.format_bounding((w, e, n, s))
 
-            self.ui.fgdc_westbc.setText(bounds[0])
-            self.ui.fgdc_southbc.setText(bounds[3])
+                self.ui.fgdc_westbc.setText(bounds[0])
+                self.ui.fgdc_southbc.setText(bounds[3])
+            except:
+                pass
 
     def switch_schema(self, schema):
         self.schema = schema
