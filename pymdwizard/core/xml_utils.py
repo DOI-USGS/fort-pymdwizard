@@ -20,14 +20,14 @@ SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
     This script is part of the pymdwizard package and is not intented to be
     used independently.  All pymdwizard package requirements are needed.
-    
+
     See imports section for external packages used in this script as well as
     inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
+This software has been approved for release by the U.S. Geological Survey
 (USGS). Although the software has been subjected to rigorous review,
 the USGS reserves the right to update the software as needed pursuant to
 further analysis and review. No warranty, expressed or implied, is made by
@@ -62,6 +62,7 @@ try:
 except ImportError:
     warnings.warn('Pandas library not installed, dataframes disabled')
     pd = None
+
 
 def xml_document_loader(xml_locator):
     """
@@ -131,14 +132,17 @@ def node_to_dict(node, add_fgdc=True):
         node_dict[tag] = node.text
     else:
         for child in node.getchildren():
-            tag = parse_tag(child.tag)
-            if add_fgdc:
-                tag = 'fgdc_' + tag
-            if len(child.getchildren()) > 0:
-                content = node_to_dict(child, add_fgdc=add_fgdc)
-            else:
-                content = child.text
-            node_dict[tag] = content
+            try:
+                tag = parse_tag(child.tag)
+                if add_fgdc:
+                    tag = 'fgdc_' + tag
+                if len(child.getchildren()) > 0:
+                    content = node_to_dict(child, add_fgdc=add_fgdc)
+                else:
+                    content = child.text
+                node_dict[tag] = content
+            except AttributeError:
+                pass #thid node was a comment or processing instruction
     return node_dict
 
 
