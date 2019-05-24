@@ -84,6 +84,7 @@ Advanced Usage
    advancedusage/Changing Your Template
    advancedusage/Launch Jupyter for Batch Processing
    advancedusage/Include Sections
+   advancedusage/InstallingAndUpdatingPython
    
 Help Improve the Tool
 ========================
