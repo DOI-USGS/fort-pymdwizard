@@ -93,6 +93,12 @@ class JupyterStarter(QDialog):
         utils.set_window_icon(self)
         self.setStyleSheet(wiz_widget.NORMAL_STYLE)
 
+        try:
+            import jupyterlab
+            self.ui.usejupyterframe.setEnabled(True)
+        except ImportError:
+            self.ui.usejupyterframe.setEnabled(False)
+
     def build_ui(self):
         """
         Build and modify this widget's GUI
@@ -108,9 +114,13 @@ class JupyterStarter(QDialog):
         self.ui.kernel.addItem('pymdwizard <<default>>')
         self.kernels['pymdwizard <<default>>'] = \
                              utils.get_install_dname('python')
-
         try:
-            kernels = subprocess.check_output(['conda', 'env', 'list'])
+
+            conda_exe = os.path.join(self.get_conda_root()[0], 'Scripts', 'conda.exe')
+            if os.path.exists(conda_exe):
+                kernels = subprocess.check_output([conda_exe, 'env', 'list'])
+            else:
+                kernels = subprocess.check_output(['conda', 'env', 'list'])
             for line in kernels.split(b'\n'):
                 if line and not line.strip().startswith(b'#'):
                     try:
@@ -124,6 +134,7 @@ class JupyterStarter(QDialog):
                         pass
         except:
             pass
+
 
     def connect_events(self):
         """
@@ -150,24 +161,30 @@ class JupyterStarter(QDialog):
 
     def get_conda_root(self):
         try:
-            conda_info = subprocess.check_output(['conda', 'info']).decode("utf-8")
-            info = {}
-            for line in conda_info.split('\n')[1:]:
-                try:
-                    key, value = line.strip().split(' : ')
-                    info[key] = value
-                except ValueError:
-                    pass
-
-            envs_dname = info['envs directories']
-            try:
-                root_dname = info["root environment"].replace('(writable)', '').strip()
-            except KeyError:
-                root_dname = info["base environment"].replace('(writable)', '').strip()
-
-            return str(root_dname), str(envs_dname)
+            from conda.core.envs_manager import list_all_known_prefixes
+            prefixes = list_all_known_prefixes()
+            return prefixes[0], os.path.join(prefixes[0], 'envs')
         except:
-            return "", ""
+            try:
+
+                conda_info = subprocess.check_output(['conda', 'info']).decode("utf-8")
+                info = {}
+                for line in conda_info.split('\n')[1:]:
+                    try:
+                        key, value = line.strip().split(' : ')
+                        info[key] = value
+                    except ValueError:
+                        pass
+
+                envs_dname = info['envs directories']
+                try:
+                    root_dname = info["root environment"].replace('(writable)', '').strip()
+                except KeyError:
+                    root_dname = info["base environment"].replace('(writable)', '').strip()
+
+                return str(root_dname), str(envs_dname)
+            except:
+                return "", ""
 
     def launch(self):
         jupyter_dname = self.ui.dname.currentText()
@@ -191,7 +208,11 @@ class JupyterStarter(QDialog):
                 my_env = os.environ.copy()
                 my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
-                p = Popen([jupyterexe, 'notebook'], cwd=jupyter_dname, env=my_env)
+                if self.ui.usejupyterlab.isChecked():
+                    jupytertype = 'lab'
+                else:
+                    jupytertype = 'notebook'
+                p = Popen([jupyterexe, jupytertype], cwd=jupyter_dname, env=my_env)
 
         else:
             root_dname, envs_dname = self.get_conda_root()
@@ -204,11 +225,16 @@ class JupyterStarter(QDialog):
                 jupyter_exe_name = os.path.join(root_dname, 'Scripts',
                                                 'jupyter.exe')
 
+            if self.ui.usejupyterlab.isChecked():
+                jupytertype = 'lab'
+            else:
+                jupytertype = 'notebook'
+
             if self.ui.kernel.currentText() == 'root':
-                cmds = ['"{}"'.format(jupyter_exe_name), 'notebook']
+                cmds = ['"{}"'.format(jupyter_exe_name), jupytertype]
             else:
                 cmds = ['"{}"'.format(activate_fname), self.ui.kernel.currentText(),
-                        '&&', '"{}"'.format(jupyter_exe_name), 'notebook']
+                        '&&', '"{}"'.format(jupyter_exe_name), jupytertype]
             Popen(" ".join(cmds), cwd=jupyter_dname)
 
         msg = 'Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser.'

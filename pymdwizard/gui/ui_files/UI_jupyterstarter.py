@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'JupyterStarter.ui'
+# Form implementation generated from reading ui file 'jupyterstarter.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(544, 195)
+        Form.resize(645, 276)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
@@ -99,6 +99,38 @@ class Ui_Form(object):
         self.verticalLayout_14.addLayout(self.horizontalLayout)
         self.verticalLayout_6.addWidget(self.help_geoform)
         self.verticalLayout.addLayout(self.verticalLayout_6)
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.usejupyterframe = QtWidgets.QFrame(Form)
+        self.usejupyterframe.setEnabled(False)
+        self.usejupyterframe.setObjectName("usejupyterframe")
+        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.usejupyterframe)
+        self.verticalLayout_17.setContentsMargins(9, 3, 9, 3)
+        self.verticalLayout_17.setSpacing(3)
+        self.verticalLayout_17.setObjectName("verticalLayout_17")
+        self.label_55 = QtWidgets.QLabel(self.usejupyterframe)
+        self.label_55.setStyleSheet("font: bold;")
+        self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_55.setObjectName("label_55")
+        self.verticalLayout_17.addWidget(self.label_55)
+        self.label_37 = QtWidgets.QLabel(self.usejupyterframe)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_37.sizePolicy().hasHeightForWidth())
+        self.label_37.setSizePolicy(sizePolicy)
+        self.label_37.setStyleSheet("font: italic;")
+        self.label_37.setObjectName("label_37")
+        self.verticalLayout_17.addWidget(self.label_37)
+        self.usejupyterlab = QtWidgets.QCheckBox(self.usejupyterframe)
+        self.usejupyterlab.setObjectName("usejupyterlab")
+        self.verticalLayout_17.addWidget(self.usejupyterlab)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.verticalLayout_17.addLayout(self.horizontalLayout_5)
+        self.verticalLayout_8.addWidget(self.usejupyterframe)
+        self.verticalLayout.addLayout(self.verticalLayout_8)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -126,6 +158,9 @@ class Ui_Form(object):
         self.btn_browse.setText(_translate("Form", "Browse"))
         self.label_52.setText(_translate("Form", "What Python Kernel to use:"))
         self.label_35.setText(_translate("Form", "This is instance of Python you want to run Jupyter with.  In addition to the Python version that was installed with the MetadataWizard any available Conda Envs are listed"))
+        self.label_55.setText(_translate("Form", "Use JupyterLab ?"))
+        self.label_37.setText(_translate("Form", "<html><head/><body><p>Use the new JupyterLab interface instead of the tradional notebook. </p><p>If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. </p></body></html>"))
+        self.usejupyterlab.setText(_translate("Form", "Use JupyterLab"))
         self.btn_launch.setText(_translate("Form", "Launch"))
         self.btn_cancel.setText(_translate("Form", "Cancel"))
 
