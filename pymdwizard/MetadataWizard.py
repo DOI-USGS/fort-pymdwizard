@@ -76,6 +76,7 @@ def set_clean_path():
         os.environ['path'] = ";".join([executable_dir,
                                        os.path.join(executable_dir, 'Library',
                                                     'bin'),
+                                       os.path.join(executable_dir, 'Scripts'),
                                        os.environ['path']])
 
         from pymdwizard.core.utils import check_pem_file
@@ -89,6 +90,9 @@ def set_clean_path():
 
 
 if __name__ == '__main__':
+
+
+
     parser = argparse.ArgumentParser(description="Metadata Wizard")
     parser.add_argument("xml_fname", help="The FGDC (or BDP) XML file to load",
                         type=str, default=None, nargs='?',)
@@ -101,5 +105,6 @@ if __name__ == '__main__':
     set_clean_path()
     from pymdwizard.gui import MainWindow
     MainWindow.launch_main(xml_fname=args.xml_fname,
-                           introspect_fname=args.introspect_fname)
+                           introspect_fname=args.introspect_fname,
+                           env_cache=os.environ)
 

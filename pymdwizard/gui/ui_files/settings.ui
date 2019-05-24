@@ -198,7 +198,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Highligh spelling errors</string>
+          <string>Highlight spelling errors</string>
          </property>
         </widget>
        </item>
@@ -386,7 +386,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Default defintion source text</string>
+          <string>Default definition source text</string>
          </property>
         </widget>
        </item>

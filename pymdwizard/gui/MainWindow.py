@@ -55,6 +55,8 @@ import tempfile
 import time
 import datetime
 import shutil
+from pathlib import Path
+import subprocess
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication
@@ -119,6 +121,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.metadata_root = None
         self.build_ui()
         self.connect_events()
+        self.env_cache = {}
 
         self.load_default()
 
@@ -197,6 +200,32 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
         self.ui.actionSpelling_flag.triggered.connect(self.spelling_switch_triggered)
+        self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
+
+    def anacondaprompt(self):
+
+        if os.name == 'nt':
+            root_dir = utils.get_install_dname('root')
+            my_env = os.environ.copy()
+            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+            my_env["PATH"] = ";".join([os.path.join(root_dir, "Python36_64", "Scripts", "conda_exes"),
+                                      my_env["PATH"]])
+
+            pydir = utils.get_install_dname('python')
+            my_env["PATH"] = ";".join([os.path.join(pydir, "Scripts", "conda_exes"),
+                                       my_env["PATH"]])
+            activatebat = os.path.join(pydir, "Scripts", "conda_exe", "activate.bat")
+
+            msg = "This is experimental functionality used for opening an Anaconda command prompt set to"
+            msg += "\nthe Python environment shipped with the MetadataWizard.\n\n"
+            msg += "The base conda env in this prompt is the one to use, so do not use the activate command."
+            msg += "\nUse: conda install ...package.. to install new packages into the MetadataWizard envronment."
+            QMessageBox.information(self, "Conda instructions", msg)
+
+            subprocess.Popen(["start", "cmd", activatebat, pydir], env=my_env, cwd=pydir, shell=True)
+        else:
+            msg = "This experimental functionality not yet implemented for Mac or Linux builds"
+            QMessageBox.warning(self, "Not implemented", msg)
 
     def open_recent_file(self):
         """
@@ -1207,6 +1236,7 @@ def show_splash(version='2.x.x'):
     painter = QPainter(splash_pix)
     painter.begin(splash_pix)
 
+
     x, y = 470, 70
     for digit in version:
         painter.drawPixmap(x, y, numbers[digit])
@@ -1219,7 +1249,7 @@ def show_splash(version='2.x.x'):
     return splash
 
 
-def launch_main(xml_fname=None, introspect_fname=None):
+def launch_main(xml_fname=None, introspect_fname=None, env_cache={}):
     app = QApplication(sys.argv)
 
     splash = show_splash(__version__)
@@ -1229,6 +1259,7 @@ def launch_main(xml_fname=None, introspect_fname=None):
     app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
+    mdwiz.env_cache=env_cache
     splash.finish(mdwiz)
 
     try:

@@ -149,6 +149,7 @@
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionLaunch_Jupyter"/>
+    <addaction name="anacondaprompt"/>
     <addaction name="separator"/>
     <addaction name="menuOptional_Sections"/>
    </widget>
@@ -496,6 +497,11 @@
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="anacondaprompt">
+   <property name="text">
+    <string>Anaconda Prompt</string>
    </property>
   </action>
  </widget>

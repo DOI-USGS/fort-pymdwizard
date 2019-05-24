@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -159,6 +159,8 @@ class Ui_MainWindow(object):
         self.actionSpelling_flag.setObjectName("actionSpelling_flag")
         self.actionSettings = QtWidgets.QAction(MainWindow)
         self.actionSettings.setObjectName("actionSettings")
+        self.anacondaprompt = QtWidgets.QAction(MainWindow)
+        self.anacondaprompt.setObjectName("anacondaprompt")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
@@ -182,6 +184,7 @@ class Ui_MainWindow(object):
         self.menuAdvanced.addAction(self.actionSettings)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.actionLaunch_Jupyter)
+        self.menuAdvanced.addAction(self.anacondaprompt)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.menuOptional_Sections.menuAction())
         self.menuHelp.addAction(self.actionLaunch_Help)
@@ -269,4 +272,5 @@ class Ui_MainWindow(object):
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
         self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
+        self.anacondaprompt.setText(_translate("MainWindow", "Anaconda Prompt"))
 

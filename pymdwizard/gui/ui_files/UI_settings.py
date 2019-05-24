@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -274,7 +274,7 @@ class Ui_Form(object):
         self.btn_restore_template.setText(_translate("Form", "Use Default"))
         self.label_6.setToolTip(_translate("Form", "Required"))
         self.label_6.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Will potential spelling errors be highlighted in text boxes?</span></p></body></html>"))
-        self.label_3.setText(_translate("Form", "Highligh spelling errors"))
+        self.label_3.setText(_translate("Form", "Highlight spelling errors"))
         self.spelling_on.setText(_translate("Form", "On"))
         self.spelling_off.setText(_translate("Form", "Off"))
         self.label_7.setToolTip(_translate("Form", "Required"))
@@ -282,7 +282,7 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "Max rows read by EA builder"))
         self.label_8.setToolTip(_translate("Form", "Required"))
         self.label_8.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">This text will be used for definition source elements when using the EA builder.</span></p></body></html>"))
-        self.label_9.setText(_translate("Form", "Default defintion source text"))
+        self.label_9.setText(_translate("Form", "Default definition source text"))
         self.groupBox.setTitle(_translate("Form", "Application Style"))
         self.label_12.setToolTip(_translate("Form", "Required"))
         self.label_12.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Change the font size or font used in the Wizard to improve readibility.</span></p></body></html>"))
