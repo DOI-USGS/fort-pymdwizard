@@ -389,6 +389,11 @@ class Citeinfo(WizardWidget): #
         title = xml_utils.xml_node("title", self.ui.fgdc_title.toPlainText(),
                                    parent_node=citeinfo)
 
+        if self.ui.fgdc_edition.text():
+            othercit = xml_utils.xml_node("edition",
+                                          self.ui.fgdc_edition.text(),
+                                          parent_node=citeinfo)
+
         geoform = xml_utils.xml_node("geoform",
                                      self.ui.fgdc_geoform.currentText(),
                                      parent_node=citeinfo)
@@ -466,7 +471,7 @@ class Citeinfo(WizardWidget): #
             utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
                                           citeinfo, 'pubdate')
             utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
-
+            utils.populate_widget_element(self.ui.fgdc_edition, citeinfo, 'edition')
             utils.populate_widget_element(self.ui.fgdc_othercit, citeinfo, 'othercit')
 
             self.onlink_list.clear_widgets()
