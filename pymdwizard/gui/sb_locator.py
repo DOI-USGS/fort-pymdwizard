@@ -55,6 +55,8 @@ import getpass
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QLineEdit
 
 import pysb
 
@@ -118,8 +120,9 @@ class SBLocator(QWidget):
     def ok_click(self):
         self.update_content()
 
-        self.get_fgdc_file()
-        print(self.fname)
+        fname = self.get_fgdc_file()
+        if not fname:
+            return None
 
         self.mainform.load_file(self.fname)
         self.mainform.sb_file = True
@@ -132,6 +135,7 @@ class SBLocator(QWidget):
 
     def check_permissions(self):
         try:
+            self.update_content()
             sb = self.log_into_sb()
         except:
             msg = "Login to ScienceBase Failed. \nCheck username and password"
@@ -145,15 +149,25 @@ class SBLocator(QWidget):
             msg = "This item does not appear to be writable by the designated user."
             QMessageBox.warning(self, "Write permission error", msg)
             return False
+        if writable:
+            item = sb.get_item(self.hash)
+            title = item['title']
+
+            fname = self.get_fgdc_file()
+
+            msg = ""
+
+            QMessageBox.warning(self, f"SB item {self.hash} ready to go.", msg)
 
         return True
 
     def get_fgdc_file(self):
 
+        if self.mainform.cur_fname:
+            self.mainform.save_file()
+
         sb = self.log_into_sb()
         tempdir = tempfile.gettempdir()
-
-        print(tempdir)
 
         item_json = sb.get_item(self.hash)
 
@@ -163,18 +177,36 @@ class SBLocator(QWidget):
                 for f in item_json["files"]
                 if f["contentType"] == "application/fgdc+xml"
             ]
-            fgdc_url = fgdc_files[0]["url"]
         except KeyError:
             fgdc_files = [
                 f for f in item_json["facets"][0]["files"] if f["name"].endswith(".xml")
             ]
-            fgdc_url = fgdc_files[0]["url"]
 
-        url = fgdc_files[0]["url"]
-        fname = fgdc_files[0]["name"]
+        if len(fgdc_files) == 0:
 
-        sb.download_file(url, fname, tempdir)
-        self.fname = os.path.join(tempdir, fname)
+            msg = f"There doesn't appear to be an FGDC XML file associated with item: {self.hash}.\n"
+            msg += "Starting a new record with the default template."
+            msg += "\n\nEnter a filename for this new FGDC record:"
+            fname, ok =  QInputDialog.getText(self, "Starting new metadata record", msg, QLineEdit.Normal, 'FGDC.xml')
+
+            if not ok:
+                return None
+            else:
+                self.fname = os.path.join(tempdir, fname)
+                self.mainform.cur_fname = self.fname
+                self.mainform.save_file()
+                sb.upload_file_to_item(item_json, self.fname, scrape_file=False)
+
+        else:
+            #
+
+            url = fgdc_files[0]["url"]
+            fname = fgdc_files[0]["name"]
+
+            sb.download_file(url, fname, tempdir)
+            self.fname = os.path.join(tempdir, fname)
+
+        return self.fname
 
     def put_fgdc_file(self):
         sb = self.log_into_sb()
