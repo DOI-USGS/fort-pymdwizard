@@ -21,14 +21,14 @@ SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
     This script is part of the pymdwizard package and is not intented to be
     used independently.  All pymdwizard package requirements are needed.
-    
+
     See imports section for external packages used in this script as well as
     inter-package dependencies
 
 
 U.S. GEOLOGICAL SURVEY DISCLAIMER
 ------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
+This software has been approved for release by the U.S. Geological Survey
 (USGS). Although the software has been subjected to rigorous review,
 the USGS reserves the right to update the software as needed pursuant to
 further analysis and review. No warranty, expressed or implied, is made by
@@ -62,7 +62,7 @@ from pymdwizard.gui.theme import Theme
 class PlaceList(WizardWidget):
 
     drag_label = "Place Keywords <keywords>"
-    acceptable_tags = ['keywords', 'place']
+    acceptable_tags = ["keywords", "place"]
 
     def build_ui(self):
         """
@@ -76,8 +76,9 @@ class PlaceList(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-
-        self.ui.theme_tabs.setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
+        self.ui.theme_tabs.setStyleSheet(
+            "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} "
+        )
         self.thesauri = []
 
         self.contact_include_place_change(False)
@@ -98,24 +99,25 @@ class PlaceList(WizardWidget):
         if b:
             self.ui.place_contents.show()
             if len(self.thesauri) == 0:
-                theme_widget = self.add_keyword(keyword='', thesaurus='None',
-                                            locked=False)
-                self.thesauri.append(theme_widget)
+                theme_widget = self.add_keyword(
+                    keyword="", thesaurus="None", locked=False
+                )
         else:
             self.ui.place_contents.hide()
 
-    def add_another(self, click=False, tab_label='', locked=False):
+    def add_another(self, click=False, tab_label="", locked=False):
 
-        if 'None' not in [t.get_thesaurus_name() for t in self.thesauri] and \
-                        tab_label == '':
-            theme_widget = self.add_keyword(keyword='', thesaurus='None',
-                                            locked=False)
+        if (
+            "None" not in [t.get_thesaurus_name() for t in self.thesauri]
+            and tab_label == ""
+        ):
+            theme_widget = self.add_keyword(keyword="", thesaurus="None", locked=False)
         else:
-            theme_widget = Theme(which='place')
+            theme_widget = Theme(which="place")
             theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
 
             self.ui.theme_tabs.addTab(theme_widget, tab_label)
-            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count() - 1)
 
             self.thesauri.append(theme_widget)
         return theme_widget
@@ -133,7 +135,7 @@ class PlaceList(WizardWidget):
         None
         """
         cur_index = self.ui.theme_tabs.currentIndex()
-        self.ui.theme_tabs.setTabText(cur_index, 'Thesaurus: ' + thesaurus_name)
+        self.ui.theme_tabs.setTabText(cur_index, "Thesaurus: " + thesaurus_name)
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
@@ -153,14 +155,16 @@ class PlaceList(WizardWidget):
         return children
 
     def clear_widget(self):
-        for i in range(len(self.thesauri)-1, -1, -1):
+        for i in range(len(self.thesauri) - 1, -1, -1):
             self.remove_tab(i)
         self.thesauri = []
 
     def search_controlled(self):
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, place=True, parent=self)
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(
+            add_term_function=self.add_keyword, place=True, parent=self
+        )
 
-        self.thesaurus_search.setWindowTitle('Place Keyword Thesaurus Search')
+        self.thesaurus_search.setWindowTitle("Place Keyword Thesaurus Search")
 
         fg = self.frameGeometry()
         self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
@@ -174,7 +178,7 @@ class PlaceList(WizardWidget):
                 theme_widget = theme
 
         if theme_widget is None:
-            shortname = thesaurus.split(' ')[0]
+            shortname = thesaurus.split(" ")[0]
             theme_widget = self.add_another(tab_label=shortname, locked=locked)
 
             theme_widget.ui.fgdc_themekt.setText(thesaurus)
@@ -184,7 +188,7 @@ class PlaceList(WizardWidget):
 
         theme_widget.add_keyword(keyword)
         return theme_widget
-                
+
     def to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
@@ -193,12 +197,21 @@ class PlaceList(WizardWidget):
         -------
         procstep element tag in xml tree
         """
-        keywords = xml_utils.xml_node('keywords')
+        keywords = xml_utils.xml_node("keywords")
 
         if self.ui.rbtn_yes.isChecked():
             for place in self.thesauri:
                 place_xml = place.to_xml()
-                keywords.append(place_xml)
+                place_node = xml_utils.XMLNode(place_xml)
+                if (
+                    place_node.placekt.text == "None"
+                    and len(place_node.xpath("placekey", as_list=True)) <= 1
+                    and place_node.xpath("placekey", as_list=True)[0].text == ""
+                    and len(self.thesauri) > 1
+                ):
+                    pass
+                else:
+                    keywords.append(place_xml)
 
         return keywords
 
@@ -217,12 +230,11 @@ class PlaceList(WizardWidget):
         self.clear_widget()
 
         self.original_xml = keywords_xml
-        if keywords_xml.tag == 'keywords':
-            place_kws = keywords_xml.xpath('place')
-
+        if keywords_xml.tag == "keywords":
+            place_kws = keywords_xml.xpath("place")
 
             for place_xml in place_kws:
-                place = self.add_another(tab_label='x')
+                place = self.add_another(tab_label="x")
                 place.from_xml(place_xml)
 
             if place_kws:
@@ -232,12 +244,4 @@ class PlaceList(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(PlaceList,
-                        "ThemeList Step testing")
-
-
-
-
-
-
-
+    utils.launch_widget(PlaceList, "ThemeList Step testing")
