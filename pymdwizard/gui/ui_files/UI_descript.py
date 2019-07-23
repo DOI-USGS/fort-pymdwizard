@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_fgdc_descript(object):
     def setupUi(self, fgdc_descript):
         fgdc_descript.setObjectName("fgdc_descript")
@@ -23,4 +24,3 @@ class Ui_fgdc_descript(object):
     def retranslateUi(self, fgdc_descript):
         _translate = QtCore.QCoreApplication.translate
         fgdc_descript.setWindowTitle(_translate("fgdc_descript", "Form"))
-

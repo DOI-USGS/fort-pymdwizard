@@ -56,10 +56,11 @@ from pymdwizard.gui.ui_files import UI_EA
 from pymdwizard.gui.detailed import Detailed
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
+
 class EA(WizardWidget):  #
 
     drag_label = "Entity and Attributes <eainfo>"
-    acceptable_tags = ['eainfo', 'detailed']
+    acceptable_tags = ["eainfo", "detailed"]
 
     def build_ui(self):
         """
@@ -85,7 +86,7 @@ class EA(WizardWidget):  #
     def remove_detailed(self):
         cur_index = self.ui.fgdc_eainfo.currentIndex()
         self.ui.fgdc_eainfo.removeTab(cur_index)
-        del self.detaileds[cur_index-1]
+        del self.detaileds[cur_index - 1]
 
     def add_detailed(self):
         """
@@ -95,8 +96,9 @@ class EA(WizardWidget):  #
         None
         """
         new_detailed = Detailed(remove_function=self.remove_detailed, parent=self)
-        self.ui.fgdc_eainfo.insertTab(self.ui.fgdc_eainfo.count()-1,
-                                      new_detailed, 'Detailed')
+        self.ui.fgdc_eainfo.insertTab(
+            self.ui.fgdc_eainfo.count() - 1, new_detailed, "Detailed"
+        )
         self.detaileds.append(new_detailed)
         return new_detailed
 
@@ -111,10 +113,10 @@ class EA(WizardWidget):  #
         self.detaileds[0].clear_widget()
         for i in range(len(self.detaileds), 1, -1):
             self.ui.fgdc_eainfo.removeTab(i)
-            del self.detaileds[i-1]
+            del self.detaileds[i - 1]
 
-        utils.set_text(self.ui.fgdc_eaover, '')
-        utils.set_text(self.ui.fgdc_eadetcit, '')
+        utils.set_text(self.ui.fgdc_eaover, "")
+        utils.set_text(self.ui.fgdc_eadetcit, "")
 
     def has_content(self):
         """
@@ -145,14 +147,14 @@ class EA(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        eainfo = xml_utils.xml_node('eainfo')
+        eainfo = xml_utils.xml_node("eainfo")
 
-        #only output the first detailed if it has content
+        # only output the first detailed if it has content
         if self.detaileds and self.detaileds[0].has_content():
             detailed_xml = self.detaileds[0].to_xml()
             eainfo.append(detailed_xml)
 
-        #the remaining detaileds will get output regardless
+        # the remaining detaileds will get output regardless
         for detailed in self.detaileds[1:]:
             detailed_xml = detailed.to_xml()
             eainfo.append(detailed_xml)
@@ -161,9 +163,11 @@ class EA(WizardWidget):  #
         eadetcit_str = self.ui.fgdc_eadetcit.toPlainText()
 
         if eaover_str or eadetcit_str:
-            overview = xml_utils.xml_node('overview', parent_node=eainfo)
-            eaover = xml_utils.xml_node('eaover', text=eaover_str, parent_node=overview)
-            eadetcit = xml_utils.xml_node('eadetcit', text=eadetcit_str, parent_node=overview)
+            overview = xml_utils.xml_node("overview", parent_node=eainfo)
+            eaover = xml_utils.xml_node("eaover", text=eaover_str, parent_node=overview)
+            eadetcit = xml_utils.xml_node(
+                "eadetcit", text=eadetcit_str, parent_node=overview
+            )
 
         return eainfo
 
@@ -181,27 +185,27 @@ class EA(WizardWidget):  #
             self.ui.fgdc_eainfo.setCurrentIndex(0)
             self.clear_widget()
 
-            if eainfo.tag == 'eainfo':
+            if eainfo.tag == "eainfo":
                 self.original_xml = eainfo
-                overview = eainfo.xpath('overview')
+                overview = eainfo.xpath("overview")
                 if overview:
-                    eaover = eainfo.xpath('overview/eaover')
+                    eaover = eainfo.xpath("overview/eaover")
                     if eaover:
                         utils.set_text(self.ui.fgdc_eaover, eaover[0].text)
 
-                    eadetcit = eainfo.xpath('overview/eadetcit')
+                    eadetcit = eainfo.xpath("overview/eadetcit")
                     if eadetcit:
                         utils.set_text(self.ui.fgdc_eadetcit, eadetcit[0].text)
                     self.ui.fgdc_eainfo.setCurrentIndex(2)
 
-                detailed = eainfo.xpath('detailed')
+                detailed = eainfo.xpath("detailed")
                 if detailed:
                     self.ui.fgdc_eainfo.setCurrentIndex(1)
                     self.detaileds[0].from_xml(detailed[0])
 
                     for i, additional_detailed in enumerate(detailed[1:]):
                         new_detailed = self.add_detailed()
-                        self.ui.fgdc_eainfo.setCurrentIndex(i+2)
+                        self.ui.fgdc_eainfo.setCurrentIndex(i + 2)
                         new_detailed.from_xml(additional_detailed)
 
             else:
@@ -212,5 +216,4 @@ class EA(WizardWidget):  #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(EA,
-                        "detailed testing")
+    utils.launch_widget(EA, "detailed testing")

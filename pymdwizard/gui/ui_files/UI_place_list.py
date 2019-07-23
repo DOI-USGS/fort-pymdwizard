@@ -8,25 +8,30 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_place_keywords(object):
     def setupUi(self, place_keywords):
         place_keywords.setObjectName("place_keywords")
         place_keywords.resize(668, 427)
-        place_keywords.setStyleSheet("QLabel{\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(90, 90, 90);\n"
-"}\n"
-"\n"
-"QLineEdit {\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(50, 50, 50);\n"
-"}")
+        place_keywords.setStyleSheet(
+            "QLabel{\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(90, 90, 90);\n"
+            "}\n"
+            "\n"
+            "QLineEdit {\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(50, 50, 50);\n"
+            "}"
+        )
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(place_keywords)
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setSpacing(3)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.help_place = QtWidgets.QGroupBox(place_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_place.sizePolicy().hasHeightForWidth())
@@ -56,7 +61,9 @@ class Ui_place_keywords(object):
         self.label.setStyleSheet("font: bold;")
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_4.addItem(spacerItem)
         self.rbtn_yes = QtWidgets.QRadioButton(self.keywords)
         self.rbtn_yes.setAutoFillBackground(True)
@@ -64,7 +71,9 @@ class Ui_place_keywords(object):
         self.rbtn_yes.setObjectName("rbtn_yes")
         self.horizontalLayout_4.addWidget(self.rbtn_yes)
         self.rbtn_no = QtWidgets.QRadioButton(self.keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Ignored)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Ignored
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rbtn_no.sizePolicy().hasHeightForWidth())
@@ -82,10 +91,14 @@ class Ui_place_keywords(object):
         self.verticalLayout_7.addLayout(self.main_layout)
         self.verticalLayout_9.addWidget(self.keywords)
         self.place_contents = QtWidgets.QFrame(self.help_place)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.place_contents.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.place_contents.sizePolicy().hasHeightForWidth()
+        )
         self.place_contents.setSizePolicy(sizePolicy)
         self.place_contents.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.place_contents.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -96,7 +109,9 @@ class Ui_place_keywords(object):
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.widget = QtWidgets.QWidget(self.place_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -106,10 +121,14 @@ class Ui_place_keywords(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_search_term_5 = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_search_term_5.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.label_search_term_5.sizePolicy().hasHeightForWidth()
+        )
         self.label_search_term_5.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -148,24 +167,30 @@ class Ui_place_keywords(object):
         self.btn_remove_selected.setStyleSheet("")
         self.btn_remove_selected.setObjectName("btn_remove_selected")
         self.horizontalLayout_3.addWidget(self.btn_remove_selected)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_6.addWidget(self.widget)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.frame = QtWidgets.QFrame(self.place_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setStyleSheet("QFrame{ \n"
-"font: 75 10pt \"Arial\";\n"
-"border: 1px solid black;\n"
-"border-radius: 3px;\n"
-"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
-"} ")
+        self.frame.setStyleSheet(
+            "QFrame{ \n"
+            'font: 75 10pt "Arial";\n'
+            "border: 1px solid black;\n"
+            "border-radius: 3px;\n"
+            "background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
+            "} "
+        )
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -204,13 +229,29 @@ class Ui_place_keywords(object):
     def retranslateUi(self, place_keywords):
         _translate = QtCore.QCoreApplication.translate
         place_keywords.setWindowTitle(_translate("place_keywords", "ITIS Search"))
-        self.help_place.setTitle(_translate("place_keywords", "Place Keywords (Grouped by Thesaurus):  "))
-        self.label.setText(_translate("place_keywords", "Are there any Place Keywords associated with this dataset?"))
+        self.help_place.setTitle(
+            _translate("place_keywords", "Place Keywords (Grouped by Thesaurus):  ")
+        )
+        self.label.setText(
+            _translate(
+                "place_keywords",
+                "Are there any Place Keywords associated with this dataset?",
+            )
+        )
         self.rbtn_yes.setText(_translate("place_keywords", "Yes"))
         self.rbtn_no.setText(_translate("place_keywords", "No"))
-        self.label_search_term_5.setText(_translate("place_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>"))
-        self.btn_add_thesaurus.setText(_translate("place_keywords", "Add New Thesaurus"))
-        self.btn_remove_selected.setText(_translate("place_keywords", "Remove Selected"))
-        self.btn_search_controlled.setText(_translate("place_keywords", "Search \n"
-"Controlled Vocabularies"))
-
+        self.label_search_term_5.setText(
+            _translate(
+                "place_keywords",
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+            )
+        )
+        self.btn_add_thesaurus.setText(
+            _translate("place_keywords", "Add New Thesaurus")
+        )
+        self.btn_remove_selected.setText(
+            _translate("place_keywords", "Remove Selected")
+        )
+        self.btn_search_controlled.setText(
+            _translate("place_keywords", "Search \n" "Controlled Vocabularies")
+        )

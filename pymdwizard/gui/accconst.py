@@ -58,7 +58,7 @@ from pymdwizard.gui.ui_files import UI_accconst
 class Accconst(WizardWidget):
 
     drag_label = "Access Constraints <accconst>"
-    acceptable_tags = ['accconst']
+    acceptable_tags = ["accconst"]
 
     def build_ui(self):
         """
@@ -68,7 +68,7 @@ class Accconst(WizardWidget):
         -------
         None
         """
-        self.ui = UI_accconst.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_accconst.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -80,8 +80,9 @@ class Accconst(WizardWidget):
         -------
         accconst element tag in xml tree
         """
-        accconst = xml_utils.xml_node('accconst',
-                                      text=self.ui.fgdc_accconst.toPlainText())
+        accconst = xml_utils.xml_node(
+            "accconst", text=self.ui.fgdc_accconst.toPlainText()
+        )
         return accconst
 
     def from_xml(self, acconst):
@@ -97,21 +98,13 @@ class Accconst(WizardWidget):
         None
         """
         try:
-            if acconst.tag == 'accconst':
-               self.ui.fgdc_accconst.setPlainText(acconst.text)
+            if acconst.tag == "accconst":
+                self.ui.fgdc_accconst.setPlainText(acconst.text)
             else:
-               print ("The tag is not accconst")
+                print("The tag is not accconst")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Accconst,
-                        "Access Constraints testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Accconst, "Access Constraints testing")

@@ -8,31 +8,38 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_theme_keywords(object):
     def setupUi(self, theme_keywords):
         theme_keywords.setObjectName("theme_keywords")
         theme_keywords.resize(499, 472)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(theme_keywords.sizePolicy().hasHeightForWidth())
         theme_keywords.setSizePolicy(sizePolicy)
-        theme_keywords.setStyleSheet("QLabel{\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(90, 90, 90);\n"
-"}\n"
-"\n"
-"QLineEdit {\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(50, 50, 50);\n"
-"}")
+        theme_keywords.setStyleSheet(
+            "QLabel{\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(90, 90, 90);\n"
+            "}\n"
+            "\n"
+            "QLineEdit {\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(50, 50, 50);\n"
+            "}"
+        )
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(theme_keywords)
         self.verticalLayout_8.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.fgdc_theme = QtWidgets.QGroupBox(theme_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_theme.sizePolicy().hasHeightForWidth())
@@ -43,20 +50,22 @@ class Ui_theme_keywords(object):
         self.verticalLayout_3.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.groupBox_2 = QtWidgets.QGroupBox(self.fgdc_theme)
-        self.groupBox_2.setStyleSheet("QGroupBox{ \n"
-"font: 75 10pt \"Arial\";\n"
-"border: 1px solid black;\n"
-"border-radius: 3px;\n"
-"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
-"} \n"
-"\n"
-"QLineEdit {\n"
-"padding: 1px;\n"
-"border-style: solid;\n"
-"border: 1px solid gray;\n"
-"border-radius: 2px;\n"
-"}")
-        self.groupBox_2.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.groupBox_2.setStyleSheet(
+            "QGroupBox{ \n"
+            'font: 75 10pt "Arial";\n'
+            "border: 1px solid black;\n"
+            "border-radius: 3px;\n"
+            "background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
+            "} \n"
+            "\n"
+            "QLineEdit {\n"
+            "padding: 1px;\n"
+            "border-style: solid;\n"
+            "border: 1px solid gray;\n"
+            "border-radius: 2px;\n"
+            "}"
+        )
+        self.groupBox_2.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.groupBox_2.setFlat(False)
         self.groupBox_2.setCheckable(False)
         self.groupBox_2.setObjectName("groupBox_2")
@@ -79,13 +88,19 @@ class Ui_theme_keywords(object):
         self.label_search_term_5.setWordWrap(True)
         self.label_search_term_5.setObjectName("label_search_term_5")
         self.horizontalLayout_2.addWidget(self.label_search_term_5)
-        spacerItem = QtWidgets.QSpacerItem(10, 29, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            10, 29, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem)
         self.btn_search_controlled = QtWidgets.QPushButton(self.groupBox_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_search_controlled.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.btn_search_controlled.sizePolicy().hasHeightForWidth()
+        )
         self.btn_search_controlled.setSizePolicy(sizePolicy)
         self.btn_search_controlled.setObjectName("btn_search_controlled")
         self.horizontalLayout_2.addWidget(self.btn_search_controlled)
@@ -106,13 +121,19 @@ class Ui_theme_keywords(object):
         self.label_search_term_3.setWordWrap(True)
         self.label_search_term_3.setObjectName("label_search_term_3")
         self.horizontalLayout_8.addWidget(self.label_search_term_3)
-        spacerItem1 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            10, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_8.addItem(spacerItem1)
         self.btn_browse_iso = QtWidgets.QPushButton(self.groupBox_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_browse_iso.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.btn_browse_iso.sizePolicy().hasHeightForWidth()
+        )
         self.btn_browse_iso.setSizePolicy(sizePolicy)
         self.btn_browse_iso.setObjectName("btn_browse_iso")
         self.horizontalLayout_8.addWidget(self.btn_browse_iso)
@@ -164,17 +185,23 @@ class Ui_theme_keywords(object):
         self.themekey.setObjectName("themekey")
         self.verticalLayout.addWidget(self.themekey)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
-        spacerItem2 = QtWidgets.QSpacerItem(24, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            24, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        spacerItem3 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.verticalLayout_4.addItem(spacerItem3)
         self.btn_add_custom = QtWidgets.QPushButton(self.groupBox_2)
         self.btn_add_custom.setObjectName("btn_add_custom")
         self.verticalLayout_4.addWidget(self.btn_add_custom)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.verticalLayout_4.addItem(spacerItem4)
         self.horizontalLayout_3.addLayout(self.verticalLayout_4)
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
@@ -184,20 +211,22 @@ class Ui_theme_keywords(object):
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.theme.setFont(font)
-        self.theme.setStyleSheet("QTreeView:item:has-children {\n"
-"\n"
-"color: rgb(90, 90, 190);\n"
-"}\n"
-"\n"
-"QTreeView:item:!has-children {\n"
-"font: 9px;\n"
-"color: rgb(56, 56, 70);\n"
-"}\n"
-"\n"
-"QTreeView::item:selected {\n"
-"    background-color:  rgb(158, 213, 76);\n"
-"    color: white;\n"
-"}")
+        self.theme.setStyleSheet(
+            "QTreeView:item:has-children {\n"
+            "\n"
+            "color: rgb(90, 90, 190);\n"
+            "}\n"
+            "\n"
+            "QTreeView:item:!has-children {\n"
+            "font: 9px;\n"
+            "color: rgb(56, 56, 70);\n"
+            "}\n"
+            "\n"
+            "QTreeView::item:selected {\n"
+            "    background-color:  rgb(158, 213, 76);\n"
+            "    color: white;\n"
+            "}"
+        )
         self.theme.setLineWidth(1)
         self.theme.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
         self.theme.setAlternatingRowColors(False)
@@ -210,7 +239,9 @@ class Ui_theme_keywords(object):
         self.verticalLayout_3.addWidget(self.theme)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem5)
         self.btn_remove_keywords = QtWidgets.QPushButton(self.fgdc_theme)
         self.btn_remove_keywords.setObjectName("btn_remove_keywords")
@@ -225,21 +256,59 @@ class Ui_theme_keywords(object):
     def retranslateUi(self, theme_keywords):
         _translate = QtCore.QCoreApplication.translate
         theme_keywords.setWindowTitle(_translate("theme_keywords", "ITIS Search"))
-        self.fgdc_theme.setTitle(_translate("theme_keywords", "Theme Keywords (Grouped by Thesaurus):  "))
-        self.groupBox_2.setTitle(_translate("theme_keywords", "Tools for adding Theme Keywords:"))
-        self.label_search_term_5.setText(_translate("theme_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>"))
-        self.btn_search_controlled.setToolTip(_translate("theme_keywords", "Perform search of USGS Controlled Vocabularies"))
-        self.btn_search_controlled.setText(_translate("theme_keywords", "Search Controlled Vocabularies"))
-        self.label_search_term_3.setText(_translate("theme_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>"))
-        self.btn_browse_iso.setToolTip(_translate("theme_keywords", "Add ISO 19115 keywords"))
+        self.fgdc_theme.setTitle(
+            _translate("theme_keywords", "Theme Keywords (Grouped by Thesaurus):  ")
+        )
+        self.groupBox_2.setTitle(
+            _translate("theme_keywords", "Tools for adding Theme Keywords:")
+        )
+        self.label_search_term_5.setText(
+            _translate(
+                "theme_keywords",
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+            )
+        )
+        self.btn_search_controlled.setToolTip(
+            _translate(
+                "theme_keywords", "Perform search of USGS Controlled Vocabularies"
+            )
+        )
+        self.btn_search_controlled.setText(
+            _translate("theme_keywords", "Search Controlled Vocabularies")
+        )
+        self.label_search_term_3.setText(
+            _translate(
+                "theme_keywords",
+                '<html><head/><body><p><span style=" font-style:italic;">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>',
+            )
+        )
+        self.btn_browse_iso.setToolTip(
+            _translate("theme_keywords", "Add ISO 19115 keywords")
+        )
         self.btn_browse_iso.setText(_translate("theme_keywords", "Browse ISO 19115"))
-        self.label_search_term_6.setText(_translate("theme_keywords", "<html><head/><body><p><span style=\" font-style:italic;\">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>"))
-        self.label_search_term_4.setText(_translate("theme_keywords", "Theme Keyword Thesaurus:"))
-        self.themekt.setToolTip(_translate("theme_keywords", "terms to search ITIS for"))
+        self.label_search_term_6.setText(
+            _translate(
+                "theme_keywords",
+                '<html><head/><body><p><span style=" font-style:italic;">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>',
+            )
+        )
+        self.label_search_term_4.setText(
+            _translate("theme_keywords", "Theme Keyword Thesaurus:")
+        )
+        self.themekt.setToolTip(
+            _translate("theme_keywords", "terms to search ITIS for")
+        )
         self.themekt.setText(_translate("theme_keywords", "None"))
-        self.label_search_term.setText(_translate("theme_keywords", "Add Free-Text Theme Keyword:"))
-        self.themekey.setToolTip(_translate("theme_keywords", "terms to search ITIS for"))
-        self.btn_add_custom.setToolTip(_translate("theme_keywords", "Add Custom Keyword"))
+        self.label_search_term.setText(
+            _translate("theme_keywords", "Add Free-Text Theme Keyword:")
+        )
+        self.themekey.setToolTip(
+            _translate("theme_keywords", "terms to search ITIS for")
+        )
+        self.btn_add_custom.setToolTip(
+            _translate("theme_keywords", "Add Custom Keyword")
+        )
         self.btn_add_custom.setText(_translate("theme_keywords", "Add Custom Keyword"))
-        self.btn_remove_keywords.setText(_translate("theme_keywords", "Remove Selected Keywords"))
-
+        self.btn_remove_keywords.setText(
+            _translate("theme_keywords", "Remove Selected Keywords")
+        )

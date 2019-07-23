@@ -57,22 +57,22 @@ from pymdwizard.gui.citeinfo import Citeinfo
 class Crossref(Citeinfo):
 
     drag_label = "Cross Reference <crossref>"
-    acceptable_tags = ['crossref', 'citeinfo']
+    acceptable_tags = ["crossref", "citeinfo"]
 
-    def build_ui(self, ):
+    def build_ui(self,):
         Citeinfo.build_ui(self)
 
         self.setObjectName("fgdc_crossref")
         self.ui.fgdc_lworkcit.hide()
-        self.ui.lbl_dataset_title.setText('Crossref Title')
+        self.ui.lbl_dataset_title.setText("Crossref Title")
         self.ui.label_34.hide()
         self.ui.label_38.hide()
-        self.ui.label_47.setText('Author/Originator')
-        self.ui.label_53.setText('Format')
+        self.ui.label_47.setText("Author/Originator")
+        self.ui.label_53.setText("Format")
         self.ui.fgdc_geoform.setCurrentText("publication")
-        self.ui.label_51.setText('Online Link to the Publication')
-        self.ui.label_53.setText('Can you provide more publication information?')
-        self.ui.label_43.setText('Is this publication part of a series?')
+        self.ui.label_51.setText("Online Link to the Publication")
+        self.ui.label_53.setText("Can you provide more publication information?")
+        self.ui.label_43.setText("Is this publication part of a series?")
 
     def connect_events(self):
         """
@@ -87,7 +87,7 @@ class Crossref(Citeinfo):
         self.ui.radio_pubinfoyes.toggled.connect(self.include_pubext_change)
 
         self.ui.btn_import_doi.clicked.connect(self.get_doi_citation)
-                
+
     def to_xml(self):
         """
         encapsulates the QLineEdit text in an element tag
@@ -97,7 +97,7 @@ class Crossref(Citeinfo):
         citation element tag in xml tree
         """
         citeinfo = Citeinfo.to_xml(self)
-        crossref = xml_utils.xml_node('crossref')
+        crossref = xml_utils.xml_node("crossref")
         crossref.append(citeinfo)
 
         return crossref
@@ -118,10 +118,10 @@ class Crossref(Citeinfo):
         self.clear_widget()
         try:
             if citeinfo.tag == "citation":
-                citeinfo = citeinfo.xpath('citeinfo')[0]
+                citeinfo = citeinfo.xpath("citeinfo")[0]
             if citeinfo.tag == "crossref":
-                citeinfo = citeinfo.xpath('citeinfo')[0]
-            elif citeinfo.tag != 'citeinfo':
+                citeinfo = citeinfo.xpath("citeinfo")[0]
+            elif citeinfo.tag != "citeinfo":
                 print("The tag is not 'citation' or 'citeinfo'")
                 return
 
@@ -132,12 +132,4 @@ class Crossref(Citeinfo):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Crossref,
-                        "Crossref testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Crossref, "Crossref testing")

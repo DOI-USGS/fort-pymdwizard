@@ -8,13 +8,16 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_metadata_root(object):
     def setupUi(self, metadata_root):
         metadata_root.setObjectName("metadata_root")
         metadata_root.resize(1327, 585)
         metadata_root.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons/Ducky.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap("icons/Ducky.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         metadata_root.setWindowIcon(icon)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(metadata_root)
         self.verticalLayout_3.setContentsMargins(3, 3, 3, 3)
@@ -22,37 +25,41 @@ class Ui_metadata_root(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.frame = QtWidgets.QFrame(metadata_root)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
         self.frame.setMinimumSize(QtCore.QSize(0, 40))
         self.frame.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
-        self.frame.setStyleSheet("QFrame {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 70), stop:1 rgba(255, 255, 255, 255));\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"    background-color: none;\n"
-"    color:rgb(0, 170, 255);\n"
-"    border:none;\n"
-"    font: 13pt \"Arial\";\n"
-"}\n"
-"\n"
-"QToolButton:Checked, QToolButton:Pressed{\n"
-"    background-color: rgb(193, 210, 238);\n"
-"    font: bold 13pt \"Arial\";\n"
-"    border: 1px solid rgb(60, 127, 177);\n"
-"}\n"
-"\n"
-"QToolButton:Hover {\n"
-"    background-color:rgb(224,232,245);\n"
-"}\n"
-"\n"
-"QToolButton:checked:Hover{\n"
-"    background-color: rgb(193, 210, 238);\n"
-"}")
+        self.frame.setStyleSheet(
+            "QFrame {\n"
+            "    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 70), stop:1 rgba(255, 255, 255, 255));\n"
+            "}\n"
+            "\n"
+            "QToolButton{\n"
+            "    background-color: none;\n"
+            "    color:rgb(0, 170, 255);\n"
+            "    border:none;\n"
+            '    font: 13pt "Arial";\n'
+            "}\n"
+            "\n"
+            "QToolButton:Checked, QToolButton:Pressed{\n"
+            "    background-color: rgb(193, 210, 238);\n"
+            '    font: bold 13pt "Arial";\n'
+            "    border: 1px solid rgb(60, 127, 177);\n"
+            "}\n"
+            "\n"
+            "QToolButton:Hover {\n"
+            "    background-color:rgb(224,232,245);\n"
+            "}\n"
+            "\n"
+            "QToolButton:checked:Hover{\n"
+            "    background-color: rgb(193, 210, 238);\n"
+            "}"
+        )
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -64,10 +71,14 @@ class Ui_metadata_root(object):
         self.horizontalLayout.setSpacing(2)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.idinfo_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.idinfo_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.idinfo_button.sizePolicy().hasHeightForWidth()
+        )
         self.idinfo_button.setSizePolicy(sizePolicy)
         self.idinfo_button.setCheckable(True)
         self.idinfo_button.setChecked(True)
@@ -76,10 +87,14 @@ class Ui_metadata_root(object):
         self.idinfo_button.setObjectName("idinfo_button")
         self.horizontalLayout.addWidget(self.idinfo_button)
         self.dataquality_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.dataquality_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.dataquality_button.sizePolicy().hasHeightForWidth()
+        )
         self.dataquality_button.setSizePolicy(sizePolicy)
         self.dataquality_button.setCheckable(True)
         self.dataquality_button.setChecked(False)
@@ -89,10 +104,14 @@ class Ui_metadata_root(object):
         self.dataquality_button.setObjectName("dataquality_button")
         self.horizontalLayout.addWidget(self.dataquality_button)
         self.spatial_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.spatial_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.spatial_button.sizePolicy().hasHeightForWidth()
+        )
         self.spatial_button.setSizePolicy(sizePolicy)
         self.spatial_button.setCheckable(True)
         self.spatial_button.setChecked(False)
@@ -101,10 +120,14 @@ class Ui_metadata_root(object):
         self.spatial_button.setObjectName("spatial_button")
         self.horizontalLayout.addWidget(self.spatial_button)
         self.eainfo_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.eainfo_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.eainfo_button.sizePolicy().hasHeightForWidth()
+        )
         self.eainfo_button.setSizePolicy(sizePolicy)
         self.eainfo_button.setCheckable(True)
         self.eainfo_button.setChecked(False)
@@ -113,10 +136,14 @@ class Ui_metadata_root(object):
         self.eainfo_button.setObjectName("eainfo_button")
         self.horizontalLayout.addWidget(self.eainfo_button)
         self.distinfo_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.distinfo_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.distinfo_button.sizePolicy().hasHeightForWidth()
+        )
         self.distinfo_button.setSizePolicy(sizePolicy)
         self.distinfo_button.setCheckable(True)
         self.distinfo_button.setChecked(False)
@@ -125,10 +152,14 @@ class Ui_metadata_root(object):
         self.distinfo_button.setObjectName("distinfo_button")
         self.horizontalLayout.addWidget(self.distinfo_button)
         self.metainfo_button = QtWidgets.QToolButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.metainfo_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.metainfo_button.sizePolicy().hasHeightForWidth()
+        )
         self.metainfo_button.setSizePolicy(sizePolicy)
         self.metainfo_button.setCheckable(True)
         self.metainfo_button.setChecked(False)
@@ -195,4 +226,3 @@ class Ui_metadata_root(object):
         self.eainfo_button.setText(_translate("metadata_root", "Entity and Attribute"))
         self.distinfo_button.setText(_translate("metadata_root", "Distribution"))
         self.metainfo_button.setText(_translate("metadata_root", "Metadata Reference"))
-

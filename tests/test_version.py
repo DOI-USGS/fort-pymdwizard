@@ -8,7 +8,7 @@ import pymdwizard
 
 def test_parse_init():
     # Parse the version from the pymdwizard module.
-    with open('pymdwizard/__init__.py') as f:
+    with open("pymdwizard/__init__.py") as f:
         for line in f:
             if line.find("__version__") >= 0:
                 version = line.split("=")[1].strip()

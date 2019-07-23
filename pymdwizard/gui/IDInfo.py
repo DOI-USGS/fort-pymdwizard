@@ -76,13 +76,13 @@ from pymdwizard.gui.crossref_list import Crossref_list
 class IdInfo(WizardWidget):
 
     drag_label = "Identification Information <idinfo>"
-    acceptable_tags = ['idinfo']
+    acceptable_tags = ["idinfo"]
 
     ui_class = UI_IdInfo.Ui_fgdc_idinfo
 
     def __init__(self, root_widget=None, parent=None):
         super(self.__class__, self).__init__(parent=parent)
-        self.schema = 'bdp'
+        self.schema = "bdp"
         self.root_widget = root_widget
         self.scroll_area = self.ui.idinfo_scroll_area
 
@@ -112,7 +112,7 @@ class IdInfo(WizardWidget):
 
         self.ui.fgdc_citation.layout().addWidget(self.citation)
 
-        #bottom to top in layout
+        # bottom to top in layout
         time_hbox = QHBoxLayout()
         time_hbox.addWidget(self.status)
         time_hbox.addWidget(self.timeperd)
@@ -123,7 +123,6 @@ class IdInfo(WizardWidget):
         self.ui.two_column_left.layout().insertWidget(0, self.ptcontac)
         self.ui.two_column_left.layout().insertWidget(0, self.useconst)
         self.ui.two_column_left.layout().insertWidget(0, self.accconst)
-
 
         self.ui.two_column_right.layout().insertWidget(0, self.supplinf)
         self.ui.two_column_right.layout().insertWidget(0, self.keywords)
@@ -138,7 +137,7 @@ class IdInfo(WizardWidget):
 
     def switch_schema(self, schema):
         self.schema = schema
-        if schema == 'bdp':
+        if schema == "bdp":
             self.taxonomy.show()
         else:
             self.taxonomy.hide()
@@ -151,14 +150,14 @@ class IdInfo(WizardWidget):
 
     def to_xml(self):
         # add code here to translate the form into xml representation
-        idinfo_node = xml_utils.xml_node('idinfo')
+        idinfo_node = xml_utils.xml_node("idinfo")
 
-        citation_node = xml_utils.xml_node('citation', parent_node=idinfo_node)
+        citation_node = xml_utils.xml_node("citation", parent_node=idinfo_node)
         citeinfo_node = self.citation.to_xml()
         citation_node.append(citeinfo_node)
         idinfo_node.append(citation_node)
 
-        descript_node = xml_utils.xml_node('descript', parent_node=idinfo_node)
+        descript_node = xml_utils.xml_node("descript", parent_node=idinfo_node)
         abstract_node = self.descript.to_xml()
         descript_node.append(abstract_node)
         purpose_node = self.purpose.to_xml()
@@ -182,7 +181,7 @@ class IdInfo(WizardWidget):
         keywords = self.keywords.to_xml()
         idinfo_node.append(keywords)
 
-        if self.schema == 'bdp' and self.taxonomy.has_content():
+        if self.schema == "bdp" and self.taxonomy.has_content():
             taxonomy = self.taxonomy.to_xml()
             idinfo_node.append(taxonomy)
 
@@ -197,7 +196,7 @@ class IdInfo(WizardWidget):
             idinfo_node.append(ptcontac)
 
         if self.original_xml is not None:
-            browse = xml_utils.search_xpath(self.original_xml, 'browse')
+            browse = xml_utils.search_xpath(self.original_xml, "browse")
             if browse is not None:
                 browse.tail = None
                 idinfo_node.append(deepcopy(browse))
@@ -207,7 +206,7 @@ class IdInfo(WizardWidget):
             idinfo_node.append(datacredit_node)
 
         if self.original_xml is not None:
-            secinfo = xml_utils.search_xpath(self.original_xml, 'secinfo')
+            secinfo = xml_utils.search_xpath(self.original_xml, "secinfo")
             if secinfo is not None:
                 secinfo.tail = None
                 idinfo_node.append(deepcopy(secinfo))
@@ -220,8 +219,7 @@ class IdInfo(WizardWidget):
                 idinfo_node.append(crossref.to_xml())
 
         if self.original_xml is not None:
-            tools = xml_utils.search_xpath(self.original_xml, 'tool',
-                                           only_first=False)
+            tools = xml_utils.search_xpath(self.original_xml, "tool", only_first=False)
             for tool in tools:
                 tool.tail = None
                 idinfo_node.append(deepcopy(tool))
@@ -232,63 +230,63 @@ class IdInfo(WizardWidget):
 
         self.original_xml = xml_idinfo
 
-        citation = xml_utils.search_xpath(xml_idinfo, 'citation')
+        citation = xml_utils.search_xpath(xml_idinfo, "citation")
         if citation is not None:
             self.citation.from_xml(citation)
 
-        abstract = xml_utils.search_xpath(xml_idinfo, 'descript/abstract')
+        abstract = xml_utils.search_xpath(xml_idinfo, "descript/abstract")
         if abstract is not None:
             self.descript.from_xml(abstract)
 
-        purpose = xml_utils.search_xpath(xml_idinfo, 'descript/purpose')
+        purpose = xml_utils.search_xpath(xml_idinfo, "descript/purpose")
         if purpose is not None:
             self.purpose.from_xml(purpose)
 
-        supplinf = xml_utils.search_xpath(xml_idinfo, 'descript/supplinf')
+        supplinf = xml_utils.search_xpath(xml_idinfo, "descript/supplinf")
         if supplinf is not None:
             self.supplinf.from_xml(supplinf)
 
-        timeperd = xml_utils.search_xpath(xml_idinfo, 'timeperd')
+        timeperd = xml_utils.search_xpath(xml_idinfo, "timeperd")
         if timeperd is not None:
             self.timeperd.from_xml(timeperd)
 
-        status = xml_utils.search_xpath(xml_idinfo, 'status')
+        status = xml_utils.search_xpath(xml_idinfo, "status")
         if status is not None:
             self.status.from_xml(status)
 
-        spdom = xml_utils.search_xpath(xml_idinfo, 'spdom')
+        spdom = xml_utils.search_xpath(xml_idinfo, "spdom")
         if spdom is not None:
             self.root_widget.spatial_tab.spdom.from_xml(spdom)
 
-        keywords = xml_utils.search_xpath(xml_idinfo, 'keywords')
+        keywords = xml_utils.search_xpath(xml_idinfo, "keywords")
         if keywords is not None:
             self.keywords.from_xml(keywords)
 
-        taxonomy = xml_utils.search_xpath(xml_idinfo, 'taxonomy')
+        taxonomy = xml_utils.search_xpath(xml_idinfo, "taxonomy")
         if taxonomy is not None:
             self.taxonomy.from_xml(taxonomy)
 
-        accconst = xml_utils.search_xpath(xml_idinfo, 'accconst')
+        accconst = xml_utils.search_xpath(xml_idinfo, "accconst")
         if accconst is not None:
             self.accconst.from_xml(accconst)
 
-        useconst =xml_utils.search_xpath(xml_idinfo, 'useconst')
+        useconst = xml_utils.search_xpath(xml_idinfo, "useconst")
         if useconst is not None:
             self.useconst.from_xml(useconst)
 
-        ptcontac = xml_utils.search_xpath(xml_idinfo, 'ptcontac')
+        ptcontac = xml_utils.search_xpath(xml_idinfo, "ptcontac")
         if ptcontac is not None:
             self.ptcontac.from_xml(ptcontac)
 
-        datacred = xml_utils.search_xpath(xml_idinfo, 'datacred')
+        datacred = xml_utils.search_xpath(xml_idinfo, "datacred")
         if datacred is not None:
             self.datacredit.from_xml(datacred)
 
-        native = xml_utils.search_xpath(xml_idinfo, 'native')
+        native = xml_utils.search_xpath(xml_idinfo, "native")
         if native is not None:
             self.native.from_xml(native)
 
-        crossref = xml_utils.search_xpath(xml_idinfo, 'crossref')
+        crossref = xml_utils.search_xpath(xml_idinfo, "crossref")
         if crossref is not None:
             self.crossref_list.from_xml(xml_idinfo)
 

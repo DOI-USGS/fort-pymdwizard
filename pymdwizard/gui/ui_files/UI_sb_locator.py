@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -38,29 +39,42 @@ class Ui_Form(object):
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
         self.password = QtWidgets.QLineEdit(Form)
-        self.password.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhNoAutoUppercase|QtCore.Qt.ImhNoPredictiveText|QtCore.Qt.ImhSensitiveData)
+        self.password.setInputMethodHints(
+            QtCore.Qt.ImhHiddenText
+            | QtCore.Qt.ImhNoAutoUppercase
+            | QtCore.Qt.ImhNoPredictiveText
+            | QtCore.Qt.ImhSensitiveData
+        )
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.horizontalLayout_2.addWidget(self.password)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.btn_check = QtWidgets.QPushButton(Form)
         self.btn_check.setObjectName("btn_check")
         self.horizontalLayout.addWidget(self.btn_check)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem1)
         self.btn_ok = QtWidgets.QPushButton(Form)
         self.btn_ok.setObjectName("btn_ok")
         self.horizontalLayout.addWidget(self.btn_ok)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem2)
         self.btn_cancel = QtWidgets.QPushButton(Form)
         self.btn_cancel.setObjectName("btn_cancel")
         self.horizontalLayout.addWidget(self.btn_cancel)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem3)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -76,4 +90,3 @@ class Ui_Form(object):
         self.btn_check.setText(_translate("Form", "Check Item"))
         self.btn_ok.setText(_translate("Form", "OK"))
         self.btn_cancel.setText(_translate("Form", "Cancel"))
-

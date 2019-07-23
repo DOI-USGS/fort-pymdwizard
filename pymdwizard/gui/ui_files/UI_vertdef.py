@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(529, 354)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -22,21 +25,25 @@ class Ui_Form(object):
         Form.setFont(font)
         Form.setFocusPolicy(QtCore.Qt.WheelFocus)
         Form.setAcceptDrops(True)
-        Form.setStyleSheet("QLabel{\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(90, 90, 90);\n"
-"}\n"
-"\n"
-"QLineEdit {\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(50, 50, 50);\n"
-"}")
+        Form.setStyleSheet(
+            "QLabel{\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(90, 90, 90);\n"
+            "}\n"
+            "\n"
+            "QLineEdit {\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(50, 50, 50);\n"
+            "}"
+        )
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_12.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_12.setSpacing(3)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
         self.fgdc_vertdef = QtWidgets.QGroupBox(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_vertdef.sizePolicy().hasHeightForWidth())
@@ -54,7 +61,9 @@ class Ui_Form(object):
         self.label_15.setStyleSheet("font: bold;")
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_27.addWidget(self.label_15)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_27.addItem(spacerItem)
         self.rbtn_yes = QtWidgets.QRadioButton(self.fgdc_vertdef)
         self.rbtn_yes.setAutoFillBackground(True)
@@ -74,7 +83,9 @@ class Ui_Form(object):
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.fgdc_altsys = QtWidgets.QGroupBox(self.content_layout)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_altsys.sizePolicy().hasHeightForWidth())
@@ -90,7 +101,9 @@ class Ui_Form(object):
         self.label_33.setStyleSheet("font: bold;")
         self.label_33.setObjectName("label_33")
         self.horizontalLayout_34.addWidget(self.label_33)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_34.addItem(spacerItem1)
         self.rbtn_yes_alt = QtWidgets.QRadioButton(self.fgdc_altsys)
         self.rbtn_yes_alt.setAutoFillBackground(True)
@@ -116,10 +129,14 @@ class Ui_Form(object):
         self.label_34.setObjectName("label_34")
         self.horizontalLayout_13.addWidget(self.label_34)
         self.fgdc_altdatum = QtWidgets.QComboBox(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_altdatum.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_altdatum.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_altdatum.setSizePolicy(sizePolicy)
         self.fgdc_altdatum.setMinimumSize(QtCore.QSize(140, 0))
         self.fgdc_altdatum.setEditable(True)
@@ -129,7 +146,9 @@ class Ui_Form(object):
         self.fgdc_altdatum.addItem("")
         self.horizontalLayout_13.addWidget(self.fgdc_altdatum)
         self.label_35 = QtWidgets.QLabel(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_35.sizePolicy().hasHeightForWidth())
@@ -144,7 +163,7 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_35.setFont(font)
         self.label_35.setScaledContents(True)
-        self.label_35.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_35.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_35.setIndent(0)
         self.label_35.setObjectName("label_35")
         self.horizontalLayout_13.addWidget(self.label_35)
@@ -156,10 +175,14 @@ class Ui_Form(object):
         self.label_36.setObjectName("label_36")
         self.horizontalLayout_14.addWidget(self.label_36)
         self.fgdc_altunits = QtWidgets.QComboBox(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_altunits.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_altunits.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_altunits.setSizePolicy(sizePolicy)
         self.fgdc_altunits.setEditable(True)
         self.fgdc_altunits.setProperty("text", "")
@@ -168,7 +191,9 @@ class Ui_Form(object):
         self.fgdc_altunits.addItem("")
         self.horizontalLayout_14.addWidget(self.fgdc_altunits)
         self.label_37 = QtWidgets.QLabel(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_37.sizePolicy().hasHeightForWidth())
@@ -183,7 +208,7 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_37.setFont(font)
         self.label_37.setScaledContents(True)
-        self.label_37.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_37.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_37.setIndent(0)
         self.label_37.setObjectName("label_37")
         self.horizontalLayout_14.addWidget(self.label_37)
@@ -195,7 +220,9 @@ class Ui_Form(object):
         self.label_38.setObjectName("label_38")
         self.horizontalLayout_15.addWidget(self.label_38)
         self.fgdc_altenc = QtWidgets.QComboBox(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_altenc.sizePolicy().hasHeightForWidth())
@@ -208,7 +235,9 @@ class Ui_Form(object):
         self.fgdc_altenc.addItem("")
         self.horizontalLayout_15.addWidget(self.fgdc_altenc)
         self.label_39 = QtWidgets.QLabel(self.altsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_39.sizePolicy().hasHeightForWidth())
@@ -223,26 +252,34 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_39.setFont(font)
         self.label_39.setScaledContents(True)
-        self.label_39.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_39.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_39.setIndent(0)
         self.label_39.setObjectName("label_39")
         self.horizontalLayout_15.addWidget(self.label_39)
         self.verticalLayout_11.addLayout(self.horizontalLayout_15)
         self.verticalLayout_10.addWidget(self.altsys_contents)
         self.verticalLayout.addWidget(self.fgdc_altsys)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        )
         self.verticalLayout.addItem(spacerItem2)
         self.label_40 = QtWidgets.QLabel(self.content_layout)
         self.label_40.setStyleSheet("font: italic;")
         self.label_40.setObjectName("label_40")
         self.verticalLayout.addWidget(self.label_40)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        )
         self.verticalLayout.addItem(spacerItem3)
         self.fgdc_depthsys = QtWidgets.QGroupBox(self.content_layout)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_depthsys.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_depthsys.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_depthsys.setSizePolicy(sizePolicy)
         self.fgdc_depthsys.setObjectName("fgdc_depthsys")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.fgdc_depthsys)
@@ -256,7 +293,9 @@ class Ui_Form(object):
         self.label_22.setStyleSheet("font: bold;")
         self.label_22.setObjectName("label_22")
         self.horizontalLayout_32.addWidget(self.label_22)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_32.addItem(spacerItem4)
         self.rbtn_yes_depth = QtWidgets.QRadioButton(self.fgdc_depthsys)
         self.rbtn_yes_depth.setAutoFillBackground(True)
@@ -282,7 +321,9 @@ class Ui_Form(object):
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_4.addWidget(self.label_9)
         self.fgdc_depthdn = QtWidgets.QComboBox(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_depthdn.sizePolicy().hasHeightForWidth())
@@ -329,7 +370,9 @@ class Ui_Form(object):
         self.fgdc_depthdn.addItem("")
         self.horizontalLayout_4.addWidget(self.fgdc_depthdn)
         self.label_23 = QtWidgets.QLabel(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
@@ -344,7 +387,7 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_23.setFont(font)
         self.label_23.setScaledContents(True)
-        self.label_23.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_23.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_23.setIndent(0)
         self.label_23.setObjectName("label_23")
         self.horizontalLayout_4.addWidget(self.label_23)
@@ -356,7 +399,9 @@ class Ui_Form(object):
         self.label_12.setObjectName("label_12")
         self.horizontalLayout_5.addWidget(self.label_12)
         self.fgdc_depthdu = QtWidgets.QComboBox(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_depthdu.sizePolicy().hasHeightForWidth())
@@ -368,7 +413,9 @@ class Ui_Form(object):
         self.fgdc_depthdu.addItem("")
         self.horizontalLayout_5.addWidget(self.fgdc_depthdu)
         self.label_24 = QtWidgets.QLabel(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
@@ -383,7 +430,7 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_24.setFont(font)
         self.label_24.setScaledContents(True)
-        self.label_24.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_24.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_24.setIndent(0)
         self.label_24.setObjectName("label_24")
         self.horizontalLayout_5.addWidget(self.label_24)
@@ -395,7 +442,9 @@ class Ui_Form(object):
         self.label_13.setObjectName("label_13")
         self.horizontalLayout_6.addWidget(self.label_13)
         self.fgdc_depthem = QtWidgets.QComboBox(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_depthem.sizePolicy().hasHeightForWidth())
@@ -408,7 +457,9 @@ class Ui_Form(object):
         self.fgdc_depthem.addItem("")
         self.horizontalLayout_6.addWidget(self.fgdc_depthem)
         self.label_25 = QtWidgets.QLabel(self.depthsys_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_25.sizePolicy().hasHeightForWidth())
@@ -423,7 +474,7 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_25.setFont(font)
         self.label_25.setScaledContents(True)
-        self.label_25.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_25.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_25.setIndent(0)
         self.label_25.setObjectName("label_25")
         self.horizontalLayout_6.addWidget(self.label_25)
@@ -439,40 +490,83 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_15.setText(_translate("Form", "Is there a Vertical or Depth Coordinate System?"))
+        self.label_15.setText(
+            _translate("Form", "Is there a Vertical or Depth Coordinate System?")
+        )
         self.rbtn_yes.setText(_translate("Form", "Yes"))
         self.rbtn_no.setText(_translate("Form", "No"))
-        self.fgdc_altsys.setTitle(_translate("Form", "Altitude Coordinate System (optional)"))
-        self.label_33.setText(_translate("Form", "Is there a Vertical Coordinate System?"))
+        self.fgdc_altsys.setTitle(
+            _translate("Form", "Altitude Coordinate System (optional)")
+        )
+        self.label_33.setText(
+            _translate("Form", "Is there a Vertical Coordinate System?")
+        )
         self.rbtn_yes_alt.setText(_translate("Form", "Yes"))
         self.rbtn_no_alt.setText(_translate("Form", "No"))
         self.label_34.setText(_translate("Form", "Altitude Datum Name"))
-        self.fgdc_altdatum.setCurrentText(_translate("Form", "National Geodetic Vertical Datum of 1929"))
-        self.fgdc_altdatum.setItemText(0, _translate("Form", "National Geodetic Vertical Datum of 1929"))
-        self.fgdc_altdatum.setItemText(1, _translate("Form", "North American Vertical Datum of 1988"))
+        self.fgdc_altdatum.setCurrentText(
+            _translate("Form", "National Geodetic Vertical Datum of 1929")
+        )
+        self.fgdc_altdatum.setItemText(
+            0, _translate("Form", "National Geodetic Vertical Datum of 1929")
+        )
+        self.fgdc_altdatum.setItemText(
+            1, _translate("Form", "North American Vertical Datum of 1988")
+        )
         self.label_35.setToolTip(_translate("Form", "Required"))
-        self.label_35.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_35.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_36.setText(_translate("Form", "Altitude Distance Units"))
         self.fgdc_altunits.setItemText(0, _translate("Form", "meters"))
         self.fgdc_altunits.setItemText(1, _translate("Form", "feet"))
         self.label_37.setToolTip(_translate("Form", "Required"))
-        self.label_37.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_37.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_38.setText(_translate("Form", "Altitude Encoding Method"))
-        self.fgdc_altenc.setItemText(0, _translate("Form", "Explicit elevation coordinate included with horizontal coordinates"))
+        self.fgdc_altenc.setItemText(
+            0,
+            _translate(
+                "Form",
+                "Explicit elevation coordinate included with horizontal coordinates",
+            ),
+        )
         self.fgdc_altenc.setItemText(1, _translate("Form", "Implicit coordinate"))
         self.fgdc_altenc.setItemText(2, _translate("Form", "Attribute values"))
         self.label_39.setToolTip(_translate("Form", "Required"))
-        self.label_39.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_40.setText(_translate("Form", "One or both of  Altitude and Depth must be open and filled."))
-        self.fgdc_depthsys.setTitle(_translate("Form", "Depth System Definition (optional)"))
+        self.label_39.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+        self.label_40.setText(
+            _translate(
+                "Form", "One or both of  Altitude and Depth must be open and filled."
+            )
+        )
+        self.fgdc_depthsys.setTitle(
+            _translate("Form", "Depth System Definition (optional)")
+        )
         self.label_22.setText(_translate("Form", "Is there a Depth Coordinate System?"))
         self.rbtn_yes_depth.setText(_translate("Form", "Yes"))
         self.rbtn_no_depth.setText(_translate("Form", "No"))
         self.label_9.setText(_translate("Form", "Depth Datum Name"))
         self.fgdc_depthdn.setItemText(0, _translate("Form", "Local surface"))
-        self.fgdc_depthdn.setItemText(1, _translate("Form", "Chart datum; datum for sounding reduction"))
+        self.fgdc_depthdn.setItemText(
+            1, _translate("Form", "Chart datum; datum for sounding reduction")
+        )
         self.fgdc_depthdn.setItemText(2, _translate("Form", "Lowest astronomical tide"))
-        self.fgdc_depthdn.setItemText(3, _translate("Form", "Highest astronomical tide"))
+        self.fgdc_depthdn.setItemText(
+            3, _translate("Form", "Highest astronomical tide")
+        )
         self.fgdc_depthdn.setItemText(4, _translate("Form", "Mean low water"))
         self.fgdc_depthdn.setItemText(5, _translate("Form", "Mean high water"))
         self.fgdc_depthdn.setItemText(6, _translate("Form", "Mean sea level"))
@@ -482,7 +576,9 @@ class Ui_Form(object):
         self.fgdc_depthdn.setItemText(10, _translate("Form", "Mean low water neap"))
         self.fgdc_depthdn.setItemText(11, _translate("Form", "Mean high water neap"))
         self.fgdc_depthdn.setItemText(12, _translate("Form", "Mean lower low water"))
-        self.fgdc_depthdn.setItemText(13, _translate("Form", "Mean lower low water springs"))
+        self.fgdc_depthdn.setItemText(
+            13, _translate("Form", "Mean lower low water springs")
+        )
         self.fgdc_depthdn.setItemText(14, _translate("Form", "Mean higher high water"))
         self.fgdc_depthdn.setItemText(15, _translate("Form", "Mean higher low water"))
         self.fgdc_depthdn.setItemText(16, _translate("Form", "Mean lower high water"))
@@ -498,24 +594,53 @@ class Ui_Form(object):
         self.fgdc_depthdn.setItemText(26, _translate("Form", "Lowest normal low water"))
         self.fgdc_depthdn.setItemText(27, _translate("Form", "Mean tide level"))
         self.fgdc_depthdn.setItemText(28, _translate("Form", "Indian spring low water"))
-        self.fgdc_depthdn.setItemText(29, _translate("Form", "High-water full and charge"))
-        self.fgdc_depthdn.setItemText(30, _translate("Form", "Low-water full and charge"))
+        self.fgdc_depthdn.setItemText(
+            29, _translate("Form", "High-water full and charge")
+        )
+        self.fgdc_depthdn.setItemText(
+            30, _translate("Form", "Low-water full and charge")
+        )
         self.fgdc_depthdn.setItemText(31, _translate("Form", "Columbia River datum"))
-        self.fgdc_depthdn.setItemText(32, _translate("Form", "Gulf Coast low water datum"))
-        self.fgdc_depthdn.setItemText(33, _translate("Form", "Equatorial springs low water"))
-        self.fgdc_depthdn.setItemText(34, _translate("Form", "Approximate lowest astronomical tide"))
+        self.fgdc_depthdn.setItemText(
+            32, _translate("Form", "Gulf Coast low water datum")
+        )
+        self.fgdc_depthdn.setItemText(
+            33, _translate("Form", "Equatorial springs low water")
+        )
+        self.fgdc_depthdn.setItemText(
+            34, _translate("Form", "Approximate lowest astronomical tide")
+        )
         self.fgdc_depthdn.setItemText(35, _translate("Form", "No correction"))
         self.label_23.setToolTip(_translate("Form", "Required"))
-        self.label_23.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_23.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_12.setText(_translate("Form", "Depth Distance Units"))
         self.fgdc_depthdu.setItemText(0, _translate("Form", "meters"))
         self.fgdc_depthdu.setItemText(1, _translate("Form", "feet"))
         self.label_24.setToolTip(_translate("Form", "Required"))
-        self.label_24.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_24.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_13.setText(_translate("Form", "Depth Encoding Method"))
-        self.fgdc_depthem.setItemText(0, _translate("Form", "Explicit depth coordinate included with horizontal coordinates"))
+        self.fgdc_depthem.setItemText(
+            0,
+            _translate(
+                "Form", "Explicit depth coordinate included with horizontal coordinates"
+            ),
+        )
         self.fgdc_depthem.setItemText(1, _translate("Form", "Implicit coordinate"))
         self.fgdc_depthem.setItemText(2, _translate("Form", "Attribute values"))
         self.label_25.setToolTip(_translate("Form", "Required"))
-        self.label_25.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-
+        self.label_25.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )

@@ -57,10 +57,11 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_timeperd
 from pymdwizard.gui import timeinfo
 
+
 class Timeperd(WizardWidget):  #
 
     drag_label = "Time Period of Content <timeperd>"
-    acceptable_tags = ['timeperd']
+    acceptable_tags = ["timeperd"]
 
     def build_ui(self):
         """
@@ -77,7 +78,6 @@ class Timeperd(WizardWidget):  #
 
         self.setup_dragdrop(self)
 
-
     def to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -85,13 +85,14 @@ class Timeperd(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        timeperd = xml_utils.xml_node('timeperd')
+        timeperd = xml_utils.xml_node("timeperd")
         timeinfo = self.timeinfo.to_xml()
 
         timeperd.append(timeinfo)
 
-        current = xml_utils.xml_node('current', parent_node=timeperd,
-                                     text= self.ui.fgdc_current.currentText())
+        current = xml_utils.xml_node(
+            "current", parent_node=timeperd, text=self.ui.fgdc_current.currentText()
+        )
 
         return timeperd
 
@@ -106,29 +107,25 @@ class Timeperd(WizardWidget):  #
         None
         """
         try:
-            if timeperd.tag == 'timeperd':
+            if timeperd.tag == "timeperd":
 
                 if timeperd.findall("current"):
                     current_text = timeperd.findtext("current")
-                    current_box = self.findChild(QComboBox, 'fgdc_current')
+                    current_box = self.findChild(QComboBox, "fgdc_current")
                     current_box.setCurrentText(current_text)
                 else:
                     pass
 
                 if timeperd.findall("timeinfo"):
-                    self.timeinfo.from_xml(timeperd.xpath('timeinfo')[0])
+                    self.timeinfo.from_xml(timeperd.xpath("timeinfo")[0])
                 else:
                     pass
 
-
-
             else:
-                print ("The tag is not timeperd")
+                print("The tag is not timeperd")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Timeperd,
-                        "Metadata Date testing")
-
+    utils.launch_widget(Timeperd, "Metadata Date testing")

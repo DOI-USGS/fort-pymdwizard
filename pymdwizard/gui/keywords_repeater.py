@@ -59,8 +59,14 @@ class KeywordsRepeater(WizardWidget):
 
     drag_label = "NA <NA>"
 
-    def __init__(self, thesaurus_label='Thesaurus', keywords_label='Keywords:',
-                 line_name='kw', spellings=True, parent=None):
+    def __init__(
+        self,
+        thesaurus_label="Thesaurus",
+        keywords_label="Keywords:",
+        line_name="kw",
+        spellings=True,
+        parent=None,
+    ):
         self.thesaurus_label = thesaurus_label
         self.keywords_label = keywords_label
         self.line_name = line_name
@@ -83,15 +89,19 @@ class KeywordsRepeater(WizardWidget):
 
         self.ui.thesaurus_label = self.thesaurus_label
 
-        widget_kwargs = {'label': self.keywords_label,
-                         'line_name': self.line_name,
-                         'required': True,
-                         'spellings': self.spellings}
+        widget_kwargs = {
+            "label": self.keywords_label,
+            "line_name": self.line_name,
+            "required": True,
+            "spellings": self.spellings,
+        }
 
-        self.keywords = RepeatingElement(add_text='Add keyword',
-                                         remove_text='Remove last',
-                                         widget_kwargs=widget_kwargs)
-        self.keywords.ui.italic_label.setStyleSheet('')
+        self.keywords = RepeatingElement(
+            add_text="Add keyword",
+            remove_text="Remove last",
+            widget_kwargs=widget_kwargs,
+        )
+        self.keywords.ui.italic_label.setStyleSheet("")
 
         self.keywords.add_another()
 
@@ -115,5 +125,4 @@ class KeywordsRepeater(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(KeywordsRepeater,
-                        " testing")
+    utils.launch_widget(KeywordsRepeater, " testing")

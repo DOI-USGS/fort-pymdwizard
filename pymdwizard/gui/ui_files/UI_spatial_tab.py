@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_spatial_tab(object):
     def setupUi(self, spatial_tab):
         spatial_tab.setObjectName("spatial_tab")
@@ -17,7 +18,9 @@ class Ui_spatial_tab(object):
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.widget = QtWidgets.QWidget(spatial_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -30,7 +33,9 @@ class Ui_spatial_tab(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_5 = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -46,14 +51,21 @@ class Ui_spatial_tab(object):
         self.label_5.setFont(font)
         self.label_5.setTextFormat(QtCore.Qt.RichText)
         self.label_5.setScaledContents(False)
-        self.label_5.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_5.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_5.setIndent(0)
         self.label_5.setObjectName("label_5")
         self.horizontalLayout.addWidget(self.label_5)
-        spacerItem = QtWidgets.QSpacerItem(321, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            321,
+            20,
+            QtWidgets.QSizePolicy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Minimum,
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.widget1 = QtWidgets.QWidget(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget1.sizePolicy().hasHeightForWidth())
@@ -68,7 +80,9 @@ class Ui_spatial_tab(object):
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.label_4 = QtWidgets.QLabel(self.layoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
@@ -84,12 +98,16 @@ class Ui_spatial_tab(object):
         self.label_4.setFont(font)
         self.label_4.setTextFormat(QtCore.Qt.RichText)
         self.label_4.setScaledContents(True)
-        self.label_4.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.label_4.setAlignment(
+            QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft
+        )
         self.label_4.setIndent(0)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
         self.label_3 = QtWidgets.QLabel(self.layoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -105,7 +123,9 @@ class Ui_spatial_tab(object):
         self.label_3.setFont(font)
         self.label_3.setTextFormat(QtCore.Qt.RichText)
         self.label_3.setScaledContents(False)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_3.setIndent(0)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_3.addWidget(self.label_3)
@@ -122,12 +142,16 @@ class Ui_spatial_tab(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_5)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        spacerItem1 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem1)
         self.btn_browse = QtWidgets.QPushButton(self.widget)
         self.btn_browse.setObjectName("btn_browse")
         self.horizontalLayout_6.addWidget(self.btn_browse)
-        spacerItem2 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem2)
         self.verticalLayout_6.addLayout(self.horizontalLayout_6)
         self.verticalLayout_2.addWidget(self.widget)
@@ -139,10 +163,14 @@ class Ui_spatial_tab(object):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.spatial_scroll_area = QtWidgets.QScrollArea(spatial_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.spatial_scroll_area.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.spatial_scroll_area.sizePolicy().hasHeightForWidth()
+        )
         self.spatial_scroll_area.setSizePolicy(sizePolicy)
         self.spatial_scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.spatial_scroll_area.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -154,7 +182,9 @@ class Ui_spatial_tab(object):
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.spatial_main_widget)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_3.addItem(spacerItem3)
         self.two_column = QtWidgets.QWidget(self.spatial_main_widget)
         self.two_column.setObjectName("two_column")
@@ -167,7 +197,9 @@ class Ui_spatial_tab(object):
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.two_column_left)
         self.verticalLayout_5.setContentsMargins(0, 3, 3, 3)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        spacerItem4 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_5.addItem(spacerItem4)
         self.horizontalLayout_4.addWidget(self.two_column_left)
         self.two_column_right = QtWidgets.QWidget(self.two_column)
@@ -175,11 +207,15 @@ class Ui_spatial_tab(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.two_column_right)
         self.verticalLayout_4.setContentsMargins(3, 3, 0, 3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        spacerItem5 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_4.addItem(spacerItem5)
         self.horizontalLayout_4.addWidget(self.two_column_right)
         self.verticalLayout_3.addWidget(self.two_column)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem6 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_3.addItem(spacerItem6)
         self.spatial_scroll_area.setWidget(self.spatial_main_widget)
         self.horizontalLayout_2.addWidget(self.spatial_scroll_area)
@@ -193,11 +229,30 @@ class Ui_spatial_tab(object):
         _translate = QtCore.QCoreApplication.translate
         spatial_tab.setWindowTitle(_translate("spatial_tab", "Form"))
         self.label_5.setToolTip(_translate("spatial_tab", "Required"))
-        self.label_5.setText(_translate("spatial_tab", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Provide Spatial Information about the dataset</span></p></body></html>"))
+        self.label_5.setText(
+            _translate(
+                "spatial_tab",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Provide Spatial Information about the dataset</span></p></body></html>',
+            )
+        )
         self.label_4.setToolTip(_translate("spatial_tab", "Required"))
-        self.label_4.setText(_translate("spatial_tab", "<html><head/><body><p><span style=\" font-size:15pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_4.setText(
+            _translate(
+                "spatial_tab",
+                '<html><head/><body><p><span style=" font-size:15pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_3.setToolTip(_translate("spatial_tab", "Required"))
-        self.label_3.setText(_translate("spatial_tab", "<html><head/><body><p><span style=\" font-size:9pt; font-style:italic; color:#55aaff;\">= Required</span></p></body></html>"))
-        self.label.setText(_translate("spatial_tab", "If you have access to the data  (*.shp, *.tif, etc) click below to browse to the data file.  This section will be autopopulated with appropriate content pulled from the dataset."))
+        self.label_3.setText(
+            _translate(
+                "spatial_tab",
+                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+            )
+        )
+        self.label.setText(
+            _translate(
+                "spatial_tab",
+                "If you have access to the data  (*.shp, *.tif, etc) click below to browse to the data file.  This section will be autopopulated with appropriate content pulled from the dataset.",
+            )
+        )
         self.btn_browse.setText(_translate("spatial_tab", "Browse to dataset"))
-

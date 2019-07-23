@@ -62,7 +62,7 @@ from pymdwizard.gui.fgdc_date import FGDCDate
 class Timeinfo(WizardWidget):  #
 
     drag_label = "Time Period information <timeinfo>"
-    acceptable_tags = ['timeinfo']
+    acceptable_tags = ["timeinfo"]
 
     def build_ui(self):
         """
@@ -75,26 +75,27 @@ class Timeinfo(WizardWidget):  #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.single_date = FGDCDate(label='    Single Date ', fgdc_name='fgdc_caldate')
+        self.single_date = FGDCDate(label="    Single Date ", fgdc_name="fgdc_caldate")
         self.ui.fgdc_sngdate.layout().insertWidget(0, self.single_date)
 
-        self.range_start_date = FGDCDate(label='Start  ', fgdc_name='fgdc_begdate')
-        self.range_end_date = FGDCDate(label='End  ', fgdc_name='fgdc_enddate')
+        self.range_start_date = FGDCDate(label="Start  ", fgdc_name="fgdc_begdate")
+        self.range_end_date = FGDCDate(label="End  ", fgdc_name="fgdc_enddate")
         self.ui.layout_daterange.addWidget(self.range_start_date)
         self.ui.layout_daterange.addWidget(self.range_end_date)
 
-        date_widget_kwargs = {'show_format': False,
-                              'label': 'Individual Date   ',
-                              'fgdc_name': 'fgdc_caldate',
-                              'parent_fgdc_name': 'fgdc_sngdate'}
+        date_widget_kwargs = {
+            "show_format": False,
+            "label": "Individual Date   ",
+            "fgdc_name": "fgdc_caldate",
+            "parent_fgdc_name": "fgdc_sngdate",
+        }
 
-        self.multi_dates = RepeatingElement(widget=FGDCDate,
-                                            widget_kwargs=date_widget_kwargs)
-
+        self.multi_dates = RepeatingElement(
+            widget=FGDCDate, widget_kwargs=date_widget_kwargs
+        )
 
         self.multi_dates.add_another()
         self.switch_primary()
-
 
     def connect_events(self):
         """
@@ -140,19 +141,22 @@ class Timeinfo(WizardWidget):  #
         -------
         timeinfo element tag in xml tree
         """
-        timeinfo = xml_utils.xml_node('timeinfo')
+        timeinfo = xml_utils.xml_node("timeinfo")
 
         cur_index = self.ui.fgdc_timeinfo.currentIndex()
         if cur_index == 0:
             sngdate = xml_utils.xml_node("sngdate", parent_node=timeinfo)
-            caldate = xml_utils.xml_node('caldate', parent_node=sngdate,
-                                         text=self.single_date.get_date())
+            caldate = xml_utils.xml_node(
+                "caldate", parent_node=sngdate, text=self.single_date.get_date()
+            )
         if cur_index == 1:
             rngdates = xml_utils.xml_node("rngdates", parent_node=timeinfo)
-            begdate = xml_utils.xml_node("begdate", parent_node=rngdates,
-                                         text=self.range_start_date.get_date())
-            enddate = xml_utils.xml_node("enddate", parent_node=rngdates,
-                                         text=self.range_end_date.get_date())
+            begdate = xml_utils.xml_node(
+                "begdate", parent_node=rngdates, text=self.range_start_date.get_date()
+            )
+            enddate = xml_utils.xml_node(
+                "enddate", parent_node=rngdates, text=self.range_end_date.get_date()
+            )
         if cur_index == 2:
             mdattim = xml_utils.xml_node("mdattim", parent_node=timeinfo)
 
@@ -160,8 +164,9 @@ class Timeinfo(WizardWidget):  #
 
                 single_date_node = xml_utils.xml_node("sngdate", parent_node=mdattim)
 
-                caldate =  xml_utils.xml_node('caldate', parent_node=single_date_node,
-                                                      text=single_date.get_date())
+                caldate = xml_utils.xml_node(
+                    "caldate", parent_node=single_date_node, text=single_date.get_date()
+                )
 
         return timeinfo
 
@@ -176,7 +181,7 @@ class Timeinfo(WizardWidget):  #
         None
         """
         try:
-            if timeinfo.tag == 'timeinfo':
+            if timeinfo.tag == "timeinfo":
                 timeinfo_stack = self.ui.fgdc_timeinfo
                 if timeinfo.xpath("rngdates"):
                     self.ui.radio_range.setChecked(True)
@@ -193,7 +198,7 @@ class Timeinfo(WizardWidget):  #
                     timeinfo_stack.setCurrentIndex(2)
 
                     self.multi_dates.clear_widgets(add_another=False)
-                    for caldate in timeinfo.xpath('mdattim/sngdate/caldate'):
+                    for caldate in timeinfo.xpath("mdattim/sngdate/caldate"):
                         date_widget = self.multi_dates.add_another()
                         date_widget.set_date(caldate.text)
 
@@ -205,19 +210,17 @@ class Timeinfo(WizardWidget):  #
                     self.single_date.set_date(sngdate)
                 else:
                     pass
-            elif timeinfo.tag == 'timeperd':
+            elif timeinfo.tag == "timeperd":
                 try:
                     self.parent.from_xml(timeinfo)
                 except:
                     pass
 
             else:
-                print ("The tag is not timeinfo")
+                print("The tag is not timeinfo")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Timeinfo,
-                        "Metadata Date testing")
-
+    utils.launch_widget(Timeinfo, "Metadata Date testing")

@@ -55,10 +55,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_useconst
 
 
-class Useconst(WizardWidget): #
+class Useconst(WizardWidget):  #
 
     drag_label = "Use Constraints <useconst>"
-    acceptable_tags = ['useconst']
+    acceptable_tags = ["useconst"]
 
     def build_ui(self):
         """
@@ -80,8 +80,9 @@ class Useconst(WizardWidget): #
         -------
         useconst element tag in xml tree
         """
-        useconst = xml_utils.xml_node('useconst',
-                                      text=self.ui.fgdc_useconst.toPlainText())
+        useconst = xml_utils.xml_node(
+            "useconst", text=self.ui.fgdc_useconst.toPlainText()
+        )
         return useconst
 
     def from_xml(self, useconst):
@@ -97,21 +98,13 @@ class Useconst(WizardWidget): #
         None
         """
         try:
-            if useconst.tag == 'useconst':
+            if useconst.tag == "useconst":
                 self.ui.fgdc_useconst.setPlainText(useconst.text)
             else:
-                print ("The tag is not useconst")
+                print("The tag is not useconst")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Useconst,
-                        "Use Constraints testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Useconst, "Use Constraints testing")

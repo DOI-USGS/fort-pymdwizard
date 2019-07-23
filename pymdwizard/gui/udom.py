@@ -59,7 +59,7 @@ from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 class Udom(WizardWidget):
 
     drag_label = "Unrepresentable Domain <udom>"
-    acceptable_tags = ['udom']
+    acceptable_tags = ["udom"]
 
     def build_ui(self):
         """
@@ -68,7 +68,7 @@ class Udom(WizardWidget):
         -------
         None
         """
-        self.ui = UI_udom.Ui_fgdc_attrdomv() # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_udom.Ui_fgdc_attrdomv()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
         self.highlighter = Highlighter(self.ui.fgdc_udom.document())
@@ -80,7 +80,7 @@ class Udom(WizardWidget):
         -------
         timeperd element tag in xml tree
         """
-        udom = xml_utils.xml_node('udom', self.ui.fgdc_udom.toPlainText())
+        udom = xml_utils.xml_node("udom", self.ui.fgdc_udom.toPlainText())
 
         return udom
 
@@ -95,15 +95,13 @@ class Udom(WizardWidget):
         None
         """
         try:
-            if udom.tag == 'udom':
+            if udom.tag == "udom":
                 utils.populate_widget(self, udom)
             else:
-                print ("The tag is not udom")
+                print("The tag is not udom")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Udom,
-                        "udom testing")
-
+    utils.launch_widget(Udom, "udom testing")

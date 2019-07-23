@@ -4,6 +4,7 @@ from __future__ import print_function
 # sys.path.append(r"../..")
 
 import os, sys
+
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
 import sys
@@ -27,9 +28,11 @@ from pymdwizard.gui import fgdc_date
 #     assert widget.findChild(QDateEdit, "dateEdit_2").date() == '1981'
 #     assert widget.findChild(QDateEdit, "dateEdit_3").date() == '2013'
 
+
 def test_metadata_date_to_xml(qtbot):
     widget = fgdc_date.FGDCDate()
     qtbot.addWidget(widget)
+
 
 #     widget.ui.radioButton_2.setChecked(True)
 #     timeWidget = widget.findChild(QStackedWidget, "fgdc_timeinfo")

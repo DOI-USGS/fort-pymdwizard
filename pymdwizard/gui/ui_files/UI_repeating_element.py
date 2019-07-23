@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(467, 52)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -22,10 +25,14 @@ class Ui_Form(object):
         self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.button_widget = QtWidgets.QWidget(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.button_widget.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.button_widget.sizePolicy().hasHeightForWidth()
+        )
         self.button_widget.setSizePolicy(sizePolicy)
         self.button_widget.setObjectName("button_widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.button_widget)
@@ -33,7 +40,9 @@ class Ui_Form(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.italic_label = QtWidgets.QLabel(self.button_widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.italic_label.sizePolicy().hasHeightForWidth())
@@ -43,7 +52,9 @@ class Ui_Form(object):
         self.italic_label.setWordWrap(True)
         self.italic_label.setObjectName("italic_label")
         self.horizontalLayout.addWidget(self.italic_label)
-        spacerItem = QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            10, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.addAnother = QtWidgets.QPushButton(self.button_widget)
         self.addAnother.setObjectName("addAnother")
@@ -53,7 +64,9 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.popOff)
         self.verticalLayout_2.addWidget(self.button_widget)
         self.tab_widget = QtWidgets.QTabWidget(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tab_widget.sizePolicy().hasHeightForWidth())
@@ -63,10 +76,14 @@ class Ui_Form(object):
         self.tab_widget.setObjectName("tab_widget")
         self.verticalLayout_2.addWidget(self.tab_widget)
         self.vertical_widget = QtWidgets.QWidget(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.vertical_widget.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.vertical_widget.sizePolicy().hasHeightForWidth()
+        )
         self.vertical_widget.setSizePolicy(sizePolicy)
         self.vertical_widget.setMinimumSize(QtCore.QSize(0, 1))
         self.vertical_widget.setObjectName("vertical_widget")
@@ -85,4 +102,3 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.addAnother.setText(_translate("Form", "PushButton"))
         self.popOff.setText(_translate("Form", "PushButton"))
-

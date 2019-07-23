@@ -66,12 +66,13 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_detailed
 from pymdwizard.gui import attributes
 
-default_def_source = utils.get_setting('defsource', 'Producer Defined')
+default_def_source = utils.get_setting("defsource", "Producer Defined")
+
 
 class Detailed(WizardWidget):  #
 
     drag_label = "Detailed Description <detailed>"
-    acceptable_tags = ['detailed']
+    acceptable_tags = ["detailed"]
 
     def __init__(self, remove_function=None, parent=None):
         self.EA = parent
@@ -102,8 +103,8 @@ class Detailed(WizardWidget):  #
         self.ui.fgdc_enttypds.setText(default_def_source)
 
     def browse(self):
-        settings = QSettings('USGS', 'pymdwizard')
-        last_data_fname = settings.value('lastDataFname', '')
+        settings = QSettings("USGS", "pymdwizard")
+        last_data_fname = settings.value("lastDataFname", "")
         if last_data_fname:
             dname, fname = os.path.split(last_data_fname)
         else:
@@ -112,16 +113,19 @@ class Detailed(WizardWidget):  #
         filter = "data files (*.csv *.txt *.shp *.xls *.xlsm *.xlsx "
         filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf)"
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname,
-                                            filter=filter)
+        fname = QFileDialog.getOpenFileName(self, fname, dname, filter=filter)
         if fname[0]:
-            settings.setValue('lastDataFname', fname[0])
+            settings.setValue("lastDataFname", fname[0])
             try:
 
                 self.populate_from_fname(fname[0])
             except BaseException as e:
                 import traceback
-                msg = "Could not extract data from file %s:\n%s." % (fname, traceback.format_exc())
+
+                msg = "Could not extract data from file %s:\n%s." % (
+                    fname,
+                    traceback.format_exc(),
+                )
                 QMessageBox.warning(self, "Data file error", msg)
 
     def update_tooltip(self):
@@ -136,7 +140,7 @@ class Detailed(WizardWidget):  #
         pass
 
     def populate_from_fname(self, fname):
-        if fname.endswith('$'):
+        if fname.endswith("$"):
             fname, sheet_name = os.path.split(fname)
             sheet_name = sheet_name[:-1]
             ok = True
@@ -147,121 +151,161 @@ class Detailed(WizardWidget):  #
         ext = os.path.splitext(shortname)[1]
 
         self.ui.fgdc_enttypds.setText(default_def_source)
-        if ext.lower() == '.csv':
+        if ext.lower() == ".csv":
             try:
                 self.clear_widget()
                 self.ui.fgdc_enttypl.setText(shortname)
-                self.ui.fgdc_enttypd.setPlainText('Comma Separated Value (CSV) file containing data.')
+                self.ui.fgdc_enttypd.setPlainText(
+                    "Comma Separated Value (CSV) file containing data."
+                )
 
                 df = data_io.read_data(fname)
 
-                max_rows = int(utils.get_setting('maxrows', 1000000))
+                max_rows = int(utils.get_setting("maxrows", 1000000))
 
                 if df.shape[0] == max_rows:
-                    msg = "This CSV file contains more than" \
-                          " {:,} rows!".format(data_io.MAX_ROWS)
-                    msg += "\n\n Due to speed and memory constraints, " \
-                           "\ndata from rows past\nthe first {:,} rows" \
-                           "".format(max_rows)
-                    msg += "\nwere not used " \
-                           "to populate this section.".format(max_rows)
-                    msg += '\n\nCheck that the values displayed are ' \
-                           'complete \nand appropriate for the entire record.'
+                    msg = "This CSV file contains more than" " {:,} rows!".format(
+                        data_io.MAX_ROWS
+                    )
+                    msg += (
+                        "\n\n Due to speed and memory constraints, "
+                        "\ndata from rows past\nthe first {:,} rows"
+                        "".format(max_rows)
+                    )
+                    msg += "\nwere not used " "to populate this section.".format(
+                        max_rows
+                    )
+                    msg += (
+                        "\n\nCheck that the values displayed are "
+                        "complete \nand appropriate for the entire record."
+                    )
                     QMessageBox.warning(self, "Large File Warning", msg)
 
                 self.attributes.load_df(df)
             except BaseException as e:
                 import traceback
+
                 msg = "Cannot read csv %s:\n%s." % (fname, traceback.format_exc())
                 QMessageBox.warning(self, "Recent Files", msg)
 
-        elif ext.lower() == '.shp':
+        elif ext.lower() == ".shp":
             self.clear_widget()
-            self.ui.fgdc_enttypl.setText(shortname + ' Attribute Table')
-            self.ui.fgdc_enttypd.setPlainText('Table containing attribute information associated with the data set.')
+            self.ui.fgdc_enttypl.setText(shortname + " Attribute Table")
+            self.ui.fgdc_enttypd.setPlainText(
+                "Table containing attribute information associated with the data set."
+            )
 
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
 
-            fid_attr = self.attributes.get_attr('FID')
+            fid_attr = self.attributes.get_attr("FID")
             if fid_attr is not None:
                 fid_attr.populate_domain_content(3)
-                fid_attr.ui.fgdc_attrdef.setPlainText('Internal feature number.')
-                utils.set_text(fid_attr.ui.fgdc_attrdefs, 'ESRI')
-                fid_attr.domain.ui.fgdc_udom.setPlainText("Sequential unique whole numbers that are automatically generated.")
+                fid_attr.ui.fgdc_attrdef.setPlainText("Internal feature number.")
+                utils.set_text(fid_attr.ui.fgdc_attrdefs, "ESRI")
+                fid_attr.domain.ui.fgdc_udom.setPlainText(
+                    "Sequential unique whole numbers that are automatically generated."
+                )
                 fid_attr.regularsize_me()
                 fid_attr.supersize_me()
-            shape_attr = self.attributes.get_attr('Shape')
+            shape_attr = self.attributes.get_attr("Shape")
             if shape_attr is not None:
                 shape_attr.populate_domain_content(3)
-                shape_attr.ui.fgdc_attrdef.setPlainText('Feature geometry.')
-                utils.set_text(shape_attr.ui.fgdc_attrdefs, 'ESRI')
-                shape_attr.domain.ui.fgdc_udom.setPlainText("Coordinates defining the features.")
+                shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
+                utils.set_text(shape_attr.ui.fgdc_attrdefs, "ESRI")
+                shape_attr.domain.ui.fgdc_udom.setPlainText(
+                    "Coordinates defining the features."
+                )
                 shape_attr.store_current_content()
                 shape_attr.supersize_me()
                 shape_attr.store_current_content()
                 shape_attr.regularsize_me()
 
-        elif ext.lower() in ['.xlsm', '.xlsx', '.xls']:
+        elif ext.lower() in [".xlsm", ".xlsx", ".xls"]:
             if sheet_name is None:
                 sheets = data_io.get_sheet_names(fname)
 
-                sheet_name, ok = QInputDialog.getItem(self, "select sheet dialog",
-                                    "Pick one of the sheets from this workbook",
-                                                      sheets, 0, False)
+                sheet_name, ok = QInputDialog.getItem(
+                    self,
+                    "select sheet dialog",
+                    "Pick one of the sheets from this workbook",
+                    sheets,
+                    0,
+                    False,
+                )
             if ok and sheet_name:
                 self.clear_widget()
-                self.ui.fgdc_enttypl.setText('{} ({})'.format(shortname, sheet_name))
-                self.ui.fgdc_enttypd.setPlainText('Excel Worksheet')
+                self.ui.fgdc_enttypl.setText("{} ({})".format(shortname, sheet_name))
+                self.ui.fgdc_enttypd.setPlainText("Excel Worksheet")
 
                 df = data_io.read_excel(fname, sheet_name)
                 self.attributes.load_df(df)
-        elif ext.lower() in ['.tif', '.grd', '.png', '.img', '.jpg', '.hdr',
-                             '.bmp', '.adf']:
+        elif ext.lower() in [
+            ".tif",
+            ".grd",
+            ".png",
+            ".img",
+            ".jpg",
+            ".hdr",
+            ".bmp",
+            ".adf",
+        ]:
             self.ui.fgdc_enttypl.setText(shortname)
 
             num_bands = spatial_utils.get_band_count(fname)
             if num_bands == 1:
-                self.ui.fgdc_enttypd.setPlainText('Raster geospatial data file.')
+                self.ui.fgdc_enttypd.setPlainText("Raster geospatial data file.")
             else:
-                self.ui.fgdc_enttypd.setPlainText('{} band raster geospatial data file.'.format(num_bands))
+                self.ui.fgdc_enttypd.setPlainText(
+                    "{} band raster geospatial data file.".format(num_bands)
+                )
 
             df = get_raster_attribute_table(fname)
             self.attributes.load_df(df)
-            oid_attr = self.attributes.get_attr('OID')
+            oid_attr = self.attributes.get_attr("OID")
             if oid_attr is not None:
                 oid_attr.populate_domain_content(3)
-                oid_attr.ui.fgdc_attrdef.setPlainText('Internal object identifier.')
-                oid_attr.domain.ui.fgdc_udom.setPlainText('Sequential unique whole numbers that are automatically generated.')
+                oid_attr.ui.fgdc_attrdef.setPlainText("Internal object identifier.")
+                oid_attr.domain.ui.fgdc_udom.setPlainText(
+                    "Sequential unique whole numbers that are automatically generated."
+                )
                 oid_attr.regularsize_me()
                 oid_attr.supersize_me()
-            value_attr = self.attributes.get_attr('Value')
+            value_attr = self.attributes.get_attr("Value")
             if value_attr is not None:
                 value_attr.populate_domain_content(1)
-                value_attr.ui.fgdc_attrdef.setPlainText('Unique numeric values contained in each raster cell.')
-            count_attr = self.attributes.get_attr('Count')
+                value_attr.ui.fgdc_attrdef.setPlainText(
+                    "Unique numeric values contained in each raster cell."
+                )
+            count_attr = self.attributes.get_attr("Count")
             if count_attr is not None:
                 count_attr.populate_domain_content(1)
-                count_attr.ui.fgdc_attrdef.setPlainText('Number of raster cells with this value.')
+                count_attr.ui.fgdc_attrdef.setPlainText(
+                    "Number of raster cells with this value."
+                )
 
         elif ext.lower() == ".p":
-            p = pickle.load(open(fname, "rb"), encoding='bytes')
+            p = pickle.load(open(fname, "rb"), encoding="bytes")
 
             if self.original_xml is not None:
                 original_content = xml_utils.XMLNode(self.original_xml)
                 self.from_xml(self.original_xml)
             else:
-                self.ui.fgdc_enttypl.setText('{}'.format(shortname[:-2]))
-                self.ui.fgdc_enttypd.setPlainText('Geospatial Dataset')
+                self.ui.fgdc_enttypl.setText("{}".format(shortname[:-2]))
+                self.ui.fgdc_enttypd.setPlainText("Geospatial Dataset")
                 self.attributes.load_pickle(p)
-        elif ext.lower() == '.txt':
+        elif ext.lower() == ".txt":
             if sheet_name is None:
-                delimiters = {'comma': ',', 'tab': '\t',
-                              'pipe': '|', 'colon': ':'}
+                delimiters = {"comma": ",", "tab": "\t", "pipe": "|", "colon": ":"}
 
-                delimiter_str, ok = QInputDialog.getItem(self, "Select text delimiter",
-                                                      "Pick the delimiter used in this file",
-                                                      delimiters.keys(), 0, False)
+                delimiter_str, ok = QInputDialog.getItem(
+                    self,
+                    "Select text delimiter",
+                    "Pick the delimiter used in this file",
+                    delimiters.keys(),
+                    0,
+                    False,
+                )
 
                 delimiter = delimiters[delimiter_str]
 
@@ -269,13 +313,19 @@ class Detailed(WizardWidget):  #
                 try:
                     self.clear_widget()
                     self.ui.fgdc_enttypl.setText(shortname)
-                    self.ui.fgdc_enttypd.setPlainText('{} delimited text file.'.format(delimiter_str))
+                    self.ui.fgdc_enttypd.setPlainText(
+                        "{} delimited text file.".format(delimiter_str)
+                    )
 
                     df = data_io.read_data(fname, delimiter=delimiter)
                     self.attributes.load_df(df)
                 except BaseException as e:
                     import traceback
-                    msg = "Cannot read txt file %s:\n%s." % (fname, traceback.format_exc())
+
+                    msg = "Cannot read txt file %s:\n%s." % (
+                        fname,
+                        traceback.format_exc(),
+                    )
                     QMessageBox.warning(self, "File load problem", msg)
         else:
             msg = "Can only read '.csv', '.txt', '.shp', raster files, and Excel files here"
@@ -289,8 +339,8 @@ class Detailed(WizardWidget):  #
         -------
         None
         """
-        self.ui.fgdc_enttypl.setText('')
-        self.ui.fgdc_enttypd.setPlainText('')
+        self.ui.fgdc_enttypl.setText("")
+        self.ui.fgdc_enttypd.setPlainText("")
         self.attributes.clear_children()
 
     def has_content(self):
@@ -320,14 +370,20 @@ class Detailed(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        detailed = xml_utils.xml_node('detailed')
-        enttyp = xml_utils.xml_node('enttyp', parent_node=detailed)
-        enttypl = xml_utils.xml_node('enttypl', text=self.ui.fgdc_enttypl.text(), parent_node=enttyp)
-        enttypd = xml_utils.xml_node('enttypd', text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp)
-        enttypds = xml_utils.xml_node('enttypds', text=self.ui.fgdc_enttypds.text(), parent_node=enttyp)
+        detailed = xml_utils.xml_node("detailed")
+        enttyp = xml_utils.xml_node("enttyp", parent_node=detailed)
+        enttypl = xml_utils.xml_node(
+            "enttypl", text=self.ui.fgdc_enttypl.text(), parent_node=enttyp
+        )
+        enttypd = xml_utils.xml_node(
+            "enttypd", text=self.ui.fgdc_enttypd.toPlainText(), parent_node=enttyp
+        )
+        enttypds = xml_utils.xml_node(
+            "enttypds", text=self.ui.fgdc_enttypds.text(), parent_node=enttyp
+        )
 
         attr = self.attributes.to_xml()
-        for a in attr.xpath('attr'):
+        for a in attr.xpath("attr"):
             detailed.append(a)
         return detailed
 
@@ -342,17 +398,15 @@ class Detailed(WizardWidget):  #
         None
         """
         try:
-            if detailed.tag == 'detailed':
+            if detailed.tag == "detailed":
                 self.original_xml = detailed
                 utils.populate_widget(self, detailed)
                 self.attributes.from_xml(detailed)
             else:
-                print ("The tag is not a detailed")
+                print("The tag is not a detailed")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Detailed,
-                        "detailed testing")
-
+    utils.launch_widget(Detailed, "detailed testing")

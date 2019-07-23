@@ -64,7 +64,7 @@ class ContactInfoPointOfContact(WizardWidget):
     COLLAPSED_HEIGHT = 75
     EXPANDED_HEIGHT = 310 + COLLAPSED_HEIGHT
     drag_label = "Point of Contact <pntcontac>"
-    acceptable_tags = ['pntcontac', 'cntinfo']
+    acceptable_tags = ["pntcontac", "cntinfo"]
 
     def build_ui(self):
         """
@@ -81,10 +81,8 @@ class ContactInfoPointOfContact(WizardWidget):
         self.cntinfo = ContactInfo.ContactInfo(parent=self)
         self.ui.main_layout.addWidget(self.cntinfo)
 
-        self.collaped_size = QSize(self.WIDGET_WIDTH,
-                                          self.COLLAPSED_HEIGHT)
-        self.expanded_size = QSize(self.WIDGET_WIDTH,
-                                   self.EXPANDED_HEIGHT)
+        self.collaped_size = QSize(self.WIDGET_WIDTH, self.COLLAPSED_HEIGHT)
+        self.expanded_size = QSize(self.WIDGET_WIDTH, self.EXPANDED_HEIGHT)
         self.resize(self.collaped_size)
 
         self.setObjectName("ptcontac")
@@ -110,7 +108,7 @@ class ContactInfoPointOfContact(WizardWidget):
 
     def to_xml(self):
         if self.ui.rbtn_yes.isChecked():
-            pntcontact = xml_utils.xml_node(tag='ptcontac')
+            pntcontact = xml_utils.xml_node(tag="ptcontac")
 
             cntinfo = self.cntinfo.to_xml()
             pntcontact.append(cntinfo)
@@ -121,13 +119,12 @@ class ContactInfoPointOfContact(WizardWidget):
 
     def from_xml(self, contact_information):
 
-        if contact_information.tag == 'cntinfo':
+        if contact_information.tag == "cntinfo":
             cntinfo_node = contact_information
         else:
-            cntinfo_node = contact_information.xpath('cntinfo')[0]
+            cntinfo_node = contact_information.xpath("cntinfo")[0]
         self.cntinfo.from_xml(cntinfo_node)
 
 
 if __name__ == "__main__":
-    utils.launch_widget(ContactInfoPointOfContact,
-                        "ContactInfoPointOfContact testing")
+    utils.launch_widget(ContactInfoPointOfContact, "ContactInfoPointOfContact testing")

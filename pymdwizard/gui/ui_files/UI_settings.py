@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -27,7 +28,9 @@ class Ui_Form(object):
         self.verticalLayout_4.setSpacing(4)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.label_5 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -43,7 +46,9 @@ class Ui_Form(object):
         self.label_5.setFont(font)
         self.label_5.setTextFormat(QtCore.Qt.RichText)
         self.label_5.setScaledContents(False)
-        self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_5.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_5.setIndent(0)
         self.label_5.setObjectName("label_5")
         self.verticalLayout_4.addWidget(self.label_5)
@@ -58,7 +63,9 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
         self.template_fname = QtWidgets.QLineEdit(Form)
-        self.template_fname.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.template_fname.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.template_fname.setObjectName("template_fname")
         self.horizontalLayout.addWidget(self.template_fname)
         self.btn_browse = QtWidgets.QPushButton(Form)
@@ -73,7 +80,9 @@ class Ui_Form(object):
         self.verticalLayout_3.setSpacing(4)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.label_6 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
@@ -89,7 +98,9 @@ class Ui_Form(object):
         self.label_6.setFont(font)
         self.label_6.setTextFormat(QtCore.Qt.RichText)
         self.label_6.setScaledContents(False)
-        self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_6.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_6.setIndent(0)
         self.label_6.setObjectName("label_6")
         self.verticalLayout_3.addWidget(self.label_6)
@@ -103,7 +114,9 @@ class Ui_Form(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem)
         self.spelling_on = QtWidgets.QRadioButton(Form)
         self.spelling_on.setObjectName("spelling_on")
@@ -117,7 +130,9 @@ class Ui_Form(object):
         self.verticalLayout_2.setSpacing(4)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_7 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
@@ -133,7 +148,9 @@ class Ui_Form(object):
         self.label_7.setFont(font)
         self.label_7.setTextFormat(QtCore.Qt.RichText)
         self.label_7.setScaledContents(False)
-        self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_7.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_7.setIndent(0)
         self.label_7.setObjectName("label_7")
         self.verticalLayout_2.addWidget(self.label_7)
@@ -148,7 +165,9 @@ class Ui_Form(object):
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
         self.maxrows = QtWidgets.QLineEdit(Form)
-        self.maxrows.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.maxrows.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.maxrows.setObjectName("maxrows")
         self.horizontalLayout_3.addWidget(self.maxrows)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
@@ -157,7 +176,9 @@ class Ui_Form(object):
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_8 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
@@ -173,7 +194,9 @@ class Ui_Form(object):
         self.label_8.setFont(font)
         self.label_8.setTextFormat(QtCore.Qt.RichText)
         self.label_8.setScaledContents(False)
-        self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_8.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_8.setIndent(0)
         self.label_8.setObjectName("label_8")
         self.verticalLayout.addWidget(self.label_8)
@@ -188,7 +211,9 @@ class Ui_Form(object):
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_4.addWidget(self.label_9)
         self.defsource = QtWidgets.QLineEdit(Form)
-        self.defsource.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.defsource.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.defsource.setObjectName("defsource")
         self.horizontalLayout_4.addWidget(self.defsource)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
@@ -198,7 +223,9 @@ class Ui_Form(object):
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.label_12 = QtWidgets.QLabel(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
@@ -214,7 +241,9 @@ class Ui_Form(object):
         self.label_12.setFont(font)
         self.label_12.setTextFormat(QtCore.Qt.RichText)
         self.label_12.setScaledContents(False)
-        self.label_12.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_12.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_12.setIndent(0)
         self.label_12.setObjectName("label_12")
         self.verticalLayout_6.addWidget(self.label_12)
@@ -229,7 +258,9 @@ class Ui_Form(object):
         self.font.setCurrentFont(font)
         self.font.setObjectName("font")
         self.horizontalLayout_6.addWidget(self.font)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem1)
         self.label_10 = QtWidgets.QLabel(self.groupBox)
         self.label_10.setObjectName("label_10")
@@ -240,23 +271,31 @@ class Ui_Form(object):
         self.font_size.setProperty("value", 9)
         self.font_size.setObjectName("font_size")
         self.horizontalLayout_6.addWidget(self.font_size)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem2)
         self.verticalLayout_6.addLayout(self.horizontalLayout_6)
         self.verticalLayout_5.addWidget(self.groupBox)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_5.addItem(spacerItem3)
         self.btn_restore_defaults = QtWidgets.QPushButton(Form)
         self.btn_restore_defaults.setObjectName("btn_restore_defaults")
         self.horizontalLayout_5.addWidget(self.btn_restore_defaults)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_5.addItem(spacerItem4)
         self.btn_save = QtWidgets.QPushButton(Form)
         self.btn_save.setObjectName("btn_save")
         self.horizontalLayout_5.addWidget(self.btn_save)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_5.addItem(spacerItem5)
         self.verticalLayout_5.addLayout(self.horizontalLayout_5)
 
@@ -268,26 +307,50 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "MetadataWizard Settings:"))
         self.label_5.setToolTip(_translate("Form", "Required"))
-        self.label_5.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">This CSDGM metadata file (.xml) will be used as a starting point when creating a new record.</span></p></body></html>"))
+        self.label_5.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">This CSDGM metadata file (.xml) will be used as a starting point when creating a new record.</span></p></body></html>',
+            )
+        )
         self.label_2.setText(_translate("Form", "Template file:"))
         self.btn_browse.setText(_translate("Form", "Browse"))
         self.btn_restore_template.setText(_translate("Form", "Use Default"))
         self.label_6.setToolTip(_translate("Form", "Required"))
-        self.label_6.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Will potential spelling errors be highlighted in text boxes?</span></p></body></html>"))
+        self.label_6.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Will potential spelling errors be highlighted in text boxes?</span></p></body></html>',
+            )
+        )
         self.label_3.setText(_translate("Form", "Highlight spelling errors"))
         self.spelling_on.setText(_translate("Form", "On"))
         self.spelling_off.setText(_translate("Form", "Off"))
         self.label_7.setToolTip(_translate("Form", "Required"))
-        self.label_7.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Maximum number of rows to read from CSV files when using detailed entity and attribute (EA) builder.</span></p></body></html>"))
+        self.label_7.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Maximum number of rows to read from CSV files when using detailed entity and attribute (EA) builder.</span></p></body></html>',
+            )
+        )
         self.label_4.setText(_translate("Form", "Max rows read by EA builder"))
         self.label_8.setToolTip(_translate("Form", "Required"))
-        self.label_8.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">This text will be used for definition source elements when using the EA builder.</span></p></body></html>"))
+        self.label_8.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">This text will be used for definition source elements when using the EA builder.</span></p></body></html>',
+            )
+        )
         self.label_9.setText(_translate("Form", "Default definition source text"))
         self.groupBox.setTitle(_translate("Form", "Application Style"))
         self.label_12.setToolTip(_translate("Form", "Required"))
-        self.label_12.setText(_translate("Form", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">Change the font size or font used in the Wizard to improve readibility.</span></p></body></html>"))
+        self.label_12.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Change the font size or font used in the Wizard to improve readibility.</span></p></body></html>',
+            )
+        )
         self.label_11.setText(_translate("Form", "Font"))
         self.label_10.setText(_translate("Form", "Font Size"))
         self.btn_restore_defaults.setText(_translate("Form", "Reset Defaults"))
         self.btn_save.setText(_translate("Form", "Save"))
-

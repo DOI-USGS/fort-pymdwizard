@@ -50,6 +50,7 @@ the copyright owner.
 import struct
 import datetime
 import decimal
+
 try:
     # Python 2
     from itertools import izip
@@ -63,6 +64,7 @@ except NameError:
     xrange = range
 
 import pandas as pd
+
 try:
     import geopandas as gpd
     import fiona
@@ -73,10 +75,7 @@ except:
 from pymdwizard.core import utils
 
 
-
-
-
-def read_csv(fname, delimiter=','):
+def read_csv(fname, delimiter=","):
     """
     converts a csv, specified by filename, into a pandas dataframe
 
@@ -92,19 +91,37 @@ def read_csv(fname, delimiter=','):
     pandas dataframe
     """
 
-    max_rows = int(utils.get_setting('maxrows', 1000000))
+    max_rows = int(utils.get_setting("maxrows", 1000000))
     try:
-        df = pd.read_csv(fname, parse_dates=True, delimiter=delimiter,
-                         nrows=max_rows, na_filter=False, comment='#')
+        df = pd.read_csv(
+            fname,
+            parse_dates=True,
+            delimiter=delimiter,
+            nrows=max_rows,
+            na_filter=False,
+            comment="#",
+        )
     except UnicodeDecodeError:
         try:
-            df = pd.read_csv(fname, parse_dates=True, encoding='utf8',
-                             delimiter=delimiter, nrows=max_rows,
-                             na_filter=False, comment='#')
+            df = pd.read_csv(
+                fname,
+                parse_dates=True,
+                encoding="utf8",
+                delimiter=delimiter,
+                nrows=max_rows,
+                na_filter=False,
+                comment="#",
+            )
         except UnicodeDecodeError:
-            df = pd.read_csv(fname, parse_dates=True,
-                             encoding="ISO-8859-1", delimiter=delimiter,
-                             nrows=max_rows, na_filter=False, comment='#')
+            df = pd.read_csv(
+                fname,
+                parse_dates=True,
+                encoding="ISO-8859-1",
+                delimiter=delimiter,
+                nrows=max_rows,
+                na_filter=False,
+                comment="#",
+            )
 
     return df
 
@@ -125,11 +142,11 @@ def read_shp(fname):
     """
     df = gpd.read_file(fname)
     c = fiona.open(fname)
-    list(c.schema['properties'].keys())
+    list(c.schema["properties"].keys())
 
-    df = df[[c for c in df.columns if c != 'geometry']]
-    df.insert(0, 'Shape', c.schema['geometry'])
-    df.insert(0, 'FID', range(df.shape[0]))
+    df = df[[c for c in df.columns if c != "geometry"]]
+    df.insert(0, "Shape", c.schema["geometry"])
+    df.insert(0, "FID", range(df.shape[0]))
     return df
 
 
@@ -148,36 +165,36 @@ def dbfreader(f):
         http://www.pgts.com.au/download/public/xbase.htm#DBF_STRUCT
     """
 
-    numrec, lenheader = struct.unpack('<xxxxLH22x', f.read(32))
+    numrec, lenheader = struct.unpack("<xxxxLH22x", f.read(32))
     numfields = (lenheader - 33) // 32
 
     fields = []
     for fieldno in xrange(numfields):
-        name, typ, size, deci = struct.unpack('<11sc4xBB14x', f.read(32))
+        name, typ, size, deci = struct.unpack("<11sc4xBB14x", f.read(32))
         name = bytes(name)
-        name = name.replace(b'\0', b'')  #  eliminate NULs from string
+        name = name.replace(b"\0", b"")  #  eliminate NULs from string
         fields.append((name, typ, size, deci))
     yield [field[0] for field in fields]
     yield [tuple(field[1:]) for field in fields]
 
     terminator = f.read(1)
-    assert terminator == b'\r'
+    assert terminator == b"\r"
 
-    fields.insert(0, ('DeletionFlag', 'C', 1, 0))
-    fmt = ''.join(['%ds' % fieldinfo[2] for fieldinfo in fields])
+    fields.insert(0, ("DeletionFlag", "C", 1, 0))
+    fmt = "".join(["%ds" % fieldinfo[2] for fieldinfo in fields])
     fmtsiz = struct.calcsize(fmt)
     for i in xrange(numrec):
         record = struct.unpack(fmt, f.read(fmtsiz))
-        if record[0] != b' ':
+        if record[0] != b" ":
             continue  #  deleted record
         result = []
         for (name, typ, size, deci), value in izip(fields, record):
             value = bytes(value)
-            if name == 'DeletionFlag':
+            if name == "DeletionFlag":
                 continue
             if typ == b"N":
-                value = value.replace(b'\0', b'').lstrip()
-                if value == '':
+                value = value.replace(b"\0", b"").lstrip()
+                if value == "":
                     value = 0
                 elif deci:
                     value = decimal.Decimal(value)
@@ -185,13 +202,14 @@ def dbfreader(f):
                     value = int(value)
             if typ == b"C":
                 value = value.decode("utf-8")
-            elif typ == b'D':
+            elif typ == b"D":
                 y, m, d = int(value[:4]), int(value[4:6]), int(value[6:8])
                 value = datetime.date(y, m, d)
-            elif typ == b'L':
-                value = (value in b'YyTt' and b'T') or \
-                        (value in b'NnFf' and b'F') or b'?'
-            elif typ == b'F':
+            elif typ == b"L":
+                value = (
+                    (value in b"YyTt" and b"T") or (value in b"NnFf" and b"F") or b"?"
+                )
+            elif typ == b"F":
                 value = float(value)
             result.append(value)
         yield result
@@ -211,7 +229,7 @@ def read_dbf(fname):
     -------
         pandas dataframe
     """
-    f = open(fname, 'rb')
+    f = open(fname, "rb")
     vat = list(dbfreader(f))
     return pd.DataFrame(vat[2:], columns=[c.decode("utf-8") for c in vat[0]])
 
@@ -230,6 +248,7 @@ def get_sheet_names(fname):
     list of strings
     """
     import xlrd as xl
+
     workbook = xl.open_workbook(fname)
     return workbook.sheet_names()
 
@@ -252,7 +271,7 @@ def read_excel(fname, sheet_name):
     return df
 
 
-def read_data(fname, sheet_name='', delimiter=','):
+def read_data(fname, sheet_name="", delimiter=","):
     """
     Returns pandas dataframe from a file (csv, txt, Excel, or shp)
 
@@ -293,9 +312,28 @@ def sniff_nodata(series):
     """
     uniques = series.uniques()
 
-    for nd in ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
-               '-nan', '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN',
-               'n/a', 'nan', 'null', -9999, '-9999', '', 'Nan']:
+    for nd in [
+        "#N/A",
+        "#N/A N/A",
+        "#NA",
+        "-1.#IND",
+        "-1.#QNAN",
+        "-NaN",
+        "-nan",
+        "1.#IND",
+        "1.#QNAN",
+        "N/A",
+        "NA",
+        "NULL",
+        "NaN",
+        "n/a",
+        "nan",
+        "null",
+        -9999,
+        "-9999",
+        "",
+        "Nan",
+    ]:
         if nd in list(uniques):
             return nd
 
@@ -322,15 +360,11 @@ def clean_nodata(series, nodata=None):
     clean_series = series[series != nodata]
 
     try:
-        clean_series = clean_series.astype('int64')
+        clean_series = clean_series.astype("int64")
     except ValueError:
         try:
-            clean_series = clean_series.astype('float64')
+            clean_series = clean_series.astype("float64")
         except ValueError:
             pass
 
     return clean_series
-
-
-
-

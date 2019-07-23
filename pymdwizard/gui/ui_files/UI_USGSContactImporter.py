@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ImportUsgsUser(object):
     def setupUi(self, ImportUsgsUser):
         ImportUsgsUser.setObjectName("ImportUsgsUser")
@@ -16,16 +17,22 @@ class Ui_ImportUsgsUser(object):
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.le_usgs_ad_name = QtWidgets.QLineEdit(ImportUsgsUser)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.le_usgs_ad_name.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.le_usgs_ad_name.sizePolicy().hasHeightForWidth()
+        )
         self.le_usgs_ad_name.setSizePolicy(sizePolicy)
         self.le_usgs_ad_name.setMinimumSize(QtCore.QSize(0, 0))
         self.le_usgs_ad_name.setObjectName("le_usgs_ad_name")
         self.verticalLayout.addWidget(self.le_usgs_ad_name)
         self.label = QtWidgets.QLabel(ImportUsgsUser)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -43,7 +50,9 @@ class Ui_ImportUsgsUser(object):
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.btn_OK = QtWidgets.QPushButton(ImportUsgsUser)
         self.btn_OK.setObjectName("btn_OK")
@@ -58,8 +67,15 @@ class Ui_ImportUsgsUser(object):
 
     def retranslateUi(self, ImportUsgsUser):
         _translate = QtCore.QCoreApplication.translate
-        ImportUsgsUser.setWindowTitle(_translate("ImportUsgsUser", "Import Contact Info from USGS Active Directory"))
-        self.label.setText(_translate("ImportUsgsUser", "Enter a valid USGS user name or email address"))
+        ImportUsgsUser.setWindowTitle(
+            _translate(
+                "ImportUsgsUser", "Import Contact Info from USGS Active Directory"
+            )
+        )
+        self.label.setText(
+            _translate(
+                "ImportUsgsUser", "Enter a valid USGS user name or email address"
+            )
+        )
         self.btn_OK.setText(_translate("ImportUsgsUser", "OK"))
         self.btn_cancel.setText(_translate("ImportUsgsUser", "Cancel"))
-

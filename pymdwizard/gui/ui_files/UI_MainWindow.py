@@ -8,12 +8,15 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1188, 650)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons/Ducky.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap("icons/Ducky.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         MainWindow.setWindowIcon(icon)
         MainWindow.setIconSize(QtCore.QSize(64, 64))
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
@@ -45,7 +48,9 @@ class Ui_MainWindow(object):
         self.menuValidate.setToolTipsVisible(True)
         self.menuValidate.setObjectName("menuValidate")
         self.menuPreview = QtWidgets.QMenu(self.menubar)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.menuPreview.sizePolicy().hasHeightForWidth())
@@ -213,17 +218,33 @@ class Ui_MainWindow(object):
         self.menuValidate.setTitle(_translate("MainWindow", "&Validation"))
         self.menuPreview.setTitle(_translate("MainWindow", "&Preview"))
         self.menuAdvanced.setTitle(_translate("MainWindow", "&Advanced"))
-        self.menuOptional_Sections.setToolTip(_translate("MainWindow", "Choose which optional sections to remove from the output record altogether."))
-        self.menuOptional_Sections.setTitle(_translate("MainWindow", "Include Sections"))
+        self.menuOptional_Sections.setToolTip(
+            _translate(
+                "MainWindow",
+                "Choose which optional sections to remove from the output record altogether.",
+            )
+        )
+        self.menuOptional_Sections.setTitle(
+            _translate("MainWindow", "Include Sections")
+        )
         self.menuHelp.setTitle(_translate("MainWindow", "&Help"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
-        self.actionOpen.setToolTip(_translate("MainWindow", "Open existing XML document."))
+        self.actionOpen.setToolTip(
+            _translate("MainWindow", "Open existing XML document.")
+        )
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
-        self.actionSave.setToolTip(_translate("MainWindow", " Save current document to disk."))
+        self.actionSave.setToolTip(
+            _translate("MainWindow", " Save current document to disk.")
+        )
         self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionSave_as.setText(_translate("MainWindow", "Save as ..."))
-        self.actionSave_as.setToolTip(_translate("MainWindow", "Save the current document to a different file name on disk"))
+        self.actionSave_as.setToolTip(
+            _translate(
+                "MainWindow",
+                "Save the current document to a different file name on disk",
+            )
+        )
         self.actionSave_as.setShortcut(_translate("MainWindow", "Ctrl+A"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionExit.setToolTip(_translate("MainWindow", "Exit the MetadataWizard"))
@@ -238,44 +259,85 @@ class Ui_MainWindow(object):
         self.actionItem_9.setText(_translate("MainWindow", "item 9 "))
         self.actionItem_10.setText(_translate("MainWindow", "item 10"))
         self.actionRun_Validation.setText(_translate("MainWindow", "Run Validation"))
-        self.actionRun_Validation.setToolTip(_translate("MainWindow", "Validate current document against FGDC/BDP schema."))
+        self.actionRun_Validation.setToolTip(
+            _translate(
+                "MainWindow", "Validate current document against FGDC/BDP schema."
+            )
+        )
         self.actionRun_Validation.setShortcut(_translate("MainWindow", "Ctrl+Shift+V"))
-        self.actionClear_validation.setText(_translate("MainWindow", "Clear validation"))
-        self.actionClear_validation.setToolTip(_translate("MainWindow", "Clear validation errors highlighted currently."))
-        self.actionClear_validation.setShortcut(_translate("MainWindow", "Ctrl+Shift+C"))
+        self.actionClear_validation.setText(
+            _translate("MainWindow", "Clear validation")
+        )
+        self.actionClear_validation.setToolTip(
+            _translate("MainWindow", "Clear validation errors highlighted currently.")
+        )
+        self.actionClear_validation.setShortcut(
+            _translate("MainWindow", "Ctrl+Shift+C")
+        )
         self.actionPreview.setText(_translate("MainWindow", "Preview"))
-        self.actionPreview.setToolTip(_translate("MainWindow", "Open preview window with current document contents."))
+        self.actionPreview.setToolTip(
+            _translate(
+                "MainWindow", "Open preview window with current document contents."
+            )
+        )
         self.actionPreview.setShortcut(_translate("MainWindow", "Ctrl+P"))
         self.actionPull_From_Data.setText(_translate("MainWindow", "Pull From Data"))
         self.actionErrorsListMenu.setText(_translate("MainWindow", "ErrorsListMenu"))
         self.actionNew.setText(_translate("MainWindow", "New"))
-        self.actionNew.setToolTip(_translate("MainWindow", "Create new metadata document, based on current template."))
+        self.actionNew.setToolTip(
+            _translate(
+                "MainWindow", "Create new metadata document, based on current template."
+            )
+        )
         self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N"))
-        self.actionBrowseTemplate.setText(_translate("MainWindow", "Browse to new template"))
+        self.actionBrowseTemplate.setText(
+            _translate("MainWindow", "Browse to new template")
+        )
         self.actionRestoreBuiltIn.setText(_translate("MainWindow", "Restore Built-in"))
-        self.actionCurrentTemplate.setText(_translate("MainWindow", "Current: Built-in"))
+        self.actionCurrentTemplate.setText(
+            _translate("MainWindow", "Current: Built-in")
+        )
         self.actionLaunch_Jupyter.setText(_translate("MainWindow", "Launch Jupyter"))
-        self.actionLaunch_Jupyter.setToolTip(_translate("MainWindow", "Launch Jupyter Notebook in browser, with MetadataWizard Python kernel."))
+        self.actionLaunch_Jupyter.setToolTip(
+            _translate(
+                "MainWindow",
+                "Launch Jupyter Notebook in browser, with MetadataWizard Python kernel.",
+            )
+        )
         self.actionLaunch_Jupyter.setShortcut(_translate("MainWindow", "Ctrl+J"))
         self.actionUpdate.setText(_translate("MainWindow", "Update"))
         self.generate_review.setText(_translate("MainWindow", "Generate Review Doc"))
-        self.generate_review.setToolTip(_translate("MainWindow", "Generate a review documnet (.docx format) of current record"))
+        self.generate_review.setToolTip(
+            _translate(
+                "MainWindow",
+                "Generate a review documnet (.docx format) of current record",
+            )
+        )
         self.generate_review.setShortcut(_translate("MainWindow", "Ctrl+G"))
         self.actionLaunch_Help.setText(_translate("MainWindow", "Launch Help"))
-        self.actionLaunch_Help.setToolTip(_translate("MainWindow", "Launch local MetadataWizard Help browser"))
+        self.actionLaunch_Help.setToolTip(
+            _translate("MainWindow", "Launch local MetadataWizard Help browser")
+        )
         self.actionLaunch_Help.setShortcut(_translate("MainWindow", "Ctrl+H"))
-        self.actionCheck_for_Updates.setText(_translate("MainWindow", "Check for Updates"))
-        self.actionCheck_for_Updates.setToolTip(_translate("MainWindow", "Check for application updates"))
+        self.actionCheck_for_Updates.setText(
+            _translate("MainWindow", "Check for Updates")
+        )
+        self.actionCheck_for_Updates.setToolTip(
+            _translate("MainWindow", "Check for application updates")
+        )
         self.actionCheck_for_Updates.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
-        self.actionAbout.setToolTip(_translate("MainWindow", "More information about the MetadataWizard"))
+        self.actionAbout.setToolTip(
+            _translate("MainWindow", "More information about the MetadataWizard")
+        )
         self.actionAbout.setShortcut(_translate("MainWindow", "Ctrl+A"))
         self.actionData_Quality.setText(_translate("MainWindow", "Data Quality"))
-        self.actionEntity_and_Attribute.setText(_translate("MainWindow", "Entity and Attribute"))
+        self.actionEntity_and_Attribute.setText(
+            _translate("MainWindow", "Entity and Attribute")
+        )
         self.actionDistribution.setText(_translate("MainWindow", "Distribution"))
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
         self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.anacondaprompt.setText(_translate("MainWindow", "Anaconda Prompt"))
         self.actionOpen_sb.setText(_translate("MainWindow", "Open ScienceBase item"))
-

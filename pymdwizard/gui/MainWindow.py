@@ -107,8 +107,8 @@ class PyMdWizardMainForm(QMainWindow):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
 
-        self.settings = QSettings('USGS', 'pymdwizard')
-        self.cur_fname = ''
+        self.settings = QSettings("USGS", "pymdwizard")
+        self.cur_fname = ""
         self.file_watcher = None
 
         # list of buttons for opening recently accessed files
@@ -130,7 +130,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.load_default()
 
-        use_spelling = self.settings.value('use_spelling', "true")
+        use_spelling = self.settings.value("use_spelling", "true")
         if isinstance(use_spelling, str):
             use_spelling = eval(use_spelling.capitalize())
         self.switch_spelling(use_spelling)
@@ -157,15 +157,16 @@ class PyMdWizardMainForm(QMainWindow):
 
         for i in range(PyMdWizardMainForm.max_recent_files):
             self.recent_file_actions.append(
-                QAction(self, visible=False, triggered=self.open_recent_file))
+                QAction(self, visible=False, triggered=self.open_recent_file)
+            )
             self.ui.menuRecent_Files.addAction(self.recent_file_actions[i])
         self.update_recent_file_actions()
 
-        template_fname = self.settings.value('template_fname')
+        template_fname = self.settings.value("template_fname")
 
         if template_fname is not None:
             just_fname = os.path.split(template_fname)[-1]
-            self.ui.actionCurrentTemplate.setText('Current: ' + just_fname)
+            self.ui.actionCurrentTemplate.setText("Current: " + just_fname)
 
         if docx is None:
             self.ui.generate_review.setEnabled(False)
@@ -174,7 +175,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.error_list = ErrorList(main_form=self)
         self.error_list_dialog = QDialog(self)
-        self.error_list_dialog.setWindowTitle('FGDC Validation Errors')
+        self.error_list_dialog.setWindowTitle("FGDC Validation Errors")
         self.error_list_dialog.setLayout(self.error_list.layout())
         self.error_list_dialog.resize(600, 400)
 
@@ -210,16 +211,21 @@ class PyMdWizardMainForm(QMainWindow):
 
     def anacondaprompt(self):
 
-        if os.name == 'nt':
-            root_dir = utils.get_install_dname('root')
+        if os.name == "nt":
+            root_dir = utils.get_install_dname("root")
             my_env = os.environ.copy()
             my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
-            my_env["PATH"] = ";".join([os.path.join(root_dir, "Python36_64", "Scripts", "conda_exes"),
-                                      my_env["PATH"]])
+            my_env["PATH"] = ";".join(
+                [
+                    os.path.join(root_dir, "Python36_64", "Scripts", "conda_exes"),
+                    my_env["PATH"],
+                ]
+            )
 
-            pydir = utils.get_install_dname('python')
-            my_env["PATH"] = ";".join([os.path.join(pydir, "Scripts", "conda_exes"),
-                                       my_env["PATH"]])
+            pydir = utils.get_install_dname("python")
+            my_env["PATH"] = ";".join(
+                [os.path.join(pydir, "Scripts", "conda_exes"), my_env["PATH"]]
+            )
             self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
             activatebat = os.path.join(pydir, "Scripts", "conda_exe", "activate.bat")
 
@@ -229,11 +235,12 @@ class PyMdWizardMainForm(QMainWindow):
             msg += "\nUse: conda install ...package.. to install new packages into the MetadataWizard envronment."
             QMessageBox.information(self, "Conda instructions", msg)
 
-            subprocess.Popen(["start", "cmd", activatebat, pydir], env=my_env, cwd=pydir, shell=True)
+            subprocess.Popen(
+                ["start", "cmd", activatebat, pydir], env=my_env, cwd=pydir, shell=True
+            )
         else:
             msg = "This experimental functionality not yet implemented for Mac or Linux builds"
             QMessageBox.warning(self, "Not implemented", msg)
-
 
     def open_recent_file(self):
         """
@@ -255,19 +262,20 @@ class PyMdWizardMainForm(QMainWindow):
         str: path and filename of the selected file or
         empty string if none was selected
         """
-        recent_files = self.settings.value('recentFileList', [])
+        recent_files = self.settings.value("recentFileList", [])
         if recent_files:
             dname, fname = os.path.split(recent_files[0])
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname, \
-                                            filter="XML Files (*.xml)")
+        fname = QFileDialog.getOpenFileName(
+            self, fname, dname, filter="XML Files (*.xml)"
+        )
 
         if fname[0]:
             return fname[0]
         else:
-            return ''
+            return ""
 
     def open_file(self, fname=None):
         """
@@ -317,7 +325,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         if check_for_changes:
             changed = self.check_for_changes()
-            if changed == 'Cancel':
+            if changed == "Cancel":
                 return changed
 
         self.file_watcher = QFileSystemWatcher([fname])
@@ -354,6 +362,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.statusBar().showMessage("File loaded", 10000)
         except BaseException as e:
             import traceback
+
             msg = "Cannot open file %s:\n%s." % (fname, traceback.format_exc())
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(self, "Recent Files", msg)
@@ -370,12 +379,15 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
         if time.time() - self.last_updated > 4:
-            msg = "The file you are editing has been changed on disk.  " \
-                  "Would you like to reload this File?"
+            msg = (
+                "The file you are editing has been changed on disk.  "
+                "Would you like to reload this File?"
+            )
             alert = QDialog()
             self.last_updated = time.time()
-            confirm = QMessageBox.question(self, "File Changed", msg,
-                                           QMessageBox.Yes | QMessageBox.No)
+            confirm = QMessageBox.question(
+                self, "File Changed", msg, QMessageBox.Yes | QMessageBox.No
+            )
             if confirm == QMessageBox.Yes:
                 self.load_file(self.cur_fname)
 
@@ -403,14 +415,15 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         str: file name and path
         """
-        recent_files = self.settings.value('recentFileList', [])
+        recent_files = self.settings.value("recentFileList", [])
         if recent_files:
             dname, fname = os.path.split(recent_files[0])
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getSaveFileName(self, "Save As", dname, \
-                                            filter="XML Files (*.xml)")
+        fname = QFileDialog.getSaveFileName(
+            self, "Save As", dname, filter="XML Files (*.xml)"
+        )
 
         return fname[0]
 
@@ -431,18 +444,18 @@ class PyMdWizardMainForm(QMainWindow):
             fname = self.cur_fname
 
         fname_msg = utils.check_fname(fname)
-        if not fname_msg == 'good':
+        if not fname_msg == "good":
             msg = "Cannot write to :\n  {}.".format(fname)
             QMessageBox.warning(self, "Metadata Wizard", msg)
             return
 
-
-        tool_comment = "Record created using version {} of the " \
-                       "USGS Metadata Wizard tool. (https://github.com/usgs/" \
-                       "fort-pymdwizard)".format(__version__)
+        tool_comment = (
+            "Record created using version {} of the "
+            "USGS Metadata Wizard tool. (https://github.com/usgs/"
+            "fort-pymdwizard)".format(__version__)
+        )
         xml_contents = self.metadata_root.to_xml()
-        comment = xml_utils.xml_node(tag='', text=tool_comment,
-                                     index=0, comment=True)
+        comment = xml_utils.xml_node(tag="", text=tool_comment, index=0, comment=True)
         xml_contents.addprevious(comment)
         xml_utils.save_to_file(xml_contents, fname)
         self.last_updated = time.time()
@@ -466,9 +479,9 @@ class PyMdWizardMainForm(QMainWindow):
         self.load_default()
         save_as_fname = self.get_save_name()
         if save_as_fname:
-            template_fname = self.settings.value('template_fname')
+            template_fname = self.settings.value("template_fname")
             if template_fname is None or not os.path.exists(template_fname):
-                template_fname = utils.get_resource_path('CSDGM_Template.xml')
+                template_fname = utils.get_resource_path("CSDGM_Template.xml")
 
             shutil.copyfile(template_fname, save_as_fname)
             self.load_file(save_as_fname)
@@ -482,26 +495,27 @@ class PyMdWizardMainForm(QMainWindow):
 
     def set_settings(self):
         self.settings_dialog = Settings(mainform=self)
-        self.settings_dialog.setWindowTitle('MetadataWizard Settings')
+        self.settings_dialog.setWindowTitle("MetadataWizard Settings")
         utils.set_window_icon(self.settings_dialog)
         self.settings_dialog.show()
 
     def load_default(self):
-        template_fname = self.settings.value('template_fname')
+        template_fname = self.settings.value("template_fname")
 
         if template_fname is None:
-            template_fname = utils.get_resource_path('CSDGM_Template.xml')
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
         elif not os.path.exists(template_fname):
-            msg = "The previous template file specified, {}, could not be " \
-                  "found.".format(template_fname)
-            msg += "\nCheck that the file has not beed deleted, renamed " \
-                   "or moved."
+            msg = (
+                "The previous template file specified, {}, could not be "
+                "found.".format(template_fname)
+            )
+            msg += "\nCheck that the file has not beed deleted, renamed " "or moved."
             msg += "Defaulting to the built in template.".format(template_fname)
             QMessageBox.warning(self, "Template file missing", msg)
-            template_fname = utils.get_resource_path('CSDGM_Template.xml')
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
 
         self.load_file_content(template_fname)
-        self.cur_fname = ''
+        self.cur_fname = ""
 
         today = fgdc_utils.format_date(datetime.datetime.now())
         self.metadata_root.metainfo.metd.set_date(today)
@@ -529,7 +543,7 @@ class PyMdWizardMainForm(QMainWindow):
             title = "Metadata Wizard - {}".format(stripped_name)
             self.setWindowTitle(title)
 
-            files = self.settings.value('recentFileList', [])
+            files = self.settings.value("recentFileList", [])
 
             try:
                 files.remove(fname)
@@ -537,9 +551,9 @@ class PyMdWizardMainForm(QMainWindow):
                 pass
 
             files.insert(0, fname)
-            del files[PyMdWizardMainForm.max_recent_files:]
+            del files[PyMdWizardMainForm.max_recent_files :]
 
-            self.settings.setValue('recentFileList', files)
+            self.settings.setValue("recentFileList", files)
 
             for widget in QApplication.topLevelWidgets():
                 if isinstance(widget, PyMdWizardMainForm):
@@ -556,7 +570,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        files = self.settings.value('recentFileList', [])
+        files = self.settings.value("recentFileList", [])
 
         num_recent_files = min(len(files), PyMdWizardMainForm.max_recent_files)
 
@@ -574,17 +588,24 @@ class PyMdWizardMainForm(QMainWindow):
         try:
             if self.cur_fname and os.path.exists(self.cur_fname):
                 cur_xml = xml_utils.node_to_string(self.metadata_root.to_xml())
-                disk_xml = xml_utils.node_to_string(xml_utils.fname_to_node(self.cur_fname))
+                disk_xml = xml_utils.node_to_string(
+                    xml_utils.fname_to_node(self.cur_fname)
+                )
 
             if cur_xml != disk_xml:
                 msg = "Do you want to save your changes?"
                 alert = QDialog()
                 self.last_updated = time.time()
-                confirm = QMessageBox.question(self, "Save Changes", msg, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                confirm = QMessageBox.question(
+                    self,
+                    "Save Changes",
+                    msg,
+                    QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                )
                 if confirm == QMessageBox.Yes:
                     xml_utils.save_to_file(self.metadata_root.to_xml(), self.cur_fname)
                 elif confirm == QMessageBox.Cancel:
-                    return 'Cancel'
+                    return "Cancel"
         except:
             pass
         return None
@@ -601,11 +622,11 @@ class PyMdWizardMainForm(QMainWindow):
         'Close' or 'Cancel' depending on user choice.
         """
         changed = self.check_for_changes()
-        if changed == 'Cancel':
+        if changed == "Cancel":
             return changed
         else:
             self.close()
-            return 'Close'
+            return "Close"
 
     def closeEvent(self, event):
         """ Intercept the builtin closeEvent so that we can check for
@@ -619,7 +640,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
 
         """
-        if self.exit() == 'Close':
+        if self.exit() == "Close":
             self.settings.setValue("size", self.size())
             self.settings.setValue("pos", self.pos())
             event.accept()
@@ -627,16 +648,16 @@ class PyMdWizardMainForm(QMainWindow):
             event.ignore()
 
     def use_dataqual(self, sender=None):
-        self.metadata_root.use_section('dataqual', sender)
+        self.metadata_root.use_section("dataqual", sender)
 
     def use_spatial(self, sender=None):
-        self.metadata_root.use_section('spatial', sender)
+        self.metadata_root.use_section("spatial", sender)
 
     def use_eainfo(self, sender=None):
-        self.metadata_root.use_section('eainfo', sender)
+        self.metadata_root.use_section("eainfo", sender)
 
     def use_distinfo(self, sender=None):
-        self.metadata_root.use_section('distinfo', sender)
+        self.metadata_root.use_section("distinfo", sender)
 
     def clear_validation(self):
         """
@@ -649,17 +670,19 @@ class PyMdWizardMainForm(QMainWindow):
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
         for widget in self.error_widgets:
-            if not sip.isdeleted(widget) and \
-                    widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+            if not sip.isdeleted(widget) and widget.objectName() not in [
+                "metadata_root",
+                "fgdc_metadata",
+            ]:
                 widget.setStyleSheet("""""")
                 print(widget.objectName())
-                shortname = widget.objectName().replace('fgdc_', '')
+                shortname = widget.objectName().replace("fgdc_", "")
                 if shortname[-1].isdigit():
                     shortname = shortname[:-1]
                 try:
-                    widget.setToolTip(annotation_lookup[shortname]['annotation'])
+                    widget.setToolTip(annotation_lookup[shortname]["annotation"])
                 except KeyError:
-                    widget.setToolTip('')
+                    widget.setToolTip("")
 
         self.error_widgets = []
         self.error_list.clear_errors()
@@ -676,11 +699,14 @@ class PyMdWizardMainForm(QMainWindow):
         """
 
         self.error_list_dialog.show()
-        if self.metadata_root.schema == 'bdp':
-            xsl_fname = utils.get_resource_path('FGDC/BDPfgdc-std-001-1998-annotated.xsd')
+        if self.metadata_root.schema == "bdp":
+            xsl_fname = utils.get_resource_path(
+                "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
+            )
         else:
-            xsl_fname = utils.get_resource_path('FGDC/fgdc-std-001-1998-annotated.xsd')
+            xsl_fname = utils.get_resource_path("FGDC/fgdc-std-001-1998-annotated.xsd")
         from pymdwizard.core import fgdc_utils
+
         errors = fgdc_utils.validate_xml(self.metadata_root.to_xml(), xsl_fname)
 
         self.clear_validation()
@@ -691,27 +717,36 @@ class PyMdWizardMainForm(QMainWindow):
         for error in errors:
             try:
                 xpath, error_msg, line_num = error
-                if 'attr' in xpath:
+                if "attr" in xpath:
                     try:
-                        detailed_index = xpath.split('/detailed[')[1].split('/')[0][:-1]
-                        detailed_index = int(detailed_index)-1
+                        detailed_index = xpath.split("/detailed[")[1].split("/")[0][:-1]
+                        detailed_index = int(detailed_index) - 1
                     except IndexError:
                         detailed_index = 0
 
                     try:
-                        attr_index = xpath.split('/attr[')[1].split('/')[0][:-1]
-                        attr_index = int(attr_index)-1
+                        attr_index = xpath.split("/attr[")[1].split("/")[0][:-1]
+                        attr_index = int(attr_index) - 1
                     except IndexError:
                         attr_index = 0
 
-                    self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].regular_me()
-                    self.metadata_root.eainfo.detaileds[detailed_index].attributes.attrs[attr_index].supersize_me()
+                    self.metadata_root.eainfo.detaileds[
+                        detailed_index
+                    ].attributes.attrs[attr_index].regular_me()
+                    self.metadata_root.eainfo.detaileds[
+                        detailed_index
+                    ].attributes.attrs[attr_index].supersize_me()
             except:
                 pass
 
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
-        self.metadata_root.add_children(self.metadata_root.spatial_tab, widget_lookup.metadata.idinfo)
-        self.metadata_root.add_children(self.metadata_root.dataqual.sourceinput, widget_lookup.metadata.dataqual.lineage)
+        self.metadata_root.add_children(
+            self.metadata_root.spatial_tab, widget_lookup.metadata.idinfo
+        )
+        self.metadata_root.add_children(
+            self.metadata_root.dataqual.sourceinput,
+            widget_lookup.metadata.dataqual.lineage,
+        )
         error_count = 0
         for error in errors:
 
@@ -726,13 +761,14 @@ class PyMdWizardMainForm(QMainWindow):
                     for widget in widgets:
                         if isinstance(widget, list):
                             for w in widget:
-                                print('problem highlighting error', xpath, widget)
+                                print("problem highlighting error", xpath, widget)
                         else:
                             self.highlight_error(widget.widget, error_msg)
                             self.error_widgets.append(widget.widget)
                             error_count += 1
             except BaseException as e:
                 import traceback
+
                 msg = "Error encountered highlighting error:"
                 msg += "\t" + xpath
                 msg += "\n\n" + traceback.format_exc()
@@ -767,42 +803,42 @@ class PyMdWizardMainForm(QMainWindow):
         """
 
         xpath = sender.data(1)
-        section = xpath.split('/')[1]
+        section = xpath.split("/")[1]
 
-        if section == 'idinfo':
-            subsection = xpath.split('/')[2]
-            if subsection == 'spdom':
+        if section == "idinfo":
+            subsection = xpath.split("/")[2]
+            if subsection == "spdom":
                 parent_section = self.metadata_root.switch_section(2)
             else:
                 parent_section = self.metadata_root.switch_section(0)
-        elif section == 'dataqual':
+        elif section == "dataqual":
             parent_section = self.metadata_root.switch_section(1)
-        elif section == 'spdoinfo' or section == 'spref':
+        elif section == "spdoinfo" or section == "spref":
             parent_section = self.metadata_root.switch_section(2)
-        elif section == 'eainfo':
+        elif section == "eainfo":
             parent_section = self.metadata_root.switch_section(3)
-        elif section == 'eainfo':
+        elif section == "eainfo":
             parent_section = self.metadata_root.switch_section(3)
-        elif section == 'distinfo':
+        elif section == "distinfo":
             parent_section = self.metadata_root.switch_section(4)
-        elif section == 'metainfo':
+        elif section == "metainfo":
             parent_section = self.metadata_root.switch_section(5)
 
-        if self.last_highlight is not None and \
-                not sip.isdeleted(self.last_highlight):
-            self.highlight_error(self.last_highlight,
-                                          self.last_highlight.toolTip())
+        if self.last_highlight is not None and not sip.isdeleted(self.last_highlight):
+            self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
 
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
         bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
 
         try:
-            parent_wizwidget = [thing for thing in parent_section.children()
-                                if isinstance(thing, WizardWidget)][0]
+            parent_wizwidget = [
+                thing
+                for thing in parent_section.children()
+                if isinstance(thing, WizardWidget)
+            ][0]
             parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
         except:
             pass
-
 
         self.last_highlight = bad_widget[0].widget
         self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
@@ -825,35 +861,51 @@ class PyMdWizardMainForm(QMainWindow):
             None
         """
 
-        if widget.objectName() in ['fgdc_attr', 'fgdc_edomv', 'fgdc_edomvd',
-                                   'fgdc_edomvds', 'fgdc_attrlabl',
-                                   'fgdc_attrdef', 'fgdc_attrdefs',
-                                   'fgdc_codesetd', 'fgdc_edom', 'fgdc_rdom',
-                                   'fgdc_udom', 'fgdc_rdommin', 'fgdc_rdommax',
-                                   'fgdc_codesetn', 'fgdc_codesets',
-                                   'fgdc_attrdomv',]:
+        if widget.objectName() in [
+            "fgdc_attr",
+            "fgdc_edomv",
+            "fgdc_edomvd",
+            "fgdc_edomvds",
+            "fgdc_attrlabl",
+            "fgdc_attrdef",
+            "fgdc_attrdefs",
+            "fgdc_codesetd",
+            "fgdc_edom",
+            "fgdc_rdom",
+            "fgdc_udom",
+            "fgdc_rdommin",
+            "fgdc_rdommax",
+            "fgdc_codesetn",
+            "fgdc_codesets",
+            "fgdc_attrdomv",
+        ]:
             self.highlight_attr(widget)
 
-        if widget.objectName() in ['fgdc_themekey', 'fgdc_themekt',
-                                   'fgdc_placekey', 'fgdc_placekt',
-                                   'fgdc_procdesc', 'fgdc_srcused',
-                                   'fgdc_srcprod']:
+        if widget.objectName() in [
+            "fgdc_themekey",
+            "fgdc_themekt",
+            "fgdc_placekey",
+            "fgdc_placekt",
+            "fgdc_procdesc",
+            "fgdc_srcused",
+            "fgdc_srcprod",
+        ]:
             self.highlight_tab(widget)
 
         if superhot:
             color = "rgb(223,1,74)"
             lw = "border: 3px solid black;"
         else:
-            color = 'rgb(223,1,74)'
-            lw = ''
+            color = "rgb(223,1,74)"
+            lw = ""
 
         color = "rgb(225,67,94)"
 
-        if widget.objectName() not in ['metadata_root', 'fgdc_metadata']:
+        if widget.objectName() not in ["metadata_root", "fgdc_metadata"]:
             try:
                 widget.setToolTip(error_msg)
                 widget.setStyleSheet(
-                            """
+                    """
                 QGroupBox#{widgetname}{{
                 background-color: {color};
                 border: 2px solid red;
@@ -883,7 +935,10 @@ class PyMdWizardMainForm(QMainWindow):
                 border-color: red;
                 opacity: 255;
                 }}
-                """.format(widgetname=widget.objectName(), color=color, lw=lw))
+                """.format(
+                        widgetname=widget.objectName(), color=color, lw=lw
+                    )
+                )
             except:
                 pass
 
@@ -891,7 +946,7 @@ class PyMdWizardMainForm(QMainWindow):
         widget_parent = widget
         attr_frame = widget
 
-        while not widget_parent.objectName() == 'fgdc_attr':
+        while not widget_parent.objectName() == "fgdc_attr":
             widget_parent = widget_parent.parent()
             attr_frame = widget_parent
         self.error_widgets.append(attr_frame)
@@ -905,7 +960,10 @@ class PyMdWizardMainForm(QMainWindow):
     QFrame#{widgetname}{{
     border: 2px solid red;
     }}
-        """.format(widgetname=attr_frame.objectName()))
+        """.format(
+                widgetname=attr_frame.objectName()
+            )
+        )
 
         self.error_widgets.append(widget_parent)
 
@@ -924,13 +982,14 @@ class PyMdWizardMainForm(QMainWindow):
     qproperty-drawBase:0;
 
 }}
-        """)
+        """
+        )
 
         self.error_widgets.append(widget_parent)
 
     def spelling_switch_triggered(self, e):
         spelling_action_text = self.ui.actionSpelling_flag.text()
-        use_spelling = spelling_action_text == 'Turn Spelling OFF'
+        use_spelling = spelling_action_text == "Turn Spelling OFF"
         self.switch_spelling(not use_spelling)
 
     def switch_spelling(self, use_spelling):
@@ -947,13 +1006,13 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
         if use_spelling:
-            self.ui.actionSpelling_flag.setText('Turn Spelling OFF')
+            self.ui.actionSpelling_flag.setText("Turn Spelling OFF")
         else:
-            self.ui.actionSpelling_flag.setText('Turn Spelling ON')
+            self.ui.actionSpelling_flag.setText("Turn Spelling ON")
 
         self.recursive_spell(self.metadata_root, use_spelling)
 
-        self.settings.setValue('use_spelling', use_spelling)
+        self.settings.setValue("use_spelling", use_spelling)
 
     def recursive_spell(self, widget, which):
         """
@@ -1030,60 +1089,63 @@ class PyMdWizardMainForm(QMainWindow):
         transform = xml_utils.load_xslt(xsl_fname)
         result = transform(self.metadata_root.to_xml())
 
-        tmp = tempfile.NamedTemporaryFile(suffix='.html')
+        tmp = tempfile.NamedTemporaryFile(suffix=".html")
         tmp.close()
         result.write(tmp.name)
 
         self.preview = Preview(url=tmp.name)
 
         self.preview_dialog = QDialog(self)
-        self.preview_dialog.setWindowTitle('Metadata Preview')
+        self.preview_dialog.setWindowTitle("Metadata Preview")
         self.preview_dialog.setLayout(self.preview.layout())
 
         self.preview_dialog.exec_()
 
     def launch_help(self):
-        root_dname = utils.get_install_dname('pymdwizard')
+        root_dname = utils.get_install_dname("pymdwizard")
 
-        help_html = os.path.join(root_dname, 'docs', 'html_output', 'index.html')
+        help_html = os.path.join(root_dname, "docs", "html_output", "index.html")
 
         if not os.path.exists(help_html):
             gui_fname = os.path.dirname(os.path.realpath(__file__))
-            help_html = os.path.join(gui_fname, '..', '..',
-                                     'docs', 'html_output', 'index.html')
+            help_html = os.path.join(
+                gui_fname, "..", "..", "docs", "html_output", "index.html"
+            )
 
         self.preview = Preview(url=help_html)
 
         self.preview_dialog = QDialog(self)
-        self.preview_dialog.setWindowTitle('MetadataWizard Help')
+        self.preview_dialog.setWindowTitle("MetadataWizard Help")
         self.preview_dialog.setLayout(self.preview.layout())
 
         self.preview_dialog.exec_()
 
     def generate_review_doc(self):
         if self.cur_fname:
-            out_fname = self.cur_fname[:-4] + '_REVIEW.docx'
+            out_fname = self.cur_fname[:-4] + "_REVIEW.docx"
 
-            if self.metadata_root.schema == 'bdp':
-                which = 'bdp'
+            if self.metadata_root.schema == "bdp":
+                which = "bdp"
             else:
-                which = 'fgdc'
+                which = "fgdc"
 
             if time.time() - self.last_updated > 4:
                 msg = "Would you like to save the current file before continuing?"
                 alert = QDialog()
                 self.last_updated = time.time()
-                confirm = QMessageBox.question(self, "File save", msg,
-                                               QMessageBox.Yes | QMessageBox.No
-                                               | QMessageBox.Cancel)
+                confirm = QMessageBox.question(
+                    self,
+                    "File save",
+                    msg,
+                    QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                )
                 if confirm == QMessageBox.Yes:
                     self.save_file()
                 elif confirm == QMessageBox.Cancel:
                     return
             try:
                 cur_content = xml_utils.XMLRecord(self.cur_fname)
-                review_utils.generate_review_report(cur_content, out_fname,
-                                                    which=which)
+                review_utils.generate_review_report(cur_content, out_fname, which=which)
 
                 import os, sys, subprocess
 
@@ -1096,12 +1158,15 @@ class PyMdWizardMainForm(QMainWindow):
 
                 open_file(out_fname)
 
-                msg = 'Review document available at: {}'.format(out_fname)
-                msg += '\n\nReview document now opening in default application...'
+                msg = "Review document available at: {}".format(out_fname)
+                msg += "\n\nReview document now opening in default application..."
                 QMessageBox.information(self, "Review finished", msg)
             except BaseException:
                 import traceback
-                msg = "Problem encountered generating review document:\n{}".format(traceback.format_exc())
+
+                msg = "Problem encountered generating review document:\n{}".format(
+                    traceback.format_exc()
+                )
                 QMessageBox.warning(self, "Problem encountered", msg)
 
     def launch_jupyter(self):
@@ -1112,21 +1177,23 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        last_kernel = self.settings.value('last_kernel', '')
-        jupyter_dnames = self.settings.value('jupyter_dnames', [])
+        last_kernel = self.settings.value("last_kernel", "")
+        jupyter_dnames = self.settings.value("jupyter_dnames", [])
         if not jupyter_dnames:
             install_dir = utils.get_install_dname()
-            jupyter_dnames = [os.path.join(install_dir, 'examples')]
-            self.settings.setValue('jupyter_dnames', jupyter_dnames)
+            jupyter_dnames = [os.path.join(install_dir, "examples")]
+            self.settings.setValue("jupyter_dnames", jupyter_dnames)
 
-        self.jupyter_dialog = JupyterStarter(last_kernel=last_kernel,
-                                             previous_dnames=jupyter_dnames,
-                                             update_function=self.update_jupyter_dnames)
+        self.jupyter_dialog = JupyterStarter(
+            last_kernel=last_kernel,
+            previous_dnames=jupyter_dnames,
+            update_function=self.update_jupyter_dnames,
+        )
         utils.set_window_icon(self.jupyter_dialog)
         self.jupyter_dialog.show()
 
     def update_jupyter_dnames(self, kernel, dname):
-        jupyter_dnames = self.settings.value('jupyter_dnames', [])
+        jupyter_dnames = self.settings.value("jupyter_dnames", [])
 
         try:
             jupyter_dnames.remove(dname)
@@ -1136,10 +1203,10 @@ class PyMdWizardMainForm(QMainWindow):
             # my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
 
         jupyter_dnames.insert(0, dname)
-        del jupyter_dnames[PyMdWizardMainForm.max_recent_files:]
-        self.settings.setValue('jupyter_dnames', jupyter_dnames)
+        del jupyter_dnames[PyMdWizardMainForm.max_recent_files :]
+        self.settings.setValue("jupyter_dnames", jupyter_dnames)
 
-        self.settings.setValue('last_kernel', kernel)
+        self.settings.setValue("last_kernel", kernel)
 
     def about(self):
         """
@@ -1150,14 +1217,16 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        msg = 'The MetadataWizard was developed by the USGS Fort Collins Science Center<br>'
-        msg += 'With help from the USGS Council for Data integration (CDI) and<br>'
-        msg += 'and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>'
-        msg += '<br>Version: {}<br>'.format(__version__)
+        msg = "The MetadataWizard was developed by the USGS Fort Collins Science Center<br>"
+        msg += "With help from the USGS Council for Data integration (CDI) and<br>"
+        msg += (
+            "and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>"
+        )
+        msg += "<br>Version: {}<br>".format(__version__)
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
-        msg += '<br><br>Contact: Colin Talbert at talbertc@usgs.gov'
+        msg += "<br><br>Contact: Colin Talbert at talbertc@usgs.gov"
 
-        msgbox = QMessageBox.about(self, 'About', msg)
+        msgbox = QMessageBox.about(self, "About", msg)
 
     def check_for_updates(self, e=None, show_uptodate_msg=True):
         """
@@ -1176,17 +1245,19 @@ class PyMdWizardMainForm(QMainWindow):
         """
         try:
             from git import Repo
-            install_dir = utils.get_install_dname('pymdwizard')
+
+            install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name=='usgs_root'][0].fetch()
-            master = [f for f in fetch if f.name=='usgs_root/master'][0]
+            fetch = [r for r in repo.remotes if r.name == "usgs_root"][0].fetch()
+            master = [f for f in fetch if f.name == "usgs_root/master"][0]
 
             if repo.head.commit != master.commit:
                 msg = "An update(s) are available for the Metadata Wizard.\n"
                 msg += "Would you like to install these now?"
 
-                confirm = QMessageBox.question(self, "Updates Available", msg,
-                                               QMessageBox.Yes | QMessageBox.No)
+                confirm = QMessageBox.question(
+                    self, "Updates Available", msg, QMessageBox.Yes | QMessageBox.No
+                )
                 if confirm == QMessageBox.Yes:
                     self.update_from_github()
             elif show_uptodate_msg:
@@ -1195,7 +1266,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         except BaseException as e:
             if show_uptodate_msg:
-                msg = 'Problem Encountered Updating from GitHub\n\nError Message:\n'
+                msg = "Problem Encountered Updating from GitHub\n\nError Message:\n"
                 msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
 
@@ -1210,28 +1281,31 @@ class PyMdWizardMainForm(QMainWindow):
 
         try:
             from git import Repo
-            install_dir = utils.get_install_dname('pymdwizard')
+
+            install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name == 'usgs_root'][0].fetch()
-            master = [f for f in fetch if f.name == 'usgs_root/master'][0]
+            fetch = [r for r in repo.remotes if r.name == "usgs_root"][0].fetch()
+            master = [f for f in fetch if f.name == "usgs_root/master"][0]
 
             merge_msg = repo.git.merge(master.name)
 
-            msg = 'Updated Successfully from GitHub.'
+            msg = "Updated Successfully from GitHub."
             QMessageBox.information(self, "Update results", msg)
         except BaseException as e:
-            msg = 'Problem Encountered Updating from GitHub\n\n' \
-                  'Please upgrade to the latest release by reinstalling the ' \
-                  'application from GitHub ' \
-                  '\n(https://github.com/usgs/fort-pymdwizard/releases)\n\n' \
-                  'Error Message:\n'
+            msg = (
+                "Problem Encountered Updating from GitHub\n\n"
+                "Please upgrade to the latest release by reinstalling the "
+                "application from GitHub "
+                "\n(https://github.com/usgs/fort-pymdwizard/releases)\n\n"
+                "Error Message:\n"
+            )
             msg += str(e)
             QMessageBox.information(self, "Update results", msg)
 
         QApplication.restoreOverrideCursor()
 
 
-def show_splash(version='2.x.x'):
+def show_splash(version="2.x.x"):
     """
     Show the applications splash screen
 
@@ -1244,29 +1318,30 @@ def show_splash(version='2.x.x'):
     -------
     None
     """
-    splash_fname = utils.get_resource_path('icons/splash.jpg')
+    splash_fname = utils.get_resource_path("icons/splash.jpg")
     splash_pix = QPixmap(splash_fname)
 
-    size = splash_pix.size()*.35
-    splash_pix = splash_pix.scaled(size, Qt.KeepAspectRatio,
-                                   transformMode=Qt.SmoothTransformation)
+    size = splash_pix.size() * 0.35
+    splash_pix = splash_pix.scaled(
+        size, Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation
+    )
     numbers = {}
-    for number in list(range(10)) + ['point', 'x']:
-        fname = utils.get_resource_path('icons/{}.png'.format(number))
+    for number in list(range(10)) + ["point", "x"]:
+        fname = utils.get_resource_path("icons/{}.png".format(number))
         pix = QPixmap(fname)
-        size = pix.size() * .65
-        numbers[str(number)] = pix.scaled(size, Qt.KeepAspectRatio,
-                                transformMode=Qt.SmoothTransformation)
-    numbers['.'] = numbers['point']
+        size = pix.size() * 0.65
+        numbers[str(number)] = pix.scaled(
+            size, Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation
+        )
+    numbers["."] = numbers["point"]
 
     painter = QPainter(splash_pix)
     painter.begin(splash_pix)
 
-
     x, y = 470, 70
     for digit in version:
         painter.drawPixmap(x, y, numbers[digit])
-        x += numbers[digit].rect().width()/3
+        x += numbers[digit].rect().width() / 3
 
     painter.end()
 
@@ -1285,7 +1360,7 @@ def launch_main(xml_fname=None, introspect_fname=None, env_cache={}):
     app.processEvents()
     mdwiz = PyMdWizardMainForm()
     mdwiz.show()
-    mdwiz.env_cache=env_cache
+    mdwiz.env_cache = env_cache
     splash.finish(mdwiz)
 
     try:
@@ -1296,7 +1371,7 @@ def launch_main(xml_fname=None, introspect_fname=None, env_cache={}):
     if xml_fname is not None and os.path.exists(xml_fname):
         mdwiz.open_file(xml_fname)
 
-    if introspect_fname is not None and introspect_fname.endswith('$'):
+    if introspect_fname is not None and introspect_fname.endswith("$"):
         just_fname, _ = os.path.split(introspect_fname)
     else:
         just_fname = introspect_fname
@@ -1307,5 +1382,5 @@ def launch_main(xml_fname=None, introspect_fname=None, env_cache={}):
     app.exec_()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     launch_main()

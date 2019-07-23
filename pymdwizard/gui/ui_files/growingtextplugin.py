@@ -7,7 +7,6 @@ import pymdwizard
 
 
 class GrowingTextEditPlugin(QPyDesignerCustomWidgetPlugin):
-
     def __init__(self, parent=None):
         super(GrowingTextEditPlugin, self).__init__(parent)
 
@@ -46,7 +45,9 @@ class GrowingTextEditPlugin(QPyDesignerCustomWidgetPlugin):
     def includeFile(self):
         return "growingtextedit"
 
+
 from PyQt5.QtWidgets import *
+
 if __name__ == "__main__":
 
     import sys

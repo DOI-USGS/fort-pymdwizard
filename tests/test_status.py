@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import sys
+
 sys.path.append(r"../..")
 
 import sys
@@ -11,6 +12,7 @@ from PyQt5.QtWidgets import QWidget, QComboBox
 
 from pymdwizard.gui import Status
 
+
 def test_status_from_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
@@ -20,21 +22,24 @@ def test_status_from_xml(qtbot):
     status = test_record.xpath("idinfo/status")[0]
 
     widget.from_xml(status)
-    assert widget.findChild(QComboBox, 'fgdc_progress').currentText() == 'Complete'
-    assert widget.findChild(QComboBox, 'fgdc_update').currentText() == 'none planned'
+    assert widget.findChild(QComboBox, "fgdc_progress").currentText() == "Complete"
+    assert widget.findChild(QComboBox, "fgdc_update").currentText() == "none planned"
+
 
 def test_status_to_xml(qtbot):
     widget = Status.Status()
     qtbot.addWidget(widget)
 
-    widget.findChild(QComboBox, 'fgdc_progress').currentText()
-    widget.findChild(QComboBox, 'fgdc_update').currentText()
+    widget.findChild(QComboBox, "fgdc_progress").currentText()
+    widget.findChild(QComboBox, "fgdc_update").currentText()
 
     stat = widget.to_xml()
 
-    assert etree.tostring(stat, pretty_print=True).decode() \
-    == """<status>
+    assert (
+        etree.tostring(stat, pretty_print=True).decode()
+        == """<status>
   <progress>Complete</progress>
   <update>None planned</update>
 </status>
 """
+    )

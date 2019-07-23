@@ -4,6 +4,7 @@ from __future__ import print_function
 # sys.path.append(r"../..")
 
 import os, sys
+
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
 import sys
@@ -23,6 +24,4 @@ def test_import(qtbot):
     fname = "tests/data/projections/wgs84.shp"
     widget.populate_from_fname(fname)
 
-    assert widget.spdom.ui.fgdc_northbc.text() == '39.3367'
-
-
+    assert widget.spdom.ui.fgdc_northbc.text() == "39.3367"

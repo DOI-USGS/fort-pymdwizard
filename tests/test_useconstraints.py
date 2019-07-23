@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import sys
+
 sys.path.append(r"../..")
 
 import sys
@@ -11,6 +12,7 @@ from PyQt5.QtWidgets import QWidget, QPlainTextEdit
 
 from pymdwizard.gui import useconst
 
+
 def test_useconstraints_from_xml(qtbot):
     widget = useconst.Useconst()
     qtbot.addWidget(widget)
@@ -20,14 +22,20 @@ def test_useconstraints_from_xml(qtbot):
     use_const = test_record.xpath("idinfo/useconst")[0]
 
     widget.from_xml(use_const)
-    assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == 'none'
+    assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == "none"
+
 
 def test_useconstraints_to_xml(qtbot):
     widget = useconst.Useconst()
     qtbot.addWidget(widget)
 
-    assert widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText() == "None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
+    assert (
+        widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
+        == "None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
+    )
 
     uc = widget.to_xml()
-    assert etree.tostring(uc, pretty_print=True).decode() \
-    == "<useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>\n"
+    assert (
+        etree.tostring(uc, pretty_print=True).decode()
+        == "<useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>\n"
+    )

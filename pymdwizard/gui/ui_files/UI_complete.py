@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -34,10 +35,14 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_complete = GrowingTextEdit(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_complete.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_complete.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_complete.setSizePolicy(sizePolicy)
         self.fgdc_complete.setMinimumSize(QtCore.QSize(0, 0))
         self.fgdc_complete.setObjectName("fgdc_complete")
@@ -51,7 +56,18 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Completeness Report"))
-        self.label.setText(_translate("Form", "Does the dataset represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the dataset versus what is not.   See help for more info."))
-        self.fgdc_complete.setPlainText(_translate("Form", "Dataset is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details."))
+        self.label.setText(
+            _translate(
+                "Form",
+                "Does the dataset represent only certain types of instances of a phenomenon?   Do the data represent occurrences only within a fixed geographic area?   Provide information about what is included in the dataset versus what is not.   See help for more info.",
+            )
+        )
+        self.fgdc_complete.setPlainText(
+            _translate(
+                "Form",
+                "Dataset is considered complete for the information presented, as described in the abstract.  Users are advised to read the rest of the metadata record carefully for additional details.",
+            )
+        )
+
 
 from growingtextedit import GrowingTextEdit

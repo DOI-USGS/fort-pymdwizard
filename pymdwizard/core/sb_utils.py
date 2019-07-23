@@ -57,6 +57,7 @@ except ImportError:
 class PYSBMissing(Exception):
     pass
 
+
 def has_pysb(func):
     """
     decorator function for checking if the pysb module is available
@@ -71,8 +72,8 @@ def has_pysb(func):
     """
 
     if pysb is None:
-        raise PYSBMissing("This functionality requires the ScienceBase " \
-                         "Python package (pysb) which was not found in this" \
-                         "environement")
-
-
+        raise PYSBMissing(
+            "This functionality requires the ScienceBase "
+            "Python package (pysb) which was not found in this"
+            "environement"
+        )

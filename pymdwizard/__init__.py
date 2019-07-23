@@ -64,4 +64,4 @@ except ImportError:
 
 this_fname = os.path.realpath(__file__)
 root_dir = os.path.dirname(this_fname)
-sys.path.append(os.path.join(root_dir, 'gui', 'ui_files'))
+sys.path.append(os.path.join(root_dir, "gui", "ui_files"))

@@ -57,22 +57,26 @@ from pymdwizard.gui.keywords_repeater import KeywordsRepeater
 class Theme(KeywordsRepeater):  #
 
     drag_label = "Theme Keywords <theme>"
-    acceptable_tags = ['theme']
+    acceptable_tags = ["theme"]
 
-    def __init__(self, which='theme', parent=None):
-        self.acceptable_tags = [which, ]
+    def __init__(self, which="theme", parent=None):
+        self.acceptable_tags = [which]
         self.which = which
-        KeywordsRepeater.__init__(self, keywords_label='Keyword   ',
-                                  parent=parent, line_name='fgdc_{}key'.format(self.which))
+        KeywordsRepeater.__init__(
+            self,
+            keywords_label="Keyword   ",
+            parent=parent,
+            line_name="fgdc_{}key".format(self.which),
+        )
 
         self.kt = self.ui.fgdc_themekt
-        if which == 'place':
-            self.setObjectName('fgdc_place')
+        if which == "place":
+            self.setObjectName("fgdc_place")
             self.drag_label = "Place Keywords <place>"
-            self.ui.fgdc_themekt.setObjectName('fgdc_placekt')
-            self.acceptable_tags = ['place']
+            self.ui.fgdc_themekt.setObjectName("fgdc_placekt")
+            self.acceptable_tags = ["place"]
         else:
-            self.setObjectName('fgdc_theme')
+            self.setObjectName("fgdc_theme")
 
     def add_keyword(self, keyword, locked=False):
         """
@@ -91,7 +95,7 @@ class Theme(KeywordsRepeater):  #
         None
         """
         existing_kws = self.get_keywords()
-        if existing_kws[0] == '':
+        if existing_kws[0] == "":
             kw = self.keywords.get_widgets()[0]
             kw.setText(keyword)
             kw.added_line.setReadOnly(locked)
@@ -118,13 +122,15 @@ class Theme(KeywordsRepeater):  #
         timeperd element tag in xml tree
         """
         keywtax = xml_utils.xml_node(self.which)
-        taxonkt = xml_utils.xml_node("{}kt".format(self.which),
-                                     text=self.ui.fgdc_themekt.text(),
-                                     parent_node=keywtax)
+        taxonkt = xml_utils.xml_node(
+            "{}kt".format(self.which),
+            text=self.ui.fgdc_themekt.text(),
+            parent_node=keywtax,
+        )
         for keyword in self.get_keywords():
-            taxonkey = xml_utils.xml_node("{}key".format(self.which),
-                                          text=keyword,
-                                          parent_node=keywtax)
+            taxonkey = xml_utils.xml_node(
+                "{}key".format(self.which), text=keyword, parent_node=keywtax
+            )
 
         return keywtax
 
@@ -146,7 +152,7 @@ class Theme(KeywordsRepeater):  #
 
                 keywords = keywtax.xpath("{}key".format(self.which))
                 for kw in keywords:
-                    if self.keywords.get_widgets()[0].text() == '':
+                    if self.keywords.get_widgets()[0].text() == "":
                         kw_widget = self.get_widgets()[0]
                     else:
                         kw_widget = self.keywords.add_another()
@@ -154,12 +160,10 @@ class Theme(KeywordsRepeater):  #
                     kw_widget.setText(kw.text)
 
             else:
-                print ("The tag is not theme")
+                print("The tag is not theme")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Theme,
-                        " testing", which='place')
-
+    utils.launch_widget(Theme, " testing", which="place")

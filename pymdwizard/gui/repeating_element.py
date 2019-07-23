@@ -61,14 +61,22 @@ from pymdwizard.core import utils
 from pymdwizard.gui.ui_files import UI_repeating_element
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
+
 class DefaultWidget(QWidget):
     """
     The default widget for a repeating element.
     It's a simple line edit with a label and an option required astrix.
     """
-    def __init__(self, label='', line_name='na', required=False,
-                 placeholder_text=None, spellings=True,
-                 parent=None):
+
+    def __init__(
+        self,
+        label="",
+        line_name="na",
+        required=False,
+        placeholder_text=None,
+        spellings=True,
+        parent=None,
+    ):
         """
 
         Parameters
@@ -86,7 +94,7 @@ class DefaultWidget(QWidget):
         self.layout = QHBoxLayout()
         self.qlbl = QLabel(label, self)
         self.added_line = QPlainTextEdit()
-        max_line_height = self.added_line.fontMetrics().height()+10
+        max_line_height = self.added_line.fontMetrics().height() + 10
         self.added_line.setMaximumHeight(max_line_height)
         self.added_line.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.added_line.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -112,14 +120,19 @@ class DefaultWidget(QWidget):
             font.setWeight(50)
             self.required_label.setFont(font)
             self.required_label.setScaledContents(True)
-            self.required_label.setAlignment(QtCore.Qt.AlignHCenter |
-                                             QtCore.Qt.AlignVCenter)
+            self.required_label.setAlignment(
+                QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
+            )
             self.required_label.setIndent(0)
 
-            self.required_label.setText(QtCore.QCoreApplication.translate("",
-                    "<html><head/><body><p align=\"center\">"
-                    "<span style=\" font-size:18pt; color:#55aaff;\">*"
-                    "</span></p></body></html>"))
+            self.required_label.setText(
+                QtCore.QCoreApplication.translate(
+                    "",
+                    '<html><head/><body><p align="center">'
+                    '<span style=" font-size:18pt; color:#55aaff;">*'
+                    "</span></p></body></html>",
+                )
+            )
             self.layout.addWidget(self.required_label)
 
         self.layout.setContentsMargins(1, 1, 1, 1)
@@ -140,11 +153,11 @@ class DefaultWidget(QWidget):
         -------
         None
         """
-        if e.y() < self.added_line.height()-3 and \
-           e.x() < self.added_line.width()-3:
+        if e.y() < self.added_line.height() - 3 and e.x() < self.added_line.width() - 3:
             QPlainTextEdit.mouseMoveEvent(self.added_line, e)
         self.added_line.verticalScrollBar().setValue(
-            self.added_line.verticalScrollBar().minimum())
+            self.added_line.verticalScrollBar().minimum()
+        )
 
     def remove_returns(self):
         """
@@ -158,7 +171,7 @@ class DefaultWidget(QWidget):
         self.added_line.textChanged.disconnect()
         old_position = self.added_line.textCursor().position()
         curtext = self.added_line.toPlainText()
-        newtext = curtext.replace('\n', ' ')
+        newtext = curtext.replace("\n", " ")
         self.added_line.setPlainText(newtext)
         cursor = self.added_line.textCursor()
         cursor.setPosition(old_position)
@@ -177,19 +190,29 @@ class DefaultWidget(QWidget):
 
 class RepeatingElement(QWidget):
 
-    default_params = {'Title': 'insert title here',
-                      'Italic Text': 'add notes here',
-                      'Add text': 'button add me',
-                      'Remove text': 'button del me',
-                      'widget': DefaultWidget,
-                      'spellings': True,
-                      'widget_kwargs': {'label': 'add a text label'}}
+    default_params = {
+        "Title": "insert title here",
+        "Italic Text": "add notes here",
+        "Add text": "button add me",
+        "Remove text": "button del me",
+        "widget": DefaultWidget,
+        "spellings": True,
+        "widget_kwargs": {"label": "add a text label"},
+    }
 
-    def __init__(self, which='vertical', tab_label='tab',
-                 widget=DefaultWidget, widget_kwargs={},
-                 italic_text='',
-                 add_text="Add another", remove_text="Remove last",
-                 show_buttons=True, add_another=None, parent=None):
+    def __init__(
+        self,
+        which="vertical",
+        tab_label="tab",
+        widget=DefaultWidget,
+        widget_kwargs={},
+        italic_text="",
+        add_text="Add another",
+        remove_text="Remove last",
+        show_buttons=True,
+        add_another=None,
+        parent=None,
+    ):
         QWidget.__init__(self, parent=parent)
 
         self.widgets = []
@@ -200,12 +223,12 @@ class RepeatingElement(QWidget):
             self.ui.italic_label.setText(italic_text)
 
         self.which = which
-        if which == 'vertical':
+        if which == "vertical":
             self.SA = self.ui.vertical_widget
             self.content_layout = self.ui.vertical_widget.layout()
             self.tab = False
             self.ui.tab_widget.deleteLater()
-        elif which == 'tab':
+        elif which == "tab":
             self.content_widget = self.ui.tab_widget
             self.tab = True
             self.ui.vertical_widget.deleteLater()
@@ -225,7 +248,7 @@ class RepeatingElement(QWidget):
 
         self.widget = widget
         self.widget_kwargs = widget_kwargs
-        self.widget_kwargs['parent'] = self
+        self.widget_kwargs["parent"] = self
 
     def build_ui(self):
         """
@@ -252,7 +275,7 @@ class RepeatingElement(QWidget):
         self.ui.addAnother.clicked.connect(self.add_another)
         self.ui.popOff.clicked.connect(self.pop_off)
 
-    def add_another(self, clicked=None, tab_label=''):
+    def add_another(self, clicked=None, tab_label=""):
         """
         Adds another instance of a widget or ____
 
@@ -265,17 +288,16 @@ class RepeatingElement(QWidget):
 
         if self.tab:
             if not tab_label:
-                tab_label = ' '.join([self.tab_label,
-                                      str(len(self.widgets))])
+                tab_label = " ".join([self.tab_label, str(len(self.widgets))])
             self.ui.tab_widget.addTab(widget, tab_label)
-            self.ui.tab_widget.setCurrentIndex(self.ui.tab_widget.count()-1)
+            self.ui.tab_widget.setCurrentIndex(self.ui.tab_widget.count() - 1)
         else:
-            self.content_layout.insertWidget(len(self.widgets)-1, widget)
+            self.content_layout.insertWidget(len(self.widgets) - 1, widget)
         return widget
 
     def pop_off(self):
         if self.widgets and len(self.widgets) > 1:
-            if self.which == 'tab':
+            if self.which == "tab":
                 current_tab = self.ui.tab_widget.currentIndex()
                 current_widget = self.widgets[current_tab]
                 current_widget.deleteLater()
@@ -299,19 +321,15 @@ class RepeatingElement(QWidget):
 
 
 if __name__ == "__main__":
-    widget_kws = {'label': 'hello', 'required' : True}
+    widget_kws = {"label": "hello", "required": True}
 
-    utils.launch_widget(RepeatingElement, which='vertical',
-                        tab_label='Processing Step', add_text='test add',
-                        # widget = sourceinput.SourceInput,
-                        widget_kwargs=widget_kws,
-                        remove_text='test remove', italic_text='some instruction')
-
-
-
-
-
-
-
-
-
+    utils.launch_widget(
+        RepeatingElement,
+        which="vertical",
+        tab_label="Processing Step",
+        add_text="test add",
+        # widget = sourceinput.SourceInput,
+        widget_kwargs=widget_kws,
+        remove_text="test remove",
+        italic_text="some instruction",
+    )

@@ -60,7 +60,6 @@ from pymdwizard.gui.ui_files import UI_settings
 
 
 class Settings(QWidget):
-
     def __init__(self, url=None, mainform=None, parent=None):
         QWidget.__init__(self, parent=parent)
         self.ui = UI_settings.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
@@ -86,31 +85,31 @@ class Settings(QWidget):
         self.ui.btn_save.clicked.connect(self.save_settings)
 
     def load_settings(self):
-        self.settings = QSettings('USGS', 'pymdwizard')
-        template_fname = self.settings.value('template_fname')
+        self.settings = QSettings("USGS", "pymdwizard")
+        template_fname = self.settings.value("template_fname")
 
         if template_fname is None:
-            template_fname = utils.get_resource_path('CSDGM_Template.xml')
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
 
         self.ui.template_fname.setText(template_fname)
 
-        use_spelling = self.settings.value('use_spelling', True)
-        if use_spelling == 'true':
+        use_spelling = self.settings.value("use_spelling", True)
+        if use_spelling == "true":
             self.ui.spelling_on.setChecked(True)
         else:
             self.ui.spelling_off.setChecked(True)
 
-        max_rows = self.settings.value('maxrows', 1000000)
+        max_rows = self.settings.value("maxrows", 1000000)
         self.ui.maxrows.setText(str(max_rows))
 
-        defsource = self.settings.value('defsource', 'Producer defined')
+        defsource = self.settings.value("defsource", "Producer defined")
         self.ui.defsource.setText(defsource)
 
-        fontfamily = self.settings.value('fontfamily', 'Arial')
+        fontfamily = self.settings.value("fontfamily", "Arial")
         self.ui.font.setFont(QFont(fontfamily))
         self.ui.font.setCurrentFont(QFont(fontfamily))
 
-        fontsize = self.settings.value('fontsize', 9)
+        fontsize = self.settings.value("fontsize", 9)
         self.ui.font_size.setValue(fontsize)
 
     def save_settings(self):
@@ -120,7 +119,7 @@ class Settings(QWidget):
             QMessageBox.warning(self, "Invalid template specified", msg)
             return
 
-        self.settings.setValue('template_fname', template_fname)
+        self.settings.setValue("template_fname", template_fname)
 
         self.mainform.switch_spelling(self.ui.spelling_on.isChecked())
 
@@ -134,12 +133,12 @@ class Settings(QWidget):
             QMessageBox.warning(self, "Invalid Max Rows", msg)
             return
 
-        self.settings.setValue('maxrows', self.ui.maxrows.text())
-        self.settings.setValue('defsource', self.ui.defsource.text())
+        self.settings.setValue("maxrows", self.ui.maxrows.text())
+        self.settings.setValue("defsource", self.ui.defsource.text())
 
-        self.settings.setValue('fontfamily', self.ui.font.currentFont().family())
+        self.settings.setValue("fontfamily", self.ui.font.currentFont().family())
 
-        self.settings.setValue('fontsize', self.ui.font_size.value())
+        self.settings.setValue("fontsize", self.ui.font_size.value())
         self.mainform.metadata_root.set_stylesheet(recursive=True)
 
         self.deleteLater()
@@ -148,12 +147,12 @@ class Settings(QWidget):
     def restore_defaults(self):
         self.restore_template()
         self.ui.spelling_on.setChecked(True)
-        self.ui.defsource.setText('Producer defined')
-        self.ui.maxrows.setText('1000000')
+        self.ui.defsource.setText("Producer defined")
+        self.ui.maxrows.setText("1000000")
         self.ui.font_size.setValue(9)
 
     def restore_template(self):
-        template_fname = utils.get_resource_path('CSDGM_Template.xml')
+        template_fname = utils.get_resource_path("CSDGM_Template.xml")
         self.ui.template_fname.setText(template_fname)
 
     def browse_template(self):
@@ -162,8 +161,5 @@ class Settings(QWidget):
             self.ui.template_fname.setText(template_fname)
 
 
-
-
 if __name__ == "__main__":
-    utils.launch_widget(Settings,
-                        "Preview")
+    utils.launch_widget(Settings, "Preview")

@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import sys
+
 sys.path.append(r"../..")
 
 import sys
@@ -28,21 +29,22 @@ def test_citation_to_xml(qtbot):
     widget = citeinfo.Citeinfo()
     qtbot.addWidget(widget)
 
-    #assert type(progress) == 'lxml.etree._Element'
+    # assert type(progress) == 'lxml.etree._Element'
     widget.ui.fgdc_title.setPlainText("test title")
-    widget.ui.pubdate_widget.set_date('1234')
-    widget.ui.fgdc_geoform.setCurrentText('book')
+    widget.ui.pubdate_widget.set_date("1234")
+    widget.ui.fgdc_geoform.setCurrentText("book")
 
     widget.ui.radio_seriesyes.setChecked(True)
     series = widget.findChild(QLineEdit, "fgdc_sername")
     series2 = widget.findChild(QLineEdit, "fgdc_issue")
-    series.setText('Name 25')
-    series2.setText('Issue 45')
+    series.setText("Name 25")
+    series2.setText("Issue 45")
 
     cit = widget.to_xml()
 
-    assert etree.tostring(cit, pretty_print=True).decode() \
-    == """<citeinfo>
+    assert (
+        etree.tostring(cit, pretty_print=True).decode()
+        == """<citeinfo>
   <origin/>
   <pubdate>1234</pubdate>
   <title>test title</title>
@@ -53,3 +55,4 @@ def test_citation_to_xml(qtbot):
   </serinfo>
 </citeinfo>
 """
+    )

@@ -57,10 +57,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_complete
 
 
-class Completeness(WizardWidget): #
+class Completeness(WizardWidget):  #
 
     drag_label = "Completeness <complete>"
-    acceptable_tags = ['complete']
+    acceptable_tags = ["complete"]
 
     def build_ui(self):
         """
@@ -82,8 +82,10 @@ class Completeness(WizardWidget): #
         -------
         complete element tag in xml tree
         """
-        complete = xml_utils.xml_node(tag='complete',
-                                      text=self.findChild(QPlainTextEdit, "fgdc_complete").toPlainText())
+        complete = xml_utils.xml_node(
+            tag="complete",
+            text=self.findChild(QPlainTextEdit, "fgdc_complete").toPlainText(),
+        )
 
         return complete
 
@@ -100,22 +102,14 @@ class Completeness(WizardWidget): #
         None
         """
         try:
-            if complete_ness.tag == 'complete':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_complete")
-               accost_box.setPlainText(complete_ness.text)
+            if complete_ness.tag == "complete":
+                accost_box = self.findChild(QPlainTextEdit, "fgdc_complete")
+                accost_box.setPlainText(complete_ness.text)
             else:
-               print ("The tag is not complete")
+                print("The tag is not complete")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Completeness,
-                        "Completeness testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Completeness, "Completeness testing")

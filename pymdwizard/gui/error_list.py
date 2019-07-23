@@ -57,10 +57,9 @@ from pymdwizard.gui.ui_files import UI_error_list
 
 
 class ErrorList(QWidget):
-
     def __init__(self, main_form, parent=None):
         QWidget.__init__(self, parent=parent)
-        self.ui = UI_error_list.Ui_error_list() # .Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_error_list.Ui_error_list()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
 
         self.main_form = main_form
@@ -79,6 +78,6 @@ class ErrorList(QWidget):
     def clear_errors(self):
         self.ui.listWidget.clear()
 
+
 if __name__ == "__main__":
-    utils.launch_widget(ErrorList,
-                        "ErrorList", url=r"c:/temp/text.html")
+    utils.launch_widget(ErrorList, "ErrorList", url=r"c:/temp/text.html")

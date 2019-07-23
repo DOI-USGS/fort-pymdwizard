@@ -94,6 +94,7 @@ class WizardWidget(QWidget):
     original_xml : lxml node
                    The original xml node contents before any changes were made.
     """
+
     # Preferred widget size constants
     # if widget doesn't collapse use -1 for COLLAPSED_HEIGHT
     WIDGET_WIDTH = 805
@@ -105,8 +106,7 @@ class WizardWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
-
-        self.help_text = ''
+        self.help_text = ""
 
         # for standalone testing and debugging
         if __name__ == "__main__":
@@ -143,7 +143,6 @@ class WizardWidget(QWidget):
         # Any child widgets that have a separate drag-drop interactivity
         # need to be added to this widget after running self.setup_dragdrop
         # function so as not to override their individual drag-drop functions.
-
 
     def connect_events(self):
         """
@@ -188,10 +187,10 @@ class WizardWidget(QWidget):
             try:
                 widget_name = child_widget.objectName()
             except AttributeError:
-                widget_name = 'Unknown'
+                widget_name = "Unknown"
 
-            if child_widget.objectName().startswith('fgdc_'):
-                root_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+            if child_widget.objectName().startswith("fgdc_"):
+                root_node = xml_utils.XMLNode(tag=widget_name.replace("fgdc_", ""))
                 root_node.widget = child_widget
                 return self.add_children(child_widget, root_node)
             else:
@@ -211,14 +210,12 @@ class WizardWidget(QWidget):
         """
         try:
             if type(widget) == QTabWidget:
-                widget_children = [widget.widget(i) for i in
-                                   range(widget.count())]
+                widget_children = [widget.widget(i) for i in range(widget.count())]
             else:
                 widget_children = widget.children()
         except AttributeError:
             try:
-                widget_children = [widget.itemAt(i) for i in
-                                   range(widget.count())]
+                widget_children = [widget.itemAt(i) for i in range(widget.count())]
             except AttributeError:
                 widget_children = []
         return widget_children
@@ -245,10 +242,10 @@ class WizardWidget(QWidget):
             try:
                 widget_name = child_widget.objectName()
             except AttributeError:
-                widget_name = 'Unknown'
+                widget_name = "Unknown"
 
-            if widget_name.startswith('fgdc_'):
-                child_node = xml_utils.XMLNode(tag=widget_name.replace('fgdc_', ''))
+            if widget_name.startswith("fgdc_"):
+                child_node = xml_utils.XMLNode(tag=widget_name.replace("fgdc_", ""))
                 child_node.widget = child_widget
                 self.add_children(child_widget, child_node)
                 parent_node.add_child(child_node)
@@ -267,7 +264,7 @@ class WizardWidget(QWidget):
         -------
         """
         mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
+        if e.mimeData().hasFormat("text/plain"):
             try:
                 element = xml_utils.string_to_node(mime_data.text())
                 if element is not None and element.tag in self.acceptable_tags:
@@ -297,7 +294,7 @@ class WizardWidget(QWidget):
             self.from_xml(element)
         except:
             e = sys.exc_info()[0]
-            print('problem drop', e)
+            print("problem drop", e)
 
     def get_mime(self):
         """
@@ -310,8 +307,9 @@ class WizardWidget(QWidget):
         mime_data = QMimeData()
         pretty_xml = etree.tostring(self.to_xml(), pretty_print=True).decode()
         mime_data.setText(pretty_xml)
-        mime_data.setData('application/x-qt-windows-mime;value="XML"',
-                          QByteArray(pretty_xml.encode()))
+        mime_data.setData(
+            'application/x-qt-windows-mime;value="XML"', QByteArray(pretty_xml.encode())
+        )
         return mime_data
 
     def copy_mime(self):
@@ -336,7 +334,7 @@ class WizardWidget(QWidget):
         """
         clipboard = QApplication.clipboard()
         mime_data = clipboard.mimeData()
-        if mime_data.hasFormat('text/plain'):
+        if mime_data.hasFormat("text/plain"):
             try:
                 element = xml_utils.string_to_node(mime_data.text())
             except:
@@ -345,7 +343,9 @@ class WizardWidget(QWidget):
                 self.from_xml(element)
             else:
                 msg = "There was a problem pasting that content."
-                msg += "\n that content being drops does not appear to be an xml element"
+                msg += (
+                    "\n that content being drops does not appear to be an xml element"
+                )
                 QMessageBox.warning(self, "Paste Error", msg)
 
     def mouseMoveEvent(self, e):
@@ -360,10 +360,10 @@ class WizardWidget(QWidget):
         None
         """
         if e.buttons() != Qt.LeftButton:
-            if hasattr(self, 'drag_start_pos'):
-                delattr(self, 'drag_start_pos')
+            if hasattr(self, "drag_start_pos"):
+                delattr(self, "drag_start_pos")
 
-        if not hasattr(self, 'drag_start_pos'):
+        if not hasattr(self, "drag_start_pos"):
             return
 
         if not (e.pos() - self.drag_start_pos).manhattanLength() > 75:
@@ -377,9 +377,10 @@ class WizardWidget(QWidget):
         # let's make it fancy. we'll show a "ghost" of the button as we drag
         # grab the button to a pixmap
         pixmap = self.grab()
-        size = pixmap.size()*.65
-        half_pixmap = pixmap.scaled(size, Qt.KeepAspectRatio,
-                                    transformMode=Qt.SmoothTransformation)
+        size = pixmap.size() * 0.65
+        half_pixmap = pixmap.scaled(
+            size, Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation
+        )
 
         # below makes the pixmap half transparent
         painter = QPainter(half_pixmap)
@@ -387,14 +388,13 @@ class WizardWidget(QWidget):
         painter.fillRect(half_pixmap.rect(), QColor(0, 0, 0, 127))
 
         font = QFont()
-        font.setFamily('Arial')
+        font.setFamily("Arial")
         font.setPointSize(15)
         font.setBold(True)
         painter.setFont(font)
 
         painter.setPen(Qt.red)
-        painter.drawText(half_pixmap.rect(), Qt.AlignCenter,
-                         self.drag_label)
+        painter.drawText(half_pixmap.rect(), Qt.AlignCenter, self.drag_label)
         painter.end()
 
         drag = QDrag(self)
@@ -420,11 +420,17 @@ class WizardWidget(QWidget):
         """
         self.setAcceptDrops(enable)
 
-        drag_types = [QLabel, QSpacerItem, QToolButton, QGroupBox,
-                      QPlainTextEdit, QComboBox]
+        drag_types = [
+            QLabel,
+            QSpacerItem,
+            QToolButton,
+            QGroupBox,
+            QPlainTextEdit,
+            QComboBox,
+        ]
 
         for drag_type in drag_types:
-            widgets = self.findChildren(drag_type, QRegExp(r'.*'))
+            widgets = self.findChildren(drag_type, QRegExp(r".*"))
             for widget in widgets:
                 widget.installEventFilter(self)
                 widget.setMouseTracking(enable)
@@ -444,10 +450,10 @@ class WizardWidget(QWidget):
         """
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
-        if self.objectName().startswith('fgdc_'):
+        if self.objectName().startswith("fgdc_"):
             self.populate_tooltip(self, annotation_lookup)
 
-        widgets = self.findChildren(QObject, QRegExp(r'.*'))
+        widgets = self.findChildren(QObject, QRegExp(r".*"))
         for widget in widgets:
             self.populate_tooltip(widget, annotation_lookup)
 
@@ -465,16 +471,19 @@ class WizardWidget(QWidget):
         -------
         None
         """
-        if widget.objectName().startswith('fgdc_') or \
-                widget.objectName().startswith('help_'):
+        if widget.objectName().startswith("fgdc_") or widget.objectName().startswith(
+            "help_"
+        ):
             shortname = widget.objectName()[5:]
             if shortname[-1].isdigit():
                 shortname = shortname[:-1]
-            widget.setToolTip(annotation_lookup[shortname]['long_name'])
-            widget.help_text = annotation_lookup[shortname]['annotation']
+            widget.setToolTip(annotation_lookup[shortname]["long_name"])
+            widget.help_text = annotation_lookup[shortname]["annotation"]
             try:
-                if not hasattr(widget.parentWidget(), 'help_text') or \
-                        not widget.parentWidget().help_text:
+                if (
+                    not hasattr(widget.parentWidget(), "help_text")
+                    or not widget.parentWidget().help_text
+                ):
                     widget.parentWidget().help_text = widget.help_text
             except:
                 pass
@@ -488,7 +497,8 @@ class WizardWidget(QWidget):
         None
         """
         from pymdwizard.gui import repeating_element
-        widgets = self.findChildren(QWidget, QRegExp(r'.*'))
+
+        widgets = self.findChildren(QWidget, QRegExp(r".*"))
 
         for widget in widgets:
             if isinstance(widget, repeating_element.RepeatingElement):
@@ -497,8 +507,8 @@ class WizardWidget(QWidget):
                 if isinstance(rep1_widget, WizardWidget):
                     rep1_widget.clear_widget()
 
-            elif widget.objectName().startswith('fgdc_'):
-                utils.set_text(widget, '')
+            elif widget.objectName().startswith("fgdc_"):
+                utils.set_text(widget, "")
 
         for widget in widgets:
             if isinstance(widget, WizardWidget):
@@ -518,14 +528,14 @@ class WizardWidget(QWidget):
         return True
 
     def leaveEvent(self, event):
-        if self.objectName() == 'attribute_widget':
+        if self.objectName() == "attribute_widget":
             return
 
         if not self.in_context:
             self.setStyleSheet(self.normal_style)
 
     def enterEvent(self, QEvent):
-        if self.objectName() == 'attribute_widget':
+        if self.objectName() == "attribute_widget":
             return
         self.setStyleSheet(self.focus_style)
 
@@ -544,15 +554,14 @@ class WizardWidget(QWidget):
         self.in_context = True
         clicked_widget = self.childAt(event.pos())
 
-
         menu = QMenu(self)
-        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
-        copy_action.setStatusTip('Copy to the Clipboard')
+        copy_action = menu.addAction(QIcon("copy.png"), "&Copy")
+        copy_action.setStatusTip("Copy to the Clipboard")
 
-        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
-        paste_action.setStatusTip('Paste from the Clipboard')
+        paste_action = menu.addAction(QIcon("paste.png"), "&Paste")
+        paste_action.setStatusTip("Paste from the Clipboard")
 
-        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+        if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()
             help_action = menu.addAction("Help")
         else:
@@ -566,15 +575,15 @@ class WizardWidget(QWidget):
         if action == copy_action:
             if clicked_widget is None:
                 pass
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.copy_mime()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.copy_mime()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.copy_mime()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.copy_mime()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.copy_mime()
             else:
                 self.copy_mime()
@@ -583,15 +592,15 @@ class WizardWidget(QWidget):
         elif action == clear_action:
             if clicked_widget is None:
                 self.clear_widget()
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.clear_widget()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.clear_widget()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.clear_widget()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.clear_widget()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.clear_widget()
             else:
                 self.clear_widget()
@@ -604,22 +613,22 @@ class WizardWidget(QWidget):
         self.in_context = False
 
     def set_stylesheet(self, recursive=False):
-        fontsize_i = utils.get_setting('fontsize', 9)
+        fontsize_i = utils.get_setting("fontsize", 9)
         fontsize = str(fontsize_i)
-        fontsizeplus = str(fontsize_i+3)
+        fontsizeplus = str(fontsize_i + 3)
         self.normal_style = NORMAL_STYLE.replace("{fontsize}", fontsize)
         self.focus_style = FOCUS_STYLE.replace("{fontsize}", fontsize)
         self.normal_style = self.normal_style.replace("{fontsizeplus}", fontsizeplus)
         self.focus_style = self.focus_style.replace("{fontsizeplus}", fontsizeplus)
 
-        fontfamily = utils.get_setting('fontfamily', 'Arial')
-        self.normal_style = self.normal_style.replace('Arial', fontfamily)
-        self.focus_style = self.focus_style.replace('Arial', fontfamily)
+        fontfamily = utils.get_setting("fontfamily", "Arial")
+        self.normal_style = self.normal_style.replace("Arial", fontfamily)
+        self.focus_style = self.focus_style.replace("Arial", fontfamily)
 
         self.setStyleSheet(self.normal_style)
 
         if recursive:
-            widgets = self.findChildren(QWidget, QRegExp(r'.*'))
+            widgets = self.findChildren(QWidget, QRegExp(r".*"))
             for widget in widgets:
                 if isinstance(widget, WizardWidget):
                     widget.set_stylesheet(recursive=recursive)
@@ -651,6 +660,7 @@ class WizardWidget(QWidget):
             return True
 
         return super(WizardWidget, self).eventFilter(obj, event)
+
 
 # TODO: move these into an external config file
 NORMAL_STYLE = """

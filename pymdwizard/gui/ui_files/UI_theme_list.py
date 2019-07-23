@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_theme_list(object):
     def setupUi(self, theme_list):
         theme_list.setObjectName("theme_list")
         theme_list.resize(608, 461)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(theme_list.sizePolicy().hasHeightForWidth())
@@ -24,7 +27,9 @@ class Ui_theme_list(object):
         self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.help_theme = QtWidgets.QGroupBox(theme_list)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_theme.sizePolicy().hasHeightForWidth())
@@ -35,7 +40,9 @@ class Ui_theme_list(object):
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.widget_3 = QtWidgets.QWidget(self.help_theme)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
@@ -47,7 +54,9 @@ class Ui_theme_list(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.widget = QtWidgets.QWidget(self.widget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -57,10 +66,14 @@ class Ui_theme_list(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_search_term_5 = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_search_term_5.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.label_search_term_5.sizePolicy().hasHeightForWidth()
+        )
         self.label_search_term_5.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -74,10 +87,14 @@ class Ui_theme_list(object):
         self.label_search_term_5.setObjectName("label_search_term_5")
         self.verticalLayout.addWidget(self.label_search_term_5)
         self.label_search_term_3 = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_search_term_3.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.label_search_term_3.sizePolicy().hasHeightForWidth()
+        )
         self.label_search_term_3.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -102,9 +119,13 @@ class Ui_theme_list(object):
         self.label_search_term_6.setWordWrap(True)
         self.label_search_term_6.setObjectName("label_search_term_6")
         self.verticalLayout.addWidget(self.label_search_term_6)
-        spacerItem = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 6, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding
+        )
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -132,24 +153,30 @@ class Ui_theme_list(object):
         self.btn_remove_selected.setStyleSheet("")
         self.btn_remove_selected.setObjectName("btn_remove_selected")
         self.horizontalLayout_3.addWidget(self.btn_remove_selected)
-        spacerItem2 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_4.addWidget(self.widget)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.frame = QtWidgets.QFrame(self.widget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setStyleSheet("QFrame{ \n"
-"font: 75 10pt \"Arial\";\n"
-"border: 1px solid black;\n"
-"border-radius: 3px;\n"
-"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
-"} ")
+        self.frame.setStyleSheet(
+            "QFrame{ \n"
+            'font: 75 10pt "Arial";\n'
+            "border: 1px solid black;\n"
+            "border-radius: 3px;\n"
+            "background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);\n"
+            "} "
+        )
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -186,13 +213,17 @@ class Ui_theme_list(object):
         self.verticalLayout_4.addWidget(self.btn_add_iso)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.verticalLayout_3.addWidget(self.frame)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_3.addItem(spacerItem3)
         self.horizontalLayout_4.addLayout(self.verticalLayout_3)
         self.horizontalLayout_6.addLayout(self.horizontalLayout_4)
         self.verticalLayout_5.addWidget(self.widget_3)
         self.widget1 = QtWidgets.QWidget(self.help_theme)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget1.sizePolicy().hasHeightForWidth())
@@ -210,7 +241,9 @@ class Ui_theme_list(object):
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.widget2 = QtWidgets.QWidget(self.fgdc_theme)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget2.sizePolicy().hasHeightForWidth())
@@ -223,7 +256,9 @@ class Ui_theme_list(object):
         self.thesaurus_label.setObjectName("thesaurus_label")
         self.horizontalLayout_2.addWidget(self.thesaurus_label)
         self.fgdc_themekt = QtWidgets.QLineEdit(self.widget2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_themekt.sizePolicy().hasHeightForWidth())
@@ -238,7 +273,9 @@ class Ui_theme_list(object):
         self.iso_keywords_layout = QtWidgets.QVBoxLayout()
         self.iso_keywords_layout.setObjectName("iso_keywords_layout")
         self.verticalLayout_6.addLayout(self.iso_keywords_layout)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_6.addItem(spacerItem4)
         self.theme_tabs.addTab(self.fgdc_theme, "")
         self.contents_layout.addWidget(self.theme_tabs)
@@ -252,19 +289,42 @@ class Ui_theme_list(object):
         _translate = QtCore.QCoreApplication.translate
         theme_list.setWindowTitle(_translate("theme_list", "Form"))
         self.help_theme.setTitle(_translate("theme_list", "Theme Keywords"))
-        self.label_search_term_5.setText(_translate("theme_list", "<html><head/><body><p><span style=\" font-style:italic;\">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>"))
-        self.label_search_term_3.setText(_translate("theme_list", "<html><head/><body><p><span style=\" font-style:italic;\">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>"))
-        self.label_search_term_6.setText(_translate("theme_list", "<html><head/><body><p><span style=\" font-style:italic;\">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>"))
+        self.label_search_term_5.setText(
+            _translate(
+                "theme_list",
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+            )
+        )
+        self.label_search_term_3.setText(
+            _translate(
+                "theme_list",
+                '<html><head/><body><p><span style=" font-style:italic;">We also recommend that you include at least one keyword from the ISO 19115 Topic Category -&gt;</span></p></body></html>',
+            )
+        )
+        self.label_search_term_6.setText(
+            _translate(
+                "theme_list",
+                '<html><head/><body><p><span style=" font-style:italic;">If the controlled vocabularies and ISO keywords are not sufficient you can also add free text keywords:</span></p></body></html>',
+            )
+        )
         self.btn_add_thesaurus.setText(_translate("theme_list", "Add New Thesaurus"))
         self.btn_remove_selected.setText(_translate("theme_list", "Remove Selected"))
-        self.btn_search_controlled.setText(_translate("theme_list", "Search \n"
-"Controlled Vocabularies"))
+        self.btn_search_controlled.setText(
+            _translate("theme_list", "Search \n" "Controlled Vocabularies")
+        )
         self.btn_add_iso.setText(_translate("theme_list", "Add ISO 19115"))
         self.thesaurus_label.setText(_translate("theme_list", "Thesaurus"))
-        self.fgdc_themekt.setToolTip(_translate("theme_list", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
+        self.fgdc_themekt.setToolTip(
+            _translate(
+                "theme_list",
+                "Contact Person -- the name of the individual to which the contact type applies.\n"
+                "Type: text\n"
+                "Domain: free text\n"
+                "Short Name: cntper",
+            )
+        )
         self.fgdc_themekt.setText(_translate("theme_list", "ISO 19115 Topic Category"))
-        self.theme_tabs.setTabText(self.theme_tabs.indexOf(self.fgdc_theme), _translate("theme_list", "ISO 19115"))
-
+        self.theme_tabs.setTabText(
+            self.theme_tabs.indexOf(self.fgdc_theme),
+            _translate("theme_list", "ISO 19115"),
+        )

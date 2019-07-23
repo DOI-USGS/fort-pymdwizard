@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_fgdc_sngdate(object):
     def setupUi(self, fgdc_sngdate):
         fgdc_sngdate.setObjectName("fgdc_sngdate")
         fgdc_sngdate.resize(210, 47)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(fgdc_sngdate.sizePolicy().hasHeightForWidth())
@@ -28,20 +31,28 @@ class Ui_fgdc_sngdate(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget_format = QtWidgets.QWidget(fgdc_sngdate)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget_format.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.widget_format.sizePolicy().hasHeightForWidth()
+        )
         self.widget_format.setSizePolicy(sizePolicy)
         self.widget_format.setObjectName("widget_format")
         self.layout_format = QtWidgets.QHBoxLayout(self.widget_format)
         self.layout_format.setContentsMargins(0, 0, 6, 0)
         self.layout_format.setSpacing(0)
         self.layout_format.setObjectName("layout_format")
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.layout_format.addItem(spacerItem)
         self.lbl_format = QtWidgets.QLabel(self.widget_format)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_format.sizePolicy().hasHeightForWidth())
@@ -54,7 +65,9 @@ class Ui_fgdc_sngdate(object):
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(fgdc_sngdate)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -62,7 +75,9 @@ class Ui_fgdc_sngdate(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.fgdc_caldate = QtWidgets.QLineEdit(fgdc_sngdate)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_caldate.sizePolicy().hasHeightForWidth())
@@ -71,7 +86,9 @@ class Ui_fgdc_sngdate(object):
         self.fgdc_caldate.setObjectName("fgdc_caldate")
         self.horizontalLayout.addWidget(self.fgdc_caldate)
         self.lbl_required = QtWidgets.QLabel(fgdc_sngdate)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_required.sizePolicy().hasHeightForWidth())
@@ -86,7 +103,7 @@ class Ui_fgdc_sngdate(object):
         font.setWeight(50)
         self.lbl_required.setFont(font)
         self.lbl_required.setScaledContents(True)
-        self.lbl_required.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.lbl_required.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.lbl_required.setIndent(0)
         self.lbl_required.setObjectName("lbl_required")
         self.horizontalLayout.addWidget(self.lbl_required)
@@ -102,5 +119,9 @@ class Ui_fgdc_sngdate(object):
         self.lbl_format.setText(_translate("fgdc_sngdate", "YYYYMMDD"))
         self.label.setText(_translate("fgdc_sngdate", "Date"))
         self.lbl_required.setToolTip(_translate("fgdc_sngdate", "Required"))
-        self.lbl_required.setText(_translate("fgdc_sngdate", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-
+        self.lbl_required.setText(
+            _translate(
+                "fgdc_sngdate",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )

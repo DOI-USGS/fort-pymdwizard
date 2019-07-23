@@ -8,19 +8,21 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_keyword_widget(object):
     def setupUi(self, keyword_widget):
         keyword_widget.setObjectName("keyword_widget")
         keyword_widget.resize(534, 75)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(keyword_widget.sizePolicy().hasHeightForWidth())
         keyword_widget.setSizePolicy(sizePolicy)
         keyword_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
         keyword_widget.setAcceptDrops(True)
-        keyword_widget.setStyleSheet("font: 9pt \"Arial\";\n"
-"color: rgb(60, 60, 60);")
+        keyword_widget.setStyleSheet('font: 9pt "Arial";\n' "color: rgb(60, 60, 60);")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(keyword_widget)
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout_2.setContentsMargins(3, 3, 3, 3)
@@ -33,10 +35,14 @@ class Ui_keyword_widget(object):
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_search_term_5 = QtWidgets.QLabel(self.fgdc_keywords)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_search_term_5.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.label_search_term_5.sizePolicy().hasHeightForWidth()
+        )
         self.label_search_term_5.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -58,5 +64,9 @@ class Ui_keyword_widget(object):
         _translate = QtCore.QCoreApplication.translate
         keyword_widget.setWindowTitle(_translate("keyword_widget", "Form"))
         self.fgdc_keywords.setTitle(_translate("keyword_widget", "Keywords"))
-        self.label_search_term_5.setText(_translate("keyword_widget", "<html><head/><body><p><span style=\" font-style:italic;\">Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your dataset.</span></p></body></html>"))
-
+        self.label_search_term_5.setText(
+            _translate(
+                "keyword_widget",
+                '<html><head/><body><p><span style=" font-style:italic;">Keywords are often used in the search function of GIS data portals and data clearinghouses. Provide a list of descriptive keywords related to the content of your dataset.</span></p></body></html>',
+            )
+        )

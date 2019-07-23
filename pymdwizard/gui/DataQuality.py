@@ -63,11 +63,10 @@ from pymdwizard.gui.sourceinput import SourceInput
 from pymdwizard.gui.procstep import ProcStep
 
 
-
 class DataQuality(WizardWidget):
 
     drag_label = "Data Quality <dataqual>"
-    acceptable_tags = ['dataqual']
+    acceptable_tags = ["dataqual"]
 
     ui_class = UI_DataQuality.Ui_fgdc_dataqual
 
@@ -86,7 +85,6 @@ class DataQuality(WizardWidget):
         self.sourceinput = SourceInput(parent=self)
         self.procstep = ProcStep(parent=self)
 
-
         self.ui.two_column_left.layout().addWidget(self.attraccr)
         self.ui.two_column_left.layout().addWidget(self.logic)
         self.ui.two_column_left.layout().addWidget(self.complete)
@@ -103,7 +101,7 @@ class DataQuality(WizardWidget):
 
     def to_xml(self):
         # add code here to translate the form into xml representation
-        dataqual_node = xml_utils.xml_node(tag='dataqual')
+        dataqual_node = xml_utils.xml_node(tag="dataqual")
 
         attraccr_node = self.attraccr.to_xml()
         dataqual_node.append(attraccr_node)
@@ -128,8 +126,9 @@ class DataQuality(WizardWidget):
             srcinfo_node.append(i)
 
         if self.original_xml is not None:
-            methods = xml_utils.search_xpath(self.original_xml,
-                                             'lineage/method', only_first=False)
+            methods = xml_utils.search_xpath(
+                self.original_xml, "lineage/method", only_first=False
+            )
             for i, method in enumerate(methods):
                 method.tail = None
                 srcinfo_node.insert(i, deepcopy(method))
@@ -137,7 +136,7 @@ class DataQuality(WizardWidget):
         dataqual_node.append(srcinfo_node)
 
         if self.original_xml is not None:
-            cloud = xml_utils.search_xpath(self.original_xml, 'cloud')
+            cloud = xml_utils.search_xpath(self.original_xml, "cloud")
             if cloud is not None:
                 cloud.tail = None
                 dataqual_node.append(deepcopy(cloud))
@@ -149,37 +148,37 @@ class DataQuality(WizardWidget):
         self.original_xml = xml_dataqual
 
         try:
-            attraccr = xml_dataqual.xpath('attracc')[0]
+            attraccr = xml_dataqual.xpath("attracc")[0]
             self.attraccr.from_xml(attraccr)
         except IndexError:
             pass
 
         try:
-            logic = xml_dataqual.xpath('logic')[0]
+            logic = xml_dataqual.xpath("logic")[0]
             self.logic.from_xml(logic)
         except IndexError:
             pass
 
         try:
-            complete = xml_dataqual.xpath('complete')[0]
+            complete = xml_dataqual.xpath("complete")[0]
             self.complete.from_xml(complete)
         except IndexError:
             pass
 
         try:
-            posacc = xml_dataqual.xpath('posacc')[0]
+            posacc = xml_dataqual.xpath("posacc")[0]
             self.posacc.from_xml(posacc)
         except IndexError:
             pass
 
         try:
-            sourceinput = xml_dataqual.xpath('lineage')[0]
+            sourceinput = xml_dataqual.xpath("lineage")[0]
             self.sourceinput.from_xml(sourceinput)
         except IndexError:
             pass
 
         try:
-            procstep = xml_dataqual.xpath('lineage')[0]
+            procstep = xml_dataqual.xpath("lineage")[0]
             self.procstep.from_xml(procstep)
         except IndexError:
             pass

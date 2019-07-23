@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -22,7 +23,9 @@ class Ui_Form(object):
         self.thesaurus_label.setObjectName("thesaurus_label")
         self.horizontalLayout.addWidget(self.thesaurus_label)
         self.fgdc_themekt = QtWidgets.QLineEdit(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_themekt.sizePolicy().hasHeightForWidth())
@@ -34,7 +37,9 @@ class Ui_Form(object):
         self.fgdc_themekt.setObjectName("fgdc_themekt")
         self.horizontalLayout.addWidget(self.fgdc_themekt)
         self.required_2 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.required_2.sizePolicy().hasHeightForWidth())
@@ -49,14 +54,16 @@ class Ui_Form(object):
         font.setWeight(50)
         self.required_2.setFont(font)
         self.required_2.setScaledContents(True)
-        self.required_2.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.required_2.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.required_2.setIndent(0)
         self.required_2.setObjectName("required_2")
         self.horizontalLayout.addWidget(self.required_2)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.keywords_layout = QtWidgets.QVBoxLayout()
         self.keywords_layout.setObjectName("keywords_layout")
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.keywords_layout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.keywords_layout)
 
@@ -67,10 +74,19 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.thesaurus_label.setText(_translate("Form", "Thesaurus"))
-        self.fgdc_themekt.setToolTip(_translate("Form", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
+        self.fgdc_themekt.setToolTip(
+            _translate(
+                "Form",
+                "Contact Person -- the name of the individual to which the contact type applies.\n"
+                "Type: text\n"
+                "Domain: free text\n"
+                "Short Name: cntper",
+            )
+        )
         self.required_2.setToolTip(_translate("Form", "Required"))
-        self.required_2.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-
+        self.required_2.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )

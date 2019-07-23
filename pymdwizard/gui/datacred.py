@@ -55,10 +55,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_datacred
 
 
-class Datacred(WizardWidget): #
+class Datacred(WizardWidget):  #
 
     drag_label = "Data Credit <datacred>"
-    acceptable_tags = ['datacred']
+    acceptable_tags = ["datacred"]
 
     def build_ui(self):
         """
@@ -86,9 +86,9 @@ class Datacred(WizardWidget): #
 
         """
         mime_data = e.mimeData()
-        if e.mimeData().hasFormat('text/plain'):
+        if e.mimeData().hasFormat("text/plain"):
             element = xml_utils.string_to_node(mime_data.text())
-            if element is not None and element.tag == 'datacred':
+            if element is not None and element.tag == "datacred":
                 e.accept()
         else:
             e.ignore()
@@ -101,8 +101,9 @@ class Datacred(WizardWidget): #
         -------
         datacred element tag in xml tree
         """
-        datacred = xml_utils.xml_node('datacred',
-                                                    text=self.ui.fgdc_datacred.toPlainText())
+        datacred = xml_utils.xml_node(
+            "datacred", text=self.ui.fgdc_datacred.toPlainText()
+        )
         return datacred
 
     def from_xml(self, data_credit):
@@ -118,21 +119,13 @@ class Datacred(WizardWidget): #
         None
         """
         try:
-            if data_credit.tag == 'datacred':
+            if data_credit.tag == "datacred":
                 self.ui.fgdc_datacred.setPlainText(data_credit.text)
             else:
-               print ("The tag is not datacred")
+                print("The tag is not datacred")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Datacred,
-                        "Data Credit testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Datacred, "Data Credit testing")

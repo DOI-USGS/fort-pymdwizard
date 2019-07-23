@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ImportUsgsUser(object):
     def setupUi(self, ImportUsgsUser):
         ImportUsgsUser.setObjectName("ImportUsgsUser")
@@ -17,7 +18,9 @@ class Ui_ImportUsgsUser(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(ImportUsgsUser)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -34,7 +37,9 @@ class Ui_ImportUsgsUser(object):
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.le_doi = QtWidgets.QLineEdit(ImportUsgsUser)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.le_doi.sizePolicy().hasHeightForWidth())
@@ -45,7 +50,9 @@ class Ui_ImportUsgsUser(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.btn_OK = QtWidgets.QPushButton(ImportUsgsUser)
         self.btn_OK.setObjectName("btn_OK")
@@ -61,7 +68,8 @@ class Ui_ImportUsgsUser(object):
     def retranslateUi(self, ImportUsgsUser):
         _translate = QtCore.QCoreApplication.translate
         ImportUsgsUser.setWindowTitle(_translate("ImportUsgsUser", "DOI search"))
-        self.label.setText(_translate("ImportUsgsUser", "Enter a valid (live) publication DOI"))
+        self.label.setText(
+            _translate("ImportUsgsUser", "Enter a valid (live) publication DOI")
+        )
         self.btn_OK.setText(_translate("ImportUsgsUser", "OK"))
         self.btn_cancel.setText(_translate("ImportUsgsUser", "Cancel"))
-

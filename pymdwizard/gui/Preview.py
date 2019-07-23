@@ -57,7 +57,6 @@ from pymdwizard.gui.ui_files import UI_Preview
 
 
 class Preview(QWidget):
-
     def __init__(self, url=None, parent=None):
         QWidget.__init__(self, parent=parent)
         self.ui = UI_Preview.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
@@ -67,6 +66,6 @@ class Preview(QWidget):
         if url:
             self.ui.webView.setUrl(QUrl.fromLocalFile(self.url))
 
+
 if __name__ == "__main__":
-    utils.launch_widget(Preview,
-                        "Preview", url=r"c:/temp/text.html")
+    utils.launch_widget(Preview, "Preview", url=r"c:/temp/text.html")

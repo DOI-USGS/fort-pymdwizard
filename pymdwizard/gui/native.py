@@ -55,10 +55,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_native
 
 
-class Native(WizardWidget): #
+class Native(WizardWidget):  #
 
     drag_label = "Native data set environment <native>"
-    acceptable_tags = ['native']
+    acceptable_tags = ["native"]
 
     def build_ui(self):
         """
@@ -73,7 +73,7 @@ class Native(WizardWidget): #
         self.setup_dragdrop(self)
 
     def has_content(self):
-        return self.ui.fgdc_native.toPlainText() != ''
+        return self.ui.fgdc_native.toPlainText() != ""
 
     def to_xml(self):
         """
@@ -83,8 +83,7 @@ class Native(WizardWidget): #
         -------
         native element tag in xml tree
         """
-        native = xml_utils.xml_node('native',
-                                    text=self.ui.fgdc_native.toPlainText())
+        native = xml_utils.xml_node("native", text=self.ui.fgdc_native.toPlainText())
         return native
 
     def from_xml(self, native):
@@ -100,21 +99,13 @@ class Native(WizardWidget): #
         None
         """
         try:
-            if native.tag == 'native':
-               self.ui.fgdc_native.setPlainText(native.text)
+            if native.tag == "native":
+                self.ui.fgdc_native.setPlainText(native.text)
             else:
-               print("The tag is not native")
+                print("The tag is not native")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Native,
-                        "Access Constraints testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Native, "Access Constraints testing")

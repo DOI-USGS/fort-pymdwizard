@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -50,13 +51,19 @@ class Ui_Form(object):
         self.fgdc_themekey.setItemText(0, _translate("Form", "farming"))
         self.fgdc_themekey.setItemText(1, _translate("Form", "biota"))
         self.fgdc_themekey.setItemText(2, _translate("Form", "boundaries"))
-        self.fgdc_themekey.setItemText(3, _translate("Form", "climatologyMeteorologyAtmosphere"))
+        self.fgdc_themekey.setItemText(
+            3, _translate("Form", "climatologyMeteorologyAtmosphere")
+        )
         self.fgdc_themekey.setItemText(4, _translate("Form", "economy"))
         self.fgdc_themekey.setItemText(5, _translate("Form", "elevation"))
         self.fgdc_themekey.setItemText(6, _translate("Form", "environment"))
-        self.fgdc_themekey.setItemText(7, _translate("Form", "geoscientificInformation"))
+        self.fgdc_themekey.setItemText(
+            7, _translate("Form", "geoscientificInformation")
+        )
         self.fgdc_themekey.setItemText(8, _translate("Form", "health"))
-        self.fgdc_themekey.setItemText(9, _translate("Form", "imageryBaseMapsEarthCover"))
+        self.fgdc_themekey.setItemText(
+            9, _translate("Form", "imageryBaseMapsEarthCover")
+        )
         self.fgdc_themekey.setItemText(10, _translate("Form", "intelligenceMilitary"))
         self.fgdc_themekey.setItemText(11, _translate("Form", "inlandWaters"))
         self.fgdc_themekey.setItemText(12, _translate("Form", "location"))
@@ -66,4 +73,3 @@ class Ui_Form(object):
         self.fgdc_themekey.setItemText(16, _translate("Form", "structure"))
         self.fgdc_themekey.setItemText(17, _translate("Form", "transportation"))
         self.fgdc_themekey.setItemText(18, _translate("Form", "utilitiesCommunication"))
-

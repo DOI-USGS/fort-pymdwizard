@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_error_list(object):
     def setupUi(self, error_list):
         error_list.setObjectName("error_list")
@@ -26,4 +27,3 @@ class Ui_error_list(object):
     def retranslateUi(self, error_list):
         _translate = QtCore.QCoreApplication.translate
         error_list.setWindowTitle(_translate("error_list", "Form"))
-

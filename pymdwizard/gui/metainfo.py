@@ -63,7 +63,7 @@ from pymdwizard import __version__
 class MetaInfo(WizardWidget):
 
     drag_label = "Metadata Information <metainfo>"
-    acceptable_tags = ['metainfo', 'cntinfo', 'ptcontact']
+    acceptable_tags = ["metainfo", "cntinfo", "ptcontact"]
 
     ui_class = UI_metainfo.Ui_fgdc_metainfo
 
@@ -79,7 +79,7 @@ class MetaInfo(WizardWidget):
         self.setup_dragdrop(self)
 
         self.contactinfo = ContactInfo(parent=self)
-        self.metd = FGDCDate(parent=self, fgdc_name='fgdc_metd')
+        self.metd = FGDCDate(parent=self, fgdc_name="fgdc_metd")
 
         self.ui.help_metd.layout().addWidget(self.metd)
 
@@ -91,80 +91,86 @@ class MetaInfo(WizardWidget):
         self.ui.button_use_dataset.clicked.connect(self.pull_datasetcontact)
 
     def update_metstdn(self):
-        if self.ui.fgdc_metstdv.currentText() == 'FGDC-STD-001-1998':
+        if self.ui.fgdc_metstdv.currentText() == "FGDC-STD-001-1998":
             self.ui.fgdc_metstdn.setCurrentIndex(0)
-            self.root_widget.switch_schema('fgdc')
-        elif self.ui.fgdc_metstdv.currentText() == 'FGDC-STD-001.1-1999':
+            self.root_widget.switch_schema("fgdc")
+        elif self.ui.fgdc_metstdv.currentText() == "FGDC-STD-001.1-1999":
             self.ui.fgdc_metstdn.setCurrentIndex(1)
-            self.root_widget.switch_schema('bdp')
+            self.root_widget.switch_schema("bdp")
 
     def update_metstdv(self):
-        if 'biological' in self.ui.fgdc_metstdn.currentText().lower() or \
-           'bdp' in self.ui.fgdc_metstdn.currentText().lower():
+        if (
+            "biological" in self.ui.fgdc_metstdn.currentText().lower()
+            or "bdp" in self.ui.fgdc_metstdn.currentText().lower()
+        ):
             self.ui.fgdc_metstdv.setCurrentIndex(1)
-            self.root_widget.switch_schema('bdp')
+            self.root_widget.switch_schema("bdp")
         else:
             self.ui.fgdc_metstdv.setCurrentIndex(0)
-            self.root_widget.switch_schema('fgdc')
+            self.root_widget.switch_schema("fgdc")
 
     def pull_datasetcontact(self):
         self.contactinfo.from_xml(self.root_widget.idinfo.ptcontac.to_xml())
 
     def to_xml(self):
         # add code here to translate the form into xml representation
-        metainfo_node = xml_utils.xml_node('metainfo')
-        metd = xml_utils.xml_node('metd', text=self.metd.get_date(),
-                                  parent_node=metainfo_node)
+        metainfo_node = xml_utils.xml_node("metainfo")
+        metd = xml_utils.xml_node(
+            "metd", text=self.metd.get_date(), parent_node=metainfo_node
+        )
 
         if self.original_xml is not None:
-            metrd = xml_utils.search_xpath(self.original_xml, 'metrd')
+            metrd = xml_utils.search_xpath(self.original_xml, "metrd")
             if metrd is not None:
                 metrd.tail = None
                 metainfo_node.append(deepcopy(metrd))
         if self.original_xml is not None:
-            metfrd = xml_utils.search_xpath(self.original_xml, 'metfrd')
+            metfrd = xml_utils.search_xpath(self.original_xml, "metfrd")
             if metfrd is not None:
                 metfrd.tail = None
                 metainfo_node.append(deepcopy(metfrd))
 
-        metc = xml_utils.xml_node('metc', parent_node=metainfo_node)
+        metc = xml_utils.xml_node("metc", parent_node=metainfo_node)
         cntinfo = self.contactinfo.to_xml()
         metc.append(cntinfo)
 
-        metstdn = xml_utils.xml_node('metstdn',
-                                     text=self.ui.fgdc_metstdn.currentText(),
-                                     parent_node=metainfo_node)
-        metstdv = xml_utils.xml_node('metstdv',
-                                     text=self.ui.fgdc_metstdv.currentText(),
-                                     parent_node=metainfo_node)
+        metstdn = xml_utils.xml_node(
+            "metstdn",
+            text=self.ui.fgdc_metstdn.currentText(),
+            parent_node=metainfo_node,
+        )
+        metstdv = xml_utils.xml_node(
+            "metstdv",
+            text=self.ui.fgdc_metstdv.currentText(),
+            parent_node=metainfo_node,
+        )
 
         if self.original_xml is not None:
-            mettc = xml_utils.search_xpath(self.original_xml, 'mettc')
+            mettc = xml_utils.search_xpath(self.original_xml, "mettc")
             if mettc is not None:
                 mettc.tail = None
                 metainfo_node.append(deepcopy(mettc))
         if self.original_xml is not None:
-            metac = xml_utils.search_xpath(self.original_xml, 'metac')
+            metac = xml_utils.search_xpath(self.original_xml, "metac")
             if metac is not None:
                 metac.tail = None
                 metainfo_node.append(deepcopy(metac))
 
-
         if self.original_xml is not None:
-            metuc = xml_utils.search_xpath(self.original_xml, 'metuc')
+            metuc = xml_utils.search_xpath(self.original_xml, "metuc")
             if metuc is not None:
-                metuc_str = xml_utils.get_text_content(self.original_xml, 'metuc')
-                metuc = xml_utils.xml_node('metuc',
-                                           text=metuc_str,
-                                           parent_node=metainfo_node)
+                metuc_str = xml_utils.get_text_content(self.original_xml, "metuc")
+                metuc = xml_utils.xml_node(
+                    "metuc", text=metuc_str, parent_node=metainfo_node
+                )
 
         if self.original_xml is not None:
-            metsi = xml_utils.search_xpath(self.original_xml, 'metsi')
+            metsi = xml_utils.search_xpath(self.original_xml, "metsi")
             if metsi is not None:
                 metsi.tail = None
                 metainfo_node.append(deepcopy(metsi))
 
-            metextns = xml_utils.search_xpath(self.original_xml, 'metextns')
+            metextns = xml_utils.search_xpath(self.original_xml, "metextns")
             if metextns is not None:
                 metextns.tail = None
                 metainfo_node.append(deepcopy(metextns))
@@ -173,31 +179,31 @@ class MetaInfo(WizardWidget):
 
     def from_xml(self, xml_metainfo):
 
-        if xml_metainfo.tag == 'metainfo':
+        if xml_metainfo.tag == "metainfo":
             self.original_xml = xml_metainfo
 
-            if xml_metainfo.xpath('metc/cntinfo'):
-                self.contactinfo.from_xml(xml_metainfo.xpath('metc/cntinfo')[0])
+            if xml_metainfo.xpath("metc/cntinfo"):
+                self.contactinfo.from_xml(xml_metainfo.xpath("metc/cntinfo")[0])
 
-            if xml_metainfo.xpath('metstdn'):
-                standard = xml_utils.get_text_content(xml_metainfo, 'metstdn')
+            if xml_metainfo.xpath("metstdn"):
+                standard = xml_utils.get_text_content(xml_metainfo, "metstdn")
                 self.ui.fgdc_metstdn.setCurrentText(standard)
                 # switch wizard content to reflect the standard in this record
-                if "biological" in standard.lower() \
-                        or 'bdp' in standard.lower():
-                    self.root_widget.switch_schema('bdp')
+                if "biological" in standard.lower() or "bdp" in standard.lower():
+                    self.root_widget.switch_schema("bdp")
                 else:
-                    self.root_widget.switch_schema('fgdc')
+                    self.root_widget.switch_schema("fgdc")
 
-            metstdv = xml_utils.get_text_content(xml_metainfo, 'metstdv')
+            metstdv = xml_utils.get_text_content(xml_metainfo, "metstdv")
             self.ui.fgdc_metstdv.setCurrentText(metstdv)
 
-            metd = xml_utils.get_text_content(xml_metainfo, 'metd')
+            metd = xml_utils.get_text_content(xml_metainfo, "metd")
             self.metd.set_date(metd)
-        elif xml_metainfo.tag in ['ptcontac', 'cntinfo']:
-            if xml_metainfo.tag == 'ptcontac':
-                xml_metainfo = xml_utils.search_xpath(xml_metainfo, 'cntinfo')
+        elif xml_metainfo.tag in ["ptcontac", "cntinfo"]:
+            if xml_metainfo.tag == "ptcontac":
+                xml_metainfo = xml_utils.search_xpath(xml_metainfo, "cntinfo")
             self.contactinfo.from_xml(xml_metainfo)
+
 
 if __name__ == "__main__":
     utils.launch_widget(MetaInfo, "MetaInfo testing")

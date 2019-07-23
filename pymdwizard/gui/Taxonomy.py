@@ -66,7 +66,7 @@ from pymdwizard.gui.keywtax import Keywordtax
 class Taxonomy(WizardWidget):
 
     drag_label = "Taxonomy"
-    acceptable_tags = ['taxonomy']
+    acceptable_tags = ["taxonomy"]
 
     def build_ui(self):
         """
@@ -99,7 +99,6 @@ class Taxonomy(WizardWidget):
         self.ui.btn_search.clicked.connect(self.search_itis)
         self.ui.rbtn_yes.toggled.connect(self.include_taxonomy_change)
 
-
     def include_taxonomy_change(self, b):
         if b:
             self.ui.widget_contents.show()
@@ -108,8 +107,9 @@ class Taxonomy(WizardWidget):
 
     def search_itis(self):
 
-        self.tax_gui = taxonomy_gui.ItisMainForm(xml=self.to_xml(),
-                                                 fgdc_function=self.from_xml)
+        self.tax_gui = taxonomy_gui.ItisMainForm(
+            xml=self.to_xml(), fgdc_function=self.from_xml
+        )
         fg = self.frameGeometry()
         self.tax_gui.move(fg.topRight() - QPoint(150, -25))
         self.tax_gui.show()
@@ -141,16 +141,16 @@ class Taxonomy(WizardWidget):
 
     def to_xml(self):
 
-        taxonomy = xml_utils.xml_node('taxonomy')
+        taxonomy = xml_utils.xml_node("taxonomy")
         taxonomy.append(self.keywtax.to_xml())
 
         if self.original_xml is not None:
-            taxonsys = xml_utils.search_xpath(self.original_xml, 'taxonsys')
+            taxonsys = xml_utils.search_xpath(self.original_xml, "taxonsys")
             if taxonsys is not None:
                 taxonsys.tail = None
                 taxonomy.append(deepcopy(taxonsys))
 
-            taxongen = xml_utils.search_xpath(self.original_xml, 'taxongen')
+            taxongen = xml_utils.search_xpath(self.original_xml, "taxongen")
             if taxongen is not None:
                 taxongen.tail = None
                 taxonomy.append(deepcopy(taxongen))
@@ -164,20 +164,14 @@ class Taxonomy(WizardWidget):
         self.clear_widget()
         self.ui.rbtn_yes.setChecked(True)
 
-        keywtax = taxonomy_element.xpath('keywtax')
+        keywtax = taxonomy_element.xpath("keywtax")
         if keywtax:
-            self.keywtax.from_xml(taxonomy_element.xpath('keywtax')[0])
+            self.keywtax.from_xml(taxonomy_element.xpath("keywtax")[0])
 
-        taxoncl = taxonomy_element.xpath('taxoncl')
+        taxoncl = taxonomy_element.xpath("taxoncl")
         if taxoncl:
             self.taxoncl.from_xml(taxoncl[0])
 
+
 if __name__ == "__main__":
     utils.launch_widget(Taxonomy, "Taxonomy testing")
-
-
-
-
-
-
-

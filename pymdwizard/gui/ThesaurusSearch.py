@@ -67,7 +67,6 @@ except ImportError:
 
 
 class ThesaurusSearch(QDialog):
-
     def __init__(self, add_term_function=None, parent=None, place=False):
         super(self.__class__, self).__init__(parent=parent)
 
@@ -96,10 +95,10 @@ class ThesaurusSearch(QDialog):
 
         thesaurus_name = "ISO 19115 Topic Category"
         branch = QStandardItem(thesaurus_name)
-        branch.setFont(QFont('Arial', 11))
-        for item in results['nt']:
-            childnode = QStandardItem(item['name'])
-            childnode.setFont(QFont('Arial', 9))
+        branch.setFont(QFont("Arial", 11))
+        for item in results["nt"]:
+            childnode = QStandardItem(item["name"])
+            childnode.setFont(QFont("Arial", 9))
             branch.appendRow([childnode])
 
         model = QStandardItemModel(0, 0)
@@ -147,29 +146,39 @@ class ThesaurusSearch(QDialog):
             thcode = self.thesauri_lookup_r[clicked_item.text()]
             thname = clicked_item.text()
 
-            THESAURUS_DETAILS_URL = "https://www2.usgs.gov/science/thesaurus.php?format=json&thcode={}"
+            THESAURUS_DETAILS_URL = (
+                "https://www2.usgs.gov/science/thesaurus.php?format=json&thcode={}"
+            )
             thesaurus_details_url = THESAURUS_DETAILS_URL.format(thcode)
             details = utils.requests_pem_get(thesaurus_details_url).json()
 
-            details_msg = ''
-            details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(thname)
+            details_msg = ""
+            details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(
+                thname
+            )
             # uri = details['vocabulary']['uri']
-            uri = "https://www2.usgs.gov/science/about/thesaurus-full.php?thcode={}".format(thcode)
+            uri = "https://www2.usgs.gov/science/about/thesaurus-full.php?thcode={}".format(
+                thcode
+            )
             if uri:
-                details_msg += '<a href="{}"><u><i><font size="4" face="arial" style="color:#386EC4">{}</font></i></u></a><br><br>'.format(uri, uri)
+                details_msg += '<a href="{}"><u><i><font size="4" face="arial" style="color:#386EC4">{}</font></i></u></a><br><br>'.format(
+                    uri, uri
+                )
 
-            details_msg += details['vocabulary']['scope']
+            details_msg += details["vocabulary"]["scope"]
         else:
             thcode = self.thesauri_lookup_r[parent.text()]
-            item_text = clicked_item.text().split(' (use: ')[0]
-            details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(thcode, quote(item_text))
+            item_text = clicked_item.text().split(" (use: ")[0]
+            details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(
+                thcode, quote(item_text)
+            )
 
             try:
                 details = utils.requests_pem_get(details_url).json()
                 if type(details) == dict:
                     details = [details]
 
-                details_msg = ''
+                details_msg = ""
                 search_term = self.ui.search_term.text()
                 prefered_shown = False
                 for detail in details:
@@ -180,43 +189,59 @@ class ThesaurusSearch(QDialog):
                     nt = detail["nt"]
                     rt = detail["rt"]
 
-                    if term['name'].lower() != search_term and \
-                            not prefered_shown:
+                    if term["name"].lower() != search_term and not prefered_shown:
                         term_count = 0
                         prefered_shown = True
                         for alt_term in uf:
-                            if alt_term['name'].lower() in search_term.lower():
+                            if alt_term["name"].lower() in search_term.lower():
                                 term_count += 1
                                 if term_count == 1:
                                     details_msg += "The query matches the following non-preferred terms: "
                                 else:
-                                    details_msg += ', '
-                                details_msg += "<u>{}</u>".format(alt_term['name'])
+                                    details_msg += ", "
+                                details_msg += "<u>{}</u>".format(alt_term["name"])
 
                         if term_count > 0:
-                            details_msg += '<br><br>'
+                            details_msg += "<br><br>"
 
-                    details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(term['name'])
-                    details_msg += '<font size="4" face="arial">{}<br><br>'.format(term['scope'])
-
+                    details_msg += '<b><font size="5" face="arial">{}</font></b><br>'.format(
+                        term["name"]
+                    )
+                    details_msg += '<font size="4" face="arial">{}<br><br>'.format(
+                        term["scope"]
+                    )
 
                     if bt:
                         details_msg += "Broader terms: "
-                        details_msg += " > ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in bt[::-1]])
-                        details_msg += '<br>'
-
+                        details_msg += " > ".join(
+                            [
+                                '<a href="{0}"><u>{0}</u></a>'.format(item["name"])
+                                for item in bt[::-1]
+                            ]
+                        )
+                        details_msg += "<br>"
 
                     if nt:
                         details_msg += " Narrower terms: "
-                        details_msg += ", ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in nt])
-                        details_msg += '<br>'
+                        details_msg += ", ".join(
+                            [
+                                '<a href="{0}"><u>{0}</u></a>'.format(item["name"])
+                                for item in nt
+                            ]
+                        )
+                        details_msg += "<br>"
 
                     if rt:
                         details_msg += " Related terms: "
-                        details_msg += ", ".join(['<a href="{0}"><u>{0}</u></a>'.format(item['name']) for item in rt])
-                        details_msg += '<br>'
+                        details_msg += ", ".join(
+                            [
+                                '<a href="{0}"><u>{0}</u></a>'.format(item["name"])
+                                for item in rt
+                            ]
+                        )
+                        details_msg += "<br>"
             except:
-                details_msg = 'error getting details'
+                details_msg = "error getting details"
 
         self.ui.textBrowser.setText(details_msg)
 
@@ -225,8 +250,12 @@ class ThesaurusSearch(QDialog):
             url = "https://www2.usgs.gov/science/thesaurus.php?format=json"
             result = self.get_result(url)
             if result is not None:
-                self.thesauri_lookup = {i['thcode']: i['name'] for i in result['vocabulary']}
-                self.thesauri_lookup_r = {i['name']: i['thcode'] for i in result['vocabulary']}
+                self.thesauri_lookup = {
+                    i["thcode"]: i["name"] for i in result["vocabulary"]
+                }
+                self.thesauri_lookup_r = {
+                    i["name"]: i["thcode"] for i in result["vocabulary"]
+                }
                 return True
             else:
                 return False
@@ -236,7 +265,9 @@ class ThesaurusSearch(QDialog):
         try:
             return utils.requests_pem_get(url).json()
         except requests.exceptions.ConnectionError:
-            msg = "We're having trouble connecting to the controlled vocabularies service"
+            msg = (
+                "We're having trouble connecting to the controlled vocabularies service"
+            )
             msg += "\n Check that you have an internet connect, or try again latter"
             QMessageBox.warning(self, "Connection error", msg)
             self.close_form()
@@ -248,7 +279,9 @@ class ThesaurusSearch(QDialog):
 
         term = self.ui.search_term.text()
 
-        search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(term)
+        search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(
+            term
+        )
 
         results = self.get_result(search_url)
         if results is None:
@@ -263,22 +296,28 @@ class ThesaurusSearch(QDialog):
         self.branch_lookup = {}
         unique_children = []
         for item in results:
-            thesaurus_name = self.thesauri_lookup[item['thcode']]
-            if item['thcode'] != '1' and not self.place or \
-               item['thcode'] == '1' and self.place:
-                branch = self.branch_lookup.get(thesaurus_name,
-                                                QStandardItem(thesaurus_name))
-                branch.setFont(QFont('Arial', 11))
-                if item['label'] != item['value']:
-                    childnode = QStandardItem('{} (use: {})'.format(item['label'], \
-                                                               item['value']))
+            thesaurus_name = self.thesauri_lookup[item["thcode"]]
+            if (
+                item["thcode"] != "1"
+                and not self.place
+                or item["thcode"] == "1"
+                and self.place
+            ):
+                branch = self.branch_lookup.get(
+                    thesaurus_name, QStandardItem(thesaurus_name)
+                )
+                branch.setFont(QFont("Arial", 11))
+                if item["label"] != item["value"]:
+                    childnode = QStandardItem(
+                        "{} (use: {})".format(item["label"], item["value"])
+                    )
                 else:
-                    childnode = QStandardItem(item['label'])
+                    childnode = QStandardItem(item["label"])
 
-                childnode.setFont(QFont('Arial', 9))
-                if (thesaurus_name, item['value']) not in unique_children:
+                childnode.setFont(QFont("Arial", 9))
+                if (thesaurus_name, item["value"]) not in unique_children:
                     branch.appendRow([childnode, None])
-                    unique_children.append((thesaurus_name, item['value']))
+                    unique_children.append((thesaurus_name, item["value"]))
 
                 self.branch_lookup[thesaurus_name] = branch
 
@@ -352,8 +391,9 @@ class ThesaurusSearch(QDialog):
         """
         parent = self.get_thesaurus()
 
-        if link.url().startswith('http'):
+        if link.url().startswith("http"):
             import webbrowser
+
             webbrowser.open(link.url(), new=0, autoraise=True)
             return
         else:
@@ -378,6 +418,6 @@ class ThesaurusSearch(QDialog):
         self.deleteLater()
         self.close()
 
-if __name__ == '__main__':
-    utils.launch_widget(ThesaurusSearch, "Thesaurus Search testing")
 
+if __name__ == "__main__":
+    utils.launch_widget(ThesaurusSearch, "Thesaurus Search testing")

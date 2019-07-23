@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_abstract
 class Abstract(WizardWidget):
 
     drag_label = "Abstract <abstract>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ["abstract"]
 
     def build_ui(self):
         """
@@ -80,7 +80,7 @@ class Abstract(WizardWidget):
         children.append(self.ui.fgdc_abstract)
 
         parent = self.parent()
-        while not parent.objectName() == 'fgdc_idinfo':
+        while not parent.objectName() == "fgdc_idinfo":
             parent = parent.parent()
         children.append(parent.supplinf.ui.fgdc_supplinf)
         children.append(parent.purpose.ui.fgdc_purpose)
@@ -96,8 +96,9 @@ class Abstract(WizardWidget):
         abstract element tag in xml tree
         """
 
-        abstract = xml_utils.xml_node('abstract',
-                                     text=self.ui.fgdc_abstract.toPlainText())
+        abstract = xml_utils.xml_node(
+            "abstract", text=self.ui.fgdc_abstract.toPlainText()
+        )
 
         return abstract
 
@@ -114,28 +115,19 @@ class Abstract(WizardWidget):
         None
         """
         try:
-            if abstract.tag == 'abstract':
+            if abstract.tag == "abstract":
                 try:
 
                     abstract_text = abstract.text
-                    abstract_box = self.findChild(QPlainTextEdit,
-                                                  "fgdc_abstract")
+                    abstract_box = self.findChild(QPlainTextEdit, "fgdc_abstract")
                     abstract_box.setPlainText(abstract_text)
                 except:
                     pass
             else:
-               print ("The tag is not abstract")
+                print("The tag is not abstract")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Abstract,
-                        "Abstract testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Abstract, "Abstract testing")

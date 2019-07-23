@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_logic
 class LogicalAccuracy(WizardWidget):
 
     drag_label = "Logical Accuracy <logic>"
-    acceptable_tags = ['logic']
+    acceptable_tags = ["logic"]
 
     def build_ui(self):
         """
@@ -70,7 +70,7 @@ class LogicalAccuracy(WizardWidget):
         -------
         None
         """
-        self.ui = UI_logic.Ui_Form()#.Ui_USGSContactInfoWidgetMain()
+        self.ui = UI_logic.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
@@ -82,7 +82,7 @@ class LogicalAccuracy(WizardWidget):
         -------
         logic element tag in xml tree
         """
-        logic = xml_utils.xml_node(tag='logic')
+        logic = xml_utils.xml_node(tag="logic")
         logic.text = self.findChild(QPlainTextEdit, "fgdc_logic").toPlainText()
 
         return logic
@@ -100,22 +100,14 @@ class LogicalAccuracy(WizardWidget):
         None
         """
         try:
-            if logical_accuracy.tag == 'logic':
-               accost_box = self.findChild(QPlainTextEdit, "fgdc_logic")
-               accost_box.setPlainText(logical_accuracy.text)
+            if logical_accuracy.tag == "logic":
+                accost_box = self.findChild(QPlainTextEdit, "fgdc_logic")
+                accost_box.setPlainText(logical_accuracy.text)
             else:
-               print ("The tag is not logic")
+                print("The tag is not logic")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(LogicalAccuracy,
-                        "Logical Accuracy testing")
-
-
-
-
-
-
-
+    utils.launch_widget(LogicalAccuracy, "Logical Accuracy testing")

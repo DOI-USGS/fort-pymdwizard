@@ -63,12 +63,12 @@ from pymdwizard.gui.ui_files import UI_mapproj
 class MapProj(WizardWidget):
 
     drag_label = "Map Projection <mapproj>"
-    acceptable_tags = ['mapproj']
+    acceptable_tags = ["mapproj"]
 
     ui_class = UI_mapproj.Ui_Form
 
     def build_ui(self):
-        self.shortname = ''
+        self.shortname = ""
 
         """
         Build and modify this widget's GUI
@@ -94,25 +94,27 @@ class MapProj(WizardWidget):
 
         annotation_lookup = fgdc_utils.get_fgdc_lookup()
 
-        annotation_lookup['stdparll_2'] = {'long_name':'Standard Parallel',
-                                      'annotation':annotation_lookup['stdparll']['annotation']}
+        annotation_lookup["stdparll_2"] = {
+            "long_name": "Standard Parallel",
+            "annotation": annotation_lookup["stdparll"]["annotation"],
+        }
 
         self.clear_widget()
         layout = self.ui.mapproj_contents.layout()
 
-        for param in self.projection['elements']:
+        for param in self.projection["elements"]:
             try:
-                long_name = annotation_lookup[param]['long_name']
-                annotation = annotation_lookup[param]['annotation']
+                long_name = annotation_lookup[param]["long_name"]
+                annotation = annotation_lookup[param]["annotation"]
             except:
                 long_name = param
-                annotation = 'Unknown'
+                annotation = "Unknown"
 
             label = QLabel(long_name)
             label.setToolTip(annotation)
             label.help_text = annotation
-            lineedit = QLineEdit('...')
-            lineedit.setObjectName('fgdc_' + param)
+            lineedit = QLineEdit("...")
+            lineedit.setObjectName("fgdc_" + param)
             lineedit.setToolTip(annotation)
             layout.addRow(label, lineedit)
 
@@ -120,14 +122,14 @@ class MapProj(WizardWidget):
         if self.shortname:
             proj_root = xml_utils.xml_node(self.shortname)
 
-            for param in self.projection['elements']:
-                widget = self.findChild(QLineEdit, "fgdc_"+param)
-                if param == 'stdparll_2':
-                    param = 'stdparll'
+            for param in self.projection["elements"]:
+                widget = self.findChild(QLineEdit, "fgdc_" + param)
+                if param == "stdparll_2":
+                    param = "stdparll"
                 if widget is not None:
                     xml_utils.xml_node(param, text=widget.text(), parent_node=proj_root)
                 else:
-                    xml_utils.xml_node(param, text='', parent_node=proj_root)
+                    xml_utils.xml_node(param, text="", parent_node=proj_root)
             return proj_root
         else:
             return None
@@ -140,11 +142,10 @@ class MapProj(WizardWidget):
 
         for item in mapproj_node.getchildren():
             tag = item.tag
-            item_widget = self.findChild(QLineEdit, "fgdc_"+tag)
+            item_widget = self.findChild(QLineEdit, "fgdc_" + tag)
             utils.set_text(item_widget, item.text)
 
-
-        stdparll = mapproj_node.xpath('stdparll')
+        stdparll = mapproj_node.xpath("stdparll")
         try:
             stdparll_widget = self.findChildren(QLineEdit, "fgdc_stdparll")[0]
             utils.set_text(stdparll_widget, stdparll[0].text)

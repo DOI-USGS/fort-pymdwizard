@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Taxonomy(object):
     def setupUi(self, Taxonomy):
         Taxonomy.setObjectName("Taxonomy")
         Taxonomy.resize(523, 225)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Taxonomy.sizePolicy().hasHeightForWidth())
@@ -23,10 +26,14 @@ class Ui_Taxonomy(object):
         self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.fgdc_taxonomy = QtWidgets.QGroupBox(Taxonomy)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_taxonomy.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_taxonomy.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_taxonomy.setSizePolicy(sizePolicy)
         self.fgdc_taxonomy.setObjectName("fgdc_taxonomy")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.fgdc_taxonomy)
@@ -43,7 +50,9 @@ class Ui_Taxonomy(object):
         self.label_3.setStyleSheet("font: italic;")
         self.label_3.setObjectName("label_3")
         self.horizontalLayout.addWidget(self.label_3)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.rbtn_yes = QtWidgets.QRadioButton(self.fgdc_taxonomy)
         self.rbtn_yes.setAutoFillBackground(True)
@@ -57,10 +66,14 @@ class Ui_Taxonomy(object):
         self.horizontalLayout.addWidget(self.rbtn_no)
         self.main_layout.addLayout(self.horizontalLayout)
         self.widget_contents = QtWidgets.QWidget(self.fgdc_taxonomy)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget_contents.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.widget_contents.sizePolicy().hasHeightForWidth()
+        )
         self.widget_contents.setSizePolicy(sizePolicy)
         self.widget_contents.setObjectName("widget_contents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget_contents)
@@ -69,7 +82,9 @@ class Ui_Taxonomy(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setContentsMargins(9, -1, 9, 3)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_4.addItem(spacerItem1)
         self.btn_search = QtWidgets.QPushButton(self.widget_contents)
         self.btn_search.setMinimumSize(QtCore.QSize(150, 0))
@@ -85,10 +100,14 @@ class Ui_Taxonomy(object):
         self.horizontalLayout_4.addWidget(self.btn_search)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
         self.keywtax_groupbox = QtWidgets.QGroupBox(self.widget_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.keywtax_groupbox.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.keywtax_groupbox.sizePolicy().hasHeightForWidth()
+        )
         self.keywtax_groupbox.setSizePolicy(sizePolicy)
         self.keywtax_groupbox.setObjectName("keywtax_groupbox")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.keywtax_groupbox)
@@ -98,10 +117,14 @@ class Ui_Taxonomy(object):
         self.verticalLayout_4.addLayout(self.kws_layout)
         self.verticalLayout_3.addWidget(self.keywtax_groupbox)
         self.taxoncl_scrollarea = QtWidgets.QScrollArea(self.widget_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.taxoncl_scrollarea.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.taxoncl_scrollarea.sizePolicy().hasHeightForWidth()
+        )
         self.taxoncl_scrollarea.setSizePolicy(sizePolicy)
         self.taxoncl_scrollarea.setMinimumSize(QtCore.QSize(0, 0))
         self.taxoncl_scrollarea.setMaximumSize(QtCore.QSize(16777215, 350))
@@ -127,9 +150,13 @@ class Ui_Taxonomy(object):
         Taxonomy.setWindowTitle(_translate("Taxonomy", "Form"))
         Taxonomy.setToolTip(_translate("Taxonomy", "test docstring"))
         self.fgdc_taxonomy.setTitle(_translate("Taxonomy", "Taxonomy"))
-        self.label_3.setText(_translate("Taxonomy", "Does this record contain biological data about particular species or other  taxons?"))
+        self.label_3.setText(
+            _translate(
+                "Taxonomy",
+                "Does this record contain biological data about particular species or other  taxons?",
+            )
+        )
         self.rbtn_yes.setText(_translate("Taxonomy", "Yes"))
         self.rbtn_no.setText(_translate("Taxonomy", "No"))
         self.btn_search.setText(_translate("Taxonomy", "Add Items from ITIS"))
         self.keywtax_groupbox.setTitle(_translate("Taxonomy", "Taxonomic Keywords"))
-

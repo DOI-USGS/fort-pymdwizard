@@ -58,11 +58,12 @@ def load_words():
     fname = utils.get_resource_path("spelling/words.txt")
     global word_set
     try:
-        word_set = set(line.strip() for line in open(fname, 'r'))
+        word_set = set(line.strip() for line in open(fname, "r"))
     except UnicodeDecodeError:
-        word_set = set(line.strip() for line in open(fname, 'r', encoding='latin-1'))
+        word_set = set(line.strip() for line in open(fname, "r", encoding="latin-1"))
 
     return word_set
+
 
 word_set = load_words()
 
@@ -72,6 +73,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
     An implementation of a custom syntax highlighter that highlights
     misspelled words
     """
+
     def __init__(self, parent):
         super(Highlighter, self).__init__(parent)
         self.sectionFormat = QtGui.QTextCharFormat()
@@ -100,11 +102,11 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         words = re.findall(r"[\w]+", text)
 
         for word in words:
-            if word.lower() not in word_set and \
-                    re.search('[a-zA-Z]', word) is not None:
-                clean = ' ' + re.sub(r"[^a-zA-Z]", " ", text) + ' '
+            if word.lower() not in word_set and re.search("[a-zA-Z]", word) is not None:
+                clean = " " + re.sub(r"[^a-zA-Z]", " ", text) + " "
                 try:
-                    self.setFormat(clean.index(" {} ".format(word)), len(word),
-                                       self.errorFormat)
+                    self.setFormat(
+                        clean.index(" {} ".format(word)), len(word), self.errorFormat
+                    )
                 except ValueError:
                     pass

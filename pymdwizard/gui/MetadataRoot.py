@@ -71,18 +71,17 @@ from pymdwizard.gui.distinfo import DistInfo
 class MetadataRoot(WizardWidget):
 
     drag_label = "Metadata <metadata>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ["abstract"]
 
     ui_class = UI_MetadataRoot.Ui_metadata_root
 
     def __init__(self, parent=None):
-        self.schema = 'bdp'
+        self.schema = "bdp"
         super(self.__class__, self).__init__(parent=parent)
         self.use_dataqual = True
         self.use_spatial = True
         self.use_eainfo = True
         self.use_distinfo = True
-
 
     def build_ui(self):
         """
@@ -141,12 +140,14 @@ class MetadataRoot(WizardWidget):
 
         button_name = self.sender().objectName()
 
-        index_lookup = {'idinfo_button': 0,
-                        'dataquality_button': 1,
-                        'spatial_button': 2,
-                        'eainfo_button': 3,
-                        'distinfo_button': 4,
-                        'metainfo_button': 5}
+        index_lookup = {
+            "idinfo_button": 0,
+            "dataquality_button": 1,
+            "spatial_button": 2,
+            "eainfo_button": 3,
+            "distinfo_button": 4,
+            "metainfo_button": 5,
+        }
 
         new_index = index_lookup[button_name]
         self.switch_section(which_index=new_index)
@@ -218,21 +219,21 @@ class MetadataRoot(WizardWidget):
         -------
         None
         """
-        if which == 'dataqual':
+        if which == "dataqual":
             self.use_dataqual = value
             self.dataqual.setVisible(value)
-        if which == 'spatial':
+        if which == "spatial":
             self.use_spatial = value
             self.spatial_tab.setVisible(value)
-        if which == 'eainfo':
+        if which == "eainfo":
             self.use_eainfo = value
             self.eainfo.setVisible(value)
-        if which == 'distinfo':
+        if which == "distinfo":
             self.use_distinfo = value
             self.distinfo.setVisible(value)
 
     def to_xml(self):
-        metadata_node = xml_utils.xml_node(tag='metadata')
+        metadata_node = xml_utils.xml_node(tag="metadata")
         idinfo = self.idinfo.to_xml()
         metadata_node.append(idinfo)
 
@@ -262,21 +263,19 @@ class MetadataRoot(WizardWidget):
 
     def from_xml(self, metadata_element):
 
-        self.populate_section(metadata_element, 'spdoinfo',
-                              self.spatial_tab.spdoinfo)
+        self.populate_section(metadata_element, "spdoinfo", self.spatial_tab.spdoinfo)
 
-        self.populate_section(metadata_element, 'spref',
-                              self.spatial_tab.spref)
+        self.populate_section(metadata_element, "spref", self.spatial_tab.spref)
 
-        self.populate_section(metadata_element, 'idinfo', self.idinfo)
+        self.populate_section(metadata_element, "idinfo", self.idinfo)
 
-        self.populate_section(metadata_element, 'dataqual', self.dataqual)
+        self.populate_section(metadata_element, "dataqual", self.dataqual)
 
-        self.populate_section(metadata_element, 'eainfo', self.eainfo)
+        self.populate_section(metadata_element, "eainfo", self.eainfo)
 
-        self.populate_section(metadata_element, 'distinfo', self.distinfo)
+        self.populate_section(metadata_element, "distinfo", self.distinfo)
 
-        self.populate_section(metadata_element, 'metainfo', self.metainfo)
+        self.populate_section(metadata_element, "metainfo", self.metainfo)
 
     def populate_section(self, metadata_element, section_name, widget):
         """
@@ -313,6 +312,7 @@ class FaderWidget(QWidget):
     """
     A QWidget that allows for fading in and out on display.
     """
+
     def __init__(self, old_widget, new_widget):
 
         QWidget.__init__(self, new_widget)
@@ -342,6 +342,6 @@ class FaderWidget(QWidget):
         self.pixmap_opacity = 1.0 - value
         self.repaint()
 
+
 if __name__ == "__main__":
     utils.launch_widget(MetadataRoot, "MetadataRoot testing")
-

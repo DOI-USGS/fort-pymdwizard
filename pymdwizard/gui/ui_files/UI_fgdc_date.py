@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_parent_widget(object):
     def setupUi(self, parent_widget):
         parent_widget.setObjectName("parent_widget")
@@ -30,10 +31,14 @@ class Ui_parent_widget(object):
         self.layout_format.setContentsMargins(0, 0, 6, 0)
         self.layout_format.setSpacing(0)
         self.layout_format.setObjectName("layout_format")
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.layout_format.addItem(spacerItem)
         self.lbl_format = QtWidgets.QLabel(self.widget_format)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_format.sizePolicy().hasHeightForWidth())
@@ -49,7 +54,9 @@ class Ui_parent_widget(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.fgdc_caldate = QtWidgets.QLineEdit(self.parent_fgdc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_caldate.sizePolicy().hasHeightForWidth())
@@ -58,7 +65,9 @@ class Ui_parent_widget(object):
         self.fgdc_caldate.setObjectName("fgdc_caldate")
         self.horizontalLayout.addWidget(self.fgdc_caldate)
         self.lbl_required = QtWidgets.QLabel(self.parent_fgdc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_required.sizePolicy().hasHeightForWidth())
@@ -73,7 +82,7 @@ class Ui_parent_widget(object):
         font.setWeight(50)
         self.lbl_required.setFont(font)
         self.lbl_required.setScaledContents(True)
-        self.lbl_required.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.lbl_required.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.lbl_required.setIndent(0)
         self.lbl_required.setObjectName("lbl_required")
         self.horizontalLayout.addWidget(self.lbl_required)
@@ -89,5 +98,9 @@ class Ui_parent_widget(object):
         self.lbl_format.setText(_translate("parent_widget", "YYYYMMDD"))
         self.label.setText(_translate("parent_widget", "Date"))
         self.lbl_required.setToolTip(_translate("parent_widget", "Required"))
-        self.lbl_required.setText(_translate("parent_widget", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-
+        self.lbl_required.setText(
+            _translate(
+                "parent_widget",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )

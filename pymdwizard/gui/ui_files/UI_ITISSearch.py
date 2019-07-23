@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ItisSearchWidget(object):
     def setupUi(self, ItisSearchWidget):
         ItisSearchWidget.setObjectName("ItisSearchWidget")
@@ -17,7 +18,9 @@ class Ui_ItisSearchWidget(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.splitter = QtWidgets.QSplitter(ItisSearchWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
@@ -63,7 +66,9 @@ class Ui_ItisSearchWidget(object):
         self.label_search_results.setFont(font)
         self.label_search_results.setObjectName("label_search_results")
         self.horizontalLayout_6.addWidget(self.label_search_results)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout_6)
         self.table_results = QtWidgets.QTableView(self.layoutWidget)
@@ -76,12 +81,16 @@ class Ui_ItisSearchWidget(object):
         self.verticalLayout.addWidget(self.table_results)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem1)
         self.button_add_taxon = QtWidgets.QPushButton(self.layoutWidget)
         self.button_add_taxon.setObjectName("button_add_taxon")
         self.horizontalLayout_2.addWidget(self.button_add_taxon)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem2)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.splitter)
@@ -116,12 +125,16 @@ class Ui_ItisSearchWidget(object):
         self.layout_include2.addWidget(self.table_include)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_7.addItem(spacerItem3)
         self.button_remove_selected = QtWidgets.QPushButton(self.frame_include)
         self.button_remove_selected.setObjectName("button_remove_selected")
         self.horizontalLayout_7.addWidget(self.button_remove_selected)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_7.addItem(spacerItem4)
         self.layout_include2.addLayout(self.horizontalLayout_7)
         self.verticalLayout_6.addLayout(self.layout_include2)
@@ -130,7 +143,9 @@ class Ui_ItisSearchWidget(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setSpacing(6)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem5)
         self.button_gen_fgdc = QtWidgets.QPushButton(ItisSearchWidget)
         self.button_gen_fgdc.setObjectName("button_gen_fgdc")
@@ -149,24 +164,74 @@ class Ui_ItisSearchWidget(object):
         _translate = QtCore.QCoreApplication.translate
         ItisSearchWidget.setWindowTitle(_translate("ItisSearchWidget", "ITIS Search"))
         self.label_search_term.setText(_translate("ItisSearchWidget", "Search Term:"))
-        self.search_term.setToolTip(_translate("ItisSearchWidget", "terms to search ITIS for"))
-        self.button_search.setToolTip(_translate("ItisSearchWidget", "Perform search of ITIS"))
+        self.search_term.setToolTip(
+            _translate("ItisSearchWidget", "terms to search ITIS for")
+        )
+        self.button_search.setToolTip(
+            _translate("ItisSearchWidget", "Perform search of ITIS")
+        )
         self.button_search.setText(_translate("ItisSearchWidget", "Search ITIS"))
-        self.label_search_type.setToolTip(_translate("ItisSearchWidget", "The type of ITIS search to perform (Scientific or Common name)"))
+        self.label_search_type.setToolTip(
+            _translate(
+                "ItisSearchWidget",
+                "The type of ITIS search to perform (Scientific or Common name)",
+            )
+        )
         self.label_search_type.setText(_translate("ItisSearchWidget", "Search Type:"))
-        self.combo_search_type.setToolTip(_translate("ItisSearchWidget", "Search ITIS on common or scientific name"))
-        self.combo_search_type.setItemText(0, _translate("ItisSearchWidget", "Common name"))
-        self.combo_search_type.setItemText(1, _translate("ItisSearchWidget", "Scientific name"))
-        self.label_search_results.setToolTip(_translate("ItisSearchWidget", "Results from the ITIS common or scientific name search"))
-        self.label_search_results.setText(_translate("ItisSearchWidget", "Search Results:"))
-        self.button_add_taxon.setToolTip(_translate("ItisSearchWidget", "Add the selected item above to the list of include species (right)"))
+        self.combo_search_type.setToolTip(
+            _translate("ItisSearchWidget", "Search ITIS on common or scientific name")
+        )
+        self.combo_search_type.setItemText(
+            0, _translate("ItisSearchWidget", "Common name")
+        )
+        self.combo_search_type.setItemText(
+            1, _translate("ItisSearchWidget", "Scientific name")
+        )
+        self.label_search_results.setToolTip(
+            _translate(
+                "ItisSearchWidget",
+                "Results from the ITIS common or scientific name search",
+            )
+        )
+        self.label_search_results.setText(
+            _translate("ItisSearchWidget", "Search Results:")
+        )
+        self.button_add_taxon.setToolTip(
+            _translate(
+                "ItisSearchWidget",
+                "Add the selected item above to the list of include species (right)",
+            )
+        )
         self.button_add_taxon.setText(_translate("ItisSearchWidget", "Add Selection"))
-        self.label_include_item.setToolTip(_translate("ItisSearchWidget", "List of taxons to include in the taxonomy section"))
-        self.label_include_item.setText(_translate("ItisSearchWidget", "Items to include:"))
-        self.button_remove_selected.setToolTip(_translate("ItisSearchWidget", "Remove selected items from list above"))
-        self.button_remove_selected.setText(_translate("ItisSearchWidget", "Remove Selection"))
-        self.button_gen_fgdc.setToolTip(_translate("ItisSearchWidget", "Create a FGDC taxonomy section with the items in the above list"))
-        self.button_gen_fgdc.setText(_translate("ItisSearchWidget", "Generate Taxonomy Section"))
-        self.check_include_common.setToolTip(_translate("ItisSearchWidget", "Include common names in FGDC taxonomy section (optional elements)"))
-        self.check_include_common.setText(_translate("ItisSearchWidget", "Include Common Names"))
-
+        self.label_include_item.setToolTip(
+            _translate(
+                "ItisSearchWidget", "List of taxons to include in the taxonomy section"
+            )
+        )
+        self.label_include_item.setText(
+            _translate("ItisSearchWidget", "Items to include:")
+        )
+        self.button_remove_selected.setToolTip(
+            _translate("ItisSearchWidget", "Remove selected items from list above")
+        )
+        self.button_remove_selected.setText(
+            _translate("ItisSearchWidget", "Remove Selection")
+        )
+        self.button_gen_fgdc.setToolTip(
+            _translate(
+                "ItisSearchWidget",
+                "Create a FGDC taxonomy section with the items in the above list",
+            )
+        )
+        self.button_gen_fgdc.setText(
+            _translate("ItisSearchWidget", "Generate Taxonomy Section")
+        )
+        self.check_include_common.setToolTip(
+            _translate(
+                "ItisSearchWidget",
+                "Include common names in FGDC taxonomy section (optional elements)",
+            )
+        )
+        self.check_include_common.setText(
+            _translate("ItisSearchWidget", "Include Common Names")
+        )

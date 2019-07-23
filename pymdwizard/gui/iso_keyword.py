@@ -56,7 +56,6 @@ from pymdwizard.gui.ui_files import UI_iso_keyword
 
 
 class IsoKeyword(QWidget):
-
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
@@ -66,12 +65,4 @@ class IsoKeyword(QWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(IsoKeyword,
-                        "IsoKeyword")
-
-
-
-
-
-
-
+    utils.launch_widget(IsoKeyword, "IsoKeyword")

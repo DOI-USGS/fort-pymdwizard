@@ -59,11 +59,10 @@ from pymdwizard.gui.citeinfo import Citeinfo
 from pymdwizard.gui.timeinfo import Timeinfo
 
 
-
-class SRCInfo(WizardWidget): #
+class SRCInfo(WizardWidget):  #
 
     drag_label = "SRCInfo <srcinfo>"
-    acceptable_tags = ['srcinfo']
+    acceptable_tags = ["srcinfo"]
 
     def build_ui(self):
         """
@@ -101,12 +100,12 @@ class SRCInfo(WizardWidget): #
         tab_widget.setTabText(current_index, new_label)
 
     def format_scale(self):
-        cur_text = self.ui.fgdc_srcscale.text().replace(',', '')
+        cur_text = self.ui.fgdc_srcscale.text().replace(",", "")
         try:
-            if '.' in cur_text:
-                formatted_text = '{:,}'.format(float(cur_text))
+            if "." in cur_text:
+                formatted_text = "{:,}".format(float(cur_text))
             else:
-                formatted_text = '{:,}'.format(int(cur_text))
+                formatted_text = "{:,}".format(int(cur_text))
             self.ui.fgdc_srcscale.setText(formatted_text)
         except:
             pass
@@ -119,36 +118,38 @@ class SRCInfo(WizardWidget): #
         -------
         srcinfo element tag in xml tree
         """
-        srcinfo = xml_utils.xml_node('srcinfo')
-        srccite = xml_utils.xml_node('srccite', parent_node=srcinfo)
+        srcinfo = xml_utils.xml_node("srcinfo")
+        srccite = xml_utils.xml_node("srccite", parent_node=srcinfo)
 
         cite = self.citation.to_xml()
         srccite.append(cite)
 
         if self.ui.fgdc_srcscale.text():
-            srcscale = xml_utils.xml_node('srcscale',
-                                          text=self.ui.fgdc_srcscale.text().replace(',', ''),
-                                          parent_node=srcinfo)
+            srcscale = xml_utils.xml_node(
+                "srcscale",
+                text=self.ui.fgdc_srcscale.text().replace(",", ""),
+                parent_node=srcinfo,
+            )
 
-        typesrc = xml_utils.xml_node('typesrc',
-                                      text=self.ui.fgdc_typesrc.currentText(),
-                                      parent_node=srcinfo)
+        typesrc = xml_utils.xml_node(
+            "typesrc", text=self.ui.fgdc_typesrc.currentText(), parent_node=srcinfo
+        )
 
-        srctime = xml_utils.xml_node('srctime', parent_node=srcinfo)
+        srctime = xml_utils.xml_node("srctime", parent_node=srcinfo)
         timeinfo = self.timeinfo.to_xml()
         srctime.append(timeinfo)
 
-        srccurr = xml_utils.xml_node('srccurr',
-                                     text=self.ui.fgdc_srccurr.currentText(),
-                                     parent_node=srctime)
+        srccurr = xml_utils.xml_node(
+            "srccurr", text=self.ui.fgdc_srccurr.currentText(), parent_node=srctime
+        )
 
-        srccitea = xml_utils.xml_node('srccitea',
-                                      text=self.ui.fgdc_srccitea.text(),
-                                      parent_node=srcinfo)
+        srccitea = xml_utils.xml_node(
+            "srccitea", text=self.ui.fgdc_srccitea.text(), parent_node=srcinfo
+        )
 
-        srccontr = xml_utils.xml_node('srccontr',
-                                      text=self.ui.fgdc_srccontr.toPlainText(),
-                                      parent_node=srcinfo)
+        srccontr = xml_utils.xml_node(
+            "srccontr", text=self.ui.fgdc_srccontr.toPlainText(), parent_node=srcinfo
+        )
 
         return srcinfo
 
@@ -167,27 +168,27 @@ class SRCInfo(WizardWidget): #
         try:
             if srcinfo.tag == "srcinfo":
                 utils.populate_widget(self, srcinfo)
-                srccite = srcinfo.xpath('srccite')[0]
-                citeinfo = srccite.xpath('citeinfo')[0]
-            elif srcinfo.tag != 'srcinfo':
+                srccite = srcinfo.xpath("srccite")[0]
+                citeinfo = srccite.xpath("citeinfo")[0]
+            elif srcinfo.tag != "srcinfo":
                 print("The tag is not 'srcinfo'")
                 return
 
             self.citation.from_xml(citeinfo)
 
-            utils.populate_widget_element(self.ui.fgdc_srcscale, srcinfo, 'srcscale')
+            utils.populate_widget_element(self.ui.fgdc_srcscale, srcinfo, "srcscale")
             self.format_scale()
 
-            typesrc = srcinfo.xpath('typesrc/text()')
+            typesrc = srcinfo.xpath("typesrc/text()")
             typesrc_text = str(typesrc[0])
             self.findChild(QComboBox, "fgdc_typesrc").setCurrentText(typesrc_text)
 
-            utils.populate_widget_element(self.ui.fgdc_srccitea, srcinfo, 'srccitea')
-            utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, 'srccontr')
+            utils.populate_widget_element(self.ui.fgdc_srccitea, srcinfo, "srccitea")
+            utils.populate_widget_element(self.ui.fgdc_srccontr, srcinfo, "srccontr")
 
-            if srcinfo.xpath('srctime'):
-                timeinfo = srcinfo.xpath('srctime/timeinfo')[0]
-                srccurr = srcinfo.xpath('srctime/srccurr')[0]
+            if srcinfo.xpath("srctime"):
+                timeinfo = srcinfo.xpath("srctime/timeinfo")[0]
+                srccurr = srcinfo.xpath("srctime/srccurr")[0]
                 self.timeinfo.from_xml(timeinfo)
                 self.ui.fgdc_srccurr.setCurrentText(srccurr.text)
 
@@ -198,5 +199,4 @@ class SRCInfo(WizardWidget): #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SRCInfo,
-                        "SRCInfo testing")
+    utils.launch_widget(SRCInfo, "SRCInfo testing")

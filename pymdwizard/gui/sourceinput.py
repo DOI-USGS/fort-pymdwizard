@@ -60,7 +60,7 @@ from pymdwizard.gui.repeating_element import RepeatingElement
 class SourceInput(WizardWidget):
 
     drag_label = "Source Information <srcinfo>"
-    acceptable_tags = ['lineage']
+    acceptable_tags = ["lineage"]
 
     def build_ui(self):
         """
@@ -74,9 +74,14 @@ class SourceInput(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.src_info = RepeatingElement(which='tab',
-                        tab_label='Source', add_text='Add Source',
-                        widget=SRCInfo, remove_text='Remove Source', italic_text='Source')
+        self.src_info = RepeatingElement(
+            which="tab",
+            tab_label="Source",
+            add_text="Add Source",
+            widget=SRCInfo,
+            remove_text="Remove Source",
+            italic_text="Source",
+        )
 
         self.src_info.add_another()
         self.ui.frame_sourceinfo.layout().addWidget(self.src_info)
@@ -122,7 +127,7 @@ class SourceInput(WizardWidget):
         -------
         series of srcinfo element tag in lineage xml tree
         """
-        lineage = xml_utils.xml_node(tag='lineage')
+        lineage = xml_utils.xml_node(tag="lineage")
         if self.ui.radio_sourceyes.isChecked():
             cnt = 0
             srcinfo_list = self.src_info.get_widgets()
@@ -143,11 +148,11 @@ class SourceInput(WizardWidget):
         None
         """
         try:
-            if xml_srcinput.tag == 'lineage':
+            if xml_srcinput.tag == "lineage":
                 self.src_info.clear_widgets(add_another=False)
                 self.ui.frame_sourceinfo.show()
                 self.ui.radio_sourceyes.setChecked(True)
-                xml_srcinput = xml_srcinput.findall('srcinfo')
+                xml_srcinput = xml_srcinput.findall("srcinfo")
                 if xml_srcinput:
                     for srcinput in xml_srcinput:
                         try:
@@ -163,12 +168,4 @@ class SourceInput(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SourceInput,
-                        "Source Input testing")
-
-
-
-
-
-
-
+    utils.launch_widget(SourceInput, "Source Input testing")

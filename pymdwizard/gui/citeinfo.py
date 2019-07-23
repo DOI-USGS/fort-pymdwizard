@@ -68,19 +68,21 @@ from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 
 try:
     import habanero
+
     hananero_installed = True
 except ImportError:
     hananero_installed = False
 
-class Citeinfo(WizardWidget): #
+
+class Citeinfo(WizardWidget):  #
 
     drag_label = "Citation information <citeinfo>"
-    acceptable_tags = ['citation', 'citeinfo']
+    acceptable_tags = ["citation", "citeinfo"]
 
     def __init__(self, parent=None, include_lwork=True):
         self.origin_hint = 'Suggested format "FIRST M. LAST"'
         self.include_lwork = include_lwork
-        self.schema = 'bdp'
+        self.schema = "bdp"
         WizardWidget.__init__(self, parent=parent)
         self.doi_lookup = None
         self.highlighter = Highlighter(self.ui.fgdc_title.document())
@@ -101,11 +103,14 @@ class Citeinfo(WizardWidget): #
         -------
         None
         """
-        if e.y() < self.ui.fgdc_title.height()-3 and \
-           e.x() < self.ui.fgdc_title.width()-3:
+        if (
+            e.y() < self.ui.fgdc_title.height() - 3
+            and e.x() < self.ui.fgdc_title.width() - 3
+        ):
             QPlainTextEdit.mouseMoveEvent(self.ui.fgdc_title, e)
         self.ui.fgdc_title.verticalScrollBar().setValue(
-            self.ui.fgdc_title.verticalScrollBar().minimum())
+            self.ui.fgdc_title.verticalScrollBar().minimum()
+        )
 
     def remove_returns(self):
         """
@@ -119,14 +124,14 @@ class Citeinfo(WizardWidget): #
         self.ui.fgdc_title.textChanged.disconnect()
         old_position = self.ui.fgdc_title.textCursor().position()
         curtext = self.ui.fgdc_title.toPlainText()
-        newtext = curtext.replace('\n', ' ')
+        newtext = curtext.replace("\n", " ")
         self.ui.fgdc_title.setPlainText(newtext)
         cursor = self.ui.fgdc_title.textCursor()
         cursor.setPosition(old_position)
         self.ui.fgdc_title.setTextCursor(cursor)
         self.ui.fgdc_title.textChanged.connect(self.remove_returns)
 
-    def build_ui(self, ):
+    def build_ui(self,):
         """
         Build and modify this widget's GUI
 
@@ -139,38 +144,45 @@ class Citeinfo(WizardWidget): #
 
         if self.include_lwork:
             self.lworkcit_widget = Citeinfo(parent=self, include_lwork=False)
-            self.lworkcit_widget.ui.lbl_dataset_title.setText('Larger Work Title')
+            self.lworkcit_widget.ui.lbl_dataset_title.setText("Larger Work Title")
             self.ui.lworkcite_widget.layout().addWidget(self.lworkcit_widget)
-            self.lworkcit_widget.ui.fgdc_geoform.setEditText('publication')
+            self.lworkcit_widget.ui.fgdc_geoform.setEditText("publication")
         else:
             self.ui.fgdc_lworkcit.hide()
         self.include_lworkext_change(self.ui.radio_lworkyes.isChecked())
 
         self.ui.series_ext.hide()
         self.ui.pub_ext.hide()
-        self.ui.pubdate_widget = FGDCDate(label='YYYYMMDD  ',
-                                          show_format=False, required=True,
-                                          fgdc_name='fgdc_pubdate')
+        self.ui.pubdate_widget = FGDCDate(
+            label="YYYYMMDD  ",
+            show_format=False,
+            required=True,
+            fgdc_name="fgdc_pubdate",
+        )
 
         self.ui.pubdate_layout.addWidget(self.ui.pubdate_widget)
 
-
-        self.onlink_list = RepeatingElement(add_text='Add online link',
-                                            remove_text='Remove last',
-                                            italic_text='Is there a link to the data or the agency that produced it? if so, provide the URL(s) ',
-                                            widget_kwargs={'label': 'Link',
-                                                           'line_name':'fgdc_onlink'})
+        self.onlink_list = RepeatingElement(
+            add_text="Add online link",
+            remove_text="Remove last",
+            italic_text="Is there a link to the data or the agency that produced it? if so, provide the URL(s) ",
+            widget_kwargs={"label": "Link", "line_name": "fgdc_onlink"},
+        )
         self.onlink_list.add_another()
         self.ui.onlink_layout.addWidget(self.onlink_list)
 
-        self.fgdc_origin = RepeatingElement(add_text='Add originator',
-                                            remove_text='Remove last',
-                                            italic_text='Who created the dataset? List the organization and/or person(s)',
-                                            widget_kwargs={'label': 'Originator',
-                                                           'line_name':'fgdc_origin',
-                                                           'required':True,
-                                                           'placeholder_text':self.origin_hint,
-                                                           'spellings':False},)
+        self.fgdc_origin = RepeatingElement(
+            add_text="Add originator",
+            remove_text="Remove last",
+            italic_text="Who created the dataset? List the organization and/or person(s)",
+            widget_kwargs={
+                "label": "Originator",
+                "line_name": "fgdc_origin",
+                "required": True,
+                "placeholder_text": self.origin_hint,
+                "spellings": False,
+            },
+        )
 
         self.ui.originator_layout.addWidget(self.fgdc_origin)
         self.fgdc_origin.add_another()
@@ -214,7 +226,7 @@ class Citeinfo(WizardWidget): #
                 utils.set_window_icon(msgbox)
                 msgbox.setIcon(QMessageBox.Warning)
                 msg = "'{}' Not Found on DataCite".format(doi)
-                msg += '\nMake sure the DOI is valid and active.'
+                msg += "\nMake sure the DOI is valid and active."
                 msgbox.setText(msg)
                 msgbox.setInformativeText("No matching citation found")
                 msgbox.setWindowTitle("DOI Not Found")
@@ -223,7 +235,9 @@ class Citeinfo(WizardWidget): #
             else:
                 self.from_xml(citeinfo.to_xml())
         except:
-            msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
+            msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(
+                doi
+            )
             msg += "Check the DOI and/or manually create the citation for it"
             QMessageBox.warning(self, "Problem DOI", msg)
         self.cancel()
@@ -245,9 +259,9 @@ class Citeinfo(WizardWidget): #
         mime_data = e.mimeData()
 
         if e.mimeData().hasUrls():
-            if 'doi' in e.mimeData().urls()[0].url().lower():
+            if "doi" in e.mimeData().urls()[0].url().lower():
                 e.accept()
-        elif e.mimeData().hasFormat('text/plain'):
+        elif e.mimeData().hasFormat("text/plain"):
             if self.is_doi_str(mime_data.text()):
                 e.accept()
             else:
@@ -262,18 +276,18 @@ class Citeinfo(WizardWidget): #
 
     def is_doi_str(self, string):
 
-        if string.startswith('https://doi.org'):
+        if string.startswith("https://doi.org"):
             return True
-        if string.startswith('doi.org'):
+        if string.startswith("doi.org"):
             return True
-        if string.startswith('http://dx.doi.org'):
+        if string.startswith("http://dx.doi.org"):
             return True
-        if string.startswith('doi:'):
+        if string.startswith("doi:"):
             return True
 
         cleaned_doi = doi_utils.clean_doi(string).lower().strip()
 
-        if cleaned_doi.startswith('doi:'):
+        if cleaned_doi.startswith("doi:"):
             return True
 
         return False
@@ -292,8 +306,7 @@ class Citeinfo(WizardWidget): #
             e.setDropAction(Qt.CopyAction)
             e.accept()
             mime_data = e.mimeData()
-            if mime_data.hasUrls() or \
-                    self.is_doi_str(mime_data.text()):
+            if mime_data.hasUrls() or self.is_doi_str(mime_data.text()):
                 if self.is_doi_str(mime_data.text()):
                     doi = mime_data.text()
                 else:
@@ -302,7 +315,9 @@ class Citeinfo(WizardWidget): #
                     citeinfo = doi_utils.get_doi_citation(doi)
                     self.from_xml(citeinfo.to_xml())
                 except:
-                    msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(doi)
+                    msg = "We ran into a problem creating a citeinfo element from that DOI({})".format(
+                        doi
+                    )
                     msg += "Check the DOI and/or manually create the citation for it"
                     QMessageBox.warning(self, "Problem DOI", msg)
             else:
@@ -311,7 +326,7 @@ class Citeinfo(WizardWidget): #
                 self.from_xml(element)
         except:
             e = sys.exc_info()[0]
-            print('problem drop', e)
+            print("problem drop", e)
 
     def include_seriesext_change(self, b):
         """
@@ -377,57 +392,60 @@ class Citeinfo(WizardWidget): #
         -------
         citation element tag in xml tree
         """
-        citeinfo = xml_utils.xml_node('citeinfo')
+        citeinfo = xml_utils.xml_node("citeinfo")
 
         for origin in self.fgdc_origin.get_widgets():
-            xml_utils.xml_node('origin', text=origin.text(),
-                               parent_node=citeinfo)
+            xml_utils.xml_node("origin", text=origin.text(), parent_node=citeinfo)
 
-        pubdate = xml_utils.xml_node("pubdate",
-                                     text=self.ui.pubdate_widget.get_date(),
-                                     parent_node=citeinfo)
-        title = xml_utils.xml_node("title", self.ui.fgdc_title.toPlainText(),
-                                   parent_node=citeinfo)
+        pubdate = xml_utils.xml_node(
+            "pubdate", text=self.ui.pubdate_widget.get_date(), parent_node=citeinfo
+        )
+        title = xml_utils.xml_node(
+            "title", self.ui.fgdc_title.toPlainText(), parent_node=citeinfo
+        )
 
         if self.ui.fgdc_edition.text():
-            othercit = xml_utils.xml_node("edition",
-                                          self.ui.fgdc_edition.text(),
-                                          parent_node=citeinfo)
+            othercit = xml_utils.xml_node(
+                "edition", self.ui.fgdc_edition.text(), parent_node=citeinfo
+            )
 
-        geoform = xml_utils.xml_node("geoform",
-                                     self.ui.fgdc_geoform.currentText(),
-                                     parent_node=citeinfo)
+        geoform = xml_utils.xml_node(
+            "geoform", self.ui.fgdc_geoform.currentText(), parent_node=citeinfo
+        )
 
         if self.ui.radio_seriesyes.isChecked():
-            serinfo = xml_utils.xml_node('serinfo', parent_node=citeinfo)
-            sername = xml_utils.xml_node('sername',
-                                         text=self.ui.fgdc_sername.text(),
-                                         parent_node=serinfo)
-            issue = xml_utils.xml_node('issue', text=self.ui.fgdc_issue.text(),
-                                       parent_node=serinfo)
+            serinfo = xml_utils.xml_node("serinfo", parent_node=citeinfo)
+            sername = xml_utils.xml_node(
+                "sername", text=self.ui.fgdc_sername.text(), parent_node=serinfo
+            )
+            issue = xml_utils.xml_node(
+                "issue", text=self.ui.fgdc_issue.text(), parent_node=serinfo
+            )
 
-        if self.ui.radio_pubinfoyes.isChecked() and \
-                (self.ui.fgdc_pubplace.text() != '' or
-                 self.ui.fgdc_publish.text() != ''):
-            pubinfo = xml_utils.xml_node('pubinfo', parent_node=citeinfo)
-            pubplace = xml_utils.xml_node('pubplace', parent_node=pubinfo,
-                                          text=self.ui.fgdc_pubplace.text())
-            publish = xml_utils.xml_node('publish', parent_node=pubinfo,
-                                         text=self.ui.fgdc_publish.text())
+        if self.ui.radio_pubinfoyes.isChecked() and (
+            self.ui.fgdc_pubplace.text() != "" or self.ui.fgdc_publish.text() != ""
+        ):
+            pubinfo = xml_utils.xml_node("pubinfo", parent_node=citeinfo)
+            pubplace = xml_utils.xml_node(
+                "pubplace", parent_node=pubinfo, text=self.ui.fgdc_pubplace.text()
+            )
+            publish = xml_utils.xml_node(
+                "publish", parent_node=pubinfo, text=self.ui.fgdc_publish.text()
+            )
 
         if self.ui.fgdc_othercit.toPlainText():
-            othercit = xml_utils.xml_node("othercit",
-                                          self.ui.fgdc_othercit.toPlainText(),
-                                          parent_node=citeinfo)
+            othercit = xml_utils.xml_node(
+                "othercit", self.ui.fgdc_othercit.toPlainText(), parent_node=citeinfo
+            )
 
         for onlink in self.onlink_list.get_widgets():
-            if onlink.text() != '':
-                onlink_node = xml_utils.xml_node('onlink',
-                                                 parent_node=citeinfo,
-                                                 text=onlink.text())
+            if onlink.text() != "":
+                onlink_node = xml_utils.xml_node(
+                    "onlink", parent_node=citeinfo, text=onlink.text()
+                )
 
         if self.include_lwork and self.ui.radio_lworkyes.isChecked():
-            lworkcit = xml_utils.xml_node('lworkcit', parent_node=citeinfo)
+            lworkcit = xml_utils.xml_node("lworkcit", parent_node=citeinfo)
             lwork = self.lworkcit_widget.to_xml()
             lworkcit.append(lwork)
 
@@ -449,63 +467,70 @@ class Citeinfo(WizardWidget): #
         self.clear_widget()
         try:
             if citeinfo.tag == "citation":
-                citeinfo = citeinfo.xpath('citeinfo')[0]
-            elif citeinfo.tag != 'citeinfo':
+                citeinfo = citeinfo.xpath("citeinfo")[0]
+            elif citeinfo.tag != "citeinfo":
                 print("The tag is not 'citation' or 'citeinfo'")
                 return
 
             self.fgdc_origin.clear_widgets(add_another=False)
             originators = citeinfo.findall("origin")
 
-            if originators :
+            if originators:
                 self.fgdc_origin.clear_widgets(add_another=False)
-                for origin in citeinfo.findall('origin'):
+                for origin in citeinfo.findall("origin"):
                     origin_widget = self.fgdc_origin.add_another()
                     origin_widget.setText(origin.text)
             else:
                 self.fgdc_origin.add_another()
 
-            if citeinfo.findall('geoform'):
-                self.ui.fgdc_geoform.setEditText(citeinfo.findall('geoform')[0].text)
+            if citeinfo.findall("geoform"):
+                self.ui.fgdc_geoform.setEditText(citeinfo.findall("geoform")[0].text)
 
-            utils.populate_widget_element(self.ui.pubdate_widget.ui.fgdc_caldate,
-                                          citeinfo, 'pubdate')
-            utils.populate_widget_element(self.ui.fgdc_title, citeinfo, 'title')
-            utils.populate_widget_element(self.ui.fgdc_edition, citeinfo, 'edition')
-            utils.populate_widget_element(self.ui.fgdc_othercit, citeinfo, 'othercit')
+            utils.populate_widget_element(
+                self.ui.pubdate_widget.ui.fgdc_caldate, citeinfo, "pubdate"
+            )
+            utils.populate_widget_element(self.ui.fgdc_title, citeinfo, "title")
+            utils.populate_widget_element(self.ui.fgdc_edition, citeinfo, "edition")
+            utils.populate_widget_element(self.ui.fgdc_othercit, citeinfo, "othercit")
 
             self.onlink_list.clear_widgets()
             if citeinfo.findall("onlink"):
                 self.onlink_list.clear_widgets(add_another=False)
-                for onlink in citeinfo.findall('onlink'):
+                for onlink in citeinfo.findall("onlink"):
                     self.onlink_list.add_another()
                     onlink_widget = self.onlink_list.widgets[-1]
                     onlink_widget.setText(onlink.text)
 
-            if citeinfo.xpath('serinfo'):
+            if citeinfo.xpath("serinfo"):
                 self.ui.radio_seriesyes.setChecked(True)
-                utils.populate_widget(self, citeinfo.xpath('serinfo')[0])
+                utils.populate_widget(self, citeinfo.xpath("serinfo")[0])
             else:
                 self.ui.radio_seriesyes.setChecked(False)
 
-            pubinfo = citeinfo.xpath('pubinfo')
+            pubinfo = citeinfo.xpath("pubinfo")
             if pubinfo:
                 self.ui.radio_pubinfoyes.setChecked(True)
-                utils.populate_widget_element(self.ui.fgdc_publish, pubinfo[0], 'publish')
-                utils.populate_widget_element(self.ui.fgdc_pubplace, pubinfo[0], 'pubplace')
+                utils.populate_widget_element(
+                    self.ui.fgdc_publish, pubinfo[0], "publish"
+                )
+                utils.populate_widget_element(
+                    self.ui.fgdc_pubplace, pubinfo[0], "pubplace"
+                )
             else:
                 self.ui.radio_pubinfoyes.setChecked(False)
                 self.ui.radio_pubinfono.setChecked(True)
 
-            if citeinfo.xpath('lworkcit'):
+            if citeinfo.xpath("lworkcit"):
                 try:
                     self.ui.radio_lworkyes.setChecked(True)
-                    self.lworkcit_widget.from_xml(citeinfo.xpath('lworkcit/citeinfo')[0])
+                    self.lworkcit_widget.from_xml(
+                        citeinfo.xpath("lworkcit/citeinfo")[0]
+                    )
                 except AttributeError:
-                    msg = 'you pasted a citation element into the larger work citation area'
-                    msg += '\n that contained a larger work citation'
-                    msg += '\n Multiple nested larger work citations are not currently supported in the tool'
-                    msg += '\n\n the larger work citation being pasted will be ignored'
+                    msg = "you pasted a citation element into the larger work citation area"
+                    msg += "\n that contained a larger work citation"
+                    msg += "\n Multiple nested larger work citations are not currently supported in the tool"
+                    msg += "\n\n the larger work citation being pasted will be ignored"
                     QMessageBox.warning(self, "Dropped Content Warning", msg)
 
             else:
@@ -516,5 +541,4 @@ class Citeinfo(WizardWidget): #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Citeinfo,
-                        "Citation testing")
+    utils.launch_widget(Citeinfo, "Citation testing")

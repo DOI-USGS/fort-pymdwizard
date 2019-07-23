@@ -59,10 +59,10 @@ from pymdwizard.gui.iso_keyword import IsoKeyword
 from pymdwizard.gui.repeating_element import RepeatingElement
 
 
-class ThemeList(WizardWidget): #
+class ThemeList(WizardWidget):  #
 
     drag_label = "Theme Keywords <keywords>"
-    acceptable_tags = ['keywords']
+    acceptable_tags = ["keywords"]
 
     def build_ui(self):
         """
@@ -76,13 +76,16 @@ class ThemeList(WizardWidget): #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-
-        self.ui.theme_tabs.setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
-        self.iso_kws = RepeatingElement(which='vertical',
-                                        add_text='Add additonal',
-                                        widget=IsoKeyword,
-                                        remove_text='Remove Keyword',
-                                        italic_text='ISO Topic Category Keywords')
+        self.ui.theme_tabs.setStyleSheet(
+            "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} "
+        )
+        self.iso_kws = RepeatingElement(
+            which="vertical",
+            add_text="Add additonal",
+            widget=IsoKeyword,
+            remove_text="Remove Keyword",
+            italic_text="ISO Topic Category Keywords",
+        )
         self.iso_kws.add_another()
         self.ui.iso_keywords_layout.addWidget(self.iso_kws)
         self.thesauri = []
@@ -99,18 +102,19 @@ class ThemeList(WizardWidget): #
         self.ui.btn_add_iso.clicked.connect(self.add_iso)
         self.ui.btn_search_controlled.clicked.connect(self.search_controlled)
 
-    def add_another(self, click=False, tab_label='', locked=False):
+    def add_another(self, click=False, tab_label="", locked=False):
 
-        if 'None' not in [t.get_thesaurus_name() for t in self.thesauri] and \
-                tab_label == '':
-            theme_widget = self.add_keyword(keyword='', thesaurus='None',
-                                            locked=False)
+        if (
+            "None" not in [t.get_thesaurus_name() for t in self.thesauri]
+            and tab_label == ""
+        ):
+            theme_widget = self.add_keyword(keyword="", thesaurus="None", locked=False)
         else:
             theme_widget = Theme()
             theme_widget.ui.fgdc_themekt.textChanged.connect(self.changed_thesaurus)
 
             self.ui.theme_tabs.addTab(theme_widget, tab_label)
-            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count()-1)
+            self.ui.theme_tabs.setCurrentIndex(self.ui.theme_tabs.count() - 1)
 
             self.thesauri.append(theme_widget)
 
@@ -118,7 +122,7 @@ class ThemeList(WizardWidget): #
 
     def changed_thesaurus(self, s):
         current_index = self.ui.theme_tabs.currentIndex()
-        self.ui.theme_tabs.setTabText(current_index, 'Thesaurus: ' + s)
+        self.ui.theme_tabs.setTabText(current_index, "Thesaurus: " + s)
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
@@ -126,7 +130,7 @@ class ThemeList(WizardWidget): #
             self.remove_iso()
         else:
             self.ui.theme_tabs.removeTab(current_index)
-            del self.thesauri[current_index-1]
+            del self.thesauri[current_index - 1]
 
     def remove_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, False)
@@ -134,7 +138,7 @@ class ThemeList(WizardWidget): #
 
     def add_iso(self):
         self.ui.theme_tabs.setTabEnabled(0, True)
-        self.ui.theme_tabs.setTabText(0, 'ISO 19115')
+        self.ui.theme_tabs.setTabText(0, "ISO 19115")
         self.ui.fgdc_theme.show()
 
         self.ui.theme_tabs.setCurrentIndex(0)
@@ -161,12 +165,14 @@ class ThemeList(WizardWidget): #
             self.ui.theme_tabs.setCurrentIndex(i)
             self.remove_selected()
 
-        self.ui.fgdc_themekt.setText('ISO 19115 Topic Category')
+        self.ui.fgdc_themekt.setText("ISO 19115 Topic Category")
 
     def search_controlled(self):
 
-        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(add_term_function=self.add_keyword, parent=self)
-        self.thesaurus_search.setWindowTitle('Search USGS Controlled Vocabularies')
+        self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(
+            add_term_function=self.add_keyword, parent=self
+        )
+        self.thesaurus_search.setWindowTitle("Search USGS Controlled Vocabularies")
         self.thesaurus_search.show()
 
     def add_keyword(self, keyword=None, thesaurus=None, locked=True):
@@ -175,12 +181,12 @@ class ThemeList(WizardWidget): #
             if theme.ui.fgdc_themekt.text() == thesaurus:
                 theme_widget = theme
                 try:
-                    self.ui.theme_tabs.setCurrentIndex(i+1)
+                    self.ui.theme_tabs.setCurrentIndex(i + 1)
                 except IndexError:
                     pass
 
         if theme_widget is None:
-            shortname = thesaurus.split(' ')[0]
+            shortname = thesaurus.split(" ")[0]
             theme_widget = self.add_another(tab_label=shortname, locked=locked)
             theme_widget.ui.fgdc_themekt.setText(thesaurus)
             if locked:
@@ -189,7 +195,7 @@ class ThemeList(WizardWidget): #
 
         theme_widget.add_keyword(keyword, locked=locked)
         return theme_widget
-                
+
     def to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
@@ -198,23 +204,28 @@ class ThemeList(WizardWidget): #
         -------
         procstep element tag in xml tree
         """
-        keywords = xml_utils.xml_node('keywords')
+        keywords = xml_utils.xml_node("keywords")
 
         if self.ui.theme_tabs.isTabEnabled(0):
-            theme = xml_utils.xml_node('theme', parent_node=keywords)
-            themekt = xml_utils.xml_node('themekt',
-                                         text=self.ui.fgdc_themekt.text(),
-                                         parent_node=theme)
+            theme = xml_utils.xml_node("theme", parent_node=keywords)
+            themekt = xml_utils.xml_node(
+                "themekt", text=self.ui.fgdc_themekt.text(), parent_node=theme
+            )
             for isokw in self.iso_kws.get_widgets():
-                themekey = xml_utils.xml_node('themekey', text=isokw.ui.fgdc_themekey.currentText(),
-                                           parent_node=theme)
+                themekey = xml_utils.xml_node(
+                    "themekey",
+                    text=isokw.ui.fgdc_themekey.currentText(),
+                    parent_node=theme,
+                )
 
         for theme in self.thesauri:
             theme_xml = theme.to_xml()
-            if theme_xml.xpath('themekt')[0].text == 'None' and \
-                    len(theme_xml.xpath('themekey')) == 1 and \
-                    theme_xml.xpath('themekey')[0].text is None and \
-                    len(self.thesauri) >= 2:
+            if (
+                theme_xml.xpath("themekt")[0].text == "None"
+                and len(theme_xml.xpath("themekey")) == 1
+                and theme_xml.xpath("themekey")[0].text is None
+                and len(self.thesauri) >= 2
+            ):
                 # Skip themes that still have the default thesaurus ('None')
                 # with no keywords entered,
                 # when they added an additional thesaurus
@@ -239,18 +250,17 @@ class ThemeList(WizardWidget): #
         self.clear_widget(remove_iso=True)
 
         self.original_xml = keywords_xml
-        if keywords_xml.tag == 'keywords':
-            for theme_xml in xml_utils.search_xpath(keywords_xml, 'theme', False):
-                themekt = xml_utils.get_text_content(theme_xml, 'themekt')
-                if themekt is not None and 'iso 19115' in themekt.lower():
+        if keywords_xml.tag == "keywords":
+            for theme_xml in xml_utils.search_xpath(keywords_xml, "theme", False):
+                themekt = xml_utils.get_text_content(theme_xml, "themekt")
+                if themekt is not None and "iso 19115" in themekt.lower():
                     self.add_iso()
                     self.iso_kws.clear_widgets(add_another=False)
-                    for themekey in xml_utils.search_xpath(theme_xml,
-                                                           'themekey',
-                                                           only_first=False):
+                    for themekey in xml_utils.search_xpath(
+                        theme_xml, "themekey", only_first=False
+                    ):
                         iso = self.iso_kws.add_another()
                         iso.ui.fgdc_themekey.setCurrentText(themekey.text)
-
 
                 else:
                     theme = self.add_another()
@@ -258,12 +268,4 @@ class ThemeList(WizardWidget): #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(ThemeList,
-                        "ThemeList Step testing")
-
-
-
-
-
-
-
+    utils.launch_widget(ThemeList, "ThemeList Step testing")

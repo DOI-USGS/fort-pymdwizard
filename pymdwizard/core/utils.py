@@ -101,8 +101,8 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
     element = xml_utils.string_to_node(result.content)
 
     try:
-        if element.xpath('cntperp/cntper')[0].text == 'GS ScienceBase':
-            element.xpath('cntperp')[0].tag = 'cntorgp'
+        if element.xpath("cntperp/cntper")[0].text == "GS ScienceBase":
+            element.xpath("cntperp")[0].tag = "cntorgp"
     except:
         pass
 
@@ -125,7 +125,7 @@ def get_orcid(ad_username):
 
     """
     try:
-        return get_usgs_contact_info(ad_username)['fgdc_cntperp']['fgdc_orcid']
+        return get_usgs_contact_info(ad_username)["fgdc_cntperp"]["fgdc_orcid"]
     except:
         return None
 
@@ -231,6 +231,7 @@ def my_exception_hook(exctype, value, traceback):
     sys._excepthook(exctype, value, traceback)
     sys.exit(1)
 
+
 # Set the exception hook to our wrapping function
 sys.excepthook = my_exception_hook
 
@@ -259,7 +260,7 @@ def launch_widget(Widget, title="", **kwargs):
         return widget
     except:
         e = sys.exc_info()[0]
-        print('problem encountered', e)
+        print("problem encountered", e)
         print(traceback.format_exc())
 
 
@@ -275,8 +276,7 @@ def get_resource_path(fname):
     -------
             the full file path to the resource specified
     """
-    return pkg_resources.resource_filename('pymdwizard',
-                                           'resources/{}'.format(fname))
+    return pkg_resources.resource_filename("pymdwizard", "resources/{}".format(fname))
 
 
 def set_window_icon(widget, remove_help=True):
@@ -292,22 +292,29 @@ def set_window_icon(widget, remove_help=True):
     -------
     None
     """
-    icon = QIcon(get_resource_path('icons/Ducky.ico'))
+    icon = QIcon(get_resource_path("icons/Ducky.ico"))
     widget.setWindowIcon(icon)
     if remove_help:
-        widget.setWindowFlags(Qt.Window |
-                              Qt.CustomizeWindowHint |
-                              Qt.WindowTitleHint |
-                              Qt.WindowCloseButtonHint |
-                              Qt.WindowStaysOnTopHint)
+        widget.setWindowFlags(
+            Qt.Window
+            | Qt.CustomizeWindowHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint
+            | Qt.WindowStaysOnTopHint
+        )
 
 
 class PandasModel(QAbstractTableModel):
     """
     Class to populate a table view with a pandas dataframe
     """
-    options = {"striped": True, "stripesColor": "#fafafa",
-               "na_values": "least", "tooltip_min_len": 21}
+
+    options = {
+        "striped": True,
+        "stripesColor": "#fafafa",
+        "na_values": "least",
+        "tooltip_min_len": 21,
+    }
 
     def __init__(self, dataframe, parent=None):
         QAbstractTableModel.__init__(self, parent)
@@ -329,18 +336,22 @@ class PandasModel(QAbstractTableModel):
         row, col = index.row(), index.column()
         if role in (Qt.DisplayRole, Qt.ToolTipRole):
             ret = self.df.iat[row, col]
-            if ret is not None and ret==ret: #convert to str except for None, NaN, NaT
+            if (
+                ret is not None and ret == ret
+            ):  # convert to str except for None, NaN, NaT
                 if isinstance(ret, float):
                     ret = "{:n}".format(ret)
                 elif isinstance(ret, datetime.date):
-                    #FIXME: show microseconds optionally
+                    # FIXME: show microseconds optionally
                     ret = ret.strftime(("%x", "%c")[isinstance(ret, datetime.datetime)])
-                else: ret = str(ret)
+                else:
+                    ret = str(ret)
                 if role == Qt.ToolTipRole:
-                    if len(ret)<self.options["tooltip_min_len"]: ret = ""
+                    if len(ret) < self.options["tooltip_min_len"]:
+                        ret = ""
                 return ret
         elif role == Qt.BackgroundRole:
-            if self.options["striped"] and row%2:
+            if self.options["striped"] and row % 2:
                 return QBrush(QColor(self.options["stripesColor"]))
 
         return None
@@ -350,27 +361,37 @@ class PandasModel(QAbstractTableModel):
 
     def reorder(self, oldIndex, newIndex, orientation):
         "Reorder columns / rows"
-        horizontal = orientation==Qt.Horizontal
+        horizontal = orientation == Qt.Horizontal
         cols = list(self.df.columns if horizontal else self.df.index)
         cols.insert(newIndex, cols.pop(oldIndex))
         self.df = self.df[cols] if horizontal else self.df.T[cols].T
         return True
 
     def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole: return
-        label = getattr(self.df, ("columns", "index")[orientation!=Qt.Horizontal])[section]
+        if role != Qt.DisplayRole:
+            return
+        label = getattr(self.df, ("columns", "index")[orientation != Qt.Horizontal])[
+            section
+        ]
         #        return label if type(label) is tuple else label
-        return ("\n", " | ")[orientation!=Qt.Horizontal].join(str(i) for i in label) if type(label) is tuple else str(label)
+        return (
+            ("\n", " | ")[orientation != Qt.Horizontal].join(str(i) for i in label)
+            if type(label) is tuple
+            else str(label)
+        )
 
     def dataFrame(self):
         return self.df
 
     def sort(self, column, order):
         if len(self.df):
-            asc = order==Qt.AscendingOrder
-            na_pos = 'first' if (self.options["na_values"]=="least") == asc else 'last'
-            self.df.sort_values(self.df.columns[column], ascending=asc,
-                                inplace=True, na_position=na_pos)
+            asc = order == Qt.AscendingOrder
+            na_pos = (
+                "first" if (self.options["na_values"] == "least") == asc else "last"
+            )
+            self.df.sort_values(
+                self.df.columns[column], ascending=asc, inplace=True, na_position=na_pos
+            )
             self.layoutChanged.emit()
 
 
@@ -397,22 +418,22 @@ def check_fname(fname):
 
     dname = os.path.split(fname)[0]
     if not os.path.exists(dname):
-        return 'missing directory'
+        return "missing directory"
     if not os.path.exists(fname):
         try:
             f = open(fname, "w")
             f.close()
             os.remove(fname)
-            return 'good'
+            return "good"
         except:
-            return 'not writable directory'
+            return "not writable directory"
     else:
         try:
             f = open(fname, "a")
             f.close()
-            return 'good'
+            return "good"
         except:
-            return 'not writable file'
+            return "not writable file"
 
 
 def url_validator(url, qualifying=None):
@@ -431,14 +452,13 @@ def url_validator(url, qualifying=None):
     -------
         Bool
     """
-    min_attributes = ('scheme', 'netloc')
+    min_attributes = ("scheme", "netloc")
     qualifying = min_attributes if qualifying is None else qualifying
     token = urlparse(url)
-    return all([getattr(token, qualifying_attr)
-                for qualifying_attr in qualifying])
+    return all([getattr(token, qualifying_attr) for qualifying_attr in qualifying])
 
 
-def get_install_dname(which='pymdwizard'):
+def get_install_dname(which="pymdwizard"):
     """
     get the full path to the installation directory
 
@@ -453,33 +473,36 @@ def get_install_dname(which='pymdwizard'):
     str : path and directory name of the directory pymdwizard is in
     """
     this_fname = os.path.realpath(__file__)
-    if platform.system() == 'Darwin':
+    if platform.system() == "Darwin":
         # This is the path to the 'content' folder in the MetadataWizard.app
-        pymdwizard_dname = os.path.abspath(os.path.join(dirname(this_fname), *['..']*7))
+        pymdwizard_dname = os.path.abspath(
+            os.path.join(dirname(this_fname), *[".."] * 7)
+        )
         root_dir = pymdwizard_dname
         executable = sys.executable
         python_dname = os.path.split(executable)[0]
     else:
         pymdwizard_dname = dirname(dirname(dirname(this_fname)))
         root_dir = os.path.dirname(pymdwizard_dname)
-        python_dname = os.path.join(root_dir, 'Python35_64')
+        python_dname = os.path.join(root_dir, "Python35_64")
         if not os.path.exists(python_dname):
-            python_dname = os.path.join(root_dir, 'Python36_64')
+            python_dname = os.path.join(root_dir, "Python36_64")
         if not os.path.exists(python_dname):
             executable = sys.executable
             python_dname = os.path.split(executable)[0]
 
-    if which == 'root':
+    if which == "root":
         return root_dir
-    elif which == 'pymdwizard':
+    elif which == "pymdwizard":
         return pymdwizard_dname
-    elif which == 'python':
+    elif which == "python":
         return python_dname
 
 
 def get_pem_fname():
-    return os.path.join(get_install_dname('pymdwizard'), 'pymdwizard',
-                        'resources', 'DOIRootCA2.pem')
+    return os.path.join(
+        get_install_dname("pymdwizard"), "pymdwizard", "resources", "DOIRootCA2.pem"
+    )
 
 
 def check_pem_file():
@@ -493,20 +516,21 @@ def check_pem_file():
     """
     try:
         import wincertstore
+
         pem_fname = get_pem_fname()
         if not os.path.exists(pem_fname):
             for storename in ("CA", "ROOT"):
                 with wincertstore.CertSystemStore(storename) as store:
                     for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
-                        if 'DOIRootCA2' in cert.get_name():
-                            text_file = open(pem_fname, "w", encoding='ascii')
+                        if "DOIRootCA2" in cert.get_name():
+                            text_file = open(pem_fname, "w", encoding="ascii")
                             contents = cert.get_pem().encode().decode("ascii")
                             text_file.write(contents)
                             text_file.close()
 
-        os.environ['PIP_CERT'] = pem_fname
-        os.environ['SSL_CERT_FILE'] = pem_fname
-        os.environ['GIT_SSL_CAINFO'] = pem_fname
+        os.environ["PIP_CERT"] = pem_fname
+        os.environ["SSL_CERT_FILE"] = pem_fname
+        os.environ["GIT_SSL_CAINFO"] = pem_fname
         return pem_fname
     except:
         # this is an optional convenience function that will only work
@@ -552,7 +576,7 @@ def get_setting(which, default=None):
         setting in native format, string, integer, etc
 
     """
-    settings = QSettings('USGS', 'pymdwizard')
+    settings = QSettings("USGS", "pymdwizard")
     if default is None:
         return settings.value(which)
     else:

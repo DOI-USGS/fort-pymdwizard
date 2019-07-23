@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_supplinf
 class SupplInf(WizardWidget):
 
     drag_label = "SupplInf <supplinf>"
-    acceptable_tags = ['supplinf']
+    acceptable_tags = ["supplinf"]
 
     def build_ui(self):
         """
@@ -90,8 +90,7 @@ class SupplInf(WizardWidget):
         supplinf element tag in xml tree
         """
         supplinf_text = self.ui.fgdc_supplinf.toPlainText()
-        supplinf = xml_utils.xml_node('supplinf',
-                                    text=supplinf_text)
+        supplinf = xml_utils.xml_node("supplinf", text=supplinf_text)
         return supplinf
 
     def from_xml(self, supplinf):
@@ -107,7 +106,7 @@ class SupplInf(WizardWidget):
         None
         """
         try:
-            if supplinf.tag == 'supplinf':
+            if supplinf.tag == "supplinf":
                 try:
                     supplinf_text = supplinf.text
                     supplinf_box = self.findChild(QPlainTextEdit, "fgdc_supplinf")
@@ -115,18 +114,10 @@ class SupplInf(WizardWidget):
                 except:
                     pass
             else:
-               print ("The tag is not supplinf")
+                print("The tag is not supplinf")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SupplInf,
-                        "SupplInf testing")
-
-
-
-
-
-
-
+    utils.launch_widget(SupplInf, "SupplInf testing")

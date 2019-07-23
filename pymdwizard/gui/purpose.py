@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_purpose
 class Purpose(WizardWidget):
 
     drag_label = "Purpose <purpose>"
-    acceptable_tags = ['purpose']
+    acceptable_tags = ["purpose"]
 
     def build_ui(self):
         """
@@ -90,11 +90,9 @@ class Purpose(WizardWidget):
         purpose element tag in xml tree
         """
 
-        purpose = xml_utils.xml_node('purpose',
-                                     text=self.ui.fgdc_purpose.toPlainText())
+        purpose = xml_utils.xml_node("purpose", text=self.ui.fgdc_purpose.toPlainText())
 
         return purpose
-
 
     def from_xml(self, purpose):
         """
@@ -109,7 +107,7 @@ class Purpose(WizardWidget):
         None
         """
         try:
-            if purpose.tag == 'purpose':
+            if purpose.tag == "purpose":
                 try:
 
                     purpose_text = purpose.text
@@ -118,18 +116,10 @@ class Purpose(WizardWidget):
                 except:
                     pass
             else:
-               print ("The tag is not purpose")
+                print("The tag is not purpose")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Purpose,
-                        "Purpose testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Purpose, "Purpose testing")

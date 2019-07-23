@@ -59,7 +59,6 @@ from pymdwizard.gui.ui_files import UI_ITISSearchSimple
 
 
 class ItisSearch(QWidget):
-
     def __init__(self, table=None, selected_items_df=None, parent=None):
         super(self.__class__, self).__init__()
 
@@ -97,8 +96,10 @@ class ItisSearch(QWidget):
 
     def search_itis(self):
 
-        if str(self.ui.combo_search_type.currentText()) == 'Scientific name':
-            results = taxonomy.search_by_scientific_name(str(self.ui.search_term.text()))
+        if str(self.ui.combo_search_type.currentText()) == "Scientific name":
+            results = taxonomy.search_by_scientific_name(
+                str(self.ui.search_term.text())
+            )
         else:
             results = taxonomy.search_by_common_name(str(self.ui.search_term.text()))
 
@@ -112,13 +113,13 @@ class ItisSearch(QWidget):
         indices = df.index[selected_indices]
 
         for index in indices:
-            if 'combinedName' in df.columns:
-                item_name = df.iloc[index]['combinedName']
+            if "combinedName" in df.columns:
+                item_name = df.iloc[index]["combinedName"]
             else:
-                item_name = str(df.iloc[index]['commonName'])
+                item_name = str(df.iloc[index]["commonName"])
 
-            tsn = df.iloc[index]['tsn']
-            i = self.selected_items_df.index.max()+1
+            tsn = df.iloc[index]["tsn"]
+            i = self.selected_items_df.index.max() + 1
             if pd.isnull(i):
                 i = 0
             self.selected_items_df.loc[i] = [str(item_name), tsn]
@@ -130,5 +131,5 @@ class ItisSearch(QWidget):
         self.deleteLater()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     utils.launch_widget(ItisSearch, "Itis testing")

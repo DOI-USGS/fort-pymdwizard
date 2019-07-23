@@ -8,49 +8,52 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_parent_form(object):
     def setupUi(self, parent_form):
         parent_form.setObjectName("parent_form")
         parent_form.resize(1093, 436)
-        parent_form.setStyleSheet("QGroupBox{\n"
-"    background-color: transparent;\n"
-"     subcontrol-position: top left; /* position at the top left*/\n"
-"     padding-top: 20px;\n"
-"    font: bold 12px;\n"
-"    color: rgba(90, 90, 90, 225);\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 2px;\n"
-"    border-color: rgba(90, 90, 90, 40);\n"
-"}\n"
-"QGroupBox::title {\n"
-"text-align: left;\n"
-"subcontrol-origin: padding;\n"
-"subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
-"}\n"
-"QLabel{\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(90, 90, 90);\n"
-"}\n"
-"QLineEdit, QComboBox {\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(50, 50, 50);\n"
-"}\n"
-"\n"
-"QGroupBox:Hover {\n"
-"    border-color: rgba(90, 90, 90, 240);\n"
-"}\n"
-"\n"
-"QHBoxLayout#import_doi_layout{\n"
-"subcontrol-position: top left; /* position at the top left*/\n"
-"     padding-top: 200px;\n"
-"}\n"
-"\n"
-".QFrame {\n"
-"    color: rgba(90, 90, 90, 225);\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 2px;\n"
-"    border-color: rgba(90, 90, 90, 75);\n"
-"}")
+        parent_form.setStyleSheet(
+            "QGroupBox{\n"
+            "    background-color: transparent;\n"
+            "     subcontrol-position: top left; /* position at the top left*/\n"
+            "     padding-top: 20px;\n"
+            "    font: bold 12px;\n"
+            "    color: rgba(90, 90, 90, 225);\n"
+            "    border: 1px solid gray;\n"
+            "    border-radius: 2px;\n"
+            "    border-color: rgba(90, 90, 90, 40);\n"
+            "}\n"
+            "QGroupBox::title {\n"
+            "text-align: left;\n"
+            "subcontrol-origin: padding;\n"
+            "subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
+            "}\n"
+            "QLabel{\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(90, 90, 90);\n"
+            "}\n"
+            "QLineEdit, QComboBox {\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(50, 50, 50);\n"
+            "}\n"
+            "\n"
+            "QGroupBox:Hover {\n"
+            "    border-color: rgba(90, 90, 90, 240);\n"
+            "}\n"
+            "\n"
+            "QHBoxLayout#import_doi_layout{\n"
+            "subcontrol-position: top left; /* position at the top left*/\n"
+            "     padding-top: 200px;\n"
+            "}\n"
+            "\n"
+            ".QFrame {\n"
+            "    color: rgba(90, 90, 90, 225);\n"
+            "    border: 1px solid gray;\n"
+            "    border-radius: 2px;\n"
+            "    border-color: rgba(90, 90, 90, 75);\n"
+            "}"
+        )
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout(parent_form)
         self.horizontalLayout_13.setContentsMargins(3, 0, 3, 0)
         self.horizontalLayout_13.setSpacing(2)
@@ -64,7 +67,9 @@ class Ui_parent_form(object):
         self.first_hbox.setContentsMargins(-1, -1, 0, -1)
         self.first_hbox.setObjectName("first_hbox")
         self.help_title = QtWidgets.QFrame(self.fgdc_citeinfo)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_title.sizePolicy().hasHeightForWidth())
@@ -80,11 +85,15 @@ class Ui_parent_form(object):
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.lbl_dataset_title = QtWidgets.QLabel(self.help_title)
         self.lbl_dataset_title.setStyleSheet("font: bold;")
-        self.lbl_dataset_title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.lbl_dataset_title.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.lbl_dataset_title.setObjectName("lbl_dataset_title")
         self.verticalLayout_10.addWidget(self.lbl_dataset_title)
         self.label_34 = QtWidgets.QLabel(self.help_title)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
@@ -95,14 +104,15 @@ class Ui_parent_form(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.fgdc_title = QtWidgets.QPlainTextEdit(self.help_title)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_title.sizePolicy().hasHeightForWidth())
         self.fgdc_title.setSizePolicy(sizePolicy)
         self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 27))
-        self.fgdc_title.setStyleSheet("font: 11pt \"Arial\";\n"
-"color: rgb(50, 50, 50);")
+        self.fgdc_title.setStyleSheet('font: 11pt "Arial";\n' "color: rgb(50, 50, 50);")
         self.fgdc_title.setInputMethodHints(QtCore.Qt.ImhNone)
         self.fgdc_title.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.fgdc_title.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -111,7 +121,9 @@ class Ui_parent_form(object):
         self.fgdc_title.setObjectName("fgdc_title")
         self.horizontalLayout_4.addWidget(self.fgdc_title)
         self.label_5 = QtWidgets.QLabel(self.help_title)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -126,7 +138,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_5.setFont(font)
         self.label_5.setScaledContents(True)
-        self.label_5.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_5.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_5.setIndent(0)
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_4.addWidget(self.label_5)
@@ -134,7 +146,9 @@ class Ui_parent_form(object):
         self.verticalLayout_11.addLayout(self.verticalLayout_10)
         self.first_hbox.addWidget(self.help_title)
         self.help_pubdate = QtWidgets.QFrame(self.fgdc_citeinfo)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_pubdate.sizePolicy().hasHeightForWidth())
@@ -146,7 +160,9 @@ class Ui_parent_form(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_46 = QtWidgets.QLabel(self.help_pubdate)
         self.label_46.setStyleSheet("font: bold;")
-        self.label_46.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_46.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_46.setObjectName("label_46")
         self.verticalLayout_2.addWidget(self.label_46)
         self.label_38 = QtWidgets.QLabel(self.help_pubdate)
@@ -156,52 +172,60 @@ class Ui_parent_form(object):
         self.pubdate_layout = QtWidgets.QHBoxLayout()
         self.pubdate_layout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.pubdate_layout.setObjectName("pubdate_layout")
-        spacerItem = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         self.pubdate_layout.addItem(spacerItem)
         self.verticalLayout_2.addLayout(self.pubdate_layout)
         self.first_hbox.addWidget(self.help_pubdate)
         self.btn_import_doi = QtWidgets.QPushButton(self.fgdc_citeinfo)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_import_doi.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.btn_import_doi.sizePolicy().hasHeightForWidth()
+        )
         self.btn_import_doi.setSizePolicy(sizePolicy)
         self.btn_import_doi.setMinimumSize(QtCore.QSize(50, 0))
         self.btn_import_doi.setMaximumSize(QtCore.QSize(16777215, 50))
-        self.btn_import_doi.setStyleSheet("QGroupBox{\n"
-"    background-color: transparent;\n"
-"     subcontrol-position: top left; /* position at the top left*/\n"
-"     padding-top: 20px;\n"
-"    font: bold 12px;\n"
-"    color: rgba(90, 90, 90, 225);\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 2px;\n"
-"    border-color: rgba(90, 90, 90, 40);\n"
-"}\n"
-"QGroupBox::title {\n"
-"text-align: left;\n"
-"subcontrol-origin: padding;\n"
-"subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
-"}\n"
-"QLabel{\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(90, 90, 90);\n"
-"}\n"
-"QLineEdit, QComboBox {\n"
-"font: 9pt \"Arial\";\n"
-"color: rgb(50, 50, 50);\n"
-"}\n"
-"\n"
-"QGroupBox:Hover {\n"
-"    border-color: rgba(90, 90, 90, 240);\n"
-"}\n"
-"\n"
-".QFrame {\n"
-"    color: rgba(90, 90, 90, 225);\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 2px;\n"
-"    border-color: rgba(90, 90, 90, 75);\n"
-"}")
+        self.btn_import_doi.setStyleSheet(
+            "QGroupBox{\n"
+            "    background-color: transparent;\n"
+            "     subcontrol-position: top left; /* position at the top left*/\n"
+            "     padding-top: 20px;\n"
+            "    font: bold 12px;\n"
+            "    color: rgba(90, 90, 90, 225);\n"
+            "    border: 1px solid gray;\n"
+            "    border-radius: 2px;\n"
+            "    border-color: rgba(90, 90, 90, 40);\n"
+            "}\n"
+            "QGroupBox::title {\n"
+            "text-align: left;\n"
+            "subcontrol-origin: padding;\n"
+            "subcontrol-position: top left; /* position at the top center */padding: 3 3px;\n"
+            "}\n"
+            "QLabel{\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(90, 90, 90);\n"
+            "}\n"
+            "QLineEdit, QComboBox {\n"
+            'font: 9pt "Arial";\n'
+            "color: rgb(50, 50, 50);\n"
+            "}\n"
+            "\n"
+            "QGroupBox:Hover {\n"
+            "    border-color: rgba(90, 90, 90, 240);\n"
+            "}\n"
+            "\n"
+            ".QFrame {\n"
+            "    color: rgba(90, 90, 90, 225);\n"
+            "    border: 1px solid gray;\n"
+            "    border-radius: 2px;\n"
+            "    border-color: rgba(90, 90, 90, 75);\n"
+            "}"
+        )
         self.btn_import_doi.setObjectName("btn_import_doi")
         self.first_hbox.addWidget(self.btn_import_doi)
         self.verticalLayout_4.addLayout(self.first_hbox)
@@ -216,7 +240,9 @@ class Ui_parent_form(object):
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.label_47 = QtWidgets.QLabel(self.help_origin)
         self.label_47.setStyleSheet("font: bold;")
-        self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_47.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_47.setObjectName("label_47")
         self.verticalLayout_13.addWidget(self.label_47)
         self.originator_layout = QtWidgets.QVBoxLayout()
@@ -229,7 +255,9 @@ class Ui_parent_form(object):
         self.verticalLayout_7.setSpacing(3)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.help_geoform = QtWidgets.QFrame(self.framex)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_geoform.sizePolicy().hasHeightForWidth())
@@ -242,11 +270,15 @@ class Ui_parent_form(object):
         self.verticalLayout_15.setObjectName("verticalLayout_15")
         self.label_53 = QtWidgets.QLabel(self.help_geoform)
         self.label_53.setStyleSheet("font: bold;")
-        self.label_53.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_53.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_53.setObjectName("label_53")
         self.verticalLayout_15.addWidget(self.label_53)
         self.label_36 = QtWidgets.QLabel(self.help_geoform)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
@@ -273,7 +305,9 @@ class Ui_parent_form(object):
         self.fgdc_geoform.addItem("")
         self.horizontalLayout_14.addWidget(self.fgdc_geoform)
         self.label_9 = QtWidgets.QLabel(self.help_geoform)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
@@ -288,7 +322,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_9.setFont(font)
         self.label_9.setScaledContents(True)
-        self.label_9.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_9.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_9.setIndent(0)
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_14.addWidget(self.label_9)
@@ -300,17 +334,23 @@ class Ui_parent_form(object):
         self.horizontalLayout.setContentsMargins(-1, 3, 9, 3)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_55 = QtWidgets.QLabel(self.help_edition)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_55.sizePolicy().hasHeightForWidth())
         self.label_55.setSizePolicy(sizePolicy)
         self.label_55.setStyleSheet("font: bold;")
-        self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_55.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_55.setObjectName("label_55")
         self.horizontalLayout.addWidget(self.label_55)
         self.fgdc_edition = QtWidgets.QLineEdit(self.help_edition)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_edition.sizePolicy().hasHeightForWidth())
@@ -318,7 +358,9 @@ class Ui_parent_form(object):
         self.fgdc_edition.setObjectName("fgdc_edition")
         self.horizontalLayout.addWidget(self.fgdc_edition)
         self.verticalLayout_7.addWidget(self.help_edition)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding
+        )
         self.verticalLayout_7.addItem(spacerItem1)
         self.second_hbox.addWidget(self.framex)
         self.help_onlink = QtWidgets.QFrame(self.fgdc_citeinfo)
@@ -329,7 +371,9 @@ class Ui_parent_form(object):
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.label_51 = QtWidgets.QLabel(self.help_onlink)
         self.label_51.setStyleSheet("font: bold;")
-        self.label_51.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_51.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_51.setObjectName("label_51")
         self.verticalLayout_17.addWidget(self.label_51)
         self.onlink_layout = QtWidgets.QVBoxLayout()
@@ -353,7 +397,9 @@ class Ui_parent_form(object):
         self.label_43.setStyleSheet("font: bold;")
         self.label_43.setObjectName("label_43")
         self.horizontalLayout_6.addWidget(self.label_43)
-        spacerItem2 = QtWidgets.QSpacerItem(48, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            48, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem2)
         self.radio_seriesyes = QtWidgets.QRadioButton(self.fgdc_serinfo)
         self.radio_seriesyes.setObjectName("radio_seriesyes")
@@ -364,7 +410,9 @@ class Ui_parent_form(object):
         self.horizontalLayout_6.addWidget(self.radio_seriesno)
         self.verticalLayout.addLayout(self.horizontalLayout_6)
         self.label_44 = QtWidgets.QLabel(self.fgdc_serinfo)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
@@ -393,7 +441,9 @@ class Ui_parent_form(object):
         self.fgdc_sername.setObjectName("fgdc_sername")
         self.horizontalLayout_7.addWidget(self.fgdc_sername)
         self.label_6 = QtWidgets.QLabel(self.series_ext)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
@@ -408,7 +458,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_6.setFont(font)
         self.label_6.setScaledContents(True)
-        self.label_6.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_6.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_6.setIndent(0)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_7.addWidget(self.label_6)
@@ -426,7 +476,9 @@ class Ui_parent_form(object):
         self.fgdc_issue.setObjectName("fgdc_issue")
         self.horizontalLayout_11.addWidget(self.fgdc_issue)
         self.label_7 = QtWidgets.QLabel(self.series_ext)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
@@ -441,7 +493,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_7.setFont(font)
         self.label_7.setScaledContents(True)
-        self.label_7.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_7.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_7.setIndent(0)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_11.addWidget(self.label_7)
@@ -449,7 +501,9 @@ class Ui_parent_form(object):
         self.horizontalLayout_9.addLayout(self.verticalLayout_22)
         self.horizontalLayout_10.addLayout(self.horizontalLayout_9)
         self.verticalLayout.addWidget(self.series_ext)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem3)
         self.horizontalLayout_15.addWidget(self.fgdc_serinfo)
         self.fgdc_pubinfo = QtWidgets.QFrame(self.fgdc_citeinfo)
@@ -464,7 +518,9 @@ class Ui_parent_form(object):
         self.label_49.setStyleSheet("font: bold;")
         self.label_49.setObjectName("label_49")
         self.horizontalLayout_8.addWidget(self.label_49)
-        spacerItem4 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_8.addItem(spacerItem4)
         self.radio_pubinfoyes = QtWidgets.QRadioButton(self.fgdc_pubinfo)
         self.radio_pubinfoyes.setObjectName("radio_pubinfoyes")
@@ -499,7 +555,9 @@ class Ui_parent_form(object):
         self.fgdc_pubplace.setObjectName("fgdc_pubplace")
         self.horizontalLayout_2.addWidget(self.fgdc_pubplace)
         self.label_3 = QtWidgets.QLabel(self.pub_ext)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -514,7 +572,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_3.setFont(font)
         self.label_3.setScaledContents(True)
-        self.label_3.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_3.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_3.setIndent(0)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
@@ -532,7 +590,9 @@ class Ui_parent_form(object):
         self.fgdc_publish.setObjectName("fgdc_publish")
         self.horizontalLayout_3.addWidget(self.fgdc_publish)
         self.label_4 = QtWidgets.QLabel(self.pub_ext)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
@@ -547,7 +607,7 @@ class Ui_parent_form(object):
         font.setWeight(50)
         self.label_4.setFont(font)
         self.label_4.setScaledContents(True)
-        self.label_4.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_4.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_4.setIndent(0)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
@@ -555,7 +615,9 @@ class Ui_parent_form(object):
         self.horizontalLayout_12.addLayout(self.verticalLayout_31)
         self.verticalLayout_3.addLayout(self.horizontalLayout_12)
         self.verticalLayout_24.addWidget(self.pub_ext)
-        spacerItem5 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_24.addItem(spacerItem5)
         self.horizontalLayout_15.addWidget(self.fgdc_pubinfo)
         self.help_othercit = QtWidgets.QFrame(self.fgdc_citeinfo)
@@ -566,16 +628,24 @@ class Ui_parent_form(object):
         self.verticalLayout_16.setObjectName("verticalLayout_16")
         self.label_54 = QtWidgets.QLabel(self.help_othercit)
         self.label_54.setStyleSheet("font: bold;")
-        self.label_54.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_54.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_54.setObjectName("label_54")
         self.verticalLayout_16.addWidget(self.label_54)
         self.fgdc_othercit = GrowingTextEdit(self.help_othercit)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_othercit.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_othercit.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_othercit.setSizePolicy(sizePolicy)
-        self.fgdc_othercit.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        self.fgdc_othercit.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow
+        )
         self.fgdc_othercit.setObjectName("fgdc_othercit")
         self.verticalLayout_16.addWidget(self.fgdc_othercit)
         self.horizontalLayout_15.addWidget(self.help_othercit)
@@ -591,7 +661,9 @@ class Ui_parent_form(object):
         self.label_65.setStyleSheet("font: bold;")
         self.label_65.setObjectName("label_65")
         self.horizontalLayout_28.addWidget(self.label_65)
-        spacerItem6 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem6 = QtWidgets.QSpacerItem(
+            15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_28.addItem(spacerItem6)
         self.radio_lworkyes = QtWidgets.QRadioButton(self.fgdc_lworkcit)
         self.radio_lworkyes.setObjectName("radio_lworkyes")
@@ -600,14 +672,20 @@ class Ui_parent_form(object):
         self.radio_lworkno.setChecked(True)
         self.radio_lworkno.setObjectName("radio_lworkno")
         self.horizontalLayout_28.addWidget(self.radio_lworkno)
-        spacerItem7 = QtWidgets.QSpacerItem(80, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem7 = QtWidgets.QSpacerItem(
+            80, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_28.addItem(spacerItem7)
         self.label_66 = QtWidgets.QLabel(self.fgdc_lworkcit)
         self.label_66.setStyleSheet("font: italic;")
-        self.label_66.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_66.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.label_66.setObjectName("label_66")
         self.horizontalLayout_28.addWidget(self.label_66)
-        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem8 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_28.addItem(spacerItem8)
         self.verticalLayout_5.addLayout(self.horizontalLayout_28)
         self.lworkcite_widget = QtWidgets.QWidget(self.fgdc_lworkcit)
@@ -628,55 +706,137 @@ class Ui_parent_form(object):
         parent_form.setWindowTitle(_translate("parent_form", "Form"))
         self.fgdc_citeinfo.setTitle(_translate("parent_form", "Citation"))
         self.lbl_dataset_title.setText(_translate("parent_form", "Dataset Title"))
-        self.label_34.setText(_translate("parent_form", "A good title includes \'What\', \'Where\', and \'When\'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)"))
+        self.label_34.setText(
+            _translate(
+                "parent_form",
+                "A good title includes 'What', 'Where', and 'When'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)",
+            )
+        )
         self.label_5.setToolTip(_translate("parent_form", "Required"))
-        self.label_5.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_5.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_46.setText(_translate("parent_form", "Publication Date"))
-        self.label_38.setText(_translate("parent_form", "When was the dataset published or finalized?"))
-        self.btn_import_doi.setToolTip(_translate("parent_form", "Import citation from Active (CrossRef) DOI"))
-        self.btn_import_doi.setText(_translate("parent_form", "Import \n"
-"from \n"
-"DOI"))
+        self.label_38.setText(
+            _translate("parent_form", "When was the dataset published or finalized?")
+        )
+        self.btn_import_doi.setToolTip(
+            _translate("parent_form", "Import citation from Active (CrossRef) DOI")
+        )
+        self.btn_import_doi.setText(
+            _translate("parent_form", "Import \n" "from \n" "DOI")
+        )
         self.label_47.setText(_translate("parent_form", "Dataset Author/ Originator"))
         self.label_53.setText(_translate("parent_form", "Dataset Format"))
-        self.label_36.setText(_translate("parent_form", "Type directly in box below for items not in list."))
-        self.fgdc_geoform.setCurrentText(_translate("parent_form", "tabular digital data"))
-        self.fgdc_geoform.setItemText(0, _translate("parent_form", "tabular digital data"))
-        self.fgdc_geoform.setItemText(1, _translate("parent_form", "vector digital data"))
-        self.fgdc_geoform.setItemText(2, _translate("parent_form", "raster digital data"))
+        self.label_36.setText(
+            _translate(
+                "parent_form", "Type directly in box below for items not in list."
+            )
+        )
+        self.fgdc_geoform.setCurrentText(
+            _translate("parent_form", "tabular digital data")
+        )
+        self.fgdc_geoform.setItemText(
+            0, _translate("parent_form", "tabular digital data")
+        )
+        self.fgdc_geoform.setItemText(
+            1, _translate("parent_form", "vector digital data")
+        )
+        self.fgdc_geoform.setItemText(
+            2, _translate("parent_form", "raster digital data")
+        )
         self.fgdc_geoform.setItemText(3, _translate("parent_form", "spreadsheet"))
-        self.fgdc_geoform.setItemText(4, _translate("parent_form", "remote-sensing image"))
-        self.fgdc_geoform.setItemText(5, _translate("parent_form", "application/service"))
+        self.fgdc_geoform.setItemText(
+            4, _translate("parent_form", "remote-sensing image")
+        )
+        self.fgdc_geoform.setItemText(
+            5, _translate("parent_form", "application/service")
+        )
         self.fgdc_geoform.setItemText(6, _translate("parent_form", "publication"))
         self.label_9.setToolTip(_translate("parent_form", "Required"))
-        self.label_9.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_9.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_55.setText(_translate("parent_form", "Edition"))
         self.label_51.setText(_translate("parent_form", "Online Link to the Dataset"))
-        self.label_43.setText(_translate("parent_form", "Is this dataset part of a series?"))
+        self.label_43.setText(
+            _translate("parent_form", "Is this dataset part of a series?")
+        )
         self.radio_seriesyes.setText(_translate("parent_form", "Yes"))
         self.radio_seriesno.setText(_translate("parent_form", "No"))
-        self.label_44.setText(_translate("parent_form", " Is it a release with an assigned issue number (e.g. USGS Data Series)"))
+        self.label_44.setText(
+            _translate(
+                "parent_form",
+                " Is it a release with an assigned issue number (e.g. USGS Data Series)",
+            )
+        )
         self.help_sername.setText(_translate("parent_form", "Series Name"))
         self.label_6.setToolTip(_translate("parent_form", "Required"))
-        self.label_6.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.help_issue.setText(_translate("parent_form", "Issue Name / Number within Series"))
+        self.label_6.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+        self.help_issue.setText(
+            _translate("parent_form", "Issue Name / Number within Series")
+        )
         self.label_7.setToolTip(_translate("parent_form", "Required"))
-        self.label_7.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_49.setText(_translate("parent_form", "Can you provide more publication information about this dataset?"))
+        self.label_7.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+        self.label_49.setText(
+            _translate(
+                "parent_form",
+                "Can you provide more publication information about this dataset?",
+            )
+        )
         self.radio_pubinfoyes.setText(_translate("parent_form", "Yes"))
         self.radio_pubinfono.setText(_translate("parent_form", "No"))
-        self.label_50.setText(_translate("parent_form", "More details are always helpful for finding and properly referencing data."))
+        self.label_50.setText(
+            _translate(
+                "parent_form",
+                "More details are always helpful for finding and properly referencing data.",
+            )
+        )
         self.help_pubplace.setText(_translate("parent_form", "Publication Place"))
         self.label_3.setToolTip(_translate("parent_form", "Required"))
-        self.label_3.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_3.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.help_publish.setText(_translate("parent_form", "Publisher"))
         self.label_4.setToolTip(_translate("parent_form", "Required"))
-        self.label_4.setText(_translate("parent_form", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_4.setText(
+            _translate(
+                "parent_form",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_54.setText(_translate("parent_form", "Other citation details"))
         self.fgdc_lworkcit.setTitle(_translate("parent_form", "Larger Work"))
-        self.label_65.setText(_translate("parent_form", "Is this dataset associated with a larger work?"))
+        self.label_65.setText(
+            _translate("parent_form", "Is this dataset associated with a larger work?")
+        )
         self.radio_lworkyes.setText(_translate("parent_form", "Yes"))
         self.radio_lworkno.setText(_translate("parent_form", "No"))
-        self.label_66.setText(_translate("parent_form", "If this record is part of a publication or larger project, you may optionally cite it here."))
+        self.label_66.setText(
+            _translate(
+                "parent_form",
+                "If this record is part of a publication or larger project, you may optionally cite it here.",
+            )
+        )
+
 
 from growingtextedit import GrowingTextEdit

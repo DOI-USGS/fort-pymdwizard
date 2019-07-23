@@ -65,7 +65,7 @@ from pymdwizard.gui.place_list import PlaceList
 class Keywords(WizardWidget):
 
     drag_label = "Keywords <keywords>"
-    acceptable_tags = ['keywords', 'theme']
+    acceptable_tags = ["keywords", "theme"]
 
     ui_class = UI_Keywords.Ui_keyword_widget
 
@@ -94,18 +94,20 @@ class Keywords(WizardWidget):
         keywords = self.theme_list.to_xml()
 
         place_keywords = self.place_list.to_xml()
-        for child_node in place_keywords.xpath('place'):
+        for child_node in place_keywords.xpath("place"):
             keywords.append(child_node)
 
         if self.original_xml is not None:
-            stratums = xml_utils.search_xpath(self.original_xml, 'stratum',
-                                              only_first=False)
+            stratums = xml_utils.search_xpath(
+                self.original_xml, "stratum", only_first=False
+            )
             for stratum in stratums:
                 stratum.tail = None
                 keywords.append(deepcopy(stratum))
 
-            temporals = xml_utils.search_xpath(self.original_xml, 'temporal',
-                                               only_first=False)
+            temporals = xml_utils.search_xpath(
+                self.original_xml, "temporal", only_first=False
+            )
             for temporal in temporals:
                 temporal.tail = None
                 keywords.append(deepcopy(temporal))
@@ -121,12 +123,4 @@ class Keywords(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Keywords,
-                        "keywords testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Keywords, "keywords testing")

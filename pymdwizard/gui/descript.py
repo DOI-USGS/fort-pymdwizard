@@ -58,7 +58,7 @@ from pymdwizard.gui.abstract import Abstract
 class Descript(WizardWidget):
 
     drag_label = "Abstract <abstract>"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ["abstract"]
 
     def build_ui(self):
         """
@@ -71,7 +71,7 @@ class Descript(WizardWidget):
         self.ui = UI_descript.Ui_fgdc_descript()
         self.ui.setupUi(self)
 
-        self.setObjectName('fgdc_descript')
+        self.setObjectName("fgdc_descript")
         self.abstract = Abstract()
         self.ui.verticalLayout.addWidget(self.abstract)
 
@@ -102,12 +102,4 @@ class Descript(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Descript,
-                        "Abstract testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Descript, "Abstract testing")

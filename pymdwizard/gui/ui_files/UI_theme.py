@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Taxonomy(object):
     def setupUi(self, Taxonomy):
         Taxonomy.setObjectName("Taxonomy")
         Taxonomy.resize(523, 280)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Taxonomy.sizePolicy().hasHeightForWidth())
@@ -23,10 +26,14 @@ class Ui_Taxonomy(object):
         self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.fgdc_taxonomy = QtWidgets.QGroupBox(Taxonomy)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_taxonomy.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_taxonomy.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_taxonomy.setSizePolicy(sizePolicy)
         self.fgdc_taxonomy.setObjectName("fgdc_taxonomy")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.fgdc_taxonomy)
@@ -37,20 +44,28 @@ class Ui_Taxonomy(object):
         self.main_layout.setSpacing(0)
         self.main_layout.setObjectName("main_layout")
         self.widget_contents = QtWidgets.QWidget(self.fgdc_taxonomy)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget_contents.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.widget_contents.sizePolicy().hasHeightForWidth()
+        )
         self.widget_contents.setSizePolicy(sizePolicy)
         self.widget_contents.setObjectName("widget_contents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget_contents)
         self.verticalLayout_3.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.theme_groupbox = QtWidgets.QGroupBox(self.widget_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.theme_groupbox.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.theme_groupbox.sizePolicy().hasHeightForWidth()
+        )
         self.theme_groupbox.setSizePolicy(sizePolicy)
         self.theme_groupbox.setObjectName("theme_groupbox")
         self.theme_kws_layout = QtWidgets.QVBoxLayout(self.theme_groupbox)
@@ -70,7 +85,9 @@ class Ui_Taxonomy(object):
         self.btn_add_iso_2.setStyleSheet("")
         self.btn_add_iso_2.setObjectName("btn_add_iso_2")
         self.horizontalLayout_4.addWidget(self.btn_add_iso_2)
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_4.addItem(spacerItem)
         self.btn_add_iso = QtWidgets.QPushButton(self.theme_groupbox)
         self.btn_add_iso.setMinimumSize(QtCore.QSize(150, 0))
@@ -86,7 +103,9 @@ class Ui_Taxonomy(object):
         self.horizontalLayout_4.addWidget(self.btn_add_iso)
         self.theme_kws_layout.addLayout(self.horizontalLayout_4)
         self.widget = QtWidgets.QWidget(self.theme_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -107,6 +126,7 @@ class Ui_Taxonomy(object):
         Taxonomy.setToolTip(_translate("Taxonomy", "test docstring"))
         self.fgdc_taxonomy.setTitle(_translate("Taxonomy", "Taxonomy"))
         self.theme_groupbox.setTitle(_translate("Taxonomy", "Theme Keywords"))
-        self.btn_add_iso_2.setText(_translate("Taxonomy", "Search Controlled Vocabularies"))
+        self.btn_add_iso_2.setText(
+            _translate("Taxonomy", "Search Controlled Vocabularies")
+        )
         self.btn_add_iso.setText(_translate("Taxonomy", "Add ISO 19115"))
-

@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(592, 145)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -27,7 +30,9 @@ class Ui_Form(object):
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.parent = QtWidgets.QGroupBox(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.parent.sizePolicy().hasHeightForWidth())
@@ -38,7 +43,9 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(self.parent)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -52,7 +59,9 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.label_6 = QtWidgets.QLabel(self.parent)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
@@ -67,18 +76,24 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label_6.setFont(font)
         self.label_6.setScaledContents(True)
-        self.label_6.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_6.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_6.setIndent(0)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout.addWidget(self.label_6)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.fgdc_abstract = GrowingTextEdit(self.parent)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_abstract.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_abstract.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_abstract.setSizePolicy(sizePolicy)
-        self.fgdc_abstract.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        self.fgdc_abstract.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow
+        )
         self.fgdc_abstract.setObjectName("fgdc_abstract")
         self.verticalLayout_2.addWidget(self.fgdc_abstract)
         self.verticalLayout.addWidget(self.parent)
@@ -92,6 +107,12 @@ class Ui_Form(object):
         self.parent.setTitle(_translate("Form", "Abstract"))
         self.label.setText(_translate("Form", "Provide a description of the dataset."))
         self.label_6.setToolTip(_translate("Form", "Required"))
-        self.label_6.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:22pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_6.setText(
+            _translate(
+                "Form",
+                '<html><head/><body><p><span style=" font-size:22pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+
 
 from growingtextedit import GrowingTextEdit

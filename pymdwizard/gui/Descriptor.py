@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_Descriptor
 class Descriptor(WizardWidget):
 
     drag_label = "Descriptor <descript>"
-    acceptable_tags = ['descript']
+    acceptable_tags = ["descript"]
 
     def build_ui(self):
         """
@@ -82,7 +82,7 @@ class Descriptor(WizardWidget):
         -------
         descript element tag in xml tree
         """
-        descript = xml_utils.xml_node(tag='descript')
+        descript = xml_utils.xml_node(tag="descript")
 
         abstract = xml_utils.xml_node(tag="abstract")
         abstract.text = self.findChild(QPlainTextEdit, "fgdc_abstract").toPlainText()
@@ -94,8 +94,9 @@ class Descriptor(WizardWidget):
 
         supplinf_str = self.ui.fgdc_supplinf.toPlainText()
         if supplinf_str:
-            upplinf = xml_utils.xml_node('supplinf', text=supplinf_str,
-                                         parent_node=descript)
+            upplinf = xml_utils.xml_node(
+                "supplinf", text=supplinf_str, parent_node=descript
+            )
 
         return descript
 
@@ -112,7 +113,7 @@ class Descriptor(WizardWidget):
         None
         """
         try:
-            if descriptors.tag == 'descript':
+            if descriptors.tag == "descript":
                 try:
 
                     abstract = descriptors[0]
@@ -140,18 +141,10 @@ class Descriptor(WizardWidget):
                     purpose_box = self.findChild(QPlainTextEdit, "fgdc_purpose")
                     purpose_box.setPlainText(purpose.text)
             else:
-               print ("The tag is not descript")
+                print("The tag is not descript")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Descriptor,
-                        "Descriptor testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Descriptor, "Descriptor testing")

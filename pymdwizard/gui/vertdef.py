@@ -61,7 +61,7 @@ from pymdwizard.gui.ui_files import UI_vertdef
 class Vertdef(WizardWidget):  #
 
     drag_label = "Time Period information <vertdef>"
-    acceptable_tags = ['vertdef', 'altsys', 'depthsys']
+    acceptable_tags = ["vertdef", "altsys", "depthsys"]
 
     def build_ui(self):
         """
@@ -74,15 +74,27 @@ class Vertdef(WizardWidget):  #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.altres_list = RepeatingElement(widget_kwargs={'label': 'Altitude Resolution',
-                                                           'line_name':'fgdc_altres',
-                                                           'required':True,}, add_text='+', remove_text='-')
+        self.altres_list = RepeatingElement(
+            widget_kwargs={
+                "label": "Altitude Resolution",
+                "line_name": "fgdc_altres",
+                "required": True,
+            },
+            add_text="+",
+            remove_text="-",
+        )
         self.altres_list.add_another()
         self.ui.altsys_contents.layout().insertWidget(1, self.altres_list)
 
-        self.depthres_list = RepeatingElement(widget_kwargs={'label': 'Depth Resolution',
-                                                             'line_name':'fgdc_depthres',
-                                                             'required':True,}, add_text='+', remove_text='-')
+        self.depthres_list = RepeatingElement(
+            widget_kwargs={
+                "label": "Depth Resolution",
+                "line_name": "fgdc_depthres",
+                "required": True,
+            },
+            add_text="+",
+            remove_text="-",
+        )
         self.depthres_list.add_another()
         self.ui.depthsys_contents.layout().insertWidget(1, self.depthres_list)
 
@@ -141,6 +153,7 @@ class Vertdef(WizardWidget):  #
             -------
             None
             """
+
         if b:
             self.ui.content_layout.show()
         else:
@@ -195,37 +208,49 @@ class Vertdef(WizardWidget):  #
         """
 
         if self.ui.rbtn_yes.isChecked():
-            vertdef = xml_utils.xml_node('vertdef')
+            vertdef = xml_utils.xml_node("vertdef")
 
             if self.ui.rbtn_yes_alt.isChecked():
-                altsys = xml_utils.xml_node('altsys', parent_node=vertdef)
-                altdatum = xml_utils.xml_node('altdatum',
-                                              text=self.ui.fgdc_altdatum.currentText(),
-                                              parent_node=altsys)
+                altsys = xml_utils.xml_node("altsys", parent_node=vertdef)
+                altdatum = xml_utils.xml_node(
+                    "altdatum",
+                    text=self.ui.fgdc_altdatum.currentText(),
+                    parent_node=altsys,
+                )
                 for widget in self.altres_list.get_widgets():
-                    altres = xml_utils.xml_node('altres', widget.added_line.toPlainText(),
-                                                parent_node=altsys)
-                altunits = xml_utils.xml_node('altunits',
-                                              text=self.ui.fgdc_altunits.currentText(),
-                                              parent_node=altsys)
-                altenc = xml_utils.xml_node('altenc',
-                                              text=self.ui.fgdc_altenc.currentText(),
-                                              parent_node=altsys)
+                    altres = xml_utils.xml_node(
+                        "altres", widget.added_line.toPlainText(), parent_node=altsys
+                    )
+                altunits = xml_utils.xml_node(
+                    "altunits",
+                    text=self.ui.fgdc_altunits.currentText(),
+                    parent_node=altsys,
+                )
+                altenc = xml_utils.xml_node(
+                    "altenc", text=self.ui.fgdc_altenc.currentText(), parent_node=altsys
+                )
 
             if self.ui.rbtn_yes_depth.isChecked():
-                depth = xml_utils.xml_node('depthsys', parent_node=vertdef)
-                depthdn = xml_utils.xml_node('depthdn',
-                                              text=self.ui.fgdc_depthdn.currentText(),
-                                              parent_node=depth)
+                depth = xml_utils.xml_node("depthsys", parent_node=vertdef)
+                depthdn = xml_utils.xml_node(
+                    "depthdn",
+                    text=self.ui.fgdc_depthdn.currentText(),
+                    parent_node=depth,
+                )
                 for widget in self.depthres_list.get_widgets():
-                    depthres = xml_utils.xml_node('depthres', widget.added_line.toPlainText(),
-                                                parent_node=depth)
-                depthdu = xml_utils.xml_node('depthdu',
-                                              text=self.ui.fgdc_depthdu.currentText(),
-                                              parent_node=depth)
-                depthem = xml_utils.xml_node('depthem',
-                                            text=self.ui.fgdc_depthem.currentText(),
-                                            parent_node=depth)
+                    depthres = xml_utils.xml_node(
+                        "depthres", widget.added_line.toPlainText(), parent_node=depth
+                    )
+                depthdu = xml_utils.xml_node(
+                    "depthdu",
+                    text=self.ui.fgdc_depthdu.currentText(),
+                    parent_node=depth,
+                )
+                depthem = xml_utils.xml_node(
+                    "depthem",
+                    text=self.ui.fgdc_depthem.currentText(),
+                    parent_node=depth,
+                )
 
             return vertdef
         else:
@@ -243,15 +268,15 @@ class Vertdef(WizardWidget):  #
         """
         self.clear_widget()
         try:
-            if vertdef.tag == 'vertdef':
+            if vertdef.tag == "vertdef":
                 self.ui.rbtn_yes.setChecked(True)
                 if vertdef.xpath("altsys"):
                     self.ui.rbtn_yes_alt.setChecked(True)
                     self.altres_list.clear_widgets(add_another=False)
-                    for altres in vertdef.xpath('altsys/altres'):
+                    for altres in vertdef.xpath("altsys/altres"):
                         altres_widget = self.altres_list.add_another()
                         altres_widget.added_line.setPlainText(altres.text)
-                    if len(vertdef.xpath('altsys/altres')) == 0:
+                    if len(vertdef.xpath("altsys/altres")) == 0:
                         self.altres_list.add_another()
                 else:
                     self.ui.rbtn_no_alt.setChecked(True)
@@ -259,10 +284,10 @@ class Vertdef(WizardWidget):  #
                 if vertdef.xpath("depthsys"):
                     self.ui.rbtn_yes_depth.setChecked(True)
                     self.depthres_list.clear_widgets(add_another=False)
-                    for depthres in vertdef.xpath('depthsys/depthres'):
+                    for depthres in vertdef.xpath("depthsys/depthres"):
                         depthres_widget = self.depthres_list.add_another()
                         depthres_widget.added_line.setPlainText(depthres.text)
-                    if len(vertdef.xpath('depthsys/depthres')) == 0:
+                    if len(vertdef.xpath("depthsys/depthres")) == 0:
                         self.depthres_list.add_another()
 
                 else:
@@ -271,12 +296,10 @@ class Vertdef(WizardWidget):  #
                 utils.populate_widget(self, vertdef)
 
             else:
-                print ("The tag is not a vertdef")
+                print("The tag is not a vertdef")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Vertdef,
-                        "Vertdef testing")
-
+    utils.launch_widget(Vertdef, "Vertdef testing")

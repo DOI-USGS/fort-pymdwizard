@@ -58,7 +58,7 @@ from pymdwizard.gui.ui_files import UI_codesetd
 class Codesetd(WizardWidget):  #
 
     drag_label = "Codeset Domain <codesetd>"
-    acceptable_tags = ['codesetd']
+    acceptable_tags = ["codesetd"]
 
     def build_ui(self):
         """
@@ -78,13 +78,13 @@ class Codesetd(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        codesetd = xml_utils.xml_node('codesetd')
-        codesetn = xml_utils.xml_node('codesetn',
-                                      text= self.ui.fgdc_codesetn.currentText(),
-                                      parent_node=codesetd)
-        codesetn = xml_utils.xml_node('codesets',
-                                      text= self.ui.fgdc_codesets.text(),
-                                      parent_node=codesetd)
+        codesetd = xml_utils.xml_node("codesetd")
+        codesetn = xml_utils.xml_node(
+            "codesetn", text=self.ui.fgdc_codesetn.currentText(), parent_node=codesetd
+        )
+        codesetn = xml_utils.xml_node(
+            "codesets", text=self.ui.fgdc_codesets.text(), parent_node=codesetd
+        )
         return codesetd
 
     def from_xml(self, codesetd):
@@ -98,16 +98,14 @@ class Codesetd(WizardWidget):  #
         None
         """
         try:
-            if codesetd.tag == 'codesetd':
-                self.ui.fgdc_codesetn.setCurrentText(codesetd.xpath('codesetn')[0].text)
-                self.ui.fgdc_codesets.setText(codesetd.xpath('codesets')[0].text)
+            if codesetd.tag == "codesetd":
+                self.ui.fgdc_codesetn.setCurrentText(codesetd.xpath("codesetn")[0].text)
+                self.ui.fgdc_codesets.setText(codesetd.xpath("codesets")[0].text)
             else:
-                print ("The tag is not codesetd")
+                print("The tag is not codesetd")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Codesetd,
-                        "udom testing")
-
+    utils.launch_widget(Codesetd, "udom testing")

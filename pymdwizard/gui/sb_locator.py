@@ -54,6 +54,7 @@ import getpass
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QUrl
+from PyQt5.QtWidgets import QMessageBox
 
 import pysb
 
@@ -63,11 +64,14 @@ from pymdwizard.gui.ui_files import UI_sb_locator
 
 
 class SBLocator(QWidget):
-
-    def __init__(self, username=None, password=None,
-                 hash='593af2e0e4b0764e6c602207',
-                 parent=None,
-                 mainform=None):
+    def __init__(
+        self,
+        username=None,
+        password=None,
+        hash="593af2e0e4b0764e6c602207",
+        parent=None,
+        mainform=None,
+    ):
 
         self.mainform = mainform
 
@@ -75,9 +79,9 @@ class SBLocator(QWidget):
             try:
                 username = getpass.getuser()
                 contact = utils.get_usgs_contact_info(username, True)
-                self.username = contact['fgdc_cntemail']
+                self.username = contact["fgdc_cntemail"]
             except:
-                self.username = ''
+                self.username = ""
         else:
             self.username = username
 
@@ -92,6 +96,8 @@ class SBLocator(QWidget):
         self.ui.password.setText(password)
         self.ui.hash.setText(hash)
 
+        self.setWindowTitle("ScienceBase Item/User Identifier")
+
         self.connect_events()
 
     def log_into_sb(self):
@@ -101,11 +107,16 @@ class SBLocator(QWidget):
 
     def connect_events(self):
         self.ui.btn_ok.clicked.connect(self.ok_click)
+        self.ui.btn_check.clicked.connect(self.check_permissions)
 
-    def ok_click(self):
-        self.hash = self.ui.hash.text()
+    def update_content(self):
         self.password = self.ui.password.text()
         self.username = self.ui.username.text()
+
+        self.hash = self.ui.hash.text()
+
+    def ok_click(self):
+        self.update_content()
 
         self.get_fgdc_file()
         print(self.fname)
@@ -115,11 +126,27 @@ class SBLocator(QWidget):
         self.mainform.cur_fname = self.fname
         self.hide()
 
+    def check_item_click(self):
+        self.update_content()
+        accessible = self.check_permissions()
+
     def check_permissions(self):
-        sb = self.log_into_sb()
+        try:
+            sb = self.log_into_sb()
+        except:
+            msg = "Login to ScienceBase Failed. \nCheck username and password"
+            QMessageBox.warning(self, "SB Login Failed", msg)
+            return False
 
         permissions = sb.get_permissions(self.hash)
-        return 'USER:{}'.format(self.username) in permissions['write']['acl']
+        writable = "USER:{}".format(self.username) in permissions["write"]["acl"]
+
+        if not writable:
+            msg = "This item does not appear to be writable by the designated user."
+            QMessageBox.warning(self, "Write permission error", msg)
+            return False
+
+        return True
 
     def get_fgdc_file(self):
 
@@ -131,17 +158,20 @@ class SBLocator(QWidget):
         item_json = sb.get_item(self.hash)
 
         try:
-            fgdc_files = [f for f in item_json['files'] if
-                          f['contentType'] == 'application/fgdc+xml']
-            fgdc_url = fgdc_files[0]['url']
+            fgdc_files = [
+                f
+                for f in item_json["files"]
+                if f["contentType"] == "application/fgdc+xml"
+            ]
+            fgdc_url = fgdc_files[0]["url"]
         except KeyError:
-            fgdc_files = [f for f in item_json['facets'][0]['files'] if
-                          f['name'].endswith('.xml')]
-            fgdc_url = fgdc_files[0]['url']
-
+            fgdc_files = [
+                f for f in item_json["facets"][0]["files"] if f["name"].endswith(".xml")
+            ]
+            fgdc_url = fgdc_files[0]["url"]
 
         url = fgdc_files[0]["url"]
-        fname = fgdc_files[0]['name']
+        fname = fgdc_files[0]["name"]
 
         sb.download_file(url, fname, tempdir)
         self.fname = os.path.join(tempdir, fname)
@@ -174,5 +204,4 @@ class SBLocator(QWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(SBLocator,
-                        "SBLocator", password='')
+    utils.launch_widget(SBLocator, "SBLocator", password="")

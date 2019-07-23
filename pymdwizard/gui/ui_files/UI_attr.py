@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_attribute_widget(object):
     def setupUi(self, attribute_widget):
         attribute_widget.setObjectName("attribute_widget")
@@ -33,7 +34,9 @@ class Ui_attribute_widget(object):
         self.fgdc_attrlabl.setObjectName("fgdc_attrlabl")
         self.horizontalLayout.addWidget(self.fgdc_attrlabl)
         self.label_20 = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
@@ -48,7 +51,7 @@ class Ui_attribute_widget(object):
         font.setWeight(50)
         self.label_20.setFont(font)
         self.label_20.setScaledContents(True)
-        self.label_20.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_20.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_20.setIndent(0)
         self.label_20.setObjectName("label_20")
         self.horizontalLayout.addWidget(self.label_20)
@@ -56,17 +59,23 @@ class Ui_attribute_widget(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem)
         self.label_21 = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
@@ -81,13 +90,15 @@ class Ui_attribute_widget(object):
         font.setWeight(50)
         self.label_21.setFont(font)
         self.label_21.setScaledContents(True)
-        self.label_21.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_21.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_21.setIndent(0)
         self.label_21.setObjectName("label_21")
         self.horizontalLayout_2.addWidget(self.label_21)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.fgdc_attrdef = QtWidgets.QPlainTextEdit(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_attrdef.sizePolicy().hasHeightForWidth())
@@ -96,7 +107,9 @@ class Ui_attribute_widget(object):
         self.fgdc_attrdef.setObjectName("fgdc_attrdef")
         self.verticalLayout.addWidget(self.fgdc_attrdef)
         self.label_3 = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -109,7 +122,9 @@ class Ui_attribute_widget(object):
         self.fgdc_attrdefs.setObjectName("fgdc_attrdefs")
         self.horizontalLayout_5.addWidget(self.fgdc_attrdefs)
         self.label_24 = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
@@ -124,13 +139,15 @@ class Ui_attribute_widget(object):
         font.setWeight(50)
         self.label_24.setFont(font)
         self.label_24.setScaledContents(True)
-        self.label_24.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_24.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_24.setIndent(0)
         self.label_24.setObjectName("label_24")
         self.horizontalLayout_5.addWidget(self.label_24)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
         self.label_7 = QtWidgets.QLabel(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
@@ -138,7 +155,9 @@ class Ui_attribute_widget(object):
         self.label_7.setObjectName("label_7")
         self.verticalLayout.addWidget(self.label_7)
         self.comboBox = QtWidgets.QComboBox(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.comboBox.sizePolicy().hasHeightForWidth())
@@ -161,7 +180,9 @@ class Ui_attribute_widget(object):
         self.label_49.setStyleSheet("font: bold;")
         self.label_49.setObjectName("label_49")
         self.horizontalLayout_8.addWidget(self.label_49)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_8.addItem(spacerItem1)
         self.rbtn_nodata_yes = QtWidgets.QRadioButton(self.nodata_content)
         self.rbtn_nodata_yes.setChecked(True)
@@ -181,10 +202,14 @@ class Ui_attribute_widget(object):
         self.verticalLayout_24.addWidget(self.nodata_section)
         self.verticalLayout.addWidget(self.nodata_content)
         self.attrdomv_contents = QtWidgets.QWidget(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.attrdomv_contents.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.attrdomv_contents.sizePolicy().hasHeightForWidth()
+        )
         self.attrdomv_contents.setSizePolicy(sizePolicy)
         self.attrdomv_contents.setObjectName("attrdomv_contents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.attrdomv_contents)
@@ -192,7 +217,9 @@ class Ui_attribute_widget(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout.addWidget(self.attrdomv_contents)
         self.place_holder = QtWidgets.QWidget(self.fgdc_attr)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.MinimumExpanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.place_holder.sizePolicy().hasHeightForWidth())
@@ -202,7 +229,9 @@ class Ui_attribute_widget(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.verticalLayout.addWidget(self.place_holder)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         self.verticalLayout.addItem(spacerItem2)
         self.horizontalLayout_6.addWidget(self.fgdc_attr)
 
@@ -214,20 +243,44 @@ class Ui_attribute_widget(object):
         attribute_widget.setWindowTitle(_translate("attribute_widget", "Form"))
         self.label_2.setText(_translate("attribute_widget", "Column Label"))
         self.label_20.setToolTip(_translate("attribute_widget", "Required"))
-        self.label_20.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_20.setText(
+            _translate(
+                "attribute_widget",
+                '<html><head/><body><p align="center"><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label.setText(_translate("attribute_widget", "Column Definition"))
         self.label_21.setToolTip(_translate("attribute_widget", "Required"))
-        self.label_21.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_21.setText(
+            _translate(
+                "attribute_widget",
+                '<html><head/><body><p align="center"><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_3.setText(_translate("attribute_widget", "Definition Source"))
         self.fgdc_attrdefs.setText(_translate("attribute_widget", "Producer defined"))
         self.label_24.setToolTip(_translate("attribute_widget", "Required"))
-        self.label_24.setText(_translate("attribute_widget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
+        self.label_24.setText(
+            _translate(
+                "attribute_widget",
+                '<html><head/><body><p align="center"><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
         self.label_7.setText(_translate("attribute_widget", "Column Contents Type"))
-        self.comboBox.setItemText(0, _translate("attribute_widget", "Enumerated (Categorical Data)"))
-        self.comboBox.setItemText(1, _translate("attribute_widget", "Range (Numeric data)"))
-        self.comboBox.setItemText(2, _translate("attribute_widget", "Codeset (Published Categories)"))
-        self.comboBox.setItemText(3, _translate("attribute_widget", "Unrepresentable (None of the above)"))
-        self.label_49.setText(_translate("attribute_widget", "Is there a NoData (NaN, etc) Value?"))
+        self.comboBox.setItemText(
+            0, _translate("attribute_widget", "Enumerated (Categorical Data)")
+        )
+        self.comboBox.setItemText(
+            1, _translate("attribute_widget", "Range (Numeric data)")
+        )
+        self.comboBox.setItemText(
+            2, _translate("attribute_widget", "Codeset (Published Categories)")
+        )
+        self.comboBox.setItemText(
+            3, _translate("attribute_widget", "Unrepresentable (None of the above)")
+        )
+        self.label_49.setText(
+            _translate("attribute_widget", "Is there a NoData (NaN, etc) Value?")
+        )
         self.rbtn_nodata_yes.setText(_translate("attribute_widget", "Yes"))
         self.rbtn_nodata_no.setText(_translate("attribute_widget", "No"))
-

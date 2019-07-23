@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_fgdc_spref(object):
     def setupUi(self, fgdc_spref):
         fgdc_spref.setObjectName("fgdc_spref")
@@ -29,7 +30,9 @@ class Ui_fgdc_spref(object):
         self.label_13.setStyleSheet("font: bold;")
         self.label_13.setObjectName("label_13")
         self.horizontalLayout_3.addWidget(self.label_13)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem)
         self.rbtn_yes = QtWidgets.QRadioButton(self.fgdc_horizsys)
         self.rbtn_yes.setAutoFillBackground(True)
@@ -70,7 +73,9 @@ class Ui_fgdc_spref(object):
         self.btn_local = QtWidgets.QRadioButton(self.frame)
         self.btn_local.setObjectName("btn_local")
         self.horizontalLayout.addWidget(self.btn_local)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.stack_definition = QtWidgets.QStackedWidget(self.frame)
@@ -105,7 +110,9 @@ class Ui_fgdc_spref(object):
         self.fgdc_geogunit.addItem("")
         self.fgdc_geogunit.addItem("")
         self.fgdc_geogunit.addItem("")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.fgdc_geogunit)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.FieldRole, self.fgdc_geogunit
+        )
         self.stack_definition.addWidget(self.fgdc_geograph)
         self.fgdc_planar = QtWidgets.QWidget()
         self.fgdc_planar.setObjectName("fgdc_planar")
@@ -115,7 +122,9 @@ class Ui_fgdc_spref(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem2 = QtWidgets.QSpacerItem(74, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            74, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem2)
         self.btn_projection = QtWidgets.QRadioButton(self.fgdc_planar)
         self.btn_projection.setChecked(True)
@@ -132,7 +141,9 @@ class Ui_fgdc_spref(object):
         self.btn_localp.setObjectName("btn_localp")
         self.btngrp_planar.addButton(self.btn_localp)
         self.horizontalLayout_2.addWidget(self.btn_localp)
-        spacerItem3 = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem3)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.stack_planar = QtWidgets.QStackedWidget(self.fgdc_planar)
@@ -179,9 +190,13 @@ class Ui_fgdc_spref(object):
         self.formLayout_2.setObjectName("formLayout_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.formLayout_2.setLayout(0, QtWidgets.QFormLayout.LabelRole, self.horizontalLayout_6)
+        self.formLayout_2.setLayout(
+            0, QtWidgets.QFormLayout.LabelRole, self.horizontalLayout_6
+        )
         self.verticalLayout_9.addWidget(self.gridsys_contents)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_9.addItem(spacerItem4)
         self.verticalLayout_8.addWidget(self.widget)
         self.stack_planar.addWidget(self.fgdc_gridsys)
@@ -195,13 +210,17 @@ class Ui_fgdc_spref(object):
         self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_5)
         self.fgdc_localpd = QtWidgets.QLineEdit(self.fgdc_local)
         self.fgdc_localpd.setObjectName("fgdc_localpd")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.fgdc_localpd)
+        self.formLayout_3.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.fgdc_localpd
+        )
         self.label_6 = QtWidgets.QLabel(self.fgdc_local)
         self.label_6.setObjectName("label_6")
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_6)
         self.fgdc_localpgi = QtWidgets.QLineEdit(self.fgdc_local)
         self.fgdc_localpgi.setObjectName("fgdc_localpgi")
-        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.fgdc_localpgi)
+        self.formLayout_3.setWidget(
+            1, QtWidgets.QFormLayout.FieldRole, self.fgdc_localpgi
+        )
         self.stack_planar.addWidget(self.fgdc_local)
         self.verticalLayout_3.addWidget(self.stack_planar)
         self.groupBox = QtWidgets.QGroupBox(self.fgdc_planar)
@@ -211,34 +230,50 @@ class Ui_fgdc_spref(object):
         self.formLayout_8.setObjectName("formLayout_8")
         self.help_plance = QtWidgets.QLabel(self.groupBox)
         self.help_plance.setObjectName("help_plance")
-        self.formLayout_8.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.help_plance)
+        self.formLayout_8.setWidget(
+            0, QtWidgets.QFormLayout.LabelRole, self.help_plance
+        )
         self.fgdc_plance = QtWidgets.QComboBox(self.groupBox)
         self.fgdc_plance.setObjectName("fgdc_plance")
         self.fgdc_plance.addItem("")
         self.fgdc_plance.addItem("")
         self.fgdc_plance.addItem("")
-        self.formLayout_8.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.fgdc_plance)
+        self.formLayout_8.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.fgdc_plance
+        )
         self.help_absres = QtWidgets.QLabel(self.groupBox)
         self.help_absres.setObjectName("help_absres")
-        self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.help_absres)
+        self.formLayout_8.setWidget(
+            2, QtWidgets.QFormLayout.LabelRole, self.help_absres
+        )
         self.fgdc_absres = QtWidgets.QLineEdit(self.groupBox)
         self.fgdc_absres.setObjectName("fgdc_absres")
-        self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.fgdc_absres)
+        self.formLayout_8.setWidget(
+            2, QtWidgets.QFormLayout.FieldRole, self.fgdc_absres
+        )
         self.help_ordres = QtWidgets.QLabel(self.groupBox)
         self.help_ordres.setObjectName("help_ordres")
-        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.help_ordres)
+        self.formLayout_8.setWidget(
+            3, QtWidgets.QFormLayout.LabelRole, self.help_ordres
+        )
         self.fgdc_ordres = QtWidgets.QLineEdit(self.groupBox)
         self.fgdc_ordres.setObjectName("fgdc_ordres")
-        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.fgdc_ordres)
+        self.formLayout_8.setWidget(
+            3, QtWidgets.QFormLayout.FieldRole, self.fgdc_ordres
+        )
         self.help_plandu = QtWidgets.QLabel(self.groupBox)
         self.help_plandu.setObjectName("help_plandu")
-        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.help_plandu)
+        self.formLayout_8.setWidget(
+            4, QtWidgets.QFormLayout.LabelRole, self.help_plandu
+        )
         self.fgdc_plandu = QtWidgets.QComboBox(self.groupBox)
         self.fgdc_plandu.setObjectName("fgdc_plandu")
         self.fgdc_plandu.addItem("")
         self.fgdc_plandu.addItem("")
         self.fgdc_plandu.addItem("")
-        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.fgdc_plandu)
+        self.formLayout_8.setWidget(
+            4, QtWidgets.QFormLayout.FieldRole, self.fgdc_plandu
+        )
         self.verticalLayout_3.addWidget(self.groupBox)
         self.stack_definition.addWidget(self.fgdc_planar)
         self.page = QtWidgets.QWidget()
@@ -251,13 +286,17 @@ class Ui_fgdc_spref(object):
         self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_12)
         self.fgdc_localdes = QtWidgets.QLineEdit(self.page)
         self.fgdc_localdes.setObjectName("fgdc_localdes")
-        self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.fgdc_localdes)
+        self.formLayout_7.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.fgdc_localdes
+        )
         self.label_14 = QtWidgets.QLabel(self.page)
         self.label_14.setObjectName("label_14")
         self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_14)
         self.fgdc_localgeo = QtWidgets.QLineEdit(self.page)
         self.fgdc_localgeo.setObjectName("fgdc_localgeo")
-        self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.fgdc_localgeo)
+        self.formLayout_7.setWidget(
+            1, QtWidgets.QFormLayout.FieldRole, self.fgdc_localgeo
+        )
         self.stack_definition.addWidget(self.page)
         self.verticalLayout.addWidget(self.stack_definition)
         self.verticalLayout_2.addLayout(self.verticalLayout)
@@ -278,7 +317,9 @@ class Ui_fgdc_spref(object):
         self.fgdc_ellips.addItem("")
         self.fgdc_ellips.addItem("")
         self.fgdc_ellips.addItem("")
-        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.fgdc_ellips)
+        self.formLayout_5.setWidget(
+            1, QtWidgets.QFormLayout.FieldRole, self.fgdc_ellips
+        )
         self.label_9 = QtWidgets.QLabel(self.fgdc_geodetic)
         self.label_9.setObjectName("label_9")
         self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_9)
@@ -287,20 +328,26 @@ class Ui_fgdc_spref(object):
         self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_10)
         self.fgdc_semiaxis = QtWidgets.QLineEdit(self.fgdc_geodetic)
         self.fgdc_semiaxis.setObjectName("fgdc_semiaxis")
-        self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.fgdc_semiaxis)
+        self.formLayout_5.setWidget(
+            2, QtWidgets.QFormLayout.FieldRole, self.fgdc_semiaxis
+        )
         self.label_11 = QtWidgets.QLabel(self.fgdc_geodetic)
         self.label_11.setObjectName("label_11")
         self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_11)
         self.fgdc_denflat = QtWidgets.QLineEdit(self.fgdc_geodetic)
         self.fgdc_denflat.setObjectName("fgdc_denflat")
-        self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.fgdc_denflat)
+        self.formLayout_5.setWidget(
+            3, QtWidgets.QFormLayout.FieldRole, self.fgdc_denflat
+        )
         self.fgdc_horizdn = QtWidgets.QComboBox(self.fgdc_geodetic)
         self.fgdc_horizdn.setEditable(True)
         self.fgdc_horizdn.setObjectName("fgdc_horizdn")
         self.fgdc_horizdn.addItem("")
         self.fgdc_horizdn.addItem("")
         self.fgdc_horizdn.addItem("")
-        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.fgdc_horizdn)
+        self.formLayout_5.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.fgdc_horizdn
+        )
         self.verticalLayout_5.addWidget(self.fgdc_geodetic)
         self.verticalLayout_4.addWidget(self.horiz_layout)
         self.verticalLayout_6.addWidget(self.fgdc_horizsys)
@@ -316,10 +363,16 @@ class Ui_fgdc_spref(object):
     def retranslateUi(self, fgdc_spref):
         _translate = QtCore.QCoreApplication.translate
         fgdc_spref.setWindowTitle(_translate("fgdc_spref", "Form"))
-        self.label_13.setText(_translate("fgdc_spref", "Is there a datum or projection used in this Dataset? "))
+        self.label_13.setText(
+            _translate(
+                "fgdc_spref", "Is there a datum or projection used in this Dataset? "
+            )
+        )
         self.rbtn_yes.setText(_translate("fgdc_spref", "Yes"))
         self.rbtn_no.setText(_translate("fgdc_spref", "No"))
-        self.horiz_layout.setTitle(_translate("fgdc_spref", "Horizontal Coordinate System"))
+        self.horiz_layout.setTitle(
+            _translate("fgdc_spref", "Horizontal Coordinate System")
+        )
         self.btn_geographic.setText(_translate("fgdc_spref", "Geographic"))
         self.btn_planar.setText(_translate("fgdc_spref", "Planar"))
         self.btn_local.setText(_translate("fgdc_spref", "Local"))
@@ -332,8 +385,12 @@ class Ui_fgdc_spref(object):
         self.fgdc_geogunit.setItemText(0, _translate("fgdc_spref", "Decimal degrees"))
         self.fgdc_geogunit.setItemText(1, _translate("fgdc_spref", "Decimal minutes"))
         self.fgdc_geogunit.setItemText(2, _translate("fgdc_spref", "Decimal seconds"))
-        self.fgdc_geogunit.setItemText(3, _translate("fgdc_spref", "Degrees and decimal minutes"))
-        self.fgdc_geogunit.setItemText(4, _translate("fgdc_spref", "Degrees, minutes, and decimal seconds"))
+        self.fgdc_geogunit.setItemText(
+            3, _translate("fgdc_spref", "Degrees and decimal minutes")
+        )
+        self.fgdc_geogunit.setItemText(
+            4, _translate("fgdc_spref", "Degrees, minutes, and decimal seconds")
+        )
         self.fgdc_geogunit.setItemText(5, _translate("fgdc_spref", "Radians"))
         self.fgdc_geogunit.setItemText(6, _translate("fgdc_spref", "Grads"))
         self.btn_projection.setText(_translate("fgdc_spref", "Map Projection"))
@@ -342,11 +399,19 @@ class Ui_fgdc_spref(object):
         self.label_4.setText(_translate("fgdc_spref", "Projection Name"))
         self.label_7.setText(_translate("fgdc_spref", "Grid System Name"))
         self.label_5.setText(_translate("fgdc_spref", "Local Planar Description"))
-        self.label_6.setText(_translate("fgdc_spref", "Local Planar georeference information"))
-        self.groupBox.setTitle(_translate("fgdc_spref", "Planar Coordinate Information"))
-        self.help_plance.setText(_translate("fgdc_spref", "Planar Coordinate Encoding Method"))
+        self.label_6.setText(
+            _translate("fgdc_spref", "Local Planar georeference information")
+        )
+        self.groupBox.setTitle(
+            _translate("fgdc_spref", "Planar Coordinate Information")
+        )
+        self.help_plance.setText(
+            _translate("fgdc_spref", "Planar Coordinate Encoding Method")
+        )
         self.fgdc_plance.setItemText(0, _translate("fgdc_spref", "coordinate pair"))
-        self.fgdc_plance.setItemText(1, _translate("fgdc_spref", "distance and bearing"))
+        self.fgdc_plance.setItemText(
+            1, _translate("fgdc_spref", "distance and bearing")
+        )
         self.fgdc_plance.setItemText(2, _translate("fgdc_spref", "row and column"))
         self.help_absres.setText(_translate("fgdc_spref", "Abscissa Resolution"))
         self.fgdc_absres.setText(_translate("fgdc_spref", "0.0001"))
@@ -357,18 +422,27 @@ class Ui_fgdc_spref(object):
         self.fgdc_plandu.setItemText(1, _translate("fgdc_spref", "International feet"))
         self.fgdc_plandu.setItemText(2, _translate("fgdc_spref", "survey feet"))
         self.label_12.setText(_translate("fgdc_spref", "Local Description"))
-        self.label_14.setText(_translate("fgdc_spref", "Local Georeference Information"))
+        self.label_14.setText(
+            _translate("fgdc_spref", "Local Georeference Information")
+        )
         self.fgdc_geodetic.setTitle(_translate("fgdc_spref", "Datum (optional)"))
         self.label_8.setText(_translate("fgdc_spref", "Datum Name"))
         self.fgdc_ellips.setItemText(0, _translate("fgdc_spref", "Clarke 1866"))
-        self.fgdc_ellips.setItemText(1, _translate("fgdc_spref", "Geodetic Reference System 1980"))
+        self.fgdc_ellips.setItemText(
+            1, _translate("fgdc_spref", "Geodetic Reference System 1980")
+        )
         self.fgdc_ellips.setItemText(2, _translate("fgdc_spref", "WGS_1984"))
         self.label_9.setText(_translate("fgdc_spref", "Elipsoid Name"))
         self.label_10.setText(_translate("fgdc_spref", "Semi-major Axis"))
         self.fgdc_semiaxis.setText(_translate("fgdc_spref", "6378137.000000"))
         self.label_11.setText(_translate("fgdc_spref", "Denominator Flattening Ratio"))
         self.fgdc_denflat.setText(_translate("fgdc_spref", "298.257224"))
-        self.fgdc_horizdn.setItemText(0, _translate("fgdc_spref", "North American Datum of 1927 (NAD 27)"))
-        self.fgdc_horizdn.setItemText(1, _translate("fgdc_spref", "North American Datum of 1983 (NAD 83)"))
-        self.fgdc_horizdn.setItemText(2, _translate("fgdc_spref", "World Geodetic System 1984 (WGS 84)"))
-
+        self.fgdc_horizdn.setItemText(
+            0, _translate("fgdc_spref", "North American Datum of 1927 (NAD 27)")
+        )
+        self.fgdc_horizdn.setItemText(
+            1, _translate("fgdc_spref", "North American Datum of 1983 (NAD 83)")
+        )
+        self.fgdc_horizdn.setItemText(
+            2, _translate("fgdc_spref", "World Geodetic System 1984 (WGS 84)")
+        )

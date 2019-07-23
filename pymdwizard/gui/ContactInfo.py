@@ -66,7 +66,7 @@ from pymdwizard.gui.ui_files import UI_USGSContactImporter
 class ContactInfo(WizardWidget):
 
     drag_label = "Contact Information <cntinfo>"
-    acceptable_tags = ['ptcontac', 'cntinfo']
+    acceptable_tags = ["ptcontac", "cntinfo"]
 
     ui_class = UI_ContactInfo.Ui_USGSContactInfoWidget
 
@@ -102,8 +102,7 @@ class ContactInfo(WizardWidget):
             return
 
         try:
-            cntperp = utils.get_usgs_contact_info(username,
-                                                  as_dictionary=False)
+            cntperp = utils.get_usgs_contact_info(username, as_dictionary=False)
             if cntperp.getchildren()[0].getchildren()[0].text.strip():
                 self.from_xml(cntperp)
                 self.usgs_contact.deleteLater()
@@ -112,12 +111,16 @@ class ContactInfo(WizardWidget):
                 utils.set_window_icon(msg)
                 msg.setIcon(QMessageBox.Information)
                 msg.setText("'{}' Not Found".format(username))
-                msg.setInformativeText("The Metadata Wizard was unable to locate the provided user name in the USGS directory")
+                msg.setInformativeText(
+                    "The Metadata Wizard was unable to locate the provided user name in the USGS directory"
+                )
                 msg.setWindowTitle("Name Not Found")
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
         except:
-            msg_text = "Make sure there is a working Internet connection or try again latter."
+            msg_text = (
+                "Make sure there is a working Internet connection or try again latter."
+            )
             msg = QMessageBox(self)
             utils.set_window_icon(msg)
             msg.setIcon(QMessageBox.Information)
@@ -156,7 +159,7 @@ class ContactInfo(WizardWidget):
         cntper_str = self.findChild(QLineEdit, "fgdc_cntper").text()
         cntorg_str = self.findChild(QLineEdit, "fgdc_cntorg").text()
 
-        rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
+        rbtn_perp = self.findChild(QRadioButton, "rbtn_perp")
         if rbtn_perp.isChecked():
             cntperp = xml_node("cntperp", parent_node=cntinfo)
             cntper = xml_node("cntper", cntper_str, cntperp)
@@ -178,16 +181,15 @@ class ContactInfo(WizardWidget):
         addrtype = xml_node("addrtype", addrtype_str, cntaddr)
 
         address_str = self.findChild(QLineEdit, "fgdc_address").text()
-        node = xml_node('address', address_str, cntaddr)
+        node = xml_node("address", address_str, cntaddr)
         address2_str = self.findChild(QLineEdit, "fgdc_address2").text()
         if address2_str:
-            node = xml_node('address', address2_str, cntaddr)
+            node = xml_node("address", address2_str, cntaddr)
         address3_str = self.findChild(QLineEdit, "fgdc_address3").text()
         if address3_str:
-            node = xml_node('address', address3_str, cntaddr)
+            node = xml_node("address", address3_str, cntaddr)
 
-        for label in ['city', 'state',
-                      'postal']:
+        for label in ["city", "state", "postal"]:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
                 node = xml_node(label, widget_str, cntaddr)
@@ -196,16 +198,15 @@ class ContactInfo(WizardWidget):
 
         country_str = self.ui.fgdc_country.text()
         if country_str:
-            node = xml_node('country', country_str, cntaddr)
+            node = xml_node("country", country_str, cntaddr)
 
-        for label in ['cntvoice', 'cntfax', 'cntemail']:
+        for label in ["cntvoice", "cntfax", "cntemail"]:
             widget_str = self.findChild(QLineEdit, "fgdc_" + label).text()
             try:
-                if label == 'cntvoice' or widget_str:
+                if label == "cntvoice" or widget_str:
                     node = xml_node(label, widget_str, cntinfo)
             except:
                 pass
-
 
         return cntinfo
 
@@ -216,25 +217,25 @@ class ContactInfo(WizardWidget):
         contact_dict = xml_utils.node_to_dict(contact_information)
         utils.populate_widget(self, contact_dict)
 
-        addrtype_widget = self.findChild(QComboBox, 'fgdc_addrtype')
+        addrtype_widget = self.findChild(QComboBox, "fgdc_addrtype")
 
-        if 'cntinfo' in contact_dict:
-            contact_dict = contact_dict['cntinfo']
-        if 'fgdc_cntinfo' in contact_dict:
-            contact_dict = contact_dict['fgdc_cntinfo']
+        if "cntinfo" in contact_dict:
+            contact_dict = contact_dict["cntinfo"]
+        if "fgdc_cntinfo" in contact_dict:
+            contact_dict = contact_dict["fgdc_cntinfo"]
 
         try:
-            addrtype = contact_dict['cntaddr']['addrtype']
+            addrtype = contact_dict["cntaddr"]["addrtype"]
             addrtype_widget.setEditText(addrtype)
         except KeyError:
             pass
 
         try:
-            if 'fgdc_cntorgp' in contact_dict:
-                rbtn_orgp = self.findChild(QRadioButton, 'rbtn_orgp')
+            if "fgdc_cntorgp" in contact_dict:
+                rbtn_orgp = self.findChild(QRadioButton, "rbtn_orgp")
                 rbtn_orgp.setChecked(True)
-            elif 'fgdc_cntperp' in contact_dict:
-                rbtn_perp = self.findChild(QRadioButton, 'rbtn_perp')
+            elif "fgdc_cntperp" in contact_dict:
+                rbtn_perp = self.findChild(QRadioButton, "rbtn_perp")
                 rbtn_perp.setChecked(True)
         except KeyError:
             pass

@@ -57,11 +57,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_spdoinfo
 
 
-
 class SpdoInfo(WizardWidget):
 
     drag_label = "Spatial Domain Info <spdoinfo>"
-    acceptable_tags = ['spdoinfo']
+    acceptable_tags = ["spdoinfo"]
 
     def build_ui(self):
         """
@@ -94,7 +93,7 @@ class SpdoInfo(WizardWidget):
             self.ui.content_widget.hide()
 
     def change_type(self):
-        if self.ui.fgdc_direct.currentText() == 'Raster':
+        if self.ui.fgdc_direct.currentText() == "Raster":
             self.ui.vector_or_raster.setCurrentIndex(1)
         else:
             self.ui.vector_or_raster.setCurrentIndex(0)
@@ -121,10 +120,10 @@ class SpdoInfo(WizardWidget):
         -------
         None
         """
-        self.ui.fgdc_rowcount.setText('')
-        self.ui.fgdc_colcount.setText('')
-        self.ui.fgdc_vrtcount.setText('')
-        self.ui.fgdc_ptvctcnt.setText('')
+        self.ui.fgdc_rowcount.setText("")
+        self.ui.fgdc_colcount.setText("")
+        self.ui.fgdc_vrtcount.setText("")
+        self.ui.fgdc_ptvctcnt.setText("")
 
         self.ui.fgdc_sdtstype.setCurrentIndex(0)
         self.ui.fgdc_rasttype.setCurrentIndex(0)
@@ -135,47 +134,56 @@ class SpdoInfo(WizardWidget):
 
     def to_xml(self):
         if self.ui.rbtn_yes.isChecked():
-            spdoinfo = xml_utils.xml_node('spdoinfo')
+            spdoinfo = xml_utils.xml_node("spdoinfo")
 
             if self.original_xml is not None:
-                indspref = xml_utils.search_xpath(self.original_xml, 'indspref')
+                indspref = xml_utils.search_xpath(self.original_xml, "indspref")
                 if indspref is not None:
                     indspref.tail = None
                     spdoinfo.append(deepcopy(indspref))
 
-
-            direct = xml_utils.xml_node('direct', text=self.ui.fgdc_direct.currentText(),
-                                        parent_node=spdoinfo)
-            if self.ui.fgdc_direct.currentText() == 'Raster':
+            direct = xml_utils.xml_node(
+                "direct", text=self.ui.fgdc_direct.currentText(), parent_node=spdoinfo
+            )
+            if self.ui.fgdc_direct.currentText() == "Raster":
                 rasttype = self.ui.fgdc_rasttype.currentText()
                 if rasttype:
-                    rastinfo = xml_utils.xml_node('rastinfo', parent_node=spdoinfo)
-                    rasttype = xml_utils.xml_node('rasttype', text=rasttype, parent_node=rastinfo)
+                    rastinfo = xml_utils.xml_node("rastinfo", parent_node=spdoinfo)
+                    rasttype = xml_utils.xml_node(
+                        "rasttype", text=rasttype, parent_node=rastinfo
+                    )
 
                     rowcount_str = self.ui.fgdc_rowcount.text()
                     colcount_str = self.ui.fgdc_colcount.text()
                     vrtcount_str = self.ui.fgdc_vrtcount.text()
 
                     if rowcount_str or colcount_str:
-                        rowcount = xml_utils.xml_node('rowcount', text=rowcount_str,
-                                                      parent_node=rastinfo)
-                        colcount = xml_utils.xml_node('colcount', text=colcount_str,
-                                                      parent_node=rastinfo)
+                        rowcount = xml_utils.xml_node(
+                            "rowcount", text=rowcount_str, parent_node=rastinfo
+                        )
+                        colcount = xml_utils.xml_node(
+                            "colcount", text=colcount_str, parent_node=rastinfo
+                        )
                         if vrtcount_str:
-                            vrtcount = xml_utils.xml_node('vrtcount', text=vrtcount_str,
-                                                      parent_node=rastinfo)
+                            vrtcount = xml_utils.xml_node(
+                                "vrtcount", text=vrtcount_str, parent_node=rastinfo
+                            )
             else:
                 sdtstype = self.ui.fgdc_sdtstype.currentText()
                 ptvctcnt = self.ui.fgdc_ptvctcnt.text()
 
                 if sdtstype or ptvctcnt:
-                    ptvctinf = xml_utils.xml_node('ptvctinf', parent_node=spdoinfo)
-                    sdtsterm = xml_utils.xml_node('sdtsterm', parent_node=ptvctinf)
-                    sdtstype = xml_utils.xml_node('sdtstype', text=sdtstype, parent_node=sdtsterm)
+                    ptvctinf = xml_utils.xml_node("ptvctinf", parent_node=spdoinfo)
+                    sdtsterm = xml_utils.xml_node("sdtsterm", parent_node=ptvctinf)
+                    sdtstype = xml_utils.xml_node(
+                        "sdtstype", text=sdtstype, parent_node=sdtsterm
+                    )
 
                     ptvctcnt_str = self.ui.fgdc_ptvctcnt.text()
                     if ptvctcnt_str:
-                        sdtsterm = xml_utils.xml_node('ptvctcnt', text = ptvctcnt_str, parent_node=sdtsterm)
+                        sdtsterm = xml_utils.xml_node(
+                            "ptvctcnt", text=ptvctcnt_str, parent_node=sdtsterm
+                        )
         else:
             spdoinfo = None
 
@@ -184,58 +192,55 @@ class SpdoInfo(WizardWidget):
     def from_xml(self, spdoinfo):
 
         self.clear_widget()
-        if spdoinfo.tag == 'spdoinfo':
+        if spdoinfo.tag == "spdoinfo":
             self.original_xml = spdoinfo
 
             self.ui.rbtn_yes.setChecked(True)
 
-            direct = xml_utils.get_text_content(spdoinfo, 'direct')
+            direct = xml_utils.get_text_content(spdoinfo, "direct")
             if direct is not None:
-                if 'raster' in direct.lower():
+                if "raster" in direct.lower():
                     self.ui.fgdc_direct.setCurrentIndex(0)
                     self.ui.fgdc_direct.setCurrentIndex(2)
-                elif 'point' in direct.lower():
+                elif "point" in direct.lower():
                     self.ui.fgdc_direct.setCurrentIndex(2)
                     self.ui.fgdc_direct.setCurrentIndex(0)
-                elif 'vector' in direct.lower():
+                elif "vector" in direct.lower():
                     self.ui.fgdc_direct.setCurrentIndex(0)
                     self.ui.fgdc_direct.setCurrentIndex(1)
 
-            rasttype = xml_utils.get_text_content(spdoinfo, 'rastinfo/rastype')
+            rasttype = xml_utils.get_text_content(spdoinfo, "rastinfo/rastype")
             if rasttype is not None:
                 self.ui.fgdc_rasttype.setCurrentText(rasttype)
 
-            sdtstype = xml_utils.get_text_content(spdoinfo, 'ptvctinf/sdtsterm/sdtstype')
+            sdtstype = xml_utils.get_text_content(
+                spdoinfo, "ptvctinf/sdtsterm/sdtstype"
+            )
             if sdtstype is not None:
                 self.ui.fgdc_sdtstype.setCurrentText(sdtstype)
 
-            ptvctcnt = xml_utils.get_text_content(spdoinfo, 'ptvctinf/sdtsterm/ptvctcnt')
+            ptvctcnt = xml_utils.get_text_content(
+                spdoinfo, "ptvctinf/sdtsterm/ptvctcnt"
+            )
             if ptvctcnt is not None:
                 self.ui.fgdc_ptvctcnt.setText(ptvctcnt)
 
-            rasttype = xml_utils.get_text_content(spdoinfo, 'rastinfo/rasttype')
+            rasttype = xml_utils.get_text_content(spdoinfo, "rastinfo/rasttype")
             if rasttype is not None:
                 self.ui.fgdc_rasttype.setCurrentText(rasttype)
 
-            rowcount = xml_utils.get_text_content(spdoinfo, 'rastinfo/rowcount')
+            rowcount = xml_utils.get_text_content(spdoinfo, "rastinfo/rowcount")
             if rowcount is not None:
                 self.ui.fgdc_rowcount.setText(rowcount)
 
-            colcount = xml_utils.get_text_content(spdoinfo, 'rastinfo/colcount')
+            colcount = xml_utils.get_text_content(spdoinfo, "rastinfo/colcount")
             if colcount is not None:
                 self.ui.fgdc_colcount.setText(colcount)
 
-            vrtcount = xml_utils.get_text_content(spdoinfo, 'rastinfo/vrtcount')
+            vrtcount = xml_utils.get_text_content(spdoinfo, "rastinfo/vrtcount")
             if vrtcount is not None:
                 self.ui.fgdc_vrtcount.setText(vrtcount)
 
+
 if __name__ == "__main__":
-    utils.launch_widget(SpdoInfo,
-                        "Spatial Domain Information")
-
-
-
-
-
-
-
+    utils.launch_widget(SpdoInfo, "Spatial Domain Information")

@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -116,19 +117,31 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.fgdc_descript.setTitle(_translate("Form", "Descriptors"))
         self.label_5.setText(_translate("Form", "Abstract"))
-        self.label_2.setText(_translate("Form", "Provide a description of the dataset."))
+        self.label_2.setText(
+            _translate("Form", "Provide a description of the dataset.")
+        )
         self.label_6.setText(_translate("Form", "Purpose"))
-        self.label_3.setText(_translate("Form", "Why were the data collected?  What is an appropriate use of the data?"))
+        self.label_3.setText(
+            _translate(
+                "Form",
+                "Why were the data collected?  What is an appropriate use of the data?",
+            )
+        )
         self.label_4.setText(_translate("Form", "Supplemental Information"))
-        self.label.setText(_translate("Form", "Use this optional section to add ANY other details or information about the dataset that may be helpful to future users."))
+        self.label.setText(
+            _translate(
+                "Form",
+                "Use this optional section to add ANY other details or information about the dataset that may be helpful to future users.",
+            )
+        )
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
-

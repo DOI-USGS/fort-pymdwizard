@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_fgdc_detailed(object):
     def setupUi(self, fgdc_detailed):
         fgdc_detailed.setObjectName("fgdc_detailed")
@@ -15,7 +16,9 @@ class Ui_fgdc_detailed(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(fgdc_detailed)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(fgdc_detailed)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
@@ -49,14 +52,18 @@ class Ui_fgdc_detailed(object):
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
         self.fgdc_enttypd = GrowingTextEdit(self.fgdc_enttyp)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_enttypd.sizePolicy().hasHeightForWidth())
         self.fgdc_enttypd.setSizePolicy(sizePolicy)
         self.fgdc_enttypd.setMinimumSize(QtCore.QSize(0, 45))
         self.fgdc_enttypd.setMaximumSize(QtCore.QSize(16777215, 45))
-        self.fgdc_enttypd.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.fgdc_enttypd.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContents
+        )
         self.fgdc_enttypd.setObjectName("fgdc_enttypd")
         self.verticalLayout.addWidget(self.fgdc_enttypd)
         self.label_4 = QtWidgets.QLabel(self.fgdc_enttyp)
@@ -65,12 +72,16 @@ class Ui_fgdc_detailed(object):
         self.fgdc_enttypds = QtWidgets.QLineEdit(self.fgdc_enttyp)
         self.fgdc_enttypds.setObjectName("fgdc_enttypds")
         self.verticalLayout.addWidget(self.fgdc_enttypds)
-        spacerItem = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.verticalLayout_2.addWidget(self.fgdc_enttyp)
         self.btn_remove = QtWidgets.QPushButton(self.frame)
-        self.btn_remove.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));\n"
-"")
+        self.btn_remove.setStyleSheet(
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));\n"
+            ""
+        )
         self.btn_remove.setObjectName("btn_remove")
         self.verticalLayout_2.addWidget(self.btn_remove)
         self.horizontalLayout.addWidget(self.frame)
@@ -82,7 +93,9 @@ class Ui_fgdc_detailed(object):
         self.verticalLayout_3.setSpacing(2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.label_5 = QtWidgets.QLabel(self.attribute_frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -98,7 +111,7 @@ class Ui_fgdc_detailed(object):
         self.label_5.setFont(font)
         self.label_5.setTextFormat(QtCore.Qt.RichText)
         self.label_5.setScaledContents(False)
-        self.label_5.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_5.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.label_5.setIndent(0)
         self.label_5.setObjectName("label_5")
         self.verticalLayout_3.addWidget(self.label_5)
@@ -121,7 +134,9 @@ class Ui_fgdc_detailed(object):
         self.horizontalLayout_2.addWidget(self.previous)
         self.next = QtWidgets.QPushButton(self.displayed_widget)
         self.next.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.next.sizePolicy().hasHeightForWidth())
@@ -130,7 +145,9 @@ class Ui_fgdc_detailed(object):
         self.next.setAutoRepeatDelay(0)
         self.next.setObjectName("next")
         self.horizontalLayout_2.addWidget(self.next)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout_4.addWidget(self.displayed_widget)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
@@ -143,9 +160,14 @@ class Ui_fgdc_detailed(object):
         _translate = QtCore.QCoreApplication.translate
         fgdc_detailed.setWindowTitle(_translate("fgdc_detailed", "Form"))
         self.fgdc_enttyp.setTitle(_translate("fgdc_detailed", "Dataset "))
-        self.label.setText(_translate("fgdc_detailed", "If you have access to the dataset being documented in this metadata record browse to it by clicking the button below.\n"
-"\n"
-"This section will be autopopulated with appropriate content pulled from the data (column labels, min/max values, unique lists, etc.)."))
+        self.label.setText(
+            _translate(
+                "fgdc_detailed",
+                "If you have access to the dataset being documented in this metadata record browse to it by clicking the button below.\n"
+                "\n"
+                "This section will be autopopulated with appropriate content pulled from the data (column labels, min/max values, unique lists, etc.).",
+            )
+        )
         self.btn_browse.setText(_translate("fgdc_detailed", "Browse to Dataset"))
         self.label_2.setText(_translate("fgdc_detailed", "Dataset Label"))
         self.label_3.setText(_translate("fgdc_detailed", "Dataset Description"))
@@ -153,11 +175,21 @@ class Ui_fgdc_detailed(object):
         self.fgdc_enttypds.setText(_translate("fgdc_detailed", "Producer defined"))
         self.btn_remove.setText(_translate("fgdc_detailed", "Remove this Detailed"))
         self.label_5.setToolTip(_translate("fgdc_detailed", "Required"))
-        self.label_5.setText(_translate("fgdc_detailed", "<html><head/><body><p><span style=\" font-style:italic; color:#55aaff;\">These represent the columns in your dataset.  Click below in each one and provide a definition for the column and a description for the column contents.</span></p></body></html>"))
-        self.displayed_label.setText(_translate("fgdc_detailed", "0-N of N Columns (attribues) displayed   "))
-        self.previous.setToolTip(_translate("fgdc_detailed", "Display previous set of columns"))
+        self.label_5.setText(
+            _translate(
+                "fgdc_detailed",
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">These represent the columns in your dataset.  Click below in each one and provide a definition for the column and a description for the column contents.</span></p></body></html>',
+            )
+        )
+        self.displayed_label.setText(
+            _translate("fgdc_detailed", "0-N of N Columns (attribues) displayed   ")
+        )
+        self.previous.setToolTip(
+            _translate("fgdc_detailed", "Display previous set of columns")
+        )
         self.previous.setText(_translate("fgdc_detailed", "<"))
         self.next.setToolTip(_translate("fgdc_detailed", "Display next set of columns"))
         self.next.setText(_translate("fgdc_detailed", ">"))
+
 
 from growingtextedit import GrowingTextEdit

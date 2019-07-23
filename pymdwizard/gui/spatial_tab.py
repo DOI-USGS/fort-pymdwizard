@@ -68,13 +68,13 @@ from pymdwizard.gui import spdom
 class SpatialTab(WizardWidget):
 
     drag_label = "Spatial org and Spatial Ref <...>"
-    acceptable_tags = ['idinfo']
+    acceptable_tags = ["idinfo"]
 
     ui_class = UI_spatial_tab.Ui_spatial_tab
 
     def __init__(self, root_widget=None):
         super(self.__class__, self).__init__()
-        self.schema = 'bdp'
+        self.schema = "bdp"
         self.root_widget = root_widget
         self.scroll_area = self.ui.spatial_scroll_area
 
@@ -98,22 +98,26 @@ class SpatialTab(WizardWidget):
         self.clear_widget()
 
     def browse(self):
-        settings = QSettings('USGS', 'pymdwizard')
-        last_data_fname = settings.value('lastDataFname', '')
+        settings = QSettings("USGS", "pymdwizard")
+        last_data_fname = settings.value("lastDataFname", "")
         if last_data_fname:
             dname, fname = os.path.split(last_data_fname)
         else:
             fname, dname = "", ""
 
-        fname = QFileDialog.getOpenFileName(self, fname, dname,
-                                            # Image Files (*.png *.jpg *.bmp)
-                                            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd)")
+        fname = QFileDialog.getOpenFileName(
+            self,
+            fname,
+            dname,
+            # Image Files (*.png *.jpg *.bmp)
+            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd)",
+        )
         if fname[0]:
-            settings.setValue('lastDataFname', fname[0])
+            settings.setValue("lastDataFname", fname[0])
             self.populate_from_fname(fname[0])
 
     def populate_from_fname(self, fname):
-        msg = ''
+        msg = ""
         try:
             spdom = spatial_utils.get_bounding(fname)
             self.spdom.from_xml(spdom)
@@ -156,12 +160,13 @@ class SpatialTab(WizardWidget):
         # since this tab is composed of content from three disparate sections
         # the to and from xml functions are being handled
         # by the parent widget (MetadataRoot)
-        if xml_unknown.tag == 'spdoinfo':
+        if xml_unknown.tag == "spdoinfo":
             self.spdoinfo.from_xml(xml_unknown)
-        elif xml_unknown.tag == 'spref':
+        elif xml_unknown.tag == "spref":
             self.spref.from_xml(xml_unknown)
-        elif xml_unknown.tag == 'spdom':
+        elif xml_unknown.tag == "spdom":
             self.spdom.from_xml(xml_unknown)
+
 
 if __name__ == "__main__":
     utils.launch_widget(SpatialTab, "IdInfo testing")

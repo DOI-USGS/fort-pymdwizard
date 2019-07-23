@@ -8,14 +8,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_USGSContactInfoWidgetMain(object):
     def setupUi(self, USGSContactInfoWidgetMain):
         USGSContactInfoWidgetMain.setObjectName("USGSContactInfoWidgetMain")
         USGSContactInfoWidgetMain.resize(530, 73)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(USGSContactInfoWidgetMain.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            USGSContactInfoWidgetMain.sizePolicy().hasHeightForWidth()
+        )
         USGSContactInfoWidgetMain.setSizePolicy(sizePolicy)
         USGSContactInfoWidgetMain.setMaximumSize(QtCore.QSize(16777215, 16777215))
         USGSContactInfoWidgetMain.setAcceptDrops(True)
@@ -44,7 +49,9 @@ class Ui_USGSContactInfoWidgetMain(object):
         self.label.setStyleSheet("font: bold;")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.rbtn_yes = QtWidgets.QRadioButton(self.fgdc_ptcontac)
         self.rbtn_yes.setAutoFillBackground(True)
@@ -65,7 +72,9 @@ class Ui_USGSContactInfoWidgetMain(object):
         self.label_2.setStyleSheet("font: italic;")
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_2.addItem(spacerItem1)
         self.main_layout.addLayout(self.horizontalLayout_2)
         self.verticalLayout_3.addLayout(self.main_layout)
@@ -76,10 +85,23 @@ class Ui_USGSContactInfoWidgetMain(object):
 
     def retranslateUi(self, USGSContactInfoWidgetMain):
         _translate = QtCore.QCoreApplication.translate
-        USGSContactInfoWidgetMain.setWindowTitle(_translate("USGSContactInfoWidgetMain", "Form"))
-        self.fgdc_ptcontac.setTitle(_translate("USGSContactInfoWidgetMain", "Dataset Point of Contact"))
-        self.label.setText(_translate("USGSContactInfoWidgetMain", "Is there a contact person or agency for this dataset?"))
+        USGSContactInfoWidgetMain.setWindowTitle(
+            _translate("USGSContactInfoWidgetMain", "Form")
+        )
+        self.fgdc_ptcontac.setTitle(
+            _translate("USGSContactInfoWidgetMain", "Dataset Point of Contact")
+        )
+        self.label.setText(
+            _translate(
+                "USGSContactInfoWidgetMain",
+                "Is there a contact person or agency for this dataset?",
+            )
+        )
         self.rbtn_yes.setText(_translate("USGSContactInfoWidgetMain", "Yes"))
         self.rbtn_no.setText(_translate("USGSContactInfoWidgetMain", "No"))
-        self.label_2.setText(_translate("USGSContactInfoWidgetMain", "This is someone who could be contacted for questions about the dataset."))
-
+        self.label_2.setText(
+            _translate(
+                "USGSContactInfoWidgetMain",
+                "This is someone who could be contacted for questions about the dataset.",
+            )
+        )

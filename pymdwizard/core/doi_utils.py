@@ -74,16 +74,16 @@ def clean_doi(doi):
     -------
         DOI string with extraneous characters removed
     """
-    if doi.startswith('https://doi.org/'):
-        return doi.replace('https://doi.org/', '')
-    elif doi.startswith('doi.org/'):
-        return doi.replace('doi.org/', '')
-    elif doi.startswith('http://dx.doi.org'):
-        return doi.replace('http://dx.doi.org/', '')
-    elif doi.startswith('doi: '):
-        return doi.replace('doi: ', '')
-    elif doi.startswith('doi:'):
-        return doi.replace('doi:', '')
+    if doi.startswith("https://doi.org/"):
+        return doi.replace("https://doi.org/", "")
+    elif doi.startswith("doi.org/"):
+        return doi.replace("doi.org/", "")
+    elif doi.startswith("http://dx.doi.org"):
+        return doi.replace("http://dx.doi.org/", "")
+    elif doi.startswith("doi: "):
+        return doi.replace("doi: ", "")
+    elif doi.startswith("doi:"):
+        return doi.replace("doi:", "")
     else:
         return doi
 
@@ -103,13 +103,12 @@ def get_doi_citation_crossref(doi):
     -------
         dict with publication information pulled from crossref site
     """
-    cite_data = json.loads(cn.content_negotiation(ids=doi,
-                                                  format="citeproc-json"))
-    cite_data['geoform'] = 'publication'
-    if 'publisher-location' in cite_data:
-        cite_data['pubplace'] = cite_data['publisher-location']
+    cite_data = json.loads(cn.content_negotiation(ids=doi, format="citeproc-json"))
+    cite_data["geoform"] = "publication"
+    if "publisher-location" in cite_data:
+        cite_data["pubplace"] = cite_data["publisher-location"]
     else:
-        cite_data['pubplace'] = 'n/a'
+        cite_data["pubplace"] = "n/a"
 
     return cite_data
 
@@ -128,25 +127,24 @@ def get_doi_citation_datacite(doi):
     -------
         dict with information pulled from datacite site
     """
-    endpoint = 'https://api.datacite.org/works'
-    response = utils.requests_pem_get(endpoint + '/' + doi)
-    cite_data = json.loads(response.text)['data']['attributes']
+    endpoint = "https://api.datacite.org/works"
+    response = utils.requests_pem_get(endpoint + "/" + doi)
+    cite_data = json.loads(response.text)["data"]["attributes"]
 
-    if 'container-title' not in cite_data:
-        cite_data['container-title'] = cite_data.pop('container_title')
-    if 'data-center-id' not in cite_data:
-        cite_data['data-center-id'] = cite_data.pop('data_center_id')
+    if "container-title" not in cite_data:
+        cite_data["container-title"] = cite_data.pop("container_title")
+    if "data-center-id" not in cite_data:
+        cite_data["data-center-id"] = cite_data.pop("data_center_id")
 
-    cite_data['publisher'] = cite_data['container-title']
-    cite_data['URL'] = 'https://doi.org/{}'.format(cite_data['doi'])
-    if 'data-center-id' in cite_data and \
-                    'usgs' in cite_data['data-center-id']:
-        cite_data['container-title'] = None
-        cite_data['pubplace'] = 'https://www.sciencebase.gov'
-        cite_data['geoform'] = 'dataset'
+    cite_data["publisher"] = cite_data["container-title"]
+    cite_data["URL"] = "https://doi.org/{}".format(cite_data["doi"])
+    if "data-center-id" in cite_data and "usgs" in cite_data["data-center-id"]:
+        cite_data["container-title"] = None
+        cite_data["pubplace"] = "https://www.sciencebase.gov"
+        cite_data["geoform"] = "dataset"
     else:
-        cite_data['geoform'] = 'publication'
-        cite_data['pubplace'] = 'n/a'
+        cite_data["geoform"] = "publication"
+        cite_data["pubplace"] = "n/a"
     return cite_data
 
 
@@ -175,66 +173,63 @@ def get_doi_citation(doi):
         except:
             return None
 
-    citeinfo = XMLNode(tag='citeinfo')
-    if 'author' in cite_data:
-        for author in cite_data['author']:
-            if 'literal' not in author:
-                author['literal'] = author['given'] + ' ' + author['family']
-            origin = XMLNode(tag='origin', parent_node=citeinfo,
-                             text=author['literal'])
+    citeinfo = XMLNode(tag="citeinfo")
+    if "author" in cite_data:
+        for author in cite_data["author"]:
+            if "literal" not in author:
+                author["literal"] = author["given"] + " " + author["family"]
+            origin = XMLNode(tag="origin", parent_node=citeinfo, text=author["literal"])
     else:
-        origin = XMLNode(tag='origin', parent_node=citeinfo,
-                         text='')
+        origin = XMLNode(tag="origin", parent_node=citeinfo, text="")
 
-    if 'published-online' in cite_data:
-        pubdate_parts = cite_data['published-online']['date-parts'][0]
-    elif 'published-print' in cite_data:
-        pubdate_parts = cite_data['published-print']['date-parts'][0]
-    elif 'published' in cite_data:
-        pubdate_parts = [cite_data['published'], ]
+    if "published-online" in cite_data:
+        pubdate_parts = cite_data["published-online"]["date-parts"][0]
+    elif "published-print" in cite_data:
+        pubdate_parts = cite_data["published-print"]["date-parts"][0]
+    elif "published" in cite_data:
+        pubdate_parts = [cite_data["published"]]
 
-    pubdate_str = ''.join(['{:02d}'.format(int(part))
-                           for part in pubdate_parts])
-    pubdate = XMLNode(tag='pubdate', parent_node=citeinfo, text=pubdate_str)
+    pubdate_str = "".join(["{:02d}".format(int(part)) for part in pubdate_parts])
+    pubdate = XMLNode(tag="pubdate", parent_node=citeinfo, text=pubdate_str)
 
-    title = XMLNode(tag='title', parent_node=citeinfo, text=cite_data['title'])
-    geoform = XMLNode(tag='geoform', parent_node=citeinfo,
-                      text=cite_data['geoform'])
+    title = XMLNode(tag="title", parent_node=citeinfo, text=cite_data["title"])
+    geoform = XMLNode(tag="geoform", parent_node=citeinfo, text=cite_data["geoform"])
 
-    has_container = 'container-title' in cite_data and cite_data['container-title']
-    has_volume = 'volume' in cite_data and cite_data['volume']
-    has_issue = 'issue' in cite_data and cite_data['issue']
+    has_container = "container-title" in cite_data and cite_data["container-title"]
+    has_volume = "volume" in cite_data and cite_data["volume"]
+    has_issue = "issue" in cite_data and cite_data["issue"]
 
     if has_container and (has_volume or has_issue):
-        serinfo = XMLNode(tag='serinfo', parent_node=citeinfo)
-        sername = XMLNode(tag='sername', parent_node=citeinfo.serinfo,
-                          text=cite_data['container-title'])
+        serinfo = XMLNode(tag="serinfo", parent_node=citeinfo)
+        sername = XMLNode(
+            tag="sername",
+            parent_node=citeinfo.serinfo,
+            text=cite_data["container-title"],
+        )
 
-        if 'volume' in cite_data and 'issue' in cite_data:
-            issue_str = 'vol.' + ' ' + str(cite_data['volume']) + ', issue '
-            issue_str += cite_data['issue']
-            issue = XMLNode(tag='issue', parent_node=citeinfo.serinfo,
-                            text=issue_str)
-        elif 'volume' in cite_data:
-            issue_str = 'vol.' + ' ' + str(cite_data['volume'])
-            XMLNode(tag='issue', parent_node=citeinfo.serinfo,
-                            text=issue_str)
-        elif 'issue' in cite_data:
-            issue_str = 'issue ' + cite_data['issue']
-            XMLNode(tag='issue', parent_node=citeinfo.serinfo,
-                            text=issue_str)
+        if "volume" in cite_data and "issue" in cite_data:
+            issue_str = "vol." + " " + str(cite_data["volume"]) + ", issue "
+            issue_str += cite_data["issue"]
+            issue = XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
+        elif "volume" in cite_data:
+            issue_str = "vol." + " " + str(cite_data["volume"])
+            XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
+        elif "issue" in cite_data:
+            issue_str = "issue " + cite_data["issue"]
+            XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
 
-    XMLNode(tag='pubinfo', parent_node=citeinfo)
-    XMLNode(tag='pubplace', parent_node=citeinfo.pubinfo,
-                       text=cite_data['pubplace'])
-    XMLNode(tag='publish', parent_node=citeinfo.pubinfo,
-                      text=cite_data['publisher'])
+    XMLNode(tag="pubinfo", parent_node=citeinfo)
+    XMLNode(tag="pubplace", parent_node=citeinfo.pubinfo, text=cite_data["pubplace"])
+    XMLNode(tag="publish", parent_node=citeinfo.pubinfo, text=cite_data["publisher"])
 
-    if 'page' in cite_data:
-        othercit_str = 'ppg. ' + cite_data['page']
-        XMLNode(tag='othercit', parent_node=citeinfo,
-                           text=othercit_str)
+    if "page" in cite_data:
+        othercit_str = "ppg. " + cite_data["page"]
+        XMLNode(tag="othercit", parent_node=citeinfo, text=othercit_str)
 
-    XMLNode(tag='onlink', parent_node=citeinfo, text=cite_data['URL'].replace('http://dx.doi.org', 'https://doi.org'))
+    XMLNode(
+        tag="onlink",
+        parent_node=citeinfo,
+        text=cite_data["URL"].replace("http://dx.doi.org", "https://doi.org"),
+    )
 
     return citeinfo

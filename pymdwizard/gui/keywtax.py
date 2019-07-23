@@ -57,12 +57,13 @@ from pymdwizard.gui.keywords_repeater import KeywordsRepeater
 class Keywordtax(KeywordsRepeater):
 
     drag_label = "Taxonomic keywords <keywtax>"
-    acceptable_tags = ['keywtax']
+    acceptable_tags = ["keywtax"]
 
     def __init__(self, parent=None):
-        KeywordsRepeater.__init__(self, keywords_label='Taxonomic keywords',
-                                  spellings=False, parent=parent)
-        self.ui.fgdc_themekt.name = 'fgdc_taxonkt'
+        KeywordsRepeater.__init__(
+            self, keywords_label="Taxonomic keywords", spellings=False, parent=parent
+        )
+        self.ui.fgdc_themekt.name = "fgdc_taxonkt"
 
     def clear_widget(self):
         self.ui.fgdc_themekt.clear()
@@ -75,13 +76,12 @@ class Keywordtax(KeywordsRepeater):
         -------
         timeperd element tag in xml tree
         """
-        keywtax = xml_utils.xml_node('keywtax')
-        taxonkt = xml_utils.xml_node("taxonkt",
-                                     text=self.ui.fgdc_themekt.text(),
-                                     parent_node=keywtax)
+        keywtax = xml_utils.xml_node("keywtax")
+        taxonkt = xml_utils.xml_node(
+            "taxonkt", text=self.ui.fgdc_themekt.text(), parent_node=keywtax
+        )
         for keyword in self.get_keywords():
-            taxonkey = xml_utils.xml_node('taxonkey', text=keyword,
-                                          parent_node=keywtax)
+            taxonkey = xml_utils.xml_node("taxonkey", text=keyword, parent_node=keywtax)
 
         return keywtax
 
@@ -96,23 +96,22 @@ class Keywordtax(KeywordsRepeater):
         None
         """
         try:
-            if keywtax.tag == 'keywtax':
-                thesaurus = keywtax.xpath('taxonkt')
+            if keywtax.tag == "keywtax":
+                thesaurus = keywtax.xpath("taxonkt")
                 if thesaurus:
                     self.ui.fgdc_themekt.setText(thesaurus[0].text)
 
-                keywords = keywtax.xpath('taxonkey')
+                keywords = keywtax.xpath("taxonkey")
                 self.keywords.clear_widgets(add_another=False)
                 for kw in keywords:
                     kw_widget = self.keywords.add_another()
                     kw_widget.setText(kw.text)
 
             else:
-                print ("The tag is not keywtax")
+                print("The tag is not keywtax")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Keywordtax,
-                        " testing")
+    utils.launch_widget(Keywordtax, " testing")

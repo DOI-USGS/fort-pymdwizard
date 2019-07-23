@@ -64,7 +64,7 @@ from pymdwizard.gui.metainfo import MetaInfo
 class DistInfo(WizardWidget):
 
     drag_label = "Distribution Information <distinfo>"
-    acceptable_tags = ['distinfo']
+    acceptable_tags = ["distinfo"]
 
     ui_class = UI_distinfo.Ui_fgdc_distinfo
 
@@ -125,8 +125,7 @@ class DistInfo(WizardWidget):
 
     def pull_datasetcontact(self):
         try:
-            sb_info = utils.get_usgs_contact_info('sciencebase',
-                                                  as_dictionary=False)
+            sb_info = utils.get_usgs_contact_info("sciencebase", as_dictionary=False)
             self.contactinfo.from_xml(sb_info)
         except:
             msg = "Having trouble getting sciencebase contact info now.\n"
@@ -137,52 +136,70 @@ class DistInfo(WizardWidget):
         return self.ui.radio_distyes.isChecked()
 
     def to_xml(self):
-        distinfo_node = xml_utils.xml_node('distinfo')
+        distinfo_node = xml_utils.xml_node("distinfo")
 
-        dist = xml_utils.xml_node('distrib', parent_node=distinfo_node)
+        dist = xml_utils.xml_node("distrib", parent_node=distinfo_node)
         cntinfo = self.contactinfo.to_xml()
         dist.append(cntinfo)
 
         if self.original_xml is not None:
-            resdesc = xml_utils.search_xpath(self.original_xml, 'resdesc')
+            resdesc = xml_utils.search_xpath(self.original_xml, "resdesc")
             if resdesc is not None:
                 resdesc.tail = None
                 distinfo_node.append(deepcopy(resdesc))
 
         if self.ui.radio_online.isChecked():
-            liab = xml_utils.xml_node('distliab', text=self.ui.fgdc_distliab.toPlainText(),
-                                      parent_node=distinfo_node)
-            stdorder = xml_utils.xml_node('stdorder', parent_node=distinfo_node)
-            digform = xml_utils.xml_node('digform', parent_node=stdorder)
+            liab = xml_utils.xml_node(
+                "distliab",
+                text=self.ui.fgdc_distliab.toPlainText(),
+                parent_node=distinfo_node,
+            )
+            stdorder = xml_utils.xml_node("stdorder", parent_node=distinfo_node)
+            digform = xml_utils.xml_node("digform", parent_node=stdorder)
 
-            if self.original_xml is not None and \
-               self.original_xml.xpath('stdorder/digform/digtinfo/formname'):
-                digtinfo = self.original_xml.xpath('stdorder/digform/digtinfo')
+            if self.original_xml is not None and self.original_xml.xpath(
+                "stdorder/digform/digtinfo/formname"
+            ):
+                digtinfo = self.original_xml.xpath("stdorder/digform/digtinfo")
                 digform.append(deepcopy(digtinfo[0]))
             else:
-                digtinfo = xml_utils.xml_node('digtinfo', parent_node=digform)
-                formname = xml_utils.xml_node('formname', parent_node=digtinfo,
-                                              text='Digital Data')
+                digtinfo = xml_utils.xml_node("digtinfo", parent_node=digform)
+                formname = xml_utils.xml_node(
+                    "formname", parent_node=digtinfo, text="Digital Data"
+                )
 
-            digtopt = xml_utils.xml_node('digtopt', parent_node=digform)
-            onlinopt = xml_utils.xml_node('onlinopt', parent_node=digtopt)
-            computer = xml_utils.xml_node('computer', parent_node=onlinopt)
-            networka = xml_utils.xml_node('networka', parent_node=computer)
-            networkr = xml_utils.xml_node('networkr', text=self.ui.fgdc_networkr.text(), parent_node=networka)
-            fees = xml_utils.xml_node('fees', text=self.ui.fgdc_fees.toPlainText(), parent_node=stdorder)
+            digtopt = xml_utils.xml_node("digtopt", parent_node=digform)
+            onlinopt = xml_utils.xml_node("onlinopt", parent_node=digtopt)
+            computer = xml_utils.xml_node("computer", parent_node=onlinopt)
+            networka = xml_utils.xml_node("networka", parent_node=computer)
+            networkr = xml_utils.xml_node(
+                "networkr", text=self.ui.fgdc_networkr.text(), parent_node=networka
+            )
+            fees = xml_utils.xml_node(
+                "fees", text=self.ui.fgdc_fees.toPlainText(), parent_node=stdorder
+            )
 
         if self.ui.radio_otherdist.isChecked():
-            liab = xml_utils.xml_node('distliab', text=self.ui.fgdc_distliab.toPlainText(),
-                                      parent_node=distinfo_node)
-            other = xml_utils.xml_node('custom', text=self.ui.fgdc_custom.toPlainText(),
-                                       parent_node=distinfo_node)
+            liab = xml_utils.xml_node(
+                "distliab",
+                text=self.ui.fgdc_distliab.toPlainText(),
+                parent_node=distinfo_node,
+            )
+            other = xml_utils.xml_node(
+                "custom",
+                text=self.ui.fgdc_custom.toPlainText(),
+                parent_node=distinfo_node,
+            )
 
         if self.ui.radio_dist.isChecked():
-            liab = xml_utils.xml_node('distliab', text=self.ui.fgdc_distliab.toPlainText(),
-                                      parent_node=distinfo_node)
+            liab = xml_utils.xml_node(
+                "distliab",
+                text=self.ui.fgdc_distliab.toPlainText(),
+                parent_node=distinfo_node,
+            )
 
         if self.original_xml is not None:
-            techpreq = xml_utils.search_xpath(self.original_xml, 'techpreq')
+            techpreq = xml_utils.search_xpath(self.original_xml, "techpreq")
             if techpreq is not None:
                 techpreq.tail = None
                 distinfo_node.append(deepcopy(techpreq))
@@ -194,30 +211,34 @@ class DistInfo(WizardWidget):
         self.original_xml = xml_distinfo
         self.clear_widget()
 
-        if xml_distinfo.tag == 'distinfo':
+        if xml_distinfo.tag == "distinfo":
             self.original_xml = xml_distinfo
             self.ui.radio_distyes.setChecked(True)
-            if xml_distinfo.xpath('distrib/cntinfo'):
-                self.contactinfo.from_xml(xml_distinfo.xpath('distrib/cntinfo')[0])
-            if xml_distinfo.xpath('distliab'):
+            if xml_distinfo.xpath("distrib/cntinfo"):
+                self.contactinfo.from_xml(xml_distinfo.xpath("distrib/cntinfo")[0])
+            if xml_distinfo.xpath("distliab"):
                 self.ui.radio_dist.setChecked(True)
-                utils.populate_widget_element(widget=self.ui.fgdc_distliab,
-                                              element=xml_distinfo,
-                                              xpath='distliab')
+                utils.populate_widget_element(
+                    widget=self.ui.fgdc_distliab, element=xml_distinfo, xpath="distliab"
+                )
                 self.ui.fgdc_distliab.sizeChange()
-            if xml_distinfo.xpath('custom'):
+            if xml_distinfo.xpath("custom"):
                 self.ui.radio_otherdist.setChecked(True)
-                utils.populate_widget_element(widget=self.ui.fgdc_custom,
-                                              element=xml_distinfo,
-                                              xpath='custom')
-            if xml_distinfo.xpath('stdorder'):
+                utils.populate_widget_element(
+                    widget=self.ui.fgdc_custom, element=xml_distinfo, xpath="custom"
+                )
+            if xml_distinfo.xpath("stdorder"):
                 self.ui.radio_online.setChecked(True)
-                utils.populate_widget_element(widget=self.ui.fgdc_networkr,
-                                              element=xml_distinfo,
-                                              xpath='stdorder/digform/digtopt/onlinopt/computer/networka/networkr')
-                utils.populate_widget_element(widget=self.ui.fgdc_fees,
-                                              element=xml_distinfo,
-                                              xpath='stdorder/fees')
+                utils.populate_widget_element(
+                    widget=self.ui.fgdc_networkr,
+                    element=xml_distinfo,
+                    xpath="stdorder/digform/digtopt/onlinopt/computer/networka/networkr",
+                )
+                utils.populate_widget_element(
+                    widget=self.ui.fgdc_fees,
+                    element=xml_distinfo,
+                    xpath="stdorder/fees",
+                )
 
 
 if __name__ == "__main__":

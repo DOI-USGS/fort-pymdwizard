@@ -65,7 +65,7 @@ from pymdwizard.gui import edom
 class EdomList(WizardWidget):  #
 
     drag_label = "Enumerated Domain <edom>"
-    acceptable_tags = ['attr']
+    acceptable_tags = ["attr"]
 
     def build_ui(self):
         """
@@ -90,9 +90,11 @@ class EdomList(WizardWidget):  #
         self.ui.listWidget.clear()
 
         for item_label in items:
-            if (pd.isnull(item_label) or \
-                    str(item_label) == '' or \
-                    (type(item_label) != str and math.isnan(item_label))):
+            if (
+                pd.isnull(item_label)
+                or str(item_label) == ""
+                or (type(item_label) != str and math.isnan(item_label))
+            ):
                 if not self.parent().nodata == "<< empty cell >>":
                     self.add_edom("<< empty cell >>")
             else:
@@ -105,7 +107,7 @@ class EdomList(WizardWidget):  #
         for item in self.ui.listWidget.selectedItems():
             self.ui.listWidget.takeItem(self.ui.listWidget.row(item))
 
-    def add_edom(self, edomv='', edomvd='', edomvds=''):
+    def add_edom(self, edomv="", edomvd="", edomvds=""):
         item = QListWidgetItem()
         e = edom.Edom(item=item)
         e.ui.fgdc_edomv.setText(edomv)
@@ -126,11 +128,11 @@ class EdomList(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        attr = xml_utils.xml_node('attr')
+        attr = xml_utils.xml_node("attr")
         for i in range(self.ui.listWidget.count()):
             e = self.ui.listWidget.item(i)
-            e2  = self.ui.listWidget.itemWidget(e)
-            attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr)
+            e2 = self.ui.listWidget.itemWidget(e)
+            attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr)
             e_node = e2.to_xml()
             attrdomv.append(e_node)
 
@@ -147,23 +149,20 @@ class EdomList(WizardWidget):  #
         None
         """
         try:
-            if attr.tag == 'attr':
+            if attr.tag == "attr":
 
                 self.edoms = []
                 self.ui.listWidget.clear()
 
-
-                for edom in attr.xpath('attrdomv/edom'):
+                for edom in attr.xpath("attrdomv/edom"):
                     edom_dict = xml_utils.node_to_dict(edom, False)
 
                     self.add_edom(**edom_dict)
             else:
-                print ("The tag is not udom")
+                print("The tag is not udom")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(EdomList,
-                        "udom testing")
-
+    utils.launch_widget(EdomList, "udom testing")

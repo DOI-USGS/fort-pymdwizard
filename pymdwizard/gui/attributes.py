@@ -64,7 +64,7 @@ from pymdwizard.gui import attr
 class Attributes(WizardWidget):  #
 
     drag_label = "Attributes <attr>"
-    acceptable_tags = ['attr']
+    acceptable_tags = ["attr"]
 
     def build_ui(self):
         """
@@ -141,17 +141,23 @@ class Attributes(WizardWidget):  #
                 attr_i = attr.Attr(parent=self)
                 attr_i.ui.fgdc_attrlabl.setText(col_label)
 
-                if contents[col_label][b'type'] == 'String':
-                    s = pd.Series(contents[col_label][b'contents'])
+                if contents[col_label][b"type"] == "String":
+                    s = pd.Series(contents[col_label][b"contents"])
                     attr_i.set_series(s)
                     attr_i.guess_domain()
-                elif contents[col_label][b'type'] in ['Integer', 'Single', 'SmallInteger', 'Double', 'Date']:
-                    s = pd.Series(contents[col_label][b'contents'])
+                elif contents[col_label][b"type"] in [
+                    "Integer",
+                    "Single",
+                    "SmallInteger",
+                    "Double",
+                    "Date",
+                ]:
+                    s = pd.Series(contents[col_label][b"contents"])
                     attr_i.set_series(s)
                     attr_i.ui.comboBox.setCurrentIndex(1)
                 else:
                     attr_i.populate_domain_content(3)
-                    unrep = contents[col_label][b'contents']
+                    unrep = contents[col_label][b"contents"]
 
                     utils.set_text(attr_i.ui.fgdc_attrdef, unrep[0].decode("utf-8"))
                     utils.set_text(attr_i.domain.ui.fgdc_udom, unrep[1].decode("utf-8"))
@@ -193,7 +199,7 @@ class Attributes(WizardWidget):  #
             new_attrs.append(attribute)
             if attribute == this_attr:
                 new_attr = attr.Attr(parent=self)
-                self.main_layout.insertWidget(i+1, new_attr)
+                self.main_layout.insertWidget(i + 1, new_attr)
                 new_attrs.append(new_attr)
         self.attrs = new_attrs
 
@@ -217,17 +223,17 @@ class Attributes(WizardWidget):  #
         clicked_widget = self.childAt(event.pos())
 
         menu = QMenu(self)
-        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
-        copy_action.setStatusTip('Copy to the Clipboard')
+        copy_action = menu.addAction(QIcon("copy.png"), "&Copy")
+        copy_action.setStatusTip("Copy to the Clipboard")
 
-        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
-        paste_action.setStatusTip('Paste from the Clipboard')
+        paste_action = menu.addAction(QIcon("paste.png"), "&Paste")
+        paste_action.setStatusTip("Paste from the Clipboard")
 
         menu.addSeparator()
-        add_attr = menu.addAction(QIcon('paste.png'), 'Add attribute (column)')
-        add_attr.setStatusTip('Add attribute')
+        add_attr = menu.addAction(QIcon("paste.png"), "Add attribute (column)")
+        add_attr.setStatusTip("Add attribute")
 
-        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+        if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()
             help_action = menu.addAction("Help")
         else:
@@ -241,15 +247,15 @@ class Attributes(WizardWidget):  #
         if action == copy_action:
             if clicked_widget is None:
                 pass
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.copy_mime()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.copy_mime()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.copy_mime()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.copy_mime()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.copy_mime()
             else:
                 self.copy_mime()
@@ -258,15 +264,15 @@ class Attributes(WizardWidget):  #
         elif action == clear_action:
             if clicked_widget is None:
                 self.clear_widget()
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.clear_widget()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.clear_widget()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.clear_widget()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.clear_widget()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.clear_widget()
             else:
                 self.clear_widget()
@@ -283,7 +289,6 @@ class Attributes(WizardWidget):  #
             msg.show()
         self.in_context = False
 
-
     def dragEnterEvent(self, e):
         """
         Attributes never accept drops
@@ -295,7 +300,6 @@ class Attributes(WizardWidget):  #
         """
         e.ignore()
 
-
     def to_xml(self):
         """
         encapsulates the QTabWidget text for Metadata Time in an element tag
@@ -303,7 +307,7 @@ class Attributes(WizardWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        detailed = xml_utils.xml_node('detailed')
+        detailed = xml_utils.xml_node("detailed")
         for a in self.attrs:
             detailed.append(a.to_xml())
 
@@ -320,15 +324,17 @@ class Attributes(WizardWidget):  #
         None
         """
         try:
-            if detailed.tag == 'detailed':
+            if detailed.tag == "detailed":
                 self.original_xml = detailed
                 self.clear_children()
-                for attr_node in detailed.xpath('attr'):
+                for attr_node in detailed.xpath("attr"):
                     attr_widget = attr.Attr(parent=self)
                     attr_widget.from_xml(attr_node)
 
                     self.attrs.append(attr_widget)
-                    self.main_layout.insertWidget(len(self.main_layout) - 1, attr_widget)
+                    self.main_layout.insertWidget(
+                        len(self.main_layout) - 1, attr_widget
+                    )
 
                 self.minimize_children()
                 try:
@@ -337,11 +343,10 @@ class Attributes(WizardWidget):  #
                     pass
 
             else:
-                print ("The tag is not udom")
+                print("The tag is not udom")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Attributes,
-                        "attr_list testing")
+    utils.launch_widget(Attributes, "attr_list testing")

@@ -57,9 +57,15 @@ from pymdwizard.gui.ui_files import UI_fgdc_date
 
 
 class FGDCDate(QWidget):
-
-    def __init__(self, parent=None, show_format=True, label='',
-                 required=False, fgdc_name=None, parent_fgdc_name=None):
+    def __init__(
+        self,
+        parent=None,
+        show_format=True,
+        label="",
+        required=False,
+        fgdc_name=None,
+        parent_fgdc_name=None,
+    ):
         QWidget.__init__(self, parent=parent)
 
         self.build_ui()
@@ -82,7 +88,7 @@ class FGDCDate(QWidget):
         if parent_fgdc_name is not None:
             self.ui.parent_fgdc.setObjectName(parent_fgdc_name)
 
-        self.last_checked_contents = ''
+        self.last_checked_contents = ""
         self.connect_events()
 
     def build_ui(self):
@@ -114,14 +120,14 @@ class FGDCDate(QWidget):
         else:
             self.last_checked_contents = cur_contents
 
-        msg = ''
+        msg = ""
         if len(cur_contents) not in (0, 4, 6, 8):
             msg = "An FGDC date needs to be 4, 6, or 8 numbers long, or be 'Unknown'"
         if not cur_contents.isdigit():
             msg = "An FGDC date can only consist of numbers"
 
-        if cur_contents == 'Unknown':
-            msg = ''
+        if cur_contents == "Unknown":
+            msg = ""
 
         if msg:
             msgbox = QMessageBox()
@@ -140,12 +146,6 @@ class FGDCDate(QWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(FGDCDate, label='testing', show_format=False,
-                        parent_fgdc_name='fgdc_sngdate')
-
-
-
-
-
-
-
+    utils.launch_widget(
+        FGDCDate, label="testing", show_format=False, parent_fgdc_name="fgdc_sngdate"
+    )

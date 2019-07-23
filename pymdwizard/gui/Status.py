@@ -60,7 +60,7 @@ from pymdwizard.gui.ui_files import UI_Status
 class Status(WizardWidget):
 
     drag_label = "Status <status>"
-    acceptable_tags = ['status']
+    acceptable_tags = ["status"]
 
     def build_ui(self):
         """
@@ -81,14 +81,14 @@ class Status(WizardWidget):
         -------
         status element tag in xml tree
         """
-        status = xml_utils.xml_node(tag='status')
+        status = xml_utils.xml_node(tag="status")
 
-        progress_text = self.findChild(QComboBox, 'fgdc_progress').currentText()
-        progress = xml_utils.xml_node(tag='progress', text=progress_text,
-                                      parent_node=status)
-        update_text = self.findChild(QComboBox, 'fgdc_update').currentText()
-        update = xml_utils.xml_node(tag='update', text=update_text,
-                                       parent_node=status)
+        progress_text = self.findChild(QComboBox, "fgdc_progress").currentText()
+        progress = xml_utils.xml_node(
+            tag="progress", text=progress_text, parent_node=status
+        )
+        update_text = self.findChild(QComboBox, "fgdc_update").currentText()
+        update = xml_utils.xml_node(tag="update", text=update_text, parent_node=status)
 
         status.append(update)
         return status
@@ -105,24 +105,23 @@ class Status(WizardWidget):
         -------
         None
         """
-        #print "Status", status.tag
-        #print "text", status.find('progress').text
+        # print "Status", status.tag
+        # print "text", status.find('progress').text
         try:
-            if status.tag == 'status':
-                progress_box = self.findChild(QComboBox, 'fgdc_progress')
-                progress_text = status.find('progress').text
-                #print progress_text
+            if status.tag == "status":
+                progress_box = self.findChild(QComboBox, "fgdc_progress")
+                progress_text = status.find("progress").text
+                # print progress_text
                 progress_box.setCurrentText(progress_text)
-                update_box = self.findChild(QComboBox, 'fgdc_update')
-                update_text = status.find('update').text
-                #print update_text
+                update_box = self.findChild(QComboBox, "fgdc_update")
+                update_text = status.find("update").text
+                # print update_text
                 update_box.setCurrentText(update_text)
             else:
-                print ("The tag is not status")
+                print("The tag is not status")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Status,
-                        "Status testing")
+    utils.launch_widget(Status, "Status testing")

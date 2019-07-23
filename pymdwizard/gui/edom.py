@@ -59,7 +59,7 @@ from pymdwizard.gui.ui_files import UI_edom
 class Edom(QWidget):  #
 
     drag_label = "Enumerated Domain <edom>"
-    acceptable_tags = ['edom']
+    acceptable_tags = ["edom"]
 
     def __init__(self, xml=None, parent=None, item=None):
         QWidget.__init__(self, parent=parent)
@@ -80,7 +80,7 @@ class Edom(QWidget):  #
         self.ui.fgdc_edomvd.heightMax = 150
         self.ui.fgdc_edomvd.sizeChange()
 
-        defsource = utils.get_setting('defsource', 'Producer defined')
+        defsource = utils.get_setting("defsource", "Producer defined")
         self.ui.fgdc_edomvds.setText(defsource)
 
     def dragEnterEvent(self, e):
@@ -102,10 +102,16 @@ class Edom(QWidget):  #
         -------
         timeperd element tag in xml tree
         """
-        edom = xml_utils.xml_node('edom')
-        edomv = xml_utils.xml_node('edomv', text=self.ui.fgdc_edomv.text(), parent_node=edom)
-        edomvd = xml_utils.xml_node('edomvd', text=self.ui.fgdc_edomvd.toPlainText(), parent_node=edom)
-        edomvds = xml_utils.xml_node('edomvds', text=self.ui.fgdc_edomvds.text(), parent_node=edom)
+        edom = xml_utils.xml_node("edom")
+        edomv = xml_utils.xml_node(
+            "edomv", text=self.ui.fgdc_edomv.text(), parent_node=edom
+        )
+        edomvd = xml_utils.xml_node(
+            "edomvd", text=self.ui.fgdc_edomvd.toPlainText(), parent_node=edom
+        )
+        edomvds = xml_utils.xml_node(
+            "edomvds", text=self.ui.fgdc_edomvds.text(), parent_node=edom
+        )
 
         return edom
 
@@ -120,8 +126,8 @@ class Edom(QWidget):  #
         None
         """
         try:
-            if edom.tag == 'edom':
-                self.ui.fgdc_edomvds.setText('')
+            if edom.tag == "edom":
+                self.ui.fgdc_edomvds.setText("")
                 utils.populate_widget(self, edom)
             else:
                 print("The tag is not udom")
@@ -130,5 +136,4 @@ class Edom(QWidget):  #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Edom,
-                        "edom testing")
+    utils.launch_widget(Edom, "edom testing")

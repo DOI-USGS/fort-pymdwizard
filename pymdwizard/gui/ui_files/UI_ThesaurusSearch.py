@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ThesaurusSearch(object):
     def setupUi(self, ThesaurusSearch):
         ThesaurusSearch.setObjectName("ThesaurusSearch")
@@ -17,7 +18,9 @@ class Ui_ThesaurusSearch(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.splitter = QtWidgets.QSplitter(ThesaurusSearch)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
@@ -58,30 +61,40 @@ class Ui_ThesaurusSearch(object):
         self.label_search_results.setFont(font)
         self.label_search_results.setObjectName("label_search_results")
         self.horizontalLayout_6.addWidget(self.label_search_results)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_6.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout_6)
         self.treeview_results = QtWidgets.QTreeView(self.layoutWidget_2)
-        self.treeview_results.setStyleSheet("QTreeView:item:has-children {\n"
-"\n"
-"color: rgb(90, 90, 190);\n"
-"font: 400 29.3pt \"Segoe UI\";\n"
-"}\n"
-"\n"
-"QTreeView:item:!has-children {\n"
-"font: 9px;\n"
-"color: rgb(190, 90, 90);\n"
-"}\n"
-"\n"
-"QTreeView::item:selected {\n"
-"    background-color:  rgb(190, 190, 90);\n"
-"    color: white;\n"
-"}")
+        self.treeview_results.setStyleSheet(
+            "QTreeView:item:has-children {\n"
+            "\n"
+            "color: rgb(90, 90, 190);\n"
+            'font: 400 29.3pt "Segoe UI";\n'
+            "}\n"
+            "\n"
+            "QTreeView:item:!has-children {\n"
+            "font: 9px;\n"
+            "color: rgb(190, 90, 90);\n"
+            "}\n"
+            "\n"
+            "QTreeView::item:selected {\n"
+            "    background-color:  rgb(190, 190, 90);\n"
+            "    color: white;\n"
+            "}"
+        )
         self.treeview_results.setLineWidth(1)
-        self.treeview_results.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.treeview_results.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers
+        )
         self.treeview_results.setAlternatingRowColors(False)
-        self.treeview_results.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.treeview_results.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.treeview_results.setSelectionMode(
+            QtWidgets.QAbstractItemView.SingleSelection
+        )
+        self.treeview_results.setSelectionBehavior(
+            QtWidgets.QAbstractItemView.SelectRows
+        )
         self.treeview_results.setIndentation(30)
         self.treeview_results.setAnimated(True)
         self.treeview_results.setHeaderHidden(True)
@@ -96,28 +109,44 @@ class Ui_ThesaurusSearch(object):
         self.label_search_results_3.setFont(font)
         self.label_search_results_3.setObjectName("label_search_results_3")
         self.horizontalLayout_8.addWidget(self.label_search_results_3)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_8.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout_8)
         self.textBrowser = QtWidgets.QTextBrowser(self.layoutWidget_2)
-        self.textBrowser.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextEditable|QtCore.Qt.TextEditorInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
+        self.textBrowser.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByKeyboard
+            | QtCore.Qt.LinksAccessibleByMouse
+            | QtCore.Qt.TextBrowserInteraction
+            | QtCore.Qt.TextEditable
+            | QtCore.Qt.TextEditorInteraction
+            | QtCore.Qt.TextSelectableByKeyboard
+            | QtCore.Qt.TextSelectableByMouse
+        )
         self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout.addWidget(self.textBrowser)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem2)
         self.btn_add_term = QtWidgets.QPushButton(self.layoutWidget_2)
         self.btn_add_term.setObjectName("btn_add_term")
         self.horizontalLayout_3.addWidget(self.btn_add_term)
-        spacerItem3 = QtWidgets.QSpacerItem(25, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            25, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem3)
         self.btn_close = QtWidgets.QPushButton(self.layoutWidget_2)
         self.btn_close.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_close.setObjectName("btn_close")
         self.horizontalLayout_3.addWidget(self.btn_close)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem4)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2.addWidget(self.splitter)
@@ -134,14 +163,34 @@ class Ui_ThesaurusSearch(object):
         _translate = QtCore.QCoreApplication.translate
         ThesaurusSearch.setWindowTitle(_translate("ThesaurusSearch", "Dialog"))
         self.label_search_term.setText(_translate("ThesaurusSearch", "Search Term:"))
-        self.search_term.setToolTip(_translate("ThesaurusSearch", "terms to search ITIS for"))
-        self.button_search.setToolTip(_translate("ThesaurusSearch", "Perform search of ITIS"))
+        self.search_term.setToolTip(
+            _translate("ThesaurusSearch", "terms to search ITIS for")
+        )
+        self.button_search.setToolTip(
+            _translate("ThesaurusSearch", "Perform search of ITIS")
+        )
         self.button_search.setText(_translate("ThesaurusSearch", "Search"))
-        self.label_search_results.setToolTip(_translate("ThesaurusSearch", "Results from the ITIS common or scientific name search"))
-        self.label_search_results.setText(_translate("ThesaurusSearch", "Search Results:"))
-        self.label_search_results_3.setToolTip(_translate("ThesaurusSearch", "Results from the ITIS common or scientific name search"))
+        self.label_search_results.setToolTip(
+            _translate(
+                "ThesaurusSearch",
+                "Results from the ITIS common or scientific name search",
+            )
+        )
+        self.label_search_results.setText(
+            _translate("ThesaurusSearch", "Search Results:")
+        )
+        self.label_search_results_3.setToolTip(
+            _translate(
+                "ThesaurusSearch",
+                "Results from the ITIS common or scientific name search",
+            )
+        )
         self.label_search_results_3.setText(_translate("ThesaurusSearch", "Details:"))
-        self.btn_add_term.setToolTip(_translate("ThesaurusSearch", "Add the selected item above to the list of include species (right)"))
+        self.btn_add_term.setToolTip(
+            _translate(
+                "ThesaurusSearch",
+                "Add the selected item above to the list of include species (right)",
+            )
+        )
         self.btn_add_term.setText(_translate("ThesaurusSearch", "Add Selection"))
         self.btn_close.setText(_translate("ThesaurusSearch", "Close"))
-

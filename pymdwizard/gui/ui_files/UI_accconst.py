@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(592, 140)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -27,7 +30,9 @@ class Ui_Form(object):
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtWidgets.QGroupBox(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
@@ -36,7 +41,9 @@ class Ui_Form(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -49,10 +56,14 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_accconst = GrowingTextEdit(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fgdc_accconst.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.fgdc_accconst.sizePolicy().hasHeightForWidth()
+        )
         self.fgdc_accconst.setSizePolicy(sizePolicy)
         self.fgdc_accconst.setObjectName("fgdc_accconst")
         self.verticalLayout_2.addWidget(self.fgdc_accconst)
@@ -65,7 +76,15 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Data Access Constraints"))
-        self.label.setText(_translate("Form", "Describe any restrictions of legal prerequisites for ACCESSING the dataset.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the dataset."))
-        self.fgdc_accconst.setPlainText(_translate("Form", "None.  Please see \'Distribution Info\' for details."))
+        self.label.setText(
+            _translate(
+                "Form",
+                "Describe any restrictions of legal prerequisites for ACCESSING the dataset.  Access Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations to accessing the dataset.",
+            )
+        )
+        self.fgdc_accconst.setPlainText(
+            _translate("Form", "None.  Please see 'Distribution Info' for details.")
+        )
+
 
 from growingtextedit import GrowingTextEdit

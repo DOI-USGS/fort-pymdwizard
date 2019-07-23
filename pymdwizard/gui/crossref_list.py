@@ -60,7 +60,7 @@ from pymdwizard.gui.crossref import Crossref
 class Crossref_list(WizardWidget):
 
     drag_label = "Cross Reference <crossref>"
-    acceptable_tags = ['idinfo']
+    acceptable_tags = ["idinfo"]
 
     def build_ui(self):
         """
@@ -74,9 +74,14 @@ class Crossref_list(WizardWidget):
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.crossrefs = RepeatingElement(which='tab',
-                         tab_label='Crossref', add_text='   Add Additional Crossref   ',
-                         widget=Crossref, remove_text='   Remove Selected Crossref   ', italic_text='')
+        self.crossrefs = RepeatingElement(
+            which="tab",
+            tab_label="Crossref",
+            add_text="   Add Additional Crossref   ",
+            widget=Crossref,
+            remove_text="   Remove Selected Crossref   ",
+            italic_text="",
+        )
 
         self.crossrefs.add_another()
         self.ui.crossref_widget.layout().addWidget(self.crossrefs)
@@ -124,7 +129,7 @@ class Crossref_list(WizardWidget):
         procstep portion of the lineageg element tag in xml tree
         """
         crossrefs = []
-        idinfo = xml_utils.xml_node(tag='idinfo')
+        idinfo = xml_utils.xml_node(tag="idinfo")
         for crossref in self.crossrefs.get_widgets():
             idinfo.append(crossref.to_xml())
 
@@ -143,10 +148,12 @@ class Crossref_list(WizardWidget):
         None
         """
         try:
-            if xml_idinfo.tag == 'idinfo':
+            if xml_idinfo.tag == "idinfo":
                 self.crossrefs.clear_widgets(add_another=False)
 
-                crossrefs = xml_utils.search_xpath(xml_idinfo, 'crossref', only_first=False)
+                crossrefs = xml_utils.search_xpath(
+                    xml_idinfo, "crossref", only_first=False
+                )
 
                 if crossrefs:
                     self.ui.radio_crossrefyes.setChecked(True)
@@ -156,20 +163,13 @@ class Crossref_list(WizardWidget):
 
                 for crossref in crossrefs:
                     crossref_widget = self.crossrefs.add_another()
-                    crossref_widget.from_xml(xml_utils.search_xpath(crossref, 'citeinfo'))
-
+                    crossref_widget.from_xml(
+                        xml_utils.search_xpath(crossref, "citeinfo")
+                    )
 
         except KeyError:
             self.ui.radio_crossrefno.setChecked(True)
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Crossref_list,
-                        "Source Input testing")
-
-
-
-
-
-
-
+    utils.launch_widget(Crossref_list, "Source Input testing")

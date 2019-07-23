@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -31,7 +32,9 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_horizpa = GrowingTextEdit(self.fg_dc_possacc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_horizpa.sizePolicy().hasHeightForWidth())
@@ -42,7 +45,9 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
         self.fgdc_vertacc = GrowingTextEdit(self.fg_dc_possacc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_vertacc.sizePolicy().hasHeightForWidth())
@@ -60,8 +65,19 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.fg_dc_possacc.setTitle(_translate("Form", "Positional Accuracy"))
         self.label.setText(_translate("Form", "Horizontal Accuracy Report"))
-        self.fgdc_horizpa.setPlainText(_translate("Form", "A formal accuracy assessment of the horizontal positional information in the dataset has not been conducted."))
+        self.fgdc_horizpa.setPlainText(
+            _translate(
+                "Form",
+                "A formal accuracy assessment of the horizontal positional information in the dataset has not been conducted.",
+            )
+        )
         self.label_2.setText(_translate("Form", "Vertical Accuracy Report"))
-        self.fgdc_vertacc.setPlainText(_translate("Form", "A formal accuracy assessment of the vertical positional information in the dataset has either not been conducted, or is not applicable."))
+        self.fgdc_vertacc.setPlainText(
+            _translate(
+                "Form",
+                "A formal accuracy assessment of the vertical positional information in the dataset has either not been conducted, or is not applicable.",
+            )
+        )
+
 
 from growingtextedit import GrowingTextEdit

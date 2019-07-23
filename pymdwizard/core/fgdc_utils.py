@@ -59,11 +59,11 @@ from pymdwizard.core import utils
 
 from collections import OrderedDict
 
-FGDC_XSD_NAME = 'FGDC/fgdc-std-001-1998-annotated.xsd'
-BDP_XSD_NAME = 'FGDC/BDPfgdc-std-001-1998-annotated.xsd'
+FGDC_XSD_NAME = "FGDC/fgdc-std-001-1998-annotated.xsd"
+BDP_XSD_NAME = "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
 
 
-def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
+def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
     """
 
     Parameters
@@ -94,9 +94,9 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
         pandas dataframe
     """
 
-    if xsl_fname.lower() == 'fgdc':
+    if xsl_fname.lower() == "fgdc":
         xsl_fname = utils.get_resource_path(FGDC_XSD_NAME)
-    elif xsl_fname.lower() == 'bdp':
+    elif xsl_fname.lower() == "bdp":
         xsl_fname = utils.get_resource_path(BDP_XSD_NAME)
     else:
         xsl_fname = xsl_fname
@@ -105,30 +105,38 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
     xml_doc = xml_utils.xml_document_loader(xml)
     xml_str = xml_utils.node_to_string(xml_doc)
 
-    tree_node = xml_utils.string_to_node(xml_str.encode('utf-8'))
+    tree_node = xml_utils.string_to_node(xml_str.encode("utf-8"))
     lxml._etree._ElementTree(tree_node)
 
     errors = []
     srcciteas = []
 
-    src_xpath = 'dataqual/lineage/srcinfo/srccitea'
+    src_xpath = "dataqual/lineage/srcinfo/srccitea"
     src_nodes = tree_node.xpath(src_xpath)
     for i, src in enumerate(src_nodes):
         srcciteas.append(src.text)
         if src.text is None:
             if len(src_nodes) == 1:
-                errors.append(('metadata/' + src_xpath,
-                               "source citation abbreviation cannot be empty",
-                               1))
+                errors.append(
+                    (
+                        "metadata/" + src_xpath,
+                        "source citation abbreviation cannot be empty",
+                        1,
+                    )
+                )
             else:
-                xpath = 'metadata/dataqual/lineage/srcinfo[{}]/srccitea'
-                errors.append((xpath.format(i + 1),
-                               "source citation abbreviation cannot be empty",
-                               1))
-    procstep_xpath = 'dataqual/lineage/procstep'
+                xpath = "metadata/dataqual/lineage/srcinfo[{}]/srccitea"
+                errors.append(
+                    (
+                        xpath.format(i + 1),
+                        "source citation abbreviation cannot be empty",
+                        1,
+                    )
+                )
+    procstep_xpath = "dataqual/lineage/procstep"
     procstep_nodes = tree_node.xpath(procstep_xpath)
     for proc_i, proc in enumerate(procstep_nodes):
-        srcprod_nodes = proc.xpath('srcprod')
+        srcprod_nodes = proc.xpath("srcprod")
         for srcprod_i, srcprod in enumerate(srcprod_nodes):
             srcciteas.append(srcprod.text)
             if srcprod.text is None:
@@ -138,50 +146,65 @@ def validate_xml(xml, xsl_fname='fgdc', as_dataframe=False):
                 error_xpath += "/srcprod"
                 if len(srcprod_nodes) > 1:
                     error_xpath += "[{}]".format(proc_i + 1)
-                errors.append(('metadata/' + error_xpath,
-                                   "source produced abbreviation cannot be empty",
-                                   1))
+                errors.append(
+                    (
+                        "metadata/" + error_xpath,
+                        "source produced abbreviation cannot be empty",
+                        1,
+                    )
+                )
 
-    srcused_xpath = 'dataqual/lineage/procstep/srcused'
+    srcused_xpath = "dataqual/lineage/procstep/srcused"
     srcused_nodes = tree_node.xpath(srcused_xpath)
     for i, src in enumerate(srcused_nodes):
         if src.text not in srcciteas:
             if len(srcused_nodes) == 1:
-                errors.append(('metadata/' + srcused_xpath,
-                               "Source Used Citation Abbreviation {} "
-                               "not found in Source inputs "
-                               "used".format(src.text),
-                               1))
+                errors.append(
+                    (
+                        "metadata/" + srcused_xpath,
+                        "Source Used Citation Abbreviation {} "
+                        "not found in Source inputs "
+                        "used".format(src.text),
+                        1,
+                    )
+                )
             else:
-                xpath = 'metadata/dataqual/lineage/procstep[{}]/srcused'
-                errors.append((xpath.format(i + 1),
-                               "Source Used Citation Abbreviation {} "
-                               "not found in Source inputs "
-                               "used".format(src.text),
-                               1))
+                xpath = "metadata/dataqual/lineage/procstep[{}]/srcused"
+                errors.append(
+                    (
+                        xpath.format(i + 1),
+                        "Source Used Citation Abbreviation {} "
+                        "not found in Source inputs "
+                        "used".format(src.text),
+                        1,
+                    )
+                )
 
     if xmlschema.validate(tree_node) and not errors:
         return []
 
-    line_lookup = dict([(e.sourceline, tree_node.getroottree().getpath(e))
-                        for e in tree_node.xpath('.//*')])
+    line_lookup = dict(
+        [
+            (e.sourceline, tree_node.getroottree().getpath(e))
+            for e in tree_node.xpath(".//*")
+        ]
+    )
     sourceline = tree_node.sourceline
     line_lookup[sourceline] = tree_node.getroottree().getpath(tree_node)
 
     fgdc_lookup = get_fgdc_lookup()
-
 
     for error in xmlschema.error_log:
         error_msg = clean_error_message(error.message, fgdc_lookup)
         try:
             errors.append((line_lookup[error.line][1:], error_msg, error.line))
         except KeyError:
-            errors.append(('Unknown', error_msg, error.line))
+            errors.append(("Unknown", error_msg, error.line))
 
     errors = list(OrderedDict.fromkeys(errors))
 
     if as_dataframe:
-        cols = ['xpath', 'message', 'line number']
+        cols = ["xpath", "message", "line number"]
         return pd.DataFrame.from_records(errors, columns=cols)
     else:
         return errors
@@ -195,9 +218,9 @@ def get_fgdc_lookup():
     -------
         json fgdc item lookup
     """
-    annotation_lookup_fname = utils.get_resource_path('FGDC/bdp_lookup')
+    annotation_lookup_fname = utils.get_resource_path("FGDC/bdp_lookup")
     try:
-        with open(annotation_lookup_fname, encoding='utf-8') as data_file:
+        with open(annotation_lookup_fname, encoding="utf-8") as data_file:
             annotation_lookup = json.loads(data_file.read())
     except TypeError:
         with open(annotation_lookup_fname) as data_file:
@@ -222,14 +245,16 @@ def clean_error_message(message, fgdc_lookup=None):
         str : cleaned up error message
     """
     parts = message.split()
-    if 'Missing child element' in message:
+    if "Missing child element" in message:
         clean_message = "The {} is missing the expected element(s) '{}'"
         clean_message.format(parts[1][:-1], parts[-2])
-    elif r"' is not accepted by the pattern '\s*\S(.|\n|\r)*'" in message or \
-            "'' is not a valid value of the atomic type" in message:
-        shortname = parts[1][:-1].replace("'", '')
+    elif (
+        r"' is not accepted by the pattern '\s*\S(.|\n|\r)*'" in message
+        or "'' is not a valid value of the atomic type" in message
+    ):
+        shortname = parts[1][:-1].replace("'", "")
         try:
-            longname = fgdc_lookup[shortname]['long_name']
+            longname = fgdc_lookup[shortname]["long_name"]
         except (KeyError, TypeError):
             longname = None
 
@@ -261,5 +286,4 @@ def format_date(date_input):
     if type(date_input) == str:
         date_input = parser.parse(date_input)
 
-    return date_input.strftime('%Y%m%d')
-
+    return date_input.strftime("%Y%m%d")

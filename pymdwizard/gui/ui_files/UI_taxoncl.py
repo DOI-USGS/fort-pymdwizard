@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_fgdc_taxoncl(object):
     def setupUi(self, fgdc_taxoncl):
         fgdc_taxoncl.setObjectName("fgdc_taxoncl")
@@ -23,7 +24,9 @@ class Ui_fgdc_taxoncl(object):
         self.verticalLayout_3.setSpacing(2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.lbl_taxonrn = QtWidgets.QLabel(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_taxonrn.sizePolicy().hasHeightForWidth())
@@ -39,7 +42,9 @@ class Ui_fgdc_taxoncl(object):
         self.lbl_taxonrn.setFont(font)
         self.lbl_taxonrn.setStyleSheet("")
         self.lbl_taxonrn.setScaledContents(False)
-        self.lbl_taxonrn.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.lbl_taxonrn.setAlignment(
+            QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft
+        )
         self.lbl_taxonrn.setWordWrap(False)
         self.lbl_taxonrn.setIndent(0)
         self.lbl_taxonrn.setObjectName("lbl_taxonrn")
@@ -47,7 +52,9 @@ class Ui_fgdc_taxoncl(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.fgdc_taxonrn = QtWidgets.QLineEdit(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_taxonrn.sizePolicy().hasHeightForWidth())
@@ -59,7 +66,9 @@ class Ui_fgdc_taxoncl(object):
         self.fgdc_taxonrn.setObjectName("fgdc_taxonrn")
         self.horizontalLayout.addWidget(self.fgdc_taxonrn)
         self.required = QtWidgets.QLabel(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.required.sizePolicy().hasHeightForWidth())
@@ -74,13 +83,15 @@ class Ui_fgdc_taxoncl(object):
         font.setWeight(50)
         self.required.setFont(font)
         self.required.setScaledContents(True)
-        self.required.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.required.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.required.setIndent(0)
         self.required.setObjectName("required")
         self.horizontalLayout.addWidget(self.required)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.lbl_taxonrv = QtWidgets.QLabel(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_taxonrv.sizePolicy().hasHeightForWidth())
@@ -96,7 +107,9 @@ class Ui_fgdc_taxoncl(object):
         self.lbl_taxonrv.setFont(font)
         self.lbl_taxonrv.setStyleSheet("")
         self.lbl_taxonrv.setScaledContents(False)
-        self.lbl_taxonrv.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.lbl_taxonrv.setAlignment(
+            QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft
+        )
         self.lbl_taxonrv.setWordWrap(False)
         self.lbl_taxonrv.setIndent(0)
         self.lbl_taxonrv.setObjectName("lbl_taxonrv")
@@ -104,7 +117,9 @@ class Ui_fgdc_taxoncl(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.fgdc_taxonrv = QtWidgets.QLineEdit(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_taxonrv.sizePolicy().hasHeightForWidth())
@@ -116,7 +131,9 @@ class Ui_fgdc_taxoncl(object):
         self.fgdc_taxonrv.setObjectName("fgdc_taxonrv")
         self.horizontalLayout_2.addWidget(self.fgdc_taxonrv)
         self.required_2 = QtWidgets.QLabel(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.required_2.sizePolicy().hasHeightForWidth())
@@ -131,13 +148,15 @@ class Ui_fgdc_taxoncl(object):
         font.setWeight(50)
         self.required_2.setFont(font)
         self.required_2.setScaledContents(True)
-        self.required_2.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.required_2.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.required_2.setIndent(0)
         self.required_2.setObjectName("required_2")
         self.horizontalLayout_2.addWidget(self.required_2)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.lbl_common = QtWidgets.QLabel(self.taxoncl_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_common.sizePolicy().hasHeightForWidth())
@@ -153,7 +172,9 @@ class Ui_fgdc_taxoncl(object):
         self.lbl_common.setFont(font)
         self.lbl_common.setStyleSheet("")
         self.lbl_common.setScaledContents(False)
-        self.lbl_common.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.lbl_common.setAlignment(
+            QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft
+        )
         self.lbl_common.setWordWrap(False)
         self.lbl_common.setIndent(0)
         self.lbl_common.setObjectName("lbl_common")
@@ -175,23 +196,50 @@ class Ui_fgdc_taxoncl(object):
     def retranslateUi(self, fgdc_taxoncl):
         _translate = QtCore.QCoreApplication.translate
         fgdc_taxoncl.setWindowTitle(_translate("fgdc_taxoncl", "Form"))
-        self.taxoncl_groupbox.setTitle(_translate("fgdc_taxoncl", "Taxonomic Classification"))
-        self.lbl_taxonrn.setToolTip(_translate("fgdc_taxoncl", "The name of the person to contact"))
+        self.taxoncl_groupbox.setTitle(
+            _translate("fgdc_taxoncl", "Taxonomic Classification")
+        )
+        self.lbl_taxonrn.setToolTip(
+            _translate("fgdc_taxoncl", "The name of the person to contact")
+        )
         self.lbl_taxonrn.setText(_translate("fgdc_taxoncl", "Taxon Rank Name"))
-        self.fgdc_taxonrn.setToolTip(_translate("fgdc_taxoncl", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
+        self.fgdc_taxonrn.setToolTip(
+            _translate(
+                "fgdc_taxoncl",
+                "Contact Person -- the name of the individual to which the contact type applies.\n"
+                "Type: text\n"
+                "Domain: free text\n"
+                "Short Name: cntper",
+            )
+        )
         self.required.setToolTip(_translate("fgdc_taxoncl", "Required"))
-        self.required.setText(_translate("fgdc_taxoncl", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.lbl_taxonrv.setToolTip(_translate("fgdc_taxoncl", "The name of the person to contact"))
+        self.required.setText(
+            _translate(
+                "fgdc_taxoncl",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+        self.lbl_taxonrv.setToolTip(
+            _translate("fgdc_taxoncl", "The name of the person to contact")
+        )
         self.lbl_taxonrv.setText(_translate("fgdc_taxoncl", "Taxon Rank Value"))
-        self.fgdc_taxonrv.setToolTip(_translate("fgdc_taxoncl", "Contact Person -- the name of the individual to which the contact type applies.\n"
-"Type: text\n"
-"Domain: free text\n"
-"Short Name: cntper"))
+        self.fgdc_taxonrv.setToolTip(
+            _translate(
+                "fgdc_taxoncl",
+                "Contact Person -- the name of the individual to which the contact type applies.\n"
+                "Type: text\n"
+                "Domain: free text\n"
+                "Short Name: cntper",
+            )
+        )
         self.required_2.setToolTip(_translate("fgdc_taxoncl", "Required"))
-        self.required_2.setText(_translate("fgdc_taxoncl", "<html><head/><body><p><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.lbl_common.setToolTip(_translate("fgdc_taxoncl", "The name of the person to contact"))
+        self.required_2.setText(
+            _translate(
+                "fgdc_taxoncl",
+                '<html><head/><body><p><span style=" font-size:18pt; color:#55aaff;">*</span></p></body></html>',
+            )
+        )
+        self.lbl_common.setToolTip(
+            _translate("fgdc_taxoncl", "The name of the person to contact")
+        )
         self.lbl_common.setText(_translate("fgdc_taxoncl", "Common Name"))
-

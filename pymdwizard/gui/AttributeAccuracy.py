@@ -61,7 +61,7 @@ from pymdwizard.gui.ui_files import UI_attracc
 class AttributeAccuracy(WizardWidget):
 
     drag_label = "Attribute Accuracy <attracc>"
-    acceptable_tags = ['attracc']
+    acceptable_tags = ["attracc"]
 
     def build_ui(self):
         """
@@ -84,15 +84,14 @@ class AttributeAccuracy(WizardWidget):
         -------
         attraccr element tag in xml tree
         """
-        attracc = xml_utils.xml_node(tag='attracc')
-        attraccr_str = self.findChild(QPlainTextEdit,
-                                      "fgdc_attraccr").toPlainText()
-        attraccr = xml_utils.xml_node(tag='attraccr',
-                                      text=attraccr_str,
-                                      parent_node=attracc)
+        attracc = xml_utils.xml_node(tag="attracc")
+        attraccr_str = self.findChild(QPlainTextEdit, "fgdc_attraccr").toPlainText()
+        attraccr = xml_utils.xml_node(
+            tag="attraccr", text=attraccr_str, parent_node=attracc
+        )
 
         if self.original_xml is not None:
-            qattracc = xml_utils.search_xpath(self.original_xml, 'qattracc')
+            qattracc = xml_utils.search_xpath(self.original_xml, "qattracc")
             if qattracc is not None:
                 qattracc.tail = None
                 attracc.append(deepcopy(qattracc))
@@ -112,7 +111,7 @@ class AttributeAccuracy(WizardWidget):
         None
         """
         try:
-            if attribute_accuracy.tag == 'attracc':
+            if attribute_accuracy.tag == "attracc":
                 self.original_xml = attribute_accuracy
                 attraccr_text = attribute_accuracy.findtext("attraccr")
                 accost_box = self.findChild(QPlainTextEdit, "fgdc_attraccr")
@@ -124,12 +123,4 @@ class AttributeAccuracy(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(AttributeAccuracy,
-                        "Attribute Accuracy testing")
-
-
-
-
-
-
-
+    utils.launch_widget(AttributeAccuracy, "Attribute Accuracy testing")

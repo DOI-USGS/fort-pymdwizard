@@ -57,10 +57,10 @@ from pymdwizard.gui.ProcessStep import ProcessStep
 from pymdwizard.gui.repeating_element import RepeatingElement
 
 
-class ProcStep(WizardWidget): #
+class ProcStep(WizardWidget):  #
 
     drag_label = "Process Step <procstep>"
-    acceptable_tags = ['lineage']
+    acceptable_tags = ["lineage"]
 
     def build_ui(self):
         """
@@ -74,13 +74,18 @@ class ProcStep(WizardWidget): #
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
-        self.proc_step = RepeatingElement(which='tab',
-                         tab_label='Step', add_text='Additional Step',
-                         widget=ProcessStep, remove_text='Remove Step', italic_text='Describe the methods performed to collect or generate the data.\n Provide as much detail as possible.')
+        self.proc_step = RepeatingElement(
+            which="tab",
+            tab_label="Step",
+            add_text="Additional Step",
+            widget=ProcessStep,
+            remove_text="Remove Step",
+            italic_text="Describe the methods performed to collect or generate the data.\n Provide as much detail as possible.",
+        )
 
         self.proc_step.add_another()
         self.ui.widget_procstep.layout().addWidget(self.proc_step)
-                
+
     def to_xml(self):
         """
         encapsulates the etree process step in an element tag
@@ -89,7 +94,7 @@ class ProcStep(WizardWidget): #
         -------
         procstep portion of the lineageg element tag in xml tree
         """
-        lineage = xml_utils.xml_node(tag='lineage')
+        lineage = xml_utils.xml_node(tag="lineage")
         procstep_list = self.proc_step.get_widgets()
         for procstep in procstep_list:
             lineage.append(procstep.to_xml())
@@ -109,9 +114,9 @@ class ProcStep(WizardWidget): #
         None
         """
         try:
-            if xml_procstep.tag == 'lineage':
+            if xml_procstep.tag == "lineage":
                 self.proc_step.clear_widgets(add_another=False)
-                xml_procstep = xml_procstep.findall('procstep')
+                xml_procstep = xml_procstep.findall("procstep")
                 if xml_procstep:
                     for procstep in xml_procstep:
                         procdesc_widget = self.proc_step.add_another()
@@ -124,12 +129,4 @@ class ProcStep(WizardWidget): #
 
 
 if __name__ == "__main__":
-    utils.launch_widget(ProcStep,
-                        "Source Input testing")
-
-
-
-
-
-
-
+    utils.launch_widget(ProcStep, "Source Input testing")

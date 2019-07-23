@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -27,7 +28,9 @@ class Ui_Form(object):
         self.label_65.setStyleSheet("font: bold;")
         self.label_65.setObjectName("label_65")
         self.horizontalLayout_28.addWidget(self.label_65)
-        spacerItem = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            15, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_28.addItem(spacerItem)
         self.radio_crossrefyes = QtWidgets.QRadioButton(self.help_crossref)
         self.radio_crossrefyes.setObjectName("radio_crossrefyes")
@@ -36,12 +39,16 @@ class Ui_Form(object):
         self.radio_crossrefno.setChecked(True)
         self.radio_crossrefno.setObjectName("radio_crossrefno")
         self.horizontalLayout_28.addWidget(self.radio_crossrefno)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_28.addItem(spacerItem1)
         self.label_66 = QtWidgets.QLabel(self.help_crossref)
         self.label_66.setStyleSheet("font: italic;")
         self.label_66.setText("")
-        self.label_66.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_66.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.label_66.setObjectName("label_66")
         self.horizontalLayout_28.addWidget(self.label_66)
         self.verticalLayout_5.addLayout(self.horizontalLayout_28)
@@ -61,7 +68,11 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.help_crossref.setTitle(_translate("Form", "Cross Reference"))
-        self.label_65.setText(_translate("Form", "Are there related data sets or publications that you would like to add a reference for? "))
+        self.label_65.setText(
+            _translate(
+                "Form",
+                "Are there related data sets or publications that you would like to add a reference for? ",
+            )
+        )
         self.radio_crossrefyes.setText(_translate("Form", "Yes"))
         self.radio_crossrefno.setText(_translate("Form", "No"))
-

@@ -75,12 +75,13 @@ from pymdwizard.gui import edom
 from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 from pymdwizard.core import data_io
 
-default_def_source = utils.get_setting('defsource', 'Producer Defined')
+default_def_source = utils.get_setting("defsource", "Producer Defined")
+
 
 class Attr(WizardWidget):
 
     drag_label = "Attribute <attr>"
-    acceptable_tags = ['attr']
+    acceptable_tags = ["attr"]
 
     def __init__(self, parent=None):
         # This changes to true when this attribute is being viewed/edited
@@ -88,7 +89,7 @@ class Attr(WizardWidget):
         self.ef = 0
 
         self.nodata = None
-        self.nodata_content = (False, None) # nodata checked, last nodata node
+        self.nodata_content = (False, None)  # nodata checked, last nodata node
 
         WizardWidget.__init__(self, parent=parent)
 
@@ -102,9 +103,29 @@ class Attr(WizardWidget):
         self.ui.nodata_section.hide()
         self.highlighter = Highlighter(self.ui.fgdc_attrdef.document())
 
-        self.nodata_matches = ['#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN',
-                               '-nan', '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN',
-                               'n/a', 'nan', 'null', -9999, '-9999', '', 'Nan', '<< empty cell >>']
+        self.nodata_matches = [
+            "#N/A",
+            "#N/A N/A",
+            "#NA",
+            "-1.#IND",
+            "-1.#QNAN",
+            "-NaN",
+            "-nan",
+            "1.#IND",
+            "1.#QNAN",
+            "N/A",
+            "NA",
+            "NULL",
+            "NaN",
+            "n/a",
+            "nan",
+            "null",
+            -9999,
+            "-9999",
+            "",
+            "Nan",
+            "<< empty cell >>",
+        ]
 
     def build_ui(self):
         """
@@ -188,7 +209,6 @@ class Attr(WizardWidget):
         except:
             pass
 
-
     def set_series(self, series):
         """
         store a series with this attri
@@ -247,23 +267,21 @@ class Attr(WizardWidget):
         """
         if self.domain is not None and not sip.isdeleted(self.domain):
             cur_xml = self.domain.to_xml()
-            if cur_xml.tag == 'udom':
+            if cur_xml.tag == "udom":
                 self._domain_content[3] = cur_xml
-            elif cur_xml.tag == 'codesetd':
+            elif cur_xml.tag == "codesetd":
                 self._domain_content[2] = cur_xml
-            elif cur_xml.tag == 'rdom':
+            elif cur_xml.tag == "rdom":
                 self._domain_content[1] = cur_xml
-            elif cur_xml.tag == 'attr':
+            elif cur_xml.tag == "attr":
                 self._domain_content[0] = cur_xml
 
-        if self.ui.rbtn_nodata_yes.isChecked() and \
-           not sip.isdeleted(self.nodata_edom):
+        if self.ui.rbtn_nodata_yes.isChecked() and not sip.isdeleted(self.nodata_edom):
             self.nodata_content = (True, self.nodata_edom.to_xml())
         else:
             self.nodata_content = (False, None)
 
-
-    def populate_domain_content(self, which='guess'):
+    def populate_domain_content(self, which="guess"):
         """
         Fill out this widget with the content from it's associated series
 
@@ -279,7 +297,7 @@ class Attr(WizardWidget):
         """
         self.clear_domain()
 
-        if which == 'guess':
+        if which == "guess":
             self.sniff_nodata()
             index = self.guess_domain()
         else:
@@ -305,13 +323,16 @@ class Attr(WizardWidget):
 
             if len(uniques) > 100:
                 msg = "There are more than 100 unique values in this field."
-                msg += "\n This tool cannot smoothly display that many " \
-                       "entries. "
-                msg += "\nTypically an enumerated domain is not used with " \
-                       "that many unique entries."
+                msg += "\n This tool cannot smoothly display that many " "entries. "
+                msg += (
+                    "\nTypically an enumerated domain is not used with "
+                    "that many unique entries."
+                )
                 msg += "\n\nOnly the first one hundred are displayed below!"
-                msg += "\nYou will likely want to change the domain to one " \
-                       "of the other options."
+                msg += (
+                    "\nYou will likely want to change the domain to one "
+                    "of the other options."
+                )
                 QMessageBox.warning(self, "Too many unique entries", msg)
                 self.domain.populate_from_list(uniques[:101])
             else:
@@ -321,19 +342,22 @@ class Attr(WizardWidget):
             try:
                 self.domain.ui.fgdc_rdommin.setText(str(clean_series.min()))
             except:
-                self.domain.ui.fgdc_rdommin.setText('')
+                self.domain.ui.fgdc_rdommin.setText("")
             try:
                 self.domain.ui.fgdc_rdommax.setText(str(clean_series.max()))
             except:
-                self.domain.ui.fgdc_rdommax.setText('')
+                self.domain.ui.fgdc_rdommax.setText("")
 
             if not np.issubdtype(clean_series.dtype, np.number):
-                msg = 'Caution! The contents of this column are stored in the' \
-                      ' data source as "text".  The use of a range domain ' \
-                      'type on text columns might give unexpected results, ' \
-                      'especially for columns that contain date information.'
-                msgbox = QMessageBox(QMessageBox.Warning, "Range domain on text field",
-                                     msg)
+                msg = (
+                    "Caution! The contents of this column are stored in the"
+                    ' data source as "text".  The use of a range domain '
+                    "type on text columns might give unexpected results, "
+                    "especially for columns that contain date information."
+                )
+                msgbox = QMessageBox(
+                    QMessageBox.Warning, "Range domain on text field", msg
+                )
                 utils.set_window_icon(msgbox)
                 msgbox.exec_()
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
@@ -412,7 +436,7 @@ class Attr(WizardWidget):
         None
         """
         if self.active:
-            #we're already big so do nothing
+            # we're already big so do nothing
             pass
         else:
             if self.parent_ui is not None:
@@ -429,9 +453,9 @@ class Attr(WizardWidget):
     def clean_domain_nodata(self):
         if self.domain is not None and not sip.isdeleted(self.domain):
             cur_xml = self.domain.to_xml()
-            if cur_xml.tag == 'rdom':
+            if cur_xml.tag == "rdom":
                 self._domain_content[1] = cur_xml
-            elif cur_xml.tag == 'attr':
+            elif cur_xml.tag == "attr":
                 edoms = self.domain.edoms
                 self._domain_content[0] = cur_xml
 
@@ -447,12 +471,12 @@ class Attr(WizardWidget):
             self.nodata_content = (False, self.nodata_content[1])
         else:
             temp_edom = edom.Edom()
-            if self.nodata == '':
-                temp_edom.ui.fgdc_edomv.setText('<< empty cell >>')
+            if self.nodata == "":
+                temp_edom.ui.fgdc_edomv.setText("<< empty cell >>")
             else:
                 temp_edom.ui.fgdc_edomv.setText(str(self.nodata))
 
-            temp_edom.ui.fgdc_edomvd.setPlainText('No Data')
+            temp_edom.ui.fgdc_edomvd.setPlainText("No Data")
             self.nodata_content = (True, temp_edom.to_xml())
             temp_edom.deleteLater()
 
@@ -461,27 +485,28 @@ class Attr(WizardWidget):
         self.in_context = True
         clicked_widget = self.childAt(event.pos())
 
-
         menu = QMenu(self)
-        copy_action = menu.addAction(QIcon('copy.png'), '&Copy')
-        copy_action.setStatusTip('Copy to the Clipboard')
+        copy_action = menu.addAction(QIcon("copy.png"), "&Copy")
+        copy_action.setStatusTip("Copy to the Clipboard")
 
-        paste_action = menu.addAction(QIcon('paste.png'), '&Paste')
-        paste_action.setStatusTip('Paste from the Clipboard')
+        paste_action = menu.addAction(QIcon("paste.png"), "&Paste")
+        paste_action.setStatusTip("Paste from the Clipboard")
 
         menu.addSeparator()
-        insert_before = menu.addAction(QIcon('paste.png'), 'Insert before')
-        insert_before.setStatusTip('insert an empty attribute (column) '
-                                   'before this one')
+        insert_before = menu.addAction(QIcon("paste.png"), "Insert before")
+        insert_before.setStatusTip(
+            "insert an empty attribute (column) " "before this one"
+        )
 
-        insert_after = menu.addAction(QIcon('paste.png'), 'Insert After')
-        insert_after.setStatusTip('insert an empty attribute (column) after'
-                                  ' this one')
+        insert_after = menu.addAction(QIcon("paste.png"), "Insert After")
+        insert_after.setStatusTip(
+            "insert an empty attribute (column) after" " this one"
+        )
 
-        delete_action = menu.addAction(QIcon('delete.png'), '&Delete')
-        delete_action.setStatusTip('Delete this atttribute (column)')
+        delete_action = menu.addAction(QIcon("delete.png"), "&Delete")
+        delete_action.setStatusTip("Delete this atttribute (column)")
 
-        if hasattr(clicked_widget, 'help_text') and clicked_widget.help_text:
+        if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()
             help_action = menu.addAction("Help")
         else:
@@ -495,15 +520,15 @@ class Attr(WizardWidget):
         if action == copy_action:
             if clicked_widget is None:
                 pass
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.copy_mime()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.copy_mime()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.copy_mime()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.copy_mime()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.copy_mime()
             else:
                 self.copy_mime()
@@ -512,15 +537,15 @@ class Attr(WizardWidget):
         elif action == clear_action:
             if clicked_widget is None:
                 self.clear_widget()
-            elif clicked_widget.objectName() == 'idinfo_button':
+            elif clicked_widget.objectName() == "idinfo_button":
                 self.idinfo.clear_widget()
-            elif clicked_widget.objectName() == 'dataquality_button':
+            elif clicked_widget.objectName() == "dataquality_button":
                 self.dataqual.clear_widget()
-            elif clicked_widget.objectName() == 'eainfo_button':
+            elif clicked_widget.objectName() == "eainfo_button":
                 self.eainfo.clear_widget()
-            elif clicked_widget.objectName() == 'distinfo_button':
+            elif clicked_widget.objectName() == "distinfo_button":
                 self.distinfo.clear_widget()
-            elif clicked_widget.objectName() == 'metainfo_button':
+            elif clicked_widget.objectName() == "metainfo_button":
                 self.metainfo.clear_widget()
             else:
                 self.clear_widget()
@@ -560,28 +585,30 @@ class Attr(WizardWidget):
 
         if self.ui.comboBox.currentIndex() == 0:
             attr = xml_utils.XMLNode(domain)
-            attr.clear_children(tag='attrlabl')
-            attr.clear_children(tag='attrdef')
-            attr.clear_children(tag='attrdefs')
+            attr.clear_children(tag="attrlabl")
+            attr.clear_children(tag="attrdef")
+            attr.clear_children(tag="attrdefs")
             attr = attr.to_xml()
         else:
-            attr = xml_utils.xml_node('attr')
-            attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr)
+            attr = xml_utils.xml_node("attr")
+            attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr)
             attrdomv.append(domain)
 
-        attrlabl = xml_utils.xml_node('attrlabl',
-                                      text=self.ui.fgdc_attrlabl.text(),
-                                      parent_node=attr, index=0)
-        attrdef = xml_utils.xml_node('attrdef',
-                                     text=self.ui.fgdc_attrdef.toPlainText(),
-                                     parent_node=attr, index=1)
-        attrdefs = xml_utils.xml_node('attrdefs',
-                                      text=self.ui.fgdc_attrdefs.text(),
-                                      parent_node=attr, index=2)
+        attrlabl = xml_utils.xml_node(
+            "attrlabl", text=self.ui.fgdc_attrlabl.text(), parent_node=attr, index=0
+        )
+        attrdef = xml_utils.xml_node(
+            "attrdef",
+            text=self.ui.fgdc_attrdef.toPlainText(),
+            parent_node=attr,
+            index=1,
+        )
+        attrdefs = xml_utils.xml_node(
+            "attrdefs", text=self.ui.fgdc_attrdefs.text(), parent_node=attr, index=2
+        )
 
         if self.nodata_content[0]:
-            attrdomv = xml_utils.xml_node('attrdomv', parent_node=attr,
-                                          index=3)
+            attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr, index=3)
             attrdomv.append(self.nodata_content[1])
 
         return attr
@@ -600,25 +627,32 @@ class Attr(WizardWidget):
         """
         try:
             self.clear_widget()
-            if attr.tag == 'attr':
+            if attr.tag == "attr":
 
                 utils.populate_widget(self, attr)
                 attr_node = xml_utils.XMLNode(attr)
-                attrdomvs = attr_node.xpath('attrdomv', as_list=True)
+                attrdomvs = attr_node.xpath("attrdomv", as_list=True)
                 attr_domains = [a.children[0].tag for a in attrdomvs]
 
                 # pull out the first no data attribute domain
                 for attrdomv in attrdomvs:
-                    if attrdomv.children[0].tag == 'edom' and \
-                            (attrdomv.children[0].children[0].text in self.nodata_matches or \
-                            attrdomv.children[0].children[1].text.lower() in ['nodata', 'no data']
-                            or (attr_domains.count('edom')==1) and len(attr_domains) > 1):
+                    if attrdomv.children[0].tag == "edom" and (
+                        attrdomv.children[0].children[0].text in self.nodata_matches
+                        or attrdomv.children[0].children[1].text.lower()
+                        in ["nodata", "no data"]
+                        or (attr_domains.count("edom") == 1)
+                        and len(attr_domains) > 1
+                    ):
                         self.ui.rbtn_nodata_yes.setChecked(True)
                         self.nodata_content = (1, attrdomv.children[0].to_xml())
                         attrdomvs.remove(attrdomv)
-                        attr_domains.remove('edom')
+                        attr_domains.remove("edom")
                         try:
-                            edomv = attr.xpath("attrdomv/edom/edomv[text()='{}']".format(attrdomv.children[0].children[0].text))[0]
+                            edomv = attr.xpath(
+                                "attrdomv/edom/edomv[text()='{}']".format(
+                                    attrdomv.children[0].children[0].text
+                                )
+                            )[0]
                             nd_attrdomv = edomv.getparent().getparent()
                             nd_attrdomv.getparent().remove(nd_attrdomv)
                         except:
@@ -638,25 +672,26 @@ class Attr(WizardWidget):
                     msg += "\n\nIf having this structure is import please use"
                     msg += " a different tool for editing this section."
                     msg = msg.format(self.ui.fgdc_attrlabl.text())
-                    msgbox = QMessageBox(QMessageBox.Warning, "Too many domain types",
-                                         msg)
+                    msgbox = QMessageBox(
+                        QMessageBox.Warning, "Too many domain types", msg
+                    )
                     utils.set_window_icon(msgbox)
                     msgbox.exec_()
 
                 if len(attrdomvs) == 0:
                     self.ui.comboBox.setCurrentIndex(3)
-                elif attr_domains[0] == 'edom':
+                elif attr_domains[0] == "edom":
                     self.ui.comboBox.setCurrentIndex(0)
                     self._domain_content[0] = attr
-                elif attr_domains[0] == 'udom':
+                elif attr_domains[0] == "udom":
                     self.ui.comboBox.setCurrentIndex(3)
-                    self._domain_content[3] = attr.xpath('attrdomv/udom')[0]
-                elif attr_domains[0] == 'rdom':
+                    self._domain_content[3] = attr.xpath("attrdomv/udom")[0]
+                elif attr_domains[0] == "rdom":
                     self.ui.comboBox.setCurrentIndex(1)
-                    self._domain_content[1] = attr.xpath('attrdomv/rdom')[0]
-                elif attr_domains[0] == 'codesetd':
+                    self._domain_content[1] = attr.xpath("attrdomv/rdom")[0]
+                elif attr_domains[0] == "codesetd":
                     self.ui.comboBox.setCurrentIndex(2)
-                    self._domain_content[2] = attr.xpath('attrdomv/codesetd')[0]
+                    self._domain_content[2] = attr.xpath("attrdomv/codesetd")[0]
                 else:
                     self.ui.comboBox.setCurrentIndex(3)
             else:
@@ -666,5 +701,4 @@ class Attr(WizardWidget):
 
 
 if __name__ == "__main__":
-    utils.launch_widget(Attr,
-                        "attr testing")
+    utils.launch_widget(Attr, "attr testing")

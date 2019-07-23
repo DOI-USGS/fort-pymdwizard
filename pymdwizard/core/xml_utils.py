@@ -60,7 +60,7 @@ from lxml import etree as etree
 try:
     import pandas as pd
 except ImportError:
-    warnings.warn('Pandas library not installed, dataframes disabled')
+    warnings.warn("Pandas library not installed, dataframes disabled")
     pd = None
 
 
@@ -104,6 +104,7 @@ def save_to_file(element, fname):
     None
     """
     import codecs
+
     file = codecs.open(fname, "w", "utf-8")
 
     file.write(node_to_string(element))
@@ -128,21 +129,21 @@ def node_to_dict(node, add_fgdc=True):
     if len(node.getchildren()) == 0:
         tag = parse_tag(node.tag)
         if add_fgdc:
-            tag = 'fgdc_' + tag
+            tag = "fgdc_" + tag
         node_dict[tag] = node.text
     else:
         for child in node.getchildren():
             try:
                 tag = parse_tag(child.tag)
                 if add_fgdc:
-                    tag = 'fgdc_' + tag
+                    tag = "fgdc_" + tag
                 if len(child.getchildren()) > 0:
                     content = node_to_dict(child, add_fgdc=add_fgdc)
                 else:
                     content = child.text
                 node_dict[tag] = content
             except AttributeError:
-                pass #thid node was a comment or processing instruction
+                pass  # thid node was a comment or processing instruction
     return node_dict
 
 
@@ -159,7 +160,7 @@ def parse_tag(tag):
     formatted tag
 
     """
-    return tag[tag.find("}")+1:]
+    return tag[tag.find("}") + 1 :]
 
 
 def element_to_list(results):
@@ -201,8 +202,11 @@ def search_xpath(node, xpath, only_first=True):
     list of lxml nodes
     """
 
-    if type(node) in [lxml._etree._Element, lxml._etree._ElementTree,
-                      lxml.RestrictedElement]:
+    if type(node) in [
+        lxml._etree._Element,
+        lxml._etree._ElementTree,
+        lxml.RestrictedElement,
+    ]:
         matches = node.xpath(xpath)
         if len(matches) == 0:
             if only_first:
@@ -222,7 +226,7 @@ def search_xpath(node, xpath, only_first=True):
             return []
 
 
-def get_text_content(node, xpath=''):
+def get_text_content(node, xpath=""):
     """
     return the text from a specific node
 
@@ -243,16 +247,16 @@ def get_text_content(node, xpath=''):
     if xpath:
         nodes = node.xpath(xpath)
     else:
-        nodes = [node, ]
+        nodes = [node]
 
     if nodes:
         result = nodes[0].text
         if result is None:
-            return ''
+            return ""
         else:
             return result
     else:
-        return ''
+        return ""
 
 
 def remove_control_characters(str):
@@ -308,8 +312,13 @@ def node_to_string(node, encoding=True):
     else:
         tree = node
 
-    return lxml.tostring(tree, pretty_print=True, with_tail=False,
-                         encoding='UTF-8', xml_declaration=encoding).decode("utf-8")
+    return lxml.tostring(
+        tree,
+        pretty_print=True,
+        with_tail=False,
+        encoding="UTF-8",
+        xml_declaration=encoding,
+    ).decode("utf-8")
 
 
 def fname_to_node(fname):
@@ -340,12 +349,12 @@ def string_to_node(str_node):
     -------
     lxml node
     """
-    parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+    parser = etree.XMLParser(ns_clean=True, recover=True, encoding="utf-8")
     element = lxml.fromstring(str_node, parser=parser)
     return element
 
 
-def xml_node(tag, text='', parent_node=None, index=-1, comment=False):
+def xml_node(tag, text="", parent_node=None, index=-1, comment=False):
     """
     convenience function for creating an xml node
 
@@ -373,7 +382,7 @@ def xml_node(tag, text='', parent_node=None, index=-1, comment=False):
         node = etree.Element(tag)
 
     if text:
-        node.text = u'{}'.format(remove_control_characters(text))
+        node.text = u"{}".format(remove_control_characters(text))
 
     if parent_node is not None:
         if index == -1:
@@ -435,6 +444,7 @@ class XMLRecord(object):
                 self._root = self.record.getroot()
             else:
                 from pymdwizard.core import utils
+
                 try:
                     if utils.url_validator(contents):
                         contents = utils.requests_pem_get(contents).text
@@ -442,12 +452,12 @@ class XMLRecord(object):
                     pass
                 self.fname = None
 
-                if contents[:3] == 'ï»¿':
+                if contents[:3] == "ï»¿":
                     # string contents start with the BOM strip this
                     contents = contents[3:]
                 if type(contents) == str:
                     # we need bytes not string
-                    contents = contents.encode('utf-8')
+                    contents = contents.encode("utf-8")
 
                 self._root = string_to_node(contents)
                 self.record = etree.ElementTree(self._root)
@@ -470,12 +480,12 @@ class XMLRecord(object):
     def serialize(self):
         return self.__str__()
 
-    def save(self, fname=''):
+    def save(self, fname=""):
         if not fname:
             fname = self.fname
         save_to_file(self._contents.to_xml(), fname)
 
-    def validate(self, schema='fgdc', as_dataframe=True):
+    def validate(self, schema="fgdc", as_dataframe=True):
         """
         Returns a list of schema validation errors for a given CSDGM XML file.
 
@@ -502,9 +512,9 @@ class XMLRecord(object):
         """
         from pymdwizard.core import fgdc_utils
 
-        return fgdc_utils.validate_xml(self._contents.to_xml(),
-                                       xsl_fname=schema,
-                                       as_dataframe=as_dataframe)
+        return fgdc_utils.validate_xml(
+            self._contents.to_xml(), xsl_fname=schema, as_dataframe=as_dataframe
+        )
 
 
 class XMLNode(object):
@@ -512,8 +522,8 @@ class XMLNode(object):
     Class used to dynamically create an object containing the contents of an
     XML node, along with functions for manipulating and introspecting it.
     """
-    def __init__(self, element=None, tag='', text='', parent_node=None,
-                 index=-1):
+
+    def __init__(self, element=None, tag="", text="", parent_node=None, index=-1):
         """
         Initialization function.
 
@@ -570,17 +580,17 @@ class XMLNode(object):
         """
         if self.text:
             cur_node = xml_node(self.tag, self.text)
-            result = "{}{}".format("  "*level,
-                                   lxml.tostring(cur_node,
-                                                 pretty_print=True).decode())
+            result = "{}{}".format(
+                "  " * level, lxml.tostring(cur_node, pretty_print=True).decode()
+            )
             result = result.rstrip()
         else:
-            result = "{}<{}>".format("  "*level, self.tag, self.tag)
+            result = "{}<{}>".format("  " * level, self.tag, self.tag)
             for child in self.children:
                 if type(self.__dict__[child.tag]) == XMLNode:
                     child = self.__dict__[child.tag]
-                result += '\n' + child.__str__(level=level+1)
-            result += '\n{}</{}>'.format("  "*level, self.tag)
+                result += "\n" + child.__str__(level=level + 1)
+            result += "\n{}</{}>".format("  " * level, self.tag)
         return result
 
     def __eq__(self, other):
@@ -617,7 +627,7 @@ class XMLNode(object):
         try:
             self.text = element.text.strip()
         except:
-            self.text = ''
+            self.text = ""
 
         self.children = []
         for child_node in self.element.getchildren():
@@ -674,7 +684,7 @@ class XMLNode(object):
         -------
 
         """
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+        parser = etree.XMLParser(ns_clean=True, recover=True, encoding="utf-8")
         element = lxml.fromstring(str_element, parser=parser)
         self.from_xml(element)
 
@@ -688,7 +698,7 @@ class XMLNode(object):
         """
         return self.__str__()
 
-    def search_xpath(self, xpath=''):
+    def search_xpath(self, xpath=""):
         """
         Parses an xpath and recursively searches this object for matching
         elements
@@ -706,16 +716,16 @@ class XMLNode(object):
         if not xpath:
             return self
 
-        xpath_items = xpath.split('/')
+        xpath_items = xpath.split("/")
         if len(xpath_items) == 1:
-            xpath_remainder = ''
+            xpath_remainder = ""
         else:
-            xpath_remainder = '/'.join(xpath_items[1:])
+            xpath_remainder = "/".join(xpath_items[1:])
         first_item = xpath_items[0]
         try:
             tag, index = split_tag(first_item)
             results = self.__dict__[tag]
-            if '[' in first_item:
+            if "[" in first_item:
                 first_result = results[index]
                 return first_result.search_xpath(xpath_remainder)
             else:
@@ -731,7 +741,7 @@ class XMLNode(object):
         except:
             return []
 
-    def xpath(self, xpath='', as_list=True, as_text=False):
+    def xpath(self, xpath="", as_list=True, as_text=False):
         """
         Convenience function for calling self.xpath but specifying the format
         to return results in
@@ -778,10 +788,10 @@ class XMLNode(object):
         -------
 
         """
-        xpath_items = xpath.split('/')
+        xpath_items = xpath.split("/")
 
         while xpath_items:
-            result = self.xpath('/'.join(xpath_items), as_list=as_list)
+            result = self.xpath("/".join(xpath_items), as_list=as_list)
             if result:
                 return result
             xpath_items.pop()
@@ -958,18 +968,10 @@ def split_tag(tag):
     -------
     tuple: fgdc_tag, index
     """
-    if '[' in tag:
-        fgdc_tag, tag = tag.split('[')
-        index = int(tag.split(']')[0])-1
+    if "[" in tag:
+        fgdc_tag, tag = tag.split("[")
+        index = int(tag.split("]")[0]) - 1
     else:
         fgdc_tag = tag
         index = 0
     return fgdc_tag, index
-
-
-
-
-
-
-
-

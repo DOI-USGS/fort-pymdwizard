@@ -65,14 +65,14 @@ from pymdwizard.gui.ui_files import UI_ITISSearch
 class ItisMainForm(QWidget):
 
     drag_label = "Taxonomy"
-    acceptable_tags = ['abstract']
+    acceptable_tags = ["abstract"]
 
-    def __init__(self, xml=None, fgdc_function=None,  parent=None):
+    def __init__(self, xml=None, fgdc_function=None, parent=None):
         QWidget.__init__(self, parent=parent)
         self.build_ui()
         self.connect_events()
 
-        self.selected_items_df = pd.DataFrame(columns=['item', 'tsn'])
+        self.selected_items_df = pd.DataFrame(columns=["item", "tsn"])
         self.selected_model = utils.PandasModel(self.selected_items_df)
         self.ui.table_include.setModel(self.selected_model)
 
@@ -112,13 +112,14 @@ class ItisMainForm(QWidget):
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
-            if str(self.ui.combo_search_type.currentText()) == \
-                    'Scientific name':
-                results = taxonomy.search_by_scientific_name(str(
-                    self.ui.search_term.text()))
+            if str(self.ui.combo_search_type.currentText()) == "Scientific name":
+                results = taxonomy.search_by_scientific_name(
+                    str(self.ui.search_term.text())
+                )
             else:
-                results = taxonomy.search_by_common_name(str(
-                    self.ui.search_term.text()))
+                results = taxonomy.search_by_common_name(
+                    str(self.ui.search_term.text())
+                )
 
             model = utils.PandasModel(results)
             self.ui.table_results.setModel(model)
@@ -144,21 +145,22 @@ class ItisMainForm(QWidget):
             else:
                 return
 
-            if 'combinedName' in df.columns:
-                item_name = df.iloc[index]['combinedName']
+            if "combinedName" in df.columns:
+                item_name = df.iloc[index]["combinedName"]
             else:
                 try:
-                    item_name = str(df.iloc[index]['commonName'])
+                    item_name = str(df.iloc[index]["commonName"])
                 except KeyError:
                     msg = "Error, No taxon was selected in the Search Results table!"
-                    msg += '\nMake sure the ITIS search returned results and select one before clicking Add Selection. '
-                    QMessageBox.information(None, "Problem adding taxon", msg,
-                                            parent=self)
+                    msg += "\nMake sure the ITIS search returned results and select one before clicking Add Selection. "
+                    QMessageBox.information(
+                        None, "Problem adding taxon", msg, parent=self
+                    )
 
                     return None
 
-            tsn = df.iloc[index]['tsn']
-            i = self.selected_items_df.index.max()+1
+            tsn = df.iloc[index]["tsn"]
+            i = self.selected_items_df.index.max() + 1
             if pd.isnull(i):
                 i = 0
             self.selected_items_df.loc[i] = [str(item_name), tsn]
@@ -201,9 +203,11 @@ class ItisMainForm(QWidget):
         df = self.ui.table_include.model().dataframe()
         include_common = self.ui.check_include_common.isChecked()
 
-        fgdc_taxonomy = taxonomy.gen_taxonomy_section(keywords=list(df.item),
-                                                      tsns=list(df.tsn),
-                                           include_common_names=include_common)
+        fgdc_taxonomy = taxonomy.gen_taxonomy_section(
+            keywords=list(df.item),
+            tsns=list(df.tsn),
+            include_common_names=include_common,
+        )
 
         return fgdc_taxonomy
 
@@ -211,10 +215,12 @@ class ItisMainForm(QWidget):
 
         if taxonomy_element is not None:
             i = 0
-            for common_node in taxonomy_element.findall('.//common'):
-                if common_node.text.startswith('TSN: '):
+            for common_node in taxonomy_element.findall(".//common"):
+                if common_node.text.startswith("TSN: "):
                     tsn = common_node.text[5:]
-                    scientific_name = taxonomy.get_full_record_from_tsn(tsn)['scientificName']['combinedName']
+                    scientific_name = taxonomy.get_full_record_from_tsn(tsn)[
+                        "scientificName"
+                    ]["combinedName"]
                     self.selected_items_df.loc[i] = [scientific_name, tsn]
                     i += 1
 
@@ -222,5 +228,5 @@ class ItisMainForm(QWidget):
             self.ui.table_include.setModel(self.selected_model)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     utils.launch_widget(ItisMainForm, "Itis testing")

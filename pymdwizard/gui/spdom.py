@@ -78,7 +78,7 @@ from pymdwizard.gui.ui_files import UI_spdom
 
 class Spdom(WizardWidget):
     drag_label = "Spatial Domain <spdom>"
-    acceptable_tags = ['spdom', 'bounding']
+    acceptable_tags = ["spdom", "bounding"]
     ui_class = UI_spdom.Ui_fgdc_spdom
 
     def __init__(self, root_widget=None):
@@ -90,7 +90,7 @@ class Spdom(WizardWidget):
         self.valid = True
 
         super(self.__class__, self).__init__()
-        self.schema = 'bdp'
+        self.schema = "bdp"
         self.root_widget = root_widget
 
         self.after_load = False
@@ -106,10 +106,12 @@ class Spdom(WizardWidget):
 
         fname = utils.get_resource_path("spatial/BNDCoords.csv")
         self.bnds_df = pd.read_csv(fname)
-        self.model.setStringList(self.bnds_df['Name'])
+        self.model.setStringList(self.bnds_df["Name"])
 
         self.completer.popup().clicked.connect(self.on_completer_activated)
-        self.completer.popup().selectionModel().selectionChanged.connect(self.on_completer_activated)
+        self.completer.popup().selectionModel().selectionChanged.connect(
+            self.on_completer_activated
+        )
         # self.completer.popup().activated.connect(self.on_completer_activated)
 
     def build_ui(self):
@@ -123,24 +125,27 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
-
-        if platform.system() == 'Darwin':
-            map_fname = utils.get_resource_path('leaflet/map_mac.html')
+        if platform.system() == "Darwin":
+            map_fname = utils.get_resource_path("leaflet/map_mac.html")
         else:
-            map_fname = utils.get_resource_path('leaflet/map.html')
+            map_fname = utils.get_resource_path("leaflet/map.html")
 
         try:
             self.view = QWebView()
             self.view.page().mainFrame().addToJavaScriptWindowObject("Spdom", self)
             self.view.setUrl(QUrl.fromLocalFile(map_fname))
             self.frame = self.view.page().mainFrame()
-            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
+            self.view.load(
+                QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname))
+            )
         except AttributeError:
             self.view = QWebView()
-            self.view.load(QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname)))
+            self.view.load(
+                QUrl.fromLocalFile(QtCore.QDir.current().filePath(map_fname))
+            )
             channel = QWebChannel(self.view.page())
 
-            jstr="""
+            jstr = """
             var spdom;
 
             new QWebChannel(qt.webChannelTransport, function (channel) {
@@ -150,8 +155,6 @@ class Spdom(WizardWidget):
             self.view.page().setWebChannel(channel)
             self.evaluate_js(jstr)
             channel.registerObject("spdom", self)
-
-
 
         self.ui.verticalLayout_3.addWidget(self.view)
 
@@ -177,11 +180,35 @@ class Spdom(WizardWidget):
                 return
 
         try:
-            if self.bnds_df['Name'].str.contains(cur_descgeog).any():
-                self.ui.fgdc_eastbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['east'])))
-                self.ui.fgdc_westbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['west'])))
-                self.ui.fgdc_northbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['north'])))
-                self.ui.fgdc_southbc.setText(str(float(self.bnds_df[self.bnds_df['Name']==cur_descgeog]['south'])))
+            if self.bnds_df["Name"].str.contains(cur_descgeog).any():
+                self.ui.fgdc_eastbc.setText(
+                    str(
+                        float(
+                            self.bnds_df[self.bnds_df["Name"] == cur_descgeog]["east"]
+                        )
+                    )
+                )
+                self.ui.fgdc_westbc.setText(
+                    str(
+                        float(
+                            self.bnds_df[self.bnds_df["Name"] == cur_descgeog]["west"]
+                        )
+                    )
+                )
+                self.ui.fgdc_northbc.setText(
+                    str(
+                        float(
+                            self.bnds_df[self.bnds_df["Name"] == cur_descgeog]["north"]
+                        )
+                    )
+                )
+                self.ui.fgdc_southbc.setText(
+                    str(
+                        float(
+                            self.bnds_df[self.bnds_df["Name"] == cur_descgeog]["south"]
+                        )
+                    )
+                )
                 self.add_rect()
                 self.update_map()
         except:
@@ -190,7 +217,7 @@ class Spdom(WizardWidget):
             # If anything at all happens pass silently
 
     def complete_name(self):
-        self.view.page().runJavaScript('addRect();', js_callback)
+        self.view.page().runJavaScript("addRect();", js_callback)
 
     def coord_updated(self):
 
@@ -198,41 +225,39 @@ class Spdom(WizardWidget):
 
         try:
             cur_name = self.sender().objectName()
-            if 'fgdc' not in cur_name:
+            if "fgdc" not in cur_name:
                 return
             cur_value = self.sender().text()
         except AttributeError:
-            cur_name = ''
-            cur_value = ''
+            cur_name = ""
+            cur_value = ""
 
         try:
             cur_value = float(cur_value)
         except ValueError:
             pass
 
-        msg = ''
-        if type(cur_value) != float and cur_value != '':
-            msg = 'number entered must be numeric only'
-        elif cur_value == '':
-            msg = ''
-        elif cur_name in ['fgdc_westbc', 'fgdc_eastbc'] \
-                and -180 >= cur_value >= 180:
-            msg = 'East or West coordinate must be within -180 and 180'
-        elif cur_name in ['fgdc_southbc', 'fgdc_northbc'] \
-                and -90 >= cur_value >= 90:
-            msg = 'North and South coordinates must be within -90 and 90'
-        elif cur_name == 'fgdc_southbc':
+        msg = ""
+        if type(cur_value) != float and cur_value != "":
+            msg = "number entered must be numeric only"
+        elif cur_value == "":
+            msg = ""
+        elif cur_name in ["fgdc_westbc", "fgdc_eastbc"] and -180 >= cur_value >= 180:
+            msg = "East or West coordinate must be within -180 and 180"
+        elif cur_name in ["fgdc_southbc", "fgdc_northbc"] and -90 >= cur_value >= 90:
+            msg = "North and South coordinates must be within -90 and 90"
+        elif cur_name == "fgdc_southbc":
             try:
                 north = float(self.ui.fgdc_northbc.text())
                 if north <= cur_value:
-                    msg = 'North coordinate must be greater than South coordinate'
+                    msg = "North coordinate must be greater than South coordinate"
             except ValueError:
                 pass
-        elif cur_name == 'fgdc_northbc':
+        elif cur_name == "fgdc_northbc":
             try:
                 south = float(self.ui.fgdc_southbc.text())
                 if south >= cur_value:
-                    msg = 'North coordinate must be greater than South coordinate'
+                    msg = "North coordinate must be greater than South coordinate"
             except ValueError:
                 pass
 
@@ -254,11 +279,14 @@ class Spdom(WizardWidget):
         north = {northbc};
         updateMap();
         fitMap();
-        """.format(**{'eastbc': self.ui.fgdc_eastbc.text(),
-                      'westbc': self.ui.fgdc_westbc.text(),
-                      'northbc': self.ui.fgdc_northbc.text(),
-                      'southbc': self.ui.fgdc_southbc.text(),
-                      })
+        """.format(
+            **{
+                "eastbc": self.ui.fgdc_eastbc.text(),
+                "westbc": self.ui.fgdc_westbc.text(),
+                "northbc": self.ui.fgdc_northbc.text(),
+                "southbc": self.ui.fgdc_southbc.text(),
+            }
+        )
         self.evaluate_js(jstr)
 
     def add_rect(self):
@@ -340,7 +368,7 @@ class Spdom(WizardWidget):
 
     def switch_schema(self, schema):
         self.schema = schema
-        if schema == 'bdp':
+        if schema == "bdp":
             self.ui.fgdc_descgeog.show()
             self.ui.descgeog_label.show()
             self.ui.descgeog_star.show()
@@ -381,24 +409,35 @@ class Spdom(WizardWidget):
             self.after_load = True
 
     def to_xml(self):
-        spdom = xml_node('spdom')
+        spdom = xml_node("spdom")
 
-        if self.schema == 'bdp':
-            descgeog = xml_node('descgeog', text=self.ui.fgdc_descgeog.text(), parent_node=spdom)
+        if self.schema == "bdp":
+            descgeog = xml_node(
+                "descgeog", text=self.ui.fgdc_descgeog.text(), parent_node=spdom
+            )
 
-        bounding = xml_node('bounding', parent_node=spdom)
-        westbc = xml_node('westbc', text=self.ui.fgdc_westbc.text(), parent_node=bounding)
-        eastbc = xml_node('eastbc', text=self.ui.fgdc_eastbc.text(), parent_node=bounding)
-        northbc = xml_node('northbc', text=self.ui.fgdc_northbc.text(), parent_node=bounding)
-        southbc = xml_node('southbc', text=self.ui.fgdc_southbc.text(), parent_node=bounding)
+        bounding = xml_node("bounding", parent_node=spdom)
+        westbc = xml_node(
+            "westbc", text=self.ui.fgdc_westbc.text(), parent_node=bounding
+        )
+        eastbc = xml_node(
+            "eastbc", text=self.ui.fgdc_eastbc.text(), parent_node=bounding
+        )
+        northbc = xml_node(
+            "northbc", text=self.ui.fgdc_northbc.text(), parent_node=bounding
+        )
+        southbc = xml_node(
+            "southbc", text=self.ui.fgdc_southbc.text(), parent_node=bounding
+        )
 
         if self.original_xml is not None:
-            boundalt = xml_utils.search_xpath(self.original_xml, 'bounding/boundalt')
+            boundalt = xml_utils.search_xpath(self.original_xml, "bounding/boundalt")
             if boundalt is not None:
                 spdom.append(deepcopy(boundalt))
 
-            dsgpoly_list = xml_utils.search_xpath(self.original_xml, 'dsgpoly',
-                                                  only_first=False)
+            dsgpoly_list = xml_utils.search_xpath(
+                self.original_xml, "dsgpoly", only_first=False
+            )
             for dsgpoly in dsgpoly_list:
                 spdom.append(deepcopy(dsgpoly))
 
@@ -411,8 +450,8 @@ class Spdom(WizardWidget):
         utils.populate_widget(self, spdom)
 
         contents = xml_utils.node_to_dict(spdom, add_fgdc=False)
-        if 'bounding' in contents:
-            contents = contents['bounding']
+        if "bounding" in contents:
+            contents = contents["bounding"]
 
         try:
             if self.all_good_coords():
@@ -431,4 +470,3 @@ def js_callback(result):
 
 if __name__ == "__main__":
     w = utils.launch_widget(Spdom)
-

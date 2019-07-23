@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -34,7 +35,9 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.fgdc_logic = GrowingTextEdit(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_logic.sizePolicy().hasHeightForWidth())
@@ -51,7 +54,15 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.groupBox.setTitle(_translate("Form", "Logical Consistency Report"))
-        self.label.setText(_translate("Form", "Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info."))
-        self.fgdc_logic.setPlainText(_translate("Form", "No formal logical accuracy tests were conducted."))
+        self.label.setText(
+            _translate(
+                "Form",
+                "Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info.",
+            )
+        )
+        self.fgdc_logic.setPlainText(
+            _translate("Form", "No formal logical accuracy tests were conducted.")
+        )
+
 
 from growingtextedit import GrowingTextEdit

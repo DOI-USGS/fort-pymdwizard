@@ -8,11 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_edom_contents(object):
     def setupUi(self, edom_contents):
         edom_contents.setObjectName("edom_contents")
         edom_contents.resize(539, 740)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(edom_contents.sizePolicy().hasHeightForWidth())
@@ -32,7 +35,9 @@ class Ui_edom_contents(object):
         self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.listWidget.setMidLineWidth(0)
-        self.listWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.listWidget.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContents
+        )
         self.listWidget.setAutoScrollMargin(25)
         self.listWidget.setDragEnabled(True)
         self.listWidget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
@@ -42,7 +47,9 @@ class Ui_edom_contents(object):
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
         self.widget = QtWidgets.QWidget(edom_contents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -54,7 +61,9 @@ class Ui_edom_contents(object):
         self.btn_addone = QtWidgets.QPushButton(self.widget)
         self.btn_addone.setObjectName("btn_addone")
         self.horizontalLayout.addWidget(self.btn_addone)
-        spacerItem = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.btn_delete = QtWidgets.QPushButton(self.widget)
         self.btn_delete.setObjectName("btn_delete")
@@ -67,7 +76,11 @@ class Ui_edom_contents(object):
     def retranslateUi(self, edom_contents):
         _translate = QtCore.QCoreApplication.translate
         edom_contents.setWindowTitle(_translate("edom_contents", "Form"))
-        self.label.setText(_translate("edom_contents", "For each unique value contained in this column, provide a definition below."))
+        self.label.setText(
+            _translate(
+                "edom_contents",
+                "For each unique value contained in this column, provide a definition below.",
+            )
+        )
         self.btn_addone.setText(_translate("edom_contents", "Add Value"))
         self.btn_delete.setText(_translate("edom_contents", "Delete Selected"))
-

@@ -57,10 +57,10 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_posacc
 
 
-class PositionalAccuracy(WizardWidget): #
+class PositionalAccuracy(WizardWidget):  #
 
     drag_label = "Positional Accuracy <possacc>"
-    acceptable_tags = ['posacc']
+    acceptable_tags = ["posacc"]
 
     def build_ui(self):
         """
@@ -90,8 +90,7 @@ class PositionalAccuracy(WizardWidget): #
             has_content = True
 
         return has_content
-         
-                
+
     def to_xml(self):
         """
         encapsulates the QPlainTextEdit text in an element tag
@@ -100,20 +99,18 @@ class PositionalAccuracy(WizardWidget): #
         -------
         possacc element tag in xml tree
         """
-        possacc = xml_utils.xml_node(tag='posacc')
-        horizpa = xml_utils.xml_node(tag='horizpa')
-        horizpar = xml_utils.xml_node(tag='horizpar')
-        horizpar_text = self.findChild(QPlainTextEdit,
-                                       "fgdc_horizpa").toPlainText()
+        possacc = xml_utils.xml_node(tag="posacc")
+        horizpa = xml_utils.xml_node(tag="horizpa")
+        horizpar = xml_utils.xml_node(tag="horizpar")
+        horizpar_text = self.findChild(QPlainTextEdit, "fgdc_horizpa").toPlainText()
         if len(horizpar_text) > 0:
             horizpar.text = horizpar_text
             horizpa.append(horizpar)
             possacc.append(horizpa)
 
-        vertacc = xml_utils.xml_node(tag='vertacc')
-        vertaccr = xml_utils.xml_node(tag='vertaccr')
-        vertaccr_text = self.findChild(QPlainTextEdit,
-                                       "fgdc_vertacc").toPlainText()
+        vertacc = xml_utils.xml_node(tag="vertacc")
+        vertaccr = xml_utils.xml_node(tag="vertaccr")
+        vertaccr_text = self.findChild(QPlainTextEdit, "fgdc_vertacc").toPlainText()
         if len(vertaccr_text) > 0:
             vertaccr.text = vertaccr_text
             vertacc.append(vertaccr)
@@ -133,7 +130,7 @@ class PositionalAccuracy(WizardWidget): #
         None
         """
         try:
-            if positional_accuracy.tag == 'posacc':
+            if positional_accuracy.tag == "posacc":
                 horizpa_text = positional_accuracy.findtext("horizpa/horizpar")
                 horizpa_box = self.findChild(QPlainTextEdit, "fgdc_horizpa")
                 horizpa_box.setPlainText(horizpa_text)
@@ -142,18 +139,10 @@ class PositionalAccuracy(WizardWidget): #
                 vertacc_box = self.findChild(QPlainTextEdit, "fgdc_vertacc")
                 vertacc_box.setPlainText(vertacc_text)
             else:
-                print ("The tag is not possacc")
+                print("The tag is not possacc")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
-    utils.launch_widget(PositionalAccuracy,
-                        "Positional Accuracy testing")
-
-
-
-
-
-
-
+    utils.launch_widget(PositionalAccuracy, "Positional Accuracy testing")

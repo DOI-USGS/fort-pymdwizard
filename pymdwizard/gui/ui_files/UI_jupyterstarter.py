@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -25,11 +26,15 @@ class Ui_Form(object):
         self.verticalLayout_15.setObjectName("verticalLayout_15")
         self.label_53 = QtWidgets.QLabel(self.help_geoform_2)
         self.label_53.setStyleSheet("font: bold;")
-        self.label_53.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_53.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_53.setObjectName("label_53")
         self.verticalLayout_15.addWidget(self.label_53)
         self.label_34 = QtWidgets.QLabel(self.help_geoform_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
@@ -50,7 +55,9 @@ class Ui_Form(object):
         self.dname.setObjectName("dname")
         self.horizontalLayout_2.addWidget(self.dname)
         self.btn_browse = QtWidgets.QPushButton(self.help_geoform_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_browse.sizePolicy().hasHeightForWidth())
@@ -71,11 +78,15 @@ class Ui_Form(object):
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.label_52 = QtWidgets.QLabel(self.help_geoform)
         self.label_52.setStyleSheet("font: bold;")
-        self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_52.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_52.setObjectName("label_52")
         self.verticalLayout_14.addWidget(self.label_52)
         self.label_35 = QtWidgets.QLabel(self.help_geoform)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_35.sizePolicy().hasHeightForWidth())
@@ -111,11 +122,15 @@ class Ui_Form(object):
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.label_55 = QtWidgets.QLabel(self.usejupyterframe)
         self.label_55.setStyleSheet("font: bold;")
-        self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_55.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_55.setObjectName("label_55")
         self.verticalLayout_17.addWidget(self.label_55)
         self.label_37 = QtWidgets.QLabel(self.usejupyterframe)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_37.sizePolicy().hasHeightForWidth())
@@ -133,17 +148,23 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.verticalLayout_8)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem)
         self.btn_launch = QtWidgets.QPushButton(Form)
         self.btn_launch.setObjectName("btn_launch")
         self.horizontalLayout_3.addWidget(self.btn_launch)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem1)
         self.btn_cancel = QtWidgets.QPushButton(Form)
         self.btn_cancel.setObjectName("btn_cancel")
         self.horizontalLayout_3.addWidget(self.btn_cancel)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
@@ -154,13 +175,26 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_53.setText(_translate("Form", "What Directory to Start in:"))
-        self.label_34.setText(_translate("Form", "This is the folder containing the notebooks you want to run. "))
+        self.label_34.setText(
+            _translate(
+                "Form", "This is the folder containing the notebooks you want to run. "
+            )
+        )
         self.btn_browse.setText(_translate("Form", "Browse"))
         self.label_52.setText(_translate("Form", "What Python Kernel to use:"))
-        self.label_35.setText(_translate("Form", "This is instance of Python you want to run Jupyter with.  In addition to the Python version that was installed with the MetadataWizard any available Conda Envs are listed"))
+        self.label_35.setText(
+            _translate(
+                "Form",
+                "This is instance of Python you want to run Jupyter with.  In addition to the Python version that was installed with the MetadataWizard any available Conda Envs are listed",
+            )
+        )
         self.label_55.setText(_translate("Form", "Use JupyterLab ?"))
-        self.label_37.setText(_translate("Form", "<html><head/><body><p>Use the new JupyterLab interface instead of the tradional notebook. </p><p>If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. </p></body></html>"))
+        self.label_37.setText(
+            _translate(
+                "Form",
+                "<html><head/><body><p>Use the new JupyterLab interface instead of the tradional notebook. </p><p>If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. </p></body></html>",
+            )
+        )
         self.usejupyterlab.setText(_translate("Form", "Use JupyterLab"))
         self.btn_launch.setText(_translate("Form", "Launch"))
         self.btn_cancel.setText(_translate("Form", "Cancel"))
-
