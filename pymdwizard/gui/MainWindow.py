@@ -94,6 +94,7 @@ from pymdwizard.gui.error_list import ErrorList
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.jupyterstarter import JupyterStarter
 from pymdwizard.gui.settings import Settings
+from pymdwizard.gui.sb_locator import SBLocator
 from pymdwizard import __version__
 
 import sip
@@ -122,6 +123,10 @@ class PyMdWizardMainForm(QMainWindow):
         self.build_ui()
         self.connect_events()
         self.env_cache = {}
+
+        self.sb_file = False
+        self.sb_locator = SBLocator(mainform=self)
+        utils.set_window_icon(self.sb_locator)
 
         self.load_default()
 
@@ -201,6 +206,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
         self.ui.actionSpelling_flag.triggered.connect(self.spelling_switch_triggered)
         self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
+        self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
 
     def anacondaprompt(self):
 
@@ -214,6 +220,7 @@ class PyMdWizardMainForm(QMainWindow):
             pydir = utils.get_install_dname('python')
             my_env["PATH"] = ";".join([os.path.join(pydir, "Scripts", "conda_exes"),
                                        my_env["PATH"]])
+            self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
             activatebat = os.path.join(pydir, "Scripts", "conda_exe", "activate.bat")
 
             msg = "This is experimental functionality used for opening an Anaconda command prompt set to"
@@ -226,6 +233,7 @@ class PyMdWizardMainForm(QMainWindow):
         else:
             msg = "This experimental functionality not yet implemented for Mac or Linux builds"
             QMessageBox.warning(self, "Not implemented", msg)
+
 
     def open_recent_file(self):
         """
@@ -269,6 +277,7 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        self.sb_file = False
         if fname is None or not fname:
             fname = self.get_xml_fname()
 
@@ -276,6 +285,20 @@ class PyMdWizardMainForm(QMainWindow):
             self.load_file(fname)
             self.set_current_file(fname)
             self.update_recent_file_actions()
+
+    def open_sb_file(self, hash=None):
+        """
+        download a
+        Parameters
+        ----------
+        hash : str
+            Tag of item to be edited on SB
+
+        Returns
+        -------
+        None
+        """
+        self.sb_locator.show()
 
     def load_file(self, fname, check_for_changes=True):
         """
@@ -426,6 +449,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
+
+        if self.sb_file:
+            self.sb_locator.put_fgdc_file()
 
     def new_record(self):
         """

@@ -161,8 +161,12 @@ class Ui_MainWindow(object):
         self.actionSettings.setObjectName("actionSettings")
         self.anacondaprompt = QtWidgets.QAction(MainWindow)
         self.anacondaprompt.setObjectName("anacondaprompt")
+        self.actionOpen_sb = QtWidgets.QAction(MainWindow)
+        self.actionOpen_sb.setObjectName("actionOpen_sb")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionOpen_sb)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_as)
@@ -273,4 +277,5 @@ class Ui_MainWindow(object):
         self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.anacondaprompt.setText(_translate("MainWindow", "Anaconda Prompt"))
+        self.actionOpen_sb.setText(_translate("MainWindow", "Open ScienceBase item"))
 
