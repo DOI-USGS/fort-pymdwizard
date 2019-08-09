@@ -271,7 +271,7 @@ def remove_control_characters(str):
     -------
     string
     """
-    return "".join(ch for ch in str if unicodedata.category(ch)[0] != "C")
+    return "".join(ch for ch in str if unicodedata.category(ch)[0] != "C" or ch in ['\n', '\t'])
 
 
 def element_to_df(results):
