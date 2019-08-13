@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
-    <height>144</height>
+    <width>602</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>ScienceBase Item number (hash)</string>
+        <string>ScienceBase Item ID (hash)</string>
        </property>
       </widget>
      </item>
@@ -62,6 +62,23 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="styleSheet">
+      <string notr="true">font: italic;
+color: rgb(131, 131, 131);</string>
+     </property>
+     <property name="text">
+      <string>This feature is provided as a convenience for advanced metadata authors managing resources within the USGS ScienceBase system.
+
+When using this functionality, please ensure that you understand appropriate use of ScienceBase and also account for any necessary edits to other associated resources (e.g., the ScienceBase item, the associated Digital Object Identifier (DOI), etc.) that may be relevant. Note that this function will update the XML file attached to the item but will not re-scrape the element values into the ScienceBase item.*
+</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

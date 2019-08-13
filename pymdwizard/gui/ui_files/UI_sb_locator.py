@@ -2,17 +2,16 @@
 
 # Form implementation generated from reading ui file 'sb_locator.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(611, 144)
+        Form.resize(602, 230)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
@@ -39,42 +38,35 @@ class Ui_Form(object):
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
         self.password = QtWidgets.QLineEdit(Form)
-        self.password.setInputMethodHints(
-            QtCore.Qt.ImhHiddenText
-            | QtCore.Qt.ImhNoAutoUppercase
-            | QtCore.Qt.ImhNoPredictiveText
-            | QtCore.Qt.ImhSensitiveData
-        )
+        self.password.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhNoAutoUppercase|QtCore.Qt.ImhNoPredictiveText|QtCore.Qt.ImhSensitiveData)
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.horizontalLayout_2.addWidget(self.password)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setStyleSheet("font: italic;\n"
+"color: rgb(131, 131, 131);")
+        self.label_4.setWordWrap(True)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout.addWidget(self.label_4)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.btn_check = QtWidgets.QPushButton(Form)
         self.btn_check.setObjectName("btn_check")
         self.horizontalLayout.addWidget(self.btn_check)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.btn_ok = QtWidgets.QPushButton(Form)
         self.btn_ok.setObjectName("btn_ok")
         self.horizontalLayout.addWidget(self.btn_ok)
-        spacerItem2 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem2)
         self.btn_cancel = QtWidgets.QPushButton(Form)
         self.btn_cancel.setObjectName("btn_cancel")
         self.horizontalLayout.addWidget(self.btn_cancel)
-        spacerItem3 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem3)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -84,9 +76,14 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "ScienceBase Item number (hash)"))
+        self.label.setText(_translate("Form", "ScienceBase Item ID (hash)"))
         self.label_2.setText(_translate("Form", "User Name"))
         self.label_3.setText(_translate("Form", "Password"))
+        self.label_4.setText(_translate("Form", "This feature is provided as a convenience for advanced metadata authors managing resources within the USGS ScienceBase system.\n"
+"\n"
+"When using this functionality, please ensure that you understand appropriate use of ScienceBase and also account for any necessary edits to other associated resources (e.g., the ScienceBase item, the associated Digital Object Identifier (DOI), etc.) that may be relevant. Note that this function will update the XML file attached to the item but will not re-scrape the element values into the ScienceBase item.*\n"
+""))
         self.btn_check.setText(_translate("Form", "Check Item"))
         self.btn_ok.setText(_translate("Form", "OK"))
         self.btn_cancel.setText(_translate("Form", "Cancel"))
+

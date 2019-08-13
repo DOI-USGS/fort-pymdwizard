@@ -120,6 +120,9 @@ class SBLocator(QWidget):
     def ok_click(self):
         self.update_content()
 
+        if not self.check_permissions():
+            return False
+
         fname = self.get_fgdc_file()
         if not fname:
             return None
@@ -142,8 +145,11 @@ class SBLocator(QWidget):
             QMessageBox.warning(self, "SB Login Failed", msg)
             return False
 
-        permissions = sb.get_permissions(self.hash)
-        writable = "USER:{}".format(self.username) in permissions["write"]["acl"]
+        try:
+            permissions = sb.get_permissions(self.hash)
+            writable = "USER:{}".format(self.username) in permissions["write"]["acl"]
+        except:
+            writable = False
 
         if not writable:
             msg = "This item does not appear to be writable by the designated user."
@@ -155,9 +161,11 @@ class SBLocator(QWidget):
 
             fname = self.get_fgdc_file()
 
-            msg = ""
-
-            QMessageBox.warning(self, f"SB item {self.hash} ready to go.", msg)
+            if fname:
+                msg = f"SB item:\n {self.hash} ready to open and edit."
+                QMessageBox.information(self, "Good to go!", msg)
+            else:
+                return False
 
         return True
 
@@ -182,57 +190,32 @@ class SBLocator(QWidget):
                 f for f in item_json["facets"][0]["files"] if f["name"].endswith(".xml")
             ]
 
-        if len(fgdc_files) == 0:
-
-            msg = f"There doesn't appear to be an FGDC XML file associated with item: {self.hash}.\n"
-            msg += "Starting a new record with the default template."
-            msg += "\n\nEnter a filename for this new FGDC record:"
-            fname, ok =  QInputDialog.getText(self, "Starting new metadata record", msg, QLineEdit.Normal, 'FGDC.xml')
-
-            if not ok:
-                return None
-            else:
-                self.fname = os.path.join(tempdir, fname)
-                self.mainform.cur_fname = self.fname
-                self.mainform.save_file()
-                sb.upload_file_to_item(item_json, self.fname, scrape_file=False)
-
-        else:
-            #
-
+        if len(fgdc_files) == 1:
+            # Perfect.  There is one and only one xml file.
             url = fgdc_files[0]["url"]
             fname = fgdc_files[0]["name"]
 
             sb.download_file(url, fname, tempdir)
             self.fname = os.path.join(tempdir, fname)
 
-        return self.fname
+            return self.fname
+        elif len(fgdc_files) == 0:
+            msg = f"There doesn't appear to be an FGDC XML file associated with item: {self.hash}.\n"
+            msg += "You will need to upload a new FGDC record to the item to use this functionality."
+            QMessageBox.warning(self, "No existing Metadata file!", msg)
+            return False
+        else:
+            msg = f"There appears to be more than one FGDC XML file associated with item: {self.hash}.\n"
+            msg += "Since we can't determine which to edit, this functionality won't work."
+            msg += "\nYou will need to download and edit the file directly."
+            QMessageBox.warning(self, "More than one XML file!", msg)
+            return False
 
     def put_fgdc_file(self):
         sb = self.log_into_sb()
         item_json = sb.get_item(self.hash)
 
         sb.replace_file(self.fname, item_json)
-
-        # md = xml_utils.XMLRecord(self.fname)
-        #
-        # item_json = sb.get_item(self.hash)
-        # item_json['title'] = md.metadata.idinfo.citation.citeinfo.title.text
-        # item_json['body'] = md.metadata.idinfo.descript.abstract.text
-        # item_json['purpose'] = md.metadata.idinfo.descript.purpose.text
-        #
-        # try:
-        #     item_json['spatial']['boundingBox']['maxX'] = float(md.metadata.idinfo.spdom.bounding.eastbc.text)
-        #     item_json['spatial']['boundingBox']['minX'] = float(md.metadata.idinfo.spdom.bounding.westbc.text)
-        #     item_json['spatial']['boundingBox']['maxY'] = float(md.metadata.idinfo.spdom.bounding.northbc.text)
-        #     item_json['spatial']['boundingBox']['minY'] = float(md.metadata.idinfo.spdom.bounding.southbc.text)
-        # except:
-        #     pass
-        #
-        # # ToDo: add keywords
-        #
-        #
-        # sb.update_item(item_json=item_json)
 
 
 if __name__ == "__main__":
