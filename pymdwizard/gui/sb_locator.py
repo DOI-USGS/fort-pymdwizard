@@ -58,7 +58,10 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QInputDialog
 from PyQt5.QtWidgets import QLineEdit
 
-import pysb
+try:
+    import pysb
+except ImportError:
+    import sciencebasepy as pysb
 
 from pymdwizard.core import utils, xml_utils
 
