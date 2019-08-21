@@ -1217,12 +1217,11 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        msg = "The MetadataWizard was developed by the USGS Fort Collins Science Center<br>"
-        msg += "With help from the USGS Council for Data integration (CDI) and<br>"
-        msg += (
-            "and the USGS Core Science Analytics, Synthesis, and Libraries (CSAS&L)<br>"
-        )
-        msg += "<br>Version: {}<br>".format(__version__)
+        msg = "The MetadataWizard was developed by the data management team <br> at the USGS Fort Collins Science Center,<br>"
+        msg += "with support from the USGS Science Analytics and Synthesis (SAS), "
+        msg += "and the USGS Council for Data integration (CDI).<br><br>"
+        msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
+        msg += f"<br><br>Version: {__version__}<br>"
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += "<br><br>Contact: Colin Talbert at talbertc@usgs.gov"
 

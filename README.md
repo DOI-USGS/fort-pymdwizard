@@ -39,8 +39,13 @@ between different records or other tools including XML-Notepad and text editors.
 This project is modeled off of the original [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source), which was designed as a toolbox in ArcMap, and required an ESRI installation.
 
 
+Acknowledgements:
+----------------
+The MetadataWizard was developed by the data management team at the USGS Fort Collins Science Center,<br>
+with support from the USGS Science Analytics and Synthesis (SAS), 
+and the USGS Council for Data integration (CDI).<br><br>
+Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br><br>
 
-----
 Disclaimer:
 -----------
 
