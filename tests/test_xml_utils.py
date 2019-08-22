@@ -33,9 +33,9 @@ def test_node_to_dict():
 
 
 def test_url_read():
-    url = "https://www2.usgs.gov/datamanagement/documents/USGS_ASC_PolarBears_FGDC.xml"
+    url = "https://www.sciencebase.gov/catalog/file/get/57d8779de4b090824ff9acfb?f=__disk__e1%2F7c%2Fa7%2Fe17ca734bf9ffd9ae0abeaaf0da208d457f72b3c&allowOpen=true"
     md = xml_utils.XMLRecord(url)
-    assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Tabular Digital Data"
+    assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Raster Digital Data Set"
 
 
 def test_open_save():

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generating a Taxonomic Information Section &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Generating a Taxonomic Information Section &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Previewing a Metadata Record" href="Previewing a Record.html" />
     <link rel="prev" title="Populating the Entity and Attribute Tab" href="How to fill out the Entity and Attribute tab.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
@@ -105,9 +108,11 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -204,22 +209,22 @@ System (ITIS)</a> (note that this tool requires internet access).</p>
 <p>A form for searching and selecting taxonomic items to include in the record will open:
 | <img alt="image1" src="../_images/taxonomy_builder.png" /></p>
 <ol class="arabic simple">
-<li>Start by entering a scientific or common name into the Search Term
+<li><p>Start by entering a scientific or common name into the Search Term
 box. The term used can be from any level of the scientific hierarchy
-(order, family, species, sub-species, etc.).</li>
-<li>Make sure that for Search Type either Scientific Name or Common
-Name matches the search term used.</li>
-<li>Click <strong>Search ITIS</strong> to get a list of search results which will be
-displayed in the Search Results section.</li>
-<li>Select one or more items from the Search Results list.</li>
-<li>Click <strong>Add Selection</strong> to add the selected item to the list of
-taxonomic items that will be included (displayed on the right panel of the window).</li>
-<li>Steps 1-5 can be run as many times as needed to complete the list of
+(order, family, species, sub-species, etc.).</p></li>
+<li><p>Make sure that for Search Type either Scientific Name or Common
+Name matches the search term used.</p></li>
+<li><p>Click <strong>Search ITIS</strong> to get a list of search results which will be
+displayed in the Search Results section.</p></li>
+<li><p>Select one or more items from the Search Results list.</p></li>
+<li><p>Click <strong>Add Selection</strong> to add the selected item to the list of
+taxonomic items that will be included (displayed on the right panel of the window).</p></li>
+<li><p>Steps 1-5 can be run as many times as needed to complete the list of
 items to include. If any item needs to be removed from this list,
-select the item and click the <strong>Remove Selection</strong> button below.</li>
-<li>If common names should be included in the taxonomy section, check this box.</li>
-<li>Click the <strong>Generate Taxonomy Section</strong> button to create a taxonomy
-section based on the list in the <strong>Items to include:</strong> box above.</li>
+select the item and click the <strong>Remove Selection</strong> button below.</p></li>
+<li><p>If common names should be included in the taxonomy section, check this box.</p></li>
+<li><p>Click the <strong>Generate Taxonomy Section</strong> button to create a taxonomy
+section based on the list in the <strong>Items to include:</strong> box above.</p></li>
 </ol>
 </div>
 <div class="section" id="limitations">
@@ -241,7 +246,7 @@ the tool intended for creating a Taxonomy section manually, without using the Ta
         <a href="Previewing a Record.html" class="btn btn-neutral float-right" title="Previewing a Metadata Record" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral" title="Populating the Entity and Attribute Tab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="How to fill out the Entity and Attribute tab.html" class="btn btn-neutral float-left" title="Populating the Entity and Attribute Tab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -266,32 +271,16 @@ the tool intended for creating a Taxonomy section manually, without using the Ta
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

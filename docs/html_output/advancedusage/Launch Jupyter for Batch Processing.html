@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Batch Processing Using Jupyter and Python &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Batch Processing Using Jupyter and Python &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Include/Exclude Optional Metadata Sections" href="Include Sections.html" />
     <link rel="prev" title="Changing the Template" href="Changing Your Template.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/Spatial Content.html">Spatial Content</a></li>
@@ -100,6 +103,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Batch Processing Using Jupyter and Python</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
@@ -108,6 +112,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -188,18 +193,18 @@ the <a class="reference external" href="https://www.python.org/">Python programi
 <a class="reference external" href="http://jupyter.org/">Jupyter Notebooks</a>.
 There are many excellent resources for learning these powerful tools such as:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://swcarpentry.github.io/python-novice-inflammation/">Software Carpentry</a></li>
-<li><a class="reference external" href="https://www.codecademy.com/learn/learn-python">Code Academy</a></li>
-<li><a class="reference external" href="https://developers.google.com/edu/python/">Google’s Python Class</a></li>
+<li><p><a class="reference external" href="http://swcarpentry.github.io/python-novice-inflammation/">Software Carpentry</a></p></li>
+<li><p><a class="reference external" href="https://www.codecademy.com/learn/learn-python">Code Academy</a></p></li>
+<li><p><a class="reference external" href="https://developers.google.com/edu/python/">Google’s Python Class</a></p></li>
 </ul>
 </div>
 <div class="section" id="launching-jupyter-from-the-metadata-wizard">
 <h2>Launching Jupyter From the Metadata Wizard<a class="headerlink" href="#launching-jupyter-from-the-metadata-wizard" title="Permalink to this headline">¶</a></h2>
 <p>A live instance of a Jupyter Notebook kernel can be launched directly from the Metadata
 Wizard application by clicking <strong>Launch Jupyter</strong> in the Advanced menu.</p>
-<div class="figure" id="id1">
+<div class="figure align-default" id="id1">
 <img alt="Launch Jupyter Menu Item" src="../_images/JupyterLaunchMenu.png" />
-<p class="caption"><span class="caption-text">Menu item to Launch Jupyter</span></p>
+<p class="caption"><span class="caption-text">Menu item to Launch Jupyter</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -211,9 +216,9 @@ to navigate to a specific project folder or specify one of the last 10 directori
 If you have Anaconda installed and have set up environments with specific packages installed,
 you can choose one from the combobox below to use for this Jupyter session.</p>
 <p>Click <strong>Launch</strong> to start Jupyter, which will appear momentarily in your default web browser.</p>
-<div class="figure" id="id2">
+<div class="figure align-default" id="id2">
 <img alt="Launch Jupyter Browse" src="../_images/JupyterBrowse.png" />
-<p class="caption"><span class="caption-text">Prompt for choosing where to start the Notebook server and optionally which Anaconda env to use.</span></p>
+<p class="caption"><span class="caption-text">Prompt for choosing where to start the Notebook server and optionally which Anaconda env to use.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="example-notebooks">
@@ -251,7 +256,7 @@ data and metadata up to an online repository (a data release on the USGS Science
         <a href="Include Sections.html" class="btn btn-neutral float-right" title="Include/Exclude Optional Metadata Sections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Changing Your Template.html" class="btn btn-neutral" title="Changing the Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Changing Your Template.html" class="btn btn-neutral float-left" title="Changing the Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -276,32 +281,16 @@ data and metadata up to an online repository (a data release on the USGS Science
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

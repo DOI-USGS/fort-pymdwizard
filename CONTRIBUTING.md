@@ -16,9 +16,11 @@ can comment on the existing issue to show your support for that issue.
 
 Code Conventions
 ================
-All code is compatible with Python 2.7 and 3.4+.
+All code is compatible with 3.4+.
 We use [PEP8][2] conventions for all Python code, and recommend running 
-a code checker prior to submitting a pull request.
+a code checker prior to submitting a pull request.  Black is the recommended
+code formater.
+
 For docstrings we're using the [numpy format][3]
 We use [pytest][6] for all testing and will require tests for new features.
 
