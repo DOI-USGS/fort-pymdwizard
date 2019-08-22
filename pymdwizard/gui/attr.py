@@ -173,11 +173,8 @@ class Attr(WizardWidget):
             """
         if b:
             self.ui.nodata_section.show()
-            # self.nodata
-            # self.nodata_edom.show()
         else:
             self.ui.nodata_section.hide()
-            # self.nodata = None
 
     def mousePressEvent(self, event):
         self.activate()
@@ -576,6 +573,7 @@ class Attr(WizardWidget):
         cur_index = self.ui.comboBox.currentIndex()
 
         if self.active:
+            self.store_current_content()
             domain = self.domain.to_xml()
         elif self._domain_content[cur_index] is not None:
             domain = self._domain_content[cur_index]
@@ -610,6 +608,7 @@ class Attr(WizardWidget):
         if self.nodata_content[0]:
             attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr, index=3)
             attrdomv.append(self.nodata_content[1])
+
 
         return attr
 
