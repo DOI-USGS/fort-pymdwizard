@@ -1,6 +1,22 @@
 Changes
 =======
+2.0.6 (8/23/2019)
+-----
+New features:
+- Directly edit a ScienceBase Item's Metadata file directly
+- Add ability to open Anaconda prompt to add packages to install Python Env
+- Add Jupyterlab to notebook launcher
+- Add edition to citeinfo
+
+Bug fixes:
+- Whitespace getting stripped
+- Nodes with comments getting stripped
+- Scrolling on single lines hiding content
+- Null characters in text breaking.
+- Nodata values not getting saved out.
+
 2.0.5 (7/27/2018)
+-----
 New features:
 - Application settings form to easily change template file, definition source text, max rows read, and font size.
 
