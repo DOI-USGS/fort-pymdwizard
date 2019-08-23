@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Populating the Entity and Attribute Tab &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Populating the Entity and Attribute Tab &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Generating a Taxonomic Information Section" href="Generating a Taxonomic Information Section.html" />
     <link rel="prev" title="Spatial Content" href="Spatial Content.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
@@ -107,9 +110,11 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -190,18 +195,18 @@ auto-populating much of the data’s content and allowing the user to more
 easily define the attributes.</p>
 <p>File types that are currently supported for populating the Entity and Attribute tab are:</p>
 <ul class="simple">
-<li>Comma Separated Values (.csv)</li>
-<li>Unformatted Texts Documents (.txt)</li>
-<li>Excel Spreadsheet (.xls, .xlsx, .xlsm)</li>
-<li>Shapefile (.shp)</li>
-<li>GeoTIFF (.tif)</li>
-<li>JPEG (.jpg)</li>
-<li>Bitmap (.bmp)</li>
-<li>Disk Image File (.img)</li>
-<li>Portable Network Graphics (.png)</li>
-<li>ASCII Grid (.grd)</li>
-<li>High Dynamic Range Image (.hdr)</li>
-<li>ESRI ArcInfo Binary Grid (.adf)</li>
+<li><p>Comma Separated Values (.csv)</p></li>
+<li><p>Unformatted Texts Documents (.txt)</p></li>
+<li><p>Excel Spreadsheet (.xls, .xlsx, .xlsm)</p></li>
+<li><p>Shapefile (.shp)</p></li>
+<li><p>GeoTIFF (.tif)</p></li>
+<li><p>JPEG (.jpg)</p></li>
+<li><p>Bitmap (.bmp)</p></li>
+<li><p>Disk Image File (.img)</p></li>
+<li><p>Portable Network Graphics (.png)</p></li>
+<li><p>ASCII Grid (.grd)</p></li>
+<li><p>High Dynamic Range Image (.hdr)</p></li>
+<li><p>ESRI ArcInfo Binary Grid (.adf)</p></li>
 </ul>
 <p>Additional geospatial formats are available when calling the
 MetadataWizard from the <a class="reference external" href="../Installing%20ArcMap%20Toolbox.html">ArcToolbox</a>.</p>
@@ -243,12 +248,13 @@ worksheet, raster attribute table) where each column represents an attribute,
 each observation forms a row, and where the rows and columns together form a table.</p>
 <blockquote>
 <div><blockquote>
-<div>On the Detailed tab click the ‘Browse to Dataset’ button on the
+<div><p>On the Detailed tab click the ‘Browse to Dataset’ button on the
 left and navigate to the data file. Appropriate content will be
 extracted from the file to fill the form. Sequentially fill out
 each of the columns on the right, by providing a definition of
 what is in that column. For each column also provide the Column
-Contents which will be one of:</div></blockquote>
+Contents which will be one of:</p>
+</div></blockquote>
 <div class="line-block">
 <div class="line">1.  <strong>Enumerated</strong> for categorical or factor data, for which a definition will need to be provided for each unique value in the column (for example, data collected in binary (1 = Yes, 2 = No), or taxonomic abbreviations (URAM = Ursus americanus, or black bear)).</div>
 </div>
@@ -268,7 +274,8 @@ Contents which will be one of:</div></blockquote>
 <p>The data consists of multiple distinct tabular datasets, for example,
 several CSVs that contain related data or multiple sheets in an Excel workbook.</p>
 <blockquote>
-<div>Click the <strong>Add Detailed</strong> button at the bottom of the Instructions tab.</div></blockquote>
+<div><p>Click the <strong>Add Detailed</strong> button at the bottom of the Instructions tab.</p>
+</div></blockquote>
 </div>
 <div class="section" id="changing-default-definition-source-text">
 <h2>Changing Default Definition Source Text<a class="headerlink" href="#changing-default-definition-source-text" title="Permalink to this headline">¶</a></h2>
@@ -289,7 +296,7 @@ can be changed in the application settings form available from the Advanced menu
         <a href="Generating a Taxonomic Information Section.html" class="btn btn-neutral float-right" title="Generating a Taxonomic Information Section" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Spatial Content.html" class="btn btn-neutral" title="Spatial Content" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Spatial Content.html" class="btn btn-neutral float-left" title="Spatial Content" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -314,32 +321,16 @@ can be changed in the application settings form available from the Advanced menu
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

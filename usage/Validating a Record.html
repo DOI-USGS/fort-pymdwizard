@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Validating a Metadata Record &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Validating a Metadata Record &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Making a Metadata Review Report" href="../advancedusage/Metadata Review Report.html" />
     <link rel="prev" title="Previewing a Metadata Record" href="Previewing a Record.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
@@ -100,9 +103,11 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -177,10 +182,10 @@ and the content. The Metadata Wizard handles the syntax validation, but the
 quality of the content requires an individual to validate accuracy of the content.
 Examples of items that can be flagged as syntax errors can include the following:</p>
 <ul class="simple">
-<li>missing content in required fields</li>
-<li>incorrectly formatted items</li>
-<li>values outside an acceptable range</li>
-<li>other violations</li>
+<li><p>missing content in required fields</p></li>
+<li><p>incorrectly formatted items</p></li>
+<li><p>values outside an acceptable range</p></li>
+<li><p>other violations</p></li>
 </ul>
 <p>These errors can be identified directly in the tool by clicking <strong>Run
 Validation</strong> in the Validation item on the menu bar. The record will be
@@ -214,7 +219,7 @@ item in the validation menu.</p>
         <a href="../advancedusage/Metadata Review Report.html" class="btn btn-neutral float-right" title="Making a Metadata Review Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Previewing a Record.html" class="btn btn-neutral" title="Previewing a Metadata Record" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Previewing a Record.html" class="btn btn-neutral float-left" title="Previewing a Metadata Record" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -239,32 +244,16 @@ item in the validation menu.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

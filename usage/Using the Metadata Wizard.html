@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Metadata Wizard &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Using the Metadata Wizard &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Spatial Content" href="Spatial Content.html" />
     <link rel="prev" title="Getting Software Updates" href="../Getting Software Updates.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Metadata Wizard</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sections">Sections</a></li>
@@ -107,9 +110,11 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -186,12 +191,12 @@
 <h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
 <p>The Metadata Wizard uses a series of forms/tabs where the user will enter information about a dataset. These tabs are broken down categorically into sections that roughly correspond to the sections in an FGDC metadata record.</p>
 <ul class="simple">
-<li><strong>Identification</strong> : <em>What the data is, who created it, associated publications, when it was created, etc.</em></li>
-<li><strong>Data Quality</strong> : <em>How was the data created (methodology), what sources were used, what quality control was used.</em></li>
-<li><strong>Spatial</strong> : <em>Where is the data geographically, what spatial projection or reference is it in, how is it organized spatially.</em></li>
-<li><strong>Entity and Attribute</strong> : <em>How is the data organized tabularly, what is in each of the field attributes, the unit of measure for applicable field attributes, etc.</em></li>
-<li><strong>Distribution</strong> : <em>Information on how would one would obtain the data.</em></li>
-<li><strong>Metadata Reference</strong> : <em>Who made the metadata record, when, what standard was used.</em></li>
+<li><p><strong>Identification</strong> : <em>What the data is, who created it, associated publications, when it was created, etc.</em></p></li>
+<li><p><strong>Data Quality</strong> : <em>How was the data created (methodology), what sources were used, what quality control was used.</em></p></li>
+<li><p><strong>Spatial</strong> : <em>Where is the data geographically, what spatial projection or reference is it in, how is it organized spatially.</em></p></li>
+<li><p><strong>Entity and Attribute</strong> : <em>How is the data organized tabularly, what is in each of the field attributes, the unit of measure for applicable field attributes, etc.</em></p></li>
+<li><p><strong>Distribution</strong> : <em>Information on how would one would obtain the data.</em></p></li>
+<li><p><strong>Metadata Reference</strong> : <em>Who made the metadata record, when, what standard was used.</em></p></li>
 </ul>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -206,7 +211,7 @@
 </div>
 <div class="section" id="expanding-a-collapsed-element">
 <h2>Expanding a Collapsed Element<a class="headerlink" href="#expanding-a-collapsed-element" title="Permalink to this headline">¶</a></h2>
-<div class="figure">
+<div class="figure align-default">
 <img alt="Expanding a hidden element" src="../_images/SeriesYes.png" />
 </div>
 <p>Some compound metadata elements are hidden until the <strong>Yes</strong> radio button is checked. For example, if the data is part of a series the user will want to record the series name and number in the Citation section on the Identification tab. These will not be visible until the user checks the <strong>Yes</strong> button corresponding to the question <strong>Is this dataset part of a series?</strong>. If compound metadata elements are not needed, the user should click the <strong>No</strong> button to help the metadata record pass validation by limiting empty metadata elements. More information on validation is <a class="reference external" href="Validating%20a%20Record.html">here</a>.</p>
@@ -216,7 +221,7 @@
 </div>
 <div class="section" id="adding-or-removing-items-in-a-list-repeating-elements">
 <h2>Adding or Removing Items in a List (Repeating Elements)<a class="headerlink" href="#adding-or-removing-items-in-a-list-repeating-elements" title="Permalink to this headline">¶</a></h2>
-<div class="figure">
+<div class="figure align-default">
 <img alt="Using a helper tool" src="../_images/AddOriginator.png" />
 </div>
 <p>Elements that can be repeated multiple times, for example, authors, keywords, and
@@ -227,7 +232,7 @@ online linkages, have buttons for adding or removing elements.</p>
 </div>
 <div class="section" id="using-tools-to-auto-populate-compound-elements">
 <h2>Using Tools to Auto-Populate Compound Elements<a class="headerlink" href="#using-tools-to-auto-populate-compound-elements" title="Permalink to this headline">¶</a></h2>
-<div class="figure">
+<div class="figure align-default">
 <img alt="Expanding a hidden element" src="../_images/ImportContact.png" />
 </div>
 <p>Some elements contain convenience tools for populating their content
@@ -250,7 +255,7 @@ Active Directory (a directory service developed for Microsoft Windows domain net
         <a href="Spatial Content.html" class="btn btn-neutral float-right" title="Spatial Content" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../Getting Software Updates.html" class="btn btn-neutral" title="Getting Software Updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../Getting Software Updates.html" class="btn btn-neutral float-left" title="Getting Software Updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -275,32 +280,16 @@ Active Directory (a directory service developed for Microsoft Windows domain net
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

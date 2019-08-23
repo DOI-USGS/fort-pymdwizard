@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.0.5 documentation</title>
+  <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html" />
     <link rel="prev" title="Installing on Mac" href="Mac Installation.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                2.0.5
+                2.0.6
               </div>
             
           
@@ -90,6 +92,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
@@ -100,9 +103,11 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -180,7 +185,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic">
-<li><p class="first">Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
+<li><p>Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
 <blockquote>
 <div><p><em>While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.</em></p>
 </div></blockquote>
@@ -190,13 +195,13 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li>Open the Anaconda command window.</li>
+<li><p>Open the Anaconda command window.</p></li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="3">
-<li>Add the conda-forge channel:</li>
+<li><p>Add the conda-forge channel:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
@@ -207,7 +212,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="4">
-<li>Install the optional conda developer tools</li>
+<li><p>Install the optional conda developer tools</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
@@ -218,7 +223,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="5">
-<li>Create a pymdwizard environment:</li>
+<li><p>Create a pymdwizard environment:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
@@ -229,7 +234,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="6">
-<li>Activate this environment:</li>
+<li><p>Activate this environment:</p></li>
 </ol>
 <div class="line-block">
 <div class="line"><em>(on Windows)</em></div>
@@ -251,7 +256,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="7">
-<li>Install git:</li>
+<li><p>Install git:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
@@ -262,7 +267,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic" start="8">
-<li><p class="first">Navigate to the directory where the Metadata Wizard will be installed:</p>
+<li><p>Navigate to the directory where the Metadata Wizard will be installed:</p>
 <blockquote>
 <div><p><em>The example directory below could be different depending on operating system or organization</em></p>
 </div></blockquote>
@@ -277,7 +282,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="9">
-<li>Clone our pymdwizard project:</li>
+<li><p>Clone our pymdwizard project:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
@@ -288,7 +293,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="10">
-<li>Navigate to our project folder:</li>
+<li><p>Navigate to our project folder:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
@@ -299,7 +304,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="11">
-<li>Install the remaining software requirements (library dependencies):</li>
+<li><p>Install the remaining software requirements (library dependencies):</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file requirements.txt
@@ -310,7 +315,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="12">
-<li>Add our git folder to the pythonpath:</li>
+<li><p>Add our git folder to the pythonpath:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
@@ -321,7 +326,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="13">
-<li>Launch Metadata Wizard:</li>
+<li><p>Launch Metadata Wizard:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
@@ -341,7 +346,7 @@ in a subsequent release to support Macs.</p>
         <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="ESRI ArcGIS Toolbox (Windows Only)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Mac Installation.html" class="btn btn-neutral" title="Installing on Mac" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Mac Installation.html" class="btn btn-neutral float-left" title="Installing on Mac" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -366,32 +371,16 @@ in a subsequent release to support Macs.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'2.0.5',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

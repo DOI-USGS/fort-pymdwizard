@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Include/Exclude Optional Metadata Sections &mdash; MetadataWizard 2.0.6 documentation</title>
+  <title>Installing and Updating Python Packages &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Installing and Updating Python Packages" href="InstallingAndUpdatingPython.html" />
-    <link rel="prev" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html" /> 
+    <link rel="next" title="Reporting Bugs and Enhancement Ideas" href="../Reporting Bugs and Enhancement Ideas.html" />
+    <link rel="prev" title="Include/Exclude Optional Metadata Sections" href="Include Sections.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,8 +106,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Settings.html">Changing Application Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Include/Exclude Optional Metadata Sections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -156,13 +156,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Include/Exclude Optional Metadata Sections</li>
+      <li>Installing and Updating Python Packages</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/advancedusage/Include Sections.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/advancedusage/InstallingAndUpdatingPython.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -175,20 +175,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="include-exclude-optional-metadata-sections">
-<h1>Include/Exclude Optional Metadata Sections<a class="headerlink" href="#include-exclude-optional-metadata-sections" title="Permalink to this headline">¶</a></h1>
-<p>Some scenarios when creating metadata do not require the use of all available FGDC
-metadata sections, such as when creating a project-level metadata record, which can
-be used to summarize a collection of metadata records relating to a project.</p>
-<p>Creating such a metadata record can be accomplished in Metadata Wizard by using the
-<strong>Include Sections</strong> feature.  This feature is located on the Advanced menu.</p>
-<p>These are reset to include all sections whenever a new record is opened.</p>
-<p><img alt="image0" src="../_images/IncludeSections.png" /></p>
-<p>The default is for all sections to be active, designated by a checkmark to the left of
-each section.  To deactivate a section, click that section.  The section’s checkmark
-will be removed, and the section’s tab in the main window of the tool will be blank.</p>
-<p><strong>Users should be advised that generally, all sections are required when creating metadata
-at the dataset level.</strong></p>
+  <div class="section" id="installing-and-updating-python-packages">
+<h1>Installing and Updating Python Packages<a class="headerlink" href="#installing-and-updating-python-packages" title="Permalink to this headline">¶</a></h1>
+<p>The metadataWizard (as installed by the precompiled installers) comes with a complete, self contained Python 3.6 installation.
+By default this will be in:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Windows: C:\Users\&lt;&lt;username&gt;&gt;\AppData\Local\Programs\MetadataWizard\Python36_64</p></li>
+<li><p>Mac: /Applications/MetadataWizard.app/Contents/Frameworks/pymdwizard_36/bin/python3.6m</p></li>
+</ul>
+</div></blockquote>
+<p>You might need to update one of the existing packages, or install an additional package.  For example if you’re using
+the Jupyter Notebook/Lab feature and need another package installed, or need to upgrade an existing package to gain new functionality.</p>
+<p><strong>Be aware, that changing or removing an existing library that the MetadataWizard depends on could render the MetadataWizard completely unusable.</strong>
+<strong>This might be difficult or impossible to remedy, short of uninstalling and reinstalling the application completely.</strong></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>To open an Anconda prompt select ‘Anaconda Prompt’ from the Advanced Menu:</p>
+<a class="reference internal image-reference" href="../_images/AnacondaPrompt.png"><img alt="../_images/AnacondaPrompt.png" src="../_images/AnacondaPrompt.png" style="width: 300pt;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The cmd that opens will look like the system command prompt but have the standard conda commands available.
+The (base) env that it is set to is the MetadataWizard’s Python environment.</p>
+<a class="reference internal image-reference" href="../_images/AnacondaPrompt2.png"><img alt="../_images/AnacondaPrompt2.png" class="align-left" src="../_images/AnacondaPrompt2.png" style="width: 900pt;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </div>
 
 
@@ -199,10 +213,10 @@ at the dataset level.</strong></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="InstallingAndUpdatingPython.html" class="btn btn-neutral float-right" title="Installing and Updating Python Packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../Reporting Bugs and Enhancement Ideas.html" class="btn btn-neutral float-right" title="Reporting Bugs and Enhancement Ideas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral float-left" title="Batch Processing Using Jupyter and Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Include Sections.html" class="btn btn-neutral float-left" title="Include/Exclude Optional Metadata Sections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
