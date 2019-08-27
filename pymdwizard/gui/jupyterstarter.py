@@ -209,6 +209,8 @@ class JupyterStarter(QDialog):
             python_dir = utils.get_install_dname("python")
             if platform.system() == "Darwin":
                 jupyterexe = os.path.join(python_dir, "jupyter")
+                my_env = os.environ.copy()
+                my_env["PYTHONPATH"] = os.path.join(python_dir, "python")
                 p = Popen([jupyterexe, "notebook"], cwd=jupyter_dname)
             else:
                 root_dir = utils.get_install_dname("root")
