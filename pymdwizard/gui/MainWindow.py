@@ -802,46 +802,51 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-        xpath = sender.data(1)
-        section = xpath.split("/")[1]
-
-        if section == "idinfo":
-            subsection = xpath.split("/")[2]
-            if subsection == "spdom":
-                parent_section = self.metadata_root.switch_section(2)
-            else:
-                parent_section = self.metadata_root.switch_section(0)
-        elif section == "dataqual":
-            parent_section = self.metadata_root.switch_section(1)
-        elif section == "spdoinfo" or section == "spref":
-            parent_section = self.metadata_root.switch_section(2)
-        elif section == "eainfo":
-            parent_section = self.metadata_root.switch_section(3)
-        elif section == "eainfo":
-            parent_section = self.metadata_root.switch_section(3)
-        elif section == "distinfo":
-            parent_section = self.metadata_root.switch_section(4)
-        elif section == "metainfo":
-            parent_section = self.metadata_root.switch_section(5)
-
-        if self.last_highlight is not None and not sip.isdeleted(self.last_highlight):
-            self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
-
-        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
-        bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
-
         try:
-            parent_wizwidget = [
-                thing
-                for thing in parent_section.children()
-                if isinstance(thing, WizardWidget)
-            ][0]
-            parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
-        except:
-            pass
+            xpath = sender.data(1)
+            section = xpath.split("/")[1]
 
-        self.last_highlight = bad_widget[0].widget
-        self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
+            if section == "idinfo":
+                subsection = xpath.split("/")[2]
+                if subsection == "spdom":
+                    parent_section = self.metadata_root.switch_section(2)
+                else:
+                    parent_section = self.metadata_root.switch_section(0)
+            elif section == "dataqual":
+                parent_section = self.metadata_root.switch_section(1)
+            elif section == "spdoinfo" or section == "spref":
+                parent_section = self.metadata_root.switch_section(2)
+            elif section == "eainfo":
+                parent_section = self.metadata_root.switch_section(3)
+            elif section == "eainfo":
+                parent_section = self.metadata_root.switch_section(3)
+            elif section == "distinfo":
+                parent_section = self.metadata_root.switch_section(4)
+            elif section == "metainfo":
+                parent_section = self.metadata_root.switch_section(5)
+
+            if self.last_highlight is not None and not sip.isdeleted(self.last_highlight):
+                self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+
+            widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+            bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
+
+            try:
+                parent_wizwidget = [
+                    thing
+                    for thing in parent_section.children()
+                    if isinstance(thing, WizardWidget)
+                ][0]
+                parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
+            except:
+                pass
+
+            self.last_highlight = bad_widget[0].widget
+            self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
+        except:
+            msg = f"We encountered a problem highlighting and navigating to that error.\n\n"
+            msg += f"The xpath of the xml error is:\n\n{xpath}"
+            QMessageBox.warning(self, "Problem encountered", msg)
 
     def highlight_error(self, widget, error_msg, superhot=False):
         """
