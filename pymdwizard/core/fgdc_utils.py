@@ -287,3 +287,49 @@ def format_date(date_input):
         date_input = parser.parse(date_input)
 
     return date_input.strftime("%Y%m%d")
+
+
+def add_doi(xml_record, doi_url):
+    """
+    Adds a doi to an existing xml record by replacing the onlink if it's our default or adding an additional onlink
+    Also replaces or adds a network resource name to the distribution section.
+
+    Parameters
+    ----------
+    xml_record : xml_utils.XMLRecord
+
+    doi_str : str
+              Digitial Object Identifier (DOI) as url
+
+    Returns
+    -------
+
+    xml record
+
+    """
+
+    onlink_added = False
+    citeinfo = xml_record.metadata.idinfo.citation.citeinfo
+    for onlink in citeinfo.xpath('onlink'):
+        if onlink.text == doi_url:
+            onlink_added = True
+        elif onlink.text == 'https://doi.org/10.5066/xxxxxxxx':
+            onlink.text = doi_url
+            onlink_added = True
+
+    if not onlink_added:
+        new_onlink = xml_utils.XMLNode(tag='onlink', text=doi_url)
+        if not citeinfo.xpath('lworkcit'):
+            citeinfo.add_child(new_onlink)
+        else:
+            # insert the new onlink before the larger work citation
+            citeinfo.add_child(new_onlink, index=-2)
+
+    try:
+        xml_record.metadata.distinfo.stdorder.digform.digtopt.onlinopt.computer.networka.networkr.text = doi_url
+    except AttributeError:
+        stdorder_str = """<stdorder><digform><digtinfo><formname>Digital Data</formname></digtinfo><digtopt><onlinopt><computer><networka><networkr></networkr></networka></computer></onlinopt></digtopt></digform><fees>None</fees></stdorder>"""
+        stdorder_node = xml_utils.XMLNode(stdorder_str, parent_node=xml_record.metadata.distinfo)
+        stdorder_node.digform.digtopt.onlinopt.computer.networka.networkr.text = doi_url
+
+    return xml_record
