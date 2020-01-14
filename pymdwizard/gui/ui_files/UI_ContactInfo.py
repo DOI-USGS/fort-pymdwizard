@@ -14,7 +14,7 @@ class Ui_USGSContactInfoWidget(object):
         USGSContactInfoWidget.setObjectName("USGSContactInfoWidget")
         USGSContactInfoWidget.resize(563, 360)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -76,7 +76,7 @@ class Ui_USGSContactInfoWidget(object):
             self.btn_import_contact.sizePolicy().hasHeightForWidth()
         )
         self.btn_import_contact.setSizePolicy(sizePolicy)
-        self.btn_import_contact.setMinimumSize(QtCore.QSize(140, 0))
+        self.btn_import_contact.setMinimumSize(QtCore.QSize(140, 40))
         self.btn_import_contact.setMaximumSize(QtCore.QSize(16777215, 25))
         self.btn_import_contact.setObjectName("btn_import_contact")
         self.horizontalLayout_17.addWidget(self.btn_import_contact)
@@ -86,7 +86,7 @@ class Ui_USGSContactInfoWidget(object):
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.widget_2 = QtWidgets.QWidget(self.fgdc_cntinfo)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -109,13 +109,13 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_cntper = QtWidgets.QLabel(self.fgdc_cntperp)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_cntper.sizePolicy().hasHeightForWidth())
         self.lbl_cntper.setSizePolicy(sizePolicy)
-        self.lbl_cntper.setMinimumSize(QtCore.QSize(0, 0))
+        self.lbl_cntper.setMinimumSize(QtCore.QSize(30, 0))
         self.lbl_cntper.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -175,7 +175,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout.addLayout(self.required_horizontal_layout)
         self.lbl_cntorg = QtWidgets.QLabel(self.fgdc_cntperp)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -211,7 +211,7 @@ class Ui_USGSContactInfoWidget(object):
         self.left_vertical_layout.addWidget(self.fgdc_cntperp)
         self.label_5 = QtWidgets.QLabel(self.widget_2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -246,7 +246,7 @@ class Ui_USGSContactInfoWidget(object):
         self.left_vertical_layout.addLayout(self.horizontalLayout_4)
         self.label_8 = QtWidgets.QLabel(self.widget_2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -301,7 +301,7 @@ class Ui_USGSContactInfoWidget(object):
         self.left_vertical_layout.addLayout(self.horizontalLayout_5)
         self.label_9 = QtWidgets.QLabel(self.widget_2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -336,7 +336,7 @@ class Ui_USGSContactInfoWidget(object):
         self.left_vertical_layout.addLayout(self.horizontalLayout_6)
         self.label_18 = QtWidgets.QLabel(self.widget_2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -376,7 +376,7 @@ class Ui_USGSContactInfoWidget(object):
         self.horizontalLayout_14.addWidget(self.widget_2)
         self.widget_3 = QtWidgets.QWidget(self.fgdc_cntinfo)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -395,7 +395,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.label_19 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -459,7 +459,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_8)
         self.label_21 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -496,7 +496,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_9)
         self.label_22 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -533,7 +533,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_10)
         self.label_23 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -590,7 +590,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.label_27 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -646,7 +646,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_30 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -707,7 +707,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.label_31 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -744,7 +744,7 @@ class Ui_USGSContactInfoWidget(object):
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.label_33 = QtWidgets.QLabel(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -762,7 +762,7 @@ class Ui_USGSContactInfoWidget(object):
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.fgdc_addrtype = QtWidgets.QComboBox(self.fgdc_cntaddr)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
