@@ -54,6 +54,7 @@ import platform
 import datetime
 import traceback
 import pkg_resources
+import urllib.request
 
 try:
     from urllib.parse import urlparse
@@ -260,7 +261,7 @@ def launch_widget(Widget, title="", **kwargs):
         return widget
     except:
         e = sys.exc_info()[0]
-        print("problem encountered", e)
+        print("problem encountered")
         print(traceback.format_exc())
 
 
@@ -581,3 +582,21 @@ def get_setting(which, default=None):
         return settings.value(which)
     else:
         return settings.value(which, default)
+
+
+def url_is_alive(url):
+    """
+    Checks that a given URL is reachable.
+    :param url: A URL
+    :rtype: bool
+    """
+    if url.startswith('www'):
+        url = 'http://' + url
+    request = urllib.request.Request(url)
+    request.get_method = lambda: 'HEAD'
+
+    try:
+        urllib.request.urlopen(request)
+        return True
+    except (urllib.request.HTTPError, urllib.request.URLError):
+        return False
