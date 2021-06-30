@@ -80,3 +80,8 @@ tests/data/projections
 desktop.ini
 Thumbs.db
 ~$*
+
+.DS_Store
+
+python36_64
+windows
