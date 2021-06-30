@@ -3,7 +3,7 @@ Changing the Template
 
 When an individual, project, or organization has particular metadata content needs that are expected in every
 record, it can be inefficient to populate these every time a record is started.  To allow users to prepopulate these
-fields easily the MetadataWizard allows for users to specify a 'Template' file to use as the starting point for any new
+fields easily, the MetadataWizard allows for users to specify a 'Template' file to use as the starting point for any new
 records.
 
 This template is simply an FGDC record that contains default content.  Keep in mind that anything
