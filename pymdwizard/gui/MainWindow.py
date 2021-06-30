@@ -58,6 +58,8 @@ import shutil
 from pathlib import Path
 import subprocess
 
+from os.path import dirname
+
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QSplashScreen
@@ -436,6 +438,38 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        # Test
+        utils.get_install_dname()
+
+        # Test continued Popup message
+        this_fname = os.path.realpath(__file__)
+        pymdwizard_dname = os.path.abspath(
+            os.path.join(dirname(this_fname), *[".."] * 4)
+        )
+
+        root_dir = pymdwizard_dname
+        executable = sys.executable
+        python_dname = os.path.split(executable)[0]
+
+        msg = "this_fname {}".format(this_fname) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/fort-pymdwizard/pymdwizard/gui/MainWindow.py
+        QMessageBox.information(self, "this_fname", msg)
+
+        msg = "dirname(this_fname)  {}".format(dirname(this_fname)) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/fort-pymdwizard/pymdwizard/gui
+        QMessageBox.information(self, "dirname(this_fname)", msg)
+
+        msg = "root_dir {}".format(root_dir) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app
+        QMessageBox.information(self, "root_dir", msg)
+
+        msg = "executable  {}".format(executable) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/Frameworks/pymdwizard/bin/python3
+        QMessageBox.information(self, "executable", msg)
+
+        msg = "python_dname (where python is) {}".format(python_dname) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/Frameworks/pymdwizard/bin
+        QMessageBox.information(self, "python_dname", msg)
+
+
+
+
+
         if not self.cur_fname:
             fname = self.get_save_name()
             if not fname:
@@ -1136,6 +1170,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             if time.time() - self.last_updated > 4:
                 msg = "Would you like to save the current file before continuing?"
+                exists_msg = "File already exists, would you like to overwrite it? Selecting 'No' "
+                exists_msg += "will allow you to SaveAs."
                 alert = QDialog()
                 self.last_updated = time.time()
                 confirm = QMessageBox.question(
@@ -1145,7 +1181,25 @@ class PyMdWizardMainForm(QMainWindow):
                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                 )
                 if confirm == QMessageBox.Yes:
-                    self.save_file()
+                    # TODO If file already exists, prompt to either "Save As" or "Overwrite"
+                    import os
+                    file_exists = os.path.exists(self.cur_fname)
+                    if file_exists:
+                        confirm2 = QMessageBox.question(self,
+                            "File Overwrite",
+                            exists_msg,
+                            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
+                        )
+                        if confirm2 == QMessageBox.Yes:
+                            self.save_file()
+                        elif confirm2 == QMessageBox.No:
+                            self.save_as()
+                        elif confirm2 == QMessageBox.Cancel:
+                            print ('cancel1')
+                            return
+                    else:
+                        self.save_as()
+
                 elif confirm == QMessageBox.Cancel:
                     return
             try:
