@@ -721,7 +721,7 @@ class Ui_parent_form(object):
         )
         self.label_46.setText(_translate("parent_form", "Publication Date"))
         self.label_38.setText(
-            _translate("parent_form", "When was the dataset published or finalized?")
+            _translate("parent_form", "When was the larger work published or finalized?")
         )
         self.btn_import_doi.setToolTip(
             _translate("parent_form", "Import citation from Active (CrossRef) DOI")
