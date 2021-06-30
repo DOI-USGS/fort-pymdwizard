@@ -1,35 +1,74 @@
-{
-  "name": "Metadata Wizard",
-  "organization": "U.S. Geological Survey",
-  "description": "Tool for editing and validating FGDC metadata records",
-  "status": "Release Candidate",
-  "homepage": "https://usgs.github.io/fort-pymdwizard/",
-  "downloadURL": "https://github.com/usgs/best-practices/archive/master.zip",
+[
+  {
+    "name": "Metadata Wizard",
+    "organization": "U.S. Geological Survey",
+    "description": "Tool for editing and validating FGDC metadata records",
+    "version": "latest",
+    "status": "Release Candidate",
+    "homepage": "https://usgs.github.io/fort-pymdwizard/",
+    "downloadURL": "https://github.com/usgs/fort-pymdwizard/archive/refs/heads/master.zip",
 
-  "openSourceProject": 1,
-  "license": "https://github.com/usgs/fort-pymdwizard/blob/master/LICENSE.md",
-  "vcs": "git",
-  "repository": "https://github.com/usgs/fort-pymdwizard",
+    "openSourceProject": 1,
+    "license": "https://github.com/usgs/fort-pymdwizard/blob/master/LICENSE.md",
+    "vcs": "git",
+    "repository": "https://github.com/usgs/fort-pymdwizard",
 
-  "tags": [
-    "metadata",
-    "FGDC",
-    "xml",
-    "BDP"
-  ],
-  "languages": [
-    "Python",
-    "JavaScript",
-    "XML",
-    "RST",
-    "HTML"
-  ],
+    "tags": [
+      "metadata",
+      "FGDC",
+      "xml",
+      "BDP"
+    ],
+    "languages": [
+      "Python",
+      "JavaScript",
+      "XML",
+      "RST",
+      "HTML"
+    ],
 
-  "contact": {
-    "name": "Colin Talbert",
-    "email": "talbertc@usgs.gov"
+    "contact": {
+      "name": "Colin Talbert",
+      "email": "talbertc@usgs.gov"
+    },
+    "updated": {
+      "metadataLastUpdated": "2017-09-22"
+    }
   },
-  "updated": {
-    "metadataLastUpdated": "2017-09-22"
+  {
+    "name": "Metadata Wizard",
+    "organization": "U.S. Geological Survey",
+    "description": "Tool for editing and validating FGDC metadata records",
+    "version": "2.0.7",
+    "status": "Development",
+    "homepage": "https://usgs.github.io/fort-pymdwizard/",
+    "downloadURL": "https://github.com/usgs/fort-pymdwizard/archive/refs/heads/dev.zip",
+
+    "openSourceProject": 1,
+    "license": "https://github.com/usgs/fort-pymdwizard/blob/dev/LICENSE.md",
+    "vcs": "git",
+    "repository": "https://github.com/usgs/fort-pymdwizard/tree/dev",
+
+    "tags": [
+      "metadata",
+      "FGDC",
+      "xml",
+      "BDP"
+    ],
+    "languages": [
+      "Python",
+      "JavaScript",
+      "XML",
+      "RST",
+      "HTML"
+    ],
+
+    "contact": {
+      "name": "Kyle Enns",
+      "email": "kenns@usgs.gov"
+    },
+    "updated": {
+      "metadataLastUpdated": "2017-09-22"
+    }
   }
-}
+]
