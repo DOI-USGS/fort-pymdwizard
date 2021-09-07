@@ -3,7 +3,7 @@ Installing on Mac
 =================
 
 | Download a copy of the latest mac bundle (`MetadataWizard_osx_2.x.x.dmg) from
-`the releases page
+`this releases page
 <https://github.com/usgs/fort-pymdwizard/releases>`_.
 
 |
