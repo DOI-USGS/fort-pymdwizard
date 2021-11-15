@@ -112,7 +112,7 @@ def removeNodeByName(XMLfile, NodeName):
     lRemoveList = []
 
     for child in lRoot.findall(NodeName):#NodeName would be passed as 'eainfo', for example
-        print child
+        print (child)
         lRemoveList.append(child)
 
     for child in lRemoveList:
@@ -381,7 +381,7 @@ if __name__ == '__main__':
     
 #    Test some things
 
-    print "Script completed."
+    print ("Script completed.")
     
 
         

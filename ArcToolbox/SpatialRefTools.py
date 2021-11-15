@@ -96,9 +96,9 @@ def getLatResLongRes(GCS_ExtentList):
     longRes = float((1/len1SecondLong) * (1/3280.84) * float(DataScale) * float(1.0/12) * float(DigPrecision))
     longRes = str(format(longRes, '.10f'))
     
-    print "Latitude Midpoint = " + str(mid_lat)
-    print "Latitudinal Resolution = " + latRes
-    print "Longitudinal Resolution = " + longRes + "\n"
+    print ("Latitude Midpoint = " + str(mid_lat))
+    print ("Latitudinal Resolution = " + latRes)
+    print ("Longitudinal Resolution = " + longRes + "\n")
     
     return(latRes, longRes)
 
@@ -1568,7 +1568,7 @@ def Data_Type(desc):
     if desc.DatasetType == "Table":
         myDataType = "Table"
     if desc.DatasetType == "FeatureDataset":
-        print "This is a feature dataset.  This tool can only be run on feature classes."
+        print ("This is a feature dataset.  This tool can only be run on feature classes.")
         sys.exit(1)
     if desc.DatasetType == "GeometricNetwork":
         myDataType = "GeometricNetwork"

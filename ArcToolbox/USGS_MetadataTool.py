@@ -819,7 +819,7 @@ def msg(message, is_error):
         arcpy.AddError(message)
     else:
         arcpy.AddMessage(message)
-    print message
+    print (message)
 
 def arcpyError():
     """Adds arcpy error messages to a print statement and ArcGIS window."""
