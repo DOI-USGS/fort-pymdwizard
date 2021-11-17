@@ -155,8 +155,14 @@ def get_geographic_extent(layer):
     t_points = np.apply_along_axis(
         transform_point, 1, edge_points, from_srs=srs, to_srs=geographic
     )
-    east, north = t_points.max(0)
-    west, south = t_points.min(0)
+
+    try:
+        if layer.RasterCount:
+            north, east = t_points.max(0)
+            south, west = t_points.min(0)
+    except:
+        east, north = t_points.max(0)
+        west, south = t_points.min(0)
 
     return west, east, south, north
 
