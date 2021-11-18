@@ -479,14 +479,9 @@ def get_install_dname(which="pymdwizard"):
         pymdwizard_dname = os.path.abspath(
             os.path.join(dirname(this_fname), *[".."] * 4)
         )
-        print ('this_fname ', this_fname)
-        print ('dirname(this_fname) ', dirname(this_fname))
         root_dir = pymdwizard_dname
         executable = sys.executable
         python_dname = os.path.split(executable)[0]
-        print ("root_dir ", root_dir)
-        print ("executable ", executable)
-        print ("python_dname ", python_dname)
 
     else:
         pymdwizard_dname = dirname(dirname(dirname(this_fname)))

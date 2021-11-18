@@ -441,35 +441,6 @@ class PyMdWizardMainForm(QMainWindow):
         # Test
         utils.get_install_dname()
 
-        # Test continued Popup message
-        this_fname = os.path.realpath(__file__)
-        pymdwizard_dname = os.path.abspath(
-            os.path.join(dirname(this_fname), *[".."] * 4)
-        )
-
-        root_dir = pymdwizard_dname
-        executable = sys.executable
-        python_dname = os.path.split(executable)[0]
-
-        msg = "this_fname {}".format(this_fname) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/fort-pymdwizard/pymdwizard/gui/MainWindow.py
-        QMessageBox.information(self, "this_fname", msg)
-
-        msg = "dirname(this_fname)  {}".format(dirname(this_fname)) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/fort-pymdwizard/pymdwizard/gui
-        QMessageBox.information(self, "dirname(this_fname)", msg)
-
-        msg = "root_dir {}".format(root_dir) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app
-        QMessageBox.information(self, "root_dir", msg)
-
-        msg = "executable  {}".format(executable) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/Frameworks/pymdwizard/bin/python3
-        QMessageBox.information(self, "executable", msg)
-
-        msg = "python_dname (where python is) {}".format(python_dname) # /Users/kenns/projects/DSST/wizard/fort-pymdwizard-installers/macos/app_test_5/MetadataWizard.app/Contents/Frameworks/pymdwizard/bin
-        QMessageBox.information(self, "python_dname", msg)
-
-
-
-
-
         if not self.cur_fname:
             fname = self.get_save_name()
             if not fname:
