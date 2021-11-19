@@ -99,7 +99,6 @@ class JupyterStarter(QDialog):
 
         try:
             import jupyterlab
-
             self.ui.usejupyterframe.setEnabled(True)
         except ImportError:
             self.ui.usejupyterframe.setEnabled(False)

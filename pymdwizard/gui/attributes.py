@@ -58,7 +58,7 @@ from pymdwizard.core import xml_utils
 
 from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_attributes
-from pymdwizard.gui import attr
+from pymdwizard.gui import mdattr
 
 
 class Attributes(WizardWidget):  #
@@ -116,7 +116,7 @@ class Attributes(WizardWidget):  #
 
         for col_label in df.columns:
             col = df[col_label]
-            attr_i = attr.Attr(parent=self)
+            attr_i = mdattr.Attr(parent=self)
             attr_i.ui.fgdc_attrlabl.setText(str(col_label))
 
             attr_i.set_series(col)
@@ -138,7 +138,7 @@ class Attributes(WizardWidget):  #
         else:
 
             for col_label in contents.keys():
-                attr_i = attr.Attr(parent=self)
+                attr_i = mdattr.Attr(parent=self)
                 attr_i.ui.fgdc_attrlabl.setText(col_label)
 
                 if contents[col_label][b"type"] == "String":
@@ -179,7 +179,7 @@ class Attributes(WizardWidget):  #
 
     def get_attr(self, which):
         for attr in self.attrs:
-            if attr.ui.fgdc_attrlabl.text() == which:
+            if mdattr.ui.fgdc_attrlabl.text() == which:
                 return attr
         return None
 
@@ -187,7 +187,7 @@ class Attributes(WizardWidget):  #
         new_attrs = []
         for i, attribute in enumerate(self.attrs):
             if attribute == this_attr:
-                new_attr = attr.Attr(parent=self)
+                new_attr = mdattr.Attr(parent=self)
                 self.main_layout.insertWidget(i, new_attr)
                 new_attrs.append(new_attr)
             new_attrs.append(attribute)
@@ -198,7 +198,7 @@ class Attributes(WizardWidget):  #
         for i, attribute in enumerate(self.attrs):
             new_attrs.append(attribute)
             if attribute == this_attr:
-                new_attr = attr.Attr(parent=self)
+                new_attr = mdattr.Attr(parent=self)
                 self.main_layout.insertWidget(i + 1, new_attr)
                 new_attrs.append(new_attr)
         self.attrs = new_attrs
@@ -231,7 +231,7 @@ class Attributes(WizardWidget):  #
 
         menu.addSeparator()
         add_attr = menu.addAction(QIcon("paste.png"), "Add attribute (column)")
-        add_attr.setStatusTip("Add attribute")
+        add_mdattr.setStatusTip("Add attribute")
 
         if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()
@@ -277,10 +277,10 @@ class Attributes(WizardWidget):  #
             else:
                 self.clear_widget()
         elif action == add_attr:
-            new_attr = attr.Attr(parent=self)
+            new_attr = mdattr.Attr(parent=self)
             self.append_attr(new_attr)
             self.minimize_children()
-            new_attr.supersize_me()
+            new_mdattr.supersize_me()
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
             # msg.setTextFormat(Qt.RichText)
@@ -328,7 +328,7 @@ class Attributes(WizardWidget):  #
                 self.original_xml = detailed
                 self.clear_children()
                 for attr_node in detailed.xpath("attr"):
-                    attr_widget = attr.Attr(parent=self)
+                    attr_widget = mdattr.Attr(parent=self)
                     attr_widget.from_xml(attr_node)
 
                     self.attrs.append(attr_widget)
