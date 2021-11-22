@@ -216,10 +216,10 @@ class PyMdWizardMainForm(QMainWindow):
         if os.name == "nt":
             root_dir = utils.get_install_dname("root")
             my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python_39")
             my_env["PATH"] = ";".join(
                 [
-                    os.path.join(root_dir, "Python36_64", "Scripts", "conda_exes"),
+                    os.path.join(root_dir, "Python_39", "Scripts", "conda_exes"),
                     my_env["PATH"],
                 ]
             )

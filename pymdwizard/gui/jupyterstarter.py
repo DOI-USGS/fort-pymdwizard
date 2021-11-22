@@ -216,7 +216,7 @@ class JupyterStarter(QDialog):
 
                 jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
                 my_env = os.environ.copy()
-                my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+                my_env["PYTHONPATH"] = os.path.join(root_dir, "Python_39")
 
                 if self.ui.usejupyterlab.isChecked():
                     jupytertype = "lab"
