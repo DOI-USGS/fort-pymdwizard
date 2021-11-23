@@ -49,12 +49,12 @@ root_dir = os.path.dirname(os.path.dirname(installDir))
 arcpy.AddWarning("installDir :" + installDir)
 arcpy.AddWarning("root_dir :" + root_dir)
 
-pymdwiz_dir = os.path.join(root_dir, 'pymdwizard')
+pymdwiz_dir = os.path.join(root_dir, 'fort-pymdwizard')
 arcpy.AddWarning("pymdwiz_dir :" + pymdwiz_dir)
 
-python_dir = os.path.join(root_dir, 'Python_39')
+python_dir = os.path.join(root_dir, 'pymdwizard')
 if not os.path.exists(python_dir):
-    python_dir = os.path.join(root_dir, 'Python35_64')
+    python_dir = os.path.join(root_dir, 'pymdwizard')
     if not os.path.exists(python_dir):
         # The Python installation that ships with the application is missing
         msg = '\n\n' + '!'*79
@@ -62,7 +62,7 @@ if not os.path.exists(python_dir):
         msg += "MetadataWizard.\n{}\n\nPlease verify that the application"
         msg += " was installed correctly, and the toolbox has not been moved."
         msg += '\n' + '!'*79 + "\n\n"
-        msg = msg.format(os.path.join(root_dir, 'Python_39'))
+        msg = msg.format(os.path.join(root_dir, 'pymdwizard'))
         arcpy.AddError(msg)
         sys.exit(1)
 else:
