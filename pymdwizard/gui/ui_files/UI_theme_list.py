@@ -292,7 +292,7 @@ class Ui_theme_list(object):
         self.label_search_term_5.setText(
             _translate(
                 "theme_list",
-                '<html><head/><body><p><span style=" font-style:italic;">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend to use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
             )
         )
         self.label_search_term_3.setText(

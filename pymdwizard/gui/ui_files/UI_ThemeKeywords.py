@@ -265,7 +265,7 @@ class Ui_theme_keywords(object):
         self.label_search_term_5.setText(
             _translate(
                 "theme_keywords",
-                '<html><head/><body><p><span style=" font-style:italic;">We recommend that use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend to use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
             )
         )
         self.btn_search_controlled.setToolTip(
