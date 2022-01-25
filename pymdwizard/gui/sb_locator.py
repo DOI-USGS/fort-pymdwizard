@@ -155,6 +155,12 @@ class SBLocator(QWidget):
             writable = False
 
         if not writable:
+            try: 
+                writable = permissions['write']['inherited'] == True
+            except: 
+                writable = False
+
+        if not writable:
             msg = "This item does not appear to be writable by the designated user."
             QMessageBox.warning(self, "Write permission error", msg)
             return False
@@ -189,9 +195,12 @@ class SBLocator(QWidget):
                 if f["contentType"] == "application/fgdc+xml"
             ]
         except KeyError:
-            fgdc_files = [
-                f for f in item_json["facets"][0]["files"] if f["name"].endswith(".xml")
-            ]
+            try:
+                fgdc_files = [
+                    f for f in item_json["facets"][0]["files"] if f["name"].endswith(".xml")
+                ]
+            except:
+                fgdc_files = []
 
         if len(fgdc_files) == 1:
             # Perfect.  There is one and only one xml file.
