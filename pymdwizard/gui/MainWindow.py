@@ -1128,6 +1128,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.setWindowTitle("MetadataWizard Help")
         self.preview_dialog.setLayout(self.preview.layout())
 
+        self.preview_dialog.resize(1000, 600)
+
         self.preview_dialog.exec_()
 
     def generate_review_doc(self):
