@@ -1313,8 +1313,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name == "usgs_root"][0].fetch()
-            master = [f for f in fetch if f.name == "usgs_root/master"][0]
+            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
+            master = [f for f in fetch if f.name == "origin/master"][0]
 
             merge_msg = repo.git.merge(master.name)
 
