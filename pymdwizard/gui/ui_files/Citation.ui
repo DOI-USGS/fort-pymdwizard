@@ -214,7 +214,7 @@
               <string notr="true">font: italic;</string>
              </property>
              <property name="text">
-              <string>When was the dataset published or finalized?</string>
+              <string>When was the larger work published or finalized?</string>
              </property>
             </widget>
            </item>

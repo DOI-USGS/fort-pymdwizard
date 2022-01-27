@@ -435,7 +435,7 @@ class XMLRecord(object):
             contents_path = Path(contents)
             try:
                 exists = contents_path.exists()
-            except OSError:
+            except (OSError, ValueError) as e:
                 exists = False
 
             if exists:

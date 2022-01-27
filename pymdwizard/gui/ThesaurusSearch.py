@@ -90,7 +90,7 @@ class ThesaurusSearch(QDialog):
 
         self.populate_thesauri_lookup()
 
-        iso_url = "https://www2.usgs.gov/science/term.php?thcode=15&text=ISO 19115 Topic Category"
+        iso_url = "https://apps.usgs.gov/thesaurus/term.php?thcode=15&text=ISO 19115 Topic Category"
         results = utils.requests_pem_get(iso_url).json()
 
         thesaurus_name = "ISO 19115 Topic Category"
@@ -147,7 +147,7 @@ class ThesaurusSearch(QDialog):
             thname = clicked_item.text()
 
             THESAURUS_DETAILS_URL = (
-                "https://www2.usgs.gov/science/thesaurus.php?format=json&thcode={}"
+                "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json&thcode={}"
             )
             thesaurus_details_url = THESAURUS_DETAILS_URL.format(thcode)
             details = utils.requests_pem_get(thesaurus_details_url).json()
@@ -157,7 +157,7 @@ class ThesaurusSearch(QDialog):
                 thname
             )
             # uri = details['vocabulary']['uri']
-            uri = "https://www2.usgs.gov/science/about/thesaurus-full.php?thcode={}".format(
+            uri = "https://apps.usgs.gov/thesaurus/about/thesaurus-full.php?thcode={}".format(
                 thcode
             )
             if uri:
@@ -169,7 +169,7 @@ class ThesaurusSearch(QDialog):
         else:
             thcode = self.thesauri_lookup_r[parent.text()]
             item_text = clicked_item.text().split(" (use: ")[0]
-            details_url = "https://www2.usgs.gov/science/term.php?thcode={}&text={}".format(
+            details_url = "https://apps.usgs.gov/thesaurus/term.php?thcode={}&text={}".format(
                 thcode, quote(item_text)
             )
 
@@ -247,7 +247,7 @@ class ThesaurusSearch(QDialog):
 
     def populate_thesauri_lookup(self):
         if not self.thesauri_lookup:
-            url = "https://www2.usgs.gov/science/thesaurus.php?format=json"
+            url = "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json"
             result = self.get_result(url)
             if result is not None:
                 self.thesauri_lookup = {
@@ -279,7 +279,7 @@ class ThesaurusSearch(QDialog):
 
         term = self.ui.search_term.text()
 
-        search_url = "https://www2.usgs.gov/science/term-search.php?thcode=any&term={}".format(
+        search_url = "https://apps.usgs.gov/thesaurus/term-search.php?thcode=any&term={}".format(
             term
         )
 

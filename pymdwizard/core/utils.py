@@ -54,6 +54,7 @@ import platform
 import datetime
 import traceback
 import pkg_resources
+import urllib.request
 
 try:
     from urllib.parse import urlparse
@@ -260,7 +261,7 @@ def launch_widget(Widget, title="", **kwargs):
         return widget
     except:
         e = sys.exc_info()[0]
-        print("problem encountered", e)
+        print("problem encountered")
         print(traceback.format_exc())
 
 
@@ -476,17 +477,18 @@ def get_install_dname(which="pymdwizard"):
     if platform.system() == "Darwin":
         # This is the path to the 'content' folder in the MetadataWizard.app
         pymdwizard_dname = os.path.abspath(
-            os.path.join(dirname(this_fname), *[".."] * 7)
+            os.path.join(dirname(this_fname), *[".."] * 2)
         )
         root_dir = pymdwizard_dname
         executable = sys.executable
         python_dname = os.path.split(executable)[0]
+
     else:
         pymdwizard_dname = dirname(dirname(dirname(this_fname)))
         root_dir = os.path.dirname(pymdwizard_dname)
-        python_dname = os.path.join(root_dir, "Python35_64")
+        python_dname = os.path.join(root_dir, "pymdwizard")
         if not os.path.exists(python_dname):
-            python_dname = os.path.join(root_dir, "Python36_64")
+            python_dname = os.path.join(root_dir, "pymdwizard")
         if not os.path.exists(python_dname):
             executable = sys.executable
             python_dname = os.path.split(executable)[0]
@@ -581,3 +583,21 @@ def get_setting(which, default=None):
         return settings.value(which)
     else:
         return settings.value(which, default)
+
+
+def url_is_alive(url):
+    """
+    Checks that a given URL is reachable.
+    :param url: A URL
+    :rtype: bool
+    """
+    if url.startswith('www'):
+        url = 'http://' + url
+    request = urllib.request.Request(url)
+    request.get_method = lambda: 'HEAD'
+
+    try:
+        urllib.request.urlopen(request)
+        return True
+    except (urllib.request.HTTPError, urllib.request.URLError):
+        return False

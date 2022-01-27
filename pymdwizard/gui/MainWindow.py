@@ -58,6 +58,8 @@ import shutil
 from pathlib import Path
 import subprocess
 
+from os.path import dirname
+
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QSplashScreen
@@ -214,10 +216,10 @@ class PyMdWizardMainForm(QMainWindow):
         if os.name == "nt":
             root_dir = utils.get_install_dname("root")
             my_env = os.environ.copy()
-            my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+            my_env["PYTHONPATH"] = os.path.join(root_dir, "pymdwizard")
             my_env["PATH"] = ";".join(
                 [
-                    os.path.join(root_dir, "Python36_64", "Scripts", "conda_exes"),
+                    os.path.join(root_dir, "pymdwizard", "Scripts", "conda_exes"),
                     my_env["PATH"],
                 ]
             )
@@ -436,6 +438,9 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
+        # Test
+        utils.get_install_dname()
+
         if not self.cur_fname:
             fname = self.get_save_name()
             if not fname:
@@ -802,46 +807,51 @@ class PyMdWizardMainForm(QMainWindow):
         None
         """
 
-        xpath = sender.data(1)
-        section = xpath.split("/")[1]
-
-        if section == "idinfo":
-            subsection = xpath.split("/")[2]
-            if subsection == "spdom":
-                parent_section = self.metadata_root.switch_section(2)
-            else:
-                parent_section = self.metadata_root.switch_section(0)
-        elif section == "dataqual":
-            parent_section = self.metadata_root.switch_section(1)
-        elif section == "spdoinfo" or section == "spref":
-            parent_section = self.metadata_root.switch_section(2)
-        elif section == "eainfo":
-            parent_section = self.metadata_root.switch_section(3)
-        elif section == "eainfo":
-            parent_section = self.metadata_root.switch_section(3)
-        elif section == "distinfo":
-            parent_section = self.metadata_root.switch_section(4)
-        elif section == "metainfo":
-            parent_section = self.metadata_root.switch_section(5)
-
-        if self.last_highlight is not None and not sip.isdeleted(self.last_highlight):
-            self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
-
-        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
-        bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
-
         try:
-            parent_wizwidget = [
-                thing
-                for thing in parent_section.children()
-                if isinstance(thing, WizardWidget)
-            ][0]
-            parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
-        except:
-            pass
+            xpath = sender.data(1)
+            section = xpath.split("/")[1]
 
-        self.last_highlight = bad_widget[0].widget
-        self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
+            if section == "idinfo":
+                subsection = xpath.split("/")[2]
+                if subsection == "spdom":
+                    parent_section = self.metadata_root.switch_section(2)
+                else:
+                    parent_section = self.metadata_root.switch_section(0)
+            elif section == "dataqual":
+                parent_section = self.metadata_root.switch_section(1)
+            elif section == "spdoinfo" or section == "spref":
+                parent_section = self.metadata_root.switch_section(2)
+            elif section == "eainfo":
+                parent_section = self.metadata_root.switch_section(3)
+            elif section == "eainfo":
+                parent_section = self.metadata_root.switch_section(3)
+            elif section == "distinfo":
+                parent_section = self.metadata_root.switch_section(4)
+            elif section == "metainfo":
+                parent_section = self.metadata_root.switch_section(5)
+
+            if self.last_highlight is not None and not sip.isdeleted(self.last_highlight):
+                self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+
+            widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+            bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
+
+            try:
+                parent_wizwidget = [
+                    thing
+                    for thing in parent_section.children()
+                    if isinstance(thing, WizardWidget)
+                ][0]
+                parent_wizwidget.scroll_area.ensureWidgetVisible(bad_widget[0].widget)
+            except:
+                pass
+
+            self.last_highlight = bad_widget[0].widget
+            self.highlight_error(bad_widget[0].widget, sender.text(), superhot=True)
+        except:
+            msg = f"We encountered a problem highlighting and navigating to that error.\n\n"
+            msg += f"The xpath of the xml error is:\n\n{xpath}"
+            QMessageBox.warning(self, "Problem encountered", msg)
 
     def highlight_error(self, widget, error_msg, superhot=False):
         """
@@ -1118,6 +1128,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.setWindowTitle("MetadataWizard Help")
         self.preview_dialog.setLayout(self.preview.layout())
 
+        self.preview_dialog.resize(1000, 600)
+
         self.preview_dialog.exec_()
 
     def generate_review_doc(self):
@@ -1131,6 +1143,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             if time.time() - self.last_updated > 4:
                 msg = "Would you like to save the current file before continuing?"
+                exists_msg = "File already exists, would you like to overwrite it? Selecting 'No' "
+                exists_msg += "will allow you to SaveAs."
                 alert = QDialog()
                 self.last_updated = time.time()
                 confirm = QMessageBox.question(
@@ -1140,7 +1154,25 @@ class PyMdWizardMainForm(QMainWindow):
                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                 )
                 if confirm == QMessageBox.Yes:
-                    self.save_file()
+                    # TODO If file already exists, prompt to either "Save As" or "Overwrite"
+                    import os
+                    file_exists = os.path.exists(self.cur_fname)
+                    if file_exists:
+                        confirm2 = QMessageBox.question(self,
+                            "File Overwrite",
+                            exists_msg,
+                            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
+                        )
+                        if confirm2 == QMessageBox.Yes:
+                            self.save_file()
+                        elif confirm2 == QMessageBox.No:
+                            self.save_as()
+                        elif confirm2 == QMessageBox.Cancel:
+                            print ('cancel1')
+                            return
+                    else:
+                        self.save_as()
+
                 elif confirm == QMessageBox.Cancel:
                     return
             try:
@@ -1247,8 +1279,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name == "usgs_root"][0].fetch()
-            master = [f for f in fetch if f.name == "usgs_root/master"][0]
+            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
+            master = [f for f in fetch if f.name == "origin/master"][0]
 
             if repo.head.commit != master.commit:
                 msg = "An update(s) are available for the Metadata Wizard.\n"
@@ -1283,8 +1315,8 @@ class PyMdWizardMainForm(QMainWindow):
 
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name == "usgs_root"][0].fetch()
-            master = [f for f in fetch if f.name == "usgs_root/master"][0]
+            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
+            master = [f for f in fetch if f.name == "origin/master"][0]
 
             merge_msg = repo.git.merge(master.name)
 

@@ -139,7 +139,8 @@ class PlaceList(WizardWidget):
 
     def remove_selected(self):
         current_index = self.ui.theme_tabs.currentIndex()
-        self.remove_tab(current_index)
+        if current_index >= 0:
+            self.remove_tab(current_index)
 
     def remove_tab(self, index):
         self.ui.theme_tabs.removeTab(index)

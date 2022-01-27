@@ -30,3 +30,12 @@ def test_get_usgs_contact_info():
 
         cnt_info = utils.get_usgs_contact_info("talbertc", as_dictionary=False)
         assert cnt_info.getchildren()[0].getchildren()[0].text == "Colin Talbert"
+
+
+def test_url_is_alive():
+
+    bad_url = 'https://www.go_thisdoesnotesist_ogle.com/'
+    good_url = 'https://www.google.com/'
+
+    assert utils.url_is_alive(good_url)
+    assert not utils.url_is_alive(bad_url)

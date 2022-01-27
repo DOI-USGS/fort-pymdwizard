@@ -288,12 +288,21 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
 
 
 def _get_xml(url, payload, **kwargs):
+    tries = 0
+    while tries < 5:
+        try:
+            out = utils.requests_pem_get(url, params=payload)
+            out.raise_for_status()
+            tt = xml_utils.string_to_node(out.content)
+            return tt
+        except:
+            tries += 1
     out = utils.requests_pem_get(url, params=payload)
     out.raise_for_status()
     tt = xml_utils.string_to_node(out.content)
     return tt
-
-
+    
+    
 def _to_lower(items):
     """
         Converts a list of strings into a list of lower case strings.

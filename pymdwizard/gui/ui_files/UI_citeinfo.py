@@ -105,13 +105,13 @@ class Ui_parent_form(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.fgdc_title = QtWidgets.QPlainTextEdit(self.help_title)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_title.sizePolicy().hasHeightForWidth())
         self.fgdc_title.setSizePolicy(sizePolicy)
-        self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 27))
+        self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 54))
         self.fgdc_title.setStyleSheet('font: 11pt "Arial";\n' "color: rgb(50, 50, 50);")
         self.fgdc_title.setInputMethodHints(QtCore.Qt.ImhNone)
         self.fgdc_title.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -721,7 +721,7 @@ class Ui_parent_form(object):
         )
         self.label_46.setText(_translate("parent_form", "Publication Date"))
         self.label_38.setText(
-            _translate("parent_form", "When was the dataset published or finalized?")
+            _translate("parent_form", "When was the larger work published or finalized?")
         )
         self.btn_import_doi.setToolTip(
             _translate("parent_form", "Import citation from Active (CrossRef) DOI")

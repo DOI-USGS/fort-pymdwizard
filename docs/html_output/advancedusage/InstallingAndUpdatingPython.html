@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changing the Template &mdash; MetadataWizard 2.0.7 documentation</title>
+  <title>Installing and Updating Python Packages &mdash; MetadataWizard 2.0.6 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Batch Processing Using Jupyter and Python" href="Launch Jupyter for Batch Processing.html" />
-    <link rel="prev" title="Changing Application Settings" href="Settings.html" /> 
+    <link rel="next" title="Reporting Bugs and Enhancement Ideas" href="../Reporting Bugs and Enhancement Ideas.html" />
+    <link rel="prev" title="Include/Exclude Optional Metadata Sections" href="Include Sections.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0.7
+                2.0.6
               </div>
             
           
@@ -104,10 +104,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Metadata Review Report.html">Making a Metadata Review Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Settings.html">Changing Application Settings</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Changing Your Template.html">Changing the Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
@@ -156,13 +156,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Changing the Template</li>
+      <li>Installing and Updating Python Packages</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/advancedusage/Changing Your Template.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/advancedusage/InstallingAndUpdatingPython.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -175,52 +175,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="changing-the-template">
-<h1>Changing the Template<a class="headerlink" href="#changing-the-template" title="Permalink to this headline">¶</a></h1>
-<p>When an individual, project, or organization has particular metadata content needs that are expected in every
-record, it can be inefficient to populate these every time a record is started.  To allow users to prepopulate these
-fields easily the MetadataWizard allows for users to specify a ‘Template’ file to use as the starting point for any new
-records.</p>
-<p>This template is simply an FGDC record that contains default content.  Keep in mind that anything
-specified in the template can be overwritten individually when editing a new
-record, they are just the default values that will pre-populate elements in the application.</p>
-<p>The default template record used by the Metadata Wizard is part of the
-standard installation but can be changed to suit the particular needs of
-individuals or organizations.</p>
-<ol class="arabic simple">
-<li><p>Open the Metadata Wizard and create a new record, saved to a location where it
-will not be overwritten or inaccessible.</p></li>
-<li><p>Edit this record in the Metadata Wizard to contain the content needed in
-subsequent new records. Sections to consider customizing might
-include some or all of:</p>
-<ul class="simple">
-<li><p>Dataset Point of Contact</p></li>
-<li><p>Metadata Contact</p></li>
-<li><p>Metadata Standard Name</p></li>
-<li><p>Distribution Information</p></li>
-<li><p>ISO 19115 Keywords</p></li>
-<li><p>Place Keywords</p></li>
-<li><p>Bounding Coordinates</p></li>
-<li><p>Attribute Accuracy Report</p></li>
-<li><p>Logical Accuracy Report</p></li>
-<li><p>Completeness Report</p></li>
-<li><p>Positional Accuracy</p></li>
+  <div class="section" id="installing-and-updating-python-packages">
+<h1>Installing and Updating Python Packages<a class="headerlink" href="#installing-and-updating-python-packages" title="Permalink to this headline">¶</a></h1>
+<p>The metadataWizard (as installed by the precompiled installers) comes with a complete, self contained Python 3.6 installation.
+By default this will be in:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Windows: C:\Users\&lt;&lt;username&gt;&gt;\AppData\Local\Programs\MetadataWizard\Python36_64</p></li>
+<li><p>Mac: /Applications/MetadataWizard.app/Contents/Frameworks/pymdwizard_36/bin/python3.6m</p></li>
 </ul>
-</li>
-<li><p>Save this record.</p></li>
-<li><p>In the top menu bar click <strong>Advanced -&gt; settings</strong> to open the settings form,
-and browse to the XML temple file saved above.</p></li>
-</ol>
+</div></blockquote>
+<p>You might need to update one of the existing packages, or install an additional package.  For example if you’re using
+the Jupyter Notebook/Lab feature and need another package installed, or need to upgrade an existing package to gain new functionality.</p>
+<p><strong>Be aware, that changing or removing an existing library that the MetadataWizard depends on could render the MetadataWizard completely unusable.</strong>
+<strong>This might be difficult or impossible to remedy, short of uninstalling and reinstalling the application completely.</strong></p>
 <div class="line-block">
-<div class="line"><img alt="image0" src="../_images/open_settings.png" /></div>
-<div class="line"><br /></div>
-<div class="line"><img alt="image1" src="../_images/settings.png" /></div>
 <div class="line"><br /></div>
 </div>
-<p>The selected template will remain active after closing and reopening the
-application.</p>
-<p>If at any time you want to return to the default template that comes with the wizard
-just click the ‘Use Default’ button on the settings form.</p>
+<p>To open an Anconda prompt select ‘Anaconda Prompt’ from the Advanced Menu:</p>
+<a class="reference internal image-reference" href="../_images/AnacondaPrompt.png"><img alt="../_images/AnacondaPrompt.png" src="../_images/AnacondaPrompt.png" style="width: 300pt;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The cmd that opens will look like the system command prompt but have the standard conda commands available.
+The (base) env that it is set to is the MetadataWizard’s Python environment.</p>
+<a class="reference internal image-reference" href="../_images/AnacondaPrompt2.png"><img alt="../_images/AnacondaPrompt2.png" class="align-left" src="../_images/AnacondaPrompt2.png" style="width: 900pt;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </div>
 
 
@@ -231,10 +213,10 @@ just click the ‘Use Default’ button on the settings form.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Launch Jupyter for Batch Processing.html" class="btn btn-neutral float-right" title="Batch Processing Using Jupyter and Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../Reporting Bugs and Enhancement Ideas.html" class="btn btn-neutral float-right" title="Reporting Bugs and Enhancement Ideas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Settings.html" class="btn btn-neutral float-left" title="Changing Application Settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Include Sections.html" class="btn btn-neutral float-left" title="Include/Exclude Optional Metadata Sections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

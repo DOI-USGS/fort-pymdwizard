@@ -23,7 +23,7 @@ var/
 venv/
 
 # Documentation build files
-docs/html_output
+# docs/html_output
 
 *.egg-info/
 .installed.cfg
@@ -81,7 +81,9 @@ desktop.ini
 Thumbs.db
 ~$*
 
-.DS_Store
-
+#Other
 python36_64
 windows
+
+#Mac
+.DS_Store

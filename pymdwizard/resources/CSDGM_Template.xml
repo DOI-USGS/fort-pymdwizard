@@ -27,7 +27,7 @@
       <update>None planned</update>
     </status>
     <spdom>
-      <descgeog>World</descgeog>
+      <descgeog></descgeog>
       <bounding>
         <westbc>-180.0</westbc>
         <eastbc>180.0</eastbc>

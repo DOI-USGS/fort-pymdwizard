@@ -5,8 +5,11 @@ pandas
 jupyter
 gdal
 geopandas
-pyqt>=5.6.0
+pyqt
 xlrd
 python-docx
 habanero
 gitpython
+git
+folium
+jupyterlab

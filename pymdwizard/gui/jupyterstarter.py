@@ -99,7 +99,6 @@ class JupyterStarter(QDialog):
 
         try:
             import jupyterlab
-
             self.ui.usejupyterframe.setEnabled(True)
         except ImportError:
             self.ui.usejupyterframe.setEnabled(False)
@@ -217,7 +216,7 @@ class JupyterStarter(QDialog):
 
                 jupyterexe = os.path.join(python_dir, "scripts", "jupyter.exe")
                 my_env = os.environ.copy()
-                my_env["PYTHONPATH"] = os.path.join(root_dir, "Python36_64")
+                my_env["PYTHONPATH"] = os.path.join(root_dir, "pymdwizard")
 
                 if self.ui.usejupyterlab.isChecked():
                     jupytertype = "lab"

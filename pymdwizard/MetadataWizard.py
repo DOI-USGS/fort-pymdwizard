@@ -78,7 +78,7 @@ def set_clean_path():
                 executable_dir,
                 os.path.join(executable_dir, "Library", "bin"),
                 os.path.join(executable_dir, "Scripts"),
-                os.environ["path"],
+                # os.environ["path"],
             ]
         )
 

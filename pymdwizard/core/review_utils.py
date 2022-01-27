@@ -133,13 +133,31 @@ def _load_styles(doc):
     font.size = Pt(12)
     font.italic = True
 
-    new_heading_style = styles.add_style("fgdc tag content", WD_STYLE_TYPE.PARAGRAPH)
+    new_heading_style = styles.add_style("fgdc tag content p", WD_STYLE_TYPE.PARAGRAPH)
     new_heading_style.base_style = styles["Normal"]
     font = new_heading_style.font
     font.name = "Times New Roman"
-    font.color.rgb = RGBColor(0x15, 0x15, 0x15)
+    font.color.rgb = RGBColor(0x55, 0x55, 0x55)
     font.size = Pt(12)
     font.italic = False
+    font.bold = False
+
+    new_heading_style = styles.add_style("fgdc tag content c", WD_STYLE_TYPE.CHARACTER)
+    new_heading_style.base_style = styles["Normal"]
+    font = new_heading_style.font
+    font.name = "Times New Roman"
+    font.color.rgb = RGBColor(0x55, 0x55, 0x55)
+    font.size = Pt(12)
+    font.italic = True
+    font.bold = True
+
+    new_heading_style = styles.add_style("fgdc tag content problem c", WD_STYLE_TYPE.CHARACTER)
+    new_heading_style.base_style = styles["Normal"]
+    font = new_heading_style.font
+    font.name = "Times New Roman"
+    font.color.rgb = RGBColor(0xFF, 0x00, 0x00)
+    font.size = Pt(12)
+    font.italic = True
     font.bold = False
 
     new_heading_style = styles.add_style("fgdc bold", WD_STYLE_TYPE.PARAGRAPH)
@@ -173,20 +191,24 @@ def _add_tag(
     cit.paragraph_format.space_after = Inches(0.005)
     if content:
         if len(content) > 70:
-            content = doc.add_paragraph(content, style=content_style)
+            content = doc.add_paragraph(content, style=content_style + ' p')
             content.paragraph_format.left_indent = Inches(indent)
             content.paragraph_format.line_spacing = 1
         else:
             content = cit.add_run(content)
-            content.italic = False
-            content.bold = False
-            content.font.color.rgb = RGBColor(0x15, 0x15, 0x15)
+            content.style = content_style + ' c'
+
 
     return cit
 
 
 def _add_child_content(doc, node, indent=0.25):
     line = _add_tag(doc, _get_longname(node.tag), node.text, indent)
+
+    if node.tag == 'onlink':
+        if not utils.url_is_alive(node.text):
+            line2 = line.add_run(" (check url, possible problem)", style='fgdc tag content problem c')
+
     line.paragraph_format.left_indent = Inches(indent)
     for child in node.children:
         _add_child_content(doc, child, indent + 0.25)
@@ -224,7 +246,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
     title = document.add_heading("Metadata Review for:", level=2)
     title.style = document.styles["fgdc heading 2"]
     title.paragraph_format.line_spacing = 1
-    title2 = document.add_paragraph("\t" + title_str + "\n", style="fgdc tag content")
+    title2 = document.add_paragraph("\t" + title_str + "\n", style="fgdc tag content p")
     bar = title2.add_run("_" * 72)
     document.add_paragraph("")
 
@@ -250,10 +272,10 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
     summaryline = document.add_heading("Summary:", level=3)
     summaryline.style = document.styles["review content heading"]
     document.add_paragraph(
-        "<<insert general review comments here>>", style="fgdc tag content"
+        "<<insert general review comments here>>", style="fgdc tag content p"
     )
-    document.add_paragraph("", style="fgdc tag content")
-    document.add_paragraph("", style="fgdc tag content")
+    document.add_paragraph("", style="fgdc tag content p")
+    document.add_paragraph("", style="fgdc tag content p")
 
     errorline = document.add_heading("FGDC Schema Errors:", level=3)
     errorline.style = document.styles["review content heading"]
@@ -263,7 +285,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
         document.add_paragraph("Error (XML Path to error)", style="fgdc tag")
         for error in errors:
             e = document.add_paragraph(
-                "\t{}\n\t({})".format(error[1], error[0]), style="fgdc tag content"
+                "\t{}\n\t({})".format(error[1], error[0]), style="fgdc tag content p"
             )
     else:
         document.add_paragraph("\tNo Schema Errors found", style="fgdc tag")
