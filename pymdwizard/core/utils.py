@@ -477,7 +477,7 @@ def get_install_dname(which="pymdwizard"):
     if platform.system() == "Darwin":
         # This is the path to the 'content' folder in the MetadataWizard.app
         pymdwizard_dname = os.path.abspath(
-            os.path.join(dirname(this_fname), *[".."] * 4)
+            os.path.join(dirname(this_fname), *[".."] * 2)
         )
         root_dir = pymdwizard_dname
         executable = sys.executable
