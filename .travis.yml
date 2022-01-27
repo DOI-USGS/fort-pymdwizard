@@ -3,7 +3,7 @@ language: python
 sudo: required
 
 env:
-    - CONDA="python=3.5"
+    - CONDA="python=3.9"
 before_install:
     - wget http://bit.ly/miniconda -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
