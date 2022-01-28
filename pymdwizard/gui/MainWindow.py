@@ -1320,7 +1320,7 @@ class PyMdWizardMainForm(QMainWindow):
 
             merge_msg = repo.git.merge(master.name)
 
-            msg = "Updated Successfully from GitHub."
+            msg = "Updated Successfully from GitHub. Close and re-open Metadata Wizard for changes to be implimented."
             QMessageBox.information(self, "Update results", msg)
         except BaseException as e:
             msg = (
