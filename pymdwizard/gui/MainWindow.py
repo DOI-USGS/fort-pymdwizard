@@ -468,8 +468,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
-        if self.sb_file:
-            self.sb_locator.put_fgdc_file()
+        # if self.sb_file:
+        #     self.sb_locator.put_fgdc_file()
 
     def new_record(self):
         """
