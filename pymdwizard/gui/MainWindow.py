@@ -208,7 +208,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
         self.ui.actionSpelling_flag.triggered.connect(self.spelling_switch_triggered)
-        self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
+        # self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
         self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
 
     def anacondaprompt(self):

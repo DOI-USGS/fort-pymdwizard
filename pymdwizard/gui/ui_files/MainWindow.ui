@@ -151,7 +151,7 @@
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionLaunch_Jupyter"/>
-    <addaction name="anacondaprompt"/>
+    <!-- <addaction name="anacondaprompt"/> -->
     <addaction name="separator"/>
     <addaction name="menuOptional_Sections"/>
    </widget>
@@ -501,11 +501,11 @@
     <string>Settings</string>
    </property>
   </action>
-  <action name="anacondaprompt">
+  <!-- <action name="anacondaprompt">
    <property name="text">
     <string>Anaconda Prompt</string>
    </property>
-  </action>
+  </action> -->
   <action name="actionOpen_sb">
    <property name="text">
     <string>Open ScienceBase item</string>

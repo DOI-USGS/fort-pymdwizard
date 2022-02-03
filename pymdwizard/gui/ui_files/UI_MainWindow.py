@@ -193,7 +193,7 @@ class Ui_MainWindow(object):
         self.menuAdvanced.addAction(self.actionSettings)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.actionLaunch_Jupyter)
-        self.menuAdvanced.addAction(self.anacondaprompt)
+        # self.menuAdvanced.addAction(self.anacondaprompt)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.menuOptional_Sections.menuAction())
         self.menuHelp.addAction(self.actionLaunch_Help)
