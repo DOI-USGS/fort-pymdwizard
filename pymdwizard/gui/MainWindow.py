@@ -1109,6 +1109,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.setWindowTitle("Metadata Preview")
         self.preview_dialog.setLayout(self.preview.layout())
 
+        self.preview_dialog.resize(600, 600)
+
         self.preview_dialog.exec_()
 
     def launch_help(self):
