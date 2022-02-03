@@ -591,9 +591,11 @@ def url_is_alive(url):
     :param url: A URL
     :rtype: bool
     """
+    # headers used so that python isn't blocked from some sites
+    headers= {'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'}  
     if url.startswith('www'):
         url = 'http://' + url
-    request = urllib.request.Request(url)
+    request = urllib.request.Request(url, headers=headers)
     request.get_method = lambda: 'HEAD'
 
     try:

@@ -208,7 +208,7 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionEntity_and_Attribute.triggered.connect(self.use_eainfo)
         self.ui.actionDistribution.triggered.connect(self.use_distinfo)
         self.ui.actionSpelling_flag.triggered.connect(self.spelling_switch_triggered)
-        self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
+        # self.ui.anacondaprompt.triggered.connect(self.anacondaprompt)
         self.ui.actionOpen_sb.triggered.connect(self.open_sb_file)
 
     def anacondaprompt(self):
@@ -468,8 +468,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
-        if self.sb_file:
-            self.sb_locator.put_fgdc_file()
+        # if self.sb_file:
+        #     self.sb_locator.put_fgdc_file()
 
     def new_record(self):
         """
@@ -1109,6 +1109,8 @@ class PyMdWizardMainForm(QMainWindow):
         self.preview_dialog.setWindowTitle("Metadata Preview")
         self.preview_dialog.setLayout(self.preview.layout())
 
+        self.preview_dialog.resize(600, 600)
+
         self.preview_dialog.exec_()
 
     def launch_help(self):
@@ -1255,7 +1257,7 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
-        msg += "<br><br>Contact: Colin Talbert at talbertc@usgs.gov"
+        msg += "<br><br>Contact: Kyle Enns at sdmapps@usgs.gov"
 
         msgbox = QMessageBox.about(self, "About", msg)
 
