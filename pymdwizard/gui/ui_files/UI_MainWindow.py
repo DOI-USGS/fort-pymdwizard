@@ -339,5 +339,5 @@ class Ui_MainWindow(object):
         self.actionSpatial.setText(_translate("MainWindow", "Spatial"))
         self.actionSpelling_flag.setText(_translate("MainWindow", "Turn Spelling OFF"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
-        self.anacondaprompt.setText(_translate("MainWindow", "Anaconda Prompt"))
+        # self.anacondaprompt.setText(_translate("MainWindow", "Anaconda Prompt"))
         self.actionOpen_sb.setText(_translate("MainWindow", "Open ScienceBase item"))
