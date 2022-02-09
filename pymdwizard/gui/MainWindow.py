@@ -1256,6 +1256,9 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "and the USGS Council for Data integration (CDI).<br><br>"
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
+        msg += f"<br>pymdwizard: {utils.get_install_dname('pymdwizard')}"
+        msg += f"<br>root: {utils.get_install_dname('root')}"
+        msg += f"<br>python: {utils.get_install_dname('python')}<br>"
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += "<br><br>Contact: Kyle Enns at sdmapps@usgs.gov"
 

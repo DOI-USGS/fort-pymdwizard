@@ -53,7 +53,7 @@ from os.path import dirname
 import platform
 import datetime
 import traceback
-import pkg_resources
+# import pkg_resources
 import urllib.request
 
 try:
@@ -277,7 +277,8 @@ def get_resource_path(fname):
     -------
             the full file path to the resource specified
     """
-    return pkg_resources.resource_filename("pymdwizard", "resources/{}".format(fname))
+    # return pkg_resources.resource_filename("pymdwizard", "resources/{}".format(fname))
+    return os.path.abspath(os.path.join(get_install_dname('pymdwizard'), "pymdwizard/resources/{}".format(fname)))
 
 
 def set_window_icon(widget, remove_help=True):
