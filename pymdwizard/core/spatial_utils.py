@@ -396,14 +396,14 @@ def get_params(layer):
     get_abs_resolution(layer, params)
 
     # SPCS_Zone
-    if params["mapprojn"] is not None and "stateplane" in params["mapprojn"].lower():
+    if params["mapprojn"] != None and "stateplane" in params["mapprojn"].lower():
         parts = params["mapprojn"].split("_")
         params["spcszone"] = str(parts[parts.index("FIPS") + 1])
     else:
         params["spcszone"] = "Unknown"
 
     # ARC_Zone
-    if params["mapprojn"] is not None and "_arc_system" in params["mapprojn"].lower():
+    if params["mapprojn"] != None and "_arc_system" in params["mapprojn"].lower():
         parts = params["mapprojn"].split("_")
         params["arczone"] = str(parts[-1])
     else:
@@ -677,7 +677,7 @@ def equidistant_conic(params):
 
     equicon = xml_node("equicon")
     stdparll = xml_node("stdparll", params["stdparll"], equicon)
-    if params["stdparll_2"] is not "Unknown":
+    if params["stdparll_2"] != "Unknown":
         stdparll_2 = xml_node("stdparll", params["stdparll_2"], equicon)
 
     for item in ["longcm", "latprjo", "feast", "fnorth"]:
@@ -688,9 +688,9 @@ def equidistant_conic(params):
 def unknown_projection(params):
     mapprojp = xml_node("mapprojp")
 
-    if params["stdparll"] is not "Unknown":
+    if params["stdparll"] != "Unknown":
         stdparll = xml_node("stdparll", params["stdparll"], mapprojp)
-    if params["stdparll_2"] is not "Unknown":
+    if params["stdparll_2"] != "Unknown":
         stdparll_2 = xml_node("stdparll", params["stdparll_2"], mapprojp)
 
     for k in [
@@ -846,7 +846,7 @@ def lambert_conformal_conic(params):
     """
     lambertc = xml_node("lambertc")
     stdparll = xml_node("stdparll", params["stdparll"], lambertc)
-    if params["stdparll_2"] is not "Unknown":
+    if params["stdparll_2"] != "Unknown":
         stdparll_2 = xml_node("stdparll", params["stdparll_2"], lambertc)
 
     for item in ["longcm", "latprjo", "feast", "fnorth"]:
@@ -1715,7 +1715,7 @@ def get_raster_attribute_table(fname):
     band = raster.GetRasterBand(1)
     rat = band.GetDefaultRAT()
 
-    if rat is not None:
+    if rat != None:
         df = rat_to_df(rat)
         if not df.columns == ["Histogram"]:
             return df
