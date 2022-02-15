@@ -503,9 +503,9 @@ def get_install_dname(which="pymdwizard"):
 
 
 def get_pem_fname():
-    return os.path.join(
+    return os.path.abspath(os.path.join(
         get_install_dname("pymdwizard"), "pymdwizard", "resources", "DOIRootCA2.pem"
-    )
+    ))
 
 
 def check_pem_file():
