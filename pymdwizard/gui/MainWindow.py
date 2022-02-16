@@ -1330,10 +1330,7 @@ class PyMdWizardMainForm(QMainWindow):
         except BaseException as e:
             msg = (
                 "Problem Encountered Updating from GitHub\n\n"
-                "Please upgrade to the latest release by reinstalling the "
-                "application from GitHub "
-                "\n(https://github.com/usgs/fort-pymdwizard/releases)\n\n"
-                "Error Message:\n"
+                "USGS users, please try disconnecting from VPN and re-checking for updates."
             )
             msg += str(e)
             QMessageBox.information(self, "Update results", msg)
