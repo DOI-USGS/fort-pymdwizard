@@ -1298,8 +1298,11 @@ class PyMdWizardMainForm(QMainWindow):
 
         except BaseException as e:
             if show_uptodate_msg:
-                msg = "Problem Encountered Updating from GitHub\n\nError Message:\n"
-                msg += str(e)
+                msg = (
+                    "Problem Encountered Updating from GitHub\n\n"
+                    "USGS users, please try disconnecting from VPN and re-checking for updates."
+                )
+                # msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
 
     def update_from_github(self):
@@ -1328,7 +1331,7 @@ class PyMdWizardMainForm(QMainWindow):
                 "Problem Encountered Updating from GitHub\n\n"
                 "USGS users, please try disconnecting from VPN and re-checking for updates."
             )
-            msg += str(e)
+            # msg += str(e)
             QMessageBox.information(self, "Update results", msg)
 
         QApplication.restoreOverrideCursor()
