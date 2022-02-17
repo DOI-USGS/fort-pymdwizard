@@ -1156,29 +1156,28 @@ class PyMdWizardMainForm(QMainWindow):
                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                 )
                 if confirm == QMessageBox.Yes:
-                    # TODO If file already exists, prompt to either "Save As" or "Overwrite"
-                    import os
-                    file_exists = os.path.exists(self.cur_fname)
-                    if file_exists:
-                        confirm2 = QMessageBox.question(self,
-                            "File Overwrite",
-                            exists_msg,
-                            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
-                        )
-                        if confirm2 == QMessageBox.Yes:
-                            self.save_file()
-                        elif confirm2 == QMessageBox.No:
-                            self.save_as()
-                        elif confirm2 == QMessageBox.Cancel:
-                            print ('cancel1')
-                            return
-                    else:
-                        self.save_as()
+                    self.save_as()
 
                 elif confirm == QMessageBox.Cancel:
                     return
             try:
                 cur_content = xml_utils.XMLRecord(self.cur_fname)
+                import os
+                if os.path.exists(out_fname):
+                    confirm2 = QMessageBox.question(self,
+                        "File Overwrite",
+                        exists_msg,
+                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
+                    )
+                    if confirm2 == QMessageBox.Yes:
+                        self.save_file()
+                    elif confirm2 == QMessageBox.No:
+                        out_fname = QFileDialog.getSaveFileName(
+                            self, "Save As", out_fname, filter="Document (*.docx)"
+                        )[0]
+                    elif confirm2 == QMessageBox.Cancel:
+                        return
+
                 review_utils.generate_review_report(cur_content, out_fname, which=which)
 
                 import os, sys, subprocess
@@ -1256,9 +1255,6 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "and the USGS Council for Data integration (CDI).<br><br>"
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
-        msg += f"<br>pymdwizard: {utils.get_install_dname('pymdwizard')}"
-        msg += f"<br>root: {utils.get_install_dname('root')}"
-        msg += f"<br>python: {utils.get_install_dname('python')}<br>"
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
         msg += "<br><br>Contact: Kyle Enns at sdmapps@usgs.gov"
 
@@ -1325,15 +1321,12 @@ class PyMdWizardMainForm(QMainWindow):
 
             merge_msg = repo.git.merge(master.name)
 
-            msg = "Updated Successfully from GitHub. Close and re-open Metadata Wizard for changes to be implimented."
+            msg = "Updated Successfully from GitHub. Close and re-open Metadata Wizard for changes to be implemented."
             QMessageBox.information(self, "Update results", msg)
         except BaseException as e:
             msg = (
                 "Problem Encountered Updating from GitHub\n\n"
-                "Please upgrade to the latest release by reinstalling the "
-                "application from GitHub "
-                "\n(https://github.com/usgs/fort-pymdwizard/releases)\n\n"
-                "Error Message:\n"
+                "USGS users, please try disconnecting from VPN and re-checking for updates."
             )
             msg += str(e)
             QMessageBox.information(self, "Update results", msg)
