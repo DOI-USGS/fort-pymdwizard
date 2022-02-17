@@ -1156,29 +1156,28 @@ class PyMdWizardMainForm(QMainWindow):
                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                 )
                 if confirm == QMessageBox.Yes:
-                    # TODO If file already exists, prompt to either "Save As" or "Overwrite"
-                    import os
-                    file_exists = os.path.exists(self.cur_fname)
-                    if file_exists:
-                        confirm2 = QMessageBox.question(self,
-                            "File Overwrite",
-                            exists_msg,
-                            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
-                        )
-                        if confirm2 == QMessageBox.Yes:
-                            self.save_file()
-                        elif confirm2 == QMessageBox.No:
-                            self.save_as()
-                        elif confirm2 == QMessageBox.Cancel:
-                            print ('cancel1')
-                            return
-                    else:
-                        self.save_as()
+                    self.save_as()
 
                 elif confirm == QMessageBox.Cancel:
                     return
             try:
                 cur_content = xml_utils.XMLRecord(self.cur_fname)
+                import os
+                if os.path.exists(out_fname):
+                    confirm2 = QMessageBox.question(self,
+                        "File Overwrite",
+                        exists_msg,
+                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel ,
+                    )
+                    if confirm2 == QMessageBox.Yes:
+                        self.save_file()
+                    elif confirm2 == QMessageBox.No:
+                        out_fname = QFileDialog.getSaveFileName(
+                            self, "Save As", out_fname, filter="Document (*.docx)"
+                        )[0]
+                    elif confirm2 == QMessageBox.Cancel:
+                        return
+
                 review_utils.generate_review_report(cur_content, out_fname, which=which)
 
                 import os, sys, subprocess
