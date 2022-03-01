@@ -70,7 +70,7 @@ def introspect_dataset(fname):
         elif field_type == "Geometry":
             contents = [
                 "Feature geometry.",
-                "Coordinates defining the features.",
+                "Shape type.",
                 "ESRI",
             ]
 
