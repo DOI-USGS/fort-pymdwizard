@@ -12,17 +12,23 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(700, 130)
-        Form.setMinimumSize(QtCore.QSize(0, 130))
-        Form.setMaximumSize(QtCore.QSize(16777215, 165))
+        Form.resize(592, 140)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
+        Form.setMinimumSize(QtCore.QSize(0, 135))
+        Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
         Form.setFont(font)
-        self.gridLayout = QtWidgets.QGridLayout(Form)
-        self.gridLayout.setContentsMargins(3, 3, 3, 3)
-        self.gridLayout.setHorizontalSpacing(3)
-        self.gridLayout.setObjectName("gridLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout(Form)
+        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtWidgets.QGroupBox(Form)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
@@ -32,17 +38,23 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
         self.groupBox.setObjectName("groupBox")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox)
-        self.verticalLayout.setContentsMargins(3, 3, 3, -1)
-        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(self.groupBox)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setItalic(True)
         self.label.setFont(font)
         self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
+        self.verticalLayout_2.addWidget(self.label)
         self.fgdc_useconst = GrowingTextEdit(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
@@ -53,11 +65,9 @@ class Ui_Form(object):
             self.fgdc_useconst.sizePolicy().hasHeightForWidth()
         )
         self.fgdc_useconst.setSizePolicy(sizePolicy)
-        self.fgdc_useconst.setMinimumSize(QtCore.QSize(0, 45))
-        self.fgdc_useconst.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.fgdc_useconst.setObjectName("fgdc_useconst")
-        self.verticalLayout.addWidget(self.fgdc_useconst)
-        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.fgdc_useconst)
+        self.verticalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
