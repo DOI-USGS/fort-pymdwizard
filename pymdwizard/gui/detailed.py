@@ -117,7 +117,6 @@ class Detailed(WizardWidget):  #
         if fname[0]:
             settings.setValue("lastDataFname", fname[0])
             try:
-
                 self.populate_from_fname(fname[0])
             except BaseException as e:
                 import traceback
@@ -214,7 +213,7 @@ class Detailed(WizardWidget):  #
                 shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
                 utils.set_text(shape_attr.ui.fgdc_attrdefs, "ESRI")
                 shape_attr.domain.ui.fgdc_udom.setPlainText(
-                    "Coordinates defining the features."
+                    "Shape type."
                 )
                 shape_attr.store_current_content()
                 shape_attr.supersize_me()

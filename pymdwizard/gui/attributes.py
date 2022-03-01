@@ -179,7 +179,7 @@ class Attributes(WizardWidget):  #
 
     def get_attr(self, which):
         for attr in self.attrs:
-            if mdattr.ui.fgdc_attrlabl.text() == which:
+            if attr.ui.fgdc_attrlabl.text() == which:
                 return attr
         return None
 
