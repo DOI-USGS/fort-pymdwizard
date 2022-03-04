@@ -604,5 +604,5 @@ def url_is_alive(url):
     try:
         urllib.request.urlopen(request)
         return True
-    except (urllib.request.HTTPError, urllib.request.URLError):
+    except:
         return False
