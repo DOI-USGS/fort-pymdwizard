@@ -594,8 +594,12 @@ def url_is_alive(url):
     """
     if url.startswith('www'):
         url = 'http://' + url
-    request = urllib.request.Request(url)
-    request.get_method = lambda: 'HEAD'
+
+    try:
+        request = urllib.request.Request(url)
+        request.get_method = lambda: 'HEAD'
+    except:
+        request = ''
 
     try:
         urllib.request.urlopen(request)
