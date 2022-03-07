@@ -1256,7 +1256,7 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
         msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
-        msg += "<br><br>Contact: Kyle Enns at sdmapps@usgs.gov"
+        msg += "<br><br>Contact: Kyle Enns at ask-sdm@usgs.gov"
 
         msgbox = QMessageBox.about(self, "About", msg)
 
