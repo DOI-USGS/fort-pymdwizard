@@ -190,6 +190,17 @@
 <div class="line"><br /></div>
 </div>
 <blockquote>
+  <div>
+    <p>open terminal and run:</p>
+    <ul>
+      <li>sudo spctl --master-disable</li>
+      <li>sudo xattr -d com.apple.quarantine /Applications/MetadataWizard.app</li>
+      <li>Open finder and navigate to /Applications and double click MetadataWizard icon. This should open the app (may take a moment).</li>
+      <li>After opening the app successfully, switch settings back to normal by running this code in the terminal: sudo spctl --master-enable</li>
+    </ul>
+  </div>
+</blockquote>
+<blockquote>
 <div><p><strong>Installation does require elevated (administrative) privileges.</strong> After installation the MetadataWizard can be launched from the duck icon (<a class="reference internal" href="_images/duck.png"><img alt="duck" src="_images/duck.png" style="width: 18pt;" /></a>) in the user’s applications.</p>
 </div></blockquote>
 </div>
