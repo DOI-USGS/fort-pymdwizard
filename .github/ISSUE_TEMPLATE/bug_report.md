@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 
 ---
-Email sdmapps@usgs.gov if you wish to contact the USGS Science Data Management (SDM) team’s application support inbox directly with bugs or feature requests. Otherwise, use the template below.
+Email ask-sdm@usgs.gov if you wish to contact the USGS Science Data Management (SDM) team’s application support inbox directly with bugs or feature requests. Otherwise, use the template below.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
