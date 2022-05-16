@@ -61,5 +61,5 @@ or unauthorized use.
 
 Contact:
 -----------
-sdmapps@usgs.gov
+ask-sdm@usgs.gov
 
