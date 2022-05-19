@@ -231,7 +231,7 @@ class Attributes(WizardWidget):  #
 
         menu.addSeparator()
         add_attr = menu.addAction(QIcon("paste.png"), "Add attribute (column)")
-        add_mdattr.setStatusTip("Add attribute")
+        add_attr.setStatusTip("Add attribute")
 
         if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()
@@ -280,7 +280,7 @@ class Attributes(WizardWidget):  #
             new_attr = mdattr.Attr(parent=self)
             self.append_attr(new_attr)
             self.minimize_children()
-            new_mdattr.supersize_me()
+            new_attr.supersize_me()
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
             # msg.setTextFormat(Qt.RichText)
