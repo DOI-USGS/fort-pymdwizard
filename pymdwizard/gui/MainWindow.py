@@ -1372,7 +1372,7 @@ def show_splash(version="2.x.x"):
 
     x, y = 470, 70
     for digit in version:
-        painter.drawPixmap(x, y, numbers[digit])
+        painter.drawPixmap(int(x), y, numbers[digit])
         x += numbers[digit].rect().width() / 3
 
     painter.end()
