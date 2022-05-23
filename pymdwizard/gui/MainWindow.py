@@ -1300,7 +1300,7 @@ class PyMdWizardMainForm(QMainWindow):
             if show_uptodate_msg:
                 msg = (
                     "Problem Encountered Updating from GitHub\n\n"
-                    "USGS users, please try disconnecting from VPN and re-checking for updates."
+                    "USGS users, if you experience issues, please try disconnecting/reconnecting to the internal USGS network and re-checking for updates."
                 )
                 # msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
@@ -1329,7 +1329,7 @@ class PyMdWizardMainForm(QMainWindow):
         except BaseException as e:
             msg = (
                 "Problem Encountered Updating from GitHub\n\n"
-                "USGS users, please try disconnecting from VPN and re-checking for updates."
+                "USGS users, if you experience issues, please try disconnecting/reconnecting to the internal USGS network and re-checking for updates."
             )
             # msg += str(e)
             QMessageBox.information(self, "Update results", msg)
