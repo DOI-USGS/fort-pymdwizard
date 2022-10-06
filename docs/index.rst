@@ -16,7 +16,7 @@ data and therefore undiscoverable. Metadata in its most basic form includes
 information about the data’s origin, creators, accuracy, availability, and 
 distribution. Metadata is necessary for the appropriate interpretation and reuse of 
 the data, and importantly provides the necessary definitions of data content. The
-`Metadata section <https://www2.usgs.gov/datamanagement/describe/metadata.php>`_ 
+`Metadata section <https://www.usgs.gov/data-management/describe-metadatadocumentation>`_ 
 of the USGS Data Management website has information on helpful metadata resources, 
 as well as best practices for metadata creation.
 
