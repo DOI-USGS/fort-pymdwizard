@@ -14,6 +14,10 @@ built using an open-source Python architecture.
 
 Complete user documentation available [here](https://usgs.github.io/fort-pymdwizard)
 
+Recommended Citation:
+----------------
+Talbert, C.B., 2017, Metadata Wizard v2.0: U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D. 
+
 ![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
 It provides a pleasant and highly efficient environment for metadata creation, 
