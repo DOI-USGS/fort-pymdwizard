@@ -1,53 +1,29 @@
 [
+  
   {
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
-    "description": "Tool for editing and validating FGDC metadata records",
-    "version": "latest",
-    "status": "Release Candidate",
-    "homepage": "https://usgs.github.io/fort-pymdwizard/",
-    "downloadURL": "https://github.com/usgs/fort-pymdwizard/archive/refs/heads/master.zip",
-
-    "openSourceProject": 1,
-    "license": "https://github.com/usgs/fort-pymdwizard/blob/master/LICENSE.md",
-    "vcs": "git",
-    "repository": "https://github.com/usgs/fort-pymdwizard",
-
-    "tags": [
-      "metadata",
-      "FGDC",
-      "xml",
-      "BDP"
-    ],
-    "languages": [
-      "Python",
-      "JavaScript",
-      "XML",
-      "RST",
-      "HTML"
-    ],
-
-    "contact": {
-      "name": "Colin Talbert",
-      "email": "talbertc@usgs.gov"
-    },
-    "updated": {
-      "metadataLastUpdated": "2017-09-22"
-    }
-  },
-  {
-    "name": "Metadata Wizard",
-    "organization": "U.S. Geological Survey",
-    "description": "Tool for editing and validating FGDC metadata records",
+    "description": "Tool for editing and validating FGDC metadata records.",
     "version": "2.0.7",
-    "status": "Development",
-    "homepage": "https://usgs.github.io/fort-pymdwizard/",
-    "downloadURL": "https://github.com/usgs/fort-pymdwizard/archive/refs/heads/dev.zip",
+    "status": "Production",
 
-    "openSourceProject": 1,
-    "license": "https://github.com/usgs/fort-pymdwizard/blob/dev/LICENSE.md",
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Creative Commons Attribution 4.0 International",
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.7/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.7",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.0.7/fort-pymdwizard-v2.0.7.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.7/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.7",
     "vcs": "git",
-    "repository": "https://github.com/usgs/fort-pymdwizard/tree/dev",
+
+    "laborHours": 0,
 
     "tags": [
       "metadata",
@@ -55,6 +31,7 @@
       "xml",
       "BDP"
     ],
+
     "languages": [
       "Python",
       "JavaScript",
@@ -67,8 +44,60 @@
       "name": "Kyle Enns",
       "email": "kenns@usgs.gov"
     },
-    "updated": {
-      "metadataLastUpdated": "2017-09-22"
+
+    "date": {
+      "metadataLastUpdated": "2023-01-10"
+    }
+  },
+
+  {
+    "name": "Metadata Wizard",
+    "organization": "U.S. Geological Survey",
+    "description": "Tool for editing and validating FGDC metadata records.",
+    "version": "latest",
+    "status": "Development",
+
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Creative Commons Attribution 4.0 International",
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/master/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/master/fort-pymdwizard-master.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/master/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard",
+    "vcs": "git",
+
+    "laborHours": 0,
+
+    "tags": [
+      "metadata",
+      "FGDC",
+      "xml",
+      "BDP"
+    ],
+
+    "languages": [
+      "Python",
+      "JavaScript",
+      "XML",
+      "RST",
+      "HTML"
+    ],
+
+    "contact": {
+      "name": "Kyle Enns",
+      "email": "kenns@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2023-01-10"
     }
   }
+
 ]
