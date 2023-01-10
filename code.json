@@ -1,5 +1,5 @@
 [
-  
+
   {
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
@@ -54,7 +54,7 @@
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
     "description": "Tool for editing and validating FGDC metadata records.",
-    "version": "latest",
+    "version": "master",
     "status": "Development",
 
     "permissions": {
