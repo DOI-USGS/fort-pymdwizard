@@ -23,14 +23,18 @@ metadata records.
 
 * Auto-population of challenging metadata sections such as the spatial reference, 
 spatial organization, and entity and attributes, based on information contained in
-the data (CSV, Excel, Shapefiles, etc.)
+the data (CSV, Excel, Shapefiles, etc.)<br>
+
  ![Alt text](./docs/img/EA_screenshot.png?raw=true "Screen shot") 
 
 * Auto-population of contact information for USGS affiliates, 
-taxonomic information from ITIS, or keywords from USGS controlled vocabularies.
+taxonomic information from ITIS, or keywords from USGS controlled vocabularies.<br>
+
  ![Alt text](docs/img/keywords_screenshot.png?raw=true "Screen shot") 
-* Built-in FGDC validator that highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
+* Built-in FGDC validator that highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.<br>
+
  ![Alt text](docs/img/error_screenshot.png?raw=true "Screen shot") 
+
 * Copy/Paste or Drag-and-Drop of entire sections, subsections, or individual content
 between different records or other tools including XML-Notepad and text editors.
 * Built-in help documentation that guides users through common and detailed questions about metadata.
