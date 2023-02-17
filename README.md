@@ -12,32 +12,43 @@ The MetadataWizard is a useful tool designed to facilitate FGDC
 metadata creation for spatial and non-spatial data sets.  It is a cross-platform desktop application
 built using an open-source Python architecture.  
 
-Complete user documentation available [here](https://usgs.github.io/fort-pymdwizard)
+Complete user documentation available [here](https://usgs.github.io/fort-pymdwizard).
 
 ![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
-It provides a pleasant and highly efficient environment for metadata creation, 
-editing, preview, and validation.  Built in tools automate and facilitate the creation of high quality 
+It provides a user-friendly and efficient environment for metadata creation, 
+editing, preview, and validation.  Built-in tools facilitate and automate the creation of high quality 
 metadata records.
 
 
-* Auto-population* of challenging sections such as the spatial reference, 
-spatial organization, and entity and attribute based on information contained in
-the data being documented (CSV, Excel, Shapefiles, etc.)
+* Auto-population of challenging metadata sections such as the spatial reference, 
+spatial organization, and entity and attributes, based on information contained in
+the data (CSV, Excel, Shapefiles, etc.)
  ![Alt text](./docs/img/EA_screenshot.png?raw=true "Screen shot") 
 
-* Automate population of contact information for USGS affiliates, 
-Taxonomic information from itis, or keywords from USGS controlled vocabularies
+* Auto-population of contact information for USGS affiliates, 
+taxonomic information from ITIS, or keywords from USGS controlled vocabularies.
  ![Alt text](docs/img/keywords_screenshot.png?raw=true "Screen shot") 
-* Built in FGDC validator which highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
+* Built-in FGDC validator that highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.
  ![Alt text](docs/img/error_screenshot.png?raw=true "Screen shot") 
 * Copy/Paste or Drag-and-Drop of entire sections, subsections, or individual content
 between different records or other tools including XML-Notepad and text editors.
-* Built in help documentation which guides users through common and detailed questions about metadata.
+* Built-in help documentation that guides users through common and detailed questions about metadata.
 
 
-This project is modeled off of the original [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source), which was designed as a toolbox in ArcMap, and required an ESRI installation.
+This project is modeled off of the original [Metadata Wizard](https://github.com/dignizio-usgs/MDWizard_Source), which was designed as a toolbox in ArcMap and required an ESRI installation.
 
+Recommended Citation:
+----------------
+
+Talbert, C.B., Ignizio, D.A., and Enns, K.D., 2017, Metadata Wizard (ver. 2.0.7, March 2022): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+
+Authors:
+----------------
+
+Colin B. Talbert -- https://orcid.org/0000-0002-9505-1876<br>
+Drew A. Ignizio -- https://orcid.org/0000-0001-8054-5139<br>
+Kyle D. Enns -- https://orcid.org/0000-0001-7675-697X 
 
 Acknowledgements:
 ----------------
