@@ -12,7 +12,7 @@ The MetadataWizard is a useful tool designed to facilitate FGDC
 metadata creation for spatial and non-spatial data sets.  It is a cross-platform desktop application
 built using an open-source Python architecture.  
 
-Complete user documentation available [here](https://usgs.github.io/fort-pymdwizard).
+Complete user documentation available [here](https://doi-usgs.github.io/fort-pymdwizard).
 
 ![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
