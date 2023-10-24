@@ -95,6 +95,7 @@ class Timeinfo(WizardWidget):  #
         )
 
         self.multi_dates.add_another()
+        self.multi_dates.add_another()
         self.switch_primary()
 
     def connect_events(self):
