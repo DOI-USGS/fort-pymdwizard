@@ -12,9 +12,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(268, 142)
-        Form.setMinimumSize(QtCore.QSize(268, 0))
-        Form.setMaximumSize(QtCore.QSize(268, 16777215))
+        Form.resize(310, 142)
+        Form.setMinimumSize(QtCore.QSize(310, 0))
+        Form.setMaximumSize(QtCore.QSize(310, 16777215))
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
