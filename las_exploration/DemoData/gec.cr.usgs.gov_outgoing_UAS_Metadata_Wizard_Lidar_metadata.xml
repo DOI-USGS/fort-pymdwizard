@@ -1,0 +1,515 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Victoria M. Scholl</origin>
+        <origin>Matthew A. Burgess</origin>
+        <origin>Mark A. Bauer</origin>
+        <origin>Lance R. Brady</origin>
+        <origin>Richard G. Thurau</origin>
+        <pubdate>2023</pubdate>
+        <title>Lidar point cloud data products from UAS surveys of two dryland sites near Moab, Utah in May 2023</title>
+        <geoform>vector digital data</geoform>
+        <onlink>https://doi.org/10.5066/xxxxxxxx</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This portion of the data release presents discrete lidar point clouds from low-altitude uncrewed aerial system (UAS) flights at two dryland sites approximately 40 km south of Moab, Utah. A Yellowscan VX20-100 scanner (laser wavelength 905 nm) was flown at an altitude of 31 meters above ground level on a DJI Matrice 600 Pro UAS with approved government edition firmware. The lidar point clouds were post-processed kinematic (PPK) corrected to a concurrently operating Trimble R8s GPS base station and each point was assigned RGB values using corresponding natural color orthomosaics at each site. The point clouds were also point classified using a bare-ground classification scheme  (0-Created, never classified; 2-Ground) and exported in .las format.</abstract>
+      <purpose>This UAS lidar dataset was collected to capture structural information about the terrain and vegetation present at dryland sites. Lidar point cloud data can be used to estimate topographic variation and vegetation height/cover. </purpose>
+      <supplinf>The Yellowscan VX20-100 scanner has a beam divergence of 1.6 mrad. The scanner rotational rate was set to 35 hz.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <mdattim>
+          <sngdate>
+            <caldate>20230503</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>20230505</caldate>
+          </sngdate>
+        </mdattim>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <descgeog>World</descgeog>
+      <bounding>
+        <westbc>-109.42111</westbc>
+        <eastbc>-109.40298</eastbc>
+        <northbc>38.29107</northbc>
+        <southbc>38.20621</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>remote sensing</themekey>
+        <themekey>geospatial datasets</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>U.S. Geological Survey</themekey>
+        <themekey>USGS</themekey>
+        <themekey>UAS</themekey>
+        <themekey>Uncrewed Aircraft System</themekey>
+        <themekey>lidar</themekey>
+        <themekey>point cloud</themekey>
+        <themekey>Yellowscan VX20</themekey>
+        <themekey>Geosciences and Environmental Change Science Center</themekey>
+        <themekey>elevation</themekey>
+        <themekey>LAS</themekey>
+        <themekey>drone</themekey>
+      </theme>
+      <place>
+        <placekt>Geographic Names Information System (GNIS)</placekt>
+        <placekey>State of Utah</placekey>
+        <placekey>San Juan County - Utah</placekey>
+        <placekey>Moab</placekey>
+        <placekey>Utah</placekey>
+      </place>
+    </keywords>
+    <accconst>None.  Please see 'Distribution Info' for details.</accconst>
+    <useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Victoria M Scholl</cntper>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing</addrtype>
+          <address>Mail Stop 516, W 6th Ave Kipling St</address>
+          <city>Lakewood</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>1-888-ASK-USGS (1-888-275-8747)</cntvoice>
+        <cntemail>uas@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>USGS National Uncrewed Systems Office</datacred>
+    <native>Yellowscan Cloudstation v2305.0.3, Applanix PosPac UAV 8.8, Windows v10.0.19045 Build 19045</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>UAS lidar elevation values were compared to the USGS 3D Elevation Program (3DEP) as an independent check. 
+
+Site 1 SfM elevations ranged between1842 - 1845 meters. 3DEP elevations ranged between 1837.5 – 1840 meters. 
+
+Site 7 SfM elevations ranged between 1784 – 1786 meters.3DEP elevations ranged between 785 – 1786 meters.</attraccr>
+    </attracc>
+    <logic>The elevations within the multispectral structure-from-motion Digital Surface Model and Point Cloud data products fall within expected ranges as compared to an external, independent elevation data set (3DEP). </logic>
+    <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record carefully for additional details.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>A Structure from Motion (SfM) UAS orthomosaic was visually compared to the .las cloud. ---. The SfM orthomosaic was processed using ground control points, using Propeller AeroPoints corrected with a Trimble R8 GPS base station.</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>The vertical accuracy assessment was completed using validation check-points (6) in non-vegetated areas computed using Global Mapper software.
+
+The average Root Mean Square Error (RMSE) for the low-vegetated check points at site 1 was 0.0265 meters. The average RMSE for the low-vegetated check points at site 7 was 0.0354 meters.</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>The UAS lidar point clouds were acquired with a Yellowscan VX20-100 LiDAR scanner, which consists of the Reigl minivux-1uav and Applanix APX20 inertial measurement unit. The system was flown on a DJI m600 UAS with approved government edition firmware.  The LiDAR acquisition was collected at 5 m/s at 31m above the ground level, with two perpendicular transects passes (north-south and east-west). The point cloud was collected +45/-45 degree scan angles from nadir, covering a swath of roughly 60 m per transect. 
+
+The VX20 lidar data was processed and filtered and processed using YellowScan CloudStation software. The lever arm offsets and boresight angle corrections were applied to the point cloud at this step. Next, the raw point cloud's position was corrected in Cloudstation by importing a corrected smooth best-estimate trajectory (sbet) containing the positional data recorded from the IMU in the payload.  This PPK-corrected UAS trajectory was generated in PosPac UAV software, using observation data recorded from a Trimble R8s base station.  
+
+After the positional correction was applied, two more steps were completed in Cloudstation to improve the point cloud. First, a small strip adjustment between transect swaths, using YellowScan’s "robust" strip adjustment setting was applied.  Next, the point cloud was point classified using a bare-ground classification scheme  (0-Created, never classified; 2-Ground).  
+
+Finally, the point cloud was exported into a .las format and validated using 6 ground control checkpoints using Global Mapper software. These checkpoints were obtained by placing the 6 Aeropoint smart targets in non-vegetated areas with their recorded positions post-corrected using the same trimble R8s base station. RGB color was also applied to the point cloud by intersecting a Skydio X2D RGB orthomosaic for each of the two dryland sites in Global Mapper.  A total of 1 UAS flights were flown per site, producing a total of 6 transects which were merged into a single .las file per site.
+
+The data was surveyed in UTM NAD83(2011) Zone12 using orthometric heights using geoid model geoid18. EPSG: 6341.</procdesc>
+        <procdate>20230710</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Victoria M Scholl</cntper>
+            </cntperp>
+            <cntaddr>
+              <addrtype>mailing</addrtype>
+              <address>Mail Stop 516, W 6th Ave Kipling St</address>
+              <city>Lakewood</city>
+              <state>CO</state>
+              <postal>80225</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>1-888-ASK-USGS (1-888-275-8747)</cntvoice>
+            <cntemail>uas@usgs.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Point</sdtstype>
+        <ptvctcnt>2</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <gridsys>
+          <gridsysn>Universal Transverse Mercator</gridsysn>
+          <utm>
+            <utmzone>12</utmzone>
+            <transmer>
+              <sfctrmer>0.9996</sfctrmer>
+              <longcm>-111.0</longcm>
+              <latprjo>0.0</latprjo>
+              <feast>500000.0</feast>
+              <fnorth>0.0</fnorth>
+            </transmer>
+          </utm>
+        </gridsys>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.04167</absres>
+            <ordres>0.04167</ordres>
+          </coordrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>NAD83_NATIONAL_SPATIAL_REFERENCE_SYSTEM_2011</horizdn>
+        <ellips>GRS_1980</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+    <vertdef>
+      <altsys>
+        <altdatum>North American Vertical Datum of 1988, using geoid 18</altdatum>
+        <altres>0.0001</altres>
+        <altunits>meters</altunits>
+        <altenc>Explicit elevation coordinate included with horizontal coordinates</altenc>
+      </altsys>
+    </vertdef>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>2023-05-03_Site1_Lidar_PointCloud.las</enttypl>
+        <enttypd>UAS lidar point cloud in .LAS file format for Site 1. This georeferenced point cloud was  and colorized using natural color RGB image values.</enttypd>
+        <enttypds>USGS</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>ELEVATION</attrlabl>
+        <attrdef>Surface elevation orthometric height NAVD88 (m) using Geoid 18 in NAD83(2011)/UTM Zone 12N.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1842.848</rdommin>
+            <rdommax>1845.768</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+  <attrlabl>CLASS</attrlabl><attrdef>Each lidar point has a classification value assigned to it according to the ASPRS LAS Specification.</attrdef><attrdefs>YellowScan CloudStation</attrdefs><attrdomv>
+    <edom>
+      <edomv>1 (Unclassified)</edomv>
+      <edomvd>Data have been subjected to a classification algorithm but emerged in an undefined state.</edomvd>
+      <edomvds>ASPRS LAS Specification</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>2 (Ground)</edomv>
+      <edomvd>Data have been subjected to a classification algorithm and identified as bare ground.</edomvd>
+      <edomvds>ASPRS LAS Specification</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
+      <attr>
+        <attrlabl>INTENSITY</attrlabl>
+        <attrdef>Lidar intensity is recorded as the return strength of a laser beam during data collection.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>36479</rdommin>
+            <rdommax>63013</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RETURN_NUM</attrlabl>
+        <attrdef>Return number. Each laser pulse can produce multiple discrete observations as emitted light is reflected by objects in the scene. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>1</rdommin>
+            <rdommax>2</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RETURN_CNT</attrlabl>
+        <attrdef>Return count. Total number of returns for the given pulse that produced each point. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>1</rdommin>
+            <rdommax>2</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SCAN_ANGLE</attrlabl>
+        <attrdef>The scan angle of the laser beam that produced each point where 0 degrees indicates nadir.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>-51</rdommin>
+            <rdommax>50</rdommax>
+            <attrunit>Degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>USER_DATA</attrlabl>
+        <attrdef>Integer referring to which data set each point originated from. Since there was only one lidar data set at each site, all of these values are 1.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <udom>All values are 1</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SOURCE_ID</attrlabl>
+        <attrdef>Integer value refers to unique flight line during the UAS flight.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1001</rdommin>
+            <rdommax>1006</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GPS_TIME</attrlabl>
+        <attrdef>Timestamp in GPS seconds at which the light pulse was emitted from the instrument. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>313459.16</rdommin>
+            <rdommax>313722.28</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RED</attrlabl>
+        <attrdef>Red band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>65280</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GREEN</attrlabl>
+        <attrdef>Green band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>65024</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>BLUE</attrlabl>
+        <attrdef>Blue band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>65280</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>2023-05-05_Site7_Lidar_PointCloud.las</enttypl>
+        <enttypd>UAS lidar point cloud in .LAS file format for Site 7. This georeferenced point cloud was  and colorized using natural color RGB image values.</enttypd>
+        <enttypds>USGS</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>ELEVATION</attrlabl>
+        <attrdef>Surface elevation orthometric height NAVD88 (m) using Geoid 18 in NAD83(2011)/UTM Zone 12N.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1784.666</rdommin>
+            <rdommax>1786.718</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+  <attrlabl>CLASS</attrlabl><attrdef>Each lidar point has a classification value assigned to it according to the ASPRS LAS Specification.</attrdef><attrdefs>YellowScan CloudStation</attrdefs><attrdomv>
+    <edom>
+      <edomv>1 (Unclassified)</edomv>
+      <edomvd>Data have been subjected to a classification algorithm but emerged in an undefined state.</edomvd>
+      <edomvds>ASPRS LAS Specification</edomvds>
+    </edom>
+  </attrdomv>
+  <attrdomv>
+    <edom>
+      <edomv>2 (Ground)</edomv>
+      <edomvd>Data have been subjected to a classification algorithm and identified as bare ground.</edomvd>
+      <edomvds>ASPRS LAS Specification</edomvds>
+    </edom>
+  </attrdomv>
+</attr>
+      <attr>
+        <attrlabl>INTENSITY</attrlabl>
+        <attrdef>Lidar intensity is recorded as the return strength of a laser beam during data collection.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>39594</rdommin>
+            <rdommax>65535</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RETURN_NUM</attrlabl>
+        <attrdef>Return number. Each laser pulse can produce multiple discrete observations as emitted light is reflected by objects in the scene. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><udom>All values are 1.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RETURN_CNT</attrlabl>
+        <attrdef>Return count. Total number of returns for the given pulse that produced each point. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <udom>All values are 1.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SCAN_ANGLE</attrlabl>
+        <attrdef>The scan angle of the laser beam that produced each point where 0 degrees indicates nadir.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>-49</rdommin>
+            <rdommax>48</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>USER_DATA</attrlabl>
+        <attrdef>Integer referring to which data set each point originated from. Since there was only one lidar data set at each site, all of these values are 1.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><udom>All values are 1.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SOURCE_ID</attrlabl>
+        <attrdef>Integer value refers to unique flight line during the UAS flight.</attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1001</rdommin>
+            <rdommax>1006</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GPS_TIME</attrlabl>
+        <attrdef>Timestamp in GPS seconds at which the light pulse was emitted from the instrument. </attrdef>
+        <attrdefs>YellowScan CloudStation</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>484536.86</rdommin>
+            <rdommax>484797.82</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>RED</attrlabl>
+        <attrdef>Red band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>65024</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GREEN</attrlabl>
+        <attrdef>Green band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>63488</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>BLUE</attrlabl>
+        <attrdef>Blue band brightness corresponding to natural color orthomosaic digital number at each lidar point's location in the point cloud.</attrdef>
+        <attrdefs>Agisoft Metashape</attrdefs>
+        <attrdomv><rdom>
+            <rdommin>0</rdommin>
+            <rdommax>63488</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data on any other system or for general or scientific purposes, nor shall the act of distribution constitute any such warranty.</distliab>
+    <stdorder>
+      <digform><digtinfo>
+          <formname>Digital Data</formname>
+        </digtinfo>
+        <digtopt><onlinopt><computer><networka><networkr>https://doi.org/10.5066/xxxxxxxx</networkr></networka></computer></onlinopt></digtopt></digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20230822</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>U.S. Geological Survey - ScienceBase</cntper>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing</addrtype>
+          <address>Mail Stop 516, W 6th Ave Kipling St</address>
+          <city>Lakewood</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>1-888-ASK-USGS (1-888-275-8747)</cntvoice>
+        <cntemail>uas@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001.1-1999</metstdv>
+  </metainfo>
+</metadata>
