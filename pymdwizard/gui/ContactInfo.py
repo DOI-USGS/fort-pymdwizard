@@ -119,7 +119,7 @@ class ContactInfo(WizardWidget):
                 msg.exec_()
         except:
             msg_text = (
-                "Make sure there is a working Internet connection or try again latter."
+                "Make sure there is a working Internet connection or try again later."
             )
             msg = QMessageBox(self)
             utils.set_window_icon(msg)
