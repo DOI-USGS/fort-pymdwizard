@@ -268,7 +268,7 @@ class ThesaurusSearch(QDialog):
             msg = (
                 "We're having trouble connecting to the controlled vocabularies service"
             )
-            msg += "\n Check that you have an internet connect, or try again latter"
+            msg += "\n Check that you have an internet connect, or try again later"
             QMessageBox.warning(self, "Connection error", msg)
             self.close_form()
 

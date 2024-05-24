@@ -129,7 +129,7 @@ class DistInfo(WizardWidget):
             self.contactinfo.from_xml(sb_info)
         except:
             msg = "Having trouble getting sciencebase contact info now.\n"
-            msg += "Check internet connection or try again latter."
+            msg += "Check internet connection or try again later."
             QMessageBox.warning(self, "Problem encountered", msg)
 
     def has_content(self):
