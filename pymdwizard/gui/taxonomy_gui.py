@@ -127,7 +127,7 @@ class ItisMainForm(QWidget):
         except requests.exceptions.ConnectionError:
             QApplication.restoreOverrideCursor()
             msg = "This functionality requires an internet connection."
-            msg += "\n Please retry latter."
+            msg += "\n Please retry later."
             QMessageBox.information(None, "No internet connection", msg)
             self.close()
 

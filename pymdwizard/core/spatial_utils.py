@@ -139,8 +139,9 @@ def get_geographic_extent(layer):
     min_x, max_x, min_y, max_y = get_extent(layer)
     srs = get_ref(layer)
     srs.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
-    target = osr.SpatialReference()
-    target.ImportFromEPSG(4326)
+    # Get the body (planet or moon) from the projection definition
+    # removes the lock-in to EPSG:4326 (WGS84)
+    target = srs.CloneGeogCS()
     target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
     spatialRef = layer.GetSpatialRef()
