@@ -171,8 +171,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
-        self.menuFile.addAction(self.actionOpen_sb)
-        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_as)
         self.menuFile.addSeparator()
