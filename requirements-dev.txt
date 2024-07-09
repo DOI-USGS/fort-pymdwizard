@@ -1,3 +1,4 @@
+#DI Note 7/9/24: This requirements file is problematic/not working currently.
 requests
 lxml
 defusedxml
