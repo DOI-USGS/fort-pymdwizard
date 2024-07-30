@@ -131,7 +131,7 @@ class ThesaurusSearch(QDialog):
         None
         """
         self.ui.button_search.clicked.connect(self.search_thesaurus)
-        self.ui.search_term.returnPressed.connect(self.search_thesaurus)
+        # self.ui.search_term.returnPressed.connect(self.search_thesaurus)
         self.ui.treeview_results.doubleClicked.connect(self.add_term)
         self.ui.treeview_results.clicked.connect(self.show_details)
         self.ui.btn_add_term.clicked.connect(self.add_term)
