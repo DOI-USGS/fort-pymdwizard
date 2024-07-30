@@ -69,7 +69,7 @@ class Ui_ImportUsgsUser(object):
         _translate = QtCore.QCoreApplication.translate
         ImportUsgsUser.setWindowTitle(
             _translate(
-                "ImportUsgsUser", "Import Contact Info from USGS Active Directory"
+                "ImportUsgsUser", "Import USGS Contact Info"
             )
         )
         self.label.setText(
