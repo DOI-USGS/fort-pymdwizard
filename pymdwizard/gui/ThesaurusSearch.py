@@ -279,7 +279,7 @@ class ThesaurusSearch(QDialog):
 
         term = self.ui.search_term.text()
 
-        search_url = "https://apps.usgs.gov/thesaurus/term-search.php?thcode=any&term={}".format(
+        search_url = "https://apps.usgs.gov/thesaurus/thesaurus.php?thcode=any&text={}".format(
             term
         )
 
