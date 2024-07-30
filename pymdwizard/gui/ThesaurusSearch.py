@@ -295,41 +295,44 @@ class ThesaurusSearch(QDialog):
 
         self.branch_lookup = {}
         unique_children = []
-        for item in results:
-            thesaurus_name = self.thesauri_lookup[item["thcode"]]
-            if (
-                item["thcode"] != "1"
-                and not self.place
-                or item["thcode"] == "1"
-                and self.place
-            ):
-                branch = self.branch_lookup.get(
-                    thesaurus_name, QStandardItem(thesaurus_name)
-                )
-                branch.setFont(QFont("Arial", 11))
-                if item["label"] != item["value"]:
-                    childnode = QStandardItem(
-                        "{} (use: {})".format(item["label"], item["value"])
+        try:
+            for item in results['vocabulary']:
+                thesaurus_name = self.thesauri_lookup[item["thcode"]]
+                if (
+                    item["thcode"] != "1"
+                    and not self.place
+                    or item["thcode"] == "1"
+                    and self.place
+                ):
+                    branch = self.branch_lookup.get(
+                        thesaurus_name, QStandardItem(thesaurus_name)
                     )
-                else:
-                    childnode = QStandardItem(item["label"])
+                    branch.setFont(QFont("Arial", 11))
+                    if item["label"] != item["value"]:
+                        childnode = QStandardItem(
+                            "{} (use: {})".format(item["label"], item["value"])
+                        )
+                    else:
+                        childnode = QStandardItem(item["label"])
 
-                childnode.setFont(QFont("Arial", 9))
-                if (thesaurus_name, item["value"]) not in unique_children:
-                    branch.appendRow([childnode, None])
-                    unique_children.append((thesaurus_name, item["value"]))
+                    childnode.setFont(QFont("Arial", 9))
+                    if (thesaurus_name, item["value"]) not in unique_children:
+                        branch.appendRow([childnode, None])
+                        unique_children.append((thesaurus_name, item["value"]))
 
-                self.branch_lookup[thesaurus_name] = branch
+                    self.branch_lookup[thesaurus_name] = branch
 
-        model = QStandardItemModel(0, 0)
+            model = QStandardItemModel(0, 0)
 
-        rootNode = model.invisibleRootItem()
+            rootNode = model.invisibleRootItem()
 
-        for thesaurus_node in self.branch_lookup.items():
-            rootNode.appendRow(thesaurus_node[1])
+            for thesaurus_node in self.branch_lookup.items():
+                rootNode.appendRow(thesaurus_node[1])
 
-        self.ui.treeview_results.setModel(model)
-        self.ui.treeview_results.expandAll()
+            self.ui.treeview_results.setModel(model)
+            self.ui.treeview_results.expandAll()
+        except:
+            QMessageBox.warning(self, "Error", "An error occurred retrieving values from the controlled vocabulary search")
 
     def get_thesaurus(self):
         model = self.ui.treeview_results.model()
