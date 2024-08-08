@@ -3,10 +3,13 @@ Changes
 2.0.8 (8/2024)
 -----
 Updates:
-- updated requirements .txt and .yaml files for dev install
-- 
--
--
+- Update requirements .txt and .yaml files for dev install
+- Replace contact lookup service with USGS People Picker service
+- Add try/catch around USGS Thesaurus search to handle errors
+- Remove option to Open ScienceBase Item from the MW GUI
+- Add fix for non-WGS84 coordinate system
+- Fix display of UI element "UI element "Data Status and Update Plans"
+- Remove inappropriate words from place names list
 
 2.0.6 (8/23/2019)
 -----
