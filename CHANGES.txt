@@ -3,8 +3,8 @@ Changes
 2.0.8 (8/2024)
 -----
 Updates:
+- updated requirements .txt and .yaml files for dev install
 - 
--
 -
 -
 
