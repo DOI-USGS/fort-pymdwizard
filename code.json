@@ -1,5 +1,53 @@
 [
+  {
+    "name": "Metadata Wizard",
+    "organization": "U.S. Geological Survey",
+    "description": "Tool for editing and validating FGDC metadata records.",
+    "version": "2.0.8",
+    "status": "Production",
 
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Creative Commons Attribution 4.0 International",
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.7/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.0.8/fort-pymdwizard-v2.0.7.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.8/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
+    "vcs": "git",
+
+    "laborHours": 0,
+
+    "tags": [
+      "metadata",
+      "FGDC",
+      "xml",
+      "BDP"
+    ],
+
+    "languages": [
+      "Python",
+      "JavaScript",
+      "XML",
+      "RST",
+      "HTML"
+    ],
+
+    "contact": {
+      "name": "Kyle Enns",
+      "email": "kenns@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2023-01-10"
+    }
+  }
   {
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
