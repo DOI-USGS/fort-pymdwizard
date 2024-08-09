@@ -8,7 +8,7 @@ Updates:
 - Add try/catch around USGS Thesaurus search to handle errors
 - Remove option to Open ScienceBase Item from the MW GUI
 - Add fix for non-WGS84 coordinate system
-- Fix display of UI element "UI element "Data Status and Update Plans"
+- Fix display of UI element "Data Status and Update Plans"
 - Remove inappropriate words from place names list
 
 2.0.6 (8/23/2019)
