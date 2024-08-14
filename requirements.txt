@@ -1,3 +1,4 @@
+#DI Note 7/9/24: This requirements file is problematic/not working currently.
 requests
 lxml
 defusedxml
@@ -5,11 +6,14 @@ pandas
 jupyter
 gdal
 geopandas
-pyqt
+pyqt==5.12.3
+pyqtwebengine==5.12.1
 xlrd
 python-docx
 habanero
-gitpython
+git
+python
 git
 folium
 jupyterlab
+sciencebasepy
