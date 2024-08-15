@@ -57,7 +57,7 @@ Use the file fort-pymdwizard/mdwizard_dev_env.yaml to install requirements in ne
  sphinx-build -b html docs docs/html_output
 
 
-[1]: https://github.com/usgs/fort-pymdwizard/issues
+[1]: https://github.com/DOI-USGS/fort-pymdwizard/issues
 [2]: https://www.python.org/dev/peps/pep-0008/
 [3]: https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
 [6]: https://pytest.org
