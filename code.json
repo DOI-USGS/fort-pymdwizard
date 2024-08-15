@@ -11,13 +11,13 @@
       "licenses": [
         {
           "name": "Creative Commons Attribution 4.0 International",
-          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.7/LICENSE.md"
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.8/LICENSE.md"
         }
       ]
     },
 
     "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
-    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.0.8/fort-pymdwizard-v2.0.7.zip",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.0.8/fort-pymdwizard-v2.0.8.zip",
     "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.8/DISCLAIMER.md",
     "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
     "vcs": "git",
@@ -40,12 +40,12 @@
     ],
 
     "contact": {
-      "name": "Kyle Enns",
-      "email": "kenns@usgs.gov"
+      "name": "Tamar Norkin",
+      "email": "tnorkin@usgs.gov"
     },
 
     "date": {
-      "metadataLastUpdated": "2023-01-10"
+      "metadataLastUpdated": "2024-08-15"
     }
   }
   {
@@ -97,7 +97,6 @@
       "metadataLastUpdated": "2023-01-10"
     }
   },
-
   {
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
@@ -147,5 +146,4 @@
       "metadataLastUpdated": "2023-01-10"
     }
   }
-
 ]
