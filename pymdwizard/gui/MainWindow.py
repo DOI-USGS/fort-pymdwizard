@@ -109,7 +109,7 @@ class PyMdWizardMainForm(QMainWindow):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
 
-        self.settings = QSettings("USGS_2.0.7", "pymdwizard_2.0.7")
+        self.settings = QSettings("USGS_2.0.8", "pymdwizard_2.0.8")
         self.cur_fname = ""
         self.file_watcher = None
 

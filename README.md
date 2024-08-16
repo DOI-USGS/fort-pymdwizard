@@ -45,7 +45,7 @@ This project is modeled off of the original [Metadata Wizard](https://github.com
 Recommended Citation:
 ----------------
 
-Talbert, C.B., Ignizio, D.A., and Enns, K.D., 2017, Metadata Wizard (ver. 2.0.7, March 2022): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+Talbert, C.B., Ignizio, D.A., and Enns, K.D., 2017, Metadata Wizard (ver. 2.0.8, August 2024): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
 
 Authors:
 ----------------
