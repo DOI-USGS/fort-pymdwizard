@@ -119,7 +119,6 @@ s
     query += """}}) {
             email
             name
-            doi_access_id
             active
             affiliation
             department
