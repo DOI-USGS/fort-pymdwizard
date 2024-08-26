@@ -3,9 +3,9 @@
 """
 The MetadataWizard(pymdwizard) software was developed by the
 U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
+See: https://github.com/DOI-USGS/fort-pymdwizard for current project source code
 See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
+See: https://github.com/DOI-USGS/fort-pymdwizard/tree/master/examples
     for examples of use in other scripts
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
@@ -456,7 +456,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         tool_comment = (
             "Record created using version {} of the "
-            "USGS Metadata Wizard tool. (https://github.com/usgs/"
+            "USGS Metadata Wizard tool. (https://github.com/DOI-USGS/"
             "fort-pymdwizard)".format(__version__)
         )
         xml_contents = self.metadata_root.to_xml()
@@ -1255,8 +1255,8 @@ class PyMdWizardMainForm(QMainWindow):
         msg += "and the USGS Council for Data integration (CDI).<br><br>"
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
-        msg += "<br> Project page: <a href='https://github.com/usgs/fort-pymdwizard'>https://github.com/usgs/fort-pymdwizard</a>"
-        msg += "<br><br>Contact: Kyle Enns at ask-sdm@usgs.gov"
+        msg += "<br> Project page: <a href='https://github.com/DOI-USGS/fort-pymdwizard'>https://github.com/DOI-USGS/fort-pymdwizard</a>"
+        msg += "<br><br>Contact: Tamar Norkin at ask-sdm@usgs.gov"
 
         msgbox = QMessageBox.about(self, "About", msg)
 
