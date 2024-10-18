@@ -109,6 +109,7 @@ class DistInfo(WizardWidget):
             self.networkr_list.setEnabled(True)
             self.networkr_list.show()
             self.ui.fgdc_distliab.setEnabled(True)
+            self.ui.fgdc_fees.setEnabled(True)
             self.networkr_list.setEnabled(True)
         else:
             self.networkr_list.setEnabled(False)
