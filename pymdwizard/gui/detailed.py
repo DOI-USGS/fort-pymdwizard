@@ -111,7 +111,8 @@ class Detailed(WizardWidget):  #
             fname, dname = "", ""
 
         filter = "data files (*.csv *.txt *.shp *.xls *.xlsm *.xlsx "
-        filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf)"
+        filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
+        filter += "*.las *.laz)"
 
         fname = QFileDialog.getOpenFileName(self, fname, dname, filter=filter)
         if fname[0]:
@@ -326,8 +327,18 @@ class Detailed(WizardWidget):  #
                         traceback.format_exc(),
                     )
                     QMessageBox.warning(self, "File load problem", msg)
+        
+        elif ext.lower() in [".las", ".laz"]:
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname)
+            self.ui.fgdc_enttypd.setPlainText(
+                "{} lidar data file.".format(ext)
+            )
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
         else:
-            msg = "Can only read '.csv', '.txt', '.shp', raster files, and Excel files here"
+            msg = "Can only read '.csv', '.txt', '.shp', '.las.', raster files, and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
 
     def clear_widget(self):
