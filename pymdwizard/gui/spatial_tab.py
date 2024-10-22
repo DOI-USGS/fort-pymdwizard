@@ -110,7 +110,7 @@ class SpatialTab(WizardWidget):
             fname,
             dname,
             # Image Files (*.png *.jpg *.bmp)
-            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd)",
+            filter="Spatial files (*.shp *.tif *.jpg *.bmp *.img *.jp2 *.png *.grd *.las *.laz)",
         )
         if fname[0]:
             settings.setValue("lastDataFname", fname[0])
