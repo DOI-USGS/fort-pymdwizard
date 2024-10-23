@@ -198,12 +198,12 @@ class DistInfo(WizardWidget):
             )
 
         if self.original_xml is not None:
-            accinstr = xml_utils.search_xpath(self.original_xml, "accinstr")
+            accinstr = xml_utils.search_xpath(self.original_xml, "stdorder/digform/digtopt/onlinopt/accinstr")
             if accinstr is not None:
                 accinstr.tail = None
                 onlinopt.append(deepcopy(accinstr))
         if self.original_xml is not None:
-            oncomp = xml_utils.search_xpath(self.original_xml, "oncomp")
+            oncomp = xml_utils.search_xpath(self.original_xml, "stdorder/digform/digtopt/onlinopt/oncomp")
             if oncomp is not None:
                 oncomp.tail = None
                 onlinopt.append(deepcopy(oncomp))        
