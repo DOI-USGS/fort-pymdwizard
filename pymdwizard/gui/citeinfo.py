@@ -518,8 +518,8 @@ class Citeinfo(WizardWidget):  #
                     self.ui.fgdc_pubplace, pubinfo[0], "pubplace"
                 )
             else:
-                self.ui.radio_pubinfoyes.setChecked(False)
-                self.ui.radio_pubinfono.setChecked(True)
+                self.ui.radio_pubinfoyes.setChecked(True)
+                self.ui.radio_pubinfono.setChecked(False)
 
             if citeinfo.xpath("lworkcit"):
                 try:
