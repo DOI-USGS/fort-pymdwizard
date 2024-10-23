@@ -197,6 +197,17 @@ class DistInfo(WizardWidget):
                 "fees", text=self.ui.fgdc_fees.toPlainText(), parent_node=stdorder
             )
 
+        if self.original_xml is not None:
+            accinstr = xml_utils.search_xpath(self.original_xml, "accinstr")
+            if accinstr is not None:
+                accinstr.tail = None
+                onlinopt.append(deepcopy(accinstr))
+        if self.original_xml is not None:
+            oncomp = xml_utils.search_xpath(self.original_xml, "oncomp")
+            if oncomp is not None:
+                oncomp.tail = None
+                onlinopt.append(deepcopy(oncomp))        
+
         if self.ui.radio_otherdist.isChecked():
             liab = xml_utils.xml_node(
                 "distliab",
