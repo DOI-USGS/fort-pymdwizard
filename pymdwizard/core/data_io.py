@@ -287,10 +287,12 @@ def read_las(fname):
     """
     import laspy
 
+    max_rows = int(utils.get_setting("maxrows", 1000000))
+
     las = laspy.open(fname)
     dims = [dim.name for dim in las.header.point_format]
 
-    for points in las.chunk_iterator(1000000):
+    for points in las.chunk_iterator(max_rows):
         break
 
     point_data = {dim: np.array(points[dim]) for dim in dims}
