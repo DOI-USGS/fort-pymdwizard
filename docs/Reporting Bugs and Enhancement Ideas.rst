@@ -2,9 +2,8 @@
 Reporting Bugs and Enhancement Ideas
 ====================================
 
-*Before submitting an issue please make sure the application is up-to-date by following the steps* here_.
+*Before submitting an issue please make sure the application is up-to-date by following the steps* `here <https://doi-usgs.github.io/fort-pymdwizard/Getting%20Software%20Updates.html>`_.
 
-.. _here: <Getting%20Software%20Updates.html>
 
 If you encounter any problems while using the Metadata Wizard or have ideas for how to improve the application, please submit them as issues directly to the GitHub repository’s `issues page
 <https://github.com/usgs/fort-pymdwizard/issues>`_.
