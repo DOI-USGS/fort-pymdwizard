@@ -330,13 +330,13 @@ class Ui_fgdc_distinfo(object):
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.label_7 = QtWidgets.QLabel(self.groupBox_3)
-        self.label_7.setObjectName("label_7")
-        self.horizontalLayout_6.addWidget(self.label_7)
-        self.fgdc_networkr = QtWidgets.QLineEdit(self.groupBox_3)
-        self.fgdc_networkr.setEnabled(False)
-        self.fgdc_networkr.setClearButtonEnabled(False)
-        self.fgdc_networkr.setObjectName("fgdc_networkr")
-        self.horizontalLayout_6.addWidget(self.fgdc_networkr)
+        # self.label_7.setObjectName("label_7")
+        # self.horizontalLayout_6.addWidget(self.label_7)
+        # self.fgdc_networkr = QtWidgets.QLineEdit(self.groupBox_3)
+        # self.fgdc_networkr.setEnabled(False)
+        # self.fgdc_networkr.setClearButtonEnabled(False)
+        # self.fgdc_networkr.setObjectName("fgdc_networkr")
+        # self.horizontalLayout_6.addWidget(self.fgdc_networkr)
         self.horizontalLayout_7.addLayout(self.horizontalLayout_6)
         self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.radio_dist = QtWidgets.QRadioButton(self.groupBox_3)
@@ -479,9 +479,9 @@ class Ui_fgdc_distinfo(object):
         self.radio_online.setText(
             _translate("fgdc_distinfo", "The dataset is available online.")
         )
-        self.label_7.setText(
-            _translate("fgdc_distinfo", "URL of website or GIS service:")
-        )
+        # self.label_7.setText(
+        #     _translate("fgdc_distinfo", "URL of website or GIS service:")
+        # )
         self.radio_dist.setText(
             _translate(
                 "fgdc_distinfo",

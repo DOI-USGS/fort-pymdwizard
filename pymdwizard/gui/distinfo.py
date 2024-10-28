@@ -59,6 +59,7 @@ from pymdwizard.gui.wiz_widget import WizardWidget
 from pymdwizard.gui.ui_files import UI_distinfo
 from pymdwizard.gui.ContactInfo import ContactInfo
 from pymdwizard.gui.metainfo import MetaInfo
+from pymdwizard.gui.repeating_element import RepeatingElement
 
 
 class DistInfo(WizardWidget):
@@ -87,6 +88,15 @@ class DistInfo(WizardWidget):
 
         self.ui.widget_distinfo.hide()
 
+        self.networkr_list = RepeatingElement(
+            add_text="Add URL",
+            remove_text="Remove last",
+            italic_text="URL(s) of website or GIS service",
+            widget_kwargs={"label": "URL", "line_name": "fgdc_networkr"},
+        )
+        self.networkr_list.add_another()
+        self.ui.horizontalLayout_6.addWidget(self.networkr_list)
+
     def connect_events(self):
         self.ui.radio_distyes.toggled.connect(self.include_dist_contacts)
         self.ui.radio_online.toggled.connect(self.online_toggle)
@@ -96,11 +106,14 @@ class DistInfo(WizardWidget):
 
     def online_toggle(self, b):
         if b:
-            self.ui.fgdc_networkr.setEnabled(True)
+            self.networkr_list.setEnabled(True)
+            self.networkr_list.show()
             self.ui.fgdc_distliab.setEnabled(True)
             self.ui.fgdc_fees.setEnabled(True)
+            self.networkr_list.setEnabled(True)
         else:
-            self.ui.fgdc_networkr.setEnabled(False)
+            self.networkr_list.setEnabled(False)
+            self.networkr_list.hide()
 
     def other_dist_toggle(self, b):
         if b:
@@ -172,12 +185,28 @@ class DistInfo(WizardWidget):
             onlinopt = xml_utils.xml_node("onlinopt", parent_node=digtopt)
             computer = xml_utils.xml_node("computer", parent_node=onlinopt)
             networka = xml_utils.xml_node("networka", parent_node=computer)
-            networkr = xml_utils.xml_node(
-                "networkr", text=self.ui.fgdc_networkr.text(), parent_node=networka
-            )
+            # networkr = xml_utils.xml_node(
+            #     "networkr", text=self.ui.fgdc_networkr.text(), parent_node=networka
+            # )
+            for networkr in self.networkr_list.get_widgets():
+                if networkr.text() != "":
+                    networkr_node = xml_utils.xml_node(
+                        "networkr", parent_node=networka, text=networkr.text()
+                    )
             fees = xml_utils.xml_node(
                 "fees", text=self.ui.fgdc_fees.toPlainText(), parent_node=stdorder
             )
+
+        if self.original_xml is not None:
+            accinstr = xml_utils.search_xpath(self.original_xml, "stdorder/digform/digtopt/onlinopt/accinstr")
+            if accinstr is not None:
+                accinstr.tail = None
+                onlinopt.append(deepcopy(accinstr))
+        if self.original_xml is not None:
+            oncomp = xml_utils.search_xpath(self.original_xml, "stdorder/digform/digtopt/onlinopt/oncomp")
+            if oncomp is not None:
+                oncomp.tail = None
+                onlinopt.append(deepcopy(oncomp))        
 
         if self.ui.radio_otherdist.isChecked():
             liab = xml_utils.xml_node(
@@ -229,11 +258,14 @@ class DistInfo(WizardWidget):
                 )
             if xml_distinfo.xpath("stdorder"):
                 self.ui.radio_online.setChecked(True)
-                utils.populate_widget_element(
-                    widget=self.ui.fgdc_networkr,
-                    element=xml_distinfo,
-                    xpath="stdorder/digform/digtopt/onlinopt/computer/networka/networkr",
-                )
+                networkrs = xml_distinfo.findall("stdorder/digform/digtopt/onlinopt/computer/networka/networkr")
+                if networkrs:
+                    self.networkr_list.clear_widgets(add_another=False)
+                    for networkr in networkrs:
+                        networkr_widget = self.networkr_list.add_another()
+                        networkr_widget.setText(networkr.text)
+                else:
+                    self.networkr_list.add_another()
                 utils.populate_widget_element(
                     widget=self.ui.fgdc_fees,
                     element=xml_distinfo,
