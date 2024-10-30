@@ -8,7 +8,8 @@ geopandas
 pyqt
 python-docx
 habanero
-gitpython
+git
+python
 git
 folium
 jupyterlab
