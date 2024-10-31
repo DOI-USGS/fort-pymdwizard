@@ -217,6 +217,14 @@ class ContactInfo(WizardWidget):
         contact_dict = xml_utils.node_to_dict(contact_information)
         utils.populate_widget(self, contact_dict)
 
+        addresses = xml_utils.search_xpath(contact_information, "cntaddr/address", only_first=False)
+        if len(addresses) >= 1:
+            self.ui.fgdc_address.setText(addresses[0].text)
+        if len(addresses) >= 2:
+            self.ui.fgdc_address2.setText(addresses[1].text)
+        if len(addresses) >= 3:
+            self.ui.fgdc_address3.setText(addresses[2].text)
+
         addrtype_widget = self.findChild(QComboBox, "fgdc_addrtype")
 
         if "cntinfo" in contact_dict:
