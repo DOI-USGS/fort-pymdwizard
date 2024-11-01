@@ -91,17 +91,17 @@
   <distinfo>
     <distrib>
       <cntinfo>
-        <cntperp>
-          <cntper>GS ScienceBase</cntper>
-          <cntorg>U.S. Geological Survey</cntorg>
-        </cntperp>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
+        </cntorgp>
         <cntaddr>
           <addrtype>mailing address</addrtype>
-          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <address>Denver Federal Center</address>
+          <address>Building 810</address>
+          <address>Mail Stop 302</address>
           <city>Denver</city>
           <state>CO</state>
           <postal>80225</postal>
-          <country>United States</country>
         </cntaddr>
         <cntvoice>1-888-275-8747</cntvoice>
         <cntemail>sciencebase@usgs.gov</cntemail>
