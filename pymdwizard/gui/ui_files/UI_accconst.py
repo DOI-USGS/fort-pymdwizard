@@ -83,7 +83,7 @@ class Ui_Form(object):
             )
         )
         self.fgdc_accconst.setPlainText(
-            _translate("Form", "None.  Please see 'Distribution Info' for details.")
+            _translate("Form", "None.  Please see 'Distribution Information' for details.")
         )
 
 

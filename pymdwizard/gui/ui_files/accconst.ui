@@ -95,7 +95,7 @@
          </sizepolicy>
         </property>
         <property name="plainText">
-         <string>None.  Please see 'Distribution Info' for details.</string>
+         <string>None.  Please see 'Distribution Information' for details.</string>
         </property>
        </widget>
       </item>
