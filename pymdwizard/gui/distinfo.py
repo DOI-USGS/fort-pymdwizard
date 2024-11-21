@@ -125,7 +125,10 @@ class DistInfo(WizardWidget):
 
     def pull_datasetcontact(self):
         try:
-            sb_info = utils.get_usgs_contact_info("sciencebase", as_dictionary=False)
+            # Pull this contact info from our starter template file
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
+            template_record = xml_utils.fname_to_node(template_fname )
+            sb_info = xml_utils.search_xpath(template_record, "distinfo/distrib/cntinfo")
             self.contactinfo.from_xml(sb_info)
         except:
             msg = "Having trouble getting sciencebase contact info now.\n"
