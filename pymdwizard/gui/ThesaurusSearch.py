@@ -273,30 +273,79 @@ class ThesaurusSearch(QDialog):
             self.close_form()
 
     def search_thesaurus(self):
+        """
+        Searches the thesaurus for a term across all available thesauri.
 
+        This function populates the thesauri lookup, retrieves search results for the term
+        from each thesaurus, processes the results, and updates the UI with the findings.
+        
+        Returns:
+            bool: True if search completed successfully, False if an error occurred.
+        """
         if not self.populate_thesauri_lookup():
             return False
 
         term = self.ui.search_term.text()
+        all_results = self.search_all_thesauri(term)
 
-        search_url = "https://apps.usgs.gov/thesaurus/thesaurus.php?thcode=any&text={}".format(
-            term
-        )
-
-        results = self.get_result(search_url)
-        if results is None:
-            return False
-
-        if not results:
-            msg = "The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search"
-            msg += "\n\n'{}' Not Found".format(self.ui.search_term.text())
+        if not all_results:
+            msg = f"The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search\n\n'{term}' Not Found"
             QMessageBox.information(self, "Search Term Not Found", msg, QMessageBox.Ok)
             return False
 
+        self.process_thesaurus_results(all_results)
+
+        return True
+
+    def search_all_thesauri(self, term):
+        """
+        Searches all thesauri for the specified term.
+
+        This function constructs the search URLs for each thesaurus code, retrieves,
+        and aggregates results from all thesauri.
+
+        Args:test
+
+            term (str): The term to be searched in the thesauri.
+
+        Returns:
+            list: A list of results retrieved from thesauri; can be empty if no matches found.
+        """
+        all_results = []
+        
+        for thcode in self.thesauri_lookup.keys():
+
+            search_url = f"https://apps.usgs.gov/thesaurus/term-search.php?thcode={thcode}&term={term}&rel=contains"
+            
+            # Get results from the current thesaurus search
+            try:
+                results = self.get_result(search_url)
+            except:
+                results = []
+
+            if results is None:
+                return []  # Return empty list if there's an error
+            
+            if results:  # Append results if found
+                all_results.extend(results)
+
+        return all_results
+
+    def process_thesaurus_results(self, results):
+        """
+        Processes the search results from the thesaurus and updates the UI.
+
+        This function takes the results list, organizes the data, and updates the
+        branch lookup to display results in the application's tree view.
+
+        Args:
+            results (list): A list of results obtained from searching the thesaurus.
+        """
         self.branch_lookup = {}
         unique_children = []
+
         try:
-            for item in results['vocabulary']:
+            for item in results:
                 thesaurus_name = self.thesauri_lookup[item["thcode"]]
                 if (
                     item["thcode"] != "1"
@@ -308,6 +357,7 @@ class ThesaurusSearch(QDialog):
                         thesaurus_name, QStandardItem(thesaurus_name)
                     )
                     branch.setFont(QFont("Arial", 11))
+                    
                     if item["label"] != item["value"]:
                         childnode = QStandardItem(
                             "{} (use: {})".format(item["label"], item["value"])
@@ -323,7 +373,6 @@ class ThesaurusSearch(QDialog):
                     self.branch_lookup[thesaurus_name] = branch
 
             model = QStandardItemModel(0, 0)
-
             rootNode = model.invisibleRootItem()
 
             for thesaurus_node in self.branch_lookup.items():
@@ -331,8 +380,8 @@ class ThesaurusSearch(QDialog):
 
             self.ui.treeview_results.setModel(model)
             self.ui.treeview_results.expandAll()
-        except:
-            QMessageBox.warning(self, "Error", "An error occurred retrieving values from the controlled vocabulary search")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"An error occurred retrieving values from the controlled vocabulary search: {str(e)}")
 
     def get_thesaurus(self):
         model = self.ui.treeview_results.model()
@@ -349,7 +398,7 @@ class ThesaurusSearch(QDialog):
 
     def add_term(self, index):
         """
-        Adds the acce[ted keyword associated with the
+        Adds the accepted keyword associated with the
         selected item in this widget to the parent theme keywords list.
 
         Parameters
