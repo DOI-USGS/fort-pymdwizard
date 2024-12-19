@@ -75,11 +75,12 @@ class SearchThread(QThread):
     """Thread for searching the thesaurus."""
     finished = pyqtSignal(list)
 
-    def __init__(self, dialog_instance, populate_lookup_function, search_term, parent=None):
+    def __init__(self, dialog_instance, populate_lookup_function, search_term, selected_thesaurus_name, parent=None):
         super(SearchThread, self).__init__(parent)
         self.dialog_instance = dialog_instance
         self.populate_lookup_function = populate_lookup_function
         self.search_term = search_term
+        self.selected_thesaurus_name = selected_thesaurus_name  # Add this line
 
     def run(self):
         """Execute the search and emit the results."""
@@ -88,7 +89,7 @@ class SearchThread(QThread):
             return
         
         # Call the search_all_thesauri method from the dialog instance
-        all_results = self.dialog_instance.search_all_thesauri(self.search_term)
+        all_results = self.dialog_instance.search_all_thesauri(self.search_term, self.selected_thesaurus_name)  # Update this line
         self.finished.emit(all_results)
 
 class ThesaurusSearch(QDialog):
@@ -96,10 +97,11 @@ class ThesaurusSearch(QDialog):
         super(self.__class__, self).__init__(parent=parent)
 
         self.build_ui()
-        self.connect_events()
 
         self.thesauri_lookup = {}
         self.thesauri_lookup_r = {}
+        self.populate_thesauri_lookup()
+        self.connect_events()
 
         self.add_term_function = add_term_function
 
@@ -281,10 +283,27 @@ class ThesaurusSearch(QDialog):
                 self.thesauri_lookup_r = {
                     i["name"]: i["thcode"] for i in result["vocabulary"]
                 }
+                self.populate_thesaurus_dropdown()  # Populate the dropdown
                 return True
             else:
                 return False
         return True
+
+    def populate_thesaurus_dropdown(self):
+        """Populate the thesaurus dropdown with thesauri names."""
+        self.ui.thesaurus_dropdown.clear()  # Clear existing items
+
+        self.ui.thesaurus_dropdown.addItem('All')
+
+        for name in self.thesauri_lookup.values():
+            self.ui.thesaurus_dropdown.addItem(name)  # Add each thesaurus name to the dropdown
+
+        # Set the current value to the thesaurus code 2 if it exists
+        if '2' in self.thesauri_lookup:
+            thesaurus_name = self.thesauri_lookup['2']
+            index = self.ui.thesaurus_dropdown.findText(thesaurus_name)
+            if index != -1:  # Check if the item is found
+                self.ui.thesaurus_dropdown.setCurrentIndex(index)  # Set the current index
 
     def get_result(self, url):
         try:
@@ -299,15 +318,16 @@ class ThesaurusSearch(QDialog):
 
     def search_thesaurus(self):
         """
-        Searches the thesaurus for a term across all available thesauri.
-
-        This function populates the thesauri lookup, retrieves search results for the term
-        from each thesaurus, processes the results, and updates the UI with the findings.
+        Searches the thesaurus for a term based on the selected thesaurus
+        in the thesaurus_dropdown.
         
         Returns:
             bool: True if search completed successfully, False if an error occurred.
         """
         term = self.ui.search_term.text()
+
+        # Retrieve the selected thesaurus from the dropdown
+        selected_thesaurus_name = self.ui.thesaurus_dropdown.currentText()
 
         # Create a progress dialog
         progress = QProgressDialog("Searching thesaurus...", "Cancel", 0, 0, self)
@@ -326,14 +346,16 @@ class ThesaurusSearch(QDialog):
         progress.setValue(0)
 
         # Start the worker thread
-        self.thread = SearchThread(self, self.populate_thesauri_lookup, term, self)
-        self.thread.finished.connect(lambda all_results: self.on_search_finished(all_results, progress))
+        self.thread = SearchThread(self, self.populate_thesauri_lookup, term,  selected_thesaurus_name, self)
+        
+        # Connect finished signal with modified logic
+        self.thread.finished.connect(lambda all_results: self.on_search_finished(all_results, progress, selected_thesaurus_name))
         self.thread.start()
 
         # Show the progress dialog while the search is processing
         progress.exec_()
 
-    def on_search_finished(self, all_results, progress):
+    def on_search_finished(self, all_results, progress, selected_thesaurus_name):
         """Handle the search results after the thread has finished."""
         progress.close()  # Close the progress dialog
 
@@ -344,37 +366,52 @@ class ThesaurusSearch(QDialog):
 
         self.process_thesaurus_results(all_results)
 
-    def search_all_thesauri(self, term):
+    def search_all_thesauri(self, term, selected_thesaurus_name):
         """
-        Searches all thesauri for the specified term.
-
-        This function constructs the search URLs for each thesaurus code, retrieves,
-        and aggregates results from all thesauri.
-
-        Args:test
-
-            term (str): The term to be searched in the thesauri.
+        Searches the selected thesaurus for the specified term.
+        
+        Args:
+            term (str): The term to be searched in the thesaurus.
+            selected_thesaurus_name (str): The selected thesaurus name.
 
         Returns:
-            list: A list of results retrieved from thesauri; can be empty if no matches found.
+            list: A list of results retrieved from the thesaurus; can be empty if no matches found.
         """
         all_results = []
         
-        for thcode in self.thesauri_lookup.keys():
+        # If 'All' is selected, search all thesauri
+        if selected_thesaurus_name == 'All':
+            for thcode in self.thesauri_lookup.keys():
+                search_url = f"https://apps.usgs.gov/thesaurus/term-search.php?thcode={thcode}&term={term}&rel=contains"
+                
+                # Get results from the current thesaurus search
+                try:
+                    results = self.get_result(search_url)
+                except:
+                    results = []
 
-            search_url = f"https://apps.usgs.gov/thesaurus/term-search.php?thcode={thcode}&term={term}&rel=contains"
-            
-            # Get results from the current thesaurus search
-            try:
-                results = self.get_result(search_url)
-            except:
-                results = []
+                if results is None:
+                    return []  # Return empty list if there's an error
+                
+                if results:  # Append results if found
+                    all_results.extend(results)
+        else:
+            # Only search in the specified thesaurus
+            for thcode, name in self.thesauri_lookup.items():
+                if name == selected_thesaurus_name:
+                    search_url = f"https://apps.usgs.gov/thesaurus/term-search.php?thcode={thcode}&term={term}&rel=contains"
+                    
+                    # Get results from the current thesaurus search
+                    try:
+                        results = self.get_result(search_url)
+                    except:
+                        results = []
 
-            if results is None:
-                return []  # Return empty list if there's an error
-            
-            if results:  # Append results if found
-                all_results.extend(results)
+                    if results is None:
+                        return []  # Return empty list if there's an error
+                    
+                    if results:  # Append results if found
+                        all_results.extend(results)
 
         return all_results
 
