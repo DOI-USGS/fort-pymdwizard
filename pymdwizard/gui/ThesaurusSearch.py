@@ -50,11 +50,17 @@ the copyright owner.
 
 import requests
 
+
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QProgressDialog
 from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
+
 
 from pymdwizard.core import utils
 
@@ -65,6 +71,25 @@ try:
 except ImportError:
     from urllib import quote
 
+class SearchThread(QThread):
+    """Thread for searching the thesaurus."""
+    finished = pyqtSignal(list)
+
+    def __init__(self, dialog_instance, populate_lookup_function, search_term, parent=None):
+        super(SearchThread, self).__init__(parent)
+        self.dialog_instance = dialog_instance
+        self.populate_lookup_function = populate_lookup_function
+        self.search_term = search_term
+
+    def run(self):
+        """Execute the search and emit the results."""
+        if not self.populate_lookup_function():
+            self.finished.emit([])
+            return
+        
+        # Call the search_all_thesauri method from the dialog instance
+        all_results = self.dialog_instance.search_all_thesauri(self.search_term)
+        self.finished.emit(all_results)
 
 class ThesaurusSearch(QDialog):
     def __init__(self, add_term_function=None, parent=None, place=False):
@@ -282,20 +307,42 @@ class ThesaurusSearch(QDialog):
         Returns:
             bool: True if search completed successfully, False if an error occurred.
         """
-        if not self.populate_thesauri_lookup():
-            return False
-
         term = self.ui.search_term.text()
-        all_results = self.search_all_thesauri(term)
+
+        # Create a progress dialog
+        progress = QProgressDialog("Searching thesaurus...", "Cancel", 0, 0, self)
+
+        # Get current window flags
+        flags = progress.windowFlags()
+        # Remove context help button and close button
+        flags &= ~Qt.WindowContextHelpButtonHint
+        flags &= ~Qt.WindowCloseButtonHint
+        # Set the modified flags
+        progress.setWindowFlags(flags | Qt.WindowStaysOnTopHint)
+
+        progress.setWindowTitle(" ")
+        progress.setWindowModality(Qt.WindowModal)
+        progress.setCancelButton(None)  # Disable the cancel button
+        progress.setValue(0)
+
+        # Start the worker thread
+        self.thread = SearchThread(self, self.populate_thesauri_lookup, term, self)
+        self.thread.finished.connect(lambda all_results: self.on_search_finished(all_results, progress))
+        self.thread.start()
+
+        # Show the progress dialog while the search is processing
+        progress.exec_()
+
+    def on_search_finished(self, all_results, progress):
+        """Handle the search results after the thread has finished."""
+        progress.close()  # Close the progress dialog
 
         if not all_results:
-            msg = f"The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search\n\n'{term}' Not Found"
+            msg = f"The Metadata Wizard was unable to locate the provided search term in the controlled vocabulary search\n\n'{self.ui.search_term.text()}' Not Found"
             QMessageBox.information(self, "Search Term Not Found", msg, QMessageBox.Ok)
-            return False
+            return
 
         self.process_thesaurus_results(all_results)
-
-        return True
 
     def search_all_thesauri(self, term):
         """
@@ -365,9 +412,10 @@ class ThesaurusSearch(QDialog):
                     else:
                         childnode = QStandardItem(item["label"])
 
+                    branch.appendRow([childnode, None])
+                    
                     childnode.setFont(QFont("Arial", 9))
                     if (thesaurus_name, item["value"]) not in unique_children:
-                        branch.appendRow([childnode, None])
                         unique_children.append((thesaurus_name, item["value"]))
 
                     self.branch_lookup[thesaurus_name] = branch
