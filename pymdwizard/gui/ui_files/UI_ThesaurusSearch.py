@@ -52,6 +52,31 @@ class Ui_ThesaurusSearch(object):
         self.button_search.setObjectName("button_search")
         self.horizontalLayout.addWidget(self.button_search)
         self.verticalLayout.addLayout(self.horizontalLayout)
+
+        # Add Thesaurus Dropdown
+        self.horizontalLayout_dropdown = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_dropdown.setObjectName("horizontalLayout_dropdown")
+
+        # Create and add label for Thesaurus
+        self.label_thesaurus = QtWidgets.QLabel(self.layoutWidget_2)
+        self.label_thesaurus.setFont(font)  # Reuse existing font
+        self.label_thesaurus.setObjectName("label_thesaurus")
+        self.horizontalLayout_dropdown.addWidget(self.label_thesaurus)
+
+        # Create and add dropdown (QComboBox)
+        self.thesaurus_dropdown = QtWidgets.QComboBox(self.layoutWidget_2)
+        self.thesaurus_dropdown.setObjectName("thesaurus_dropdown")
+        self.thesaurus_dropdown.addItems(["Thesaurus 1", "Thesaurus 2", "Thesaurus 3"])  # Example items
+
+        # Set the size policy of the dropdown to allow it to expand
+        self.thesaurus_dropdown.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+
+        # Add the dropdown to the layout
+        self.horizontalLayout_dropdown.addWidget(self.thesaurus_dropdown)
+
+        # Add the horizontal layout for thesaurus dropdown to the vertical layout
+        self.verticalLayout.addLayout(self.horizontalLayout_dropdown)
+
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.label_search_results = QtWidgets.QLabel(self.layoutWidget_2)
@@ -164,10 +189,10 @@ class Ui_ThesaurusSearch(object):
         ThesaurusSearch.setWindowTitle(_translate("ThesaurusSearch", "Dialog"))
         self.label_search_term.setText(_translate("ThesaurusSearch", "Search Term:"))
         self.search_term.setToolTip(
-            _translate("ThesaurusSearch", "terms to search ITIS for")
+            _translate("ThesaurusSearch", "terms to search selected Thesauri for")
         )
         self.button_search.setToolTip(
-            _translate("ThesaurusSearch", "Perform search of ITIS")
+            _translate("ThesaurusSearch", "Perform search of selected Thesauri")
         )
         self.button_search.setText(_translate("ThesaurusSearch", "Search"))
         self.label_search_results.setToolTip(
@@ -176,6 +201,9 @@ class Ui_ThesaurusSearch(object):
                 "Results from the ITIS common or scientific name search",
             )
         )
+
+        self.label_thesaurus.setText(_translate("ThesaurusSearch", "Thesaurus:"))
+
         self.label_search_results.setText(
             _translate("ThesaurusSearch", "Search Results:")
         )
