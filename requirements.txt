@@ -6,6 +6,7 @@ jupyter
 gdal
 geopandas
 pyqt
+PyQtWebEngine
 xlrd
 python-docx
 habanero
@@ -13,3 +14,4 @@ gitpython
 git
 folium
 jupyterlab
+sciencebasepy
