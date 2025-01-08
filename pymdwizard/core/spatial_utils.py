@@ -203,7 +203,7 @@ def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
         if transformed_south[1] < min_south:
             min_south = transformed_south[1]
 
-    return max_east, min_west, max_north, min_south
+    return min_west, max_east, max_north, min_south
 
 def get_ref(layer):
     """
@@ -1510,8 +1510,8 @@ def get_bounding(fname):
     bounding = xml_node("bounding")
     westbc = xml_node("westbc", extent[0], bounding)
     eastbc = xml_node("eastbc", extent[1], bounding)
-    northbc = xml_node("northbc", extent[3], bounding)
-    southbc = xml_node("southbc", extent[2], bounding)
+    northbc = xml_node("northbc", extent[2], bounding)
+    southbc = xml_node("southbc", extent[3], bounding)
 
     return bounding
 
