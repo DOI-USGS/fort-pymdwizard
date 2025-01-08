@@ -1,5 +1,16 @@
 Changes
 =======
+2.0.8 (8/15/2024)
+-----
+Updates:
+- Update requirements .txt and .yaml files for environment install
+- Replace contact lookup service with USGS People Picker service
+- Add try/catch around USGS Thesaurus search to handle errors
+- Remove option to 'Open ScienceBase Item' from the Metadata Wizard GUI
+- Add fix for non-WGS84 coordinate system
+- Fix display of UI element 'Data Status and Update Plans'
+- Remove inappropriate words from place names list
+
 2.0.6 (8/23/2019)
 -----
 New features:

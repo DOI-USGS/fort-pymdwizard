@@ -6,12 +6,11 @@ jupyter
 gdal
 geopandas
 pyqt
-PyQtWebEngine
-xlrd
 python-docx
 habanero
-gitpython
+git
+python
 git
 folium
 jupyterlab
-sciencebasepy
+openpyxl
