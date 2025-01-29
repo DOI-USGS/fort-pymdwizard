@@ -71,12 +71,6 @@ except ImportError:
     print("ERROR Importing GDAL, Spatial functionality limited")
     use_gdal = False
 
-try:
-    import laspy
-    use_laspy = True
-except ImportError:
-    print("ERROR Importing laspy, LAS functionality limited")
-    use_laspy = False
 
 def set_local_gdal_data():
     """
@@ -90,30 +84,6 @@ def set_local_gdal_data():
     gdal_data = os.path.join(python_root, "Library", "share", "gdal")
     os.environ["GDAL_DATA"] = gdal_data
 
-
-def _get_las_extent(fh):
-    """
-    Extract the projected extent from a LAS file header.
-    (min_x, max_x, min_y, max_y)
-
-    Parameters
-    ----------
-    fh : LAS file handle
-        A file handle that provides access to the LAS file header.
-
-    Returns
-    -------
-    (min_x, max_x, min_y, max_y) : tuple
-        A tuple containing the upper left x-coordinate (min_x), 
-        lower right x-coordinate (max_x), lower right y-coordinate (min_y), 
-        and upper left y-coordinate (max_y) of the LAS file extent.
-    """
-    header = fh.header
-    ulx = header.x_min
-    lrx = header.x_max
-    uly = header.y_max
-    lry = header.y_min
-    return ulx, lrx, lry, uly
 
 def _get_raster_extent(src):
     """
@@ -150,17 +120,8 @@ def get_extent(layer):
     try:
         return layer.GetExtent()
     except:
-        pass
-
-    try:
-        return _get_las_extent(layer)
-    except:
-        pass
-
-    try:
         return _get_raster_extent(layer)
-    except:
-        pass
+
 
 def get_geographic_extent(layer):
     """
@@ -183,23 +144,66 @@ def get_geographic_extent(layer):
     target = srs.CloneGeogCS()
     target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
-    try:
-        spatialRef = layer.GetSpatialRef()
-        spatialRef.ExportToProj4()
-        spatialRef.AutoIdentifyEPSG()
-        spref = spatialRef.GetAuthorityCode(None)
-    except:
-        pass
+    spatialRef = layer.GetSpatialRef()
+    spatialRef.ExportToProj4()
+    spatialRef.AutoIdentifyEPSG()
     
-    # Basically just run transform_point until no inf values return (weird bug with transform_point)
-    try_again = True
-    while try_again:
-        west, south  = transform_point((min_x, min_y),from_srs=srs, to_srs=target)
-        east, north  = transform_point((max_x, max_y),from_srs=srs, to_srs=target)
-        if float("inf") not in [south, west, north, east] and float("-inf") not in [south, west, north, east]:
-            try_again = False
+    west, east, south, north = calculate_max_bounds(min_x, max_x, min_y, max_y, srs, target)
+
     return west, east, south, north
 
+
+def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
+    """
+    Calculates the maximum east, minimum west, maximum north, and minimum south
+    coordinates after transforming the points from the source SRS to the target SRS.
+
+    Parameters:
+    - min_x, max_x: The extent of the x-coordinates.
+    - min_y, max_y: The extent of the y-coordinates.
+    - src_srs: The source spatial reference system.
+    - target_srs: The target spatial reference system.
+
+    Returns:
+    - (max_east, min_west, max_north, min_south): Tuple of calculated bounds.
+    """
+    steps = 10
+
+    # Initialize the values for each direction
+    max_east = -float('inf')
+    min_west = float('inf')
+    max_north = -float('inf')
+    min_south = float('inf')
+
+    # Calculate max_east and min_west
+    for step in range(steps + 1):
+        cur_north = min_y + step * ((max_y - min_y) / steps)
+
+        # Max East
+        transformed_east = transform_point((max_x, cur_north), src_srs, target_srs)
+        if transformed_east[0] > max_east:
+            max_east = transformed_east[0]
+
+        # Min West
+        transformed_west = transform_point((min_x, cur_north), src_srs, target_srs)
+        if transformed_west[0] < min_west:
+            min_west = transformed_west[0]
+
+    # Calculate max_north and min_south
+    for step in range(steps + 1):
+        cur_east = min_x + step * ((max_x - min_x) / steps)
+
+        # Max North
+        transformed_north = transform_point((cur_east, max_y), src_srs, target_srs)
+        if transformed_north[1] > max_north:
+            max_north = transformed_north[1]
+
+        # Min South
+        transformed_south = transform_point((cur_east, min_y), src_srs, target_srs)
+        if transformed_south[1] < min_south:
+            min_south = transformed_south[1]
+
+    return min_west, max_east, max_north, min_south
 
 def get_ref(layer):
     """
@@ -216,17 +220,7 @@ def get_ref(layer):
     try:
         wkt = layer.GetProjection()
     except:
-        pass
-
-    try:
-        wkt = layer.header.parse_crs().to_wkt()
-    except:
-        pass
-
-    try:
         wkt = layer.GetSpatialRef().ExportToWkt()
-    except:
-        pass
 
     return osr.SpatialReference(wkt=wkt)
 
@@ -509,9 +503,6 @@ def get_layer(fname, feature_class=None):
         global gdb
         gdb = driver.Open(fname, 0)
         return gdb.GetLayerByName(feature_class)
-    elif fname.endswith(".las") or fname.endswith(".laz"):
-        fh = laspy.open(fname)
-        return fh
     else:
         # it better be a raster
         return gdal.Open(fname)
@@ -1519,8 +1510,8 @@ def get_bounding(fname):
     bounding = xml_node("bounding")
     westbc = xml_node("westbc", extent[0], bounding)
     eastbc = xml_node("eastbc", extent[1], bounding)
-    northbc = xml_node("northbc", extent[3], bounding)
-    southbc = xml_node("southbc", extent[2], bounding)
+    northbc = xml_node("northbc", extent[2], bounding)
+    southbc = xml_node("southbc", extent[3], bounding)
 
     return bounding
 
@@ -1593,14 +1584,6 @@ def get_spdoinfo(fname, feature_class=None):
         dataset = driver.Open(fname)
         layer = dataset.GetLayer()
         return vector_spdoinfo(layer)
-    elif fname.endswith(".gdb"):
-        driver = ogr.GetDriverByName("OpenFileGDB")
-        gdb = driver.Open(fname, 0)
-        layer = gdb.GetLayerByName(feature_class)
-        return vector_spdoinfo(layer)
-    elif fname.endswith(".las") or fname.endswith(".laz"):
-        layer = laspy.open(fname)
-        return las_spdoinfo(layer)
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
         gdb = driver.Open(fname, 0)
@@ -1681,30 +1664,6 @@ def raster_spdoinfo(data):
 
     return spdoinfo
 
-def las_spdoinfo(layer):
-    """
-    generate a fgdc Point Vector Object information element from a OGR layer
-    Parameters
-    ----------
-    layer : ogr layer
-
-    Returns
-    -------
-    lxml element
-    """
-    # introspect our layer to get the info we need
-    feature_count = layer.header.point_count
-
-    # create the FGDC element
-    spdoinfo = xml_node("spdoinfo")
-    direct = xml_node("direct", text="Vector", parent_node=spdoinfo)
-
-    ptvctinf = xml_node("ptvctinf", parent_node=spdoinfo)
-    sdtsterm = xml_node("sdtsterm", parent_node=ptvctinf)
-    sdtstype = xml_node("sdtstype", text="Point", parent_node=sdtsterm)
-    xml_node("ptvctcnt", text=feature_count, parent_node=sdtsterm)
-
-    return spdoinfo
 
 def band_to_df(band):
     """
