@@ -71,6 +71,12 @@ except ImportError:
     print("ERROR Importing GDAL, Spatial functionality limited")
     use_gdal = False
 
+try:
+    import laspy
+    use_laspy = True
+except ImportError:
+    print("ERROR Importing laspy, LAS functionality limited")
+    use_laspy = False
 
 def set_local_gdal_data():
     """
@@ -84,6 +90,30 @@ def set_local_gdal_data():
     gdal_data = os.path.join(python_root, "Library", "share", "gdal")
     os.environ["GDAL_DATA"] = gdal_data
 
+
+def _get_las_extent(fh):
+    """
+    Extract the projected extent from a LAS file header.
+    (min_x, max_x, min_y, max_y)
+
+    Parameters
+    ----------
+    fh : LAS file handle
+        A file handle that provides access to the LAS file header.
+
+    Returns
+    -------
+    (min_x, max_x, min_y, max_y) : tuple
+        A tuple containing the upper left x-coordinate (min_x), 
+        lower right x-coordinate (max_x), lower right y-coordinate (min_y), 
+        and upper left y-coordinate (max_y) of the LAS file extent.
+    """
+    header = fh.header
+    ulx = header.x_min
+    lrx = header.x_max
+    uly = header.y_max
+    lry = header.y_min
+    return ulx, lrx, lry, uly
 
 def _get_raster_extent(src):
     """
@@ -120,8 +150,17 @@ def get_extent(layer):
     try:
         return layer.GetExtent()
     except:
-        return _get_raster_extent(layer)
+        pass
 
+    try:
+        return _get_las_extent(layer)
+    except:
+        pass
+
+    try:
+        return _get_raster_extent(layer)
+    except:
+        pass
 
 def get_geographic_extent(layer):
     """
@@ -144,10 +183,13 @@ def get_geographic_extent(layer):
     target = srs.CloneGeogCS()
     target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
-    spatialRef = layer.GetSpatialRef()
-    spatialRef.ExportToProj4()
-    spatialRef.AutoIdentifyEPSG()
-    spref = spatialRef.GetAuthorityCode(None)
+    try:
+        spatialRef = layer.GetSpatialRef()
+        spatialRef.ExportToProj4()
+        spatialRef.AutoIdentifyEPSG()
+        spref = spatialRef.GetAuthorityCode(None)
+    except:
+        pass
     
     # Basically just run transform_point until no inf values return (weird bug with transform_point)
     try_again = True
@@ -174,7 +216,17 @@ def get_ref(layer):
     try:
         wkt = layer.GetProjection()
     except:
+        pass
+
+    try:
+        wkt = layer.header.parse_crs().to_wkt()
+    except:
+        pass
+
+    try:
         wkt = layer.GetSpatialRef().ExportToWkt()
+    except:
+        pass
 
     return osr.SpatialReference(wkt=wkt)
 
@@ -457,6 +509,9 @@ def get_layer(fname, feature_class=None):
         global gdb
         gdb = driver.Open(fname, 0)
         return gdb.GetLayerByName(feature_class)
+    elif fname.endswith(".las") or fname.endswith(".laz"):
+        fh = laspy.open(fname)
+        return fh
     else:
         # it better be a raster
         return gdal.Open(fname)
@@ -1543,6 +1598,14 @@ def get_spdoinfo(fname, feature_class=None):
         gdb = driver.Open(fname, 0)
         layer = gdb.GetLayerByName(feature_class)
         return vector_spdoinfo(layer)
+    elif fname.endswith(".las") or fname.endswith(".laz"):
+        layer = laspy.open(fname)
+        return las_spdoinfo(layer)
+    elif fname.endswith(".gdb"):
+        driver = ogr.GetDriverByName("OpenFileGDB")
+        gdb = driver.Open(fname, 0)
+        layer = gdb.GetLayerByName(feature_class)
+        return vector_spdoinfo(layer)
     else:
         # it better be a raster
         data = gdal.Open(fname)
@@ -1618,6 +1681,30 @@ def raster_spdoinfo(data):
 
     return spdoinfo
 
+def las_spdoinfo(layer):
+    """
+    generate a fgdc Point Vector Object information element from a OGR layer
+    Parameters
+    ----------
+    layer : ogr layer
+
+    Returns
+    -------
+    lxml element
+    """
+    # introspect our layer to get the info we need
+    feature_count = layer.header.point_count
+
+    # create the FGDC element
+    spdoinfo = xml_node("spdoinfo")
+    direct = xml_node("direct", text="Vector", parent_node=spdoinfo)
+
+    ptvctinf = xml_node("ptvctinf", parent_node=spdoinfo)
+    sdtsterm = xml_node("sdtsterm", parent_node=ptvctinf)
+    sdtstype = xml_node("sdtstype", text="Point", parent_node=sdtsterm)
+    xml_node("ptvctcnt", text=feature_count, parent_node=sdtsterm)
+
+    return spdoinfo
 
 def band_to_df(band):
     """

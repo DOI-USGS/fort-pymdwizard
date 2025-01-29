@@ -5,7 +5,9 @@ pandas
 jupyter
 gdal
 geopandas
-pyqt
+pyqt==5.12.3
+pyqtwebengine==5.12.1
+xlrd
 python-docx
 habanero
 git
@@ -13,4 +15,5 @@ python
 git
 folium
 jupyterlab
-openpyxl
+sciencebasepy
+laspy
