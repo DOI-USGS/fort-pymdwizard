@@ -85,6 +85,42 @@
           </layout>
          </item>
          <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_dropdown">
+           <item>
+            <widget class="QLabel" name="label_thesaurus">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Thesaurus:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="thesaurus_dropdown">
+             <property name="toolTip">
+              <string>Select a thesaurus to search</string>
+             </property>
+             <item>
+              <string>All</string>
+             </item>
+             <item>
+              <string>Thesaurus 1</string>
+             </item>
+             <item>
+              <string>Thesaurus 2</string>
+             </item>
+             <item>
+              <string>Thesaurus 3</string>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
             <widget class="QLabel" name="label_search_results">

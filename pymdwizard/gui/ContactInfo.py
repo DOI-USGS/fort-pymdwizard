@@ -95,8 +95,9 @@ class ContactInfo(WizardWidget):
 
     def add_contact(self):
         username = self.usgs_contact_ui.le_usgs_ad_name.text()
-        # strip off the @usgs.gov if they entered one
-        username = username.split("@")[0]
+        # add a @usgs.gov if they didn't enter one
+        if not "@" in username:
+            username = username + "@usgs.gov"
 
         if not username:
             return
@@ -233,7 +234,7 @@ class ContactInfo(WizardWidget):
             contact_dict = contact_dict["fgdc_cntinfo"]
 
         try:
-            addrtype = contact_dict["cntaddr"]["addrtype"]
+            addrtype = contact_dict["fgdc_cntaddr"]["fgdc_addrtype"]
             addrtype_widget.setEditText(addrtype)
         except KeyError:
             pass

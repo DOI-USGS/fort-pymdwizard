@@ -191,15 +191,62 @@ def get_geographic_extent(layer):
     except:
         pass
     
-    # Basically just run transform_point until no inf values return (weird bug with transform_point)
-    try_again = True
-    while try_again:
-        west, south  = transform_point((min_x, min_y),from_srs=srs, to_srs=target)
-        east, north  = transform_point((max_x, max_y),from_srs=srs, to_srs=target)
-        if float("inf") not in [south, west, north, east] and float("-inf") not in [south, west, north, east]:
-            try_again = False
+    west, east, south, north = calculate_max_bounds(min_x, max_x, min_y, max_y, srs, target)
+
     return west, east, south, north
 
+
+def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
+    """
+    Calculates the maximum east, minimum west, maximum north, and minimum south
+    coordinates after transforming the points from the source SRS to the target SRS.
+
+    Parameters:
+    - min_x, max_x: The extent of the x-coordinates.
+    - min_y, max_y: The extent of the y-coordinates.
+    - src_srs: The source spatial reference system.
+    - target_srs: The target spatial reference system.
+
+    Returns:
+    - (max_east, min_west, max_north, min_south): Tuple of calculated bounds.
+    """
+    steps = 10
+
+    # Initialize the values for each direction
+    max_east = -float('inf')
+    min_west = float('inf')
+    max_north = -float('inf')
+    min_south = float('inf')
+
+    # Calculate max_east and min_west
+    for step in range(steps + 1):
+        cur_north = min_y + step * ((max_y - min_y) / steps)
+
+        # Max East
+        transformed_east = transform_point((max_x, cur_north), src_srs, target_srs)
+        if transformed_east[0] > max_east:
+            max_east = transformed_east[0]
+
+        # Min West
+        transformed_west = transform_point((min_x, cur_north), src_srs, target_srs)
+        if transformed_west[0] < min_west:
+            min_west = transformed_west[0]
+
+    # Calculate max_north and min_south
+    for step in range(steps + 1):
+        cur_east = min_x + step * ((max_x - min_x) / steps)
+
+        # Max North
+        transformed_north = transform_point((cur_east, max_y), src_srs, target_srs)
+        if transformed_north[1] > max_north:
+            max_north = transformed_north[1]
+
+        # Min South
+        transformed_south = transform_point((cur_east, min_y), src_srs, target_srs)
+        if transformed_south[1] < min_south:
+            min_south = transformed_south[1]
+
+    return min_west, max_east, max_north, min_south
 
 def get_ref(layer):
     """
@@ -1519,8 +1566,8 @@ def get_bounding(fname):
     bounding = xml_node("bounding")
     westbc = xml_node("westbc", extent[0], bounding)
     eastbc = xml_node("eastbc", extent[1], bounding)
-    northbc = xml_node("northbc", extent[3], bounding)
-    southbc = xml_node("southbc", extent[2], bounding)
+    northbc = xml_node("northbc", extent[2], bounding)
+    southbc = xml_node("southbc", extent[3], bounding)
 
     return bounding
 

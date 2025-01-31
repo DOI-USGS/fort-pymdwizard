@@ -55,6 +55,7 @@ import datetime
 import traceback
 # import pkg_resources
 import urllib.request
+import json
 
 try:
     from urllib.parse import urlparse
@@ -79,8 +80,120 @@ from PyQt5.QtCore import QSettings
 
 from pymdwizard.core import xml_utils
 
-USGS_AD_URL = "https://geo-nsdi.er.usgs.gov/contact-xml.php?email={}"
+USGS_PEOPLEPICKER_URL = 'https://data.usgs.gov/modelcatalog/graphql'
 
+
+def get_from_people_picker(email):
+    """
+    Fetches and returns a dictionary of personal information from the USGS People Pickers Active Directory
+    for a given email address.
+
+    This function sends a GraphQL query to the USGS People Picker GraphQL endpoint to retrieve information
+    about a person identified by their email address. The information retrieved includes email, name, DOI access ID,
+    active status, affiliation, department, description, ORCID, ORCID number, title, street address, city, state,
+    postal code, and telephone number.
+
+    Parameters:
+    - email (str): The email address of the person to query information for.
+s
+    Returns:
+    - dict: A dictionary containing the person's information as retrieved from the USGS Model Catalog's Active Directory.
+            If the person is not found, an empty dictionary is returned.
+
+    Note:
+    - This function requires the `requests` library to send HTTP requests and the `json` library to parse the response.
+    - The function assumes that the person's information is always present and does not handle cases where the person
+      might not exist in the directory or the response structure is different than expected.
+    """
+    headers = {
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Connection': 'keep-alive',
+            }
+
+    query = """
+            {
+              active_directory(where: {email: {_eq: """
+    query += f'"{email}"'
+    query += """}}) {
+            email
+            name
+            active
+            affiliation
+            department
+            description
+            orcid
+            orcid_num
+            title
+            street_address
+            city
+            state
+            postal_code
+            telephone
+          }
+        }
+    """
+    
+    data = {
+        "query": query,
+        "variables": {}
+    }
+
+    response = requests.post(USGS_PEOPLEPICKER_URL, headers=headers, data=json.dumps(data))
+    return dict(response.json()['data']['active_directory'][0].items())
+
+def convert_persondict_to_fgdc(person_dict):
+    """
+    Converts a dictionary representing a person's information into an FGDC (Federal Geographic Data Committee) compliant XML structure.
+
+    Parameters:
+    - person_dict (dict): A dictionary containing the person's information. Expected keys are:
+        - 'name': The person's full name (str).
+        - 'department': The department within USGS the person belongs to (str).
+        - 'title': The person's job title (str).
+        - 'street_address': The person's street address (str).
+        - 'city': The city of the person's address (str).
+        - 'state': The state of the person's address (str).
+        - 'postal_code': The postal code of the person's address (str).
+        - 'telephone': The person's telephone number (str).
+        - 'email': The person's email address (str).
+
+    Returns:
+    - An XML node (ElementTree.Element) representing the contact information in FGDC format.
+
+    This function constructs an XML structure for a single contact person, including their name, organization (prefixed with 'USGS -'),
+    position title, address (composed of street address, city, state, and postal code), telephone number, and email address.
+    The address is marked as both 'mailing and physical'. The XML nodes are created using a hypothetical 'xml_node' function,
+    which is assumed to create and optionally append a new XML node to a parent node.
+    """
+    
+    cntper_str = person_dict['name']
+    cntorg_str = f"USGS - {person_dict['department']}"
+    cntpos_str = person_dict['title']
+    address_str = person_dict['street_address']
+    city_str = person_dict['city']
+    state_str = person_dict['state']
+    postal_str = person_dict['postal_code']
+    cntvoice_str = person_dict['telephone']
+    cntemail_str = person_dict['email']
+    addrtype_str = "mailing and physical"
+
+    cntinfo = xml_utils.xml_node("cntinfo")
+    cntperp = xml_utils.xml_node("cntperp", parent_node=cntinfo)
+    cntper = xml_utils.xml_node("cntper", text=cntper_str, parent_node=cntperp)
+    cntorg = xml_utils.xml_node("cntorg", text=cntorg_str, parent_node=cntperp)
+    cntpos = xml_utils.xml_node("cntpos", text=cntpos_str, parent_node=cntinfo)
+    cntaddr = xml_utils.xml_node("cntaddr", parent_node=cntinfo)
+    addrtype = xml_utils.xml_node("addrtype", text=addrtype_str, parent_node=cntaddr)
+    address = xml_utils.xml_node("address", text=address_str, parent_node=cntaddr)
+    city = xml_utils.xml_node("city", text=city_str, parent_node=cntaddr)
+    state = xml_utils.xml_node("state", text=state_str, parent_node=cntaddr)
+    postal = xml_utils.xml_node("postal", text=postal_str, parent_node=cntaddr)
+    cntvoice = xml_utils.xml_node("cntvoice", text=cntvoice_str, parent_node=cntinfo)
+    cntemail = xml_utils.xml_node("cntemail", text=cntemail_str, parent_node=cntinfo)
+
+    return cntinfo
 
 def get_usgs_contact_info(ad_username, as_dictionary=True):
     """
@@ -98,8 +211,8 @@ def get_usgs_contact_info(ad_username, as_dictionary=True):
         FGDC Contact Section as dictionary or lxml element
     """
 
-    result = requests_pem_get(USGS_AD_URL.format(ad_username))
-    element = xml_utils.string_to_node(result.content)
+    person_dict = get_from_people_picker(ad_username)
+    element = convert_persondict_to_fgdc(person_dict)
 
     try:
         if element.xpath("cntperp/cntper")[0].text == "GS ScienceBase":
@@ -579,7 +692,7 @@ def get_setting(which, default=None):
         setting in native format, string, integer, etc
 
     """
-    settings = QSettings("USGS_2.0.7", "pymdwizard_2.0.7")
+    settings = QSettings("USGS_2.0.8", "pymdwizard_2.0.8")
     if default is None:
         return settings.value(which)
     else:

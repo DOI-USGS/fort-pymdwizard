@@ -98,7 +98,7 @@ class SpatialTab(WizardWidget):
         self.clear_widget()
 
     def browse(self):
-        settings = QSettings("USGS_2.0.7", "pymdwizard_2.0.7")
+        settings = QSettings("USGS_2.0.8", "pymdwizard_2.0.8")
         last_data_fname = settings.value("lastDataFname", "")
         if last_data_fname:
             dname, fname = os.path.split(last_data_fname)

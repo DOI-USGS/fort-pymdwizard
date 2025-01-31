@@ -248,10 +248,8 @@ def get_sheet_names(fname):
     -------
     list of strings
     """
-    import xlrd as xl
-
-    workbook = xl.open_workbook(fname)
-    return workbook.sheet_names()
+    workbook = pd.ExcelFile(fname)
+    return workbook.sheet_names
 
 
 def read_excel(fname, sheet_name):
@@ -268,7 +266,10 @@ def read_excel(fname, sheet_name):
     -------
         pandas dataframe
     """
-    df = pd.read_excel(fname, sheet_name)
+    if fname.endswith(".xlsx") or fname.endswith(".xlsm"):
+        df = pd.read_excel(fname, sheet_name, engine='openpyxl')
+    else:
+        df = pd.read_excel(fname, sheet_name)
     return df
 
 

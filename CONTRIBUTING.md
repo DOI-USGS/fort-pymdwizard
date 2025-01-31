@@ -19,7 +19,7 @@ Code Conventions
 All code is compatible with 3.4+.
 We use [PEP8][2] conventions for all Python code, and recommend running 
 a code checker prior to submitting a pull request.  Black is the recommended
-code formater.
+code formatter.
 
 For docstrings we're using the [numpy format][3]
 We use [pytest][6] for all testing and will require tests for new features.
@@ -42,7 +42,7 @@ Development Environment
 We use the Anaconda distribution system for installation of the development 
 environment, and recommend setting up a specific environment for this development effort.
 
-see: ... for detailed instructions for setting up a development environment
+Use the file fort-pymdwizard/mdwizard_dev_env.yaml to install requirements in new dev environments.
 
 
  Running Tests
@@ -57,7 +57,7 @@ see: ... for detailed instructions for setting up a development environment
  sphinx-build -b html docs docs/html_output
 
 
-[1]: https://github.com/usgs/fort-pymdwizard/issues
+[1]: https://github.com/DOI-USGS/fort-pymdwizard/issues
 [2]: https://www.python.org/dev/peps/pep-0008/
 [3]: https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
 [6]: https://pytest.org
