@@ -9,9 +9,10 @@ pyqt
 python-docx
 habanero
 git
-python
-git
+gitpython
 folium
 jupyterlab
 sciencebasepy
 laspy
+openpyxl
+xlrd
