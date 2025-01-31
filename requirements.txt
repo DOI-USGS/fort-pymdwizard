@@ -13,4 +13,5 @@ python
 git
 folium
 jupyterlab
-openpyxl
+sciencebasepy
+laspy

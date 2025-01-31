@@ -64,6 +64,7 @@ except NameError:
     xrange = range
 
 import pandas as pd
+import numpy as np
 
 try:
     import geopandas as gpd
@@ -272,6 +273,35 @@ def read_excel(fname, sheet_name):
     return df
 
 
+def read_las(fname):
+    """
+    Returns a pandas dataframe of the attribute in a las file
+
+    Parameters
+    ----------
+    fname : str
+            file path/name to the las file being returned
+
+    Returns
+    -------
+        pandas dataframe
+    """
+    import laspy
+
+    max_rows = int(utils.get_setting("maxrows", 1000000))
+
+    las = laspy.open(fname)
+    dims = [dim.name for dim in las.header.point_format]
+
+    for points in las.chunk_iterator(max_rows):
+        break
+
+    point_data = {dim: np.array(points[dim]) for dim in dims}
+    df = pd.DataFrame(point_data)
+
+    return df
+
+
 def read_data(fname, sheet_name="", delimiter=","):
     """
     Returns pandas dataframe from a file (csv, txt, Excel, or shp)
@@ -295,6 +325,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
+        return read_las(fname)
     elif sheet_name:
         return read_excel(fname, sheet_name)
 
