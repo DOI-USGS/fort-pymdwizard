@@ -367,18 +367,21 @@ class Taxon(object):
             self._rank_names.drop_duplicates(inplace=True)
             del self._rank_names["kingdomName"]
             self._rank_names["rankId"] = pd.to_numeric(self._rank_names["rankId"])
-            self._rank_names = self._rank_names.append(
-                pd.DataFrame([{"rankName": "Life", "rankId": 1}])
-            )
-            self._rank_names = self._rank_names.append(
-                pd.DataFrame([{"rankName": "Domain", "rankId": 5}])
-            )
+            
+            # Create a DataFrame for the new ranks to be added
+            additional_ranks = pd.DataFrame([
+                {"rankName": "Life", "rankId": 1},
+                {"rankName": "Domain", "rankId": 5}
+            ])
+            
+            # Use pd.concat to combine the original DataFrame with the new ranks
+            self._rank_names = pd.concat([self._rank_names, additional_ranks], ignore_index=True)
 
-            self._indent_lookup = dict(
-                zip(self._rank_names.rankName, self._rank_names.rankId)
-            )
+            # Create the lookup dictionary
+            self._indent_lookup = dict(zip(self._rank_names.rankName, self._rank_names.rankId))
+            
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            self._rank_names = {}
+            self._rank_names = pd.DataFrame()  # Initialize as an empty DataFrame instead of {}
             self._indent_lookup = {}
 
     def __eq__(self, other):
