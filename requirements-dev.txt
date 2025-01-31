@@ -8,11 +8,14 @@ geopandas
 pyqt
 python-docx
 habanero
-gitpython
 git
+gitpython
 folium
 jupyterlab
+sciencebasepy
+laspy
 openpyxl
+xlrd
 
 # development specific requirements
 pytest>=3.1.0
