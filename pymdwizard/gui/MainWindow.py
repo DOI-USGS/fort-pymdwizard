@@ -1299,7 +1299,7 @@ class PyMdWizardMainForm(QMainWindow):
         except BaseException as e:
             if show_uptodate_msg:
                 msg = (
-                    "Problem Encountered Updating from GitHub\n\n"
+                    "Problem Encountered Updating from USGS Gitlab (https://code.usgs.gov/usgs/fort-pymdwizard)\n\n"
                     "USGS users, if you experience issues, please try disconnecting/reconnecting to the internal USGS network and re-checking for updates."
                 )
                 # msg += str(e)
@@ -1377,8 +1377,13 @@ def show_splash(version="2.x.x"):
 
     painter.end()
 
-    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnBottomHint)
-    splash.show()
+    # Create splash screen with Window flag only
+    splash = QSplashScreen(splash_pix, Qt.Window)
+
+    splash.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+
+    splash.show()  # Show the splash screen
+    splash.raise_()
     return splash
 
 
