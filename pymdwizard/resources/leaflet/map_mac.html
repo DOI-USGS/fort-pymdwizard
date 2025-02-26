@@ -33,13 +33,13 @@ var east = 180.0;
     var south = -90.0;
 
     var OpenStreetMap_Mapnik = L.tileLayer(
-            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',
             {
                 maxZoom: 20,
                 minZoom: 0,
                 continuousWorld: true,
                 noWrap: true,
-                attribution: 'Data by <a href="https://openstreetmap.org">OpenStreetMap</a>, under <a href="https://www.openstreetmap.org/copyright">ODbL</a>.',
+                attribution: 'USGS The National Map',
                 detectRetina: false
             }
     );
@@ -61,7 +61,7 @@ var east = 180.0;
         layers: [OpenStreetMap_Mapnik]
     });
     var baseMaps = {
-        "OpenStreetMap": OpenStreetMap_Mapnik,
+        "Street Map": OpenStreetMap_Mapnik,
         "Imagery": Esri_WorldImagery,
     };
     var overlayMaps = {
