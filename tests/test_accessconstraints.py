@@ -31,11 +31,11 @@ def test_accessconstraints_to_xml(qtbot):
 
     assert (
         widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText()
-        == "No access constraints. Please see 'Distribution Information' for details.."
+        == "No access constraints. Please see 'Distribution Information' for details."
     )
     ac = widget.to_xml()
     assert (
         str(etree.tostring(ac, pretty_print=True).decode())
-        == """<accconst>No access constraints. Please see 'Distribution Information' for details..</accconst>
+        == """<accconst>No access constraints. Please see 'Distribution Information' for details.</accconst>
 """
     )
