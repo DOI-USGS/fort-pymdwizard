@@ -95,7 +95,7 @@
          </sizepolicy>
         </property>
         <property name="plainText">
-         <string>None.  Please see 'Distribution Information' for details.</string>
+         <string>No access constraints. Please see 'Distribution Information' for details.</string>
         </property>
        </widget>
       </item>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <metadata>
   <idinfo>
     <citation>
@@ -11,8 +11,8 @@
         <themekt>None</themekt>
       </theme>
     </keywords>
-    <accconst>None. Please see 'Distribution Info' for details.</accconst>
-    <useconst>None. Users are advised to read the data set's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <accconst>No access constraints. Please see 'Distribution Information' for details.</accconst>
+    <useconst>These data are marked with a Creative Common CC0 1.0 Universal License. These data are in the public domain and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
   </idinfo>
   <dataqual>
     <attracc>
