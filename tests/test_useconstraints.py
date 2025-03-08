@@ -31,11 +31,11 @@ def test_useconstraints_to_xml(qtbot):
 
     assert (
         widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
-        == "None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
+        == "These data are marked with a Creative Common CC0 1.0 Universal License. These data are in the public domain and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
     )
 
     uc = widget.to_xml()
     assert (
         etree.tostring(uc, pretty_print=True).decode()
-        == "<useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>\n"
+        == "<useconst>These data are marked with a Creative Common CC0 1.0 Universal License. These data are in the public domain and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>\n"
     )
