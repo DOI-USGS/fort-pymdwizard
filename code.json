@@ -3,7 +3,7 @@
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
     "description": "Tool for editing and validating FGDC metadata records.",
-    "version": "2.0.8",
+    "version": "2.1.0",
     "status": "Production",
 
     "permissions": {
@@ -11,15 +11,15 @@
       "licenses": [
         {
           "name": "Creative Commons Attribution 4.0 International",
-          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.8/LICENSE.md"
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.1.0/LICENSE.md"
         }
       ]
     },
 
-    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
-    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.0.8/fort-pymdwizard-v2.0.8.zip",
-    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.0.8/DISCLAIMER.md",
-    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.0.8",
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.1.0",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.1.0/fort-pymdwizard-v2.1.0.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.1.0/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.1.0",
     "vcs": "git",
 
     "laborHours": 0,

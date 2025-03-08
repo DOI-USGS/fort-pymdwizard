@@ -1,6 +1,6 @@
 Changes
 =======
-2.0.8 (8/15/2024)
+2.1.0 (8/15/2024)
 -----
 Updates:
 - Update requirements .txt and .yaml files for environment install
