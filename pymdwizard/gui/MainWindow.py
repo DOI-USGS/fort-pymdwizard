@@ -1252,7 +1252,7 @@ class PyMdWizardMainForm(QMainWindow):
         """
         msg = "The MetadataWizard was developed by the data management team <br> at the USGS Fort Collins Science Center,<br>"
         msg += "with support from the USGS Science Analytics and Synthesis (SAS), "
-        msg += "and the USGS Council for Data integration (CDI).<br><br>"
+        msg += "and the USGS Community for Data Integration (CDI).<br><br>"
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
         msg += "<br> Project page: <a href='https://github.com/DOI-USGS/fort-pymdwizard'>https://github.com/DOI-USGS/fort-pymdwizard</a>"
