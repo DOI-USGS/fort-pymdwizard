@@ -692,7 +692,7 @@ def get_setting(which, default=None):
         setting in native format, string, integer, etc
 
     """
-    settings = QSettings("USGS_2.0.8", "pymdwizard_2.0.8")
+    settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
     if default is None:
         return settings.value(which)
     else:
