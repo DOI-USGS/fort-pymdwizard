@@ -59,7 +59,7 @@ Acknowledgements:
 ----------------
 The Metadata Wizard was developed by the data management team at the USGS Fort Collins Science Center,<br>
 with support from the USGS Science Analytics and Synthesis (SAS), 
-and the USGS Council for Data integration (CDI).<br><br>
+and the USGS Community for Data Integration (CDI).<br><br>
 Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br><br>
 
 Disclaimer:
