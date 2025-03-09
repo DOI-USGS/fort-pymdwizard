@@ -1,6 +1,18 @@
 Changes
 =======
-2.1.0 (8/15/2024)
+2.1.0 (3/10/2025)
+-----
+Updates:
+-	Make 'networkr' a repeating element
+-	Updates to support parsing of .xlsm and .xlsx file formats
+-	Updates to support parsing of .las and .laz file formats
+-	Updates to template xml with fix for ScienceBase contact info
+-	Fix connection with USGS Thesaurus – switch to active endpoint
+-	Add more robust bounding box calculation method
+-	Change basemaps and location names to comply with U.S. Department of the Interior’s SO 3423 and SO 3424
+- Updated associated Python env 
+
+2.0.8 (8/15/2024)
 -----
 Updates:
 - Update requirements .txt and .yaml files for environment install
