@@ -109,7 +109,7 @@ class PyMdWizardMainForm(QMainWindow):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
 
-        self.settings = QSettings("USGS_2.0.8", "pymdwizard_2.0.8")
+        self.settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
         self.cur_fname = ""
         self.file_watcher = None
 
@@ -1252,7 +1252,7 @@ class PyMdWizardMainForm(QMainWindow):
         """
         msg = "The MetadataWizard was developed by the data management team <br> at the USGS Fort Collins Science Center,<br>"
         msg += "with support from the USGS Science Analytics and Synthesis (SAS), "
-        msg += "and the USGS Council for Data integration (CDI).<br><br>"
+        msg += "and the USGS Community for Data Integration (CDI).<br><br>"
         msg += "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)<br>"
         msg += f"<br><br>Version: {__version__}<br>"
         msg += "<br> Project page: <a href='https://github.com/DOI-USGS/fort-pymdwizard'>https://github.com/DOI-USGS/fort-pymdwizard</a>"
