@@ -2,9 +2,9 @@
 Installing on Mac
 =================
 
-| Download a copy of the latest mac bundle (`MetadataWizard_2.x.x.dmg) from the releases page:
+| Download a copy of the latest mac bundle (MetadataWizard_2.x.x.dmg) from the releases page:
 
-<https://github.com/DOI-USGS/fort-pymdwizard/releases>`_
+<https://github.com/DOI-USGS/fort-pymdwizard/releases>_
 |
 Once the download is complete, double click on the downloaded .dmg file to begin the installation.
 
