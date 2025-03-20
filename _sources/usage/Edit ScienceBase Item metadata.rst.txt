@@ -2,7 +2,7 @@
 Editing existing FGDC metadata record on ScienceBase
 ====================================================
 
-(New in release 2.0.7)
+(New in release 2.1.0)
 
 Editing the existing FGDC metadata file on ScienceBase Item can be done directly by entering a ScienceBase item ID as well as a user name and password.
 
