@@ -2,10 +2,8 @@
 Installing on Windows
 =====================
 
-| Download a copy of the latest Windows installer (`metadatawizard_win64x_2.x.x.exe) from
-`the releases page
-<https://github.com/usgs/fort-pymdwizard/releases>`_.
-
+| Download a copy of the latest Windows installer (`metadatawizard_2.x.x.exe) from the releases page:
+<https://github.com/DOI-USGS/fort-pymdwizard/releases>`_.
 |
 Once the download is complete, double click on the downloaded.exe file to begin the installation.
 
