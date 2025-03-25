@@ -146,7 +146,7 @@ def read_shp(fname):
 
     df = df[[c for c in df.columns if c != "geometry"]]
     df.insert(0, "Shape", c.schema["geometry"])
-    df.insert(0, "FID", range(df.shape[0]))
+    # df.insert(0, "FID", range(df.shape[0]))
     return df
 
 
