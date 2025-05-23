@@ -127,7 +127,7 @@ def get_doi_citation_datacite(doi):
     -------
         dict with information pulled from datacite site
     """
-    endpoint = "https://api.datacite.org/works"
+    endpoint = "https://api.datacite.org/dois"
     response = utils.requests_pem_get(endpoint + "/" + doi)
     cite_data = json.loads(response.text)["data"]["attributes"]
 
