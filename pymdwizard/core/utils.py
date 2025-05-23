@@ -171,7 +171,8 @@ def convert_persondict_to_fgdc(person_dict):
     cntper_str = person_dict['name']
     cntorg_str = f"USGS - {person_dict['department']}"
     cntpos_str = person_dict['title']
-    address_str = person_dict['street_address']
+    address_str_comma = person_dict['street_address']
+    address_str = address_str_comma.replace(",", ", ")
     city_str = person_dict['city']
     state_str = person_dict['state']
     postal_str = person_dict['postal_code']
