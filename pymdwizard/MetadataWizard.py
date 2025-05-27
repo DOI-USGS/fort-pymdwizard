@@ -112,6 +112,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     set_clean_path()
+    
+    # Handle high resolution displays:
+    # Import after executable path defined by set_clean_path().
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import QApplication
+    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+        
     from pymdwizard.gui import MainWindow
 
     MainWindow.launch_main(
