@@ -50,6 +50,7 @@ the copyright owner.
 """
 
 import json
+from urllib.parse import urlparse  # OD
 
 try:
     from habanero import cn
@@ -164,6 +165,7 @@ def get_doi_citation(doi):
             or
         None if the DOI cannot be retrieved
     """
+
     doi = clean_doi(doi)
     try:
         cite_data = get_doi_citation_crossref(doi)
@@ -182,6 +184,8 @@ def get_doi_citation(doi):
     else:
         origin = XMLNode(tag="origin", parent_node=citeinfo, text="")
 
+    # ODONNELL: This will not work for different pub types (DR, SR, USGS Series,
+    # journal okay), so I have adjusted below. ???????????????????????????????????????
     if "published-online" in cite_data:
         pubdate_parts = cite_data["published-online"]["date-parts"][0]
     elif "published-print" in cite_data:
@@ -190,7 +194,91 @@ def get_doi_citation(doi):
         pubdate_parts = [cite_data["published"]]
 
     pubdate_str = "".join(["{:02d}".format(int(part)) for part in pubdate_parts])
+
+    # ODONNELL--Handle different publication dates in attempt to define a
+    # complete YYYYMMDD.
+    if len(pubdate_str) == 4:
+        has_deposited = \
+            "deposited" in cite_data and cite_data["deposited"]["date-parts"]
+        has_registered = \
+            "registered" in cite_data and cite_data["registered"]
+        if has_deposited:
+            try:
+                # USGS Series ???????????????????????????????????????????????????????? elements not clear
+                pubdate_parts = cite_data.get("deposited").get("date-parts")[0]
+                pubdate_str = "".join(
+                    ["{:02d}".format(int(part)) for part in pubdate_parts])
+            except AttributeError:
+                pass
+        if has_registered:
+            try:
+                # USGS data/software
+                pubdate_parts = cite_data.get("registered")
+                pubdate_parts = pubdate_parts[:10].split("-")
+                pubdate_str = "".join(
+                    ["{:02d}".format(int(part)) for part in pubdate_parts])
+            except AttributeError:
+                pass
+
     pubdate = XMLNode(tag="pubdate", parent_node=citeinfo, text=pubdate_str)
+
+    # ODONNELL--USGS data/software products (pubplace and geoform).
+    # Version--Edition unfortunately not tracked in data/software DOI.
+    has_usgs_prod = \
+        "data-center-id" in cite_data and cite_data["data-center-id"]
+    if has_usgs_prod:
+        data_cntr_id = cite_data["data-center-id"]
+        data_type = cite_data["resource-type-subtype"]
+        if data_cntr_id == "usgs.prod":
+            try:
+                usgs_url = cite_data["url"]
+                parsed_url = urlparse(usgs_url)
+                cite_data["pubplace"] = \
+                    parsed_url.scheme + "://" + parsed_url.netloc
+            except AttributeError:
+                cite_data["pubplace"] = "UNKNOWN"
+
+            if data_type == "Dataset":
+                # User may want to change to vector, raster, etc.???????????????????
+                cite_data["geoform"] = data_type
+            elif data_type == "Software":
+                cite_data["geoform"] = "application/service"
+
+    # ODODDNELL--USGS Series (pubplace, volume/issue)
+    try:
+        has_container = "container-title" in cite_data and cite_data[
+            "container-title"]
+        has_url = "URL" in cite_data and cite_data["URL"]
+        has_altid = \
+            "alternative-id" in cite_data and cite_data["alternative-id"]
+        if has_container and has_url and has_altid:
+            try:
+                # Series name; set below
+                series_name = cite_data["container-title"]
+            except AttributeError:
+                series_name = "ERROR"
+            try:
+                # DOI--Not using
+                url_doi = cite_data["URL"]
+            except AttributeError:
+                url_doi = "ERROR"
+            try:
+                # Pub place.
+                url_ref = cite_data.get("resource").get("primary").get("URL")
+                if "https://pubs.usgs.gov/" in url_ref:
+                    cite_data["pubplace"] = "https://pubs.usgs.gov"
+                else:
+                    cite_data["pubplace"] = url_ref
+            except AttributeError:
+                cite_data["pubplace"] = "ERROR"
+            try:
+                # USGS series volume/issue
+                altid = cite_data["alternative-id"][0]
+                cite_data["volume"] = altid
+            except AttributeError:
+                cite_data["volume"] = "ERROR"
+    except AttributeError:
+        pass
 
     title = XMLNode(tag="title", parent_node=citeinfo, text=cite_data["title"])
     geoform = XMLNode(tag="geoform", parent_node=citeinfo, text=cite_data["geoform"])
@@ -199,6 +287,7 @@ def get_doi_citation(doi):
     has_volume = "volume" in cite_data and cite_data["volume"]
     has_issue = "issue" in cite_data and cite_data["issue"]
 
+    # May want to drop vol. for USGS pub types ???????????????????????????????????
     if has_container and (has_volume or has_issue):
         serinfo = XMLNode(tag="serinfo", parent_node=citeinfo)
         sername = XMLNode(
