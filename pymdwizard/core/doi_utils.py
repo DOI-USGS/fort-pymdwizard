@@ -187,6 +187,7 @@ def get_doi_citation(doi):
     else:
         origin = XMLNode(tag="origin", parent_node=citeinfo, text="")
 
+    pubdate_parts = None
     if "published-online" in cite_data:
         pubdate_parts = cite_data["published-online"]["date-parts"][0]
     elif "published-print" in cite_data:
@@ -194,19 +195,34 @@ def get_doi_citation(doi):
     elif "published" in cite_data:
         pubdate_parts = [cite_data["published"]]
 
-    pubdate_str = "".join(["{:02d}".format(int(part)) for part in pubdate_parts])
+    if pubdate_parts:
+        pubdate_str = \
+            "".join(["{:02d}".format(int(part)) for part in pubdate_parts])
 
     # Handle different publication dates in attempt to define a
-    # complete YYYYMMDD.
+    # complete YYYYMMDD for journals that are not including day.
+    if len(pubdate_str) == 6:
+        has_license = "license" in cite_data and cite_data["license"]
+        if has_license:
+            try:
+                pubdate_parts = \
+                    cite_data.get("license")[0].get("start").get("date-parts")[0]
+                pubdate_str = "".join(
+                    ["{:02d}".format(int(part)) for part in pubdate_parts])
+            except AttributeError:
+                pass
+
+    # Handle different publication dates in attempt to define a
+    # complete YYYYMMDD for USGS publications.
     if len(pubdate_str) == 4:
-        has_deposited = \
-            "deposited" in cite_data and cite_data["deposited"]["date-parts"]
+        has_created = \
+            "created" in cite_data and cite_data["created"]["date-parts"]
         has_registered = \
             "registered" in cite_data and cite_data["registered"]
-        if has_deposited:
+        if has_created:
             try:
                 # USGS Series.
-                pubdate_parts = cite_data.get("deposited").get("date-parts")[0]
+                pubdate_parts = cite_data.get("created").get("date-parts")[0]
                 pubdate_str = "".join(
                     ["{:02d}".format(int(part)) for part in pubdate_parts])
             except AttributeError:
