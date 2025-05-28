@@ -635,12 +635,16 @@ def check_pem_file():
         import wincertstore
 
         pem_fname = get_pem_fname()
+
         if not os.path.exists(pem_fname):
             for storename in ("CA", "ROOT"):
                 with wincertstore.CertSystemStore(storename) as store:
                     for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
                         if "DOIRootCA2" in cert.get_name():
-                            text_file = open(pem_fname, "w", encoding="ascii")
+                            pem_fname = os.path.abspath(os.path.join(
+                                get_install_dname("pymdwizard"), "pymdwizard",
+                                "resources", "DOIRootCA2.pem"))
+                            text_file = open(pem_fname, "w", encoding="ascii")  # no location is defined
                             contents = cert.get_pem().encode().decode("ascii")
                             text_file.write(contents)
                             text_file.close()
