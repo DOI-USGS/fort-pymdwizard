@@ -644,7 +644,7 @@ def check_pem_file():
                             pem_fname = os.path.abspath(os.path.join(
                                 get_install_dname("pymdwizard"), "pymdwizard",
                                 "resources", "DOIRootCA2.pem"))
-                            text_file = open(pem_fname, "w", encoding="ascii")  # no location is defined
+                            text_file = open(pem_fname, "w", encoding="ascii")
                             contents = cert.get_pem().encode().decode("ascii")
                             text_file.write(contents)
                             text_file.close()
