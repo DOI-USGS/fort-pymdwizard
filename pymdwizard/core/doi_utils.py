@@ -268,32 +268,40 @@ def get_doi_citation(doi):
         has_url = "URL" in cite_data and cite_data["URL"]
         has_altid = \
             "alternative-id" in cite_data and cite_data["alternative-id"]
+
         if has_container and has_url and has_altid:
             try:
-                # Series name; set below
-                series_name = cite_data["container-title"]
-            except AttributeError:
-                series_name = "ERROR"
-            try:
-                # DOI--Not using
-                url_doi = cite_data["URL"]
-            except AttributeError:
-                url_doi = "ERROR"
-            try:
-                # Pub place.
                 url_ref = cite_data.get("resource").get("primary").get("URL")
+
                 if "https://pubs.usgs.gov/" in url_ref:
-                    cite_data["pubplace"] = "https://pubs.usgs.gov"
-                else:
-                    cite_data["pubplace"] = url_ref
+                    try:
+                        # Series name; set below
+                        series_name = cite_data["container-title"]
+                    except AttributeError:
+                        series_name = "ERROR"
+                    try:
+                        # DOI--Not using
+                        url_doi = cite_data["URL"]
+                    except AttributeError:
+                        url_doi = "ERROR"
+                    try:
+                        # Pub place.
+                        url_ref = \
+                            cite_data.get("resource").get("primary").get("URL")
+                        if "https://pubs.usgs.gov/" in url_ref:
+                            cite_data["pubplace"] = "https://pubs.usgs.gov"
+                        else:
+                            cite_data["pubplace"] = url_ref
+                    except AttributeError:
+                        cite_data["pubplace"] = "ERROR"
+                    try:
+                        # USGS series volume/issue
+                        altid = cite_data["alternative-id"][0]
+                        cite_data["volume"] = altid
+                    except AttributeError:
+                        cite_data["volume"] = "ERROR"
             except AttributeError:
-                cite_data["pubplace"] = "ERROR"
-            try:
-                # USGS series volume/issue
-                altid = cite_data["alternative-id"][0]
-                cite_data["volume"] = altid
-            except AttributeError:
-                cite_data["volume"] = "ERROR"
+                pass
     except AttributeError:
         pass
 

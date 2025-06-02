@@ -66,6 +66,8 @@ import requests
 
 import pandas as pd
 
+import wincertstore
+
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QTextBrowser
 from PyQt5.QtWidgets import QPlainTextEdit
@@ -632,8 +634,6 @@ def check_pem_file():
     None
     """
     try:
-        import wincertstore
-
         pem_fname = get_pem_fname()
 
         if not os.path.exists(pem_fname):
