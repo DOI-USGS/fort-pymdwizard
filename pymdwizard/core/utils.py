@@ -56,6 +56,8 @@ import traceback
 # import pkg_resources
 import urllib.request
 import json
+import subprocess
+# import wincertstore  # Handled in check_pem_file()
 
 try:
     from urllib.parse import urlparse
@@ -65,6 +67,7 @@ except:
 import requests
 
 import pandas as pd
+
 
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QTextBrowser
@@ -631,29 +634,73 @@ def check_pem_file():
     -------
     None
     """
-    try:
-        import wincertstore
 
-        pem_fname = get_pem_fname()
-        if not os.path.exists(pem_fname):
-            for storename in ("CA", "ROOT"):
-                with wincertstore.CertSystemStore(storename) as store:
-                    for cert in store.itercerts(usage=wincertstore.SERVER_AUTH):
-                        if "DOIRootCA2" in cert.get_name():
-                            text_file = open(pem_fname, "w", encoding="ascii")
-                            contents = cert.get_pem().encode().decode("ascii")
-                            text_file.write(contents)
-                            text_file.close()
+    # Define path and name of pem file that will be stored locally (if this
+    # function has been run once before).
+    pem_fname = get_pem_fname()
 
-        os.environ["PIP_CERT"] = pem_fname
-        os.environ["SSL_CERT_FILE"] = pem_fname
-        os.environ["GIT_SSL_CAINFO"] = pem_fname
-        return pem_fname
-    except:
-        # this is an optional convenience function that will only work
-        # on the Windows platform, for USGS users.
-        # if anything goes wrong pass silently
-        pass
+    # Specify the certificate alias and output filename
+    cert_alias = "DOIRootCA2"
+
+    if platform.system() == "Windows":
+        try:
+            import wincertstore
+
+            if not os.path.exists(pem_fname):
+                for storename in ("CA", "ROOT"):
+                    with wincertstore.CertSystemStore(storename) as store:
+                        for cert in store.itercerts(
+                                usage=wincertstore.SERVER_AUTH):
+                            if cert_alias in cert.get_name():
+                                pem_fname = os.path.abspath(os.path.join(
+                                    get_install_dname("pymdwizard"),
+                                    "pymdwizard", "resources",
+                                    cert_alias + ".pem"))
+                                text_file = open(pem_fname, "w",
+                                                 encoding="ascii")
+                                contents = cert.get_pem().encode().decode(
+                                    "ascii")
+                                text_file.write(contents)
+                                text_file.close()
+
+            os.environ["PIP_CERT"] = pem_fname
+            os.environ["SSL_CERT_FILE"] = pem_fname
+            os.environ["GIT_SSL_CAINFO"] = pem_fname
+            return pem_fname
+        except:
+            print("Cannot locate a organizational pem file (only an issue "
+                  "for USGS).")
+    else:
+        # Mac/linux-like users.
+        try:
+            if not os.path.exists(pem_fname):
+                # Run the security command to find the certificate
+                result = subprocess.run(
+                    ["security", "find-certificate", "-a", "-c",
+                     cert_alias, "-p"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                # If found, result.stdout contains the PEM formatted
+                # certificate.
+                text_file = open(pem_fname, "w", encoding="ascii")
+                contents = result.stdout.strip()
+                text_file.write(contents)
+                text_file.close()
+
+                os.environ["PIP_CERT"] = pem_fname
+                os.environ["SSL_CERT_FILE"] = pem_fname
+                os.environ["GIT_SSL_CAINFO"] = pem_fname
+            else:
+                pass
+        except subprocess.CalledProcessError as e:
+            print(f"Error finding the certificate: {e}")
+        except FileNotFoundError:
+            print("The security command-line tool is not found. Ensure you "
+                  "are on macOS.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
 
 def requests_pem_get(url, params={}):
