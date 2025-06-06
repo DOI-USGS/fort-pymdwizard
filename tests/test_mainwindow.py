@@ -98,7 +98,7 @@ def test_misc(qtbot, mock):
 
 def test_settings(qtbot, mock):
 
-    settings = qt_api.QtCore.QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
+    settings = qt_api.QtCore.QSettings("USGS_2.1.1", "pymdwizard_2.1.1")
     settings.setValue("template_fname", "tests/data/USGS_ASC_PolarBears_FGDC.xml")
 
     widget = MainWindow.PyMdWizardMainForm()

@@ -103,7 +103,7 @@ class Detailed(WizardWidget):  #
         self.ui.fgdc_enttypds.setText(default_def_source)
 
     def browse(self):
-        settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
+        settings = QSettings("USGS_2.1.1", "pymdwizard_2.1.1")
         last_data_fname = settings.value("lastDataFname", "")
         if last_data_fname:
             dname, fname = os.path.split(last_data_fname)
