@@ -5,7 +5,7 @@ Changes
 -----
 Updates:
 - Add support for high resolution displays
-- Improve parsing of citations for “import from DOI” feature
+- Improve parsing of citations for "import from DOI" feature
 - Correct .pem file cert management
 - Update associated Python env to remove vulnerability
 
