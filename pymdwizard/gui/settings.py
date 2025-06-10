@@ -85,7 +85,7 @@ class Settings(QWidget):
         self.ui.btn_save.clicked.connect(self.save_settings)
 
     def load_settings(self):
-        self.settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
+        self.settings = QSettings("USGS_2.1.1", "pymdwizard_2.1.1")
         template_fname = self.settings.value("template_fname")
 
         if template_fname is None:
