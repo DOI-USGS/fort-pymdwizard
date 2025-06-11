@@ -8,6 +8,7 @@ Updates:
 - Improve parsing of citations for "import from DOI" feature
 - Correct .pem file cert management
 - Update associated Python env to remove vulnerability
+- Improve handling of .las and .laz files
 
 2.1.0 (3/10/2025)
 -----
