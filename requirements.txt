@@ -14,5 +14,6 @@ folium
 jupyterlab
 sciencebasepy
 laspy
+lazrs
 openpyxl
 xlrd
