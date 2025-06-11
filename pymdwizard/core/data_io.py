@@ -147,7 +147,8 @@ def read_shp(fname):
 
     df = df[[c for c in df.columns if c != "geometry"]]
     df.insert(0, "Shape", c.schema["geometry"])
-    df.insert(0, "FID", range(df.shape[0]))
+    if not "FID" in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
     return df
 
 
@@ -297,6 +298,14 @@ def read_las(fname):
         break
 
     point_data = {dim: np.array(points[dim]) for dim in dims}
+    
+    # Apply scaling and offsets to X, Y, Z dimensions
+    header = las.header
+    point_data["X"] = point_data["X"] * header.x_scale + header.x_offset
+    point_data["Y"] = point_data["Y"] * header.y_scale + header.y_offset
+    point_data["Z"] = point_data["Z"] * header.z_scale + header.z_offset
+
+    
     df = pd.DataFrame(point_data)
 
     return df
