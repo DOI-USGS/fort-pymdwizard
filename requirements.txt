@@ -164,7 +164,7 @@ typing_extensions==4.12.2
 tzdata==2025.2
 unicodedata2==14.0.0
 uri-template==1.3.0
-urllib3==2.4.0
+urllib3==2.5.0
 usgs-datatools==1.1.2
 wcwidth==0.2.13
 webcolors==24.11.1
