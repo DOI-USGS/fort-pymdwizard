@@ -58,6 +58,8 @@ import urllib.request
 import json
 import subprocess
 # import wincertstore  # Handled in check_pem_file()
+import subprocess
+# import wincertstore  # Handled in check_pem_file()
 
 try:
     from urllib.parse import urlparse
@@ -170,17 +172,19 @@ def convert_persondict_to_fgdc(person_dict):
     The address is marked as both 'mailing and physical'. The XML nodes are created using a hypothetical 'xml_node' function,
     which is assumed to create and optionally append a new XML node to a parent node.
     """
-    
-    cntper_str = person_dict['name']
-    cntorg_str = f"USGS - {person_dict['department']}"
-    cntpos_str = person_dict['title']
-    address_str_comma = person_dict['street_address']
+    # Replace any None values with the empty string
+    person_dict = {k: ("" if v is None else v) for k, v in person_dict.items()}
+
+    cntper_str = person_dict.get('name', "")
+    cntorg_str = f"USGS - {person_dict.get('department', '')}"
+    cntpos_str = person_dict.get('title', "")
+    address_str_comma = person_dict.get('street_address', "")
     address_str = address_str_comma.replace(",", ", ")
-    city_str = person_dict['city']
-    state_str = person_dict['state']
-    postal_str = person_dict['postal_code']
-    cntvoice_str = person_dict['telephone']
-    cntemail_str = person_dict['email']
+    city_str = person_dict.get('city', "")
+    state_str = person_dict.get('state', "")
+    postal_str = person_dict.get('postal_code', "")
+    cntvoice_str = person_dict.get('telephone', "")
+    cntemail_str = person_dict.get('email', "")
     addrtype_str = "mailing and physical"
 
     cntinfo = xml_utils.xml_node("cntinfo")
@@ -703,6 +707,7 @@ def check_pem_file():
             print(f"An unexpected error occurred: {e}")
 
 
+
 def requests_pem_get(url, params={}):
     """
     Make a get requests.get call but use the local PEM fname if you hit an
@@ -767,3 +772,4 @@ def url_is_alive(url):
         return True
     except:
         return False
+
