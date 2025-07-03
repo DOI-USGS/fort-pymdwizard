@@ -1295,8 +1295,8 @@ class PyMdWizardMainForm(QMainWindow):
         except BaseException as e:
             if show_uptodate_msg:
                 msg = (
-                    "Problem Encountered Updating from USGS Gitlab (https://code.usgs.gov/usgs/fort-pymdwizard)\n\n"
-                    "USGS users, if you experience issues, please try disconnecting/reconnecting to the internal USGS network and re-checking for updates."
+                    "Problem Encountered Updating from USGS GitHub (https://github.com/DOI-USGS/fort-pymdwizard)\n\n"
+                    "Please ensure that you have write access to the location where the Metadata Wizard is installed."
                 )
                 # msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
