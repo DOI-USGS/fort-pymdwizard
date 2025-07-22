@@ -85,7 +85,7 @@ class Ui_Form(object):
         self.fgdc_useconst.setPlainText(
             _translate(
                 "Form",
-                "These data are marked with a Creative Common CC0 1.0 Universal License. These data are in the public domain and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.",
+                "These data are marked with a Creative Commons Zero v1.0 Universal (CC0-1.0) public domain dedication and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.",
             )
         )
 
