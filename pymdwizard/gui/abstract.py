@@ -48,33 +48,54 @@ the copyright owner.
 ------------------------------------------------------------------------------
 """
 
-from PyQt5.QtWidgets import QPlainTextEdit
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QPlainTextEdit
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_abstract
+# Custom import/libraries.
+try:
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_abstract
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Abstract(WizardWidget):
-
     drag_label = "Abstract <abstract>"
     acceptable_tags = ["abstract"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Build and modify this widget's GUI.
 
-        Returns
-        -------
-        None
+        Args:
+            None
+
+        Returns:
+            None
         """
+
         self.ui = UI_abstract.Ui_Form()
         self.ui.setupUi(self)
         self.setup_dragdrop(self)
 
+
     def get_children(self, widget):
+        """
+        Description:
+            Return a list of widget's children.
+
+        Args:
+            widget (QWidget): The widget whose children are to be returned.
+
+        Returns:
+            widget (list): List of children widgets
+        """
 
         children = []
         children.append(self.ui.fgdc_abstract)
@@ -87,13 +108,18 @@ class Abstract(WizardWidget):
 
         return children
 
+
     def to_xml(self):
         """
-        encapsulates the QPlainTextEdit text in an element tag
+        Description:
+            Encapsulate the QPlainTextEdit text in an element tag.
 
-        Returns
-        -------
-        abstract element tag in xml tree
+        Args:
+            None
+
+        Returns:
+            abstract (xml.etree.ElementTree.Element): Abstract element tag in
+                XML tree
         """
 
         abstract = xml_utils.xml_node(
@@ -102,32 +128,38 @@ class Abstract(WizardWidget):
 
         return abstract
 
+
     def from_xml(self, abstract):
         """
-        parses the xml code into the relevant abstract elements
+        Description:
+            Parse the XML code into the relevant abstract elements.
 
-        Parameters
-        ----------
-        access_constraints - the xml element status and its contents
+        Args:
+            abstract (xml.etree.ElementTree.Element): The XML element
+                containing the abstract.
 
-        Returns
-        -------
-        None
+        Returns:
+            None
         """
+
         try:
             if abstract.tag == "abstract":
                 try:
-
                     abstract_text = abstract.text
-                    abstract_box = self.findChild(QPlainTextEdit, "fgdc_abstract")
+                    abstract_box = self.findChild(QPlainTextEdit,
+                                                  "fgdc_abstract")
                     abstract_box.setPlainText(abstract_text)
                 except:
                     pass
             else:
-                print("The tag is not abstract")
+                print("The tag is not abstract.")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
     utils.launch_widget(Abstract, "Abstract testing")

@@ -48,32 +48,39 @@ the copyright owner.
 ------------------------------------------------------------------------------
 """
 
+# Non-standard python libraries.
 try:
     import pysb
-except ImportError:
-    pysb = None
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class PYSBMissing(Exception):
+    """Exception raised when the PYSB module is not available."""
     pass
 
 
 def has_pysb(func):
     """
-    decorator function for checking if the pysb module is available
+    Description:
+        Decorator function to check if the PYSB module is available.
 
-    Parameters
-    ----------
-    func : function
+    Args:
+        func (function): The function to be decorated.
 
-    Returns
-    -------
-
+    Returns:
+        function: The original function if PYSB is available; raises
+            PYSBMissing if PYSB is not found.
     """
 
-    if pysb is None:
+    try:
+        import pysb  # Attempt to import the PYSB module
+    except ImportError:
         raise PYSBMissing(
             "This functionality requires the ScienceBase "
-            "Python package (pysb) which was not found in this"
-            "environement"
+            "Python package (pysb) which was not found in this "
+            "environment."
         )
+
+    # Return the original function if PYSB is available.
+    return func

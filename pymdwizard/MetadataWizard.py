@@ -20,12 +20,12 @@ It does two things, initialize environment variables (windows only)
 Pass command line arguments to the MainWindow script.
 
 Todo:
-    * Make this functionality cross platform
+    * Make this functionality cross-platform
 
 
 SCRIPT DEPENDENCIES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
+    This script is part of the pymdwizard package and is not intended to be
     used independently.  All pymdwizard package requirements are needed.
     
     See imports section for external packages used in this script as well as
@@ -54,20 +54,26 @@ the copyright owner.
 ------------------------------------------------------------------------------
 """
 
+# Standard python libraries.
 import argparse
-
 import os
 import sys
 
 
 def set_clean_path():
     """
-    For installations on Windows (assumes installed via installer)
-    - prepends the path with the installer's python directory and bin directory
-    - makes a copy of the PEM file from the user's registry
-    - sets the gdal environmental variables
-    :return:
-     None
+    Description:
+        For installations on Windows (assumes installed via installer)
+            - prepends the path with the installer's python directory and bin
+              directory
+            - makes a copy of the PEM file from the user's registry
+            - sets the gdal environmental variables
+
+    Args:
+        None
+
+    Returns:
+        None
     """
 
     if os.name == "nt":
@@ -95,6 +101,9 @@ def set_clean_path():
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
 
     parser = argparse.ArgumentParser(description="Metadata Wizard")
     parser.add_argument(

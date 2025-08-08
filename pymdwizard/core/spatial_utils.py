@@ -48,18 +48,15 @@ the copyright owner.
 ------------------------------------------------------------------------------
 """
 
+# Standard python libraries.
 import os
 import collections
 import math
 
-import numpy as np
-import pandas as pd
-
-from pymdwizard.core.xml_utils import xml_node
-from pymdwizard.core import utils
-from pymdwizard.core import data_io
-
+# Non-standard python libraries.
 try:
+    import numpy as np
+    import pandas as pd
     from osgeo import gdal
     from osgeo import osr
     from osgeo import ogr
@@ -67,122 +64,156 @@ try:
     gdal.UseExceptions()
     gdal.AllRegister()
     use_gdal = True
-except ImportError:
-    print("ERROR Importing GDAL, Spatial functionality limited")
-    use_gdal = False
 
-try:
     import laspy
-    use_laspy = True
-except ImportError:
-    print("ERROR Importing laspy, LAS functionality limited")
-    use_laspy = False
+except ImportError as err:
+    raise ImportError(err, __file__)
+
+# Custom import/libraries.
+try:
+    from pymdwizard.core.xml_utils import xml_node
+    from pymdwizard.core import utils
+    from pymdwizard.core import data_io
+except ImportError as err:
+    raise ImportError(err, __file__)
+
 
 def set_local_gdal_data():
     """
-    Sets the path variable to the local gdal instance
+    Description:
+        Sets the environment variable for the local GDAL instance path.
 
-    Returns
-    -------
-    None
+    Returns:
+        None
     """
+
+    # Get the installation directory of Python.
     python_root = utils.get_install_dname("python")
+
+    # Construct the path to the GDAL data directory.
     gdal_data = os.path.join(python_root, "Library", "share", "gdal")
+
+    # Set the GDAL_DATA environment variable.
     os.environ["GDAL_DATA"] = gdal_data
 
 
 def _get_las_extent(fh):
     """
-    Extract the projected extent from a LAS file header.
-    (min_x, max_x, min_y, max_y)
+    Description:
+        Extracts the projected extent from a LAS file header.
+        Returns the coordinates in the format (min_x, max_x, min_y, max_y).
 
-    Parameters
-    ----------
-    fh : LAS file handle
-        A file handle that provides access to the LAS file header.
+    Args:
+        fh (LAS file handle): A file handle that provides access to the LAS
+            file header.
 
-    Returns
-    -------
-    (min_x, max_x, min_y, max_y) : tuple
-        A tuple containing the upper left x-coordinate (min_x), 
-        lower right x-coordinate (max_x), lower right y-coordinate (min_y), 
-        and upper left y-coordinate (max_y) of the LAS file extent.
+    Returns:
+        tuple: A tuple containing the upper left x-coordinate (min_x),
+            lower right x-coordinate (max_x), lower right y-coordinate
+            (min_y), and upper left y-coordinate (max_y) of the LAS
+            file extent.
     """
+
+    # Access the header of the LAS file
     header = fh.header
+
+    # Extract the x and y coordinates from the header.
     ulx = header.x_min
     lrx = header.x_max
     uly = header.y_max
     lry = header.y_min
+
     return ulx, lrx, lry, uly
+
 
 def _get_raster_extent(src):
     """
-    extract projected extent from a raster dataset
-    (min_x, max_x, min_y, max_y)
+    Description:
+        Extracts the projected extent from a raster dataset.
+        Returns the coordinates in the format (min_x, max_x, min_y, max_y).
 
-    Parameters
-    ----------
-    src : gdal raster
+    Args:
+        src (gdal raster): The raster dataset from which to extract the extent.
 
-    Returns
-    -------
-    (min_x, max_x, min_y, max_y)
+    Returns:
+        tuple: A tuple containing the upper left x-coordinate (min_x),
+            lower right x-coordinate (max_x), lower right y-coordinate
+            (min_y), and upper left y-coordinate (max_y) of the raster
+            dataset extent.
     """
+
+    # Get the geotransform parameters from the raster dataset.
     ulx, xres, xskew, uly, yskew, yres = src.GetGeoTransform()
+
+    # Calculate the lower right x and y coordinates.
     lrx = ulx + (src.RasterXSize * xres)
     lry = uly + (src.RasterYSize * yres)
+
     return ulx, lrx, lry, uly
 
 
 def get_extent(layer):
     """
-    returns projected extent from an ogr layer or gdal dataset
-    (min_x, max_x, min_y, max_y)
+    Description:
+        Returns the projected extent from an OGR layer or GDAL dataset.
+        The extent is returned in the format (min_x, max_x, min_y, max_y).
 
-    Parameters
-    ----------
-    layer : ogr layer or gdal dataset
+    Args:
+        layer (ogr layer or gdal dataset): The layer or dataset from which to
+            extract the extent.
 
-    Returns
-    -------
-    (min_x, max_x, min_y, max_y)
+    Returns:
+        tuple or None: A tuple containing the extent coordinates (min_x, max_x,
+            min_y, max_y) if found; otherwise, returns None.
     """
+
+    # Attempt to retrieve extent from the layer using GetExtent()
     try:
         return layer.GetExtent()
-    except:
+    except Exception:
         pass
 
+    # Attempt to retrieve extent using a LAS extent function
     try:
         return _get_las_extent(layer)
-    except:
+    except Exception:
         pass
 
+    # Attempt to retrieve extent using a raster extent function
     try:
         return _get_raster_extent(layer)
-    except:
+    except Exception:
         pass
+
 
 def get_geographic_extent(layer):
     """
-    returns extent in geographic (lat, long) coordinates
+    Description:
+        Returns the extent in geographic (latitude, longitude) coordinates.
 
-    Parameters
-    ----------
-    layer : ogr layer or gdal dataset
+    Args:
+        layer (ogr layer or gdal dataset): The layer or dataset from which to
+            extract the geographic extent.
 
-    Returns
-    -------
-    (min_x, max_x, min_y, max_y)
+    Returns:
+        tuple: A tuple containing the westernmost, easternmost, southernmost,
+            and northernmost coordinates (west, east, south, north).
     """
-    
+
+    # Get the extent in projected coordinates.
     min_x, max_x, min_y, max_y = get_extent(layer)
+
+    # Retrieve the spatial reference from the layer.
     srs = get_ref(layer)
     srs.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
+
+    # Clone the geographic coordinate system and define axis mapping.
     # Get the body (planet or moon) from the projection definition
     # removes the lock-in to EPSG:4326 (WGS84)
     target = srs.CloneGeogCS()
     target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
+    # Attempt to extract spatial reference information.
     try:
         spatialRef = layer.GetSpatialRef()
         spatialRef.ExportToProj4()
@@ -190,26 +221,35 @@ def get_geographic_extent(layer):
         spref = spatialRef.GetAuthorityCode(None)
     except:
         pass
-    
-    west, east, south, north = calculate_max_bounds(min_x, max_x, min_y, max_y, srs, target)
+
+    # Calculate geographic bounds using the extent and reference systems.
+    west, east, south, north = \
+        calculate_max_bounds(min_x, max_x, min_y, max_y, srs, target)
 
     return west, east, south, north
 
 
 def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
     """
-    Calculates the maximum east, minimum west, maximum north, and minimum south
-    coordinates after transforming the points from the source SRS to the target SRS.
+    Description:
+        Calculates maximum east, minimum west, maximum north, and minimum
+        south coordinates after transforming points from the source SRS to the
+        target SRS.
 
-    Parameters:
-    - min_x, max_x: The extent of the x-coordinates.
-    - min_y, max_y: The extent of the y-coordinates.
-    - src_srs: The source spatial reference system.
-    - target_srs: The target spatial reference system.
+    Args:
+        min_x (float): The minimum x-coordinate of the extent.
+        max_x (float): The maximum x-coordinate of the extent.
+        min_y (float): The minimum y-coordinate of the extent.
+        max_y (float): The maximum y-coordinate of the extent.
+        src_srs (spatial reference): The source spatial reference system.
+        target_srs (spatial reference): The target spatial reference system.
 
     Returns:
-    - (max_east, min_west, max_north, min_south): Tuple of calculated bounds.
+        tuple: A tuple of calculated bounds in the format
+            (min_west, max_east, max_north, min_south).
     """
+
+    # Define the number of interpolation steps for calculation
     steps = 10
 
     # Initialize the values for each direction
@@ -218,17 +258,19 @@ def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
     max_north = -float('inf')
     min_south = float('inf')
 
-    # Calculate max_east and min_west
+    # Calculate max_east and min_west.
     for step in range(steps + 1):
         cur_north = min_y + step * ((max_y - min_y) / steps)
 
         # Max East
-        transformed_east = transform_point((max_x, cur_north), src_srs, target_srs)
+        transformed_east = transform_point((max_x, cur_north),
+                                           src_srs, target_srs)
         if transformed_east[0] > max_east:
             max_east = transformed_east[0]
 
         # Min West
-        transformed_west = transform_point((min_x, cur_north), src_srs, target_srs)
+        transformed_west = transform_point((min_x, cur_north),
+                                           src_srs, target_srs)
         if transformed_west[0] < min_west:
             min_west = transformed_west[0]
 
@@ -237,61 +279,93 @@ def calculate_max_bounds(min_x, max_x, min_y, max_y, src_srs, target_srs):
         cur_east = min_x + step * ((max_x - min_x) / steps)
 
         # Max North
-        transformed_north = transform_point((cur_east, max_y), src_srs, target_srs)
+        transformed_north = transform_point((cur_east, max_y),
+                                            src_srs, target_srs)
         if transformed_north[1] > max_north:
             max_north = transformed_north[1]
 
         # Min South
-        transformed_south = transform_point((cur_east, min_y), src_srs, target_srs)
+        transformed_south = transform_point((cur_east, min_y),
+                                            src_srs, target_srs)
         if transformed_south[1] < min_south:
             min_south = transformed_south[1]
 
     return min_west, max_east, max_north, min_south
 
+
 def get_ref(layer):
     """
-    returns the  osr geospatial reference from an object
+    Description:
+        Returns the OSR geospatial reference from an OGR layer or GDAL dataset.
 
-    Parameters
-    ----------
-    layer : ogr layer or gdal dataset
+    Args:
+        layer (ogr layer or gdal dataset): The layer or dataset from which to
+            extract the geospatial reference.
 
-    Returns
-    -------
-    osr  geospatial reference
+    Returns:
+        osr.SpatialReference: An OSR geospatial reference object if available;
+            otherwise, None.
     """
+
+    # Initialize WKT variable to hold the Well-Known Text representation.
+    wkt = None
+
+    # Attempt to get the WKT from various methods
     try:
         wkt = layer.GetProjection()
-    except:
+    except Exception:
         pass
 
+    # Parse CRS from header
     try:
         wkt = layer.header.parse_crs().to_wkt()
-    except:
+    except Exception:
         pass
 
+    # Get spatial reference WKT.
     try:
         wkt = layer.GetSpatialRef().ExportToWkt()
-    except:
+    except Exception:
         pass
+
+    # Return the OSR SpatialReference object created from the WKT, or None.
+    if wkt is not None:
+        return osr.SpatialReference(wkt=wkt)
 
     return osr.SpatialReference(wkt=wkt)
 
 
 def get_latlong_res(extent):
-    # D. Ignizio : This function is a modified approach to calculating
-    # latitudinal and longitudinal resolution in a GCS.
-    # Use in lieu of Vincenty's algorithm due to complexity/issues with
-    # incorrect results.
-    # The formula calculates values against the WGS 84 spheroid.
-    # The mid-point of the latitudinal extent of the dataset is used to
-    # calculate values, as they change depending on where on the globe
-    # we are considering.
+    """
+    Description:
+        Calculates the latitudinal and longitudinal resolution for a given
+        geographic extent based on the WGS 84 spheroid model.
 
-    ### Find GCS bounding coordinates of DS
+    Args:
+        extent : tuple
+            A tuple containing the minimum longitude, maximum longitude,
+            minimum latitude, and maximum latitude of the geographic area.
+
+    Returns:
+        tuple
+            A tuple containing the latitudinal and longitudinal resolutions
+            as strings formatted to 10 decimal places.
+
+    Notes:
+        D. Ignizio: This function is a modified approach to calculating
+        latitudinal and longitudinal resolution in a GCS.
+        Use in lieu of Vincenty's algorithm due to complexity/issues with
+        incorrect results.
+        The formula calculates values against the WGS 84 spheroid.
+        The mid-point of the latitudinal extent of the dataset is used to
+        calculate values, as they change depending on where on the globe
+        we are considering.
+    """
+
+    # Unpack the extent coordinates.
     min_lon, max_lon, min_lat, max_lat = extent
 
-    ### Find mid-latitude position while handling Hemisphere
+    # Calculate mid-latitude position while handling the hemisphere.
     mid = 0
     if max_lat >= min_lat:
         mid = ((max_lat - min_lat) / 2) + min_lat
@@ -317,6 +391,8 @@ def get_latlong_res(extent):
 
     # Length of 1 degree of Latitude in kilometers @ Latitude(y) on the globe.
     # y = -3E-06x^3 + 0.0005x^2 - 0.0013x + 110.57
+
+    # Length of 1 degree of Latitude in kilometers
     x = mid_lat
     len1_degree_lat = (
         (-3e-06 * pow(x, 3)) + (0.0005 * pow(x, 2)) - (0.0013 * x) + 110.57
@@ -324,33 +400,31 @@ def get_latlong_res(extent):
     len1_minute_lat = len1_degree_lat / 60
     len1_second_lat = len1_minute_lat / 60
 
-    data_scale = 24000
-    dig_precision = 0.001
+    # Constants for calculations
+    data_scale = 24000  # Scale factor for the resolution
+    dig_precision = 0.001  # Digital precision factor
 
-    latlat_reses = float(
-        (1 / len1_second_lat)
-        * (1 / 3280.84)
-        * float(data_scale)
-        * float(1.0 / 12.0)
-        * float(dig_precision)
+    # Calculate latitudinal resolution.
+    lat_res = float(
+        (1 / len1_second_lat) * (1 / 3280.84) * data_scale * (1.0 / 12) *
+        dig_precision
     )
-    latlat_reses = str(format(latlat_reses, ".10f"))
+    latlat_reses = str(format(lat_res, ".10f"))
 
     # Length of 1 degree of Longitude in kilometers @ Latitude(y) on the globe.
     # y = 7E-05x^3 - 0.0203x^2 + 0.0572x + 111.24
 
+    # Length of 1 degree of Longitude in kilometers.
     len1_degree_long = (
         (7e-05 * pow(x, 3)) - (0.0203 * pow(x, 2)) + (0.0572 * x) + 111.24
     )
     len1_minute_long = len1_degree_long / 60
     len1_second_long = len1_minute_long / 60
 
+    # Calculate longitudinal resolution
     long_res = float(
-        (1 / len1_second_long)
-        * (1 / 3280.84)
-        * float(data_scale)
-        * float(1.0 / 12)
-        * float(dig_precision)
+        (1 / len1_second_long) * (1 / 3280.84) * data_scale * (1.0 / 12) *
+        dig_precision
     )
     long_res = str(format(long_res, ".10f"))
 
@@ -358,34 +432,54 @@ def get_latlong_res(extent):
 
 
 def get_abs_resolution(src, params):
+    """
+    Description:
+        Calculates the absolute resolution in both the x and y directions
+        for a given source. It distinguishes between raster and vector data.
 
-    # The minimum difference between X (abscissa) and Y (ordinate) values in
-    #  the planar data set
-    # The values usually indicate the ?fuzzy tolerance? or ?clustering? setting
-    #   that establishes the minimum distance at which two points will NOT be
-    #   automatically converged by the data collection device (digitizer,
-    #   GPS, etc.). NOTE: units of measures are provided under element Planar
-    #   Distance Units
-    # Raster data: Abscissa/ordinate res equals cell resolution
-    # Vector data: Abscissa/ordinate res is the smallest measurable distance
+    Args:
+        src (object): The source object from which to obtain the geographic
+            transform.
+        params (dict): A dictionary that contains parameters needed for
+            resolution calculations and will be updated with results.
+
+    Returns:
+        None
+
+    Notes:
+        The minimum difference between X (abscissa) and Y (ordinate) values in
+        the planar data set.
+
+        The values usually indicate the ?fuzzy tolerance? or ?clustering?
+        setting that establishes the minimum distance at which two points will
+        NOT be automatically converged by the data collection device (digitizer,
+        GPS, etc.). NOTE: units of measures are provided under element Planar
+        Distance Units.
+
+        Raster data: Abscissa/ordinate res equals cell resolution
+        Vector data: Abscissa/ordinate res is the smallest measurable distance
+    """
+
     try:
-        # this will only work for raster data
+        # Attempt to obtain the geo-transform, which works for raster data.
         xform = src.GetGeoTransform()
         params["absres"] = math.fabs(xform[1])
         params["latres"] = math.fabs(xform[1])
         params["ordres"] = math.fabs(xform[5])
         params["longres"] = math.fabs(xform[5])
-
     except:
-        # otherwise we will calculate these from our projection parameters
+        # Calculate resolutions based on projection parameters for vector data.
         if params["mapprojn"] != "Unknown":
             data_scale = 24000
             dig_precision = 0.001
 
+            # Determine the unit of measure and calculate the resolutions.
             # Industry-standard digitizer precision of 0.001"
             if params["plandu"].lower() == "feet":
-                params["absres"] = str(float(data_scale) * float(dig_precision) / 12.0)
-                params["ordres"] = str(float(data_scale) * float(dig_precision) / 12.0)
+                params["absres"] = str(
+                    float(data_scale) * float(dig_precision) / 12.0)
+                params["ordres"] = str(
+                    float(data_scale) * float(dig_precision) / 12.0)
             elif params["plandu"].lower() == "meter":
                 params["absres"] = str(
                     float(data_scale) * (float(dig_precision) / 12.0) * 0.3048
@@ -402,25 +496,44 @@ def get_abs_resolution(src, params):
                     float(data_scale) * (float(dig_precision) / 12.0) * 0.3048
                 )
         else:
+            # If projection is unknown, use existing lat/long resolutions.
             params["absres"] = params["latres"]
             params["ordres"] = params["longres"]
 
 
 def get_params(layer):
+    """
+    Description:
+        Retrieves various parameters from a given geographic layer and outputs
+        them in a structured dictionary.
 
-    # get the spatial reference and extent
+    Args:
+        layer (ogr layer or gdal dataset): The layer from which to extract
+            parameters.
+
+    Returns:
+        dict: A dictionary containing various parameters related to spatial
+            reference and geographic characteristics of the layer.
+    """
+
+    # Get spatial reference and extent information from the layer.
     ref = get_ref(layer)
     projected_extent = get_extent(layer)
     geographic_extent = get_geographic_extent(layer)
 
     params = {}
 
+    # Get latitudinal and longitudinal resolutions.
     params["latres"], params["longres"] = get_latlong_res(geographic_extent)
-    params["latres"], params["longres"] = str(params["latres"]), str(params["longres"])
-    params["geogunit"] = "Decimal seconds"  # we will always use Decimal Seconds'
+    params["latres"], params["longres"] = str(
+        params["latres"]), str(params["longres"])
+
+    params["geogunit"] = "Decimal seconds"  # always use Decimal Seconds
     params["mapprojn"] = ref.GetAttrValue("projcs")
     params["projection_name"] = ref.GetAttrValue("projection")
     params["geogcs"] = ref.GetAttrValue("geogcs")
+
+    # Get projection parameters and ensure all values are strings.
     params["stdparll"] = str(ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_1))
     params["stdparll_2"] = str(ref.GetProjParm(osr.SRS_PP_STANDARD_PARALLEL_2))
     params["longcm"] = str(ref.GetProjParm(osr.SRS_PP_CENTRAL_MERIDIAN))
@@ -428,7 +541,8 @@ def get_params(layer):
     params["feast"] = str(ref.GetProjParm(osr.SRS_PP_FALSE_EASTING))
     params["fnorth"] = str(ref.GetProjParm(osr.SRS_PP_FALSE_NORTHING))
     params["sfequat"] = str(ref.GetProjParm(osr.SRS_PP_SCALE_FACTOR))
-    params["heightpt"] = str(ref.GetProjParm(osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT))
+    params["heightpt"] = str(ref.GetProjParm(
+        osr.SRS_PP_PERSPECTIVE_POINT_HEIGHT))
     params["longpc"] = str(ref.GetProjParm(osr.SRS_PP_LONGITUDE_OF_CENTER))
     params["latprjc"] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER))
     params["latprjo"] = str(ref.GetProjParm(osr.SRS_PP_LATITUDE_OF_CENTER))
@@ -458,12 +572,17 @@ def get_params(layer):
         params["plance"] = "row and column"
     else:
         params["plance"] = "coordinate pair"
+
+    # Default unknown values for several parameters.
     params["distres"] = "Unknown"
     params["bearres"] = "Unknown"
     params["bearunit"] = "Unknown"
     params["bearrefd"] = "Unknown"
     params["bearrefm"] = "Unknown"
     params["plandu"] = ref.GetLinearUnitsName()
+
+    # Set various local properties to "Unknown" and populate those that data
+    # retain.
     params["localdes"] = "Unknown"
     params["localgeo"] = "Unknown"
     params["horizdn"] = ref.GetAttrValue("datum")
@@ -480,27 +599,31 @@ def get_params(layer):
     params["depthdu"] = "Unknown"
     params["depthem"] = "Unknown"
 
+    # Initialize unknown values if params are None.
     for k in params:
         if params[k] is None:
             params[k] = "Unknown"
 
+    # Get absolute resolution parameters.
     get_abs_resolution(layer, params)
 
-    # SPCS_Zone
-    if params["mapprojn"] != None and "stateplane" in params["mapprojn"].lower():
+    # SPCS_Zone determination
+    if (params["mapprojn"] != None and
+            "stateplane" in params["mapprojn"].lower()):
         parts = params["mapprojn"].split("_")
         params["spcszone"] = str(parts[parts.index("FIPS") + 1])
     else:
         params["spcszone"] = "Unknown"
 
-    # ARC_Zone
-    if params["mapprojn"] != None and "_arc_system" in params["mapprojn"].lower():
+    # ARC_Zone determination.
+    if (params["mapprojn"] != None and
+            "_arc_system" in params["mapprojn"].lower()):
         parts = params["mapprojn"].split("_")
         params["arczone"] = str(parts[-1])
     else:
         params["arczone"] = "Unknown"
 
-    # PCS_Units
+    # PCS_Units determination.
     params["upzone"] = "Unknown"
 
     return params
