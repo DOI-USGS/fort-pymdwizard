@@ -11,14 +11,9 @@ PURPOSE
 ------------------------------------------------------------------------------
 Provide a variety of xml processing functions.
 
-
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intended to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Standard python libraries.
