@@ -79,3 +79,13 @@ Contact:
 -----------
 ask-sdm@usgs.gov
 
+Software repositories:
+-----------
+Official source code:
+  https://code.usgs.gov/usgs/fort-pymdwizard
+Mirrored from GitLab:
+    https://github.com/usgs/fort-pymdwizard
+Current user documentation:
+    See: https://doi-usgs.github.io/fort-pymdwizard/
+Examples of use in other scripts:
+    https://github.com/usgs/fort-pymdwizard/tree/master/examples
