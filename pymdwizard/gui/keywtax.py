@@ -18,10 +18,13 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.keywords_repeater import KeywordsRepeater
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.keywords_repeater import KeywordsRepeater
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Keywordtax(KeywordsRepeater):

@@ -18,58 +18,63 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import sys
 import os
-import platform
 import tempfile
 import time
 import datetime
 import shutil
-from pathlib import Path
 import subprocess
 
-from os.path import dirname
-
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QSplashScreen
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QAction
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import QFile
-from PyQt5.QtCore import QFileInfo
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QSettings
-from PyQt5.QtCore import QFileSystemWatcher
-from PyQt5.QtCore import QPoint
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QPainter
-from PyQt5.QtGui import QPixmap
-
-
+# Non-standard python libraries.
 try:
-    import docx
-except ImportError:
-    docx = None
+    import docx  # ??????????????????????????????????????????????????????????????????? win only?
+    import sip
+except ImportError as err:
+    raise ImportError(err, __file__)
+    docx = None  # ????????????????????????????????????????????????????????????????????????
 
-from pymdwizard.gui.ui_files import UI_MainWindow
-from pymdwizard.gui.MetadataRoot import MetadataRoot
-from pymdwizard.core import xml_utils
-from pymdwizard.core import utils
-from pymdwizard.core import fgdc_utils
-from pymdwizard.core import review_utils
-from pymdwizard.gui.Preview import Preview
-from pymdwizard.gui.error_list import ErrorList
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.jupyterstarter import JupyterStarter
-from pymdwizard.gui.settings import Settings
-from pymdwizard.gui.sb_locator import SBLocator
-from pymdwizard import __version__
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMainWindow
+    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QSplashScreen
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QAction
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QFileDialog
+    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QTabWidget
+    from PyQt5.QtCore import QFile
+    from PyQt5.QtCore import QFileInfo
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import QSettings
+    from PyQt5.QtCore import QFileSystemWatcher
+    from PyQt5.QtCore import QPoint
+    from PyQt5.QtCore import QSize
+    from PyQt5.QtGui import QPainter
+    from PyQt5.QtGui import QPixmap
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-import sip
+# Custom import/libraries.
+try:
+    from pymdwizard.gui.ui_files import UI_MainWindow
+    from pymdwizard.gui.MetadataRoot import MetadataRoot
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import utils
+    from pymdwizard.core import fgdc_utils
+    from pymdwizard.core import review_utils
+    from pymdwizard.gui.Preview import Preview
+    from pymdwizard.gui.error_list import ErrorList
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.jupyterstarter import JupyterStarter
+    from pymdwizard.gui.settings import Settings
+    from pymdwizard.gui.sb_locator import SBLocator
+    from pymdwizard import __version__
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class PyMdWizardMainForm(QMainWindow):

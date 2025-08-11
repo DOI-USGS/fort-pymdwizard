@@ -17,16 +17,25 @@ NOTES
 ------------------------------------------------------------------------------
 None
 """
+
+# Standard python libraries.
 import os
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QSettings
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtGui import QFont
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtCore import QSettings
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtGui import QFont
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_settings
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_settings
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Settings(QWidget):

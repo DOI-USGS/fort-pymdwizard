@@ -21,13 +21,13 @@ None
 # Non-standard python libraries.
 try:
     from PyQt5.QtWidgets import QPlainTextEdit
-    from pymdwizard.core import utils
-    from pymdwizard.core import xml_utils
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Custom import/libraries.
 try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
     from pymdwizard.gui.wiz_widget import WizardWidget
     from pymdwizard.gui.ui_files import UI_abstract
 except ImportError as err:

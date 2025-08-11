@@ -18,16 +18,20 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_metainfo
-from pymdwizard.gui.ContactInfo import ContactInfo
-from pymdwizard.gui.fgdc_date import FGDCDate
-from pymdwizard import __version__
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_metainfo
+    from pymdwizard.gui.ContactInfo import ContactInfo
+    from pymdwizard.gui.fgdc_date import FGDCDate
+    from pymdwizard import __version__
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class MetaInfo(WizardWidget):

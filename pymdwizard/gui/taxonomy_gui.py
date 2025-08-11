@@ -18,18 +18,26 @@ NOTES
 None
 """
 
-import pandas as pd
+# Standard python libraries.
 import requests
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import Qt
+# Non-standard python libraries.
+try:
+    import pandas as pd
+    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtCore import Qt
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import taxonomy
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_ITISSearch
+# Custom import/libraries.
+try:
+    from pymdwizard.core import taxonomy
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_ITISSearch
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ItisMainForm(QWidget):

@@ -18,12 +18,15 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_taxoncl
-from pymdwizard.gui.repeating_element import RepeatingElement
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_taxoncl
+    from pymdwizard.gui.repeating_element import RepeatingElement
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Taxoncl(WizardWidget):

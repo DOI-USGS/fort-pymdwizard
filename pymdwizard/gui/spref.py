@@ -18,22 +18,27 @@ NOTES
 None
 """
 
-from copy import deepcopy
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QLineEdit
+    from PyQt5.QtWidgets import QLabel
+    from PyQt5.QtWidgets import QComboBox
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QComboBox
-
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core.xml_utils import xml_node
-from pymdwizard.core import spatial_utils
-from pymdwizard.core import fgdc_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_spref
-from pymdwizard.gui.mapproj import MapProj
-from pymdwizard.gui.vertdef import Vertdef
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core.xml_utils import xml_node
+    from pymdwizard.core import spatial_utils
+    from pymdwizard.core import fgdc_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_spref
+    from pymdwizard.gui.mapproj import MapProj
+    from pymdwizard.gui.vertdef import Vertdef
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class SpRef(WizardWidget):

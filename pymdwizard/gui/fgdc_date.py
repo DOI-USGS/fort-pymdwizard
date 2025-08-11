@@ -18,12 +18,19 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QWidget
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_fgdc_date
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_fgdc_date
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class FGDCDate(QWidget):

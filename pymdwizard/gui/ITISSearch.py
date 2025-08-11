@@ -18,14 +18,20 @@ NOTES
 None
 """
 
-import pandas as pd
+# Non-standard python libraries.
+try:
+    import pandas as pd
+    from PyQt5.QtWidgets import QWidget
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from PyQt5.QtWidgets import QWidget
-
-from pymdwizard.core import taxonomy
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_ITISSearchSimple
+# Custom import/libraries.
+try:
+    from pymdwizard.core import taxonomy
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_ITISSearchSimple
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ItisSearch(QWidget):

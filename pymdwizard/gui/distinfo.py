@@ -18,18 +18,26 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QMessageBox
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMessageBox
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_distinfo
-from pymdwizard.gui.ContactInfo import ContactInfo
-from pymdwizard.gui.metainfo import MetaInfo
-from pymdwizard.gui.repeating_element import RepeatingElement
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_distinfo
+    from pymdwizard.gui.ContactInfo import ContactInfo
+    from pymdwizard.gui.metainfo import MetaInfo
+    from pymdwizard.gui.repeating_element import RepeatingElement
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class DistInfo(WizardWidget):

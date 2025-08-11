@@ -18,32 +18,37 @@ NOTES
 None
 """
 
-import numpy as np
+# Non-standard python libraries.
+try:
+    import numpy as np
+    import sip
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QMenu
+    from PyQt5.QtWidgets import QComboBox
+    from PyQt5.QtWidgets import QLineEdit
+    from PyQt5.QtWidgets import QPlainTextEdit
+    from PyQt5.QtCore import QPropertyAnimation
+    from PyQt5.QtCore import QSize
+    from PyQt5.QtGui import QIcon
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-import sip
-
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QMenu
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtCore import QPropertyAnimation
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QIcon
-
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_attr
-from pymdwizard.gui import udom
-from pymdwizard.gui import rdom
-from pymdwizard.gui import codesetd
-from pymdwizard.gui import edom_list
-from pymdwizard.gui import edom
-from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
-from pymdwizard.core import data_io
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_attr
+    from pymdwizard.gui import udom
+    from pymdwizard.gui import rdom
+    from pymdwizard.gui import codesetd
+    from pymdwizard.gui import edom_list
+    from pymdwizard.gui import edom
+    from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+    from pymdwizard.core import data_io
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 default_def_source = utils.get_setting("defsource", "Producer Defined")
 

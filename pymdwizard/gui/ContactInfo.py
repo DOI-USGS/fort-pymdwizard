@@ -18,19 +18,26 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QRadioButton
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QLineEdit
+    from PyQt5.QtWidgets import QComboBox
+    from PyQt5.QtWidgets import QRadioButton
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core.xml_utils import xml_node
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_ContactInfo
-from pymdwizard.gui.ui_files import UI_USGSContactImporter
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core.xml_utils import xml_node
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_ContactInfo
+    from pymdwizard.gui.ui_files import UI_USGSContactImporter
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ContactInfo(WizardWidget):

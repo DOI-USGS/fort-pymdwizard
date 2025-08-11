@@ -18,30 +18,35 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import sys
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtCore import Qt
-
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core import doi_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_citeinfo
-from pymdwizard.gui.fgdc_date import FGDCDate
-from pymdwizard.gui.repeating_element import RepeatingElement
-from pymdwizard.gui.ui_files import UI_DOICiteinfoImporter
-from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
-
+# Non-standard python libraries.
 try:
     import habanero
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QPlainTextEdit
+    from PyQt5.QtCore import Qt
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-    hananero_installed = True
-except ImportError:
-    hananero_installed = False
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import doi_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_citeinfo
+    from pymdwizard.gui.fgdc_date import FGDCDate
+    from pymdwizard.gui.repeating_element import RepeatingElement
+    from pymdwizard.gui.ui_files import UI_DOICiteinfoImporter
+    from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+except ImportError as err:
+    raise ImportError(err, __file__)
+
+hananero_installed = True  # ??????????????????????????????????????????????????????????????
+
 
 
 class Citeinfo(WizardWidget):  #

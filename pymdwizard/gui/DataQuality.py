@@ -18,19 +18,23 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_DataQuality
-from pymdwizard.gui.AttributeAccuracy import AttributeAccuracy
-from pymdwizard.gui.LogicalAccuracy import LogicalAccuracy
-from pymdwizard.gui.Completeness import Completeness
-from pymdwizard.gui.PositionalAccuracy import PositionalAccuracy
-from pymdwizard.gui.sourceinput import SourceInput
-from pymdwizard.gui.procstep import ProcStep
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_DataQuality
+    from pymdwizard.gui.AttributeAccuracy import AttributeAccuracy
+    from pymdwizard.gui.LogicalAccuracy import LogicalAccuracy
+    from pymdwizard.gui.Completeness import Completeness
+    from pymdwizard.gui.PositionalAccuracy import PositionalAccuracy
+    from pymdwizard.gui.sourceinput import SourceInput
+    from pymdwizard.gui.procstep import ProcStep
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class DataQuality(WizardWidget):

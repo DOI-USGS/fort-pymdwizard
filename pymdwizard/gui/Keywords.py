@@ -18,18 +18,26 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtWidgets import QSpacerItem
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QSizePolicy
+    from PyQt5.QtWidgets import QSpacerItem
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Keywords
-from pymdwizard.gui.theme_list import ThemeList
-from pymdwizard.gui.place_list import PlaceList
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_Keywords
+    from pymdwizard.gui.theme_list import ThemeList
+    from pymdwizard.gui.place_list import PlaceList
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Keywords(WizardWidget):

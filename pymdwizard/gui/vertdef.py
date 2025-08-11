@@ -18,14 +18,15 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QStackedWidget
-
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.repeating_element import RepeatingElement
-from pymdwizard.gui.ui_files import UI_vertdef
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.repeating_element import RepeatingElement
+    from pymdwizard.gui.ui_files import UI_vertdef
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Vertdef(WizardWidget):  #

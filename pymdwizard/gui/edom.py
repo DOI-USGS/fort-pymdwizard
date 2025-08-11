@@ -18,12 +18,19 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QWidget
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QWidget
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.ui_files import UI_edom
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.ui_files import UI_edom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Edom(QWidget):  #

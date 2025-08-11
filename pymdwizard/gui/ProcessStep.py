@@ -18,18 +18,25 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtWidgets import QPlainTextEdit
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QLineEdit
+    from PyQt5.QtWidgets import QVBoxLayout
+    from PyQt5.QtWidgets import QPlainTextEdit
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_ProcessStep
-from pymdwizard.gui.fgdc_date import FGDCDate
-from pymdwizard.gui.repeating_element import RepeatingElement
-from pymdwizard.gui.proccont import ProcessContact
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_ProcessStep
+    from pymdwizard.gui.fgdc_date import FGDCDate
+    from pymdwizard.gui.repeating_element import RepeatingElement
+    from pymdwizard.gui.proccont import ProcessContact
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ProcessStep(WizardWidget):  #

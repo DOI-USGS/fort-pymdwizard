@@ -18,14 +18,23 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QPlainTextEdit
-from pymdwizard.core import xml_utils
-from pymdwizard.core import utils
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QPlainTextEdit
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_attracc
+# Custom import/libraries.
+try:
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_attracc
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class AttributeAccuracy(WizardWidget):

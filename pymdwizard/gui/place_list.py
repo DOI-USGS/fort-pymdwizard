@@ -18,15 +18,22 @@ NOTES
 None
 """
 
-from PyQt5.QtCore import QPoint
+# Non-standard python libraries.
+try:
+    from PyQt5.QtCore import QPoint
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_place_list
-from pymdwizard.gui import ThesaurusSearch
-from pymdwizard.gui.theme import Theme
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_place_list
+    from pymdwizard.gui import ThesaurusSearch
+    from pymdwizard.gui.theme import Theme
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class PlaceList(WizardWidget):

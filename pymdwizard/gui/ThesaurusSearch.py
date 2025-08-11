@@ -18,28 +18,35 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import requests
 
-
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QProgressDialog
-from PyQt5.QtGui import QStandardItemModel
-from PyQt5.QtGui import QStandardItem
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QThread
-from PyQt5.QtCore import pyqtSignal
-
-
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_ThesaurusSearch
-
-try:
+try:  # ????????????????????????????????????????????????????????????????????????????????????
     from urllib.parse import quote
 except ImportError:
     from urllib import quote
+
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QProgressDialog
+    from PyQt5.QtGui import QStandardItemModel
+    from PyQt5.QtGui import QStandardItem
+    from PyQt5.QtGui import QFont
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import QThread
+    from PyQt5.QtCore import pyqtSignal
+except ImportError as err:
+    raise ImportError(err, __file__)
+
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_ThesaurusSearch
+except ImportError as err:
+    raise ImportError(err, __file__)
+
 
 class SearchThread(QThread):
     """Thread for searching the thesaurus."""

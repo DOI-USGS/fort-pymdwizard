@@ -18,24 +18,28 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import os
 import tempfile
 import getpass
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QInputDialog
-from PyQt5.QtWidgets import QLineEdit
-
+# Non-standard python libraries.
 try:
     import pysb
-except ImportError:
-    import sciencebasepy as pysb
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QMessageBox
+    # from PyQt5.QtCore import QUrl
+    # from PyQt5.QtWidgets import QInputDialog
+    # from PyQt5.QtWidgets import QLineEdit
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils, xml_utils
-
-from pymdwizard.gui.ui_files import UI_sb_locator
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils, xml_utils
+    from pymdwizard.gui.ui_files import UI_sb_locator
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class SBLocator(QWidget):

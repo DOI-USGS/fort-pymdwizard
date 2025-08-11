@@ -18,24 +18,31 @@ NOTES
 ------------------------------------------------------------------------------
 None
 """
-from lxml import etree
 
-from PyQt5.QtGui import QPainter
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QTimeLine
+# Non-standard python libraries.
+try:
+    from lxml import etree
+    from PyQt5.QtGui import QPainter
+    from PyQt5.QtGui import QPixmap
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtCore import QTimeLine
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_MetadataRoot
-from pymdwizard.gui.IDInfo import IdInfo
-from pymdwizard.gui.spatial_tab import SpatialTab
-from pymdwizard.gui.EA import EA
-from pymdwizard.gui.DataQuality import DataQuality
-from pymdwizard.gui.metainfo import MetaInfo
-from pymdwizard.gui.distinfo import DistInfo
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_MetadataRoot
+    from pymdwizard.gui.IDInfo import IdInfo
+    from pymdwizard.gui.spatial_tab import SpatialTab
+    from pymdwizard.gui.EA import EA
+    from pymdwizard.gui.DataQuality import DataQuality
+    from pymdwizard.gui.metainfo import MetaInfo
+    from pymdwizard.gui.distinfo import DistInfo
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class MetadataRoot(WizardWidget):

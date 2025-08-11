@@ -18,12 +18,19 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QListWidgetItem
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QListWidgetItem
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_error_list
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_error_list
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ErrorList(QWidget):

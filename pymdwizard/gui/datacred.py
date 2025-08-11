@@ -18,11 +18,14 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_datacred
+# Non-standard python libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_datacred
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Datacred(WizardWidget):  #

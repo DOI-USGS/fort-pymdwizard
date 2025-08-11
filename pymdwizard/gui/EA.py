@@ -18,13 +18,16 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_EA
-from pymdwizard.gui.detailed import Detailed
-from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_EA
+    from pymdwizard.gui.detailed import Detailed
+    from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class EA(WizardWidget):  #

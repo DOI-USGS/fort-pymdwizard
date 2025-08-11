@@ -27,15 +27,22 @@ NOTES
 None
 """
 
-from PyQt5.QtWidgets import QComboBox
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QComboBox
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_srcinfo
-from pymdwizard.gui.citeinfo import Citeinfo
-from pymdwizard.gui.timeinfo import Timeinfo
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_srcinfo
+    from pymdwizard.gui.citeinfo import Citeinfo
+    from pymdwizard.gui.timeinfo import Timeinfo
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class SRCInfo(WizardWidget):  #

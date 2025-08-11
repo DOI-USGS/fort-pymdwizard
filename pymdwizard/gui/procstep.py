@@ -18,13 +18,21 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+# Non-standard python libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_procstep
-from pymdwizard.gui.ProcessStep import ProcessStep
-from pymdwizard.gui.repeating_element import RepeatingElement
+# Custom import/libraries.
+try:
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_procstep
+    from pymdwizard.gui.ProcessStep import ProcessStep
+    from pymdwizard.gui.repeating_element import RepeatingElement
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class ProcStep(WizardWidget):  #

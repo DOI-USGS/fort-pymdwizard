@@ -18,18 +18,26 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import math
-import pandas as pd
 
-from PyQt5.QtWidgets import QListWidgetItem
-from PyQt5.QtWidgets import QAbstractItemView
+# Non-standard python libraries.
+try:
+    import pandas as pd
+    from PyQt5.QtWidgets import QListWidgetItem
+    from PyQt5.QtWidgets import QAbstractItemView
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_edom_list
-from pymdwizard.gui import edom
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_edom_list
+    from pymdwizard.gui import edom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class EdomList(WizardWidget):  #

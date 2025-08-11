@@ -18,11 +18,14 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_descript
-from pymdwizard.gui.abstract import Abstract
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_descript
+    from pymdwizard.gui.abstract import Abstract
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Descript(WizardWidget):

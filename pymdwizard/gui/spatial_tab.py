@@ -18,21 +18,29 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import os
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import QSettings
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QFileDialog
+    from PyQt5.QtCore import QSettings
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core import spatial_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_spatial_tab
-from pymdwizard.gui import spref
-from pymdwizard.gui import spdoinfo
-from pymdwizard.gui import spdom
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import spatial_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_spatial_tab
+    from pymdwizard.gui import spref
+    from pymdwizard.gui import spdoinfo
+    from pymdwizard.gui import spdom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class SpatialTab(WizardWidget):

@@ -18,19 +18,26 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtCore import QPoint
+# Non-standard python libraries.
+try:
+    from PyQt5.QtCore import QPoint
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_taxonomy
-from pymdwizard.gui import taxonomy_gui
-
-from pymdwizard.gui.taxoncl import Taxoncl
-from pymdwizard.gui.keywtax import Keywordtax
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_taxonomy
+    from pymdwizard.gui import taxonomy_gui
+    from pymdwizard.gui.taxoncl import Taxoncl
+    from pymdwizard.gui.keywtax import Keywordtax
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Taxonomy(WizardWidget):

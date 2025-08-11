@@ -18,12 +18,19 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+# Non-standard python libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_rdom
-
+# Custom import/libraries.
+try:
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_rdom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 class Rdom(WizardWidget):  #
 

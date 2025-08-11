@@ -18,29 +18,37 @@ NOTES
 None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QHBoxLayout
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QHBoxLayout
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_IdInfo
-from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
-from pymdwizard.gui.Taxonomy import Taxonomy
-from pymdwizard.gui.Keywords import Keywords
-from pymdwizard.gui.accconst import Accconst
-from pymdwizard.gui.useconst import Useconst
-from pymdwizard.gui.Status import Status
-from pymdwizard.gui.timeperd import Timeperd
-from pymdwizard.gui.citeinfo import Citeinfo
-from pymdwizard.gui.datacred import Datacred
-from pymdwizard.gui.descript import Descript
-from pymdwizard.gui.supplinf import SupplInf
-from pymdwizard.gui.native import Native
-from pymdwizard.gui.purpose import Purpose
-from pymdwizard.gui.crossref_list import Crossref_list
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_IdInfo
+    from pymdwizard.gui.PointOfContact import ContactInfoPointOfContact
+    from pymdwizard.gui.Taxonomy import Taxonomy
+    from pymdwizard.gui.Keywords import Keywords
+    from pymdwizard.gui.accconst import Accconst
+    from pymdwizard.gui.useconst import Useconst
+    from pymdwizard.gui.Status import Status
+    from pymdwizard.gui.timeperd import Timeperd
+    from pymdwizard.gui.citeinfo import Citeinfo
+    from pymdwizard.gui.datacred import Datacred
+    from pymdwizard.gui.descript import Descript
+    from pymdwizard.gui.supplinf import SupplInf
+    from pymdwizard.gui.native import Native
+    from pymdwizard.gui.purpose import Purpose
+    from pymdwizard.gui.crossref_list import Crossref_list
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class IdInfo(WizardWidget):

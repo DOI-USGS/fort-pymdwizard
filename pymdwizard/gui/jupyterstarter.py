@@ -18,19 +18,26 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import os
 import platform
-import subprocess
 from subprocess import Popen
 
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QMessageBox
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QFileDialog
+    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QMessageBox
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.gui import wiz_widget
-
-from pymdwizard.gui.ui_files import UI_jupyterstarter
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui import wiz_widget
+    from pymdwizard.gui.ui_files import UI_jupyterstarter
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class JupyterStarter(QDialog):

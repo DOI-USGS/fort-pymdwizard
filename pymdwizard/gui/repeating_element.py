@@ -17,19 +17,26 @@ NOTES
 None
 """
 
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtWidgets import QHBoxLayout
-from PyQt5.QtWidgets import QLabel
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QTextEdit
-from PyQt5.QtCore import Qt
+# Non-standard python libraries.
+try:
+    from PyQt5.QtGui import QFont
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QPlainTextEdit
+    from PyQt5.QtWidgets import QHBoxLayout
+    from PyQt5.QtWidgets import QLabel
+    from PyQt5 import QtCore
+    # from PyQt5.QtWidgets import QTextEdit
+    from PyQt5.QtCore import Qt
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_repeating_element
-from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_repeating_element
+    from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class DefaultWidget(QWidget):

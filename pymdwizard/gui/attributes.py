@@ -18,17 +18,24 @@ NOTES
 None
 """
 
-import pandas as pd
+# Non-standard python libraries.
+try:
+    import pandas as pd
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QMenu
+    from PyQt5.QtGui import QIcon
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QMenu
-from PyQt5.QtGui import QIcon
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_attributes
-from pymdwizard.gui import mdattr
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_attributes
+    from pymdwizard.gui import mdattr
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Attributes(WizardWidget):  #

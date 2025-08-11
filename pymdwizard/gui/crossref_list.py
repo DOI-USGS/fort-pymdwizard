@@ -18,13 +18,16 @@ NOTES
 None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_crossref
-from pymdwizard.gui.repeating_element import RepeatingElement
-from pymdwizard.gui.crossref import Crossref
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_crossref
+    from pymdwizard.gui.repeating_element import RepeatingElement
+    from pymdwizard.gui.crossref import Crossref
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Crossref_list(WizardWidget):

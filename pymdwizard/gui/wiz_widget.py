@@ -18,36 +18,45 @@ NOTES
 None
 """
 
+# Standard python libraries.
 import sys
-from lxml import etree
 
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMenu
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtWidgets import QSpacerItem
-from PyQt5.QtWidgets import QToolButton
-from PyQt5.QtWidgets import QGroupBox
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtGui import QFont
-from PyQt5.QtGui import QColor
-from PyQt5.QtGui import QDrag
-from PyQt5.QtGui import QPainter
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QMimeData
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QByteArray
-from PyQt5.QtCore import QRegExp
-from PyQt5.QtCore import QEvent
+# Non-standard python libraries.
+try:
+    from lxml import etree
+    from PyQt5.QtWidgets import QMainWindow
+    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QMenu
+    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QLabel
+    from PyQt5.QtWidgets import QComboBox
+    from PyQt5.QtWidgets import QTabWidget
+    from PyQt5.QtWidgets import QSpacerItem
+    from PyQt5.QtWidgets import QToolButton
+    from PyQt5.QtWidgets import QGroupBox
+    from PyQt5.QtWidgets import QPlainTextEdit
+    from PyQt5.QtGui import QFont
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtGui import QDrag
+    from PyQt5.QtGui import QPainter
+    from PyQt5.QtGui import QIcon
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import QMimeData
+    from PyQt5.QtCore import QObject
+    from PyQt5.QtCore import QByteArray
+    from PyQt5.QtCore import QRegExp
+    from PyQt5.QtCore import QEvent
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core import fgdc_utils
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import fgdc_utils
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class WizardWidget(QWidget):

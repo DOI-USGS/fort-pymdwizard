@@ -17,17 +17,23 @@ NOTES
 ------------------------------------------------------------------------------
 None
 """
+
+# Standard python libraries.
 import platform
 from copy import deepcopy
 
-import pandas as pd
-
-from PyQt5.QtWidgets import QMessageBox, QCompleter
-from PyQt5.QtCore import QUrl
-from PyQt5.QtCore import pyqtSlot
-from PyQt5 import QtCore
-
+# Non-standard python libraries.
 try:
+    import pandas as pd
+    from PyQt5.QtWidgets import QMessageBox, QCompleter
+    from PyQt5.QtCore import QUrl
+    # from PyQt5.QtCore import pyqtSlot
+    from PyQt5 import QtCore
+    from PyQt5.QtCore import pyqtSlot, QStringListModel
+except ImportError as err:
+    raise ImportError(err, __file__)
+
+try:  # ??????????????????????????????????????????????????????????????????????????????? fix
     from PyQt5.QtWebKitWidgets import QWebView
 except ImportError:
     from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
@@ -35,15 +41,17 @@ except ImportError:
     from PyQt5.QtWebChannel import QWebChannel
     from PyQt5.QtWebEngineWidgets import QWebEngineView
     from PyQt5.QtCore import QObject, pyqtSlot
-from PyQt5.QtCore import pyqtSlot, QStringListModel
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-from pymdwizard.core import spatial_utils
-from pymdwizard.core.xml_utils import xml_node
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_spdom
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.core import xml_utils
+    from pymdwizard.core import spatial_utils
+    from pymdwizard.core.xml_utils import xml_node
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_spdom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Spdom(WizardWidget):
