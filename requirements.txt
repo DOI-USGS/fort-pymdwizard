@@ -13,7 +13,7 @@ beautifulsoup4==4.11.1
 bleach==6.2.0
 branca==0.5.0
 brotlipy==0.7.0
-certifi==2021.10.8
+certifi==2024.7.4
 cffi==1.15.0
 charset-normalizer==2.0.12
 click==8.1.3
