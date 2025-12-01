@@ -45,7 +45,7 @@ This project is modeled off of the original [Metadata Wizard](https://github.com
 Recommended Citation:
 ----------------
 
-Talbert, C.B., Ignizio, D.A., Norkin, T., and Enns, K.D., 2017, Metadata Wizard (ver. 2.1.1, June 2025): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.1.1, June 2025): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
 
 Authors:
 ----------------
@@ -53,6 +53,7 @@ Authors:
 Colin B. Talbert -- https://orcid.org/0000-0002-9505-1876<br>
 Drew A. Ignizio -- https://orcid.org/0000-0001-8054-5139<br>
 Tamar Norkin -- https://orcid.org/0000-0003-0797-3940<br>
+Michael S. O'Donnell -- https://orcid.org/0000-0002-3488-003X<br>
 Kyle D. Enns -- https://orcid.org/0000-0001-7675-697X
 
 Acknowledgements:
