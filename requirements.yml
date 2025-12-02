@@ -1,0 +1,31 @@
+name pymdwizard
+channels
+  - conda-forge
+dependencies
+  - python=3.13
+  - pip
+  - cryptography
+  - numpy
+  - pandas
+  - geopandas
+  - gdal
+  - matplotlib
+  - folium
+  - fiona
+  - shapely
+  - pyproj
+  - lxml
+  - openpyxl
+  - jupyterlab
+  - ipywidgets
+  - scikit-learn
+  - requests
+  - beautifulsoup4
+  - pyyaml
+  - pyqt
+  - pip
+      - pyqt5
+      - pyqtwebengine
+      - sciencebasepy
+      - pip-system-certs
+prefix: pymdwizard
