@@ -270,7 +270,7 @@ class Ui_Form(object):
         self.fgdc_srccurr.setItemText(1, _translate("Form", "ground condition"))
         self.fgdc_srccurr.setItemText(2, _translate("Form", "observed"))
         self.fgdc_srccurr.setItemText(3, _translate("Form", "publication date"))
-        self.fgdc_srccurr.setItemText(4, _translate("Form", "See Supplemental Info"))
+        self.fgdc_srccurr.setItemText(4, _translate("Form", "See Supplemental Information"))
         self.label_15.setText(_translate("Form", "Contribution of this Source Input"))
         self.label_16.setToolTip(_translate("Form", "Required"))
         self.label_16.setText(
