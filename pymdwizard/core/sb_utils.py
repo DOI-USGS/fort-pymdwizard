@@ -13,18 +13,14 @@ Module contains functionality for direct editing of USGS ScienceBase metadata
 files
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intended to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Non-standard python libraries.
 try:
-    import pysb
+    import sciencebasepy
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -48,7 +44,8 @@ def has_pysb(func):
     """
 
     try:
-        import pysb  # Attempt to import the PYSB module
+        # import pysb  # Attempt to import the PYSB module  ?????????????????????????????????????
+        import sciencebasepy
     except ImportError:
         raise PYSBMissing(
             "This functionality requires the ScienceBase "

@@ -13,17 +13,14 @@ Module provide a variety of spatial introspection functions.
 Produces FGDC spatial elements from spatial data sets
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intended to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Standard python libraries.
 import os
+import sys
 import collections
 import math
 
@@ -31,6 +28,12 @@ import math
 try:
     import numpy as np
     import pandas as pd
+
+    # Address warning: Warning 3: Cannot find header.dxf (GDAL_DATA is not
+    # defined). Include before importing geopandas and fiona.
+    os.environ["GDAL_DATA"] = os.path.join(
+        f"{os.sep}".join(sys.executable.split(os.sep)[:-1]),
+        "Library", "share", "gdal")
     from osgeo import gdal
     from osgeo import osr
     from osgeo import ogr
@@ -46,8 +49,7 @@ except ImportError as err:
 # Custom import/libraries.
 try:
     from pymdwizard.core.xml_utils import xml_node
-    from pymdwizard.core import utils
-    from pymdwizard.core import data_io
+    from pymdwizard.core import (utils, data_io)
 except ImportError as err:
     raise ImportError(err, __file__)
 

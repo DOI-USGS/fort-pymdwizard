@@ -12,13 +12,9 @@ PURPOSE
 Module contains a variety of miscellaneous functions
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intended to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Standard python libraries.
@@ -38,23 +34,17 @@ import requests
 # Non-standard python libraries.
 try:
     import pandas as pd
-    from PyQt5.QtWidgets import QLineEdit
-    from PyQt5.QtWidgets import QTextBrowser
-    from PyQt5.QtWidgets import QPlainTextEdit
-    from PyQt5.QtWidgets import QApplication
-    from PyQt5.QtWidgets import QComboBox
-    from PyQt5.QtCore import QAbstractTableModel
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtGui import QBrush
-    from PyQt5.QtGui import QColor
-    from PyQt5.QtGui import QIcon
-    from PyQt5.QtCore import QSettings
+    from PyQt5.QtWidgets import (QLineEdit, QTextBrowser, QPlainTextEdit,
+                                 QApplication, QComboBox)
+    from PyQt5.QtCore import (QAbstractTableModel, Qt, QSettings)
+    from PyQt5.QtGui import (QBrush, QColor, QIcon)
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import xml_utils
+    from pymdwizard.core import (xml_utils, org_cert_setup)
+    from pymdwizard import __version__
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -171,26 +161,26 @@ def convert_persondict_to_fgdc(person_dict):
     person_dict = {k: ("" if v is None else v) for k, v in person_dict.items()}
 
     # Prepare contact information strings.
-    cntper_str = person_dict.get('name', "")
-    cntorg_str = f"USGS - {person_dict.get('department', '')}"
-    cntpos_str = person_dict.get('title', "")
-    address_str_comma = person_dict.get('street_address', "")
+    cntper_str = person_dict.get("name", "")
+    cntorg_str = f"USGS - {person_dict.get("department", '')}"
+    cntpos_str = person_dict.get("title", "")
+    address_str_comma = person_dict.get("street_address", "")
     address_str = address_str_comma.replace(",", ", ")
-    city_str = person_dict.get('city', "")
-    state_str = person_dict.get('state', "")
-    postal_str = person_dict.get('postal_code', "")
-    cntvoice_str = person_dict.get('telephone', "")
-    cntemail_str = person_dict.get('email', "")
+    city_str = person_dict.get("city", "")
+    state_str = person_dict.get("state", "")
+    postal_str = person_dict.get("postal_code", "")
+    cntvoice_str = person_dict.get("telephone", "")
+    cntemail_str = person_dict.get("email", "")
     addrtype_str = "mailing and physical"
 
-    # Create the XML structure
+    # Create the XML structure.
     cntinfo = xml_utils.xml_node("cntinfo")
     cntperp = xml_utils.xml_node("cntperp", parent_node=cntinfo)
     xml_utils.xml_node("cntper", text=cntper_str, parent_node=cntperp)
     xml_utils.xml_node("cntorg", text=cntorg_str, parent_node=cntperp)
     xml_utils.xml_node("cntpos", text=cntpos_str, parent_node=cntinfo)
 
-    # Create address nodes
+    # Create address nodes.
     cntaddr = xml_utils.xml_node("cntaddr", parent_node=cntinfo)
     xml_utils.xml_node("addrtype", text=addrtype_str, parent_node=cntaddr)
     xml_utils.xml_node("address", text=address_str, parent_node=cntaddr)
@@ -198,7 +188,7 @@ def convert_persondict_to_fgdc(person_dict):
     xml_utils.xml_node("state", text=state_str, parent_node=cntaddr)
     xml_utils.xml_node("postal", text=postal_str, parent_node=cntaddr)
 
-    # Create contact voice and email nodes
+    # Create contact voice and email nodes.
     xml_utils.xml_node("cntvoice", text=cntvoice_str, parent_node=cntinfo)
     xml_utils.xml_node("cntemail", text=cntemail_str, parent_node=cntinfo)
 
@@ -274,7 +264,7 @@ def populate_widget(widget, contents):
         widget (QtGui.QWidget): The widget containing QLineEdits named according
             to the keys in the dictionary.
         contents (dict): A dictionary containing keys that correspond to line
-             editsand values to be inserted as text. This dictionary will be
+             edits and values to be inserted as text. This dictionary will be
             flattened if it contains a nested hierarchy.
 
     Returns:
@@ -347,8 +337,8 @@ def set_text(widget, text):
 def populate_widget_element(widget, element, xpath):
     """
     Description:
-        Populates a PyQt widget with text from an lxml element
-        based on the provided XPath.
+        Populates a PyQt widget with text from a lxml element based on the
+        provided XPath.
 
     Args:
         widget (QWidget): A PyQt widget, either QLineEdit or QPlainTextEdit.
@@ -370,7 +360,7 @@ def populate_widget_element(widget, element, xpath):
         set_text(widget, first_child.text)
 
 
-# Back up the reference to the exceptionhook. ???????????????????????????????????????? move to top
+# TODO: Back up the reference to the exceptionhook. ???????????????????????????????????????? move to top
 sys._excepthook = sys.excepthook
 
 
@@ -399,7 +389,7 @@ def my_exception_hook(exctype, value, traceback):
     sys.exit(1)
 
 
-# Set the exception hook to our wrapping function ????????????????????????????????????
+# TODO: Set the exception hook to our wrapping function ????????????????????????????????????
 sys.excepthook = my_exception_hook
 
 
@@ -578,7 +568,8 @@ class PandasModel(QAbstractTableModel):
                     ret = "{:n}".format(ret)
                 elif isinstance(ret, datetime.date):
                     # FIXME: show microseconds optionally
-                    ret = ret.strftime(("%x", "%c")[isinstance(ret, datetime.datetime)])
+                    ret = ret.strftime(("%x", "%c")[isinstance(
+                        ret, datetime.datetime)])
                 else:
                     ret = str(ret)
                 if role == Qt.ToolTipRole:
@@ -819,7 +810,7 @@ def get_pem_fname():
         str: The absolute path to the DOIRootCA2.pem file.
     """
 
-    # Construct the full path to the DOIRootCA2.pem file.
+    # Construct the full path to the DOIRootCA2.pem file.  ?????????????????????? TODO: Do we want to use this path
     pem_path = os.path.abspath(os.path.join(
         get_install_dname("pymdwizard"),
         "pymdwizard",
@@ -848,69 +839,10 @@ def check_pem_file():
     # Define path and name of pem file that will be stored locally (if this
     # function has been run once before).
     pem_fname = get_pem_fname()
+    cert_file = os.path.basename(pem_fname)  # "DOIRootCA2.pem"
 
-    # Specify the certificate alias and output filename
-    cert_alias = "DOIRootCA2"
-
-    if platform.system() == "Windows":
-        try:
-            import wincertstore
-
-            if not os.path.exists(pem_fname):
-                for storename in ("CA", "ROOT"):
-                    with wincertstore.CertSystemStore(storename) as store:
-                        for cert in store.itercerts(
-                                usage=wincertstore.SERVER_AUTH):
-                            if cert_alias in cert.get_name():
-                                pem_fname = os.path.abspath(os.path.join(
-                                    get_install_dname("pymdwizard"),
-                                    "pymdwizard", "resources",
-                                    cert_alias + ".pem"))
-                                text_file = open(pem_fname, "w",
-                                                 encoding="ascii")
-                                contents = cert.get_pem().encode().decode(
-                                    "ascii")
-                                text_file.write(contents)
-                                text_file.close()
-
-            os.environ["PIP_CERT"] = pem_fname
-            os.environ["SSL_CERT_FILE"] = pem_fname
-            os.environ["GIT_SSL_CAINFO"] = pem_fname
-            return pem_fname
-        except:
-            print("Cannot locate a organizational pem file (only an issue "
-                  "for USGS).")
-    else:
-        # Mac/linux-like users.
-        try:
-            if not os.path.exists(pem_fname):
-                # Run the security command to find the certificate
-                result = subprocess.run(
-                    ["security", "find-certificate", "-a", "-c",
-                     cert_alias, "-p"],
-                    capture_output=True,
-                    text=True,
-                    check=True
-                )
-                # If found, result.stdout contains the PEM formatted
-                # certificate.
-                text_file = open(pem_fname, "w", encoding="ascii")
-                contents = result.stdout.strip()
-                text_file.write(contents)
-                text_file.close()
-
-                os.environ["PIP_CERT"] = pem_fname
-                os.environ["SSL_CERT_FILE"] = pem_fname
-                os.environ["GIT_SSL_CAINFO"] = pem_fname
-            else:
-                pass
-        except subprocess.CalledProcessError as e:
-            print(f"Error finding the certificate: {e}")
-        except FileNotFoundError:
-            print("The security command-line tool is not found. Ensure you "
-                  "are on macOS.")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+    # Set up certificate on system for Metadata Wizard.
+    cert_file = org_cert_setup.cert_setup(cert_file)
 
 
 def requests_pem_get(url, params={}):
@@ -927,6 +859,7 @@ def requests_pem_get(url, params={}):
         Response: The result of the requests.get call, which includes
             the server's response.
     """
+
     # Use an empty dictionary if no params are provided.
     if params is None:
         params = {}
@@ -953,11 +886,12 @@ def get_setting(which, default=None):
         default (optional): The value to return if the setting is not found.
 
     Returns:
-        The setting in its native format (string, integer, etc).
+        The setting in its native format (string, integer, etc.).
     """
 
-    # Create a QSettings object for the application settings. ??????????????????????????? pull from version
-    settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
+    # Create a QSettings object for the application settings.
+    settings = QSettings("USGS_" + __version__,
+                             "pymdwizard_" + __version__)
 
     # Return the setting value, or default if not found
     return settings.value(which, default)
@@ -975,9 +909,9 @@ def url_is_alive(url):
         bool: True if the URL is reachable, False otherwise.
     """
 
-    # Prefix the URL with 'http://' if it starts with 'www'. ?????????????????????????? https; not all sites redirect
+    # Prefix the URL with 'https://' if it starts with 'www'.
     if url.startswith("www"):
-        url = "http://" + url
+        url = "https://" + url
 
     # Create a request to perform a HEAD request.
     try:

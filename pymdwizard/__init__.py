@@ -16,52 +16,30 @@ PURPOSE
 Module for Python package creation
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
-
-from __future__ import absolute_import
 
 import os
 import sys
 
-__version__ = "2.1.1"
-
-try:
-    import core
-    import gui
-except ImportError:
-    from pymdwizard import gui
-    from pymdwizard.gui.ui_files import growingtextedit
-    from pymdwizard import core
+# try:
+#     import core
+#     import gui
+# except ImportError:
+#     from pymdwizard import gui
+#     from pymdwizard.gui.ui_files import growingtextedit
+#     from pymdwizard import core
 
 this_fname = os.path.realpath(__file__)
 root_dir = os.path.dirname(this_fname)
 sys.path.append(os.path.join(root_dir, "gui", "ui_files"))
+
+# Version of software properties used in different places of UIs. Change this
+# value and do not hardcode else where.
+__version__ = "2.1.1"
+__author__ = "U.S. Geological Survey, Fort Collins Colorado"
+__copyright__ = "Creative Commons (Universal 4.0)"
+__license__ = "Creative Commons (Universal 4.0)"
+__status__ = "Final"

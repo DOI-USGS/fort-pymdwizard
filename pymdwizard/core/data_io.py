@@ -18,6 +18,8 @@ None
 """
 
 # Standard python libraries.
+import os
+import sys
 import struct
 import datetime
 import decimal
@@ -26,6 +28,12 @@ import decimal
 try:
     import pandas as pd
     import numpy as np
+
+    # Address warning: Warning 3: Cannot find header.dxf (GDAL_DATA is not
+    # defined). Include before importing geopandas and fiona.
+    os.environ["GDAL_DATA"] = os.path.join(
+        f"{os.sep}".join(sys.executable.split(os.sep)[:-1]),
+        "Library", "share", "gdal")
     import geopandas as gpd
     import fiona
     import laspy
@@ -132,7 +140,7 @@ def read_shp(fname):
 def dbfreader(f):
     """
     Description:
-        Returns an iterator over records in an Xbase DBF file.
+        Returns an iterator over records in a Xbase DBF file.
         The first row returned contains the field names.
 
         The second row contains field specs: (type, size, decimal places).

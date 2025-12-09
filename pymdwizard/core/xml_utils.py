@@ -34,7 +34,7 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import fgdc_utils
+    from pymdwizard.core import (fgdc_utils, utils)
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -83,9 +83,9 @@ def save_to_file(element, fname):
 
     # Open the file in write mode with UTF-8 encoding.
     with codecs.open(fname, "w", "utf-8") as file:
-        # Convert the lxml element to a string and write to the file
+        # Convert the lxml element to a string and write to the file.
         file.write(node_to_string(element))
-        # lxml.etree.tostring(element, encoding="unicode") ???????????????????????????????? why do we need a custom function
+        # lxml.etree.tostring(element, encoding="unicode")
 
 
 def node_to_dict(node, add_fgdc=True):
@@ -189,8 +189,7 @@ def search_xpath(node, xpath, only_first=True):
     """
 
     # Check if node is of an acceptable type.
-    if isinstance(node, (etree._Element, etree._ElementTree,
-                         etree.RestrictedElement)):
+    if isinstance(node, (etree._Element, etree._ElementTree)):
         # Execute the XPath query.
         matches = node.xpath(xpath)
 
@@ -476,8 +475,6 @@ class XMLRecord(object):
                 self.record = etree.parse(self.fname)
                 self._root = self.record.getroot()
             else:
-                from pymdwizard.core import utils
-
                 # Validate and retrieve content from the URL.
                 try:
                     if utils.url_validator(contents):
@@ -535,7 +532,6 @@ class XMLRecord(object):
         if not fname:
             fname = self.fname
         save_to_file(self._contents.to_xml(), fname)
-
 
     def validate(self, schema="fgdc", as_dataframe=True):
         """
@@ -604,12 +600,10 @@ class XMLNode(object):
         if parent_node is not None:
             parent_node.add_child(self, index=index, deepcopy=False)
 
-
     def __repr__(self):
         """Return a string representation of this object."""
 
         return self.__str__()
-
 
     def __str__(self, level=0):
         """
@@ -640,7 +634,6 @@ class XMLNode(object):
 
         return result
 
-
     def __eq__(self, other):
         """
         Description:
@@ -657,7 +650,6 @@ class XMLNode(object):
             return self.to_str() == other.to_str()
 
         return False
-
 
     def from_xml(self, element):
         """
@@ -702,7 +694,6 @@ class XMLNode(object):
             # tag.
             self.add_attr(child_node.tag, child_object)
 
-
     def add_attr(self, tag, child_object):
         """
         Description:
@@ -732,7 +723,6 @@ class XMLNode(object):
             # If the tag does not exist, directly add the new child object.
             self.__dict__[tag] = child_object
 
-
     def to_xml(self):
         """
         Description:
@@ -749,7 +739,6 @@ class XMLNode(object):
         element = string_to_node(str_element)
 
         return element
-
 
     def from_str(self, str_element):
         """
@@ -774,7 +763,6 @@ class XMLNode(object):
         # Populate this XMLNode using the parsed lxml.Element.
         self.from_xml(element)
 
-
     def to_str(self):
         """
         Description:
@@ -785,7 +773,6 @@ class XMLNode(object):
         """
 
         return self.__str__()
-
 
     def search_xpath(self, xpath=""):
         """
@@ -851,7 +838,6 @@ class XMLNode(object):
         except:
             return []
 
-
     def xpath(self, xpath="", as_list=True, as_text=False):
         """
         Description:
@@ -883,7 +869,6 @@ class XMLNode(object):
         # Return the final results, which can be an XMLNode, list of XMLNodes,
         # or str.
         return results
-
 
     def xpath_march(self, xpath, as_list=True):
         """
@@ -917,7 +902,6 @@ class XMLNode(object):
         # return an empty list.
         return []
 
-
     def clear_children(self, tag=None):
         """
         Description:
@@ -939,7 +923,6 @@ class XMLNode(object):
         else:
             # If no tag is specified, clear all children from this node.
             self.children = []
-
 
     def replace_child(self, new_child, tag=None, deepcopy=True):
         """
@@ -974,7 +957,6 @@ class XMLNode(object):
                 # Exit loop after the replacement is done.
                 break
 
-
     def find_string(self, string, ignorecase=False):
         """
         Description:
@@ -1007,7 +989,6 @@ class XMLNode(object):
 
         # Return the list of all found XMLNodes.
         return found
-
 
     def replace_string(self, old, new, maxreplace=None, deep=True):
         """
@@ -1049,7 +1030,6 @@ class XMLNode(object):
 
         # Return the total number of occurrences found and replaced.
         return count_found
-
 
     def add_child(self, child, index=-1, deepcopy=True):
         """

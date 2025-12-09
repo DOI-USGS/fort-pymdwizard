@@ -16,13 +16,9 @@ It does two things, initialize environment variables (windows only)
 Pass command line arguments to the MainWindow script.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intented to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Standard python libraries.
@@ -59,16 +55,21 @@ def set_clean_path():
             ]
         )
 
-        from pymdwizard.core.utils import check_pem_file
-
-        check_pem_file()
-
-        from pymdwizard.core.spatial_utils import set_local_gdal_data
-
-        set_local_gdal_data()
-
     else:
         pass
+
+    # Allow python to recognize module pymdwizard.
+    this_fname = os.path.realpath(__file__)
+    root_dir = os.path.dirname(this_fname)
+    sys.path.append(os.path.dirname(root_dir))
+
+    # Setup DOI (organizational) certificate.
+    from pymdwizard.core.utils import check_pem_file
+    check_pem_file()
+    from pymdwizard.core.spatial_utils import set_local_gdal_data
+
+    # Set up local GDAL data.
+    set_local_gdal_data()
 
 
 if __name__ == "__main__":
@@ -87,22 +88,24 @@ if __name__ == "__main__":
     help_str = "The CSV or SHP file to use for populating the spdom, spdoinfo,"
     help_str += " spref and eainfo sections"
     parser.add_argument(
-        "introspect_fname", help=help_str, type=str, default=None, nargs="?"
+        "introspect_fname", help=help_str, type=str, default=None,
+        nargs="?"
     )
     args = parser.parse_args()
 
+    # Call function above.
     set_clean_path()
 
-    # Handle high resolution displays.
+    # Handle high resolution displays with QT.
     from PyQt5.QtCore import Qt
     from PyQt5.QtWidgets import QApplication
-    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+    if hasattr(Qt, "AA_EnableHighDpiScaling"):
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+    if hasattr(Qt, "AA_UseHighDpiPixmaps"):
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
+    # Open application.
     from pymdwizard.gui import MainWindow
-
     MainWindow.launch_main(
         xml_fname=args.xml_fname,
         introspect_fname=args.introspect_fname,

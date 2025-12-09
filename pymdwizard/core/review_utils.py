@@ -12,13 +12,9 @@ PURPOSE
 Module contains functionality for creating a metadata review document.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-This script is part of the pymdwizard package and is not intended to be
-used independently. All pymdwizard package requirements are needed.
-
-See imports section for external packages used in this script as well as
-inter-package dependencies.
+None
 """
 
 # Standard python libraries.
@@ -38,8 +34,7 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import utils
-    from pymdwizard.core import fgdc_utils
+    from pymdwizard.core import (utils, fgdc_utils)
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -378,7 +373,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
         )
     except:
         # something when wrong getting the contact info
-        # (no internet, non USGS, etc), just insert placeholcers
+        # (no internet, non USGS, etc.), just insert placeholcers
         reviewer_str = "<<insert reviewer name>> (<<insert reviewer email>>)"
 
     # Add reviewer information.

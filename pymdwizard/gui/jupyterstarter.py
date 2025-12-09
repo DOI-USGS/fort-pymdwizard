@@ -15,7 +15,7 @@ file's name.
 
 NOTES
 ------------------------------------------------------------------------------
-None
+TODO: Fix commented functions (delete or add justification for keeping).
 """
 
 # Standard python libraries.
@@ -25,9 +25,7 @@ from subprocess import Popen
 
 # Non-standard python libraries.
 try:
-    from PyQt5.QtWidgets import QFileDialog
-    from PyQt5.QtWidgets import QDialog
-    from PyQt5.QtWidgets import QMessageBox
+    from PyQt5.QtWidgets import (QFileDialog, QDialog, QMessageBox)
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -41,6 +39,33 @@ except ImportError as err:
 
 
 class JupyterStarter(QDialog):
+    """
+    Description:
+        A dialog widget that allows the user to select a directory and
+        launch a Jupyter Lab session within that directory.
+        Inherits from QDialog.
+
+    Passed arguments:
+        previous_dnames (list): List of directories previously used.
+        update_function (callable, optional): Function to call after
+            launching Jupyter (e.g., to save settings).
+        parent (QWidget, optional): Parent widget.
+
+    Returned objects:
+        None
+
+    Workflow:
+        1. Initializes the UI and populates the directory history.
+        2. Provides buttons to browse for a directory, launch Jupyter,
+           or cancel.
+        3. Executes "jupyter lab" (or equivalent) in a subprocess
+           within the selected directory.
+
+    Notes:
+        Code related to kernel discovery is commented out and ignored
+        in this update.
+    """
+
     def __init__(
         self,
         previous_dnames=[],
@@ -49,11 +74,14 @@ class JupyterStarter(QDialog):
         update_function=None,
         parent=None,
     ):
+
+        # Initialize the parent QDialog class.
         super(self.__class__, self).__init__(parent=parent)
 
         self.build_ui()
         self.connect_events()
 
+        # Set default values.
         # self.kernels = {}
         self.previous_dnames = previous_dnames
         if previous_dnames:
@@ -63,6 +91,7 @@ class JupyterStarter(QDialog):
         # self.populate_kernels()
         self.update_function = update_function
 
+        # Populate the directory dropdown with history.
         for dname in self.previous_dnames:
             self.ui.dname.addItem(dname)
 
@@ -71,6 +100,7 @@ class JupyterStarter(QDialog):
         #     if index >= 0:
         #         self.ui.kernel.setCurrentIndex(index)
 
+        # Apply window icon and style.
         utils.set_window_icon(self)
         self.setStyleSheet(wiz_widget.NORMAL_STYLE)
 
@@ -82,12 +112,23 @@ class JupyterStarter(QDialog):
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Build and modify this widget's GUI.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Instantiates and sets up the UI elements.
+
+        Notes:
+            None
         """
+
+        # Instantiate and setup the UI
         self.ui = UI_jupyterstarter.Ui_Form()
         self.ui.setupUi(self)
 
@@ -117,27 +158,63 @@ class JupyterStarter(QDialog):
 
     def connect_events(self):
         """
-        Connect the appropriate GUI components with the corresponding functions
+        Description:
+            Connect the appropriate GUI components with the corresponding
+            functions.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Connects Browse, Cancel, and Launch buttons to their
+            respective methods.
+
+        Notes:
+            None
         """
+
+        # Connect button signals.
         self.ui.btn_browse.clicked.connect(self.browse)
         self.ui.btn_cancel.clicked.connect(self.close_form)
         self.ui.btn_launch.clicked.connect(self.launch)
 
     def browse(self):
-        if not self.previous_dnames:
-            dname = ""
-        else:
-            dname = self.previous_dnames[0]
+        """
+        Description:
+            Opens a dialog to browse for a directory and sets the
+            dropdown text to the selected path.
 
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. Determines the initial directory for the file dialog.
+            2. Calls "QFileDialog.getExistingDirectory".
+            3. Sets the selected directory as the current text in the
+               directory dropdown.
+
+        Notes:
+            None
+        """
+
+        # Determine the default directory for the dialog.
+        dname = self.previous_dnames[0] if self.previous_dnames else ""
+
+        # Open file dialog to select the directory.
         jupyter_dname = QFileDialog.getExistingDirectory(
             self, "Select Directory to launch Jupyter from", dname
         )
+
+        # Update the dropdown if a directory was selected.
         if jupyter_dname:
             self.ui.dname.setCurrentText(jupyter_dname)
+
 
     # def get_conda_root(self):
     #     try:
@@ -172,40 +249,112 @@ class JupyterStarter(QDialog):
     #             return "", ""
 
     def launch(self):
+        """
+        Description:
+            Launches a Jupyter Lab session in a subprocess.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. Validates the selected directory.
+            2. Configures the environment variables (PYTHONPATH).
+            3. Executes the Jupyter Lab command using `Popen` based on
+               the operating system (Mac/Windows).
+            4. Displays a success message and closes the dialog.
+
+        Notes:
+            None
+        """
+
+        # Retrieve widget value.
         jupyter_dname = self.ui.dname.currentText()
+
+        # Validate the directory existence
         if not os.path.exists(jupyter_dname):
-            msg = "The selected directory to lauch jupyter in does not exists."
-            msg += "\nPlease check the location before launching Jupyter."
+            msg = (
+                "The selected directory to lauch jupyter in does not "
+                "exists.\nPlease check the location before launching "
+                "Jupyter."
+            )
             QMessageBox.information(self, "Missing Directory", msg)
             return
 
         python_dir = utils.get_install_dname("python")
+
         if platform.system() == "Darwin":
+            # For Mac OS: direct execution of "jupyter lab".
+            python_dir = utils.get_install_dname("python")
             jupyterexe = os.path.join(python_dir, "jupyter")
             my_env = os.environ.copy()
             my_env["PYTHONPATH"] = os.path.join(python_dir, "python")
-            p = Popen([jupyterexe, "lab"], cwd=jupyter_dname)
+
+            # Execute command.
+            Popen([jupyterexe, "lab"], cwd=jupyter_dname, env=my_env)
         else:
+            # For Windows/Other: execution via python module.
             root_dir = utils.get_install_dname("root")
             my_env = os.environ.copy()
+
+            # Set PYTHONPATH to include pymdwizard root.
             my_env["PYTHONPATH"] = os.path.join(root_dir, "pymdwizard")
 
-            pythonexe = os.path.join(utils.get_install_dname("python"), "python.exe")
-            p = Popen([pythonexe, "-m", "jupyterlab"], cwd=jupyter_dname, env=my_env)
+            pythonexe = os.path.join(
+                utils.get_install_dname("python"), "python.exe"
+            )
 
-        msg = "Jupyter launching...\nJupyter will start momentarily in a new tab in your default internet browser."
-        QMessageBox.information(self, "Launching Jupyter", msg)
+            # Execute command.
+            Popen(
+                [pythonexe, "-m", "jupyterlab"],
+                cwd=jupyter_dname,
+                env=my_env,
+            )
 
-        self.update_function(self.ui.dname.currentText())
-        self.close()
+            # Inform the user that launch is in progress.
+            msg = (
+                "Jupyter launching...\nJupyter will start momentarily in a "
+                "new tab in your default internet browser."
+            )
+            QMessageBox.information(self, "Launching Jupyter", msg)
+
+            # Call update function (e.g., to save directory history).
+            self.update_function(self.ui.dname.currentText())
+            self.close()
 
     def close_form(self):
+        """
+        Description:
+            Safely closes the dialog box.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Sets parent to None, then deletes the widget safely and
+            closes the window.
+
+        Notes:
+            None
+        """
+
         self.parent = None
         self.deleteLater()
         self.close()
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(
-        JupyterStarter, "JupyterStarter", previous_dnames=[r"c:\temp", r"c:\temp\junk"]
+        JupyterStarter, "JupyterStarter",
+        previous_dnames=[r"c:\temp", r"c:\temp\junk"]
     )
