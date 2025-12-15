@@ -66,6 +66,8 @@ def set_clean_path():
     # Setup DOI (organizational) certificate.
     from pymdwizard.core.utils import check_pem_file
     check_pem_file()
+
+    # Set up access to GDAL data.
     from pymdwizard.core.spatial_utils import set_local_gdal_data
 
     # Set up local GDAL data.

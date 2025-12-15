@@ -360,10 +360,6 @@ def populate_widget_element(widget, element, xpath):
         set_text(widget, first_child.text)
 
 
-# TODO: Back up the reference to the exceptionhook. ???????????????????????????????????????? move to top
-sys._excepthook = sys.excepthook
-
-
 def my_exception_hook(exctype, value, traceback):
     """
     Description:
@@ -379,6 +375,18 @@ def my_exception_hook(exctype, value, traceback):
         None
     """
 
+    # Test without these two lines of code found outside of this function
+    # and retain for now.
+    # -----
+    # This line of code preceded this function, which should not do anything
+    # because of how code is loaded into memory. So, we are keeping here for
+    # now, because developers did not state logic of its use.
+    # sys._excepthook = sys.excepthook
+
+    # This line of code came after this function.
+    # sys.excepthook = my_exception_hook
+    # -----
+
     # Print the exception type, value, and traceback.
     print(exctype, value, traceback)
 
@@ -387,11 +395,6 @@ def my_exception_hook(exctype, value, traceback):
 
     # Exit the program with a non-zero exit code.
     sys.exit(1)
-
-
-# TODO: Set the exception hook to our wrapping function ????????????????????????????????????
-sys.excepthook = my_exception_hook
-
 
 def launch_widget(Widget, title="", **kwargs):
     """
@@ -810,7 +813,7 @@ def get_pem_fname():
         str: The absolute path to the DOIRootCA2.pem file.
     """
 
-    # Construct the full path to the DOIRootCA2.pem file.  ?????????????????????? TODO: Do we want to use this path
+    # Construct the full path to the DOIRootCA2.pem file.
     pem_path = os.path.abspath(os.path.join(
         get_install_dname("pymdwizard"),
         "pymdwizard",
@@ -839,10 +842,9 @@ def check_pem_file():
     # Define path and name of pem file that will be stored locally (if this
     # function has been run once before).
     pem_fname = get_pem_fname()
-    cert_file = os.path.basename(pem_fname)  # "DOIRootCA2.pem"
 
     # Set up certificate on system for Metadata Wizard.
-    cert_file = org_cert_setup.cert_setup(cert_file)
+    cert_file = org_cert_setup.cert_setup(pem_fname)
 
 
 def requests_pem_get(url, params={}):

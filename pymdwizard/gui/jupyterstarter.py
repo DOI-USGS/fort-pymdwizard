@@ -15,7 +15,7 @@ file's name.
 
 NOTES
 ------------------------------------------------------------------------------
-TODO: Fix commented functions (delete or add justification for keeping).
+None
 """
 
 # Standard python libraries.
@@ -74,7 +74,6 @@ class JupyterStarter(QDialog):
         update_function=None,
         parent=None,
     ):
-
         # Initialize the parent QDialog class.
         super(self.__class__, self).__init__(parent=parent)
 
@@ -82,33 +81,18 @@ class JupyterStarter(QDialog):
         self.connect_events()
 
         # Set default values.
-        # self.kernels = {}
         self.previous_dnames = previous_dnames
         if previous_dnames:
             self.ui.dname.setCurrentText(previous_dnames[0])
-
-        # self.default_kernel = default_kernel
-        # self.populate_kernels()
         self.update_function = update_function
 
         # Populate the directory dropdown with history.
         for dname in self.previous_dnames:
             self.ui.dname.addItem(dname)
 
-        # if last_kernel and last_kernel in self.kernels:
-        #     index = self.ui.kernel.findText(last_kernel)
-        #     if index >= 0:
-        #         self.ui.kernel.setCurrentIndex(index)
-
         # Apply window icon and style.
         utils.set_window_icon(self)
         self.setStyleSheet(wiz_widget.NORMAL_STYLE)
-
-        # try:
-        #     import jupyterlab
-        #     self.ui.usejupyterframe.setEnabled(True)
-        # except ImportError:
-        #     self.ui.usejupyterframe.setEnabled(False)
 
     def build_ui(self):
         """
@@ -131,30 +115,6 @@ class JupyterStarter(QDialog):
         # Instantiate and setup the UI
         self.ui = UI_jupyterstarter.Ui_Form()
         self.ui.setupUi(self)
-
-    # def populate_kernels(self):
-    #     self.ui.kernel.addItem("pymdwizard <<default>>")
-    #     self.kernels["pymdwizard <<default>>"] = utils.get_install_dname("python")
-    #     try:
-
-    #         conda_exe = os.path.join(self.get_conda_root()[0], "Scripts", "conda.exe")
-    #         if os.path.exists(conda_exe):
-    #             kernels = subprocess.check_output([conda_exe, "env", "list"])
-    #         else:
-    #             kernels = subprocess.check_output(["conda", "env", "list"])
-    #         for line in kernels.split(b"\n"):
-    #             if line and not line.strip().startswith(b"#"):
-    #                 try:
-    #                     parts = line.split()
-    #                     if parts[1] == b"*":
-    #                         parts = [parts[0], parts[2]]
-    #                     name, path = parts
-    #                     self.ui.kernel.addItem(str(name)[2:-1])
-    #                     self.kernels[str(name)[2:-1]] = str(path)
-    #                 except (ValueError, IndexError):
-    #                     pass
-    #     except:
-    #         pass
 
     def connect_events(self):
         """
@@ -214,39 +174,6 @@ class JupyterStarter(QDialog):
         # Update the dropdown if a directory was selected.
         if jupyter_dname:
             self.ui.dname.setCurrentText(jupyter_dname)
-
-
-    # def get_conda_root(self):
-    #     try:
-    #         from conda.core.envs_manager import list_all_known_prefixes
-
-    #         prefixes = list_all_known_prefixes()
-    #         return prefixes[0], os.path.join(prefixes[0], "envs")
-    #     except:
-    #         try:
-
-    #             conda_info = subprocess.check_output(["conda", "info"]).decode("utf-8")
-    #             info = {}
-    #             for line in conda_info.split("\n")[1:]:
-    #                 try:
-    #                     key, value = line.strip().split(" : ")
-    #                     info[key] = value
-    #                 except ValueError:
-    #                     pass
-
-    #             envs_dname = info["envs directories"]
-    #             try:
-    #                 root_dname = (
-    #                     info["root environment"].replace("(writable)", "").strip()
-    #                 )
-    #             except KeyError:
-    #                 root_dname = (
-    #                     info["base environment"].replace("(writable)", "").strip()
-    #                 )
-
-    #             return str(root_dname), str(envs_dname)
-    #         except:
-    #             return "", ""
 
     def launch(self):
         """

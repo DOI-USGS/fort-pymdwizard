@@ -140,7 +140,7 @@ class Crossref(Citeinfo):
             None
 
         Returned objects:
-            crossref (xml.etree.ElementTree.Element): Cross reference
+            crossref (xml.etree.ElementTree.Element): Cross-reference
                 element tag in XML tree.
 
         Workflow:
@@ -153,7 +153,7 @@ class Crossref(Citeinfo):
         """
 
         # Get the "citeinfo" element from the parent method.
-        citeinfo = super().to_xml()
+        citeinfo = Citeinfo.to_xml(self)
 
         # Create the parent "crossref" XML node.
         crossref = xml_utils.xml_node("crossref")
@@ -197,6 +197,7 @@ class Crossref(Citeinfo):
             # Unwrap "citeinfo" if it is wrapped in "crossref".
             if citeinfo.tag == "crossref":
                 citeinfo = citeinfo.xpath("citeinfo")[0]
+
             # Use the element directly if it's "citeinfo".
             elif citeinfo.tag != "citeinfo":
                 print("The tag is not 'citation' or 'citeinfo'")

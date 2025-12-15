@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!--
+	The MetadataWizard (pymdwizard) software was developed by the U.S. 
+	Geological Survey Fort Collins Science Center.
+	
+	License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+		https://creativecommons.org/licenses/by/4.0/
+	-->
+	
     <title>Quick Start - Leaflet</title>
-
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
-    <link rel="stylesheet" href="leaflet/leaflet.css" integrity="" crossorigin=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
+	
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="leaflet/leaflet.css" integrity="" crossorigin=""/>
+	
+	<!-- scripts -->
     <script src="leaflet/leaflet.js" integrity="" crossorigin=""></script>
-    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+	<script src="qrc:///qtwebchannel/qwebchannel.js"></script> 
+	
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
 </head>
 <body>
-<div id="map"></div>
+    <div id="map"></div>
 
+    <script>
+		// --------------------------------
+		// QAQC: start up
+		// --------------------------------
+		console.log("Started: java script");
+		
+		console.log("Checking for qt object:", qt);
+		if (typeof qt === 'undefined') {
+			console.error(
+				"qt object is undefined — WebChannel transport not available"
+			);
+		} else {
+			console.log("qt object is available:", qt);
+		};
+		
+		// --------------------------------
+		// Global Variables
+		// --------------------------------
+		console.log("Setup of global variables");
+		
+        // Reference to Python object exposed via Qt WebChannel.
+        let Spdom;
 
-<script>
+		// Declare map
+		let map;
+		let baseMaps;
 
-var spdom;
-
-new QWebChannel(qt.webChannelTransport, function (channel) {
-    spdom = channel.objects.spdom;
-});
-
-
-var east = 180.0;
-    var west = -180.0;
-    var north = 90.0;
-    var south = -90.0;
-
-    var OpenStreetMap_Mapnik = L.tileLayer(
+		// Initial bounding box coordinates are defined in python and are 
+		// designed to override these. However, we need to define the Global
+		// variables here.
+		// ----------------
+		// Initial bounding box coordinates set to globe.
+        let east = 180.0;
+        let west = -180.0;
+        let north = 90.0;
+        let south = -90.0;
+		
+		/*
+        // Initial bounding box coordinates set to all US states and 
+		// territories. Our application specifically uses the antimeridian-
+		// crossing logic (where west > east means the bounding box wraps 
+		// around the globe)
+		let north = 71.5388
+		let south = 24.0
+		let east = -64.5843
+		let west = -178.6194
+		*/
+	
+		// Global Layer Variables (CRITICAL: Used by updateMap() for setBounds).
+		let rect = null;
+		let rect2 = null;
+		
+		// Global marker variables.
+		let ne_marker, nw_marker, se_marker, sw_marker;
+		let marker_layer;
+		
+		// Base layers
+		let OpenStreetMap_Mapnik;
+		let Esri_WorldImagery;
+				
+		// --------------------------------
+        // Define base map layers
+		// --------------------------------
+        OpenStreetMap_Mapnik = L.tileLayer(
             'https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',
             {
                 maxZoom: 20,
@@ -42,138 +100,284 @@ var east = 180.0;
                 attribution: 'USGS The National Map',
                 detectRetina: false
             }
-    );
-    var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        continuousWorld: true,
-        noWrap: true,
-        minZoom: 0,
-        maxZoom: 20,
-    });
-    var map = L.map('map', {
-        layers: [OpenStreetMap_Mapnik]
-    });
-    var baseMaps = {
-        "Street Map": OpenStreetMap_Mapnik,
-        "Imagery": Esri_WorldImagery,
-    };
-    L.control.layers(baseMaps).addTo(map);
-    map.setView([51.505, -0.09], 1);
-    var ne_marker = new L.marker([north, east],{
-        draggable: true
-    });
-    ne_marker.bindPopup("move to resize");
-    var nw_marker = new L.marker([north, west],{
-        draggable: true
-    });
-    nw_marker.bindPopup("move to resize");
-    var se_marker = new L.marker([south, east],{
-        draggable: true
-    });
-    se_marker.bindPopup("move to resize");
-    var sw_marker = new L.marker([south, west],{
-        draggable: true
-    });
-    sw_marker.bindPopup("move corner markers to resize");
-    var southWest = new L.latLng(south, west);
-    var northEast = new L.latLng(north, east);
-    var bounds = new L.latLngBounds(southWest, northEast);
-    var rect = new L.rectangle(bounds, {color: 'blue', weight: 1});
-    var rect2 = new L.rectangle(bounds, {color: 'blue', weight: 1});
-    ne_marker.on("dragend",function(ev){
-        var changedPos = ev.target.getLatLng();
-        east = changedPos.lng;
-        north = changedPos.lat;
-        updateMap();
-    });
-    se_marker.on("dragend",function(ev){
-        var changedPos = ev.target.getLatLng();
-        east = changedPos.lng;
-        south = changedPos.lat;
-        updateMap();
-    });
-    nw_marker.on("dragend",function(ev){
-        var changedPos = ev.target.getLatLng();
-        west = changedPos.lng;
-        north = changedPos.lat;
-        updateMap();
-    });
-    sw_marker.on("dragend",function(ev){
-        var changedPos = ev.target.getLatLng();
-        west = changedPos.lng;
-        south = changedPos.lat;
-        updateMap();
-    });
-    function removeRect(){
-        map.removeLayer(se_marker);
-        map.removeLayer(ne_marker);
-        map.removeLayer(sw_marker);
-        map.removeLayer(nw_marker);
-        map.removeLayer(rect);
-        map.removeLayer(rect2);
-    }
-    function addRect(){
-        map.addLayer(se_marker);
-        map.addLayer(ne_marker);
-        map.addLayer(sw_marker);
-        map.addLayer(nw_marker);
-        map.addLayer(rect);
-        if (west > east) {
-            map.addLayer(rect2)
-        }
-    }
-    function updateMap() {
-        var southWest = new L.latLng(south, west);
-        var northEast = new L.latLng(north, east);
-        var southEast = new L.latLng(south, east);
-        var northWest = new L.latLng(north, west);
-        se_marker.setLatLng(southEast);
-        ne_marker.setLatLng(northEast);
-        sw_marker.setLatLng(southWest);
-        nw_marker.setLatLng(northWest);
-        var bounds = new L.latLngBounds(southWest, northEast);
-        if (west > east) {
-            var southNeg180 = new L.latLng(south, -180);
-            var north180 = new L.latLng(north, 180);
-            var bounds1 = new L.latLngBounds(southWest, north180);
-            var bounds2 = new L.latLngBounds(southNeg180, northEast);
-            map.addLayer(rect2);
-            rect.setBounds(bounds1);
-            rect2.setBounds(bounds2);
-        } else {
-            map.removeLayer(rect2);
-            var bounds = new L.latLngBounds(southWest, northEast);
-            rect.setBounds(bounds);
-        }
-    }
-    function fitMap(){
-        var southWest = new L.latLng(south, west);
-        var northEast = new L.latLng(north,east);
-        var bounds = new L.latLngBounds(southWest, northEast);
-        map.fitBounds(bounds);
-    }
+        );
 
-    var onNEMove = function () {
-        spdom.on_ne_move(ne_marker.getLatLng().lat, ne_marker.getLatLng().lng)
+        Esri_WorldImagery = L.tileLayer(
+			'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                continuousWorld: true,
+                noWrap: true,
+                minZoom: 0,
+                maxZoom: 20
+            }
+        );
+			
+		// ===================================================================
+		// Function to Initialize the Leaflet Map Object
+		// This runs immediately upon script load, creating the map object 
+		// once for Python to reference later.
+		// ===================================================================
+		function initialize_map() {
+			if (!map) { 
+				console.log("Started: initialize_map");
+				
+				map = L.map('map', {
+					layers: [OpenStreetMap_Mapnik],
+					// Provide a safe, valid default view (approx. US center).
+					// center: [39.8283, -98.5795],
+					// zoom: 10
+				});
+				
+				baseMaps = {
+					"Street Map": OpenStreetMap_Mapnik,
+					"Imagery": Esri_WorldImagery,
+				};
+				L.control.layers(baseMaps).addTo(map);
+										
+				console.log("	Success");
+			}
+		};
 
-    };
-    ne_marker.on('move', onNEMove);
-    var onNWMove = function () {
-        spdom.on_nw_move(nw_marker.getLatLng().lat, nw_marker.getLatLng().lng)
-    };
-    nw_marker.on('move', onNWMove);
-    var onSEMove = function () {
-        spdom.on_se_move(se_marker.getLatLng().lat, se_marker.getLatLng().lng)
-    };
-    se_marker.on('move', onSEMove);
-    var onSWMove = function () {
-        spdom.on_sw_move(sw_marker.getLatLng().lat, sw_marker.getLatLng().lng)
-    };
-    sw_marker.on('move', onSWMove);
+		// ===================================================================
+		// Create Layers, Markers, and Listeners
+		// This runs ONLY after QWebChannel is connected.
+		// ===================================================================
+		function setupLayersAndListeners() {
+			console.log("Started: setupLayersAndListeners");
+			
+			// Ensure 'map' is valid before proceeding
+			if (typeof map === 'undefined' || 
+				typeof map.addLayer !== 'function') {
+				
+				console.error(
+					"CRITICAL ERROR: 'map' object is INVALID or UNDEFINED " + 
+					"before layers setup!"
+				);
+				return; // Halt execution if the map object is broken
+			}
+			
+			// Initial Bounds for layers
+			const southWest = L.latLng(south, west);
+			const northEast = L.latLng(north, east);
+			const bounds = L.latLngBounds(southWest, northEast);
 
-</script>
+			// Create Rectangle Layers (Add the primary one to map 
+			// immediately). rect: Secondary for dateline, not added yet.
+			rect = L.rectangle(bounds, { color: 'blue', weight: 1 }).addTo(map);
+			rect2 = L.rectangle(bounds, { color: 'blue', weight: 1 });
+	
+			// Create Draggable Corner Markers (using initial bounds)
+			ne_marker = L.marker([north, east], { draggable: true });
+			nw_marker = L.marker([north, west], { draggable: true });
+			se_marker = L.marker([south, east], { draggable: true });
+			sw_marker = L.marker([south, west], { draggable: true });
 
+			// Popup text.
+			ne_marker.bindPopup("Move to resize northeast corner.");
+			nw_marker.bindPopup("Move to resize northwest corner.");
+			se_marker.bindPopup("Move to resize southeast corner.");
+			sw_marker.bindPopup("Move to resize southwest corner.");
+			
+			
+			// Add hover listeners to show/hide popups
+			[ne_marker, nw_marker, se_marker, sw_marker].forEach(marker => {
+				marker.on('mouseover', function () {
+					marker.openPopup();
+				});
+				marker.on('mouseout', function () {
+					marker.closePopup();
+				});
+			});
 
+			// Create a group to store markers.
+			marker_layer = L.layerGroup();
+			
+			// Add marker layers to layer group and then map.
+			marker_layer.addLayer(ne_marker); 
+			marker_layer.addLayer(nw_marker);
+			marker_layer.addLayer(se_marker);
+			marker_layer.addLayer(sw_marker);
+			marker_layer.addTo(map);
+	
+			// Attach dragend listeners to markers
+			ne_marker.on('dragend', function () {
+				const latlng = ne_marker.getLatLng();
+				console.log("NE marker dragged to:", latlng.lat, latlng.lng);
+				Spdom.on_ne_move(latlng.lat, latlng.lng);
+			});
+			nw_marker.on('dragend', function () {
+				const latlng = nw_marker.getLatLng();
+				Spdom.on_nw_move(latlng.lat, latlng.lng);
+			});
+			se_marker.on('dragend', function () {
+				const latlng = se_marker.getLatLng();
+				Spdom.on_se_move(latlng.lat, latlng.lng);
+			});
+			sw_marker.on('dragend', function () {
+				const latlng = sw_marker.getLatLng();
+				Spdom.on_sw_move(latlng.lat, latlng.lng);
+			});
+		};
 
+		// ===================================================================
+		// Python-called Functions
+		// updateMap(n, s, e, w) 
+		// fitMap()
+		// ===================================================================
+		function updateMap(n, s, e, w) {
+			console.log("Started: UpdateMap");
+			north = n;
+			south = s;
+			east = e;
+			west = w;
+
+			console.log("JS UpdateMap - N:", north, "S:", south, "E:", 
+						east, "W:", west);
+
+			// Update coordinates for marker positioning
+			const southWest = L.latLng(south, west);
+			const northEast = L.latLng(north, east);
+			const southEast = L.latLng(south, east);
+			const northWest = L.latLng(north, west);
+
+			// 1. Update all four marker positions
+			se_marker.setLatLng(southEast);
+			ne_marker.setLatLng(northEast);
+			sw_marker.setLatLng(southWest);
+			nw_marker.setLatLng(northWest);
+
+			// Update the existing rectangle(s) bounds
+			if (west > east) {
+				// Redraw for dateline crossing
+				const southNeg180 = L.latLng(south, -180);
+				const north180 = L.latLng(north, 180);
+
+				// Update bounds for both rectangles (rect and rect2)
+				rect.setBounds(L.latLngBounds(southWest, north180));
+				rect2.setBounds(L.latLngBounds(southNeg180, northEast));
+
+				// Ensure both layers are visible
+				if (!map.hasLayer(rect2)) {
+					rect2.addTo(map);
+				};
+			} else {
+				// Simple bounds update
+				const bounds = L.latLngBounds(southWest, northEast);
+				rect.setBounds(bounds);
+
+				// Ensure rect2 is removed if the dateline crossing is no 
+				// longer happening
+				if (map.hasLayer(rect2)) {
+					map.removeLayer(rect2);
+				};
+			};
+
+			// Fit the map view to the new bounds 
+			fitMap();
+			console.log("	Success");
+		}
+
+		function fitMap() {
+			console.log("Started: fitMap");
+			
+			// Invalidate size before fitting to ensure the map view is correct.
+			if (map) {
+				map.invalidateSize(true);
+			}
+	
+			const southWest = L.latLng(south, west);
+			const northEast = L.latLng(north, east);
+			const bounds = L.latLngBounds(southWest, northEast);
+
+			// Handle dateline crossing for map fit (Center on 0 longitude).
+			if (west > east) {
+				const center = L.latLng((north + south) / 2, 0);
+				map.setView(center, map.getBoundsZoom(bounds));
+			} else {
+				map.fitBounds(bounds, { padding: [1, 1] });
+				
+			console.log("	Success");
+			};
+		};
+
+		// ===================================================================
+		// MAIN EXECUTION BLOCK
+		// Initialize WebChannel for communication with Python
+		// ===================================================================		
+		console.log("Attempting QWebChannel connection...");
+		try {
+			// Check if 'qt' is defined and not null
+			if (typeof qt === 'undefined' || qt === null) {
+				console.error(
+					"Failure: The global 'qt' object is missing or null."
+				);
+			} 
+			// With 'qt' confirmed as an object, check the transport property.
+			else if (qt.webChannelTransport) {
+				// SUCCESS: Condition passed safely
+				console.log(
+					"Success: qt.webChannelTransport found. " + 
+					"Initializing QWebChannel..."
+				);
+				
+				// QWebChannel setup
+				new QWebChannel(qt.webChannelTransport, function (channel) {
+					console.log("Started: WebChannel initialized"); 
+
+					// Connect to Spdom channel object from python.
+					Spdom = channel.objects.Spdom;
+
+					if (Spdom) {
+						console.log("Spdom object received from Python");
+	
+						// Map Initialization MUST happen here!
+						console.log("Calling initialize_map()...");
+						initialize_map();
+	
+						// Set up the layers and markers now that the channel 
+						// is ready.
+						setupLayersAndListeners();
+
+						// Update extent
+						fitMap();
+
+						setTimeout(function() {
+							console.log(
+								"Signaling Python after 50ms render delay..."
+							);
+							
+							// Signal Python that all JS objects are ready.
+							// Python can now handle the delayed invalidateSize 
+							// and fitMap calls.
+							Spdom.js_ready_for_commands(); 
+						}, 50);
+					} else {
+						console.error(
+							"Spdom object is undefined in WebChannel."
+						);
+					}
+					console.log("	Success");
+				});
+			} else {
+				// FAILURE: qt exists but transport property is missing or 
+				// false.
+				console.error(
+					"Failure: 'qt' object exists, but " + 
+					"'qt.webChannelTransport' is missing or null."
+				);
+			}
+		} catch (e) {
+			// Catch the TypeError if one occurred during property access.
+			console.error(
+				"CRITICAL RUNTIME ERROR: Execution halted due to an " + 
+				"exception.", e
+			);
+			
+			// Print the name/message of the error for diagnostics.
+			console.error("Error Details:", e.name, e.message); 
+		}
+
+    </script>
 </body>
 </html>

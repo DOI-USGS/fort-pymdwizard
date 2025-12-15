@@ -15,7 +15,9 @@ file's name.
 
 NOTES
 ------------------------------------------------------------------------------
-None
+IMPORTANT:
+  + This script references numerous hardcoded API URL/URIs. See constant
+    below for potential changes required in the future.
 """
 
 # Standard python libraries.
@@ -41,6 +43,17 @@ try:
     from pymdwizard.gui.ui_files import UI_ThesaurusSearch
 except ImportError as err:
     raise ImportError(err, __file__)
+
+# URLs used to collect information from USGS Thesauri. The base URL is appended
+# to for multiple sections and these may require revisions over time.
+# "https://apps.usgs.gov/thesaurus/term.php?thcode=15&text=ISO 19115
+#         Topic Category"
+# "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json&thcode={}"
+# "https://apps.usgs.gov/thesaurus/about/thesaurus-full.php?thcode="
+# "https://apps.usgs.gov/thesaurus/term.php?thcode="
+# "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json"
+# "https://apps.usgs.gov/thesaurus/term-search.php?thcode="
+THESAURUS_BASE_URL = "https://apps.usgs.gov/thesaurus/"
 
 
 class SearchThread(QThread):
@@ -328,8 +341,7 @@ class ThesaurusSearch(QDialog):
             thname = clicked_item.text()
 
             THESAURUS_DETAILS_URL = (
-                "https://apps.usgs.gov/thesaurus/thesaurus.php?"
-                "format=json&thcode={}"
+                THESAURUS_BASE_URL + "thesaurus.php?format=json&thcode={}"
             )
             thesaurus_details_url = THESAURUS_DETAILS_URL.format(thcode)
             details = utils.requests_pem_get(thesaurus_details_url).json()
@@ -339,8 +351,7 @@ class ThesaurusSearch(QDialog):
                 f'<b><font size="5" face="arial">{thname}</font></b><br>'
             )
             uri = (
-                "https://apps.usgs.gov/thesaurus/about/thesaurus-full.php?"
-                f"thcode={thcode}"
+                THESAURUS_BASE_URL + "about/thesaurus-full.php?thcode={thcode}"
             )
             if uri:
                 details_msg += (
@@ -357,8 +368,8 @@ class ThesaurusSearch(QDialog):
             # Strip '(use: ...)' part for search
             item_text = clicked_item.text().split(" (use: ")[0]
             details_url = (
-                "https://apps.usgs.gov/thesaurus/term.php?"
-                f"thcode={thcode}&text={quote(item_text)}"
+                THESAURUS_BASE_URL +
+                "term.php?thcode={thcode}&text={quote(item_text)}"
             )
 
             try:
@@ -475,10 +486,7 @@ class ThesaurusSearch(QDialog):
         """
 
         if not self.thesauri_lookup:
-            url = (
-                "https://apps.usgs.gov/thesaurus/thesaurus.php?"
-                "format=json"
-            )
+            url = (THESAURUS_BASE_URL + "thesaurus.php?format=json")
             result = self.get_result(url)
 
             if result is not None:
@@ -486,6 +494,7 @@ class ThesaurusSearch(QDialog):
                 self.thesauri_lookup = {
                     i["thcode"]: i["name"] for i in result["vocabulary"]
                 }
+
                 # Populate reverse lookup (name -> thcode).
                 self.thesauri_lookup_r = {
                     i["name"]: i["thcode"] for i in result["vocabulary"]
@@ -510,7 +519,7 @@ class ThesaurusSearch(QDialog):
 
         Workflow:
             Clears dropdown, adds "All", adds thesaurus names from
-            lookup, and sets the default selection (code "2")..
+            lookup, and sets the default selection (code "2").
 
         Notes:
             None
@@ -531,6 +540,7 @@ class ThesaurusSearch(QDialog):
             thesaurus_name = self.thesauri_lookup["2"]
             index = self.ui.thesaurus_dropdown.findText(thesaurus_name)
             if index != -1:
+                # Check if the item is found and set current index.
                 self.ui.thesaurus_dropdown.setCurrentIndex(index)
 
     def get_result(self, url):
@@ -695,6 +705,7 @@ class ThesaurusSearch(QDialog):
 
         Notes:
             This method runs in the "SearchThread".
+            Details: https://apps.usgs.gov/thesaurus/service-thesaurus.html
         """
 
         all_results = []
@@ -712,8 +723,8 @@ class ThesaurusSearch(QDialog):
         for thcode, name in thesauri_to_search:
             # Construct the search URL.
             search_url = (
-                f"https://apps.usgs.gov/thesaurus/term-search.php?"
-                f"thcode={thcode}&term={term}&rel=contains"
+                THESAURUS_BASE_URL +
+                f"term-search.php?thcode={thcode}&term={term}&rel=contains"
             )
 
             # Get results from the current thesaurus.
@@ -763,8 +774,8 @@ class ThesaurusSearch(QDialog):
 
                 # Filter out Theme/Place keywords based on self.place flag.
                 is_valid = (
-                        thcode != "1" and not self.place
-                        or thcode == "1" and self.place
+                        thcode != 1 and not self.place
+                        or thcode == 1 and self.place
                 )
 
                 if is_valid:

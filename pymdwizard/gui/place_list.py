@@ -444,10 +444,10 @@ class PlaceList(WizardWidget):
                 # Check for the default empty thesaurus case.
                 place_keys = place_node.xpath("placekey", as_list=True)
                 is_empty_default = (
-                        place_node.placekt.text == "None"
-                        and len(place_keys) <= 1
-                        and place_keys[0].text == ""
-                        and len(self.thesauri) > 1
+                    place_node.placekt.text == "None"
+                    and len(place_keys) <= 1
+                    and place_keys[0].text == ""
+                    and len(self.thesauri) > 1
                 )
 
                 if not is_empty_default:

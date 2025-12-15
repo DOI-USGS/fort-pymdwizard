@@ -61,16 +61,6 @@ class Attributes(WizardWidget):  #
     drag_label = "Attributes <attr>"
     acceptable_tags = ["attr"]
 
-    def __init__(self, *args, **kwargs):
-        """Initialize Attributes widget."""
-        super().__init__(*args, **kwargs)
-        self.original_xml = None
-        self.in_context = False
-        self.attrs = []
-        self.displayed_min = 0
-        self.displayed_max = 9
-        self.main_layout = None  # Will be set in build_ui
-
     def build_ui(self):
         """
         Description:
@@ -92,6 +82,7 @@ class Attributes(WizardWidget):  #
 
         # Instantiate the UI elements from the designer file.
         self.ui = UI_attributes.Ui_Form()
+
         # Set up the instantiated UI
         self.ui.setupUi(self)
 
@@ -243,7 +234,6 @@ class Attributes(WizardWidget):  #
         # If original XML exists, load from that instead.
         if self.original_xml is not None:
             self.from_xml(self.original_xml)
-            return
 
         # Iterate through keys (column labels) in the pickle contents.
         for col_label in contents.keys():
