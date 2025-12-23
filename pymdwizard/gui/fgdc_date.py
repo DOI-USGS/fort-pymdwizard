@@ -36,7 +36,7 @@ class FGDCDate(QWidget):
     """
     Description:
         A reusable widget for entering and validating dates according to
-        FGDC CSDGM format rules (YYYY, YYYYMM, YYYYMMDD, or "Unknown").
+        FGDC CSDGM format rules (YYYY, YYYYMM, YYYYMMDD, "Unknown", or "Unpublished material").
         Inherits from QWidget.
 
     Passed arguments:
@@ -166,7 +166,7 @@ class FGDCDate(QWidget):
         Workflow:
             1. Checks if the content has changed since the last check.
             2. Validates length (must be 4, 6, 8, or 0) and content
-               (must be digits or "Unknown").
+               (must be digits, "Unknown", or "Unpublished material").
             3. If invalid, displays a "QMessageBox" detailing the error
                and required formats.
 
@@ -188,11 +188,11 @@ class FGDCDate(QWidget):
         if len(cur_contents) not in (0, 4, 6, 8):
             msg = (
                 "An FGDC date needs to be 4, 6, or 8 numbers long, "
-                "or be 'Unknown'"
+                "or be 'Unknown' or 'Unpublished material'"
             )
 
         # Check if content consists of only digits.
-        if not cur_contents.isdigit() and cur_contents != "Unknown":
+        if not cur_contents.isdigit() and cur_contents != "Unknown" and cur_contents != "Unpublished material":
             msg = "An FGDC date can only consist of numbers or 'Unknown'"
 
         # Clear message if explicitly set to "Unknown" (redundant with
@@ -200,12 +200,18 @@ class FGDCDate(QWidget):
         if cur_contents == "Unknown":
             msg = ""
 
+        # Clear message if explicitly set to "Unpublished material" (redundant with
+        # previous check, but safer).
+        if cur_contents == "Unpublished material":
+            msg = ""
+
+
         # Show message box if an error message was generated.
         if msg:
             msgbox = QMessageBox()
             msgbox.setIcon(QMessageBox.Information)
             msgbox.setText(msg)
-            msgbox.setInformativeText("YYYY or YYYYMM or YYYYMMDD or 'Unknown'")
+            msgbox.setInformativeText("YYYY or YYYYMM or YYYYMMDD or 'Unknown' or 'Unpublished material'")
             msgbox.setWindowTitle("Problem with FGDC date format")
             msgbox.setStandardButtons(QMessageBox.Ok)
             msgbox.exec_()
