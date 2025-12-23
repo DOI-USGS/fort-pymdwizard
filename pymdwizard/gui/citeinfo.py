@@ -790,9 +790,11 @@ class Citeinfo(WizardWidget):  #
                 print("The tag is not 'citation' or 'citeinfo'")
                 return
 
+            # Clear widgets
+            self.fgdc_origin.clear_widgets(add_another=False)
+
             # Originators.
             originators = citeinfo.findall("origin")
-            self.fgdc_origin.clear_widgets(add_another=False)
             if originators:
                 for origin in originators:
                     origin_widget = self.fgdc_origin.add_another()
@@ -848,7 +850,9 @@ class Citeinfo(WizardWidget):  #
                     self.ui.fgdc_pubplace, pubinfo[0], "pubplace"
                 )
             else:
-                self.ui.radio_pubinfono.setChecked(True)
+                # self.ui.radio_pubinfono.setChecked(True)
+                self.ui.radio_pubinfoyes.setChecked(True)
+                self.ui.radio_pubinfono.setChecked(False)
 
             # Larger Work Citation (lworkcit).
             if citeinfo.xpath("lworkcit"):

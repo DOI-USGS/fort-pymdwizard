@@ -1,0 +1,41 @@
+# Michael O'Donnell
+# Date: 7/29/2025
+#
+# wincertstore: deprecated. Since Python 2.7.9 but can still 
+#   install. We need to rewrite section and use 
+#   ssl.create_default_context().
+# Sciencebasepy: was pysb an older version
+#   UserWarning: pkg_resources is deprecated as an API. See 
+#     https://setuptools.pypa.io/en/latest/pkg_resources.html. 
+#     The pkg_resources package is slated for removal as early 
+#     as 2025-11-30. Refrain from using this package or pin to 
+#     Setuptools<81.
+# Suggest removing folder: ArcToolbox
+# Clean up imports so only supporting python 3.x
+name: pymdwizard
+channels:
+  - conda-forge
+dependencies:
+  - python~=3.12
+  - git
+  - gitpython
+  - pip
+  - pip-system-certs 
+  - cryptography
+  - pandas~=2.3.1
+  - geopandas~=1.1.1
+  - gdal~=3.10.3
+  - laspy~=2.6.1
+  - habanero~=2.3.0
+  - defusedxml~=0.7.1
+  - lxml~=6.0.0
+  - pyqt~=5.15.11
+  - pyqtwebengine~=5.15.11
+  - pytest-qt~=4.5.0
+  - fiona~=1.10.1
+  - python-docx~=1.2.0
+  - openpyxl~=3.1.5
+  - jupyter~=1.1.1
+  - pip:
+    - sciencebasepy~=2.0.20
+prefix: pymdwizard

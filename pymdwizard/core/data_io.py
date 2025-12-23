@@ -37,6 +37,10 @@ try:
     import geopandas as gpd
     import fiona
     import laspy
+
+    # IMPORTANT:
+    # Must install openpyxl python library to read Excel files, but we do not
+    # import.
 except ImportError as err:
     raise ImportError(err, __file__)
 

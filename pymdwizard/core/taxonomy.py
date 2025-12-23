@@ -42,11 +42,12 @@ except ImportError as err:
 
 # Global variables of URLs to access the Integrated Taxonomic Information System
 # (ITIS) for handling taxonomic names.
-ITIS_BASE_URL = "https://www.itis.gov/ITISWebService/services/ITISService/"
-NS21 = {"ax21": "https://data.itis_service.itis.usgs.gov/xsd"}
-NS23 = {"ax23": "https://metadata.itis_service.itis.usgs.gov/xsd"}
+# IMPT: These are not https (does not work)
+ITIS_BASE_URL = "http://www.itis.gov/ITISWebService/services/ITISService/"
+NS21 = {"ax21": "http://data.itis_service.itis.usgs.gov/xsd"}
+NS23 = {"ax23": "http://metadata.itis_service.itis.usgs.gov/xsd"}
 
-# gLOBAL Dictionary defining kingdoms.
+# GLOBAL Dictionary defining kingdoms.
 KINGDON_LOOKUP = {
     "Animalia": 202423,
     "Chromista": 630578,
@@ -166,9 +167,7 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
                 df = df[df.parentTsn != str(tsn)]
             except KeyError:
                 pass
-
         return df
-
     else:
         # Convert the XML hierarchy to a list of dictionaries.
         d = xml_utils.element_to_list(hierarchy)
@@ -176,7 +175,6 @@ def get_full_hierarchy_from_tsn(tsn, as_dataframe=True, include_children=True,
         # If children are not included, filter the list.
         if not include_children:
             d = [r for r in d if r["parentTsn"] != str(tsn)]
-
         return d
 
 
@@ -302,7 +300,6 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
             dfs[xml_utils.parse_tag(child.tag)] = df  # Use tag as key
 
         return dfs
-
     else:
         # Convert the results to a dictionary without FGDC added.
         return xml_utils.node_to_dict(results, add_fgdc=False)
@@ -332,10 +329,9 @@ def _get_xml(url, payload, **kwargs):
             tt = xml_utils.string_to_node(out.content)  # Parse response
 
             return tt  # Return the parsed XML node
-        except Exception as e:
+        except:
             # Increment the attempt counter on exception.
             tries += 1
-            # Optionally, log the exception (e.g., print(e))
 
     # Final attempt outside the loop if previous attempts failed.
     out = utils.requests_pem_get(url, params=payload)
@@ -397,6 +393,7 @@ class Taxon(object):
 
         # Initialize children.
         self.children = children if children else []
+
         self.parent = parent
 
         # Indent for display based on rank lookup.
@@ -629,9 +626,9 @@ def get_accepted_tsn(tsn):
             _get_xml(ITIS_BASE_URL + "getAcceptedNamesFromTSN",
                      payload={"tsn": tsn})
             .xpath("//ax21:acceptedTsn", namespaces=NS21)[0]
-            .text  # Return the text of the accepted TSN node
+            .text
         )
-    except Exception:
+    except:
         # Return the original TSN if an error occurs.
         return tsn
 

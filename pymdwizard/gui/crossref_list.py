@@ -32,7 +32,7 @@ except ImportError as err:
 class Crossref_list(WizardWidget):
     """
     Description:
-        A widget for managing a list of FGDC "cross reference"
+        A widget for managing a list of FGDC "cross-reference"
         ("crossref") elements, which are citation objects.
         Inherits from QgsWizardWidget.
 
@@ -231,7 +231,7 @@ class Crossref_list(WizardWidget):
     def to_xml(self):
         """
         Description:
-            Encapsulates the multiple cross reference elements into a
+            Encapsulates the multiple cross-reference elements into a
             single XML node.
 
         Passed arguments:
@@ -240,7 +240,7 @@ class Crossref_list(WizardWidget):
         Returned objects:
             idinfo (xml.etree.ElementTree.Element): The parent
                 identification information element tag containing the
-                cross references.
+                cross-references.
 
         Workflow:
             Creates an <idinfo> node and appends the XML from each
@@ -268,7 +268,7 @@ class Crossref_list(WizardWidget):
 
         Passed arguments:
             xml_idinfo (xml.etree.ElementTree.Element): The XML element
-                containing the cross references (expected to be "idinfo").
+                containing the cross-references (expected to be "idinfo").
 
         Returned objects:
             None

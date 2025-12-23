@@ -99,7 +99,7 @@ class ThemeList(WizardWidget):  #
         # Setup RepeatingElement for ISO Keywords.
         self.iso_kws = RepeatingElement(
             which="vertical",
-            add_text="Add additonal",
+            add_text="Add additional",
             widget=IsoKeyword,
             remove_text="Remove Keyword",
             italic_text="ISO Topic Category Keywords",
@@ -491,7 +491,8 @@ class ThemeList(WizardWidget):  #
         if self.ui.theme_tabs.isTabEnabled(0):
             theme = xml_utils.xml_node("theme", parent_node=keywords)
             themekt = xml_utils.xml_node(
-                "themekt", text=self.ui.fgdc_themekt.text(), parent_node=theme
+                "themekt", text=self.ui.fgdc_themekt.text(),
+                parent_node=theme
             )
 
             # Add ISO keywords as <themekey>.

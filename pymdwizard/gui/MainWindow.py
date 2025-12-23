@@ -15,7 +15,7 @@ file's name.
 
 NOTES
 ------------------------------------------------------------------------------
-None
++ The widget.setStyleSheet does not support rgba for highlights (only rgb).
 """
 
 # Standard python libraries.
@@ -36,7 +36,7 @@ try:
     import docx
 
     # Use functions, classes, and other elements from C/C++ libraries directly
-    # within your Python code.
+    # within your Python code. Used for highlighting errors
     import sip
 except ImportError as err:
     raise ImportError(err, __file__)
@@ -45,10 +45,11 @@ except ImportError as err:
 try:
     from PyQt5.QtWidgets import (QMainWindow, QApplication, QSplashScreen,
                                  QMessageBox, QAction, QWidget, QFileDialog,
-                                 QDialog, QTabWidget)
+                                 QDialog, QTabWidget, QGraphicsOpacityEffect,
+                                 QLineEdit, QToolTip, QLabel, QVBoxLayout)
     from PyQt5.QtCore import (QFile, QFileInfo, Qt, QSettings,
                               QFileSystemWatcher, QPoint, QSize)
-    from PyQt5.QtGui import (QPainter, QPixmap)
+    from PyQt5.QtGui import (QPainter, QPixmap, QMovie)
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -66,6 +67,42 @@ try:
     from pymdwizard import __version__
 except ImportError as err:
     raise ImportError(err, __file__)
+
+
+class SpinnerDialog(QDialog):
+    """Class to generate spinner when checking for software updates."""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        # Set window flags on dialog and exclude the "?", designated as
+        # Qt.WindowContextHelpButtonHint.
+        self.setWindowFlags(
+            Qt.Dialog | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
+
+        # Set the window title and size.
+        self.setWindowTitle("USGS Metadata Wizard Update")
+        self.setModal(True)
+        # Set a rectangular fixed size for the dialog.
+        self.setFixedSize(250, 75)
+
+        # Create a label to display the message.
+        self.message_label = QLabel("Checking for Software Updates...")
+        self.message_label.setAlignment(Qt.AlignCenter)
+
+        # Create a label to display the spinner animation.
+        self.label = QLabel(self)
+        self.label.setAlignment(Qt.AlignCenter)  # Center the spinner
+        self.movie = QMovie("spinner.gif")  # Load the spinner GIF
+        self.label.setMovie(self.movie)  # Set the movie to the label
+        self.movie.start()  # Start the animation
+
+        # Create a vertical layout and add both labels.
+        layout = QVBoxLayout()
+        layout.addWidget(self.message_label)  # Add the message label to layout
+        layout.addWidget(self.label)          # Add the spinner label to layout
+
+        # Apply the layout to the dialog.
+        self.setLayout(layout)
 
 
 class PyMdWizardMainForm(QMainWindow):
@@ -101,7 +138,7 @@ class PyMdWizardMainForm(QMainWindow):
         # Initialize the parent QMainWindow class.
         super(self.__class__, self).__init__()
 
-        # Application settings and file state. TODO: Remove hardcoding ???????????????????
+        # Application settings and file state.
         self.settings = QSettings("USGS_" + __version__,
                                   "pymdwizard_" + __version__)
         self.cur_fname = ""
@@ -261,7 +298,7 @@ class PyMdWizardMainForm(QMainWindow):
     def anacondaprompt(self):
         """
         Description:
-            Launches an Anaconda command prompt configured for the
+            Launches a conda command prompt configured for the
             application's Python environment (Windows only).
 
         Passed arguments:
@@ -276,7 +313,7 @@ class PyMdWizardMainForm(QMainWindow):
             subprocess.
 
         Notes:
-            None
+            TODO: Rename to conda_prompt.
         """
 
         if os.name == "nt":
@@ -302,16 +339,16 @@ class PyMdWizardMainForm(QMainWindow):
                 pydir, "Scripts", "conda_exe", "activate.bat"
             )
 
-            # Display instructions.  TODO: Anaconda is not allowed. ??????????????????????????????????????
+            # Display instructions.
             msg = (
                 "This is experimental functionality used for opening "
-                "an Anaconda command prompt set to"
+                "a conda command prompt set to"
                 "\nthe Python environment shipped with the "
                 "MetadataWizard.\n\n"
                 "The base conda env in this prompt is the one to use, "
                 "so do not use the activate command."
                 "\nUse: conda install ...package.. to install new "
-                "packages into the MetadataWizard envronment."
+                "packages into the MetadataWizard environment."
             )
             QMessageBox.information(self, "Conda instructions", msg)
 
@@ -1271,7 +1308,7 @@ class PyMdWizardMainForm(QMainWindow):
                 "Form that just popped up."
                 "\n Clicking each error will take you to the section it is "
                 "contained in."
-                "\n Note that some highlighed errors can be in collapsed "
+                "\n Note that some highlighted errors can be in collapsed "
                 "items, scrolled out of view, or in non-selected tabs."
             )
             QMessageBox.warning(self, "Validation", msg)
@@ -1429,7 +1466,7 @@ class PyMdWizardMainForm(QMainWindow):
             self.highlight_tab(widget)
 
         # Determine styling based on superhot status.
-        color = "rgba(225, 67, 94, 0)"
+        color = "rgb(225, 67, 94)"
         lw = ""
         if superhot:
             lw = "border: 3px solid black;"
@@ -1438,6 +1475,7 @@ class PyMdWizardMainForm(QMainWindow):
         if widget.objectName() not in ["metadata_root", "fgdc_metadata"]:
             try:
                 widget.setToolTip(error_msg)
+                '''
                 widget.setStyleSheet(
                     """
                 QGroupBox#{widgetname}{{
@@ -1446,7 +1484,7 @@ class PyMdWizardMainForm(QMainWindow):
                 subcontrol-position: top left;
                 padding-top: 20px;
                 font: bold 14px;
-                color: rgba(90, 90, 90, 0);
+                color: rgb(90, 90, 90);
                 }}
                 QGroupBox#{widgetname}::title {{
                 text-align: left;
@@ -1456,17 +1494,17 @@ class PyMdWizardMainForm(QMainWindow):
                 }}
                 QLabel{{
                 font: 9pt "Arial";
-                color: rgba(90, 90, 90, 0);
+                color: rgb(90, 90, 90);
                 }}
                 QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
                 font: 9pt "Arial";
-                color: rgba(50, 50, 50, 0);
+                color: rgb(50, 50, 50);
                 background-color: {color};
                 opacity: 25;
                 {lw}
                 }}
                 QToolTip {{
-                background-color: rgba(255, 76, 77, 0);
+                background-color: rgb(255, 76, 77);
                 border-color: red;
                 opacity: 255;
                 }}
@@ -1474,8 +1512,83 @@ class PyMdWizardMainForm(QMainWindow):
                         widgetname=widget.objectName(), color=color, lw=lw
                     )
                 )
+                '''
+                # ----------------------------------------------------------- ??????????????? testing
+                # Opacity is not a valid Qt stylesheet property, so do not
+                # include here.
+                # Opacity (0-1) = Alpha / 255
+                # Alpha (0-255) = Opacity × 255
+                widget.setStyleSheet(
+                    """
+                QGroupBox#{widgetname}{{
+                background-color: {color};
+                border: 2px solid red;
+                subcontrol-position: top left;
+                padding-top: 20px;
+                font: bold 14px;
+                color: rgb(90, 90, 90);
+                }}
+                QGroupBox#{widgetname}::title {{
+                text-align: left;
+                subcontrol-origin: padding;
+                subcontrol-position: top left;
+                padding: 3 3px;
+                }}
+                QLabel{{
+                font: 9pt "Arial";
+                color: rgb(90, 90, 90);
+                }}
+                QLineEdit#{widgetname}, QPlainTextEdit#{widgetname}, QComboBox#{widgetname} {{
+                font: 9pt "Arial";
+                color: rgb(50, 50, 50);
+                background-color: {color};
+                opacity: 25;
+                {lw}
+                }}
+                QToolTip {{
+                background-color: rgb(255, 76, 77);
+                border-color: red;
+                opacity: 255;
+                }}
+                """.format(
+                        widgetname=widget.objectName(), color=color, lw=lw
+                    )
+                )
+
+                # Define opacity for widget in stylesheet.
+                self.set_widget_opacity(
+                    widget.findChild(QLineEdit, widget.objectName()), 0.1)
+                self.set_widget_opacity(
+                    widget.findChild(QToolTip, widget.objectName()), 1)
             except:
                 pass
+
+    def set_widget_opacity(self, opacity_value):
+        """
+        Description:
+            Define opacity value to passed widget.
+
+        Passed arguments:
+            self (QWidget): The widget to apply the opacity effect to.
+            opacity_value (float): A value between 0.0 (fully transparent)
+                and 1.0 (fully opaque).
+
+        Returned objects:
+            None
+
+        Workflow:
+            None
+
+        Notes:
+            None
+        """
+
+        if isinstance(self, QWidget):
+            effect = QGraphicsOpacityEffect()
+            effect.setOpacity(opacity_value)
+            self.setGraphicsEffect(effect)
+        else:
+            print(f"Warning: Expected QWidget, got {type(self)}")
 
     def highlight_attr(self, widget):
         """
@@ -1556,7 +1669,7 @@ class PyMdWizardMainForm(QMainWindow):
         widget_parent.setStyleSheet(
             """
     QTabBar {{
-    background-color: rgba(225, 67, 94, 0);
+    background-color: rgb(225, 67, 94);
     qproperty-drawBase:0;
 
 }}
@@ -2051,17 +2164,17 @@ class PyMdWizardMainForm(QMainWindow):
 
         msg = (
             "The MetadataWizard was developed by the data management "
-            "team <br> at the USGS Fort Collins Science Center,<br>"
-            "with support from the USGS Science Analytics and Synthesis "
-            "(SAS), "
-            "and the USGS Community for Data Integration (CDI).<br><br>"
+            "team <br> at the USGS Fort Collins Science Center, "
+            "with support from the USGS <br> Science Analytics and Synthesis "
+            "(SAS), and the USGS Community for <br> "
+            "Data Integration (CDI).<br><br>"
             "Ongoing support provided by the USGS Science Analytics "
-            "and Synthesis (SAS)<br>"
-            f"<br><br>Version: {__version__}<br>"
-            "<br> Project page: <a href='https://github.com/DOI-USGS/"
+            "and Synthesis (SAS)."
+            f"<br><br><b>Version</b>: {__version__}<br>"
+            "<br><b>Project page</b>: <a href='https://github.com/DOI-USGS/"
             "fort-pymdwizard'>https://github.com/DOI-USGS/"
             "fort-pymdwizard</a>"
-            "<br><br>Contact: Tamar Norkin at ask-sdm@usgs.gov"
+            "<br><br><b>Contact</b>: Tamar Norkin at ask-sdm@usgs.gov"
         )
 
         msgbox = QMessageBox.about(self, "About", msg)
@@ -2089,6 +2202,11 @@ class PyMdWizardMainForm(QMainWindow):
             None
         """
 
+        # Start spinner
+        spinner = SpinnerDialog(self)
+        spinner.show()
+        QApplication.processEvents()
+
         try:
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
@@ -2096,6 +2214,9 @@ class PyMdWizardMainForm(QMainWindow):
             # Fetch remote changes.
             fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
             master = [f for f in fetch if f.name == "origin/master"][0]
+
+            # Close spinner.
+            spinner.close()
 
             if repo.head.commit != master.commit:
                 msg = (
@@ -2118,6 +2239,9 @@ class PyMdWizardMainForm(QMainWindow):
                 QMessageBox.information(self, "No Update Needed", msg)
 
         except BaseException as e:
+            if spinner:
+                spinner.close()
+
             if show_uptodate_msg:
                 msg = (
                     "Problem Encountered Updating from USGS GitHub "
@@ -2204,7 +2328,7 @@ def show_splash(version="2.x.x"):
     splash_fname = utils.get_resource_path("icons/splash.jpg")
     splash_pix = QPixmap(splash_fname)
 
-    size = splash_pix.size() * 0.35
+    size = splash_pix.size() * 0.3  # 0.35
     splash_pix = splash_pix.scaled(
         size, Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation
     )
@@ -2221,16 +2345,18 @@ def show_splash(version="2.x.x"):
         )
     numbers["."] = numbers["point"]
 
-    # Use QPainter to draw the version number.
+    # Use QPainter to draw the version number. Must revise location if size is
+    # modified.
     painter = QPainter(splash_pix)
     painter.begin(splash_pix)
 
-    x, y = 470, 70
+    x, y = 400, 65  # 470, 70
     for digit in version:
         painter.drawPixmap(int(x), y, numbers[digit])
         x += numbers[digit].rect().width() / 3
 
     painter.end()
+    del painter
 
     # Create and show the splash screen.
     splash = QSplashScreen(splash_pix, Qt.Window)
@@ -2282,8 +2408,9 @@ def launch_main(xml_fname=None, introspect_fname=None, env_cache={}):
     mdwiz.env_cache = env_cache
     splash.finish(mdwiz)
     app.processEvents()
+    del splash
 
-    # Check for updates silently on startup.
+    # Check for updates silently on startup. ???????????????????????????????????????????????? loads before mainwindow loaded
     try:
         mdwiz.check_for_updates(show_uptodate_msg=False)
     except:
