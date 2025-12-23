@@ -122,18 +122,21 @@ class FGDCDate(QWidget):
 
         msg = ""
         if len(cur_contents) not in (0, 4, 6, 8):
-            msg = "An FGDC date needs to be 4, 6, or 8 numbers long, or be 'Unknown'"
+            msg = "An FGDC date needs to be 4, 6, or 8 numbers long, or be 'Unknown' or 'Unpublished material'"
         if not cur_contents.isdigit():
             msg = "An FGDC date can only consist of numbers"
 
         if cur_contents == "Unknown":
             msg = ""
 
+        if cur_contents == "Unpublished material":
+            msg = ""
+
         if msg:
             msgbox = QMessageBox()
             msgbox.setIcon(QMessageBox.Information)
             msgbox.setText(msg)
-            msgbox.setInformativeText("YYYY or YYYYMM or YYYYMMDD or 'Unknown'")
+            msgbox.setInformativeText("YYYY or YYYYMM or YYYYMMDD or 'Unknown' or 'Unpublished material'")
             msgbox.setWindowTitle("Problem with FGDC date format")
             msgbox.setStandardButtons(QMessageBox.Ok)
             msgbox.exec_()
