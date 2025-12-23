@@ -1,14 +1,14 @@
 Changes
 =======
 
-2.1.1 (6/9/2025)
+2.1.1 (12/5/2025)
 -----
 Updates:
 - Add support for high resolution displays
 - Improve parsing of citations for "import from DOI" feature
-- Correct .pem file cert management
-- Update associated Python env to remove vulnerability
-- Improve handling of .las and .laz files
+- Correct .pem file for cert management
+- Update associated Python environment to fix vulnerabilities
+- Update uninstall function to remove all directories
 
 2.1.0 (3/10/2025)
 -----
