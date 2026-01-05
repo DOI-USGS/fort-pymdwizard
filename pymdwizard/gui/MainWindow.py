@@ -1210,7 +1210,6 @@ class PyMdWizardMainForm(QMainWindow):
         -------
         None
         """
-        last_kernel = self.settings.value("last_kernel", "")
         jupyter_dnames = self.settings.value("jupyter_dnames", [])
         if not jupyter_dnames:
             install_dir = utils.get_install_dname()
@@ -1218,14 +1217,13 @@ class PyMdWizardMainForm(QMainWindow):
             self.settings.setValue("jupyter_dnames", jupyter_dnames)
 
         self.jupyter_dialog = JupyterStarter(
-            last_kernel=last_kernel,
             previous_dnames=jupyter_dnames,
-            update_function=self.update_jupyter_dnames,
+            update_function=self.update_jupyter_dnames
         )
         utils.set_window_icon(self.jupyter_dialog)
         self.jupyter_dialog.show()
 
-    def update_jupyter_dnames(self, kernel, dname):
+    def update_jupyter_dnames(self, dname):
         jupyter_dnames = self.settings.value("jupyter_dnames", [])
 
         try:
@@ -1238,8 +1236,6 @@ class PyMdWizardMainForm(QMainWindow):
         jupyter_dnames.insert(0, dname)
         del jupyter_dnames[PyMdWizardMainForm.max_recent_files :]
         self.settings.setValue("jupyter_dnames", jupyter_dnames)
-
-        self.settings.setValue("last_kernel", kernel)
 
     def about(self):
         """
@@ -1299,8 +1295,8 @@ class PyMdWizardMainForm(QMainWindow):
         except BaseException as e:
             if show_uptodate_msg:
                 msg = (
-                    "Problem Encountered Updating from USGS Gitlab (https://code.usgs.gov/usgs/fort-pymdwizard)\n\n"
-                    "USGS users, if you experience issues, please try disconnecting/reconnecting to the internal USGS network and re-checking for updates."
+                    "Problem Encountered Updating from USGS GitHub (https://github.com/DOI-USGS/fort-pymdwizard)\n\n"
+                    "Please ensure that you have write access to the location where the Metadata Wizard is installed."
                 )
                 # msg += str(e)
                 QMessageBox.information(self, "Update results", msg)
