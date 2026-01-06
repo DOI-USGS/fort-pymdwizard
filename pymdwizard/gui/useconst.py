@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,94 +13,137 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_useconst
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_useconst
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Useconst(WizardWidget):  #
+    """
+    Description:
+        A widget corresponding to the FGDC <useconst> tag (Use
+        Constraints), used to describe the restrictions and legal
+        prerequisites for using the data set.
 
+    Passed arguments:
+        None (Inherited from WizardWidget)
+
+    Returned objects:
+        None
+
+    Workflow:
+        1. Provides a multiline text field ("QPlainTextEdit") for the
+           user to enter use constraints.
+        2. Handles serialization to and deserialization from the
+           <useconst> XML tag.
+
+    Notes:
+        Inherits from "WizardWidget". The constraints description is
+        free-form text.
+    """
+
+    # Class attributes.
     drag_label = "Use Constraints <useconst>"
     acceptable_tags = ["useconst"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Builds and modifies this widget's graphical user interface.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes UI and enables drag-and-drop.
+
+        Notes:
+            None
         """
+
         self.ui = UI_useconst.Ui_Form()
+
+        # Setup the UI defined in the separate class.
         self.ui.setupUi(self)
+
+        # Enable drag and drop functionality.
         self.setup_dragdrop(self)
 
     def to_xml(self):
         """
-        encapsulates the QPlainTextEdit text in an element tag
+        Description:
+            Converts the text content into an FGDC <useconst> XML
+            element.
 
-        Returns
-        -------
-        useconst element tag in xml tree
+        Passed arguments:
+            None
+
+        Returned objects:
+            useconst (lxml.etree._Element): The <useconst> element
+                tag in the XML tree.
+
+        Workflow:
+            Creates a single XML node with the element name "useconst"
+            and the text content from the widget.
+
+        Notes:
+            None
         """
+
+        # Create the <useconst> node with the text content.
         useconst = xml_utils.xml_node(
             "useconst", text=self.ui.fgdc_useconst.toPlainText()
         )
+
         return useconst
 
     def from_xml(self, useconst):
         """
-        parses the xml code into the relevant useconst elements
+        Description:
+            Parses an XML element and populates the widget fields.
 
-        Parameters
-        ----------
-        use_constraints - the xml element status and its contents
+        Passed arguments:
+            useconst (lxml.etree._Element): The XML element, expected
+                to be <useconst>.
 
-        Returns
-        -------
-        None
+        Returned objects:
+            None
+
+        Workflow:
+            Checks for the correct tag and sets the text content of the
+            widget using the XML node's text.
+
+        Notes:
+            None
         """
+
         try:
             if useconst.tag == "useconst":
+                # Populate the widget's text field with XML content.
                 self.ui.fgdc_useconst.setPlainText(useconst.text)
             else:
+                # Print statement for debugging/logging purposes.
                 print("The tag is not useconst")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(Useconst, "Use Constraints testing")

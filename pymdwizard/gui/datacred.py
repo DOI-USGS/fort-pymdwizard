@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,115 +13,174 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_datacred
+# Non-standard python libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_datacred
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class Datacred(WizardWidget):  #
+    """
+    Description:
+        A widget for managing the FGDC "data credit" ("datacred")
+        metadata element. Inherits from QgsWizardWidget.
 
+    Passed arguments:
+        None
+
+    Returned objects:
+        None
+
+    Workflow:
+        Manages the user interface for the data credit text, handles
+        data extraction to XML, parsing from XML, and drag-and-drop
+        acceptance for "datacred" tags.
+
+    Notes:
+        None
+    """
+
+    # Class attributes.
     drag_label = "Data Credit <datacred>"
     acceptable_tags = ["datacred"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Build and modify this widget's GUI.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes the UI elements and sets up drag-and-drop
+            functionality.
+
+        Notes:
+            Assumes UI_datacred and setup_dragdrop are available.
         """
+
+        # Instantiate the UI elements from the designer file.
         self.ui = UI_datacred.Ui_Form()
+
+        # Set up the instantiated UI.
         self.ui.setupUi(self)
+
+        # Initialize drag-and-drop features for the widget.
         self.setup_dragdrop(self)
 
     def dragEnterEvent(self, e):
         """
-        Only accept Dragged items that can be converted to an xml object with
-        a root tag called 'datacred'
-        Parameters
-        ----------
-        e : qt event
+        Description:
+            Handles incoming drag events, only accepting items that can
+            be converted to an XML object with a root tag called
+            "datacred".
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            e (QEvent): The drag event object.
 
+        Returned objects:
+            None
+
+        Workflow:
+            1. Check if the mime data contains plain text.
+            2. Attempt to convert the text to an XML node.
+            3. Accept the event only if the root tag is "datacred".
+
+        Notes:
+            None
         """
+
         mime_data = e.mimeData()
+
+        # Check if the dropped data is plain text.
         if e.mimeData().hasFormat("text/plain"):
+
+            # Attempt to convert the text to an XML node.
             element = xml_utils.string_to_node(mime_data.text())
+
+            # Accept if the node exists and its tag is "datacred".
             if element is not None and element.tag == "datacred":
                 e.accept()
         else:
+            # Ignore all other formats.
             e.ignore()
 
     def to_xml(self):
         """
-        encapsulates the QPlainTextEdit text in an element tag
+        Description:
+            Encapsulates the QPlainTextEdit text in a "datacred" element
+            tag.
 
-        Returns
-        -------
-        datacred element tag in xml tree
+        Passed arguments:
+            None
+
+        Returned objects:
+            datacred (xml.etree.ElementTree.Element): Data credit
+                element tag in XML tree.
+
+        Workflow:
+            Extracts text from the UI box and wraps it in an XML element.
+
+        Notes:
+            Assumes "xml_utils.xml_node" is available.
         """
+
+        # Create the XML node using text from the QPlainTextEdit.
         datacred = xml_utils.xml_node(
             "datacred", text=self.ui.fgdc_datacred.toPlainText()
         )
+
         return datacred
 
     def from_xml(self, data_credit):
         """
-        parses the xml code into the relevant datacred elements
+        Description:
+            Parse the XML code into the relevant data credit elements.
 
-        Parameters
-        ----------
-        data_credit - the xml element status and its contents
+        Passed arguments:
+            data_credit (xml.etree.ElementTree.Element): The XML
+                element containing the data credit.
 
-        Returns
-        -------
-        None
+        Returned objects:
+            None
+
+        Workflow:
+            1. Check if the element tag is "datacred".
+            2. Set the UI text box content using the XML element's text.
+
+        Notes:
+            None
         """
+
         try:
+            # Check if the element tag matches the expected "datacred".
             if data_credit.tag == "datacred":
+                # Set the extracted text to the UI widget.
                 self.ui.fgdc_datacred.setPlainText(data_credit.text)
             else:
+                # Print a message if the tag is incorrect.
                 print("The tag is not datacred")
         except KeyError:
+            # Handle if the element text is missing.
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(Datacred, "Data Credit testing")

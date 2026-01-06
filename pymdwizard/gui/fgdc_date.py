@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,46 +13,58 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import (QMessageBox, QWidget)
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_fgdc_date
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_fgdc_date
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class FGDCDate(QWidget):
+    """
+    Description:
+        A reusable widget for entering and validating dates according to
+        FGDC CSDGM format rules (YYYY, YYYYMM, YYYYMMDD, "Unknown", or "Unpublished material").
+        Inherits from QWidget.
+
+    Passed arguments:
+        parent (QWidget, optional): Parent widget.
+        show_format (bool): If True, shows the format helper widget.
+        label (str): Text label for the date field.
+        required (bool): If True, shows the required indicator.
+        fgdc_name (str, optional): Object name for the date input
+            field ("fgdc_caldate").
+        parent_fgdc_name (str, optional): Object name for the parent
+            widget container ("parent_fgdc").
+
+    Returned objects:
+        None
+
+    Workflow:
+        1. Initializes the UI.
+        2. Configures display based on "show_format", "label", and
+           "required" flags.
+        3. Sets object names for XML identification.
+        4. Connects the "editingFinished" signal to the validation
+           method.
+
+    Notes:
+        Validation logic uses a QMessageBox to notify the user of
+        formatting errors.
+    """
+
     def __init__(
         self,
         parent=None,
@@ -66,66 +74,124 @@ class FGDCDate(QWidget):
         fgdc_name=None,
         parent_fgdc_name=None,
     ):
-        QWidget.__init__(self, parent=parent)
 
+        # Initialize the parent QWidget class.
+        QWidget.__init__(self, parent=parent)
         self.build_ui()
 
+        # Configure UI visibility based on initialization flags.
         if not show_format:
             self.ui.widget_format.hide()
 
         if label:
             self.ui.label.setText(label)
         else:
+            # Hide the label if no text is provided.
             self.ui.label.visible = False
 
         if not required:
             self.ui.lbl_required.hide()
 
+        # Store reference to the actual date input widget.
         self.date_widget = self.ui.fgdc_caldate
+
+        # Set object name for the date input widget (for XML/utility).
         if fgdc_name is not None:
             self.ui.fgdc_caldate.setObjectName(fgdc_name)
 
+        # Set object name for the parent container (for XML/utility).
         if parent_fgdc_name is not None:
             self.ui.parent_fgdc.setObjectName(parent_fgdc_name)
 
+        # Used to prevent repetitive checks if content has not changed.
         self.last_checked_contents = ""
         self.connect_events()
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Build and modify this widget's GUI.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Instantiates and sets up the UI elements.
+
+        Notes:
+            None
         """
+
+        # Instantiate and setup the UI.
         self.ui = UI_fgdc_date.Ui_parent_widget()
         self.ui.setupUi(self)
 
     def connect_events(self):
         """
-        Connect the appropriate GUI components with the corresponding functions
+        Description:
+            Connect the appropriate GUI components with the corresponding
+            functions.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Connects the date input field's "editingFinished" signal to
+            the "check_format" validation method.
+
+        Notes:
+            None
         """
+
+        # Connect the date widget's signal to the validation function.
         self.date_widget.editingFinished.connect(self.check_format)
 
     def check_format(self):
+        """
+        Description:
+            Validates the date format upon completion of editing.
 
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. Checks if the content has changed since the last check.
+            2. Validates length (must be 4, 6, 8, or 0) and content
+               (must be digits, "Unknown", or "Unpublished material").
+            3. If invalid, displays a "QMessageBox" detailing the error
+               and required formats.
+
+        Notes:
+            None
+        """
+
+        # Retrieve date value.
         cur_contents = self.date_widget.text()
+
+        # Skip validation if content is unchanged.
         if cur_contents == self.last_checked_contents:
             return
         else:
             self.last_checked_contents = cur_contents
 
         msg = ""
+        # Check if length is valid (0 for empty, 4, 6, or 8).
         if len(cur_contents) not in (0, 4, 6, 8):
             msg = "An FGDC date needs to be 4, 6, or 8 numbers long, or be 'Unknown' or 'Unpublished material'"
         if not cur_contents.isdigit():
             msg = "An FGDC date can only consist of numbers"
 
+        # Clear message if explicitly set to "Unknown" (redundant with
+        # previous check, but safer).
         if cur_contents == "Unknown":
             msg = ""
 
@@ -142,13 +208,53 @@ class FGDCDate(QWidget):
             msgbox.exec_()
 
     def get_date(self):
+        """
+        Description:
+            Returns the current text in the date input field.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            str: The current date string.
+
+        Workflow:
+            Retrieves text from the internal date widget.
+
+        Notes:
+            None
+        """
+
         return self.date_widget.text()
 
     def set_date(self, date_str):
+        """
+        Description:
+            Sets the text content of the date input field.
+
+        Passed arguments:
+            date_str (str): The new date string to set.
+
+        Returned objects:
+            None
+
+        Workflow:
+            Sets the text of the internal date widget.
+
+        Notes:
+            None
+        """
+
         self.date_widget.setText(date_str)
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(
-        FGDCDate, label="testing", show_format=False, parent_fgdc_name="fgdc_sngdate"
+        FGDCDate, label="testing", show_format=False,
+        parent_fgdc_name="fgdc_sngdate"
     )

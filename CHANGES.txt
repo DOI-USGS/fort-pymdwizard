@@ -1,7 +1,47 @@
 Changes
 =======
 
-2.1.1 (12/5/2025)
+(12/09/2025)
+-----
+Updates to Metadata Wizard:
+--------------
+1. Updated lxml library version and associated call (e.g., RestrictedElement removed)
+2. Updated DOI certificate support
+3. Update sciencebasepy library and associated code (was using sbpy)
+4. Added inline comments and doc strings to almost every script.
+5. Revised inline comments and code referencing http (instead of https; though these are usually redirected on most serviers) when not specified.
+6. \pymdwizard\gui\spdom.py was not properly migrated to pyQT5, so modifications made to address QWebChannel, QWebEngineView, methods to run java script, and related steps.
+7. Updated all library imports as they were included legacy support for python 2.7
+8. Many scripts were importing libraries in functions, which made this software very difficult to manage (also not recommended). All of this was fixed.
+9. Addressed issues with \pymdwizard\gui\spdom.py and centering, rendering of map on spatial tab.
+10. Removed hardcoding of software version found in many scripts.
+11. Updated older methods of string and variable formatting (.format() in 2.7) to F-strings, which is used in Python 3.
+12. Updated all libraries for deployment and created a new yaml file. This should address vulnerabilities. This approach should be done every time work is done to the code (at least one release a year with new python bindings) and versions of all software should be current/acceptable.
+
+TODO (Long-term): 
+--------------
+1. pyqt6 is not available on conda-forge (it is available on Anaconda), so not updating at this time.
+2. There are a lot of bare except statements in code that should be addressed.
+3. Add support for accessing data within ESRI FGDB (raster, feature classes/datasets) and geopackages (raster and vector).
+----
+
+TODO (Short-term): 
+--------------
+1. Check code with static analyzer
+2. Address the commented out code in jupyterstarter.py. Need to test before cleaning up code.
+3. MainWindow.py: Anaconda is not allowed. Revise line xxx.
+
+
+FYI:
+--------------
+1. Running code from DOS prints STDOUT of:
+  a. QPainter::begin: A paint device can only be painted by one painter at a time. (Seems to be a timing issue for splash, which I have improved and should not affect performance).
+  b. js: Uncaught ReferenceError: xxx (Timing issue with splash screen and main app. This is a lot better now).
+  c. QCssParser::parseColorValue: Specified color with alpha value but no alpha given: 'rgba 90, 90, 90' (I checked every html file, code, and other things but cannot seem to find where alpha is not included. I need change rgb to rgba, but this did not fix the issue (there is some CSS file somewhere that I am missing).
+
+
+
+2.1.1 (6/9/2025)
 -----
 Updates:
 - Add support for high resolution displays

@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -18,63 +14,43 @@ from Datacite and Crossref
 Returns information in an FGDC citeinfo xml format
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
+# Standard python libraries.
 import json
 from urllib.parse import urlparse
 
+# Non-standard python libraries.
 try:
     from habanero import cn
-except ImportError:
-    habanero = None
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core.xml_utils import XMLNode
-from pymdwizard.core import utils
+# Custom import/libraries.
+try:
+    from pymdwizard.core.xml_utils import XMLNode
+    from pymdwizard.core import utils
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 def clean_doi(doi):
     """
-    Cleans doi to match expected string format.
-    Removes leading 'https://'  and 'doi.org/' from the string
+    Description:
+        Cleans DOI to match the expected string format by removing
+        leading 'https://doi.org/' and 'doi.org/' from the string.
 
-    Parameters
-    ----------
-    doi : str
-        A string containing a DOI
+    Args:
+        doi (str): A string containing a DOI.
 
-    Returns
-    -------
-        DOI string with extraneous characters removed
+    Returns:
+        str: DOI string with extraneous characters removed.
     """
+
+    # Remove specific DOI prefixes for standardization.
     if doi.startswith("https://doi.org/"):
         return doi.replace("https://doi.org/", "")
     elif doi.startswith("doi.org/"):
@@ -91,24 +67,29 @@ def clean_doi(doi):
 
 def get_doi_citation_crossref(doi):
     """
-    get
+    Description:
+        Retrieve publication information from the CrossRef API
+        using a DOI.
 
-    Parameters
-    ----------
-    doi : str
-        DOI in the format "https://doi.org/10.1109/5.771073"
-                    or    "doi:10.5066/F70R9MFW"
-                    or    "http://dx.doi.org/10.1109/5.771073"
+    Args:
+        doi (str): A string containing a DOI in the format:
+            - "https://doi.org/10.1109/5.771073"
+            - "doi:10.5066/F70R9MFW"
+            - "http://dx.doi.org/10.1109/5.771073"
 
-    Returns
-    -------
-        dict with publication information pulled from crossref site
+    Returns:
+        dict: A dictionary with publication information pulled from CrossRef
+            site.
     """
 
+    # Perform content negotiation to retrieve citation data for the DOI.
     cite_data = json.loads(cn.content_negotiation(ids=doi,
                                                   format="citeproc-json"))
 
+    # Set geoform to indicate the type of publication.
     cite_data["geoform"] = "publication"
+
+    # Check for publisher location and set publication place.
     if "publisher-location" in cite_data:
         cite_data["pubplace"] = cite_data["publisher-location"]
     else:
@@ -119,29 +100,40 @@ def get_doi_citation_crossref(doi):
 
 def get_doi_citation_datacite(doi):
     """
+    Description:
+        Retrieve citation information from the DataCite API
+        using a DOI.
 
-    Parameters
-    ----------
-    doi : str
-        DOI in the format "https://doi.org/10.1109/5.771073"
-                    or    "doi:10.5066/F70R9MFW"
-                    or    "http://dx.doi.org/10.1109/5.771073"
+    Args:
+        doi (str): A string containing a DOI in the format:
+            - "https://doi.org/10.1109/5.771073"
+            - "doi:10.5066/F70R9MFW"
+            - "http://dx.doi.org/10.1109/5.771073"
 
-    Returns
-    -------
-        dict with information pulled from datacite site
+    Returns:
+        dict: A dictionary with information pulled from DataCite.
     """
+
+    # Define endpoint.
     endpoint = "https://api.datacite.org/works"
+
+    # Make a GET request to the DataCite API using the DOI.
     response = utils.requests_pem_get(endpoint + "/" + doi)
+
+    # Load the response JSON and extract citation attributes.
     cite_data = json.loads(response.text)["data"]["attributes"]
 
+    # Standardize key names from API response.
     if "container-title" not in cite_data:
         cite_data["container-title"] = cite_data.pop("container_title")
     if "data-center-id" not in cite_data:
         cite_data["data-center-id"] = cite_data.pop("data_center_id")
 
+    # Set publisher and URL fields.
     cite_data["publisher"] = cite_data["container-title"]
     cite_data["URL"] = "https://doi.org/{}".format(cite_data["doi"])
+
+    # Determine geoform and publication place based on data center ID.
     if "data-center-id" in cite_data and "usgs" in cite_data["data-center-id"]:
         cite_data["container-title"] = None
         cite_data["pubplace"] = "n/a"
@@ -149,44 +141,55 @@ def get_doi_citation_datacite(doi):
     else:
         cite_data["geoform"] = "publication"
         cite_data["pubplace"] = "n/a"
+
     return cite_data
 
 
 def get_doi_citation(doi):
     """
+    Description:
+        Retrieve citation information based on the provided DOI.
 
-    Parameters
-    ----------
-    doi : str
-        DOI in the format "https://doi.org/10.1109/5.771073"
-                    or    "doi:10.5066/F70R9MFW"
-                    or    "http://dx.doi.org/10.1109/5.771073"
+    Args:
+        doi (str): A string containing a DOI in the format:
+            - "https://doi.org/10.1109/5.771073"
+            - "doi:10.5066/F70R9MFW"
+            - "http://dx.doi.org/10.1109/5.771073"
 
-    Returns
-    -------
-        xml node with citation information in FGDC schema, citeinfo format.
-            or
-        None if the DOI cannot be retrieved
+    Returns:
+        XMLNode or None: XMLNode with citation information in FGDC schema,
+            citeinfo format, or None if the DOI cannot be retrieved.
     """
 
+    # Clean the DOI format.
     doi = clean_doi(doi)
+
+    # Try getting citation using DOI from CrossRef and DataCite.
     try:
+        # Try CrossRef API
         cite_data = get_doi_citation_crossref(doi)
     except:
         try:
+            # Try DataCite API
             cite_data = get_doi_citation_datacite(doi)
         except:
             return None
 
+    # Create XMLNode for citation info.
     citeinfo = XMLNode(tag="citeinfo")
+
+    # Process authors and add to citeinfo.
     if "author" in cite_data:
         for author in cite_data["author"]:
+            # Create a full name if literal is not present
             if "literal" not in author:
                 author["literal"] = author["given"] + " " + author["family"]
-            origin = XMLNode(tag="origin", parent_node=citeinfo, text=author["literal"])
+            XMLNode(tag="origin", parent_node=citeinfo,
+                    text=author["literal"])
     else:
-        origin = XMLNode(tag="origin", parent_node=citeinfo, text="")
+        XMLNode(tag="origin", parent_node=citeinfo, text="")  # No authors
 
+    # Get publication date information.
     pubdate_parts = None
     if "published-online" in cite_data:
         pubdate_parts = cite_data["published-online"]["date-parts"][0]
@@ -206,7 +209,8 @@ def get_doi_citation(doi):
         if has_license:
             try:
                 pubdate_parts = \
-                    cite_data.get("license")[0].get("start").get("date-parts")[0]
+                    cite_data.get("license")[0].get("start").get(
+                        "date-parts")[0]
                 pubdate_str = "".join(
                     ["{:02d}".format(int(part)) for part in pubdate_parts])
             except AttributeError:
@@ -237,7 +241,7 @@ def get_doi_citation(doi):
             except AttributeError:
                 pass
 
-    pubdate = XMLNode(tag="pubdate", parent_node=citeinfo, text=pubdate_str)
+    XMLNode(tag="pubdate", parent_node=citeinfo, text=pubdate_str)
 
     # USGS data/software products (pubplace and geoform).
     # Version--Edition unfortunately not tracked in data/software DOI.
@@ -261,7 +265,7 @@ def get_doi_citation(doi):
             elif data_type == "Software":
                 cite_data["geoform"] = "application/service"
 
-    # USGS Series (pubplace, volume/issue)
+    # # Process details for USGS Series publications (pubplace, volume/issue).
     try:
         has_container = "container-title" in cite_data and cite_data[
             "container-title"]
@@ -306,9 +310,12 @@ def get_doi_citation(doi):
         pass
 
     title = XMLNode(tag="title", parent_node=citeinfo, text=cite_data["title"])
-    geoform = XMLNode(tag="geoform", parent_node=citeinfo, text=cite_data["geoform"])
+    geoform = XMLNode(tag="geoform", parent_node=citeinfo,
+                      text=cite_data["geoform"])
 
-    has_container = "container-title" in cite_data and cite_data["container-title"]
+    # Add series info if available.
+    has_container = "container-title" in cite_data and cite_data[
+        "container-title"]
     has_volume = "volume" in cite_data and cite_data["volume"]
     has_issue = "issue" in cite_data and cite_data["issue"]
 
@@ -323,7 +330,8 @@ def get_doi_citation(doi):
         if "volume" in cite_data and "issue" in cite_data:
             issue_str = "vol." + " " + str(cite_data["volume"]) + ", issue "
             issue_str += cite_data["issue"]
-            issue = XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
+            issue = XMLNode(tag="issue", parent_node=citeinfo.serinfo,
+                            text=issue_str)
         elif "volume" in cite_data:
             issue_str = "vol." + " " + str(cite_data["volume"])
             XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
@@ -331,14 +339,19 @@ def get_doi_citation(doi):
             issue_str = "issue " + cite_data["issue"]
             XMLNode(tag="issue", parent_node=citeinfo.serinfo, text=issue_str)
 
+    # Add publication information.
     XMLNode(tag="pubinfo", parent_node=citeinfo)
-    XMLNode(tag="pubplace", parent_node=citeinfo.pubinfo, text=cite_data["pubplace"])
-    XMLNode(tag="publish", parent_node=citeinfo.pubinfo, text=cite_data["publisher"])
+    XMLNode(tag="pubplace", parent_node=citeinfo.pubinfo,
+            text=cite_data["pubplace"])
+    XMLNode(tag="publish", parent_node=citeinfo.pubinfo,
+            text=cite_data["publisher"])
 
+    # Optional page info.
     if "page" in cite_data:
         othercit_str = "ppg. " + cite_data["page"]
         XMLNode(tag="othercit", parent_node=citeinfo, text=othercit_str)
 
+    # Add the DOI link.
     XMLNode(
         tag="onlink",
         parent_node=citeinfo,

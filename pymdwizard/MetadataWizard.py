@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -19,55 +15,32 @@ This module is used to launch the main application (MainWindow.py)
 It does two things, initialize environment variables (windows only)
 Pass command line arguments to the MainWindow script.
 
-Todo:
-    * Make this functionality cross platform
 
-
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
+# Standard python libraries.
 import argparse
-
 import os
 import sys
 
 
 def set_clean_path():
     """
-    For installations on Windows (assumes installed via installer)
-    - prepends the path with the installer's python directory and bin directory
-    - makes a copy of the PEM file from the user's registry
-    - sets the gdal environmental variables
-    :return:
-     None
+    Description:
+        For installations on Windows (assumes installed via installer)
+            - prepends the path with the installer's python directory and bin
+              directory
+            - makes a copy of the PEM file from the user's registry
+            - sets the gdal environmental variables
+
+    Args:
+        None
+
+    Returns:
+        None
     """
 
     if os.name == "nt":
@@ -82,19 +55,29 @@ def set_clean_path():
             ]
         )
 
-        from pymdwizard.core.utils import check_pem_file
-
-        check_pem_file()
-
-        from pymdwizard.core.spatial_utils import set_local_gdal_data
-
-        set_local_gdal_data()
-
     else:
         pass
 
+    # Allow python to recognize module pymdwizard.
+    this_fname = os.path.realpath(__file__)
+    root_dir = os.path.dirname(this_fname)
+    sys.path.append(os.path.dirname(root_dir))
+
+    # Setup DOI (organizational) certificate.
+    from pymdwizard.core.utils import check_pem_file
+    check_pem_file()
+
+    # Set up access to GDAL data.
+    from pymdwizard.core.spatial_utils import set_local_gdal_data
+
+    # Set up local GDAL data.
+    set_local_gdal_data()
+
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
 
     parser = argparse.ArgumentParser(description="Metadata Wizard")
     parser.add_argument(
@@ -107,22 +90,24 @@ if __name__ == "__main__":
     help_str = "The CSV or SHP file to use for populating the spdom, spdoinfo,"
     help_str += " spref and eainfo sections"
     parser.add_argument(
-        "introspect_fname", help=help_str, type=str, default=None, nargs="?"
+        "introspect_fname", help=help_str, type=str, default=None,
+        nargs="?"
     )
     args = parser.parse_args()
 
+    # Call function above.
     set_clean_path()
 
-    # Handle high resolution displays.
+    # Handle high resolution displays with QT.
     from PyQt5.QtCore import Qt
     from PyQt5.QtWidgets import QApplication
-    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+    if hasattr(Qt, "AA_EnableHighDpiScaling"):
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+    if hasattr(Qt, "AA_UseHighDpiPixmaps"):
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
+    # Open application.
     from pymdwizard.gui import MainWindow
-
     MainWindow.launch_main(
         xml_fname=args.xml_fname,
         introspect_fname=args.introspect_fname,

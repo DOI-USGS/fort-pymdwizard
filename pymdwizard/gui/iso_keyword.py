@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,52 +13,60 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from PyQt5.QtWidgets import QWidget
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QWidget
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-
-from pymdwizard.gui.ui_files import UI_iso_keyword
+# Custom import/libraries.
+try:
+    from pymdwizard.core import utils
+    from pymdwizard.gui.ui_files import UI_iso_keyword
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class IsoKeyword(QWidget):
+    """
+    Description:
+        A widget for entering an ISO 19115 keyword (e.g., a specific
+        key word or phrase) within the metadata. Inherits from QWidget.
+
+    Passed arguments:
+        parent (QWidget, optional): Parent widget.
+
+    Returned objects:
+        None
+
+    Workflow:
+        Initializes the UI elements provided by "UI_iso_keyword".
+
+    Notes:
+        This widget is often used inside a repeating list or part of a
+        larger keyword container (e.g., Keywords).
+    """
+
     def __init__(self, parent=None):
+        # Initialize the parent QWidget class.
         QWidget.__init__(self, parent=parent)
 
+        # Instantiate the UI class.
         self.ui = UI_iso_keyword.Ui_Form()
 
+        # Set up the UI components on the widget instance.
         self.ui.setupUi(self)
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(IsoKeyword, "IsoKeyword")
