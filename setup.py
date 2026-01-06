@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-with open("requirements.txt") as f:
+with open("environment.yml") as f:
     tests_require = f.readlines()
 install_requires = [t.strip() for t in tests_require]
 
