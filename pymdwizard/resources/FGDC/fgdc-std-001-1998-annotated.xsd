@@ -792,7 +792,7 @@ FAQ:     Why are the g-rings composed of four or more points?
     <xsd:choice>
       <xsd:element ref="grngpoin" minOccurs="4" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>1.5.2.1.1  G-Ring Point -- a single geographic location.
+          <xsd:documentation>1.5.2.2.0  G-Ring Point -- a single geographic location.
 
        Type: compound</xsd:documentation>
         </xsd:annotation>
@@ -818,7 +818,7 @@ FAQ:     Why are the g-rings composed of four or more points?
     <xsd:sequence>
       <xsd:element ref="gringlat">
         <xsd:annotation>
-          <xsd:documentation>1.5.2.1.1.1  G-Ring Latitude -- the latitude of a point of the g-ring.
+          <xsd:documentation>1.5.2.2.0.1  G-Ring Latitude -- the latitude of a point of the g-ring.
 
        Type: real
        Domain:  -90.0 &lt;= G-Ring Latitude &lt;= 90.0</xsd:documentation>
@@ -826,7 +826,7 @@ FAQ:     Why are the g-rings composed of four or more points?
       </xsd:element>
       <xsd:element ref="gringlon">
         <xsd:annotation>
-          <xsd:documentation>1.5.2.1.1.2  G-Ring Longitude -- the longitude of a point of the
+          <xsd:documentation>1.5.2.2.0.2  G-Ring Longitude -- the longitude of a point of the
              g-ring.
 
        Type: real
@@ -854,7 +854,7 @@ FAQ:     Why are the g-rings composed of four or more points?
     <xsd:choice>
       <xsd:element ref="grngpoin" minOccurs="4" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>1.5.2.1.1  G-Ring Point -- a single geographic location.
+          <xsd:documentation>1.5.2.2.0  G-Ring Point -- a single geographic location.
 
        Type: compound</xsd:documentation>
         </xsd:annotation>
@@ -1345,7 +1345,7 @@ FAQ:     What does SDTS say about completeness?
     <xsd:sequence>
       <xsd:element ref="attraccr">
         <xsd:annotation>
-          <xsd:documentation>2.1.1  Attribute Accuracy Report -- an explanation of the accuracy of
+          <xsd:documentation>2.2.0  Attribute Accuracy Report -- an explanation of the accuracy of
        the identification of the entities and assignments of values in
        the data set and a description of the tests used.
 
@@ -2700,7 +2700,7 @@ FAQ:     What is the "local planar" system?
     <xsd:sequence>
       <xsd:element ref="mapprojn">
         <xsd:annotation>
-          <xsd:documentation>4.1.2.1.1  Map Projection Name -- name of the map projection.
+          <xsd:documentation>4.1.2.2.0  Map Projection Name -- name of the map projection.
 
        Type: text
        Domain:  "Albers Conical Equal Area" "Azimuthal Equidistant"
@@ -2785,7 +2785,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="mercator">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.10  Mercator -- contains parameters for the Mercator
+            <xsd:documentation>4.1.2.2.00  Mercator -- contains parameters for the Mercator
             projection
 
        Type: compound</xsd:documentation>
@@ -2793,7 +2793,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="modsak">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.11  Modified Stereographic for Alaska -- contains parameters
+            <xsd:documentation>4.1.2.2.01  Modified Stereographic for Alaska -- contains parameters
             for the Modified Stereographic for Alaska projection.
 
        Type: compound</xsd:documentation>
@@ -2801,7 +2801,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="miller">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.12  Miller Cylindrical -- contains parameters for the Miller
+            <xsd:documentation>4.1.2.2.02  Miller Cylindrical -- contains parameters for the Miller
             Cylindrical projection.
 
        Type: compound</xsd:documentation>
@@ -2809,7 +2809,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="obqmerc">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.13  Oblique Mercator -- contains parameters for the Oblique
+            <xsd:documentation>4.1.2.2.03  Oblique Mercator -- contains parameters for the Oblique
             Mercator projection.
 
        Type: compound</xsd:documentation>
@@ -2817,7 +2817,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="orthogr">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.14  Orthographic -- contains parameters for the Orthographic
+            <xsd:documentation>4.1.2.2.04  Orthographic -- contains parameters for the Orthographic
             projection
 
        Type: compound
@@ -2827,7 +2827,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="polarst">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.15  Polar Stereographic -- contains parameters for the Polar
+            <xsd:documentation>4.1.2.2.05  Polar Stereographic -- contains parameters for the Polar
             Stereographic  projection.
 
        Type: compound
@@ -2837,7 +2837,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="polycon">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.16  Polyconic -- contains parameters for the Polyconic
+            <xsd:documentation>4.1.2.2.06  Polyconic -- contains parameters for the Polyconic
             projection.
 
        Type: compound
@@ -2847,7 +2847,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="robinson">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.17  Robinson -- contains parameters for the Robinson
+            <xsd:documentation>4.1.2.2.07  Robinson -- contains parameters for the Robinson
             projection.
 
        Type: compound</xsd:documentation>
@@ -2855,7 +2855,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="sinusoid">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.18  Sinusoidal -- contains parameters for the Sinusoidal
+            <xsd:documentation>4.1.2.2.08  Sinusoidal -- contains parameters for the Sinusoidal
             projection.
 
        Type: compound</xsd:documentation>
@@ -2863,7 +2863,7 @@ FAQ:     What is the "local planar" system?
         </xsd:element>
         <xsd:element ref="spaceobq">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.19  Space Oblique Mercator (Landsat) -- contains parameters
+            <xsd:documentation>4.1.2.2.09  Space Oblique Mercator (Landsat) -- contains parameters
             for the Space Oblique  Mercator (Landsat) projection.
 
        Type: compound</xsd:documentation>
@@ -4603,7 +4603,7 @@ FAQ:     What is the "local planar" system?
       </xsd:element>
       <xsd:element ref="polarst">
         <xsd:annotation>
-          <xsd:documentation>4.1.2.1.15  Polar Stereographic -- contains parameters for the Polar
+          <xsd:documentation>4.1.2.2.05  Polar Stereographic -- contains parameters for the Polar
             Stereographic  projection.
 
        Type: compound
@@ -4663,7 +4663,7 @@ Survey.
         </xsd:element>
         <xsd:element ref="obqmerc">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.13  Oblique Mercator -- contains parameters for the Oblique
+            <xsd:documentation>4.1.2.2.03  Oblique Mercator -- contains parameters for the Oblique
             Mercator projection.
 
        Type: compound</xsd:documentation>
@@ -4671,7 +4671,7 @@ Survey.
         </xsd:element>
         <xsd:element ref="polycon">
           <xsd:annotation>
-            <xsd:documentation>4.1.2.1.16  Polyconic -- contains parameters for the Polyconic
+            <xsd:documentation>4.1.2.2.06  Polyconic -- contains parameters for the Polyconic
             projection.
 
        Type: compound
@@ -5138,7 +5138,7 @@ FAQ:     What are the values for the semi-major axis and denominator of
     <xsd:sequence>
       <xsd:element ref="altdatum">
         <xsd:annotation>
-          <xsd:documentation>4.2.1.1  Altitude Datum Name -- the identification given to the
+          <xsd:documentation>4.2.2.0  Altitude Datum Name -- the identification given to the
          surface taken as the surface of reference from which
          altitudes are measured.
 
@@ -6029,7 +6029,7 @@ FAQ:     Where are the data elements for the "Available Time Period"
     <xsd:sequence>
       <xsd:element ref="formname">
         <xsd:annotation>
-          <xsd:documentation>6.4.2.1.1  Format Name -- the name of the data transfer format.
+          <xsd:documentation>6.4.2.2.0  Format Name -- the name of the data transfer format.
 
        Type: text
        Domain:  domain values from the table below; free text
@@ -6231,7 +6231,7 @@ FAQ:     What is the purpose of the Format Information Content Element?
     <xsd:sequence>
       <xsd:element ref="computer" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>6.4.2.2.1.1  Computer Contact Information -- instructions for
+          <xsd:documentation>6.4.2.2.2.0  Computer Contact Information -- instructions for
              establishing communications with the distribution
              computer.
 
@@ -6265,7 +6265,7 @@ FAQ:     What is the purpose of the Format Information Content Element?
     <xsd:choice>
       <xsd:element ref="networka">
         <xsd:annotation>
-          <xsd:documentation>4.2.2.1.1.1  Network Address -- the electronic address from which the
+          <xsd:documentation>4.2.2.2.0.1  Network Address -- the electronic address from which the
              data set can be obtained from the distribution computer.
 
        Type: compound
@@ -6275,7 +6275,7 @@ FAQ:     What is the purpose of the Format Information Content Element?
       </xsd:element>
       <xsd:element ref="dialinst">
         <xsd:annotation>
-          <xsd:documentation>4.2.2.1.1.2  Dialup Instructions -- information required to access the
+          <xsd:documentation>4.2.2.2.0.2  Dialup Instructions -- information required to access the
              distribution computer remotely through telephone lines.
 
        Type: compound
@@ -6290,7 +6290,7 @@ FAQ:     What is the purpose of the Format Information Content Element?
     <xsd:sequence>
       <xsd:element ref="networkr" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.1.1  Network Resource Name -- the name of the file or service
+          <xsd:documentation>2.2.2.0.1.1  Network Resource Name -- the name of the file or service
              from which the data set can be obtained.
 
        Type: text
@@ -6334,7 +6334,7 @@ FAQ:     What is the difference between the Network Resource Name and the
     <xsd:sequence>
       <xsd:element ref="lowbps">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.1  Lowest BPS -- lowest or only speed for the connection's
+          <xsd:documentation>2.2.2.0.2.1  Lowest BPS -- lowest or only speed for the connection's
              communication, expressed in bits per second.
 
        Type: integer
@@ -6345,7 +6345,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="highbps" minOccurs="0">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.2  Highest BPS -- highest speed for the connection's
+          <xsd:documentation>2.2.2.0.2.2  Highest BPS -- highest speed for the connection's
              communication, expressed in bits per second. Used in
              cases when a range of rates are provided.
 
@@ -6357,7 +6357,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="numdata">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.3  Number DataBits -- number of data bits in each character
+          <xsd:documentation>2.2.2.0.2.3  Number DataBits -- number of data bits in each character
              exchanged in the communication.
 
        Type: integer
@@ -6368,7 +6368,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="numstop">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.4  Number StopBits -- number of stop bits in each character
+          <xsd:documentation>2.2.2.0.2.4  Number StopBits -- number of stop bits in each character
              exchanged in the communication.
 
        Type: integer
@@ -6379,7 +6379,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="parity">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.5  Parity -- parity error checking used in each character
+          <xsd:documentation>2.2.2.0.2.5  Parity -- parity error checking used in each character
              exchanged in the communication.
 
        Type: text
@@ -6390,7 +6390,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="compress" minOccurs="0">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.6  Compression Support -- data compression available through
+          <xsd:documentation>2.2.2.0.2.6  Compression Support -- data compression available through
              the modem service to speed data transfer.
 
        Type: text
@@ -6401,7 +6401,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="dialtel" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.7  Dialup Telephone -- the telephone number of the
+          <xsd:documentation>2.2.2.0.2.7  Dialup Telephone -- the telephone number of the
              distribution computer.
 
        Type: text
@@ -6412,7 +6412,7 @@ FAQ:     What is the difference between the Network Resource Name and the
       </xsd:element>
       <xsd:element ref="dialfile" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>2.2.1.1.2.8  Dialup File Name -- the name of a file containing the
+          <xsd:documentation>2.2.2.0.2.8  Dialup File Name -- the name of a file containing the
              data set on the distribution computer.
 
        Type: text

@@ -38,7 +38,7 @@ sys.path.append(os.path.join(root_dir, "gui", "ui_files"))
 
 # Version of software properties used in different places of UIs. Change this
 # value and do not hardcode else where.
-__version__ = "2.1.1"
+__version__ = "2.2.0"
 __author__ = "U.S. Geological Survey, Fort Collins Colorado"
 __copyright__ = "Creative Commons (Universal 4.0)"
 __license__ = "Creative Commons (Universal 4.0)"

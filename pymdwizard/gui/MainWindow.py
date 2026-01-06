@@ -2309,7 +2309,7 @@ def show_splash(version="2.x.x"):
         rendered over the image.
 
     Passed arguments:
-        version (str): Version number as a string (e.g., "2.1.1").
+        version (str): Version number as a string (e.g., "2.2.0").
 
     Returned objects:
         splash (QSplashScreen): The created splash screen object.
