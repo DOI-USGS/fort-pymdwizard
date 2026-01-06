@@ -186,27 +186,18 @@ class FGDCDate(QWidget):
         msg = ""
         # Check if length is valid (0 for empty, 4, 6, or 8).
         if len(cur_contents) not in (0, 4, 6, 8):
-            msg = (
-                "An FGDC date needs to be 4, 6, or 8 numbers long, "
-                "or be 'Unknown' or 'Unpublished material'"
-            )
-
-        # Check if content consists of only digits.
-        if not cur_contents.isdigit() and cur_contents != "Unknown" and cur_contents != "Unpublished material":
-            msg = "An FGDC date can only consist of numbers or 'Unknown'"
+            msg = "An FGDC date needs to be 4, 6, or 8 numbers long, or be 'Unknown' or 'Unpublished material'"
+        if not cur_contents.isdigit():
+            msg = "An FGDC date can only consist of numbers"
 
         # Clear message if explicitly set to "Unknown" (redundant with
         # previous check, but safer).
         if cur_contents == "Unknown":
             msg = ""
 
-        # Clear message if explicitly set to "Unpublished material" (redundant with
-        # previous check, but safer).
         if cur_contents == "Unpublished material":
             msg = ""
 
-
-        # Show message box if an error message was generated.
         if msg:
             msgbox = QMessageBox()
             msgbox.setIcon(QMessageBox.Information)
