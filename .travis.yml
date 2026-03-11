@@ -10,7 +10,7 @@ before_install:
     - export PATH="$HOME/miniconda/bin:$PATH"
     - conda update --yes conda
     - conda config --add channels conda-forge --force
-    - travis_retry conda create --yes -n TEST $CONDA --file requirements.txt
+    - travis_retry conda create --yes -n TEST $CONDA --file environment.yml
     - source activate TEST
     - travis_retry conda install --yes pytest
     - travis_retry conda install --yes pytest-cov

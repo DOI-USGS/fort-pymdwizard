@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,95 +13,156 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_native
-
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_native
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 class Native(WizardWidget):  #
+    """
+    Description:
+        A widget corresponding to the FGDC <native> tag, which describes
+        the native data set environment of the digital data.
 
+    Passed arguments:
+        None (Inherited from WizardWidget)
+
+    Returned objects:
+        None
+
+    Workflow:
+        Manages a single QPlainTextEdit field for the native environment
+        description, allowing for XML serialization and deserialization
+        of this content.
+
+    Notes:
+        Inherits from "WizardWidget".
+    """
+
+    # Class attributes.
     drag_label = "Native data set environment <native>"
     acceptable_tags = ["native"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Builds and modifies this widget's graphical user interface.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes the UI class, calls "setupUi", and sets up
+            drag-and-drop functionality.
+
+        Notes:
+            None
         """
+
         self.ui = UI_native.Ui_Form()
+
+        # Setup the UI defined in the separate class.
         self.ui.setupUi(self)
+
+        # Enable drag and drop functionality.
         self.setup_dragdrop(self)
 
     def has_content(self):
+        """
+        Description:
+            Checks if the widget contains any user-entered text.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            bool: True if the text field is not empty, False otherwise.
+
+        Workflow:
+            Compares the content of the QPlainTextEdit to an empty string.
+
+        Notes:
+            None
+        """
+
+        # Return True if the text content is not empty.
         return self.ui.fgdc_native.toPlainText() != ""
 
     def to_xml(self):
         """
-        encapsulates the QPlainTextEdit text in an element tag
+        Description:
+            Encapsulates the text content of the widget into an FGDC
+            <native> XML element.
 
-        Returns
-        -------
-        native element tag in xml tree
+        Passed arguments:
+            None
+
+        Returned objects:
+            native (lxml.etree._Element): The <native> element tag
+                in the XML tree.
+
+        Workflow:
+            Creates an XML node with the tag "native" and the
+            QPlainTextEdit's content as its text.
+
+        Notes:
+            None
         """
-        native = xml_utils.xml_node("native", text=self.ui.fgdc_native.toPlainText())
+
+        # Create the <native> XML node with the widget's text content.
+        native = xml_utils.xml_node("native",
+                                    text=self.ui.fgdc_native.toPlainText())
+
         return native
 
     def from_xml(self, native):
         """
-        parses the xml code into the relevant native elements
+        Description:
+            Parses an XML element and populates the widget's text field
+            with the content of the <native> tag.
 
-        Parameters
-        ----------
-        access_constraints - the xml element status and its contents
+        Passed arguments:
+            native (lxml.etree._Element): The XML element, expected to
+                be <native>.
 
-        Returns
-        -------
-        None
+        Returned objects:
+            None
+
+        Workflow:
+            1. Checks if the tag is <native>.
+            2. Sets the QPlainTextEdit content to the element's text.
+
+        Notes:
+            None
         """
+
         try:
+            # Check if the element tag matches the expected tag.
             if native.tag == "native":
+                # Set the text content of the QPlainTextEdit.
                 self.ui.fgdc_native.setPlainText(native.text)
             else:
+                # Output a message if the tag is incorrect.
                 print("The tag is not native")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(Native, "Access Constraints testing")

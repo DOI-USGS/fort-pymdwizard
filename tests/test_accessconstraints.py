@@ -1,16 +1,23 @@
-from __future__ import print_function
 
+# Standard python libraries.
+from __future__ import print_function
 import sys
+
+# Non-standard python libraries.
+try:
+    from pytestqt import qtbot
+    from lxml import etree
+    from PyQt5.QtWidgets import QPlainTextEdit
+except ImportError as err:
+    raise ImportError(err, __file__)
+
+# Custom import/libraries.
+try:
+    from pymdwizard.gui import accconst
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 sys.path.append(r"../..")
-
-import sys
-from pytestqt import qtbot
-from lxml import etree
-
-from PyQt5.QtWidgets import QPlainTextEdit
-
-from pymdwizard.gui import accconst
 
 
 def test_accessconstraints_from_xml(qtbot):
@@ -22,7 +29,8 @@ def test_accessconstraints_from_xml(qtbot):
     acc_const = test_record.xpath("idinfo/accconst")[0]
 
     widget.from_xml(acc_const)
-    assert widget.findChild(QPlainTextEdit, "fgdc_accconst").toPlainText() == "none"
+    assert widget.findChild(QPlainTextEdit,
+                            "fgdc_accconst").toPlainText() == "none"
 
 
 def test_accessconstraints_to_xml(qtbot):

@@ -100,7 +100,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ conda install --yes --file requirements.txt
+        $ conda install --yes --file environment.yml
 		
 |
 

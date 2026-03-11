@@ -45,7 +45,7 @@ This project is modeled off of the original [Metadata Wizard](https://github.com
 Recommended Citation:
 ----------------
 
-Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.1.1, June 2025): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.2.0, January 2026): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
 
 Authors:
 ----------------
@@ -80,3 +80,13 @@ Contact:
 -----------
 ask-sdm@usgs.gov
 
+Software repositories:
+-----------
+Official source code:
+  https://code.usgs.gov/usgs/fort-pymdwizard
+Mirrored from GitLab:
+    https://github.com/usgs/fort-pymdwizard
+Current user documentation:
+    See: https://doi-usgs.github.io/fort-pymdwizard/
+Examples of use in other scripts:
+    https://github.com/usgs/fort-pymdwizard/tree/master/examples

@@ -1,122 +1,95 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
 Module contains a variety of miscellaneous functions
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey (USGS).
-Although the software has been subjected to rigorous review, 
-the USGS reserves the right to update the software as needed pursuant to 
-further analysis and review. No warranty, expressed or implied, is made by 
-the USGS or the U.S. Government as to the functionality of the software and 
-related material nor shall the fact of release constitute any such warranty. 
-Furthermore, the software is released on condition that neither the USGS nor 
-the U.S. Government shall be held liable for any damages resulting from 
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
+# Standard python libraries.
 import sys
 import os
 from os.path import dirname
 import platform
 import datetime
 import traceback
-# import pkg_resources
-import urllib.request
 import json
 import subprocess
-# import wincertstore  # Handled in check_pem_file()
-import subprocess
-# import wincertstore  # Handled in check_pem_file()
-
-try:
-    from urllib.parse import urlparse
-except:
-    from urlparse import urlparse
-
+import urllib.request
+from urllib.parse import urlparse
 import requests
+# import pkg_resources
 
-import pandas as pd
+# Non-standard python libraries.
+try:
+    import pandas as pd
+    from PyQt5.QtWidgets import (QLineEdit, QTextBrowser, QPlainTextEdit,
+                                 QApplication, QComboBox)
+    from PyQt5.QtCore import (QAbstractTableModel, Qt, QSettings)
+    from PyQt5.QtGui import (QBrush, QColor, QIcon)
+except ImportError as err:
+    raise ImportError(err, __file__)
 
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (xml_utils, org_cert_setup)
+    from pymdwizard import __version__
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QTextBrowser
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush
-from PyQt5.QtGui import QColor
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QSettings
-
-from pymdwizard.core import xml_utils
-
-USGS_PEOPLEPICKER_URL = 'https://data.usgs.gov/modelcatalog/graphql'
+# Global variable of URL to Query USGS employee contacts.
+USGS_PEOPLEPICKER_URL = "https://data.usgs.gov/modelcatalog/graphql"
 
 
 def get_from_people_picker(email):
     """
-    Fetches and returns a dictionary of personal information from the USGS People Pickers Active Directory
-    for a given email address.
+    Description:
+        Fetches personal information from the USGS People Picker Active
+        Directory for a given email address.
 
-    This function sends a GraphQL query to the USGS People Picker GraphQL endpoint to retrieve information
-    about a person identified by their email address. The information retrieved includes email, name, DOI access ID,
-    active status, affiliation, department, description, ORCID, ORCID number, title, street address, city, state,
-    postal code, and telephone number.
+    Args:
+        email (str): The email address of the person to query information for.
 
-    Parameters:
-    - email (str): The email address of the person to query information for.
-s
     Returns:
-    - dict: A dictionary containing the person's information as retrieved from the USGS Model Catalog's Active Directory.
-            If the person is not found, an empty dictionary is returned.
+        dict: A dictionary containing the person's information retrieved
+            from the USGS Active Directory. If the person is not found,
+            an empty dictionary is returned.
 
     Note:
-    - This function requires the `requests` library to send HTTP requests and the `json` library to parse the response.
-    - The function assumes that the person's information is always present and does not handle cases where the person
-      might not exist in the directory or the response structure is different than expected.
+        This function requires the `requests` library and assumes that
+        the person's information is always present. It does not handle
+        cases where the person might not exist in the directory or if
+        the response structure is different from expected.
+
+        The information retrieved includes email, name, DOI access ID, active
+        status, affiliation, department, description, ORCID, ORCID number,
+        title, street address, city, state, postal code, and telephone number.
+
+        This function sends a GraphQL query to the USGS People Picker GraphQL
+        endpoint to retrieve information about a person identified by their
+        email address.
     """
+
+    # Headers for the HTTP request.
     headers = {
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Connection': 'keep-alive',
+                "Accept-Encoding": "gzip, deflate, br",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Connection": "keep-alive",
             }
 
+    # GraphQL query to fetch user information based on email.
     query = """
             {
               active_directory(where: {email: {_eq: """
@@ -139,284 +112,375 @@ s
           }
         }
     """
-    
+
+    # Data object for the GraphQL request.
     data = {
         "query": query,
         "variables": {}
     }
 
-    response = requests.post(USGS_PEOPLEPICKER_URL, headers=headers, data=json.dumps(data))
-    return dict(response.json()['data']['active_directory'][0].items())
+    # Sending POST request to the USGS People Picker API.
+    response = requests.post(USGS_PEOPLEPICKER_URL, headers=headers,
+                             data=json.dumps(data))
+
+    # Return the user's data as a dictionary, or an empty dictionary.
+    return dict(response.json()["data"]["active_directory"][0].items())
+
 
 def convert_persondict_to_fgdc(person_dict):
     """
-    Converts a dictionary representing a person's information into an FGDC (Federal Geographic Data Committee) compliant XML structure.
+    Description:
+        Converts a dictionary representing a person's information into
+        an FGDC (Federal Geographic Data Committee) compliant XML structure.
 
-    Parameters:
-    - person_dict (dict): A dictionary containing the person's information. Expected keys are:
-        - 'name': The person's full name (str).
-        - 'department': The department within USGS the person belongs to (str).
-        - 'title': The person's job title (str).
-        - 'street_address': The person's street address (str).
-        - 'city': The city of the person's address (str).
-        - 'state': The state of the person's address (str).
-        - 'postal_code': The postal code of the person's address (str).
-        - 'telephone': The person's telephone number (str).
-        - 'email': The person's email address (str).
+    Args:
+        person_dict (dict):
+            A dictionary containing the person's information. Expected keys:
+            - 'name': Full name (str).
+            - 'department': Department within USGS (str).
+            - 'title': Job title (str).
+            - 'street_address': Street address (str).
+            - 'city': City of the address (str).
+            - 'state': State of the address (str).
+            - 'postal_code': Postal code (str).
+            - 'telephone': Telephone number (str).
+            - 'email': Email address (str).
 
     Returns:
-    - An XML node (ElementTree.Element) representing the contact information in FGDC format.
+        ElementTree.Element: An XML node representing the contact information
+            in FGDC format.
 
-    This function constructs an XML structure for a single contact person, including their name, organization (prefixed with 'USGS -'),
-    position title, address (composed of street address, city, state, and postal code), telephone number, and email address.
-    The address is marked as both 'mailing and physical'. The XML nodes are created using a hypothetical 'xml_node' function,
-    which is assumed to create and optionally append a new XML node to a parent node.
+    Note:
+        Constructs an XML structure for a single contact person,
+        including their name, organization, position title, address,
+        telephone number, and email address. The address is marked
+        as both 'mailing and physical'.
     """
+
     # Replace any None values with the empty string
     person_dict = {k: ("" if v is None else v) for k, v in person_dict.items()}
 
-    cntper_str = person_dict.get('name', "")
-    cntorg_str = f"USGS - {person_dict.get('department', '')}"
-    cntpos_str = person_dict.get('title', "")
-    address_str_comma = person_dict.get('street_address', "")
+    # Prepare contact information strings.
+    cntper_str = person_dict.get("name", "")
+    cntorg_str = f"USGS - {person_dict.get("department", '')}"
+    cntpos_str = person_dict.get("title", "")
+    address_str_comma = person_dict.get("street_address", "")
     address_str = address_str_comma.replace(",", ", ")
-    city_str = person_dict.get('city', "")
-    state_str = person_dict.get('state', "")
-    postal_str = person_dict.get('postal_code', "")
-    cntvoice_str = person_dict.get('telephone', "")
-    cntemail_str = person_dict.get('email', "")
+    city_str = person_dict.get("city", "")
+    state_str = person_dict.get("state", "")
+    postal_str = person_dict.get("postal_code", "")
+    cntvoice_str = person_dict.get("telephone", "")
+    cntemail_str = person_dict.get("email", "")
     addrtype_str = "mailing and physical"
 
+    # Create the XML structure.
     cntinfo = xml_utils.xml_node("cntinfo")
     cntperp = xml_utils.xml_node("cntperp", parent_node=cntinfo)
-    cntper = xml_utils.xml_node("cntper", text=cntper_str, parent_node=cntperp)
-    cntorg = xml_utils.xml_node("cntorg", text=cntorg_str, parent_node=cntperp)
-    cntpos = xml_utils.xml_node("cntpos", text=cntpos_str, parent_node=cntinfo)
+    xml_utils.xml_node("cntper", text=cntper_str, parent_node=cntperp)
+    xml_utils.xml_node("cntorg", text=cntorg_str, parent_node=cntperp)
+    xml_utils.xml_node("cntpos", text=cntpos_str, parent_node=cntinfo)
+
+    # Create address nodes.
     cntaddr = xml_utils.xml_node("cntaddr", parent_node=cntinfo)
-    addrtype = xml_utils.xml_node("addrtype", text=addrtype_str, parent_node=cntaddr)
-    address = xml_utils.xml_node("address", text=address_str, parent_node=cntaddr)
-    city = xml_utils.xml_node("city", text=city_str, parent_node=cntaddr)
-    state = xml_utils.xml_node("state", text=state_str, parent_node=cntaddr)
-    postal = xml_utils.xml_node("postal", text=postal_str, parent_node=cntaddr)
-    cntvoice = xml_utils.xml_node("cntvoice", text=cntvoice_str, parent_node=cntinfo)
-    cntemail = xml_utils.xml_node("cntemail", text=cntemail_str, parent_node=cntinfo)
+    xml_utils.xml_node("addrtype", text=addrtype_str, parent_node=cntaddr)
+    xml_utils.xml_node("address", text=address_str, parent_node=cntaddr)
+    xml_utils.xml_node("city", text=city_str, parent_node=cntaddr)
+    xml_utils.xml_node("state", text=state_str, parent_node=cntaddr)
+    xml_utils.xml_node("postal", text=postal_str, parent_node=cntaddr)
+
+    # Create contact voice and email nodes.
+    xml_utils.xml_node("cntvoice", text=cntvoice_str, parent_node=cntinfo)
+    xml_utils.xml_node("cntemail", text=cntemail_str, parent_node=cntinfo)
 
     return cntinfo
 
+
 def get_usgs_contact_info(ad_username, as_dictionary=True):
     """
+    Description:
+        Retrieves the USGS contact information for a given Active Directory
+        username.
 
-    Parameters
-    ----------
-    ad_username : str
-                  The active directory username to return the
-                  contact information for
-    as_dictionary : bool
-                    specify return format as nested dictionary or lxml element
-    Returns
-    -------
-        None if ad_username is not found
-        FGDC Contact Section as dictionary or lxml element
+    Args:
+        ad_username (str): The Active Directory username to return contact
+            information for.
+        as_dictionary (bool): Specify return format as nested dictionary or
+            lxml element.
+
+    Returns:
+        dict or ElementTree.Element or None: Returns None if ad_username is not
+            found, otherwise returns the FGDC contact section as a dictionary
+            or lxml element.
     """
 
+    # Get the person dictionary from the People Picker service.
     person_dict = get_from_people_picker(ad_username)
+
+    # Convert the person's dictionary to FGDC-compliant XML structure.
     element = convert_persondict_to_fgdc(person_dict)
 
+    # Check if the organization is "GS ScienceBase" and rename tag if so.
     try:
         if element.xpath("cntperp/cntper")[0].text == "GS ScienceBase":
             element.xpath("cntperp")[0].tag = "cntorgp"
-    except:
+    except IndexError:
+        # This exception handles the case where the required nodes do not exist.
         pass
 
+    # Return the formatted contact information based on requested format.
     if as_dictionary:
-        return xml_utils.node_to_dict(element)
+        return xml_utils.node_to_dict(element)  # Convert to dict if requested.
     else:
         return element
 
 
 def get_orcid(ad_username):
     """
+    Description:
+        Retrieves the ORCID of a USGS user based on their Active Directory
+        username.
 
-    Parameters
-    ----------
-    ad_username : the AD user name to search for
+    Args:
+        ad_username (str): The Active Directory username to search for.
 
-    Returns
-    -------
-    str : the orcid as a string, if not found returns None
-
+    Returns:
+        str or None: The ORCID as a string if found; otherwise, returns None.
     """
+
     try:
+        # Retrieve contact information and access the ORCID.
         return get_usgs_contact_info(ad_username)["fgdc_cntperp"]["fgdc_orcid"]
-    except:
+    except (KeyError, TypeError):
+        # Return None if the ORCID is not found or the structure is incorrect.
         return None
 
 
 def populate_widget(widget, contents):
     """
-    uses the
+    Description:
+        Populates a widget's QLineEdits with text from a dictionary.
 
-    Parameters
-    ----------
-    widget : QtGui:QWidget
-            This widget has QLineEdits with names that correspond to the keys
-            in the dictionary.
-    contents : dict
-            A dictionary containing key that correspond to line edits and
-            values that will be inserted as text.  This dictionary will be
+    Args:
+        widget (QtGui.QWidget): The widget containing QLineEdits named according
+            to the keys in the dictionary.
+        contents (dict): A dictionary containing keys that correspond to line
+             edits and values to be inserted as text. This dictionary will be
             flattened if it contains a nested hierarchy.
-    Returns
-    -------
-    None
 
+    Returns:
+        None
     """
+
+    # Convert contents to a dictionary if it is not already.
     if not isinstance(contents, dict):
         contents = xml_utils.node_to_dict(contents)
 
+    # Iterate through the contents to populate the widget.
     for key, value in contents.items():
         if isinstance(value, dict):
+            # Recursively populate for nested dictionaries.
             populate_widget(widget, value)
         else:
+            # Attempt to retrieve the corresponding widget ui or widget.
             try:
                 child_widget = getattr(widget.ui, key)
             except AttributeError:
                 try:
                     child_widget = getattr(widget, key)
                 except AttributeError:
-                    child_widget = None
+                    child_widget = None  # Widget not found
 
-            set_text(child_widget, value)
+            # Set the text for the child widget, if it exists.
+            if child_widget is not None:
+                set_text(child_widget, value)
+
 
 
 def set_text(widget, text):
     """
-    set the text of a widget regardless of it's base type
+    Description:
+        Sets the text of a widget regardless of its base type.
 
-    Parameters
-    ----------
-    widget : QtGui:QWidget
-            This widget is a QlineEdit or QPlainText edit
-    text : str
-            The text that will be inserted
-    Returns
-    -------
-    None
+    Args:
+        widget (QtGui.QWidget): This widget could be a QLineEdit,
+            QPlainTextEdit, QTextBrowser, or QComboBox.
 
+        text (str): The text that will be inserted into the widget.
+
+    Returns:
+        None
     """
+
+
+    # Check if the widget is a QLineEdit and set the text.
     if isinstance(widget, QLineEdit):
-        widget.setText(text)
-        widget.setCursorPosition(0)
+        widget.setText(text)  # Set the text for QLineEdit
+        widget.setCursorPosition(0)  # Move cursor to the start
 
-    if isinstance(widget, QPlainTextEdit):
-        widget.setPlainText(text)
+    # Check if the widget is a QPlainTextEdit and set the text.
+    elif isinstance(widget, QPlainTextEdit):
+        widget.setPlainText(text)  # Set plain text
 
-    if isinstance(widget, QTextBrowser):
-        widget.setText(text)
+    # Check if the widget is a QTextBrowser and set the text.
+    elif isinstance(widget, QTextBrowser):
+        widget.setText(text)  # Set text for QTextBrowser
 
-    if isinstance(widget, QComboBox):
+    # Check if the widget is a QComboBox and set the text.
+    elif isinstance(widget, QComboBox):
         index = widget.findText(text, Qt.MatchFixedString)
         if index >= 0:
-            widget.setCurrentIndex(index)
+            widget.setCurrentIndex(index)  # Set the current index if found
         else:
-            widget.setEditText(text)
+            widget.setEditText(text)  # Set edit text if not found
 
 
 def populate_widget_element(widget, element, xpath):
     """
-    if the xpath is present in the element
-    set the text or plainText of it to the first result of that xpath's text
+    Description:
+        Populates a PyQt widget with text from a lxml element based on the
+        provided XPath.
 
-    Parameters
-    ----------
-    widget : pyqt widget, lineEdit or plainTextEdit
-    element : lxml element
-    xpath : str
-            xpath to the child element in the element
+    Args:
+        widget (QWidget): A PyQt widget, either QLineEdit or QPlainTextEdit.
+        element (lxml.etree.Element): The lxml element from which to extract
+            text.
+        xpath (str): XPath string to locate the child element within the
+            provided lxml element.
 
-    Returns
-    -------
+    Returns:
         None
     """
+
+    # Check if the XPath returns any results.
     if element.xpath(xpath):
+        # Get the first child element found by the XPath.
         first_child = element.xpath(xpath)[0]
+
+        # Set the text of the widget to that of the first child.
         set_text(widget, first_child.text)
 
 
-# Back up the reference to the exceptionhook
-sys._excepthook = sys.excepthook
-
-
 def my_exception_hook(exctype, value, traceback):
-    # Print the error and traceback
+    """
+    Description:
+        Custom exception hook to print exception information and exit.
+
+    Args:
+        exctype (type): The exception type.
+        value (Exception): The exception instance.
+        traceback (traceback): The traceback object associated with the
+            exception.
+
+    Returns:
+        None
+    """
+
+    # Test without these two lines of code found outside of this function
+    # and retain for now.
+    # -----
+    # This line of code preceded this function, which should not do anything
+    # because of how code is loaded into memory. So, we are keeping here for
+    # now, because developers did not state logic of its use.
+    # sys._excepthook = sys.excepthook
+
+    # This line of code came after this function.
+    # sys.excepthook = my_exception_hook
+    # -----
+
+    # Print the exception type, value, and traceback.
     print(exctype, value, traceback)
-    # Call the normal Exception hook after
-    sys._excepthook(exctype, value, traceback)
+
+    # Call the default exception hook to handle the exception normally.
+    sys.__excepthook__(exctype, value, traceback)
+
+    # Exit the program with a non-zero exit code.
     sys.exit(1)
-
-
-# Set the exception hook to our wrapping function
-sys.excepthook = my_exception_hook
-
 
 def launch_widget(Widget, title="", **kwargs):
     """
-    run a widget within it's own application
-    Parameters
-    ----------
-    widget : QWidget
-    title : str
-            The title to use for the application
+    Description:
+        Launches a widget within its own QApplication.
 
-    Returns
-    -------
-    None
+    Args:
+        Widget (QWidget): The widget class to be instantiated.
+
+        title (str): The title to use for the application window.
+
+    Returns:
+        None
     """
 
     try:
+        # Create a new instance of QApplication.
         app = QApplication([])
-        app.title = title
+
+        # Set the application title.
+        app.setApplicationName(title)
+
+        # Instantiate the widget with provided arguments.
         widget = Widget(**kwargs)
+
+        # Set the window title for the widget.
         widget.setWindowTitle(title)
+
+        # Show the widget.
         widget.show()
+
+        # Execute the application event loop.
         sys.exit(app.exec_())
-        return widget
-    except:
-        e = sys.exc_info()[0]
-        print("problem encountered")
+
+    except Exception as e:
+        # Handle exceptions and print the error trace.
+        print("Problem encountered:")
         print(traceback.format_exc())
 
 
 def get_resource_path(fname):
     """
+    Description:
+        Retrieves the full file path to a specified resource.
 
-    Parameters
-    ----------
-    fname : str
-            filename that you would like to find
+    Args:
+        fname (str): The filename of the resource you would like to find.
 
-    Returns
-    -------
-            the full file path to the resource specified
+    Returns:
+        str: The full file path to the specified resource.
     """
-    # return pkg_resources.resource_filename("pymdwizard", "resources/{}".format(fname))
-    return os.path.abspath(os.path.join(get_install_dname('pymdwizard'), "pymdwizard/resources/{}".format(fname)))
+
+    # return pkg_resources.resource_filename("pymdwizard",
+    #                                        "resources/{}".format(fname))
+
+    # Construct the full resource path.
+    resource_path = os.path.join(
+        get_install_dname("pymdwizard"),
+        "pymdwizard/resources/{}".format(fname)
+    )
+
+    # Return the absolute path to the resource.
+    return os.path.abspath(resource_path)
 
 
 def set_window_icon(widget, remove_help=True):
     """
-    Add our default ducky icon to a widget
+    Description:
+        Sets a default ducky icon for a given widget.
 
-    Parameters
-    ----------
-    widget : PyQt widget
-    remove_help : Bool
-                  Whether to show the help question mark icon.
-    Returns
-    -------
-    None
+    Args:
+        widget (QWidget): The PyQt widget to which the icon will be added.
+
+        remove_help (bool): Whether to show the help question mark icon.
+
+    Returns:
+        None
     """
+
+    # Load the ducky icon from the resource path.
     icon = QIcon(get_resource_path("icons/Ducky.ico"))
+
+    # Set the window icon for the widget.
     widget.setWindowIcon(icon)
+
+    # Adjust window flags if help icon should be removed.
     if remove_help:
         widget.setWindowFlags(
             Qt.Window
@@ -429,7 +493,8 @@ def set_window_icon(widget, remove_help=True):
 
 class PandasModel(QAbstractTableModel):
     """
-    Class to populate a table view with a pandas dataframe
+    Description:
+        Class to populate a table view with a pandas DataFrame.
     """
 
     options = {
@@ -439,22 +504,62 @@ class PandasModel(QAbstractTableModel):
         "tooltip_min_len": 21,
     }
 
+
     def __init__(self, dataframe, parent=None):
+        """
+        Description:
+            Initialize the PandasModel with a DataFrame.
+
+        Args:
+            dataframe (pd.DataFrame): The pandas DataFrame to model.
+            parent (QObject): Parent object for the model.
+        """
+
         QAbstractTableModel.__init__(self, parent)
-        self.setDataFrame(dataframe if dataframe is not None else pd.DataFrame())
+        self.setDataFrame(dataframe if dataframe is not None else
+                          pd.DataFrame())
+
 
     def setDataFrame(self, dataframe):
+        """
+        Description:
+            Set the DataFrame for the model.
+
+        Args:
+            dataframe (pd.DataFrame): The DataFrame to set.
+        """
+
         self.df = dataframe
-        #        self.df_full = self.df
+        # self.df_full = self.df
+
+        # Notify views of layout change.
         self.layoutChanged.emit()
 
+
     def rowCount(self, parent=None):
+        """Return the number of rows in the DataFrame."""
+
         return len(self.df.values)
 
+
     def columnCount(self, parent=None):
+        """Return the number of columns in the DataFrame."""
+
         return self.df.columns.size
 
+
     def data(self, index, role=Qt.DisplayRole):
+        """
+        Description:
+            Retrieve data for the model.
+
+        Args:
+            index (QModelIndex): The index of the data to retrieve.
+            role (int): The role of the data (e.g., display or tooltip).
+
+        Returns:
+            The data corresponding to the index and role, or None.
+        """
 
         row, col = index.row(), index.column()
         if role in (Qt.DisplayRole, Qt.ToolTipRole):
@@ -466,7 +571,8 @@ class PandasModel(QAbstractTableModel):
                     ret = "{:n}".format(ret)
                 elif isinstance(ret, datetime.date):
                     # FIXME: show microseconds optionally
-                    ret = ret.strftime(("%x", "%c")[isinstance(ret, datetime.datetime)])
+                    ret = ret.strftime(("%x", "%c")[isinstance(
+                        ret, datetime.datetime)])
                 else:
                     ret = str(ret)
                 if role == Qt.ToolTipRole:
@@ -479,125 +585,192 @@ class PandasModel(QAbstractTableModel):
 
         return None
 
+
     def dataframe(self):
+        """Return the current DataFrame."""
+
         return self.df
 
+
     def reorder(self, oldIndex, newIndex, orientation):
-        "Reorder columns / rows"
+        """
+        Description:
+            Reorder columns or rows in the DataFrame.
+
+        Args:
+            oldIndex (int): The original index of the item.
+            newIndex (int): The desired index after reordering.
+            orientation (int): Orientation of the operation (Qt.Horizontal or
+                Qt.Vertical).
+
+        Returns:
+            bool: True if successfully reordered.
+        """
+
         horizontal = orientation == Qt.Horizontal
         cols = list(self.df.columns if horizontal else self.df.index)
         cols.insert(newIndex, cols.pop(oldIndex))
         self.df = self.df[cols] if horizontal else self.df.T[cols].T
+
         return True
 
+
     def headerData(self, section, orientation, role):
+        """
+        Description:
+            Retrieve header data for the model.
+
+        Args:
+            section (int): The section index for the header.
+            orientation (int): The orientation (Qt.Horizontal or Qt.Vertical).
+            role (int): The role of the header data.
+
+        Returns:
+            str: The header data for the specified section.
+        """
+
         if role != Qt.DisplayRole:
             return
-        label = getattr(self.df, ("columns", "index")[orientation != Qt.Horizontal])[
-            section
-        ]
-        #        return label if type(label) is tuple else label
+        label = getattr(self.df, ("columns", "index")[
+            orientation != Qt.Horizontal])[section]
+        # return label if type(label) is tuple else label
         return (
-            ("\n", " | ")[orientation != Qt.Horizontal].join(str(i) for i in label)
+            ("\n", " | ")[orientation != Qt.Horizontal].join(
+                str(i) for i in label)
             if type(label) is tuple
             else str(label)
         )
 
+
     def dataFrame(self):
+        """Return a copy of the current DataFrame."""
+
         return self.df
 
+
     def sort(self, column, order):
+        """
+        Description:
+            Sort the DataFrame based on a column.
+
+        Args:
+            column (int): The index of the column to sort by.
+            order (int): The order to sort (Qt.AscendingOrder or
+                Qt.DescendingOrder).
+
+        Returns:
+            None
+        """
+
         if len(self.df):
             asc = order == Qt.AscendingOrder
             na_pos = (
-                "first" if (self.options["na_values"] == "least") == asc else "last"
+                "first" if (self.options["na_values"] == "least") == asc else
+                "last"
             )
             self.df.sort_values(
-                self.df.columns[column], ascending=asc, inplace=True, na_position=na_pos
+                self.df.columns[column], ascending=asc, inplace=True,
+                na_position=na_pos
             )
+
+            # Notify views of layout change
             self.layoutChanged.emit()
 
 
 def check_fname(fname):
     """
-    Check that the given fname is in a directory that exists and the current
-    users has write permission to.  If a file named fname already exists that
-    it can be opened with write permission.
+    Description:
+        Checks if the given file name is valid concerning permissions
+        and the existence of its directory.
 
-    Parameters
-    ----------
-    fname : str
-            file path and name to check
-    Returns
-    -------
-    str :
-    one of:
-    'good' if the fname is good on all criteria
-    'missing directory' if the directory does not exist
-    'not writable directory' if the user does not have write access
-    'not writable file' if there is a lock on the file
-    Boolean if the file is writable
+    Args:
+        fname (str): The file path and name to check.
+
+    Returns:
+        str:
+            'good' if the fname meets all criteria.
+            'missing directory' if the directory does not exist.
+            'not writable directory' if the user lacks write access.
+            'not writable file' if the file cannot be opened for writing.
     """
 
+    # Extract the directory name from the file path.
     dname = os.path.split(fname)[0]
+
+    # Check if the directory exists.
     if not os.path.exists(dname):
         return "missing directory"
+
+    # Check if the file exists.
     if not os.path.exists(fname):
         try:
-            f = open(fname, "w")
-            f.close()
-            os.remove(fname)
+            # Attempt to create the file and then remove it.
+            with open(fname, "w") as f:
+                pass  # Create the file to check for write access.
+            os.remove(fname)  # Remove the file after creating it.
             return "good"
-        except:
+        except Exception:
+            # Return an error if the directory is not writable.
             return "not writable directory"
     else:
         try:
-            f = open(fname, "a")
-            f.close()
+            # Attempt to open the existing file in append mode.
+            with open(fname, "a") as f:
+                pass  # Check if the file can be opened for writing.
             return "good"
-        except:
+        except Exception:
+            # Return an error if the file is not writable.
             return "not writable file"
 
 
 def url_validator(url, qualifying=None):
     """
-    Check whether a given string is in a valid url syntax
+    Description:
+        Validates if a given string adheres to URL syntax.
 
-    Parameters
-    ----------
-    url : str
-        The string to check for url syntax
-    qualifying : list
-        url attributes to check for as list of strings
-        defaults to 'scheme' and 'netloc'
+    Args:
+        url (str): The string to check for valid URL syntax.
+        qualifying (list, optional): URL attributes to check for as a list of
+            strings. Defaults to ['scheme', 'netloc'].
 
-    Returns
-    -------
-        Bool
+    Returns:
+        bool: True if the URL is valid based on the qualifying attributes,
+            otherwise False.
     """
+
+    # Default attributes required for a valid URL.
     min_attributes = ("scheme", "netloc")
+
+    # Use default attributes if none provided.
     qualifying = min_attributes if qualifying is None else qualifying
+
+    # Parse the URL into its components.
     token = urlparse(url)
-    return all([getattr(token, qualifying_attr) for qualifying_attr in qualifying])
+
+    # Verify that all qualifying attributes are present.
+    return all(
+        getattr(token, qualifying_attr) for qualifying_attr in qualifying)
 
 
 def get_install_dname(which="pymdwizard"):
     """
-    get the full path to the installation directory
+    Description:
+        Retrieves the full path to the installation directory.
 
-    Parameters
-    ----------
-    which : str, optional
-            which subdirectory to return (
-            one of: 'root', 'pymdwizard', or 'python'
+    Args:
+        which (str, optional): Specifies which subdirectory to return:
+            'root', 'pymdwizard', or 'python'.
 
-    Returns
-    -------
-    str : path and directory name of the directory pymdwizard is in
+    Returns:
+        str: path and directory name of the directory where pymdwizard is
+            installed.
     """
+
+    # Get the absolute file path of the current script.
     this_fname = os.path.realpath(__file__)
+
     if platform.system() == "Darwin":
-        # This is the path to the 'content' folder in the MetadataWizard.app
+        # For macOS, get the path to the 'content' folder .
         pymdwizard_dname = os.path.abspath(
             os.path.join(dirname(this_fname), *[".."] * 2)
         )
@@ -606,15 +779,17 @@ def get_install_dname(which="pymdwizard"):
         python_dname = os.path.split(executable)[0]
 
     else:
+        # For non-macOS systems, navigate three levels up to find the directory.
         pymdwizard_dname = dirname(dirname(dirname(this_fname)))
         root_dir = os.path.dirname(pymdwizard_dname)
         python_dname = os.path.join(root_dir, "pymdwizard")
-        if not os.path.exists(python_dname):
-            python_dname = os.path.join(root_dir, "pymdwizard")
+
+        # Check if the python directory exists.
         if not os.path.exists(python_dname):
             executable = sys.executable
             python_dname = os.path.split(executable)[0]
 
+    # Return the requested directory based on the 'which' argument.
     if which == "root":
         return root_dir
     elif which == "pymdwizard":
@@ -622,154 +797,136 @@ def get_install_dname(which="pymdwizard"):
     elif which == "python":
         return python_dname
 
+    # If no valid option is provided, return None.
+    return None
+
 
 def get_pem_fname():
-    return os.path.abspath(os.path.join(
-        get_install_dname("pymdwizard"), "pymdwizard", "resources", "DOIRootCA2.pem"
+    """
+    Description:
+        Retrieves the absolute path to the DOIRootCA2.pem file.
+
+    Args:
+        None
+
+    Returns:
+        str: The absolute path to the DOIRootCA2.pem file.
+    """
+
+    # Construct the full path to the DOIRootCA2.pem file.
+    pem_path = os.path.abspath(os.path.join(
+        get_install_dname("pymdwizard"),
+        "pymdwizard",
+        "resources",
+        "DOIRootCA2.pem"
     ))
+
+    return pem_path
 
 
 def check_pem_file():
     """
-    Convenience USGS only function that checks if the DOI PEM file is stored
-    in the wincertstore and export a local copy for use in the application.
+    Description:
+        Convenience USGS function to check if the DOI PEM file is stored
+        in the wincertstore and to export a local copy for use in the
+        application.
 
-    Returns
-    -------
-    None
+    Args:
+        None
+
+    Returns:
+        str or None: The local path to the PEM file if successfully obtained,
+            otherwise None.
     """
 
     # Define path and name of pem file that will be stored locally (if this
     # function has been run once before).
     pem_fname = get_pem_fname()
 
-    # Specify the certificate alias and output filename
-    cert_alias = "DOIRootCA2"
-
-    if platform.system() == "Windows":
-        try:
-            import wincertstore
-
-            if not os.path.exists(pem_fname):
-                for storename in ("CA", "ROOT"):
-                    with wincertstore.CertSystemStore(storename) as store:
-                        for cert in store.itercerts(
-                                usage=wincertstore.SERVER_AUTH):
-                            if cert_alias in cert.get_name():
-                                pem_fname = os.path.abspath(os.path.join(
-                                    get_install_dname("pymdwizard"),
-                                    "pymdwizard", "resources",
-                                    cert_alias + ".pem"))
-                                text_file = open(pem_fname, "w",
-                                                 encoding="ascii")
-                                contents = cert.get_pem().encode().decode(
-                                    "ascii")
-                                text_file.write(contents)
-                                text_file.close()
-
-            os.environ["PIP_CERT"] = pem_fname
-            os.environ["SSL_CERT_FILE"] = pem_fname
-            os.environ["GIT_SSL_CAINFO"] = pem_fname
-            return pem_fname
-        except:
-            print("Cannot locate a organizational pem file (only an issue "
-                  "for USGS).")
-    else:
-        # Mac/linux-like users.
-        try:
-            if not os.path.exists(pem_fname):
-                # Run the security command to find the certificate
-                result = subprocess.run(
-                    ["security", "find-certificate", "-a", "-c",
-                     cert_alias, "-p"],
-                    capture_output=True,
-                    text=True,
-                    check=True
-                )
-                # If found, result.stdout contains the PEM formatted
-                # certificate.
-                text_file = open(pem_fname, "w", encoding="ascii")
-                contents = result.stdout.strip()
-                text_file.write(contents)
-                text_file.close()
-
-                os.environ["PIP_CERT"] = pem_fname
-                os.environ["SSL_CERT_FILE"] = pem_fname
-                os.environ["GIT_SSL_CAINFO"] = pem_fname
-            else:
-                pass
-        except subprocess.CalledProcessError as e:
-            print(f"Error finding the certificate: {e}")
-        except FileNotFoundError:
-            print("The security command-line tool is not found. Ensure you "
-                  "are on macOS.")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-
+    # Set up certificate on system for Metadata Wizard.
+    cert_file = org_cert_setup.cert_setup(pem_fname)
 
 
 def requests_pem_get(url, params={}):
     """
-    Make a get requests.get call but use the local PEM fname if you hit an
-    SSL error
+    Description:
+        Makes a GET request using the provided URL and parameters,
+        utilizing a local PEM file if an SSL error occurs.
 
-    Parameters
-    ----------
-    url : str
-          url to use
-    params: dict
-            parameters to pass on to the function
+    Args:
+        url (str): The URL to make the GET request to.
+        params (dict, optional): Parameters to send with the GET request.
 
-    Returns
-    -------
-        the results of the requests call
+    Returns:
+        Response: The result of the requests.get call, which includes
+            the server's response.
     """
+
+    # Use an empty dictionary if no params are provided.
+    if params is None:
+        params = {}
+
     try:
+        # Attempt to make a GET request.
         return requests.get(url, params=params)
     except requests.exceptions.SSLError:
+        # In case of an SSL error, get the PEM file name.
         pem_fname = get_pem_fname()
+
+        # Retry the GET request with the PEM file for verification.
         return requests.get(url, params=params, verify=pem_fname)
 
 
 def get_setting(which, default=None):
     """
-    return a pymdwizard application setting
+    Description:
+        Retrieves a setting from the pymdwizard application.
 
-    Parameters
-    ----------
-    which: str
-            name of setting to return
+    Args:
+        which (str): The name of the setting to return.
 
-    Returns
-    -------
-        setting in native format, string, integer, etc
+        default (optional): The value to return if the setting is not found.
 
+    Returns:
+        The setting in its native format (string, integer, etc.).
     """
-    settings = QSettings("USGS_2.1.0", "pymdwizard_2.1.0")
-    if default is None:
-        return settings.value(which)
-    else:
-        return settings.value(which, default)
+
+    # Create a QSettings object for the application settings.
+    settings = QSettings("USGS_" + __version__,
+                             "pymdwizard_" + __version__)
+
+    # Return the setting value, or default if not found
+    return settings.value(which, default)
 
 
 def url_is_alive(url):
     """
-    Checks that a given URL is reachable.
-    :param url: A URL
-    :rtype: bool
-    """
-    if url.startswith('www'):
-        url = 'http://' + url
+    Description:
+        Checks if a given URL is reachable.
 
+    Args:
+        url (str): The URL to check for reachability.
+
+    Returns:
+        bool: True if the URL is reachable, False otherwise.
+    """
+
+    # Prefix the URL with 'https://' if it starts with 'www'.
+    if url.startswith("www"):
+        url = "https://" + url
+
+    # Create a request to perform a HEAD request.
     try:
         request = urllib.request.Request(url)
-        request.get_method = lambda: 'HEAD'
-    except:
-        request = ''
+        request.get_method = lambda: "HEAD"  # Use HEAD method for request
+    except Exception:
+        # Return False if request creation fails
+        return False
 
+    # Attempt to open the URL and return True if successful.
     try:
         urllib.request.urlopen(request)
         return True
-    except:
+    except Exception:
+        # Return False if URL is not reachable.
         return False
-
