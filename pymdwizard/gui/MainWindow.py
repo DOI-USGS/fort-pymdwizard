@@ -572,3 +572,913 @@ class PyMdWizardMainForm(QMainWindow):
         template_fname = self.settings.value("template_fname")
 
         if template_fname is None:
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
+        elif not os.path.exists(template_fname):
+            msg = (
+                "The previous template file specified, {}, could not be "
+                "found.".format(template_fname)
+            )
+            msg += (
+                "\nCheck that the file has not beed deleted, renamed "
+                "or moved. Defaulting to the built in template.".format(
+                    template_fname
+                )
+            )
+            QMessageBox.warning(self, "Template file missing", msg)
+            template_fname = utils.get_resource_path("CSDGM_Template.xml")
+
+        self.load_file_content(template_fname)
+        self.cur_fname = ""
+
+        today = fgdc_utils.format_date(datetime.datetime.now())
+        self.metadata_root.metainfo.metd.set_date(today)
+
+    def set_current_file(self, fname):
+        """
+        The procedure for storing and displaying a new current file.
+        """
+
+        self.cur_fname = fname
+        if fname:
+            stripped_name = QFileInfo(fname).fileName()
+            title = "Metadata Wizard - {}".format(stripped_name)
+            self.setWindowTitle(title)
+
+            files = self.settings.value("recentFileList", [])
+
+            try:
+                files.remove(fname)
+            except ValueError:
+                pass
+
+            files.insert(0, fname)
+            del files[PyMdWizardMainForm.max_recent_files:]
+
+            self.settings.setValue("recentFileList", files)
+
+            for widget in QApplication.topLevelWidgets():
+                if isinstance(widget, PyMdWizardMainForm):
+                    widget.update_recent_file_actions()
+        else:
+            self.setWindowTitle("Metadata Wizard")
+
+    def update_recent_file_actions(self):
+        """
+        Updates the actions in the recent files list to reflect the stored file paths.
+        """
+
+        files = self.settings.value("recentFileList", [])
+        num_recent_files = min(len(files), PyMdWizardMainForm.max_recent_files)
+
+        for i in range(num_recent_files):
+            stripped_name = QFileInfo(files[i]).fileName()
+            text = "&%d %s" % (i + 1, stripped_name)
+            self.recent_file_actions[i].setText(text)
+            self.recent_file_actions[i].setData(files[i])
+            self.recent_file_actions[i].setVisible(True)
+
+        for j in range(num_recent_files, PyMdWizardMainForm.max_recent_files):
+            self.recent_file_actions[j].setVisible(False)
+
+    def check_for_changes(self):
+        """
+        Checks if the current document has unsaved changes by comparing the form's XML to disk.
+        """
+
+        try:
+            if self.cur_fname and os.path.exists(self.cur_fname):
+                cur_xml = xml_utils.node_to_string(
+                    self.metadata_root.to_xml()
+                )
+                disk_xml = xml_utils.node_to_string(
+                    xml_utils.fname_to_node(self.cur_fname)
+                )
+
+            if cur_xml != disk_xml:
+                msg = "Do you want to save your changes?"
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(
+                    self,
+                    "Save Changes",
+                    msg,
+                    QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                )
+                if confirm == QMessageBox.Yes:
+                    xml_utils.save_to_file(
+                        self.metadata_root.to_xml(), self.cur_fname
+                    )
+                elif confirm == QMessageBox.Cancel:
+                    return "Cancel"
+        except:
+            pass
+
+    def exit(self):
+        """
+        Checks for unsaved changes and prompts the user before closing the application.
+        """
+
+        changed = self.check_for_changes()
+        if changed == "Cancel":
+            return changed
+        else:
+            self.close()
+            return "Close"
+
+    def closeEvent(self, event):
+        """
+        Intercepts the built-in closeEvent to run the save-check before closing the window.
+        """
+
+        if self.exit() == "Close":
+            self.settings.setValue("size", self.size())
+            self.settings.setValue("pos", self.pos())
+            event.accept()
+        else:
+            event.ignore()
+
+    def use_dataqual(self, sender=None):
+        """Toggles the visibility of the Data Quality tab."""
+        self.metadata_root.use_section("dataqual", sender)
+
+    def use_spatial(self, sender=None):
+        """Toggles the visibility of the Spatial tab."""
+        self.metadata_root.use_section("spatial", sender)
+
+    def use_eainfo(self, sender=None):
+        """Toggles the visibility of the Entity and Attribute tab."""
+        self.metadata_root.use_section("eainfo", sender)
+
+    def use_distinfo(self, sender=None):
+        """Toggles the visibility of the Distribution tab."""
+        self.metadata_root.use_section("distinfo", sender)
+
+    def clear_validation(self):
+        """
+        Removes the error highlighting from all marked widgets and clears the error list.
+        """
+
+        annotation_lookup = fgdc_utils.get_fgdc_lookup()
+
+        for widget in self.error_widgets:
+            if not qwidget_is_valid(widget):
+                continue
+            if widget.objectName() in ["metadata_root", "fgdc_metadata"]:
+                continue
+            try:
+                widget.setStyleSheet("")  # clear highlight
+                shortname = widget.objectName().replace("fgdc_", "")
+                if shortname and shortname[-1].isdigit():
+                    shortname = shortname[:-1]
+                widget.setToolTip(annotation_lookup.get(shortname, {}).get("annotation", ""))
+            except RuntimeError:
+                pass
+            except Exception:
+                widget.setToolTip("")
+
+        self.error_widgets = []
+        self.error_list.clear_errors()
+        self.error_list_dialog.hide()
+
+    def validate(self):
+        """
+        Checks the current record against the FGDC schema using XSD validation and highlights errors.
+        """
+
+        self.error_list_dialog.show()
+
+        if self.metadata_root.schema == "bdp":
+            xsl_fname = utils.get_resource_path(
+                "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
+            )
+        else:
+            xsl_fname = utils.get_resource_path(
+                "FGDC/fgdc-std-001-1998-annotated.xsd"
+            )
+
+        errors = fgdc_utils.validate_xml(self.metadata_root.to_xml(),
+                                         xsl_fname)
+
+        self.clear_validation()
+        marked_errors = []
+
+        # First pass: Expand complex widgets related to Eainfo errors.
+        for error in errors:
+            try:
+                xpath, error_msg, line_num = error
+                if "attr" in xpath:
+                    try:
+                        detailed_index = xpath.split("/detailed[")[1].split(
+                            "/")[0][:-1]
+                        detailed_index = int(detailed_index) - 1
+                    except IndexError:
+                        detailed_index = 0
+
+                    try:
+                        attr_index = xpath.split("/attr[")[1].split("/")[0][:-1]
+                        attr_index = int(attr_index) - 1
+                    except IndexError:
+                        attr_index = 0
+
+                    # Expand the attribute widget.
+                    self.metadata_root.eainfo.detaileds[
+                        detailed_index
+                    ].attributes.attrs[attr_index].regular_me()
+                    self.metadata_root.eainfo.detaileds[
+                        detailed_index
+                    ].attributes.attrs[attr_index].supersize_me()
+            except:
+                pass
+
+        # Rebuild widget lookup tree after expansions.
+        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+        self.metadata_root.add_children(
+            self.metadata_root.spatial_tab, widget_lookup.metadata.idinfo
+        )
+        self.metadata_root.add_children(
+            self.metadata_root.dataqual.sourceinput,
+            widget_lookup.metadata.dataqual.lineage,
+        )
+
+        error_count = 0
+        for error in errors:
+            try:
+                xpath, error_msg, line_num = error
+                if xpath not in marked_errors:
+                    self.error_list.add_error(error_msg, xpath)
+                    marked_errors.append(xpath)
+
+                    widgets = widget_lookup.xpath_march(xpath, as_list=True)
+                    for widget in widgets:
+                        if isinstance(widget, list):
+                            for w in widget:
+                                print("problem highlighting error", xpath,
+                                      widget)
+                        else:
+                            self.highlight_error(widget.widget, error_msg)
+                            self.error_widgets.append(widget.widget)
+                            error_count += 1
+            except BaseException:
+                msg = "Error encountered highlighting error:\t" + xpath
+                msg += "\n\n" + traceback.format_exc()
+                QMessageBox.warning(self, "Bug encountered", msg)
+
+        widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
+
+        if errors:
+            msg = "There are {} errors in this record".format(error_count)
+            self.statusBar().showMessage(msg, 20000)
+            msg = (
+                "\n\n These errors are highlighted in red in the form below."
+                "\n\n These errors are also listed in the Validation Errors "
+                "Form that just popped up."
+                "\n Clicking each error will take you to the section it is "
+                "contained in."
+                "\n Note that some highlighted errors can be in collapsed "
+                "items, scrolled out of view, or in non-selected tabs."
+            )
+            QMessageBox.warning(self, "Validation", msg)
+            self.error_list_dialog.show()
+        else:
+            msg = "Congratulations there were No FGDC Errors!"
+            self.statusBar().showMessage(msg, 20000)
+            QMessageBox.information(self, "Validation", msg)
+
+    def goto_error(self, sender):
+        """
+        Highlights the selected error in the form and switches to the containing tab/section.
+        """
+
+        try:
+            xpath = sender.data(1)
+        except Exception:
+            return
+
+        try:
+            section = xpath.split("/")[1]
+        except Exception:
+            section = ""
+
+        if section == "idinfo":
+            subsection = xpath.split("/")[2] if len(xpath.split("/")) > 2 else ""
+            if subsection == "spdom":
+                parent_section = self.metadata_root.switch_section(2)
+            else:
+                parent_section = self.metadata_root.switch_section(0)
+        elif section == "dataqual":
+            parent_section = self.metadata_root.switch_section(1)
+        elif section in ("spdoinfo", "spref"):
+            parent_section = self.metadata_root.switch_section(2)
+        elif section == "eainfo":
+            parent_section = self.metadata_root.switch_section(3)
+        elif section == "distinfo":
+            parent_section = self.metadata_root.switch_section(4)
+        elif section == "metainfo":
+            parent_section = self.metadata_root.switch_section(5)
+
+            # Clear previous super-highlight safely.
+            if self.last_highlight is not None and qwidget_is_valid(self.last_highlight):
+                try:
+                    self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+                except RuntimeError:
+                    pass
+
+        widget_lookup = self.metadata_root.make_tree(
+            widget=self.metadata_root
+        )
+        bad_widget = widget_lookup.xpath_march(xpath, as_list=True)
+
+        try:
+            parent_wizwidget = [
+                thing
+                for thing in parent_section.children()
+                if isinstance(thing, WizardWidget)
+            ][0]
+            if bad_widget and qwidget_is_valid(bad_widget[0].widget):
+                parent_wizwidget.scroll_area.ensureWidgetVisible(
+                    bad_widget[0].widget)
+        except:
+            pass
+
+        try:
+            self.last_highlight = bad_widget[0].widget if bad_widget else None
+            if qwidget_is_valid(self.last_highlight):
+                self.highlight_error(self.last_highlight, sender.text(),
+                                     superhot=True)
+        except Exception:
+            msg = (
+                f"We encountered a problem highlighting and navigating "
+                f"to that error.\n\nThe xpath of the xml error is:\n\n"
+                f"{xpath}"
+            )
+            QMessageBox.warning(self, "Problem encountered", msg)
+
+    def highlight_error(self, widget, error_msg, superhot=False):
+        """
+        Highlights the given widget and sets its tooltip message to the error message.
+        """
+
+        if not qwidget_is_valid(widget):
+            return
+
+        if widget.objectName() in [
+            "fgdc_attr",
+            "fgdc_edomv",
+            "fgdc_edomvd",
+            "fgdc_edomvds",
+            "fgdc_attrlabl",
+            "fgdc_attrdef",
+            "fgdc_attrdefs",
+            "fgdc_codesetd",
+            "fgdc_edom",
+            "fgdc_rdom",
+            "fgdc_udom",
+            "fgdc_rdommin",
+            "fgdc_rdommax",
+            "fgdc_codesetn",
+            "fgdc_codesets",
+            "fgdc_attrdomv",
+        ]:
+            self.highlight_attr(widget)
+
+        if widget.objectName() in [
+            "fgdc_themekey",
+            "fgdc_themekt",
+            "fgdc_placekey",
+            "fgdc_placekt",
+            "fgdc_procdesc",
+            "fgdc_srcused",
+            "fgdc_srcprod",
+        ]:
+            self.highlight_tab(widget)
+
+        color = "rgb(225, 67, 94)"
+        lw = "border: 3px solid black;" if superhot else "border: 2px solid red;"
+
+        try:
+            widget.setToolTip(f"<b>Validation error</b><br/>{error_msg}")
+            if widget.objectName() not in ["metadata_root", "fgdc_metadata"]:
+                widget.setStyleSheet(
+                    f"""
+                QWidget#{widget.objectName()} {{
+                    background-color: {color};
+                    {lw}
+                }}
+                """
+                )
+
+                # soften text fields if present
+                line_edit = widget.findChild(QLineEdit)
+                if line_edit:
+                    apply_opacity_effect(line_edit, 0.95)
+
+                self.error_widgets.append(widget)
+        except RuntimeError:
+            pass
+
+    def highlight_attr(self, widget):
+        """
+        Highlights the parent 'fgdc_attr' frame when an error is found in one of its child widgets.
+        """
+
+        if not qwidget_is_valid(widget):
+            return
+
+        widget_parent = widget
+        attr_frame = widget
+
+        while True:
+            if not qwidget_is_valid(widget_parent):
+                return
+            try:
+                if widget_parent.objectName() == "fgdc_attr":
+                    break
+                widget_parent = widget_parent.parent()
+                attr_frame = widget_parent
+            except RuntimeError:
+                return
+
+        self.error_widgets.append(attr_frame)
+        try:
+            parent_of_attr = widget_parent.parent()
+            if hasattr(parent_of_attr, "supersize_me"):
+                parent_of_attr.supersize_me()
+
+            error_msg = "Validation error in hidden contents, click to show"
+            widget_parent.setToolTip(error_msg)
+            widget_parent.setStyleSheet(
+                f"""
+    QFrame#{attr_frame.objectName()} {{
+    border: 2px solid red;
+    }}
+                """
+            )
+
+            self.error_widgets.append(parent_of_attr)
+        except RuntimeError:
+            pass
+
+    def highlight_tab(self, widget):
+        """
+        Highlights the parent QTabWidget's tab bar when an error is found within one of its hidden tabs.
+        """
+
+        if not qwidget_is_valid(widget):
+            return
+
+        try:
+            widget_parent = widget.parent()
+        except RuntimeError:
+            return
+
+        while True:
+            if not qwidget_is_valid(widget_parent):
+                return
+            if isinstance(widget_parent, QTabWidget):
+                break
+            try:
+                widget_parent = widget_parent.parent()
+            except RuntimeError:
+                return
+
+        error_msg = "Validation error in hidden contents, click to show"
+        try:
+            widget_parent.setToolTip(error_msg)
+            widget_parent.setStyleSheet(
+                """
+    QTabBar {
+        background-color: rgb(225, 67, 94);
+        qproperty-drawBase:0;
+    }
+                """
+            )
+
+            self.error_widgets.append(widget_parent)
+        except RuntimeError:
+            pass
+
+    def spelling_switch_triggered(self, e):
+        """
+        Toggles the spelling/autocomplete feature state.
+        """
+
+        spelling_action_text = self.ui.actionSpelling_flag.text()
+        use_spelling = spelling_action_text == "Turn Spelling OFF"
+        self.switch_spelling(not use_spelling)
+
+    def switch_spelling(self, use_spelling):
+        """
+        Updates the GUI flag and recursively enables or disables spelling highlighting.
+        """
+
+        if use_spelling:
+            self.ui.actionSpelling_flag.setText("Turn Spelling OFF")
+        else:
+            self.ui.actionSpelling_flag.setText("Turn Spelling ON")
+
+        self.recursive_spell(self.metadata_root, use_spelling)
+        self.settings.setValue("use_spelling", use_spelling)
+
+    def recursive_spell(self, widget, which):
+        """
+        Turns the spelling highlighter on or off for a given widget and iterates through its children.
+        """
+
+        try:
+            widget.highlighter.enabled = which
+            widget.highlighter.rehighlight()
+        except:
+            pass
+
+        for child_widget in self.metadata_root.get_children(widget):
+            self.recursive_spell(child_widget, which)
+
+    def dragEnterEvent(self, e):
+        """
+        Accepts the drag event if the MIME data contains URLs.
+        """
+
+        if e.mimeData().hasUrls():
+            e.accept()
+        else:
+            e.ignore()
+
+    def dragMoveEvent(self, e):
+        """
+        Accepts the move event if the URL refers to a local file.
+        """
+
+        if e.mimeData().hasUrls() and e.mimeData().urls()[0].isLocalFile():
+            e.accept()
+        else:
+            e.ignore()
+
+    def dropEvent(self, e):
+        """
+        Handles the dropping of files onto the main widget by loading the dropped file.
+        """
+
+        try:
+            if e.mimeData().hasUrls():
+                e.setDropAction(Qt.CopyAction)
+
+                url = e.mimeData().urls()[0]
+                fname = url.toLocalFile()
+
+                if os.path.isfile(fname):
+                    self.open_file(fname)
+                e.accept()
+            else:
+                e.ignore()
+        except:
+            pass
+
+    def preview(self):
+        """
+        Shows a preview window with the XML content rendered using the FGDC XSLT stylesheet.
+        """
+
+        xsl_fname = utils.get_resource_path("FGDC/FGDC_Stylesheet.xsl")
+        transform = xml_utils.load_xslt(xsl_fname)
+        result = transform(self.metadata_root.to_xml())
+
+        tmp = tempfile.NamedTemporaryFile(suffix=".html")
+        tmp.close()
+        result.write(tmp.name)
+
+        self.preview = Preview(url=tmp.name)
+        self.preview_dialog = QDialog(self)
+        self.preview_dialog.setWindowTitle("Metadata Preview")
+        self.preview_dialog.setLayout(self.preview.layout())
+
+        self.preview_dialog.resize(600, 600)
+        self.preview_dialog.exec_()
+
+    def launch_help(self):
+        """
+        Opens the application's documentation/help page in a preview dialog.
+        """
+
+        root_dname = utils.get_install_dname("pymdwizard")
+        help_html = os.path.join(
+            root_dname, "docs", "html_output", "index.html"
+        )
+
+        if not os.path.exists(help_html):
+            gui_fname = os.path.dirname(os.path.realpath(__file__))
+            help_html = os.path.join(
+                gui_fname, "..", "..", "docs", "html_output", "index.html"
+            )
+
+        self.preview = Preview(url=help_html)
+        self.preview_dialog = QDialog(self)
+        self.preview_dialog.setWindowTitle("MetadataWizard Help")
+        self.preview_dialog.setLayout(self.preview.layout())
+        self.preview_dialog.resize(1000, 600)
+        self.preview_dialog.exec_()
+
+    def generate_review_doc(self):
+        """
+        Generates a Microsoft Word (.docx) review document from the current metadata record.
+        """
+
+        if self.cur_fname:
+            out_fname = self.cur_fname[:-4] + "_REVIEW.docx"
+            which = "bdp" if self.metadata_root.schema == "bdp" else "fgdc"
+            exists_msg = (
+                "File already exists, would you like to overwrite it? "
+                "Selecting 'No' will allow you to Save As."
+            )
+
+            if time.time() - self.last_updated >= 4:
+                msg = (
+                    "Would you like to save the current file "
+                    "before continuing?"
+                )
+                self.last_updated = time.time()
+                confirm = QMessageBox.question(
+                    self,
+                    "File save",
+                    msg,
+                    QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                )
+                if confirm == QMessageBox.Yes:
+                    self.save_as()
+                elif confirm == QMessageBox.Cancel:
+                    return
+
+            try:
+                cur_content = xml_utils.XMLRecord(self.cur_fname)
+
+                if os.path.exists(out_fname):
+                    confirm2 = QMessageBox.question(self,
+                        "File Overwrite",
+                        exists_msg,
+                        QMessageBox.Yes | QMessageBox.No |
+                                                    QMessageBox.Cancel ,
+                    )
+                    if confirm2 == QMessageBox.Yes:
+                        self.save_file()
+                    elif confirm2 == QMessageBox.No:
+                        out_fname = QFileDialog.getSaveFileName(
+                            self, "Save As", out_fname,
+                            filter="Document (*.docx)"
+                        )[0]
+                    elif confirm2 == QMessageBox.Cancel:
+                        return
+
+                review_utils.generate_review_report(cur_content, out_fname,
+                                                    which=which)
+
+                def open_file(filename):
+                    """Helper function to open file using OS defaults."""
+                    if sys.platform == "win32":
+                        os.startfile(filename)
+                    elif sys.platform == "darwin":  # macOS
+                        opener = "open"
+                        subprocess.call([opener, filename])
+                    else:  # Linux/others
+                        opener = "xdg-open"
+                        subprocess.call([opener, filename])
+
+                open_file(out_fname)
+
+                msg = "Review document available at: {}".format(out_fname)
+                msg += (
+                    "\n\nReview document now opening in default "
+                    "application..."
+                )
+                QMessageBox.information(self, "Review finished", msg)
+            except BaseException:
+                msg = "Problem encountered generating review document:\n"
+                msg += "{}".format(traceback.format_exc())
+                QMessageBox.warning(self, "Problem encountered", msg)
+
+    def launch_jupyter(self):
+        """
+        Launches the Jupyter Notebook starter dialog.
+        """
+
+        jupyter_dnames = self.settings.value("jupyter_dnames", [])
+
+        if not jupyter_dnames:
+            install_dir = utils.get_install_dname()
+            jupyter_dnames = [os.path.join(install_dir, "examples")]
+            self.settings.setValue("jupyter_dnames", jupyter_dnames)
+
+        self.jupyter_dialog = JupyterStarter(
+            previous_dnames=jupyter_dnames,
+            update_function=self.update_jupyter_dnames
+        )
+        utils.set_window_icon(self.jupyter_dialog)
+        self.jupyter_dialog.show()
+
+    def update_jupyter_dnames(self, dname):
+        """
+        Updates the list of recently used Jupyter directories stored in application settings.
+        """
+
+        jupyter_dnames = self.settings.value("jupyter_dnames", [])
+
+        try:
+            jupyter_dnames.remove(dname)
+        except ValueError:
+            pass
+
+        jupyter_dnames.insert(0, dname)
+        del jupyter_dnames[PyMdWizardMainForm.max_recent_files:]
+
+        self.settings.setValue("jupyter_dnames", jupyter_dnames)
+
+    def about(self):
+        """
+        Displays an 'about' message box with contact information, version number, and project links.
+        """
+
+        msg = (
+            "The MetadataWizard was developed by the data management "
+            "team &lt;br&gt; at the USGS Fort Collins Science Center, "
+            "with support from the USGS &lt;br&gt; Science Analytics and Synthesis "
+            "(SAS), and the USGS Community for &lt;br&gt; "
+            "Data Integration (CDI).&lt;br&gt;&lt;br&gt;"
+            "Ongoing support provided by the USGS Science Analytics "
+            "and Synthesis (SAS)."
+            f"&lt;br&gt;&lt;br&gt;&lt;b&gt;Version&lt;/b&gt;: {__version__}&lt;br&gt;"
+            "&lt;br&gt;&lt;b&gt;Project page&lt;/b&gt;: &lt;a href='https://github.com/DOI-USGS/"
+            "fort-pymdwizard'&gt;https://github.com/DOI-USGS/"
+            "fort-pymdwizard&lt;/a&gt;"
+            "&lt;br&gt;&lt;br&gt;&lt;b&gt;Contact&lt;/b&gt;: Tamar Norkin at ask-sdm@usgs.gov"
+        )
+
+        msgbox = QMessageBox.about(self, "About", msg)
+
+    def check_for_updates(self, e=None, show_uptodate_msg=True):
+        """
+        Checks if the local installation's commit is behind the master branch of the USGS GitHub repository.
+        """
+
+        spinner = SpinnerDialog(self)
+        spinner.show()
+        QApplication.processEvents()
+
+        try:
+            install_dir = utils.get_install_dname("pymdwizard")
+            repo = Repo(install_dir)
+
+            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
+            master = [f for f in fetch if f.name == "origin/master"][0]
+
+            spinner.close()
+
+            if repo.head.commit != master.commit:
+                msg = (
+                    "An update(s) are available for the Metadata Wizard.\n"
+                    "Would you like to install these now?"
+                )
+
+                confirm = QMessageBox.question(
+                    self,
+                    "Updates Available",
+                    msg,
+                    QMessageBox.Yes | QMessageBox.No,
+                )
+
+                if confirm == QMessageBox.Yes:
+                    self.update_from_github()
+            elif show_uptodate_msg:
+                msg = "MetadataWizard already up to date."
+                QMessageBox.information(self, "No Update Needed", msg)
+
+        except BaseException:
+            if spinner:
+                spinner.close()
+
+            if show_uptodate_msg:
+                msg = (
+                    "Problem Encountered Updating from USGS GitHub "
+                    "(https://github.com/DOI-USGS/fort-pymdwizard)\n\n"
+                    "Please ensure that you have write access to the "
+                    "location where the Metadata Wizard is installed."
+                )
+                QMessageBox.information(self, "Update results", msg)
+
+    def update_from_github(self):
+        """
+        Merges the latest version of the application from the GitHub repository into the local repository.
+        """
+
+        try:
+            install_dir = utils.get_install_dname("pymdwizard")
+            repo = Repo(install_dir)
+
+            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
+            master = [f for f in fetch if f.name == "origin/master"][0]
+
+            repo.git.merge(master.name)
+
+            msg = (
+                "Updated Successfully from GitHub. Close and re-open "
+                "Metadata Wizard for changes to be implemented."
+            )
+            QMessageBox.information(self, "Update results", msg)
+        except BaseException:
+            msg = (
+                "Problem Encountered Updating from GitHub\n\n"
+                "USGS users, if you experience issues, please try "
+                "disconnecting/reconnecting to the internal USGS network "
+                "and re-checking for updates."
+            )
+            QMessageBox.information(self, "Update results", msg)
+
+        QApplication.restoreOverrideCursor()
+
+
+def show_splash(version="2.x.x"):
+    """
+    Displays the application's splash screen with the version number rendered over the image.
+    """
+
+    splash_fname = utils.get_resource_path("icons/splash.jpg")
+    splash_pix = QPixmap(splash_fname)
+
+    size = splash_pix.size() * 0.3
+    splash_pix = splash_pix.scaled(
+        size, Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation
+    )
+
+    numbers = {}
+    for number in list(range(10)) + ["point", "x"]:
+        fname = utils.get_resource_path("icons/{}.png".format(number))
+        pix = QPixmap(fname)
+        size = pix.size() * 0.65
+        numbers[str(number)] = pix.scaled(
+            size, Qt.KeepAspectRatio,
+            transformMode=Qt.SmoothTransformation
+        )
+    numbers["."] = numbers["point"]
+
+    painter = QPainter(splash_pix)
+    painter.begin(splash_pix)
+
+    x, y = 400, 65
+    for digit in version:
+        painter.drawPixmap(int(x), y, numbers[digit])
+        x += numbers[digit].rect().width() / 3
+
+    painter.end()
+    del painter
+
+    splash = QSplashScreen(splash_pix, Qt.Window)
+    splash.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+    splash.show()
+    splash.raise_()
+
+    return splash
+
+
+def launch_main(xml_fname=None, introspect_fname=None, env_cache=None):
+    """
+    The main function to initialize and run the PyQt application.
+    """
+
+    if env_cache is None:
+        env_cache = {}
+
+    app = QApplication(sys.argv)
+
+    splash = show_splash(__version__)
+    app.processEvents()
+
+    mdwiz = PyMdWizardMainForm()
+    mdwiz.show()
+    mdwiz.env_cache = env_cache
+    splash.finish(mdwiz)
+    app.processEvents()
+    del splash
+
+    try:
+        mdwiz.check_for_updates(show_uptodate_msg=False)
+    except:
+        pass
+
+    if xml_fname is not None and os.path.exists(xml_fname):
+        mdwiz.open_file(xml_fname)
+
+    if introspect_fname is not None and introspect_fname.endswith("$"):
+        just_fname, _ = os.path.split(introspect_fname)
+    else:
+        just_fname = introspect_fname
+
+    if introspect_fname is not None and os.path.exists(just_fname):
+        mdwiz.metadata_root.eainfo.detaileds[0].populate_from_fname(
+            introspect_fname)
+
+        mdwiz.metadata_root.eainfo.ui.fgdc_eainfo.setCurrentIndex(1)
+
+    app.exec_()
+
+
+if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+    launch_main()
