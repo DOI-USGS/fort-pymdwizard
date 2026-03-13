@@ -1256,50 +1256,23 @@ class PyMdWizardMainForm(QMainWindow):
 
         msgbox = QMessageBox.about(self, "About", msg)
 
+
     def check_for_updates(self, e=None, show_uptodate_msg=True):
         """
-        Check if the usgs_root repo is at the same commit as this installation
-
-        Parameters
-        ----------
-        e : qt event
-            
-        show_uptodate_msg : bool
-           Whether to display a msg if no updates found
-
-        Returns
-        -------
-        None
+        TEMPORARY (during transition to 2.2.0):
+        Disable in‑app updates and direct users to download the installer.
+        Always show the notice, including at startup.
         """
-        try:
-            from git import Repo
 
-            install_dir = utils.get_install_dname("pymdwizard")
-            repo = Repo(install_dir)
-            fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
-            master = [f for f in fetch if f.name == "origin/master"][0]
+        msg = (
+            "The latest version of the Metadata Wizard requires a reinstall using the 2.2.0 installer.\n\n"
+            "Because of this, the in-app 'Check for Updates' feature is temporarily disabled.\n"
+            "Please download and install the 2.2.0 installer from the Releases page:\n"
+            "https://github.com/DOI-USGS/fort-pymdwizard/releases"
+        )
 
-            if repo.head.commit != master.commit:
-                msg = "An update(s) are available for the Metadata Wizard.\n"
-                msg += "Would you like to install these now?"
+        QMessageBox.information(self, "Check for Updates", msg)
 
-                confirm = QMessageBox.question(
-                    self, "Updates Available", msg, QMessageBox.Yes | QMessageBox.No
-                )
-                if confirm == QMessageBox.Yes:
-                    self.update_from_github()
-            elif show_uptodate_msg:
-                msg = "MetadataWizard already up to date."
-                QMessageBox.information(self, "No Update Needed", msg)
-
-        except BaseException as e:
-            if show_uptodate_msg:
-                msg = (
-                    "Problem Encountered Updating from USGS GitHub (https://github.com/DOI-USGS/fort-pymdwizard)\n\n"
-                    "Please ensure that you have write access to the location where the Metadata Wizard is installed."
-                )
-                # msg += str(e)
-                QMessageBox.information(self, "Update results", msg)
 
     def update_from_github(self):
         """
