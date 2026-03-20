@@ -1289,27 +1289,35 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.settings.setValue("jupyter_dnames", jupyter_dnames)
 
+
     def about(self):
         """
         Displays an 'about' message box with contact information, version number, and project links.
         """
 
         msg = (
-            "The MetadataWizard was developed by the data management "
-            "team &lt;br&gt; at the USGS Fort Collins Science Center, "
-            "with support from the USGS &lt;br&gt; Science Analytics and Synthesis "
-            "(SAS), and the USGS Community for &lt;br&gt; "
-            "Data Integration (CDI).&lt;br&gt;&lt;br&gt;"
-            "Ongoing support provided by the USGS Science Analytics "
-            "and Synthesis (SAS)."
-            f"&lt;br&gt;&lt;br&gt;&lt;b&gt;Version&lt;/b&gt;: {__version__}&lt;br&gt;"
-            "&lt;br&gt;&lt;b&gt;Project page&lt;/b&gt;: &lt;a href='https://github.com/DOI-USGS/"
-            "fort-pymdwizard'&gt;https://github.com/DOI-USGS/"
-            "fort-pymdwizard&lt;/a&gt;"
-            "&lt;br&gt;&lt;br&gt;&lt;b&gt;Contact&lt;/b&gt;: Tamar Norkin at ask-sdm@usgs.gov"
+            "The Metadata Wizard was developed by the data management team at the USGS Fort Collins Science Center, with support from the USGS Science Analytics and Synthesis (SAS) program, and the USGS Community for Data Integration (CDI).<br><br>"
+            "Ongoing support provided by the USGS Science Analytics and Synthesis (SAS)."
+            f"<br><br><b>Version</b>: {__version__}<br>"
+            "<br><b>Project page</b>: "
+            "<a href='https://github.com/DOI-USGS/fort-pymdwizard'>https://github.com/DOI-USGS/fort-pymdwizard</a>"
+            "<br><br><b>Contact</b>: Tamar Norkin at ask-sdm@usgs.gov"
         )
 
-        msgbox = QMessageBox.about(self, "About", msg)
+        # Use a configured QMessageBox to render rich text and enable clickable links
+        msgbox = QMessageBox(self)
+        msgbox.setWindowTitle("About")
+        msgbox.setTextFormat(Qt.RichText)  # Render HTML
+        msgbox.setText(msg)
+        msgbox.setTextInteractionFlags(Qt.TextBrowserInteraction)  # Allow link interaction
+
+        # Ensure links open externally in the default browser
+        label = msgbox.findChild(QLabel, "qt_msgbox_label")
+        if label is not None:
+            label.setOpenExternalLinks(True)
+
+        msgbox.exec_()
+
 
     def check_for_updates(self, e=None, show_uptodate_msg=True):
         """
