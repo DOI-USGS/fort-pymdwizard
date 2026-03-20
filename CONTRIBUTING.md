@@ -42,7 +42,7 @@ Development Environment
 We use the Anaconda distribution system for installation of the development 
 environment, and recommend setting up a specific environment for this development effort.
 
-Use the file fort-pymdwizard/requirements.txt to install requirements in new dev environments.
+Use the file fort-pymdwizard/environment.yml to install requirements in new dev environments.
 
 
  Running Tests

@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,225 +13,210 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 files name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-import numpy as np
+# Standard python libraries.
 
-import sip
+# Non-standard python libraries.
+try:
+    import numpy as np
+    from PyQt5.QtWidgets import (QMessageBox, QWidget, QMenu, QComboBox,
+                                 QLineEdit, QPlainTextEdit)
+    from PyQt5.QtCore import (QPropertyAnimation, QSize)
+    from PyQt5.QtGui import QIcon
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QMenu
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtCore import QPropertyAnimation
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QIcon
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils, data_io)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_attr
+    from pymdwizard.gui import (udom, rdom, codesetd, edom_list, edom)
+    from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_attr
-from pymdwizard.gui import udom
-from pymdwizard.gui import rdom
-from pymdwizard.gui import codesetd
-from pymdwizard.gui import edom_list
-from pymdwizard.gui import edom
-from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
-from pymdwizard.core import data_io
+def qwidget_is_valid(widget) -> bool:
+    """
+    Return True if 'widget' is a live Qt object we can safely touch.
+    PyQt raises RuntimeError if the wrapped C/C++ object has been deleted.
+    """
+    if widget is None:
+        return False
+    try:
+        _ = widget.objectName()
+        return True
+    except RuntimeError:
+        return False
 
 default_def_source = utils.get_setting("defsource", "Producer Defined")
 
 
 class Attr(WizardWidget):
+    """
+    Description:
+        A widget to handle the contents of the FGDC "attr" (Attribute)
+        tag, allowing the user to select and configure different
+        attribute domains (Enumerated, Range, Codeset, Unrepresentable).
 
-    drag_label = "Attribute <attr>"
+    Passed arguments:
+        parent (QWidget, optional): The parent widget.
+
+    Returned objects:
+        None
+
+    Workflow:
+        1. Initializes domain content and No Data tracking.
+        2. Builds a dynamic UI that can switch between domain types.
+        3. Supports context-menu actions (Copy, Paste, Insert, Delete).
+        4. Provides introspection logic to guess the best domain type.
+
+    Notes:
+        Inherits from `WizardWidget`. Uses `QPropertyAnimation` for
+        expanding/collapsing the attribute detail view.
+    """
+
+    # Class attributes.
+    drag_label = "Attribute &lt;attr&gt;"
     acceptable_tags = ["attr"]
 
     def __init__(self, parent=None):
-        # This changes to true when this attribute is being viewed/edited
+        # This changes to true when this attribute is being viewed/edited.
         self.active = False
         self.ef = 0
 
         self.nodata = None
-        self.nodata_content = (False, None)  # nodata checked, last nodata node
+        # (nodata checked, last nodata node)
+        self.nodata_content = (False, None)
 
         WizardWidget.__init__(self, parent=parent)
 
-        # an in memory record of all  the contents that were selected
+        # In-memory record of contents selected for each domain type.
         self._previous_index = -1
         cbo = self.ui.comboBox
         self._domain_content = dict.fromkeys(range(cbo.count()), None)
 
         self.parent_ui = parent
         self.series = None
+
+        # Hide No Data section initially.
         self.ui.nodata_section.hide()
+
+        # Setup highlighter for the definition text area.
         self.highlighter = Highlighter(self.ui.fgdc_attrdef.document())
 
+        # List of common No Data strings for sniffing
         self.nodata_matches = [
-            "#N/A",
-            "#N/A N/A",
-            "#NA",
-            "-1.#IND",
-            "-1.#QNAN",
-            "-NaN",
-            "-nan",
-            "1.#IND",
-            "1.#QNAN",
-            "N/A",
-            "NA",
-            "NULL",
-            "NaN",
-            "n/a",
-            "nan",
-            "null",
-            -9999,
-            "-9999",
-            "",
-            "Nan",
-            "<< empty cell >>",
+            "#N/A", "#N/A N/A", "#NA", "-1.#IND", "-1.#QNAN", "-NaN",
+            "-nan", "1.#IND", "1.#QNAN", "N/A", "NA", "NULL", "NaN",
+            "n/a", "nan", "null", -9999, "-9999", "", "Nan",
+            "&lt;&lt; empty cell &gt;&gt;",
         ]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
-        Returns
-        -------
-        None
+        Description:
+            Builds and modifies this widget's GUI.
         """
+
         self.ui = UI_attr.Ui_attribute_widget()
         self.ui.setupUi(self)
 
-        # self.ui.fgdc_attrdef.installEventFilter(self)
+        # Install event filters.
         self.ui.fgdc_attrdef.setMouseTracking(True)
         self.ui.fgdc_attrdefs.installEventFilter(self)
         self.ui.attrdomv_contents.installEventFilter(self)
         self.ui.place_holder.installEventFilter(self)
 
+        # Setup drag and drop.
         self.setup_dragdrop(self)
+
+        # Connect combobox change signal.
         self.ui.comboBox.currentIndexChanged.connect(self.change_domain)
+
+        # Override mouse press events for activation.
         self.ui.fgdc_attr.mousePressEvent = self.mousePressEvent
         self.ui.fgdc_attrlabl.mousePressEvent = self.attrlabl_press
         self.ui.fgdc_attrdef.mousePressEvent = self.attrdef_press
         self.ui.fgdc_attrdefs.mousePressEvent = self.attrdefs_press
         self.ui.comboBox.mousePressEvent = self.combo_press
+
+        # Connect No Data radio button toggle.
         self.ui.rbtn_nodata_yes.toggled.connect(self.include_nodata_change)
 
-        self.domain = None
+        # Hide the detailed No Data content section.
         self.ui.nodata_content.hide()
+
+        # Set default radio button state.
         self.ui.rbtn_nodata_no.setChecked(True)
+
+        # Set initial domain to Unrepresentable (index 3).
         self.ui.comboBox.setCurrentIndex(3)
 
+        # Set the default definition source.
         self.ui.fgdc_attrdefs.setText(default_def_source)
 
     def include_nodata_change(self, b):
-        """
-            The user has changed the nodata present selection
-
-            Parameters
-            ----------
-            b: qt event
-
-            Returns
-            -------
-            None
-            """
+        """Show/Hide the No Data config section."""
         if b:
             self.ui.nodata_section.show()
         else:
             self.ui.nodata_section.hide()
 
     def mousePressEvent(self, event):
+        """Activate the widget on click."""
         self.activate()
 
     def attrlabl_press(self, event):
+        """Activate + pass the event to QLineEdit."""
         self.activate()
         return QLineEdit.mousePressEvent(self.ui.fgdc_attrlabl, event)
 
     def attrdef_press(self, event):
+        """Activate + pass the event to QPlainTextEdit."""
         self.activate()
         return QPlainTextEdit.mousePressEvent(self.ui.fgdc_attrdef, event)
 
     def attrdefs_press(self, event):
+        """Activate + pass the event to QLineEdit."""
         self.activate()
         return QLineEdit.mousePressEvent(self.ui.fgdc_attrdefs, event)
 
     def combo_press(self, event):
+        """Activate + pass the event to QComboBox."""
         self.activate()
         return QComboBox.mousePressEvent(self.ui.comboBox, event)
 
     def clear_domain(self):
+        """Remove current domain widget from layout."""
         for child in self.ui.attrdomv_contents.children():
             if isinstance(child, QWidget):
                 child.deleteLater()
 
     def clear_nodata(self):
+        """Remove No Data enumerated domain widget if present."""
         try:
             self.nodata_edom.deleteLater()
-        except:
+        except AttributeError:
             pass
 
     def set_series(self, series):
-        """
-        store a series with this attri
-        Parameters
-        ----------
-        series : pandas series
-
-        Returns
-        -------
-        None
-        """
+        """Associate a pandas Series with this attribute."""
         self.series = series
 
     def guess_domain(self):
         """
-        return the index of the domain the associated series is thought to
-        best match.
-
-        if there are less than twenty unique items in the series the guess
-        is enumerated
-        if it's numeric the guess is range.
-        else it's unrepresentable
-
-        Returns
-        -------
-        int : index of the domain the associated series is
-            thought to best match
+        Guess the appropriate FGDC domain type index based on the data series.
+        Returns:
+            0: Enumerated, 1: Range, 3: Unrepresentable
         """
-        # given a series of data take a guess as to which
-        # domain type is appropriate
+
+        if self.series is None:
+            return 3
 
         if self.series is not None:
             if self.nodata is not None:
@@ -251,18 +232,14 @@ class Attr(WizardWidget):
             else:
                 return 3  # unrepresentable
 
-        # without a series to introspect we're going to default to udom
-        return 3  # unrepresentable
-
     def store_current_content(self):
         """
-        Save the current contents (xml format) into our domain contents dict
-
-        Returns
-        -------
-        None
+        Saves current domain and No Data content into memory caches.
+        (SIP-free: uses qwidget_is_valid)
         """
-        if self.domain is not None and not sip.isdeleted(self.domain):
+
+        # Save the current primary domain content.
+        if self.domain is not None and qwidget_is_valid(self.domain):
             cur_xml = self.domain.to_xml()
             if cur_xml.tag == "udom":
                 self._domain_content[3] = cur_xml
@@ -273,25 +250,22 @@ class Attr(WizardWidget):
             elif cur_xml.tag == "attr":
                 self._domain_content[0] = cur_xml
 
-        if self.ui.rbtn_nodata_yes.isChecked() and not sip.isdeleted(self.nodata_edom):
-            self.nodata_content = (True, self.nodata_edom.to_xml())
+        # Save the current No Data domain content (if widget exists & checked).
+        nodata_widget = getattr(self, "nodata_edom", None)
+        if (self.ui.rbtn_nodata_yes.isChecked()
+                and qwidget_is_valid(nodata_widget)):
+            try:
+                self.nodata_content = (True, nodata_widget.to_xml())
+            except RuntimeError:
+                self.nodata_content = (False, None)
         else:
             self.nodata_content = (False, None)
 
     def populate_domain_content(self, which="guess"):
         """
-        Fill out this widget with the content from it's associated series
-
-        Parameters
-        ----------
-        which : str, optional, one of 'guess' or the index to force
-            if guess introspect the series associated with this attribute
-            and make a best guess as to which domain to use.
-
-        Returns
-        -------
-        None
+        Fills the attribute domain section with a new domain widget.
         """
+
         self.clear_domain()
 
         if which == "guess":
@@ -302,33 +276,30 @@ class Attr(WizardWidget):
 
         self.ui.comboBox.setCurrentIndex(index)
 
-        if index == 0:
+        if index == 0:      # Enumerated
             self.domain = edom_list.EdomList(parent=self)
-        elif index == 1:
+        elif index == 1:    # Range
             self.domain = rdom.Rdom(parent=self)
-        elif index == 2:
+        elif index == 2:    # Codeset
             self.domain = codesetd.Codesetd(parent=self)
-        else:
+        else:               # Unrepresentable
             self.domain = udom.Udom(parent=self)
 
         if self._domain_content[index] is not None:
-            # This domain has been used before, display previous content
             self.domain.from_xml(self._domain_content[index])
         elif self.series is not None and index == 0:
             clean_series = data_io.clean_nodata(self.series, self.nodata)
             uniques = clean_series.unique()
 
             if len(uniques) > 100:
-                msg = "There are more than 100 unique values in this field."
-                msg += "\n This tool cannot smoothly display that many " "entries. "
-                msg += (
-                    "\nTypically an enumerated domain is not used with "
-                    "that many unique entries."
-                )
-                msg += "\n\nOnly the first one hundred are displayed below!"
-                msg += (
-                    "\nYou will likely want to change the domain to one "
-                    "of the other options."
+                msg = (
+                    "There are more than 100 unique values in this "
+                    "field. This tool cannot smoothly display that "
+                    "many entries. Typically an enumerated domain is "
+                    "not used with that many unique entries."
+                    "\n\nOnly the first one hundred are displayed "
+                    "below! You will likely want to change the "
+                    "domain to one of the other options."
                 )
                 QMessageBox.warning(self, "Too many unique entries", msg)
                 self.domain.populate_from_list(uniques[:101])
@@ -338,11 +309,11 @@ class Attr(WizardWidget):
             clean_series = data_io.clean_nodata(self.series, self.nodata)
             try:
                 self.domain.ui.fgdc_rdommin.setText(str(clean_series.min()))
-            except:
+            except Exception:
                 self.domain.ui.fgdc_rdommin.setText("")
             try:
                 self.domain.ui.fgdc_rdommax.setText(str(clean_series.max()))
-            except:
+            except Exception:
                 self.domain.ui.fgdc_rdommax.setText("")
 
             if not np.issubdtype(clean_series.dtype, np.number):
@@ -357,65 +328,61 @@ class Attr(WizardWidget):
                 )
                 utils.set_window_icon(msgbox)
                 msgbox.exec_()
+
         self.ui.attrdomv_contents.layout().addWidget(self.domain)
 
     def change_domain(self):
-        """
-        When changing the domain we must first store the current contents
-        in our internal contents dictionary before loading the next.
-
-        Returns
-        -------
-        None
-        """
+        """Handle combobox change → store, clear, repopulate."""
         if self.active:
             self.store_current_content()
             self.clear_domain()
-
             self.populate_domain_content(self.ui.comboBox.currentIndex())
 
     def supersize_me(self):
         """
-        Expand this attribute and display it's contents
-
-        Returns
-        -------
-        None
+        Expand this attribute to show domain and No Data content.
         """
+
         if not self.active:
             self.active = True
+
             self.animation = QPropertyAnimation(self, b"minimumSize")
             self.animation.setDuration(200)
             self.animation.setEndValue(QSize(345, self.height()))
             self.animation.start()
+
             self.ui.attrdomv_contents.show()
             self.ui.place_holder.hide()
             cbo = self.ui.comboBox
+
             self.populate_domain_content(cbo.currentIndex())
 
             self.ui.nodata_content.show()
             self.nodata_edom = edom.Edom()
+
             self.ui.rbtn_nodata_yes.setChecked(self.nodata_content[0])
+
             if self.nodata_content[1] is not None:
                 self.nodata_edom.from_xml(self.nodata_content[1])
 
-            self.nodata_edom.ui.fgdc_edomv.textChanged.connect(self.nodata_changed)
+            self.nodata_edom.ui.fgdc_edomv.textChanged.connect(
+                self.nodata_changed)
+
             self.ui.nodata_section.layout().addWidget(self.nodata_edom)
 
     def regularsize_me(self):
         """
-        Collapse this attribute and hide it's content
-
-        Returns
-        -------
-        None
+        Collapse this attribute and hide detailed content.
         """
+
         if self.active:
             self.store_current_content()
+
             self.animation = QPropertyAnimation(self, b"minimumSize")
             self.animation.setDuration(200)
             self.animation.setEndValue(QSize(100, self.height()))
             self.animation.start()
+
             self.ui.nodata_content.hide()
             self.clear_domain()
             self.clear_nodata()
@@ -425,15 +392,10 @@ class Attr(WizardWidget):
 
     def activate(self):
         """
-        When an attribute is activated minimize all the other attributes
-        in the parent attribute list
-
-        Returns
-        -------
-        None
+        Minimize siblings and expand this attribute.
         """
+
         if self.active:
-            # we're already big so do nothing
             pass
         else:
             if self.parent_ui is not None:
@@ -441,25 +403,43 @@ class Attr(WizardWidget):
             self.supersize_me()
 
     def nodata_changed(self):
-        """remove """
+        """
+        Update self.nodata from the No Data widget and refresh domain cache.
+        """
+
         self.nodata = self.nodata_edom.ui.fgdc_edomv.text()
-        if self.nodata == "<< empty cell >>":
+        if self.nodata == "&lt;&lt; empty cell &gt;&gt;":
             self.nodata = ""
+
         self.clean_domain_nodata()
 
     def clean_domain_nodata(self):
-        if self.domain is not None and not sip.isdeleted(self.domain):
-            cur_xml = self.domain.to_xml()
+        """
+        Force update of the primary domain's stored XML in _domain_content.
+        (SIP-free: uses qwidget_is_valid)
+        """
+
+        if self.domain is not None and qwidget_is_valid(self.domain):
+            try:
+                cur_xml = self.domain.to_xml()
+            except RuntimeError:
+                return
+
             if cur_xml.tag == "rdom":
                 self._domain_content[1] = cur_xml
             elif cur_xml.tag == "attr":
-                edoms = self.domain.edoms
+                # For enumerated domains which use the <attr> tag.
+                edoms = getattr(self.domain, "edoms", None)  # retained from original
                 self._domain_content[0] = cur_xml
 
     def sniff_nodata(self):
-        uniques = self.series.unique()
+        """
+        Detect common No Data values in the series and prefill the No Data domain.
+        """
 
+        uniques = self.series.unique()
         self.nodata = None
+
         for nd in self.nodata_matches:
             if nd in list(uniques):
                 self.nodata = nd
@@ -469,7 +449,7 @@ class Attr(WizardWidget):
         else:
             temp_edom = edom.Edom()
             if self.nodata == "":
-                temp_edom.ui.fgdc_edomv.setText("<< empty cell >>")
+                temp_edom.ui.fgdc_edomv.setText("&lt;&lt; empty cell &gt;&gt;")
             else:
                 temp_edom.ui.fgdc_edomv.setText(str(self.nodata))
 
@@ -478,6 +458,9 @@ class Attr(WizardWidget):
             temp_edom.deleteLater()
 
     def contextMenuEvent(self, event):
+        """
+        Right-click context menu for Copy/Paste/Insert/Delete/Help.
+        """
 
         self.in_context = True
         clicked_widget = self.childAt(event.pos())
@@ -491,14 +474,10 @@ class Attr(WizardWidget):
 
         menu.addSeparator()
         insert_before = menu.addAction(QIcon("paste.png"), "Insert before")
-        insert_before.setStatusTip(
-            "insert an empty attribute (column) " "before this one"
-        )
+        insert_before.setStatusTip("insert an empty attribute (column) before this one")
 
         insert_after = menu.addAction(QIcon("paste.png"), "Insert After")
-        insert_after.setStatusTip(
-            "insert an empty attribute (column) after" " this one"
-        )
+        insert_after.setStatusTip("insert an empty attribute (column) after this one")
 
         delete_action = menu.addAction(QIcon("delete.png"), "&Delete")
         delete_action.setStatusTip("Delete this atttribute (column)")
@@ -554,7 +533,6 @@ class Attr(WizardWidget):
             self.parent_ui.delete_attr(self)
         elif help_action is not None and action == help_action:
             msg = QMessageBox(self)
-            # msg.setTextFormat(Qt.RichText)
             msg.setText(clicked_widget.help_text)
             msg.setWindowTitle("Help")
             msg.show()
@@ -562,16 +540,12 @@ class Attr(WizardWidget):
 
     def to_xml(self):
         """
-        return an XML element with the contents of this widget,
-        augmented with any original content not displayed on the widget
-        if applicable.
-
-        Returns
-        -------
-        XML Element
+        Return an FGDC <attr> XML element representing this attribute.
         """
+
         cur_index = self.ui.comboBox.currentIndex()
 
+        # Get the domain XML content.
         if self.active:
             self.store_current_content()
             domain = self.domain.to_xml()
@@ -581,7 +555,9 @@ class Attr(WizardWidget):
             self.populate_domain_content(cur_index)
             domain = self.domain.to_xml()
 
+        # Build the <attr> node structure.
         if self.ui.comboBox.currentIndex() == 0:
+            # Enumerated domain uses <attr> as its root tag.
             attr = xml_utils.XMLNode(domain)
             attr.clear_children(tag="attrlabl")
             attr.clear_children(tag="attrdef")
@@ -592,85 +568,97 @@ class Attr(WizardWidget):
             attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr)
             attrdomv.append(domain)
 
-        attrlabl = xml_utils.xml_node(
-            "attrlabl", text=self.ui.fgdc_attrlabl.text(), parent_node=attr, index=0
+        # Add common elements
+        xml_utils.xml_node(
+            "attrlabl",
+            text=self.ui.fgdc_attrlabl.text(),
+            parent_node=attr,
+            index=0,
         )
-        attrdef = xml_utils.xml_node(
+        xml_utils.xml_node(
             "attrdef",
             text=self.ui.fgdc_attrdef.toPlainText(),
             parent_node=attr,
             index=1,
         )
-        attrdefs = xml_utils.xml_node(
-            "attrdefs", text=self.ui.fgdc_attrdefs.text(), parent_node=attr, index=2
+        xml_utils.xml_node(
+            "attrdefs",
+            text=self.ui.fgdc_attrdefs.text(),
+            parent_node=attr,
+            index=2,
         )
 
+        # No Data domain
         if self.nodata_content[0]:
-            attrdomv = xml_utils.xml_node("attrdomv", parent_node=attr, index=3)
+            attrdomv = xml_utils.xml_node(
+                "attrdomv", parent_node=attr, index=3
+            )
             attrdomv.append(self.nodata_content[1])
-
 
         return attr
 
     def from_xml(self, attr):
         """
-        Populate widget with a representation of the passed XML element
-
-        Parameters
-        ----------
-        attr : XML Element
-
-        Returns
-        -------
-        None
+        Populate the widget from an <attr> XML element.
         """
+
         try:
             self.clear_widget()
             if attr.tag == "attr":
-
                 utils.populate_widget(self, attr)
                 attr_node = xml_utils.XMLNode(attr)
+
                 attrdomvs = attr_node.xpath("attrdomv", as_list=True)
                 attr_domains = [a.children[0].tag for a in attrdomvs]
 
-                # pull out the first no data attribute domain
+                # --- No Data Domain Detection and Extraction ---
                 for attrdomv in attrdomvs:
-                    if attrdomv.children[0].tag == "edom" and (
-                        attrdomv.children[0].children[0].text in self.nodata_matches
-                        or attrdomv.children[0].children[1].text.lower()
-                        in ["nodata", "no data"]
-                        or (attr_domains.count("edom") == 1)
+                    domain_tag = attrdomv.children[0].tag
+                    edomv_text = attrdomv.children[0].children[0].text
+                    edomvd_text = attrdomv.children[0].children[1].text
+                    is_nodata_def = edomvd_text.lower() in ["nodata", "no data"]
+
+                    if (
+                        domain_tag == "edom"
+                        and (edomv_text in self.nodata_matches or is_nodata_def)
+                    ) or (
+                        domain_tag == "edom"
                         and len(attr_domains) > 1
+                        and attr_domains.count("edom") == 1
                     ):
                         self.ui.rbtn_nodata_yes.setChecked(True)
-                        self.nodata_content = (1, attrdomv.children[0].to_xml())
+                        self.nodata_content = (
+                            1,
+                            attrdomv.children[0].to_xml(),
+                        )
                         attrdomvs.remove(attrdomv)
                         attr_domains.remove("edom")
                         try:
                             edomv = attr.xpath(
-                                "attrdomv/edom/edomv[text()='{}']".format(
-                                    attrdomv.children[0].children[0].text
-                                )
+                                f"attrdomv/edom/edomv[text()='{edomv_text}']"
                             )[0]
                             nd_attrdomv = edomv.getparent().getparent()
                             nd_attrdomv.getparent().remove(nd_attrdomv)
-                        except:
+                        except Exception:
                             pass
                         break
 
+                # --- Primary Domain Detection and Assignment ---
                 if len(set(attr_domains)) > 1:
-                    # multiple domain types present in this attr
-                    msg = "Multiple domain types found in the attribute/column '{}'."
-                    msg += "\ni.e. more than one of Enumerated, Range, "
-                    msg += "Codeset, and Unrepresentable was used to "
-                    msg += "was used to describe a single column.\n\n"
-                    msg += "While this is valid in the FGDC schema the "
-                    msg += "MetadataWizard is not designed to handle this."
-                    msg += "\n\nOnly the first of these domains will be displayed "
-                    msg += "and retained in the output saved from this tool."
-                    msg += "\n\nIf having this structure is import please use"
-                    msg += " a different tool for editing this section."
-                    msg = msg.format(self.ui.fgdc_attrlabl.text())
+                    msg = (
+                        "Multiple domain types found in the "
+                        f"attribute/column '{self.ui.fgdc_attrlabl.text()}'."
+                        "\n i.e. more than one of Enumerated, Range, "
+                        "Codeset, and Unrepresentable was used to "
+                        "describe a single column.\n\n"
+                        "While this is valid in the FGDC schema the "
+                        "MetadataWizard is not designed to handle this."
+                        "\n\nOnly the first of these domains will be "
+                        "displayed and retained in the output saved "
+                        "from this tool."
+                        "\n\nIf having this structure is important please "
+                        "use a different tool for editing this section."
+                    )
                     msgbox = QMessageBox(
                         QMessageBox.Warning, "Too many domain types", msg
                     )
@@ -678,21 +666,21 @@ class Attr(WizardWidget):
                     msgbox.exec_()
 
                 if len(attrdomvs) == 0:
-                    self.ui.comboBox.setCurrentIndex(3)
+                    self.ui.comboBox.setCurrentIndex(3)  # Unrepresentable
                 elif attr_domains[0] == "edom":
-                    self.ui.comboBox.setCurrentIndex(0)
+                    self.ui.comboBox.setCurrentIndex(0)  # Enumerated
                     self._domain_content[0] = attr
                 elif attr_domains[0] == "udom":
-                    self.ui.comboBox.setCurrentIndex(3)
+                    self.ui.comboBox.setCurrentIndex(3)  # Unrepresentable
                     self._domain_content[3] = attr.xpath("attrdomv/udom")[0]
                 elif attr_domains[0] == "rdom":
-                    self.ui.comboBox.setCurrentIndex(1)
+                    self.ui.comboBox.setCurrentIndex(1)  # Range
                     self._domain_content[1] = attr.xpath("attrdomv/rdom")[0]
                 elif attr_domains[0] == "codesetd":
-                    self.ui.comboBox.setCurrentIndex(2)
+                    self.ui.comboBox.setCurrentIndex(2)  # Codeset
                     self._domain_content[2] = attr.xpath("attrdomv/codesetd")[0]
                 else:
-                    self.ui.comboBox.setCurrentIndex(3)
+                    self.ui.comboBox.setCurrentIndex(3)  # Default
             else:
                 print("The tag is not attr")
         except KeyError:
@@ -700,4 +688,7 @@ class Attr(WizardWidget):
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
     utils.launch_widget(Attr, "attr testing")

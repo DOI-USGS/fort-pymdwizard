@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,105 +13,173 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
+# Non-standard python libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils)
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_rdom
-
+# Custom import/libraries.
+try:
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_rdom
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 class Rdom(WizardWidget):  #
+    """
+    Description:
+        A widget corresponding to the FGDC <rdom> tag, which is part
+        of <attrdomv> (Attribute Domain Values) and specifies a range
+        of attribute values.
 
+    Passed arguments:
+        None (Inherited from WizardWidget)
+
+    Returned objects:
+        None
+
+    Workflow:
+        Manages fields for minimum value ("rdommin"), maximum value
+        ("rdommax"), attribute unit ("attrunit"), and attribute resolution
+        ("attrmres"), handling their XML serialization and
+        deserialization.
+
+    Notes:
+        Inherits from "WizardWidget". The class name "Rdom" is a short
+        form for Range Domain.
+    """
+
+    # Class attributes.
     drag_label = "Range Domain <rdom>"
     acceptable_tags = ["rdom"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
-        Returns
-        -------
-        None
+        Description:
+            Builds and modifies this widget's graphical user interface.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes the UI class, calls "setupUi", and sets up
+            drag-and-drop functionality.
+
+        Notes:
+            None
         """
+
         self.ui = UI_rdom.Ui_fgdc_attrdomv()
+
+        # Setup the UI defined in the separate class.
         self.ui.setupUi(self)
+
+        # Enable drag and drop functionality.
         self.setup_dragdrop(self)
 
     def to_xml(self):
         """
-        encapsulates the QTabWidget text for Metadata Time in an element tag
-        Returns
-        -------
-        timeperd element tag in xml tree
+        Description:
+            Converts the widget's content into an FGDC <rdom> XML
+            element, including its nested components.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            rdom (lxml.etree._Element): The <rdom> element tag
+                in the XML tree.
+
+        Workflow:
+            1. Creates the root <rdom> node.
+            2. Appends <rdommin> and <rdommax> (required).
+            3. Appends <attrunit> and <attrmres> only if they contain text.
+
+        Notes:
+            None
         """
+
+        # Create the root <rdom> node.
         rdom = xml_utils.xml_node("rdom")
-        rdommin = xml_utils.xml_node(
-            "rdommin", text=self.ui.fgdc_rdommin.text(), parent_node=rdom
-        )
-        rdommax = xml_utils.xml_node(
-            "rdommax", text=self.ui.fgdc_rdommax.text(), parent_node=rdom
+
+        # Range Domain Minimum (<rdommin>).
+        xml_utils.xml_node(
+            "rdommin",
+            text=self.ui.fgdc_rdommin.text(),
+            parent_node=rdom,
         )
 
+        # Range Domain Maximum (<rdommax>).
+        xml_utils.xml_node(
+            "rdommax",
+            text=self.ui.fgdc_rdommax.text(),
+            parent_node=rdom,
+        )
+
+        # Attribute Unit (<attrunit>) - optional.
         if self.ui.fgdc_attrunit.text():
-            attrunit = xml_utils.xml_node(
-                "attrunit", text=self.ui.fgdc_attrunit.text(), parent_node=rdom
+            xml_utils.xml_node(
+                "attrunit",
+                text=self.ui.fgdc_attrunit.text(),
+                parent_node=rdom,
             )
 
+        # Attribute Measurement Resolution (<attrmres>) - optional.
         if self.ui.fgdc_attrmres.text():
-            attrmres = xml_utils.xml_node(
-                "attrmres", text=self.ui.fgdc_attrmres.text(), parent_node=rdom
+            xml_utils.xml_node(
+                "attrmres",
+                text=self.ui.fgdc_attrmres.text(),
+                parent_node=rdom,
             )
 
         return rdom
 
     def from_xml(self, rdom):
         """
-        parses the xml code into the relevant timeperd elements
-        Parameters
-        ----------
-        metadata_date - the xml element timeperd and its contents
-        Returns
-        -------
-        None
+        Description:
+            Parses an XML element and populates the widget's fields.
+
+        Passed arguments:
+            rdom (lxml.etree._Element): The XML element, expected to
+                be <rdom>.
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. Checks if the tag is <rdom>.
+            2. Uses a utility function to populate the fields based on
+               matching object names.
+
+        Notes:
+            None
         """
+
         try:
+            # Check if the element tag matches the expected tag.
             if rdom.tag == "rdom":
+                # Populate fields based on matching XML tags and widget names.
                 utils.populate_widget(self, rdom)
             else:
+                # Output a message if the tag is incorrect.
                 print("The tag is not rdom")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(Rdom, "udom testing")

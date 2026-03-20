@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,111 +13,172 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
-from PyQt5.QtWidgets import QComboBox
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QComboBox
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.core import utils
-from pymdwizard.core import xml_utils
-
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_Status
-
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (utils, xml_utils)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_Status
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 class Status(WizardWidget):
+    """
+    Description:
+        A widget corresponding to the FGDC <status> tag, which describes
+        the state and update frequency of a metadata record or dataset.
 
+    Passed arguments:
+        None (Inherited from WizardWidget)
+
+    Returned objects:
+        None
+
+    Workflow:
+        1. Manages two "QComboBox" elements for progress and update
+           frequency.
+        2. Handles XML serialization/deserialization for the <status>
+           tag and its children (<progress> and <update>).
+
+    Notes:
+        Inherits from "WizardWidget".
+    """
+
+    # Class attributes.
     drag_label = "Status <status>"
     acceptable_tags = ["status"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
-        Returns
-        -------
-        None
+        Description:
+            Builds and modifies this widget's graphical user interface.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes UI and sets up drag-and-drop.
+
+        Notes:
+            None
         """
-        self.ui = UI_Status.Ui_Form()  # .Ui_USGSContactInfoWidgetMain()
+
+        self.ui = UI_Status.Ui_Form()
+
+        # Setup the UI defined in the separate class.
         self.ui.setupUi(self)
+
+        # Enable drag and drop functionality.
         self.setup_dragdrop(self)
 
     def to_xml(self):
         """
-        encapsulates the two QComboBox's text into two separate element tags
+        Description:
+            Converts the two comboboxes' text into two separate element
+            tags (<progress> and <update>) encapsulated by a <status> tag.
 
-        Returns
-        -------
-        status element tag in xml tree
+        Passed arguments:
+            None
+
+        Returned objects:
+            status (lxml.etree._Element): The <status> element tag in the
+                XML tree.
+
+        Workflow:
+            1. Creates <status> node.
+            2. Finds values from "fgdc_progress" and "fgdc_update".
+            3. Creates and appends <progress> and <update> children.
+
+        Notes:
+            None
         """
+
+        # Create the root <status> node.
         status = xml_utils.xml_node(tag="status")
 
-        progress_text = self.findChild(QComboBox, "fgdc_progress").currentText()
-        progress = xml_utils.xml_node(
-            tag="progress", text=progress_text, parent_node=status
+        # --- Progress ---
+        progress_text = self.findChild(QComboBox,
+                                       "fgdc_progress").currentText()
+        xml_utils.xml_node(
+            tag="progress",
+            text=progress_text,
+            parent_node=status,
         )
-        update_text = self.findChild(QComboBox, "fgdc_update").currentText()
-        update = xml_utils.xml_node(tag="update", text=update_text, parent_node=status)
 
+        # --- Update Frequency ---
+        update_text = self.findChild(QComboBox,
+                                     "fgdc_update").currentText()
+        update = xml_utils.xml_node(
+            tag="update",
+            text=update_text,
+            parent_node=status,
+        )
+
+        # Append update node to the status node (progress is already appended
+        # via parent_node argument)
         status.append(update)
         return status
 
     def from_xml(self, status):
         """
-        parses the xml code into the relevant status elements
+        Description:
+            Parses an XML element and populates the relevant status
+            comboboxes.
 
-        Parameters
-        ----------
-        status - the xml element status and its contents
+        Passed arguments:
+            status (lxml.etree._Element): The XML element, expected to
+                be <status>.
 
-        Returns
-        -------
-        None
+        Returned objects:
+            None
+
+        Workflow:
+            1. Checks for the <status> tag.
+            2. Extracts text content from <progress> and <update>.
+            3. Sets the extracted text as the current value for the
+               corresponding "QComboBox" widgets.
+
+        Notes:
+            None
         """
-        # print "Status", status.tag
-        # print "text", status.find('progress').text
+
         try:
+            # Populate Progress QComboBox.
             if status.tag == "status":
-                progress_box = self.findChild(QComboBox, "fgdc_progress")
+                progress_box = self.findChild(QComboBox,
+                                              "fgdc_progress")
                 progress_text = status.find("progress").text
-                # print progress_text
                 progress_box.setCurrentText(progress_text)
-                update_box = self.findChild(QComboBox, "fgdc_update")
+
+                # Populate Update QComboBox.
+                update_box = self.findChild(QComboBox,
+                                            "fgdc_update")
                 update_text = status.find("update").text
-                # print update_text
                 update_box.setCurrentText(update_text)
             else:
+                # Print statement for debugging/logging purposes.
                 print("The tag is not status")
         except KeyError:
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(Status, "Status testing")

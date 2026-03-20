@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 """
-The MetadataWizard(pymdwizard) software was developed by the
-U.S. Geological Survey Fort Collins Science Center.
-See: https://github.com/usgs/fort-pymdwizard for current project source code
-See: https://usgs.github.io/fort-pymdwizard/ for current user documentation
-See: https://github.com/usgs/fort-pymdwizard/tree/master/examples
-    for examples of use in other scripts
+The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
+Survey Fort Collins Science Center.
 
 License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    http://creativecommons.org/licenses/by/4.0/
+                    https://creativecommons.org/licenses/by/4.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
@@ -17,110 +13,189 @@ Provide a pyqt widget for the FGDC component with a shortname matching this
 file's name.
 
 
-SCRIPT DEPENDENCIES
+NOTES
 ------------------------------------------------------------------------------
-    This script is part of the pymdwizard package and is not intented to be
-    used independently.  All pymdwizard package requirements are needed.
-    
-    See imports section for external packages used in this script as well as
-    inter-package dependencies
-
-
-U.S. GEOLOGICAL SURVEY DISCLAIMER
-------------------------------------------------------------------------------
-This software has been approved for release by the U.S. Geological Survey 
-(USGS). Although the software has been subjected to rigorous review,
-the USGS reserves the right to update the software as needed pursuant to
-further analysis and review. No warranty, expressed or implied, is made by
-the USGS or the U.S. Government as to the functionality of the software and
-related material nor shall the fact of release constitute any such warranty.
-Furthermore, the software is released on condition that neither the USGS nor
-the U.S. Government shall be held liable for any damages resulting from
-its authorized or unauthorized use.
-
-Any use of trade, product or firm names is for descriptive purposes only and
-does not imply endorsement by the U.S. Geological Survey.
-
-Although this information product, for the most part, is in the public domain,
-it also contains copyrighted material as noted in the text. Permission to
-reproduce copyrighted items for other than personal use must be secured from
-the copyright owner.
-------------------------------------------------------------------------------
+None
 """
 
+# Standard python libraries.
 from copy import deepcopy
 
-from PyQt5.QtWidgets import QPlainTextEdit
-from pymdwizard.core import xml_utils
-from pymdwizard.core import utils
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QPlainTextEdit
+except ImportError as err:
+    raise ImportError(err, __file__)
 
-from pymdwizard.gui.wiz_widget import WizardWidget
-from pymdwizard.gui.ui_files import UI_attracc
+# Custom import/libraries.
+try:
+    from pymdwizard.core import (xml_utils, utils)
+    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.ui_files import UI_attracc
+except ImportError as err:
+    raise ImportError(err, __file__)
 
 
 class AttributeAccuracy(WizardWidget):
+    """
+    Description:
+        A widget for managing the FGDC "attribute accuracy" metadata
+        element. Inherits from QgsWizardWidget.
 
+    Passed arguments:
+        None
+
+    Returned objects:
+        None
+
+    Workflow:
+        Manages the user interface for attribute accuracy text,
+        handles data extraction to XML, and parsing from XML.
+
+    Notes:
+        None
+    """
+
+    # Class attributes.
     drag_label = "Attribute Accuracy <attracc>"
     acceptable_tags = ["attracc"]
 
     def build_ui(self):
         """
-        Build and modify this widget's GUI
+        Description:
+            Build and modify this widget's GUI.
 
-        Returns
-        -------
-        None
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Initializes the UI elements, sets up drag-and-drop, and
+            adjusts the height of the primary text box.
+
+        Notes:
+            Assumes UI_attracc and setup_dragdrop are available.
         """
+
+        # Instantiate the UI elements from the designer file.
         self.ui = UI_attracc.Ui_Form()
+
+        # Set up the instantiated UI.
         self.ui.setupUi(self)
+
+        # Initialize drag-and-drop features for the widget.
         self.setup_dragdrop(self)
+
+        # Adjust the height of the attribute accuracy report text box.
         self.ui.fgdc_attraccr.setFixedHeight(55)
 
     def to_xml(self):
         """
-        encapsulates the QPlainTextEdit text in an element tag
+        Description:
+            Encapsulates the QPlainTextEdit text in an "attracc'"element
+            tag and potentially includes a "qattracc" element.
 
-        Returns
-        -------
-        attraccr element tag in xml tree
+        Passed arguments:
+            None
+
+        Returned objects:
+            attracc (xml.etree.ElementTree.Element): Attribute accuracy
+                element tag in XML tree.
+
+        Workflow:
+            1. Create the parent "attracc" node.
+            2. Get text from "fgdc_attraccr" and create its node as a
+               child.
+            3. If "self.original_xml" exists, find the "qattracc" node
+               in it, deepcopy it, and append it to "attracc".
+
+        Notes:
+            Assumes xml_utils.xml_node and xml_utils.search_xpath are
+            available. Uses `deepcopy` to prevent modifying the original
+            XML structure.
         """
+
+        # Create the parent "attracc" XML node.
         attracc = xml_utils.xml_node(tag="attracc")
-        attraccr_str = self.findChild(QPlainTextEdit, "fgdc_attraccr").toPlainText()
+
+        # Find the text from the UI widget.
+        attraccr_str = self.findChild(
+            QPlainTextEdit, "fgdc_attraccr"
+        ).toPlainText()
+
+        # Create and append the "attraccr" child node.
         attraccr = xml_utils.xml_node(
             tag="attraccr", text=attraccr_str, parent_node=attracc
         )
 
+        # Check if original XML exists to search for "qattracc".
         if self.original_xml is not None:
-            qattracc = xml_utils.search_xpath(self.original_xml, "qattracc")
+            # Search for the optional "qattracc" (quantitative accuracy).
+            qattracc = xml_utils.search_xpath(
+                self.original_xml, "qattracc"
+            )
             if qattracc is not None:
+                # Remove the element tail if it exists.
                 qattracc.tail = None
+
+                # Deep copy and append the element to the new "attracc".
                 attracc.append(deepcopy(qattracc))
 
         return attracc
 
     def from_xml(self, attribute_accuracy):
         """
-        parses the xml code into the relevant attraccr elements
+        Description:
+            Parse the XML code into the relevant "attraccr" elements.
 
-        Parameters
-        ----------
-        attribute_accuracy - the xml element status and its contents
+        Passed arguments:
+            attribute_accuracy (xml.etree.ElementTree.Element): The XML
+                element containing the attribute accuracy.
 
-        Returns
-        -------
-        None
+        Returned objects:
+            None
+
+        Workflow:
+            1. Check if the element tag is "attracc".
+            2. Store the original XML element.
+            3. Extract the text content of the "attraccr" child node.
+            4. Find the corresponding UI text box.
+            5. Set the text box content.
+
+        Notes:
+            None
         """
+
         try:
+            # Check if the element tag matches the expected "attracc".
             if attribute_accuracy.tag == "attracc":
+                # Store the original element for use in to_xml().
                 self.original_xml = attribute_accuracy
+
+                # Find the text of the "attraccr" child element.
                 attraccr_text = attribute_accuracy.findtext("attraccr")
-                accost_box = self.findChild(QPlainTextEdit, "fgdc_attraccr")
+
+                # Locate the specific QPlainTextEdit widget by name.
+                accost_box = self.findChild(
+                    QPlainTextEdit, "fgdc_attraccr"
+                )
+
+                # Set the extracted text to the UI widget.
                 accost_box.setPlainText(attraccr_text)
             else:
+                # Print a message if the tag is incorrect.
                 print("The tag is not attracc")
         except KeyError:
+            # Handle if the element is not found/accessible.
             pass
 
 
 if __name__ == "__main__":
+    """
+    Run the code as a stand alone application without importing script.
+    """
+
+    # Helper to launch the widget for testing.
     utils.launch_widget(AttributeAccuracy, "Attribute Accuracy testing")

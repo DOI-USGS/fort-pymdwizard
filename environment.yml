@@ -1,8 +1,8 @@
-name pymdwizard
-channels
+name: pymdwizard
+channels:
   - conda-forge
-dependencies
-  - python=3.13
+dependencies:
+  - python=3.13 
   - pip
   - cryptography
   - numpy
@@ -22,10 +22,9 @@ dependencies
   - requests
   - beautifulsoup4
   - pyyaml
-  - pyqt
-  - pip
-      - pyqt5
-      - pyqtwebengine
+  - pyqt            
+  - pyqtwebengine  
+  - pip:
       - sciencebasepy
       - pip-system-certs
 prefix: pymdwizard
