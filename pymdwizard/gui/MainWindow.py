@@ -1337,10 +1337,15 @@ class PyMdWizardMainForm(QMainWindow):
 
             spinner.close()
 
-            if repo.head.commit != master.commit:
+            # Check if the local commit is ahead of or equal to the master
+            if repo.is_ancestor(master.commit, repo.head.commit) or repo.head.commit == master.commit:
+                if show_uptodate_msg:
+                    msg = "Metadata Wizard already up to date"
+                    QMessageBox.information(self, "No Update Needed", msg)
+            else:
                 msg = (
-                    "An update(s) are available for the Metadata Wizard.\n"
-                    "Would you like to install these now?"
+                    "An update is available for the Metadata Wizard.\n"
+                    "Would you like to install it now?"
                 )
 
                 confirm = QMessageBox.question(
@@ -1352,9 +1357,6 @@ class PyMdWizardMainForm(QMainWindow):
 
                 if confirm == QMessageBox.Yes:
                     self.update_from_github()
-            elif show_uptodate_msg:
-                msg = "MetadataWizard already up to date."
-                QMessageBox.information(self, "No Update Needed", msg)
 
         except BaseException:
             if spinner:
