@@ -74,6 +74,27 @@ def set_clean_path():
     set_local_gdal_data()
 
 
+if sys.version_info < (3, 13):
+    try:
+        from PyQt5.QtWidgets import QApplication, QMessageBox
+        app = QApplication.instance() or QApplication(sys.argv)
+
+        QMessageBox.critical(
+            None,
+            "MetadataWizard - Environment Error",
+            f"""Python 3.13 or newer is required.
+Please download and install the 2.2.0 installer from the Releases page:
+https://github.com/DOI-USGS/fort-pymdwizard/releases"""
+        )
+
+    except Exception:
+        print(f"ERROR: Python 3.13 or newer is required "
+              f"(current: {sys.version.split()[0]})")
+        import time; time.sleep(3)
+
+    sys.exit(1)
+
+
 if __name__ == "__main__":
     """
     Run the code as a stand alone application without importing script.

@@ -8,7 +8,9 @@ dependencies:
   - numpy
   - pandas
   - geopandas
+  - git
   - gdal
+  - habanero
   - matplotlib
   - folium
   - fiona
@@ -27,4 +29,7 @@ dependencies:
   - pip:
       - sciencebasepy
       - pip-system-certs
+      - GitPython
+      - python-docx
+      - laspy
 prefix: pymdwizard
