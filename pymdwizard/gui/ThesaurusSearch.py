@@ -211,7 +211,7 @@ class ThesaurusSearch(QDialog):
         self.ui.button_search.hide()
 
         # Update results label.
-        self.ui.label_search_results.text = "ISO 19115 Topic Categories"
+        self.ui.label_search_results.setText("ISO 19115 Topic Categories")
 
         self.populate_thesauri_lookup()
 
@@ -369,7 +369,7 @@ class ThesaurusSearch(QDialog):
             item_text = clicked_item.text().split(" (use: ")[0]
             details_url = (
                 THESAURUS_BASE_URL +
-                "term.php?thcode={thcode}&text={quote(item_text)}"
+                f"term.php?thcode={thcode}&text={quote(item_text)}"
             )
 
             try:
@@ -898,10 +898,10 @@ class ThesaurusSearch(QDialog):
                     accepted_terms = [keyword]
 
                 # Call the parent function for each accepted term.
-                for keyword in accepted_terms:
-                    if keyword:
-                        self.add_term_function(keyword=keyword,
-                                               thesaurus=thesaurus)
+                if self.add_term_function:
+                    for keyword in accepted_terms:
+                        if keyword:
+                            self.add_term_function(keyword=keyword, thesaurus=thesaurus)
 
     def text_clicked(self, link):
         """
