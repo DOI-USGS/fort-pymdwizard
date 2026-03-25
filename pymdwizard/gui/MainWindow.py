@@ -1356,7 +1356,7 @@ class PyMdWizardMainForm(QMainWindow):
                 msg = "MetadataWizard already up to date."
                 QMessageBox.information(self, "No Update Needed", msg)
 
-        except BaseException:
+        except Exception as err:
             if spinner:
                 spinner.close()
 
@@ -1366,6 +1366,7 @@ class PyMdWizardMainForm(QMainWindow):
                     "(https://github.com/DOI-USGS/fort-pymdwizard)\n\n"
                     "Please ensure that you have write access to the "
                     "location where the Metadata Wizard is installed."
+                    f"\n\nTechnical details:\n{err}"
                 )
                 QMessageBox.information(self, "Update results", msg)
 
@@ -1388,12 +1389,13 @@ class PyMdWizardMainForm(QMainWindow):
                 "Metadata Wizard for changes to be implemented."
             )
             QMessageBox.information(self, "Update results", msg)
-        except BaseException:
+        except Exception as err:
             msg = (
                 "Problem Encountered Updating from GitHub\n\n"
                 "USGS users, if you experience issues, please try "
                 "disconnecting/reconnecting to the internal USGS network "
                 "and re-checking for updates."
+                f"\n\nTechnical details:\n{err}"
             )
             QMessageBox.information(self, "Update results", msg)
 

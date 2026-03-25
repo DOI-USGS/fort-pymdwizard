@@ -46,12 +46,13 @@ def set_clean_path():
     if os.name == "nt":
         cur_python_exe = sys.executable
         executable_dir = os.path.split(cur_python_exe)[0]
-        os.environ["path"] = ";".join(
+        existing_path = os.environ.get("PATH", os.environ.get("path", ""))
+        os.environ["PATH"] = ";".join(
             [
                 executable_dir,
                 os.path.join(executable_dir, "Library", "bin"),
                 os.path.join(executable_dir, "Scripts"),
-                # os.environ["path"],
+                existing_path,
             ]
         )
 
