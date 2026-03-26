@@ -5,17 +5,15 @@
 
 >***Note about GitHub branches:*** *Version 2.2.0 contains updated Python libraries. These updates result in breaking changes for installed Metadata Wizard applications. As a result, current users should not pull updates using the in-app 'check for updates' feature. Instead, they should download the v2.2.0 installer from the GitHub Releases page: https://github.com/DOI-USGS/fort-pymdwizard/releases.*
 >*To make sure existing installations don't inadvertently pull breaking changes, v2.2.0 is set up to pull updates from a new branch, ___'Main-v2.2'___. All future updates will be published to this new branch or to later 'Main' branches.*<br>
-
-The USGS Metadata Wizard is a desktop application to create XML metadata records that describe data products. The tool creates metadata in the Content Standard for Digital Geospatial Metadata (CSDGM) format, as endorsed by the Federal Geographic Data Committee (FGDC). 
+---
+The USGS Metadata Wizard is a desktop application to create XML metadata records that describe data products. The tool creates metadata in the Content Standard for Digital Geospatial Metadata (CSDGM) format, as endorsed by the Federal Geographic Data Committee (FGDC).
 
 Complete user documentation available [here](https://doi-usgs.github.io/fort-pymdwizard).
 
 ![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
 It provides a user-friendly and efficient environment for metadata creation, 
-editing, preview, and validation.  Built-in tools facilitate and automate the creation of high quality 
-metadata records.
-
+editing, preview, and validation.  Built-in tools facilitate and automate the creation of high quality metadata records.
 
 * Auto-population of challenging metadata sections such as the spatial reference, 
 spatial organization, and entity and attributes, based on information contained in
