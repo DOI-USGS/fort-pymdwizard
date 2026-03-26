@@ -1,22 +1,22 @@
 Changes
 =======
 
-2.2.0 (12/09/2026)
+2.2.0 (3/26/2026)
 -----
 Updates to Metadata Wizard:
 --------------
-1. Updated lxml library version and associated call (e.g., RestrictedElement removed)
-2. Updated DOI certificate support
-3. Update sciencebasepy library and associated code (was using sbpy)
+1. Updated lxml library version and associated call (e.g., RestrictedElement removed).
+2. Updated DOI certificate support.
+3. Updated sciencebasepy library and associated code (was using sbpy).
 4. Added inline comments and doc strings to almost every script.
 5. Revised inline comments and code referencing http (instead of https; though these are usually redirected on most serviers) when not specified.
 6. \pymdwizard\gui\spdom.py was not properly migrated to pyQT5, so modifications made to address QWebChannel, QWebEngineView, methods to run java script, and related steps.
-7. Updated all library imports as they were included legacy support for python 2.7
-8. Many scripts were importing libraries in functions, which made this software very difficult to manage (also not recommended). All of this was fixed.
+7. Updated all library imports as they were included legacy support for python 2.7.
+8. Many scripts were importing libraries in functions and this was fixed.
 9. Addressed issues with \pymdwizard\gui\spdom.py and centering, rendering of map on spatial tab.
 10. Removed hardcoding of software version found in many scripts.
 11. Updated older methods of string and variable formatting (.format() in 2.7) to F-strings, which is used in Python 3.
-12. Updated all libraries for deployment and created a new yaml file. This should address vulnerabilities. This approach should be done every time work is done to the code (at least one release a year with new python bindings) and versions of all software should be current/acceptable.
+12. Updated all libraries for deployment and created a new yaml file. This should address vulnerabilities. 
 
 TODO (Long-term): 
 --------------

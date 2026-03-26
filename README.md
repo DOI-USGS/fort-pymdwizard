@@ -1,24 +1,21 @@
-[![Build Status](https://travis-ci.org/talbertc-usgs/fort-pymdwizard.svg?branch=master)](https://travis-ci.org/talbertc-usgs/fort-pymdwizard)
-[![Hackage](https://coveralls.io/repos/github/talbertc-usgs/fort-pymdwizard/badge.svg?branch=master)](https://coveralls.io/github/talbertc-usgs/fort-pymdwizard?branch=master)
 
-<img width="250" align="right" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/USGS_logo_green.svg/500px-USGS_logo_green.svg.png"/>
+<img width="170" align="right" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/USGS_logo_green.svg/500px-USGS_logo_green.svg.png"/>
 
 
 
 Metadata Wizard
 ===========================================================================================
+<br><br>
+>***Note about GitHub branches (for developers):*** *Version 2.2.0 contains updated Python libraries. These updates result in breaking changes for installed Metadata Wizard applications. As a result, current users should not pull updates using the in-app 'check for updates' feature. Instead, they should download the v2.2.0 installer from the GitHub Releases page: https://github.com/DOI-USGS/fort-pymdwizard/releases.*
+>*To make sure existing installations don't inadvertently pull breaking changes, v2.2.0 is set up to pull updates from a new branch, ___'Main-v2.2'___. All future updates will be published to this new branch or to later 'Main' branches.*<br>
 
-The MetadataWizard is a useful tool designed to facilitate FGDC  
-metadata creation for spatial and non-spatial data sets.  It is a cross-platform desktop application
-built using an open-source Python architecture.  
+The USGS Metadata Wizard is a desktop application to create XML metadata records that describe data products. The tool creates metadata in the Content Standard for Digital Geospatial Metadata (CSDGM) format, as endorsed by the Federal Geographic Data Committee (FGDC).
 
 Complete user documentation available [here](https://doi-usgs.github.io/fort-pymdwizard).
 
 ![Alt text](docs/img/screenshot.png?raw=true "Screen shot")
 
-It provides a user-friendly and efficient environment for metadata creation, 
-editing, preview, and validation.  Built-in tools facilitate and automate the creation of high quality 
-metadata records.
+It provides a user-friendly and efficient environment for metadata creation, editing, preview, and validation.  Built-in tools facilitate and automate the creation of high quality metadata records.
 
 
 * Auto-population of challenging metadata sections such as the spatial reference, 
@@ -27,8 +24,7 @@ the data (CSV, Excel, Shapefiles, etc.)<br>
 
  ![Alt text](./docs/img/EA_screenshot.png?raw=true "Screen shot") 
 
-* Auto-population of contact information for USGS affiliates, 
-taxonomic information from ITIS, or keywords from USGS controlled vocabularies.<br>
+* Auto-population of contact information for USGS affiliates, taxonomic information from ITIS, or keywords from USGS controlled vocabularies.<br>
 
  ![Alt text](docs/img/keywords_screenshot.png?raw=true "Screen shot") 
 * Built-in FGDC validator that highlights any missing or error elements directly on the GUI and in a printable report suitable for metadata review.<br>
@@ -45,7 +41,7 @@ This project is modeled off of the original [Metadata Wizard](https://github.com
 Recommended Citation:
 ----------------
 
-Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.2.0, January 2026): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.2.0, March 2026): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
 
 Authors:
 ----------------
@@ -84,7 +80,7 @@ Software repositories:
 -----------
 Official source code:
   https://code.usgs.gov/usgs/fort-pymdwizard
-Mirrored from GitLab:
+Mirrored into GitHub:
     https://github.com/usgs/fort-pymdwizard
 Current user documentation:
     See: https://doi-usgs.github.io/fort-pymdwizard/
