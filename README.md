@@ -1,11 +1,8 @@
 
 <img width="170" align="right" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/USGS_logo_green.svg/500px-USGS_logo_green.svg.png"/>
 
+# Metadata Wizard
 
-
-Metadata Wizard
-===========================================================================================
-<br><br>
 >***Note about GitHub branches (for developers):*** *Version 2.2.0 contains updated Python libraries. These updates result in breaking changes for installed Metadata Wizard applications. As a result, current users should not pull updates using the in-app 'check for updates' feature. Instead, they should download the v2.2.0 installer from the GitHub Releases page: https://github.com/DOI-USGS/fort-pymdwizard/releases.*
 >*To make sure existing installations don't inadvertently pull breaking changes, v2.2.0 is set up to pull updates from a new branch, ___'Main-v2.2'___. All future updates will be published to this new branch or to later 'Main' branches.*<br>
 
