@@ -1321,7 +1321,7 @@ class PyMdWizardMainForm(QMainWindow):
 
     def check_for_updates(self, e=None, show_uptodate_msg=True):
         """
-        Checks if the local installation's commit is behind the master branch of the USGS GitHub repository.
+        Checks if the local installation's commit is behind the main branch of the USGS GitHub repository.
         """
 
         spinner = SpinnerDialog(self)
@@ -1333,11 +1333,11 @@ class PyMdWizardMainForm(QMainWindow):
             repo = Repo(install_dir)
 
             fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
-            master = [f for f in fetch if f.name == "origin/master"][0]
+            main = [f for f in fetch if f.name == "origin/main-v2.2"][0]
 
             spinner.close()
 
-            if repo.head.commit != master.commit:
+            if repo.head.commit != main.commit:
                 msg = (
                     "An update(s) are available for the Metadata Wizard.\n"
                     "Would you like to install these now?"
@@ -1380,9 +1380,9 @@ class PyMdWizardMainForm(QMainWindow):
             repo = Repo(install_dir)
 
             fetch = [r for r in repo.remotes if r.name == "origin"][0].fetch()
-            master = [f for f in fetch if f.name == "origin/master"][0]
+            main = [f for f in fetch if f.name == "origin/main-v2.2"][0]
 
-            repo.git.merge(master.name)
+            repo.git.merge(main.name)
 
             msg = (
                 "Updated Successfully from GitHub. Close and re-open "
