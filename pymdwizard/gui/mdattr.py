@@ -613,33 +613,28 @@ class Attr(WizardWidget):
 
                 # --- No Data Domain Detection and Extraction ---
                 for attrdomv in attrdomvs:
-                    domain_tag = attrdomv.children[0].tag
-                    edomv_text = attrdomv.children[0].children[0].text
-                    edomvd_text = attrdomv.children[0].children[1].text
-                    is_nodata_def = edomvd_text.lower() in ["nodata", "no data"]
-
-                    if (
-                        domain_tag == "edom"
-                        and (edomv_text in self.nodata_matches or is_nodata_def)
-                    ) or (
-                        domain_tag == "edom"
+                    if attrdomv.children[0].tag == "edom" and (
+                        attrdomv.children[0].children[0].text
+                        in self.nodata_matches
+                        or attrdomv.children[0].children[1].text.lower()
+                        in ["nodata", "no data"]
+                        or (attr_domains.count("edom") == 1)
                         and len(attr_domains) > 1
-                        and attr_domains.count("edom") == 1
                     ):
                         self.ui.rbtn_nodata_yes.setChecked(True)
-                        self.nodata_content = (
-                            1,
-                            attrdomv.children[0].to_xml(),
-                        )
+                        self.nodata_content = \
+                            (1, attrdomv.children[0].to_xml())
                         attrdomvs.remove(attrdomv)
                         attr_domains.remove("edom")
                         try:
                             edomv = attr.xpath(
-                                f"attrdomv/edom/edomv[text()='{edomv_text}']"
+                                "attrdomv/edom/edomv[text()='{}']".format(
+                                    attrdomv.children[0].children[0].text
+                                )
                             )[0]
                             nd_attrdomv = edomv.getparent().getparent()
                             nd_attrdomv.getparent().remove(nd_attrdomv)
-                        except Exception:
+                        except:
                             pass
                         break
 

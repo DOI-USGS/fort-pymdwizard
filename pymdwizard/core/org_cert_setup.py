@@ -10,18 +10,52 @@ Citation:
 
 PURPOSE
 ------------------------------------------------------------------------------
-Set up of organization certificates (USGS/DOI) to access HTTPS sites from
-government hardware.
+Setup for Department of Interior Organizational certificates, which is required
+when access HTTPS. These methods aim to support Windows, Mac, and Linux
+operating systems, but verification is provided in case changes occur or
+methods not supported on all platforms.
+
 
 NOTES
 ------------------------------------------------------------------------------
-None
+Info on libraries that can help with SSL issues:
+# ----------------
+pip_system_certs (not perfect support across all platforms):
+    This will automatically configure pip, requests,
+    urllib3, and other Python libraries that use the standard SSL
+    context to utilize your system's certificate store for SSL
+    verification. This method loads certs but prevents us from
+    exporting to PEM and therefore not desired.
+
+    NOTE: conda virtual environments on Linux may install a separate
+    SSL certificate store which takes precedence over the system
+    store, potentially preventing this package from accessing
+    system-installed certificates.
+
+    IMPORTANT: Currently, pip-system-certs versions above 4.0 cause
+    issues with truststore and causing ssl get_ca_certs() to result
+    in NotImplementedError()).
+
+    Windows: Works well because it uses the Windows certificate store.
+    Mac: Works, but macOS uses the Keychain for certificates, so not
+      guaranteed; may need additional steps like installing
+      certifi-system-store.
+    Linux: Works if your system CA certificates are in standard locations.
+
+python-certifi-win32 (Windows only):
+    This makes requests using the Windows certificate store (which commonly
+    contains your org CA), fixing many corporate SSL errors without custom
+    bundles. Only works on Windows.
+
 """
 
 # Standard python libraries.
 import os
 import time
 import warnings
+import sys
+import requests
+import certifi
 
 # Non-standard python libraries.
 try:
@@ -36,9 +70,6 @@ try:
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     warnings.filterwarnings("ignore",
                             category=CryptographyDeprecationWarning)
-
-    # Imported below to be used for a backup if SSL fails.
-    # import pip_system_certs
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -112,12 +143,21 @@ def cert_setup(local_cert_file):
     alias_name = "DOIRootCA2"
 
     if os.path.exists(local_cert_file):
-        os.environ["PIP_CERT"] = local_cert_file
-        os.environ["SSL_CERT_FILE"] = local_cert_file
-        os.environ["GIT_SSL_CAINFO"] = local_cert_file
-        os.environ["REQUESTS_CA_BUNDLE"] = local_cert_file
-        return local_cert_file
-    else:
+        resp = requests.get("https://google.com", verify=str(local_cert_file))
+        if resp.status_code != 200:
+            local_cert_file = "DOIRootCA2.pem"
+            # print("SSL error. Check PEM file or internet. Exiting...")
+            # sys.tracebacklimit = 1
+            # raise ValueError()
+        else:
+            os.environ["PIP_CERT"] = local_cert_file
+            os.environ["SSL_CERT_FILE"] = local_cert_file
+            os.environ["GIT_SSL_CAINFO"] = local_cert_file
+            os.environ["REQUESTS_CA_BUNDLE"] = local_cert_file
+            os.environ["CURL_CA_BUNDLE"] = local_cert_file
+            return local_cert_file
+
+    if not os.path.exists(local_cert_file):
         # Use the user's home directory for cross-platform compatibility.
         local_cert_file = os.path.join(os.path.expanduser("~"),
                                        "certificates", local_cert_file)
@@ -146,6 +186,9 @@ def cert_setup(local_cert_file):
                     common_names = certificate.subject.get_attributes_for_oid(
                         x509.NameOID.COMMON_NAME)
 
+                    # QAQC: Keep
+                    # print(common_names)
+
                     # Check if the common names list is not empty and the first
                     # common name matches the alias name.
                     if common_names and common_names[0].value == alias_name:
@@ -164,32 +207,49 @@ def cert_setup(local_cert_file):
                 print(f"INVESTIGATE: Did not locate USGS organization "
                       f"certificate (may not be on a USGS system or something "
                       f"changed).")
-        else:
-            # pip-system-certs will automatically configure pip, requests,
-            # urllib3, and other Python libraries that use the standard SSL
-            # context to utilize your system's certificate store for SSL
-            # verification. This method loads certs but prevents us from
-            # exporting to PEM and therefore not desired.
-            #
-            # NOTE: conda virtual environments on Linux may install a separate
-            # SSL certificate store which takes precedence over the system
-            # store, potentially preventing this package from accessing
-            # system-installed certificates.
-            #
-            # IMPORTANT: Currently, pip-system-certs versions above 4.0 cause
-            # issues with truststore and causing ssl get_ca_certs() to result
-            # in NotImplementedError()).
-            print(f"SSL certificate retrieval failed and using a different "
-                  f"method (pip_system_certs).")
-            import pip_system_certs.wrapt_requests
-            pip_system_certs.wrapt_requests.inject_truststore()
-            local_cert_file = ""
 
+    # Add organizational cert to certifi cert list installed with certifi
+    # library.
+    if os.path.exists(local_cert_file):
+        # Obtain Python site-packages certs: site-packages\\certifi\\cacert.pem
+        certifi_bundle = certifi.where()
+
+        # New output.
+        local_cert_file2 = os.path.join(
+            os.path.splitext(local_cert_file)[0] +
+            "_certifi" + os.path.splitext(local_cert_file)[1]
+        )
+
+        # Read both bundles and write the combined file (binary-safe).
+        with (open(certifi_bundle, "rb") as f_certifi,
+              open(local_cert_file, "rb") as f_org):
+            combined_bytes = f_certifi.read() + f_org.read()
+
+        with open(local_cert_file2, "wb") as f_out:
+            f_out.write(combined_bytes)
+    else:
+        print("Certificate file NOT found...")
+
+        # Obtain Python site-packages certs: site-packages\\certifi\\cacert.pem
+        local_cert_file2 = certifi.where()
+
+    # Rename variable.
+    local_cert_file = local_cert_file2
+
+    # Add to various SSL environments that tools may use.
     if os.path.exists(local_cert_file):
         os.environ["PIP_CERT"] = local_cert_file
         os.environ["SSL_CERT_FILE"] = local_cert_file
         os.environ["GIT_SSL_CAINFO"] = local_cert_file
         os.environ["REQUESTS_CA_BUNDLE"] = local_cert_file
+        os.environ["CURL_CA_BUNDLE"] = local_cert_file
+
+    # Test: should succeed
+    resp = requests.get("https://google.com", verify=str(local_cert_file))
+    if resp.status_code != 200:
+        print("SSL error. Check PEM file or internet. Exiting...")
+        sys.tracebacklimit = 1
+        raise ValueError()
 
     return local_cert_file
 
@@ -203,10 +263,10 @@ if __name__ == "__main__":
     tot_start_comp_time = time.time()
     print("Started...\n")
 
-    # Set up Cert for accessing https. DOI cert name.
+    # Set up Cert for accessing https.
     cert_file = "DOIRootCA2.pem"
 
-    # Testing methods
+    # Testing newer versions of pip_system_certs
     cert_file = cert_setup(cert_file)
 
     print("Output USGS PEM:", cert_file)
