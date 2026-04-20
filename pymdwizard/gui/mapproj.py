@@ -275,7 +275,7 @@ class MapProj(WizardWidget):
         self.load_projection(shortname)
 
         # Iterate through XML children to populate UI fields.
-        for item in mapproj_node.getchildren():
+        for item in list(mapproj_node):
             tag = item.tag
 
             # Find the corresponding QLineEdit widget.

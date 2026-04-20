@@ -103,15 +103,15 @@ def test_to_lower():
 def test_gen_fgdc_taxonomy():
     fgdc_taxonomy = taxonomy.gen_fgdc_taxoncl(tsns=[180694])
     assert fgdc_taxonomy.tag == "taxoncl"
-    assert fgdc_taxonomy.getchildren()[1].text == "Animalia"
+    assert list(fgdc_taxonomy)[1].text == "Animalia"
 
     # Add a plant, so that the top level is Domain==Eukaryota
     fgdc_taxonomy = taxonomy.gen_fgdc_taxoncl(tsns=[180694, 183437])
-    assert fgdc_taxonomy.getchildren()[1].text == "Eukaryota"
+    assert list(fgdc_taxonomy)[1].text == "Eukaryota"
 
     # Add a bacteria, so that the top level is Domain==Life
     fgdc_taxonomy = taxonomy.gen_fgdc_taxoncl(tsns=[180694, 183437, 951930])
-    assert fgdc_taxonomy.getchildren()[1].text == "Life"
+    assert list(fgdc_taxonomy)[1].text == "Life"
 
     fgdc_taxonomy = taxonomy.gen_taxonomy_section(
         keywords=["test", "test2"], tsns=[180694, 183437]

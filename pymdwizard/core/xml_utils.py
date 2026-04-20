@@ -440,7 +440,7 @@ def clear_children(element):
     """
 
     # Iterate over a list of child elements and remove each one.
-    for child in element.getchildren():
+    for child in list(element):
         element.remove(child)
 
 
@@ -683,7 +683,7 @@ class XMLNode(object):
         self.children = []
 
         # Iterate over all child elements of the current element.
-        for child_node in self.element.getchildren():
+        for child_node in list(self.element):
             # Create an XMLNode from the current child element.
             child_object = XMLNode(child_node)
 
