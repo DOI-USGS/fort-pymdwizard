@@ -602,7 +602,11 @@ def merge_taxons(tsns):
 
                 # Find the parent taxon and add the new child taxon.
                 parent = root_taxon.find_child_by_tsn(row.parentTsn)
-                parent.add_child(child_taxon)
+                if parent:
+                    parent.add_child(child_taxon)
+                else:
+                    # Parent not found yet - add directly to root
+                    root_taxon.add_child(child_taxon)
 
     return root_taxon
 
