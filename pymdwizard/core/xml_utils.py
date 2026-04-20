@@ -26,8 +26,7 @@ import codecs
 
 # Non-standard python libraries.
 try:
-    from defusedxml import lxml
-    from lxml import etree as etree
+    from lxml import etree
     import pandas as pd
 except ImportError as err:
     raise ImportError(err, __file__)
@@ -347,7 +346,14 @@ def string_to_node(str_node):
     """
 
     # Create an XML parser with specified settings.
-    parser = etree.XMLParser(ns_clean=True, recover=True, encoding="utf-8")
+    # resolve_entities=False and no_network=True prevent XXE attacks
+    parser = etree.XMLParser(
+        ns_clean=True,
+        recover=True,
+        encoding="utf-8",
+        resolve_entities=False,
+        no_network=True
+    )
 
     # Parse the string to create an lxml element.
     element = etree.fromstring(str_node, parser=parser)
@@ -753,12 +759,18 @@ class XMLNode(object):
         """
 
         # Create an XML parser with options to clean namespaces and recover
-        # from errors.
-        parser = etree.XMLParser(ns_clean=True, recover=True, encoding="utf-8")
+        # from errors. resolve_entities=False and no_network=True prevent XXE attacks
+        parser = etree.XMLParser(
+            ns_clean=True,
+            recover=True,
+            encoding="utf-8",
+            resolve_entities=False,
+            no_network=True
+        )
 
         # Parse the string representation of the XML element into an
         # lxml.Element.
-        element = lxml.fromstring(str_element, parser=parser)
+        element = etree.fromstring(str_element, parser=parser)
 
         # Populate this XMLNode using the parsed lxml.Element.
         self.from_xml(element)

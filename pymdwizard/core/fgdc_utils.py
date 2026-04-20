@@ -24,7 +24,7 @@ from collections import OrderedDict
 
 # Non-standard python libraries.
 try:
-    import defusedxml.lxml as lxml
+    from lxml import etree
     import pandas as pd
 except ImportError as err:
     raise ImportError(err, __file__)
@@ -76,7 +76,6 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
 
     # Create a tree node from the XML string.
     tree_node = xml_utils.string_to_node(xml_str.encode("utf-8"))
-    lxml._etree._ElementTree(tree_node)
 
     # Initiate list objects to store results.
     errors = []
