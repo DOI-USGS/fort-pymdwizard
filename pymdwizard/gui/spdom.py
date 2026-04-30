@@ -1054,11 +1054,16 @@ class Spdom(WizardWidget):
         self.in_xml_load = False
         self.original_xml = spdom
         self.clear_widget()
+
+        # First populate descgeog and other top-level elements
         utils.populate_widget(self, spdom)
 
+        # Then extract and populate the bounding coordinates
         contents = xml_utils.node_to_dict(spdom, add_fgdc=False)
         if "bounding" in contents:
-            contents = contents["bounding"]
+            bounding_contents = contents["bounding"]
+            # Populate the bounding coordinate fields
+            utils.populate_widget(self, bounding_contents)
 
         self.in_xml_load = True
 
