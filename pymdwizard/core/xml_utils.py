@@ -308,7 +308,7 @@ def node_to_string(node, encoding=True):
         tree = node
 
     # Convert the ElementTree to a string with specified formatting options.
-    return lxml.tostring(
+    return etree.tostring(
         tree,
         pretty_print=True,  # Format with indentation
         with_tail=False,     # Do not include tail text
@@ -626,7 +626,7 @@ class XMLNode(object):
         if self.text:
             cur_node = xml_node(self.tag, self.text)
             result = "{}{}".format(
-                "  " * level, lxml.tostring(cur_node,
+                "  " * level, etree.tostring(cur_node,
                                             pretty_print=True).decode()
             )
             result = result.rstrip()
