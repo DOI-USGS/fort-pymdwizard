@@ -114,6 +114,24 @@ class DistInfo(WizardWidget):
         # Hide the main distribution section by default.
         self.ui.widget_distinfo.hide()
 
+        # Create a vertical container for formname and networkr list
+        from PyQt5.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QWidget
+        online_container = QWidget()
+        online_vlayout = QVBoxLayout(online_container)
+        online_vlayout.setContentsMargins(0, 0, 0, 0)
+
+        # Add formname input field
+        self.formname_widget = QWidget()
+        formname_layout = QHBoxLayout(self.formname_widget)
+        formname_layout.setContentsMargins(0, 0, 0, 0)
+        formname_label = QLabel("Format Name:")
+        self.fgdc_formname = QLineEdit()
+        self.fgdc_formname.setEnabled(False)
+        self.fgdc_formname.setObjectName("fgdc_formname")
+        formname_layout.addWidget(formname_label)
+        formname_layout.addWidget(self.fgdc_formname)
+        online_vlayout.addWidget(self.formname_widget)
+
         # Initialize the RepeatingElement for distribution URLs (networkr).
         self.networkr_list = RepeatingElement(
             add_text="Add URL",
@@ -122,9 +140,10 @@ class DistInfo(WizardWidget):
             widget_kwargs={"label": "URL", "line_name": "fgdc_networkr"},
         )
         self.networkr_list.add_another()
+        online_vlayout.addWidget(self.networkr_list)
 
-        # Add the repeating element to the layout.
-        self.ui.horizontalLayout_6.addWidget(self.networkr_list)
+        # Add the container to the layout.
+        self.ui.horizontalLayout_6.addWidget(online_container)
 
     def connect_events(self):
         """
@@ -165,8 +184,8 @@ class DistInfo(WizardWidget):
             None
 
         Workflow:
-            If checked, enables/shows URL list, liability, and fees.
-            If unchecked, disables/hides URL list.
+            If checked, enables/shows formname, URL list, liability, and fees.
+            If unchecked, disables/hides formname and URL list.
 
         Notes:
             None
@@ -174,15 +193,14 @@ class DistInfo(WizardWidget):
 
         if b:
             # Enable/show online specific fields.
+            self.fgdc_formname.setEnabled(True)
             self.networkr_list.setEnabled(True)
-            self.networkr_list.show()
             self.ui.fgdc_distliab.setEnabled(True)
             self.ui.fgdc_fees.setEnabled(True)
-            self.networkr_list.setEnabled(True)
         else:
-            # Disable/hide URL list.
+            # Disable formname and URL list.
+            self.fgdc_formname.setEnabled(False)
             self.networkr_list.setEnabled(False)
-            self.networkr_list.hide()
 
     def other_dist_toggle(self, b):
         """
@@ -373,21 +391,25 @@ class DistInfo(WizardWidget):
             digform = xml_utils.xml_node("digform",
                                          parent_node=stdorder)
 
-            # Re-insert original <digtinfo> or create default.
-            digtinfo = None
-            if self.original_xml is not None and self.original_xml.xpath(
-                    "stdorder/digform/digtinfo/formname"
-            ):
-                digtinfo = self.original_xml.xpath(
-                    "stdorder/digform/digtinfo"
-                )[0]
-                digform.append(deepcopy(digtinfo))
-            else:
-                digtinfo = xml_utils.xml_node("digtinfo",
-                                              parent_node=digform)
-                xml_utils.xml_node(
-                    "formname", parent_node=digtinfo, text="Digital Data"
+            # Create <digtinfo> with <formname> from widget
+            digtinfo = xml_utils.xml_node("digtinfo",
+                                          parent_node=digform)
+            formname_text = self.fgdc_formname.text() or "Digital Data"
+            xml_utils.xml_node(
+                "formname", parent_node=digtinfo, text=formname_text
+            )
+
+            # Re-insert optional digtinfo children (formvern, formverd, etc.)
+            if self.original_xml is not None:
+                original_digtinfo = xml_utils.search_xpath(
+                    self.original_xml, "stdorder/digform/digtinfo"
                 )
+                if original_digtinfo is not None:
+                    for child in original_digtinfo:
+                        if child.tag != "formname":
+                            child_copy = deepcopy(child)
+                            child_copy.tail = None
+                            digtinfo.append(child_copy)
 
             # <digtopt> -> <onlinopt> -> <computer> -> <networka>.
             digtopt = xml_utils.xml_node("digtopt", parent_node=digform)
@@ -522,6 +544,13 @@ class DistInfo(WizardWidget):
             # Check for Stdorder (online distribution).
             if xml_distinfo.xpath("stdorder"):
                 self.ui.radio_online.setChecked(True)
+
+                # Populate formname from first <digform>
+                utils.populate_widget_element(
+                    widget=self.fgdc_formname,
+                    element=xml_distinfo,
+                    xpath="stdorder/digform[1]/digtinfo/formname",
+                )
 
                 # Find all <networkr> URLs from the first <digform> only.
                 networkrs = xml_distinfo.findall(
