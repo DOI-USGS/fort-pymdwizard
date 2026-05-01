@@ -523,9 +523,9 @@ class DistInfo(WizardWidget):
             if xml_distinfo.xpath("stdorder"):
                 self.ui.radio_online.setChecked(True)
 
-                # Find all <networkr> URLs.
+                # Find all <networkr> URLs from the first <digform> only.
                 networkrs = xml_distinfo.findall(
-                    "stdorder/digform/digtopt/"
+                    "stdorder/digform[1]/digtopt/"
                     "onlinopt/computer/networka/networkr"
                 )
 
