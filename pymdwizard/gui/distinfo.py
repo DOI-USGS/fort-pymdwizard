@@ -427,6 +427,14 @@ class DistInfo(WizardWidget):
                     oncomp.tail = None
                     onlinopt.append(deepcopy(oncomp))
 
+            # Re-insert any additional <digform> elements beyond the first one
+            if self.original_xml is not None:
+                additional_digforms = self.original_xml.xpath("stdorder/digform")[1:]
+                for digform in additional_digforms:
+                    digform_copy = deepcopy(digform)
+                    digform_copy.tail = None
+                    stdorder.append(digform_copy)
+
         # --- Other Distribution (<custom>) ---
         if self.ui.radio_otherdist.isChecked():
             liab = xml_utils.xml_node(
