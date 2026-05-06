@@ -124,7 +124,7 @@ class DistInfo(WizardWidget):
         self.formname_widget = QWidget()
         formname_layout = QHBoxLayout(self.formname_widget)
         formname_layout.setContentsMargins(0, 0, 0, 0)
-        formname_label = QLabel("Format Name:")
+        formname_label = QLabel("Data Format:")
         self.fgdc_formname = QLineEdit()
         self.fgdc_formname.setEnabled(False)
         self.fgdc_formname.setObjectName("fgdc_formname")
