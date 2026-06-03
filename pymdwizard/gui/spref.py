@@ -629,7 +629,7 @@ class SpRef(WizardWidget):
                     utils.populate_widget_element(
                         self.ui.fgdc_mapprojn, mapproj, "mapprojn"
                     )
-                    mapproj_children = mapproj.getchildren()
+                    mapproj_children = list(mapproj)
 
                     # Pass projection parameters to MapProj widget.
                     if len(mapproj_children) > 1:
@@ -644,13 +644,13 @@ class SpRef(WizardWidget):
                         self.ui.fgdc_gridsysn, gridsys, "gridsysn"
                     )
 
-                    gridsys_children = gridsys.getchildren()
+                    gridsys_children = list(gridsys)
                     if len(gridsys_children) > 1:
                         # Get the <gridsysn> tag's children.
-                        gridsys_contents = gridsys.getchildren()[1]
+                        gridsys_contents = list(gridsys)[1]
                     else:
                         gridsys_contents = []
-                    for item in gridsys_contents.getchildren():
+                    for item in list(gridsys_contents):
                         tag = item.tag
 
                         # Check if tag is a known projection parameter.
@@ -662,7 +662,7 @@ class SpRef(WizardWidget):
                             mapprojn = xml_utils.search_xpath(item,
                                                               "mapprojn")
                             if mapprojn.text in spatial_utils.PROJECTION_LOOKUP:
-                                self.grid_mapproj.from_xml(item.getchildren()[1])
+                                self.grid_mapproj.from_xml(list(item)[1])
                         else:
                             # Populate dynamic grid parameters.
                             item_widget = self.findChild(QLineEdit,

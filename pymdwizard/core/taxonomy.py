@@ -285,17 +285,17 @@ def get_full_record_from_tsn(tsn, as_dataframe=False, **kwargs):
     """
 
     # Fetch the XML results from ITIS using the provided TSN.
-    results = _get_xml(
+    results = list(_get_xml(
         ITIS_BASE_URL + "getFullRecordFromTSN",
         payload={"tsn": tsn}
-    ).getchildren()[0]  # Get the first child of the results.
+    ))[0]  # Get the first child of the results.
 
     if as_dataframe:
         # Create an OrderedDict to hold DataFrames for each child.
         dfs = collections.OrderedDict()
 
         # Iterate over each child element and convert to DataFrame.
-        for child in results.getchildren():
+        for child in list(results):
             df = xml_utils.element_to_df([child]).dropna()
             dfs[xml_utils.parse_tag(child.tag)] = df  # Use tag as key
 
@@ -602,7 +602,11 @@ def merge_taxons(tsns):
 
                 # Find the parent taxon and add the new child taxon.
                 parent = root_taxon.find_child_by_tsn(row.parentTsn)
-                parent.add_child(child_taxon)
+                if parent:
+                    parent.add_child(child_taxon)
+                else:
+                    # Parent not found yet - add directly to root
+                    root_taxon.add_child(child_taxon)
 
     return root_taxon
 

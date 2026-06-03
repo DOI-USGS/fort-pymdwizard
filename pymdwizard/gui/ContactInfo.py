@@ -166,7 +166,7 @@ class ContactInfo(WizardWidget):
             cntperp = utils.get_usgs_contact_info(username, as_dictionary=False)
 
             # Check if contact content is actually present.
-            if cntperp.getchildren()[0].getchildren()[0].text.strip():
+            if list(list(cntperp)[0])[0].text.strip():
                 # Load the XML into the widget and close the dialog.
                 self.from_xml(cntperp)
                 self.usgs_contact.deleteLater()

@@ -199,7 +199,7 @@ class DataQuality(WizardWidget):
 
         # Get the processing step nodes.
         procstep_node = self.procstep.to_xml()
-        procstep_children = procstep_node.getchildren()
+        procstep_children = list(procstep_node)
 
         # Append all procstep children to the lineage node.
         for child in procstep_children:

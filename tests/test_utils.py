@@ -29,7 +29,7 @@ def test_get_usgs_contact_info():
         assert bad["fgdc_cntperp"]["fgdc_cntper"].strip() == ""
 
         cnt_info = utils.get_usgs_contact_info("talbertc", as_dictionary=False)
-        assert cnt_info.getchildren()[0].getchildren()[0].text == "Colin Talbert"
+        assert list(list(cnt_info)[0])[0].text == "Colin Talbert"
 
 
 def test_url_is_alive():

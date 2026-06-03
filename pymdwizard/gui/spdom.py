@@ -995,37 +995,38 @@ class Spdom(WizardWidget):
                 parent_node=spdom
             )
 
-            # Create and populate the <bounding> node.
-            bounding = xml_node("bounding", parent_node=spdom)
-            xml_node(
-                "westbc", text=self.ui.fgdc_westbc.text(),
-                parent_node=bounding
-            )
-            xml_node(
-                "eastbc", text=self.ui.fgdc_eastbc.text(),
-                parent_node=bounding
-            )
-            xml_node(
-                "northbc", text=self.ui.fgdc_northbc.text(),
-                parent_node=bounding
-            )
-            xml_node(
-                "southbc", text=self.ui.fgdc_southbc.text(),
-                parent_node=bounding
-            )
+        # Create and populate the <bounding> node.
+        # This must happen for both bdp and fgdc schemas.
+        bounding = xml_node("bounding", parent_node=spdom)
+        xml_node(
+            "westbc", text=self.ui.fgdc_westbc.text(),
+            parent_node=bounding
+        )
+        xml_node(
+            "eastbc", text=self.ui.fgdc_eastbc.text(),
+            parent_node=bounding
+        )
+        xml_node(
+            "northbc", text=self.ui.fgdc_northbc.text(),
+            parent_node=bounding
+        )
+        xml_node(
+            "southbc", text=self.ui.fgdc_southbc.text(),
+            parent_node=bounding
+        )
 
-            # Retain optional child elements from original XML.
-            if self.original_xml is not None:
-                boundalt = xml_utils.search_xpath(self.original_xml,
-                                                  "bounding/boundalt")
-                if boundalt is not None:
-                    spdom.append(deepcopy(boundalt))
+        # Retain optional child elements from original XML.
+        if self.original_xml is not None:
+            boundalt = xml_utils.search_xpath(self.original_xml,
+                                              "bounding/boundalt")
+            if boundalt is not None:
+                bounding.append(deepcopy(boundalt))
 
-                dsgpoly_list = xml_utils.search_xpath(
-                    self.original_xml, "dsgpoly", only_first=False
-                )
-                for dsgpoly in dsgpoly_list:
-                    spdom.append(deepcopy(dsgpoly))
+            dsgpoly_list = xml_utils.search_xpath(
+                self.original_xml, "dsgpoly", only_first=False
+            )
+            for dsgpoly in dsgpoly_list:
+                spdom.append(deepcopy(dsgpoly))
 
         return spdom
 
@@ -1053,11 +1054,16 @@ class Spdom(WizardWidget):
         self.in_xml_load = False
         self.original_xml = spdom
         self.clear_widget()
+
+        # First populate descgeog and other top-level elements
         utils.populate_widget(self, spdom)
 
+        # Then extract and populate the bounding coordinates
         contents = xml_utils.node_to_dict(spdom, add_fgdc=False)
         if "bounding" in contents:
-            contents = contents["bounding"]
+            bounding_contents = contents["bounding"]
+            # Populate the bounding coordinate fields
+            utils.populate_widget(self, bounding_contents)
 
         self.in_xml_load = True
 
