@@ -25,7 +25,6 @@ import platform
 import datetime
 import traceback
 import json
-import subprocess
 import urllib.request
 from urllib.parse import urlparse
 import requests
@@ -429,7 +428,7 @@ def launch_widget(Widget, title="", **kwargs):
         # Execute the application event loop.
         sys.exit(app.exec_())
 
-    except Exception as e:
+    except Exception:
         # Handle exceptions and print the error trace.
         print("Problem encountered:")
         print(traceback.format_exc())

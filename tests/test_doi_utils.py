@@ -1,6 +1,5 @@
 """Unittests for core.doi_utils"""
 
-import pytest
 
 from pymdwizard.core import doi_utils
 

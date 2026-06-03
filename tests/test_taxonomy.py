@@ -1,11 +1,9 @@
 """Unittests for taxonomy module"""
 
 
-import pytest
 
 import pandas as pd
 
-import pymdwizard
 from pymdwizard.core import taxonomy
 
 

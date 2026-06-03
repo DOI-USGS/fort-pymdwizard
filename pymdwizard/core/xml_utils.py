@@ -19,7 +19,6 @@ None
 # Standard python libraries.
 import os
 import collections
-import warnings
 from pathlib import Path
 import unicodedata
 import codecs
@@ -631,7 +630,7 @@ class XMLNode(object):
             )
             result = result.rstrip()
         else:
-            result = "{}<{}>".format("  " * level, self.tag, self.tag)
+            result = "{}<{}>".format("  " * level, self.tag, )
             for child in self.children:
                 if type(self.__dict__[child.tag]) == XMLNode:
                     child = self.__dict__[child.tag]

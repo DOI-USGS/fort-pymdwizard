@@ -580,9 +580,7 @@ class PyMdWizardMainForm(QMainWindow):
             )
             msg += (
                 "\nCheck that the file has not beed deleted, renamed "
-                "or moved. Defaulting to the built in template.".format(
-                    template_fname
-                )
+                "or moved. Defaulting to the built in template."
             )
             QMessageBox.warning(self, "Template file missing", msg)
             template_fname = utils.get_resource_path("CSDGM_Template.xml")

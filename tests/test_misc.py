@@ -1,7 +1,6 @@
 """Unittests for misc functions"""
 
 
-import pytest
 
 
 def test_spellinghighlighter():

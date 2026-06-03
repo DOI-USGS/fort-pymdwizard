@@ -3,16 +3,13 @@ from __future__ import print_function
 # import sys
 # sys.path.append(r"../..")
 
-import os, sys
+import os
+import sys
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
 import sys
-from pytestqt import qtbot
-from lxml import etree
 
-from PyQt5.QtWidgets import QLineEdit, QComboBox, QTabWidget, QStackedWidget
-from PyQt5.QtCore import QDate
 
 from pymdwizard.gui import fgdc_date
 

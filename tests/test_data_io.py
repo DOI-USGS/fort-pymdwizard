@@ -1,9 +1,7 @@
 """Unittests for core.data_io"""
 
 
-import pytest
 
-import pandas as pd
 
 import pymdwizard
 

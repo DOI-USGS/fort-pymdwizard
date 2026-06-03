@@ -110,8 +110,8 @@ def retrieve_certs_ssl():
             # Method should work on all platforms, but not working for Windows.
             certs = ctx.get_ca_certs(binary_form=True)
     except:
-        print(f"An unexpected error occurred using Python's SSL library when "
-              f"attempting to retrieve system certificates.")
+        print("An unexpected error occurred using Python's SSL library when "
+              "attempting to retrieve system certificates.")
         certs = None
 
     return certs
@@ -204,9 +204,9 @@ def cert_setup(local_cert_file):
                 with open(local_cert_file, "wb") as pem_file:
                     pem_file.write(pem_data)
             else:
-                print(f"INVESTIGATE: Did not locate USGS organization "
-                      f"certificate (may not be on a USGS system or something "
-                      f"changed).")
+                print("INVESTIGATE: Did not locate USGS organization "
+                      "certificate (may not be on a USGS system or something "
+                      "changed).")
 
     # Add organizational cert to certifi cert list installed with certifi
     # library.

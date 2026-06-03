@@ -7,24 +7,19 @@ sys.path.append(r"../..")
 import os
 import time
 
-from PyQt5 import QtCore
-from PyQt5.QtCore import Qt
 
-import pytest
-from pytestqt import qtbot
 from pytestqt.qt_compat import qt_api
 
 
 from PyQt5.QtWidgets import QMessageBox
-from lxml import etree
 
 try:
     from unittest.mock import Mock
     from unittest import mock
 except ImportError:
-    from mock import Mock  # Python 2
+    pass  # Python 2
 
-from PyQt5.QtWidgets import QWidget, QPlainTextEdit, QComboBox
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.gui import MainWindow
 

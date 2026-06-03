@@ -26,7 +26,6 @@ None
 # Standard python libraries.
 import collections
 import requests
-import warnings
 
 # Non-standard python libraries.
 try:

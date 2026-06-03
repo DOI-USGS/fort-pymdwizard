@@ -135,7 +135,7 @@ def read_shp(fname):
     df.insert(0, "Shape", c.schema["geometry"])
 
     # Add a 'FID' column if it doesn't exist.
-    if not "FID" in df.columns:
+    if "FID" not in df.columns:
         df.insert(0, "FID", range(df.shape[0]))
 
     return df

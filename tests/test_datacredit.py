@@ -5,10 +5,9 @@ import sys
 sys.path.append(r"../..")
 
 import sys
-from pytestqt import qtbot
 from lxml import etree
 
-from PyQt5.QtWidgets import QWidget, QPlainTextEdit
+from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.gui import datacred
 

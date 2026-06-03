@@ -21,7 +21,6 @@ None
 # Standard python libraries.
 import platform
 from copy import deepcopy
-import time
 
 # Non-standard python libraries.
 try:

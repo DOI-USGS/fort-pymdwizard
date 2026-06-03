@@ -174,7 +174,7 @@ class Detailed(WizardWidget):  #
             settings.setValue("lastDataFname", fname[0])
             try:
                 self.populate_from_fname(fname[0])
-            except BaseException as e:
+            except BaseException:
                 msg = "Could not extract data from file %s:\n%s." % (
                     fname,
                     traceback.format_exc(),
@@ -275,7 +275,7 @@ class Detailed(WizardWidget):  #
                     QMessageBox.warning(self, "Large File Warning", msg)
 
                 self.attributes.load_df(df)
-            except BaseException as e:
+            except BaseException:
                 msg = (
                     f"Cannot read csv {fname}:\n"
                     f"{traceback.format_exc()}."
@@ -438,7 +438,7 @@ class Detailed(WizardWidget):  #
 
                     df = data_io.read_data(fname, delimiter=delimiter)
                     self.attributes.load_df(df)
-                except BaseException as e:
+                except BaseException:
                     msg = "Cannot read txt file %s:\n%s." % (
                         fname,
                         traceback.format_exc(),

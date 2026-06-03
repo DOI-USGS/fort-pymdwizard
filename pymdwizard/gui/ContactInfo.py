@@ -156,7 +156,7 @@ class ContactInfo(WizardWidget):
         username = self.usgs_contact_ui.le_usgs_ad_name.text()
 
         # Add "@usgs.gov" if it is not present
-        if not "@" in username:
+        if "@" not in username:
             username = username + "@usgs.gov"
         if not username:
             return

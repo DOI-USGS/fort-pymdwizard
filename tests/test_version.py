@@ -1,7 +1,6 @@
 """Unittests for core.data_io"""
 
 
-import pytest
 
 import pymdwizard
 

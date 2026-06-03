@@ -1,11 +1,9 @@
 """Unittests for core.data_io"""
 
 
-import pytest
 
 from pymdwizard.core import spatial_utils
 
-import pymdwizard
 
 
 def test_shp():
