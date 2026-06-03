@@ -345,7 +345,7 @@ class ContactInfo(WizardWidget):
             try:
                 # Create XML node if text is present.
                 xml_node(label, widget_str, cntaddr)
-            except:
+            except Exception:
                 pass
 
         # Add Country.
@@ -361,7 +361,7 @@ class ContactInfo(WizardWidget):
                 # cntvoice is required, others only if text is present.
                 if label == "cntvoice" or widget_str:
                     xml_node(label, widget_str, cntinfo)
-            except:
+            except Exception:
                 pass
 
         return cntinfo

@@ -667,7 +667,7 @@ class PyMdWizardMainForm(QMainWindow):
                     )
                 elif confirm == QMessageBox.Cancel:
                     return "Cancel"
-        except:
+        except Exception:
             pass
 
     def exit(self):
@@ -784,7 +784,7 @@ class PyMdWizardMainForm(QMainWindow):
                     self.metadata_root.eainfo.detaileds[
                         detailed_index
                     ].attributes.attrs[attr_index].supersize_me()
-            except:
+            except Exception:
                 pass
 
         # Rebuild widget lookup tree after expansions.
@@ -894,7 +894,7 @@ class PyMdWizardMainForm(QMainWindow):
             if bad_widget and qwidget_is_valid(bad_widget[0].widget):
                 parent_wizwidget.scroll_area.ensureWidgetVisible(
                     bad_widget[0].widget)
-        except:
+        except Exception:
             pass
 
         try:
@@ -1084,7 +1084,7 @@ class PyMdWizardMainForm(QMainWindow):
         try:
             widget.highlighter.enabled = which
             widget.highlighter.rehighlight()
-        except:
+        except Exception:
             pass
 
         for child_widget in self.metadata_root.get_children(widget):
@@ -1127,7 +1127,7 @@ class PyMdWizardMainForm(QMainWindow):
                 e.accept()
             else:
                 e.ignore()
-        except:
+        except Exception:
             pass
 
     def preview(self):
@@ -1469,7 +1469,7 @@ def launch_main(xml_fname=None, introspect_fname=None, env_cache=None):
 
     try:
         mdwiz.check_for_updates(show_uptodate_msg=False)
-    except:
+    except Exception:
         pass
 
     if xml_fname is not None and os.path.exists(xml_fname):

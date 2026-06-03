@@ -192,7 +192,7 @@ class Abstract(WizardWidget):
 
                     # Set the extracted text to the UI widget
                     abstract_box.setPlainText(abstract_text)
-                except:
+                except Exception:
                     # Handle if the element is not found.
                     pass
             else:

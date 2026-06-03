@@ -337,7 +337,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
     title_str = "Metadata Review for:\n\t{}"
     try:
         title_str = xml_document.metadata.idinfo.citation.citeinfo.title.text
-    except:
+    except Exception:
         title_str = (
             "No FGDC Title found in record at "
             "metadta/idinfo/citation/citeinfo/title"
@@ -371,7 +371,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
             contact["fgdc_cntperp"]["fgdc_cntper"],
             contact["fgdc_cntemail"]
         )
-    except:
+    except Exception:
         # something when wrong getting the contact info
         # (no internet, non USGS, etc.), just insert placeholcers
         reviewer_str = "<<insert reviewer name>> (<<insert reviewer email>>)"

@@ -310,7 +310,7 @@ class DistInfo(WizardWidget):
 
             # Populate the child widget
             self.contactinfo.from_xml(sb_info)
-        except:
+        except Exception:
             msg = "Having trouble getting ScienceBase contact info now.\n"
             msg += "Check internet connection or try again later."
             QMessageBox.warning(self, "Problem encountered", msg)

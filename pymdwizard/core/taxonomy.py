@@ -328,7 +328,7 @@ def _get_xml(url, payload, **kwargs):
             tt = xml_utils.string_to_node(out.content)  # Parse response
 
             return tt  # Return the parsed XML node
-        except:
+        except Exception:
             # Increment the attempt counter on exception.
             tries += 1
 
@@ -631,7 +631,7 @@ def get_accepted_tsn(tsn):
             .xpath("//ax21:acceptedTsn", namespaces=NS21)[0]
             .text
         )
-    except:
+    except Exception:
         # Return the original TSN if an error occurs.
         return tsn
 

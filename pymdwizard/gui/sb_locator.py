@@ -87,7 +87,7 @@ class SBLocator(QWidget):
                 username = getpass.getuser()
                 contact = utils.get_usgs_contact_info(username, True)
                 self.username = contact["fgdc_cntemail"]
-            except:
+            except Exception:
                 self.username = ""
         else:
             self.username = username
@@ -274,7 +274,7 @@ class SBLocator(QWidget):
         try:
             self.update_content()
             sb = self.log_into_sb()
-        except:
+        except Exception:
             # Handle login failure
             msg = "Login to ScienceBase Failed. \nCheck username and password"
             QMessageBox.warning(self, "SB Login Failed", msg)
@@ -286,7 +286,7 @@ class SBLocator(QWidget):
                 permissions = sb.get_permissions(self.hash)
                 writable = ("USER:{}".format(self.username) in
                             permissions["write"]["acl"])
-            except:
+            except Exception:
                 # Continue to check for inherited permission.
                 pass
 
@@ -294,7 +294,7 @@ class SBLocator(QWidget):
         if not writable:
             try:
                 writable = permissions["write"]["inherited"]
-            except:
+            except Exception:
                 writable = False
 
         if not writable:
@@ -368,7 +368,7 @@ class SBLocator(QWidget):
                     for f in item_json["facets"][0]["files"]
                     if f["name"].endswith(".xml")
                 ]
-            except:
+            except Exception:
                 fgdc_files = []
 
         if len(fgdc_files) == 1:

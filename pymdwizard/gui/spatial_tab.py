@@ -215,7 +215,7 @@ class SpatialTab(WizardWidget):
         try:
             spdom = spatial_utils.get_bounding(fname)
             self.spdom.from_xml(spdom)
-        except:
+        except Exception:
             msg = "Problem encountered extracting bounding coordinates"
             self.spdom.clear_widget()
 
@@ -223,7 +223,7 @@ class SpatialTab(WizardWidget):
         try:
             spdoinfo = spatial_utils.get_spdoinfo(fname)
             self.spdoinfo.from_xml(spdoinfo)
-        except:
+        except Exception:
             msg += "\nProblem encountered extracting spatial data organization"
             self.spdoinfo.clear_widget()
 
@@ -231,7 +231,7 @@ class SpatialTab(WizardWidget):
         try:
             spref = spatial_utils.get_spref(fname)
             self.spref.from_xml(spref)
-        except:
+        except Exception:
             msg += "\nProblem encountered extracting spatial reference"
             self.spref.clear_widget()
 

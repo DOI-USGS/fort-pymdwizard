@@ -187,7 +187,7 @@ class SRCInfo(WizardWidget):  #
             else:
                 formatted_text = "{:,}".format(int(cur_text))
             self.ui.fgdc_srcscale.setText(formatted_text)
-        except:
+        except Exception:
             pass
 
     def to_xml(self):

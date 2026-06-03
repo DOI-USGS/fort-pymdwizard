@@ -440,7 +440,7 @@ class Spdom(WizardWidget):
                 cur_descgeog = model_index.data()
             except AttributeError:
                 cur_descgeog = model_index.indexes()[0].data()
-        except:
+        except Exception:
             return
 
         # Look up the coordinates in the DataFrame and populate fields.
@@ -458,7 +458,7 @@ class Spdom(WizardWidget):
 
                 # Update map extent.
                 self.update_map()
-        except:
+        except Exception:
             pass
 
     def coord_updated(self):
@@ -606,7 +606,7 @@ class Spdom(WizardWidget):
 
         try:
             self.view.page().runJavaScript(jstr)
-        except:
+        except Exception:
             print("Error: evaluate_js")
             self.view.page().runJavaScript(jstr, js_callback)
 
@@ -651,7 +651,7 @@ class Spdom(WizardWidget):
 
                 # Update map.
                 self.update_map()
-            except:
+            except Exception:
                 pass
 
     def handle_nw_move(self, lat, lng):
@@ -695,7 +695,7 @@ class Spdom(WizardWidget):
 
                 # Update map.
                 self.update_map()
-            except:
+            except Exception:
                 pass
 
     def handle_se_move(self, lat, lng):
@@ -739,7 +739,7 @@ class Spdom(WizardWidget):
 
                 # Update map.
                 self.update_map()
-            except:
+            except Exception:
                 pass
 
     def handle_sw_move(self, lat, lng):
@@ -783,7 +783,7 @@ class Spdom(WizardWidget):
 
                 # Update map.
                 self.update_map()
-            except:
+            except Exception:
                 pass
 
     def handle_js_ready(self):
@@ -869,7 +869,7 @@ class Spdom(WizardWidget):
                     float(self.ui.fgdc_southbc.text())):
                 return False
             return True
-        except:
+        except Exception:
             return False
 
     def clear_widget(self):

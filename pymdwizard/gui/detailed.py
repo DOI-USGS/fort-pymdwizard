@@ -207,7 +207,7 @@ class Detailed(WizardWidget):  #
 
             # Set the new tooltip for the current tab.
             self.EA.ui.fgdc_eainfo.setTabToolTip(cur_index, cur_text)
-        except:
+        except Exception:
             pass
 
     def populate_from_fname(self, fname):

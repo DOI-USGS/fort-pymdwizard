@@ -169,7 +169,7 @@ class MapProj(WizardWidget):
             try:
                 long_name = annotation_lookup[param]["long_name"]
                 annotation = annotation_lookup[param]["annotation"]
-            except:
+            except Exception:
                 long_name = param
                 annotation = "Unknown"
 

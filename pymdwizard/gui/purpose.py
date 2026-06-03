@@ -171,7 +171,7 @@ class Purpose(WizardWidget):
 
                     # Set the extracted text into the widget.
                     purpose_box.setPlainText(purpose_text)
-                except:
+                except Exception:
                     pass
             else:
                 # Output a message if the tag is incorrect.

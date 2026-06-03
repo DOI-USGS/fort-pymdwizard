@@ -200,7 +200,7 @@ class Settings(QWidget):
         # Define and validate Max Rows input.
         try:
             maxrows = int(self.ui.maxrows.text())
-        except:
+        except Exception:
             maxrows = -9999
         if not maxrows > 0:
             msg = "Max rows must be an integer greater than 0"

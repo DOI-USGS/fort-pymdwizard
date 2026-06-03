@@ -172,7 +172,7 @@ class SupplInf(WizardWidget):
 
                     # Set the text into the widget.
                     supplinf_box.setPlainText(supplinf.text)
-                except:
+                except Exception:
                     # Silently ignore errors during text population.
                     pass
             else:

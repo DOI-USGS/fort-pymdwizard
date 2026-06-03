@@ -368,7 +368,7 @@ class Citeinfo(WizardWidget):  #
             else:
                 # Load the citation into the widget.
                 self.from_xml(citeinfo.to_xml())
-        except:
+        except Exception:
             # Catch unexpected network or parsing errors.
             msg = "We ran into a problem creating a citeinfo element "
             msg += "from that DOI({}).".format(doi)
@@ -528,7 +528,7 @@ class Citeinfo(WizardWidget):  #
                     # Get citation object from DOI and convert to XML.
                     citeinfo = doi_utils.get_doi_citation(doi)
                     self.from_xml(citeinfo.to_xml())
-                except:
+                except Exception:
                     # Catch errors during DOI lookup or XML conversion.
                     msg = "We ran into a problem creating a citeinfo "
                     msg += "element from that DOI({})".format(doi)
@@ -539,7 +539,7 @@ class Citeinfo(WizardWidget):  #
                 # Handle XML text drop.
                 element = xml_utils.string_to_node(mime_data.text())
                 self.from_xml(element)
-        except:
+        except Exception:
             # Catch unexpected errors during drop handling.
             exc_type = sys.exc_info()[0]
             print("problem drop", exc_type)

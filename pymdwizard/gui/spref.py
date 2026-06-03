@@ -330,7 +330,7 @@ class SpRef(WizardWidget):
 
             # Load the necessary MapProj fields.
             self.mapproj.load_projection(projection["shortname"])
-        except:
+        except Exception:
             pass
 
     def load_gridsys(self):
@@ -375,7 +375,7 @@ class SpRef(WizardWidget):
                 # Look up long name and annotation.
                 long_name = annotation_lookup[param]["long_name"]
                 annotation = annotation_lookup[param]["annotation"]
-            except:
+            except Exception:
                 long_name = param
                 annotation = "Unknown"
 

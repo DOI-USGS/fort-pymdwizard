@@ -255,7 +255,7 @@ class SourceInput(WizardWidget):
                             # Add a new source tab and populate it from XML.
                             srcinfo_widget = self.src_info.add_another()
                             srcinfo_widget.from_xml(srcinput)
-                        except:
+                        except Exception:
                             pass
                 else:
                     # If no sources found, set 'No' and add one empty tab.

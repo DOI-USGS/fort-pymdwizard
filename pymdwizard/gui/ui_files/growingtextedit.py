@@ -59,7 +59,7 @@ class GrowingTextEdit(QPlainTextEdit):
 
         try:
             self.item.setSizeHint(QSize(self.width(), size_hint + 100))
-        except:
+        except Exception:
             pass
 
         self.setUpdatesEnabled(True)

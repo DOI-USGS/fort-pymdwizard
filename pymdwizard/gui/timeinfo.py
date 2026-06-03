@@ -329,7 +329,7 @@ class Timeinfo(WizardWidget):  #
                 # Handle parent element <timeperd> by recursing to parent.
                 try:
                     self.parent.from_xml(timeinfo)
-                except:
+                except Exception:
                     pass
             else:
                 print("The tag is not timeinfo")

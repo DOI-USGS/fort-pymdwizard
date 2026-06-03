@@ -681,7 +681,7 @@ class XMLNode(object):
         # Attempt to extract and clean the text from the element.
         try:
             self.text = element.text.strip()
-        except:
+        except Exception:
             self.text = ""
 
         # Initialize an empty list to hold child XMLNodes.
@@ -846,7 +846,7 @@ class XMLNode(object):
 
         # If any errors occur during the search or navigation, return an empty
         # list.
-        except:
+        except Exception:
             return []
 
     def xpath(self, xpath="", as_list=True, as_text=False):

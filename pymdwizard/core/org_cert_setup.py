@@ -106,10 +106,10 @@ def retrieve_certs_ssl():
         # Method suggested for Mac and Windows, which works.
         try:
             certs = ctx._ctx.get_ca_certs(binary_form=True)
-        except:
+        except Exception:
             # Method should work on all platforms, but not working for Windows.
             certs = ctx.get_ca_certs(binary_form=True)
-    except:
+    except Exception:
         print("An unexpected error occurred using Python's SSL library when "
               "attempting to retrieve system certificates.")
         certs = None

@@ -195,7 +195,7 @@ def get_geographic_extent(layer):
         spatialRef.ExportToProj4()
         spatialRef.AutoIdentifyEPSG()
         spatialRef.GetAuthorityCode(None)
-    except:
+    except Exception:
         pass
 
     # Calculate geographic bounds using the extent and reference systems.
@@ -443,7 +443,7 @@ def get_abs_resolution(src, params):
         params["latres"] = math.fabs(xform[1])
         params["ordres"] = math.fabs(xform[5])
         params["longres"] = math.fabs(xform[5])
-    except:
+    except Exception:
         # Calculate resolutions based on projection parameters for vector data.
         if params["mapprojn"] != "Unknown":
             data_scale = 24000
@@ -1996,7 +1996,7 @@ def num_sig_digits(f, min_num=4):
                 (i for i, x in enumerate(digit_list) if x != "0"), None
             )
             return first_nonzero + min_num
-    except:
+    except Exception:
         return min_num
 
 

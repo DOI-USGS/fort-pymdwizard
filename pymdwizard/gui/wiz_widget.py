@@ -484,7 +484,7 @@ class WizardWidget(QWidget):
             try:
                 # Attempt to parse clipboard text as XML.
                 element = xml_utils.string_to_node(mime_data.text())
-            except:
+            except Exception:
                 element = None
 
             if element is not None:
@@ -700,7 +700,7 @@ class WizardWidget(QWidget):
                     or not widget.parentWidget().help_text
                 ):
                     widget.parentWidget().help_text = widget.help_text
-            except:
+            except Exception:
                 pass
 
     def clear_widget(self):
