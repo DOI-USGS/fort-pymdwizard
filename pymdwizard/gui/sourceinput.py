@@ -206,7 +206,6 @@ class SourceInput(WizardWidget):
         # Create the root <lineage> node.
         lineage = xml_utils.xml_node(tag="lineage")
         if self.ui.radio_sourceyes.isChecked():
-            cnt = 0
             srcinfo_list = self.src_info.get_widgets()
 
             # Append the XML output of each source widget.

@@ -267,7 +267,7 @@ def _add_child_content(doc, node, indent=0.25):
     # Check if the node is an 'onlink' type and verify the URL.
     if node.tag == "onlink":
         if not utils.url_is_alive(node.text):
-            line2 = line.add_run(" (check url, possible problem)",
+            line.add_run(" (check url, possible problem)",
                                  style='fgdc tag content problem c')
 
     # Set the left indent for the current line.
@@ -351,7 +351,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
                                     style="fgdc tag content p")
 
     # Add a visual separator to the title.
-    bar = title2.add_run("_" * 72)
+    title2.add_run("_" * 72)
     document.add_paragraph("")
 
     # Add review information section.
@@ -404,7 +404,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
         document.add_paragraph("Error (XML Path to error)",
                                style="fgdc tag")
         for error in errors:
-            e = document.add_paragraph(
+            document.add_paragraph(
                 "\t{}\n\t({})".format(error[1], error[0]),
                 style="fgdc tag content p"
             )
@@ -418,7 +418,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
     # Add metadata content section.
     mdcontentline = document.add_heading("Metadata Content:", level=3)
     mdcontentline.style = document.styles["review content heading"]
-    bar = document.add_paragraph("_" * 72, style="fgdc bar")
+    document.add_paragraph("_" * 72, style="fgdc bar")
 
     title2 = document.add_heading("Metadata:", level=3)
     title2.style = document.styles["fgdc heading 3"]
@@ -432,7 +432,7 @@ def generate_review_report(xml_document, docx_fname, which="bdp"):
 
     for child in xml_document.metadata.children:
         long_name = _get_longname(child.tag)
-        bar = document.add_paragraph("_" * 72, style="fgdc bar")
+        document.add_paragraph("_" * 72, style="fgdc bar")
 
         section_title = document.add_heading(long_name + ":", level=3)
         section_title.style = document.styles["fgdc heading 3"]

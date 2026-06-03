@@ -847,7 +847,7 @@ class ThesaurusSearch(QDialog):
         for i in self.ui.treeview_results.selectedIndexes():
             clicked_item = model.itemFromIndex(i)
             parent = clicked_item.parent()
-            keyword = clicked_item.text()
+            clicked_item.text()
 
             # If the clicked item has children, it is a branch (thesaurus).
             if clicked_item.hasChildren():
@@ -944,7 +944,7 @@ class ThesaurusSearch(QDialog):
         # Try to select the item in the tree view.
         parent_item = self.branch_lookup[parent]
 
-        model = self.ui.treeview_results.model()
+        self.ui.treeview_results.model()
         for irow in range(parent_item.rowCount()):
             child = parent_item.child(irow)
             if child.text() == link.url():

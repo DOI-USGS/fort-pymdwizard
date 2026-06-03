@@ -301,7 +301,7 @@ class Vertdef(WizardWidget):  #
                 altsys = xml_utils.xml_node("altsys", parent_node=vertdef)
 
                 # Altitude Datum.
-                altdatum = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "altdatum",
                     text=self.ui.fgdc_altdatum.currentText(),
                     parent_node=altsys,
@@ -309,20 +309,20 @@ class Vertdef(WizardWidget):  #
 
                 # Altitude Resolution(s).
                 for widget in self.altres_list.get_widgets():
-                    altres = xml_utils.xml_node(
+                    xml_utils.xml_node(
                         "altres", widget.added_line.toPlainText(),
                         parent_node=altsys
                     )
 
                 # Altitude Units.
-                altunits = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "altunits",
                     text=self.ui.fgdc_altunits.currentText(),
                     parent_node=altsys,
                 )
 
                 # Altitude Encoding.
-                altenc = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "altenc", text=self.ui.fgdc_altenc.currentText(),
                     parent_node=altsys
                 )
@@ -333,7 +333,7 @@ class Vertdef(WizardWidget):  #
                                            parent_node=vertdef)
 
                 # Depth Datum.
-                depthdn = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "depthdn",
                     text=self.ui.fgdc_depthdn.currentText(),
                     parent_node=depth,
@@ -341,20 +341,20 @@ class Vertdef(WizardWidget):  #
 
                 # Depth Resolution(s).
                 for widget in self.depthres_list.get_widgets():
-                    depthres = xml_utils.xml_node(
+                    xml_utils.xml_node(
                         "depthres", widget.added_line.toPlainText(),
                         parent_node=depth
                     )
 
                 # Depth Units.
-                depthdu = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "depthdu",
                     text=self.ui.fgdc_depthdu.currentText(),
                     parent_node=depth,
                 )
 
                 # Depth Encoding.
-                depthem = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "depthem",
                     text=self.ui.fgdc_depthem.currentText(),
                     parent_node=depth,

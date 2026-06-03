@@ -669,7 +669,7 @@ class SpRef(WizardWidget):
                                                          "fgdc_" + tag)
                             utils.set_text(item_widget, item.text)
 
-                    grid_proj = gridsys.xpath("proj")
+                    gridsys.xpath("proj")
 
                 # Local Planar within Planar.
                 localp = xml_utils.search_xpath(planar, "localp")

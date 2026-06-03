@@ -304,20 +304,20 @@ class ContactInfo(WizardWidget):
         if rbtn_perp.isChecked():
             # Person primary: <cntperp>.
             cntperp = xml_node("cntperp", parent_node=cntinfo)
-            cntper = xml_node("cntper", cntper_str, cntperp)
+            xml_node("cntper", cntper_str, cntperp)
             if cntorg_str:
-                cntorg = xml_node("cntorg", cntorg_str, cntperp)
+                xml_node("cntorg", cntorg_str, cntperp)
         else:
             # Organization primary: <cntorgp>.
             cntorgp = xml_node("cntorgp", parent_node=cntinfo)
-            cntper = xml_node("cntorg", cntorg_str, cntorgp)
+            xml_node("cntorg", cntorg_str, cntorgp)
             if cntper_str:
-                cntper = xml_node("cntper", cntper_str, cntorgp)
+                xml_node("cntper", cntper_str, cntorgp)
 
         # Add Contact Position (<cntpos>).
         cntpos_str = self.findChild(QLineEdit, "fgdc_cntpos").text()
         if cntpos_str:
-            cntpos = xml_node("cntpos", cntpos_str, cntinfo)
+            xml_node("cntpos", cntpos_str, cntinfo)
 
         # Add Contact Address (<cntaddr>).
         cntaddr = xml_node("cntaddr", parent_node=cntinfo)
@@ -325,18 +325,18 @@ class ContactInfo(WizardWidget):
         # Add Address Type (<addrtype>).
         addrtype_str = self.findChild(QComboBox,
                                       "fgdc_addrtype").currentText()
-        addrtype = xml_node("addrtype", addrtype_str, cntaddr)
+        xml_node("addrtype", addrtype_str, cntaddr)
 
         # Add Address Lines (up to 3).
         address_str = self.findChild(QLineEdit, "fgdc_address").text()
-        node = xml_node("address", address_str, cntaddr)
+        xml_node("address", address_str, cntaddr)
         address2_str = self.findChild(QLineEdit, "fgdc_address2").text()
 
         if address2_str:
-            node = xml_node("address", address2_str, cntaddr)
+            xml_node("address", address2_str, cntaddr)
         address3_str = self.findChild(QLineEdit, "fgdc_address3").text()
         if address3_str:
-            node = xml_node("address", address3_str, cntaddr)
+            xml_node("address", address3_str, cntaddr)
 
         # Add City, State, Postal Code.
         for label in ["city", "state", "postal"]:
@@ -344,14 +344,14 @@ class ContactInfo(WizardWidget):
                                         "fgdc_" + label).text()
             try:
                 # Create XML node if text is present.
-                node = xml_node(label, widget_str, cntaddr)
+                xml_node(label, widget_str, cntaddr)
             except:
                 pass
 
         # Add Country.
         country_str = self.ui.fgdc_country.text()
         if country_str:
-            node = xml_node("country", country_str, cntaddr)
+            xml_node("country", country_str, cntaddr)
 
         # Add Voice, Fax, Email.
         for label in ["cntvoice", "cntfax", "cntemail"]:
@@ -360,7 +360,7 @@ class ContactInfo(WizardWidget):
             try:
                 # cntvoice is required, others only if text is present.
                 if label == "cntvoice" or widget_str:
-                    node = xml_node(label, widget_str, cntinfo)
+                    xml_node(label, widget_str, cntinfo)
             except:
                 pass
 

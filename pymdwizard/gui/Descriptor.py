@@ -127,7 +127,7 @@ class Descriptor(WizardWidget):
         # Get the "supplinf" text.
         supplinf_str = self.ui.fgdc_supplinf.toPlainText()
         if supplinf_str:
-            upplinf = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "supplinf", text=supplinf_str, parent_node=descript
             )
 
@@ -163,7 +163,6 @@ class Descriptor(WizardWidget):
                 try:
                     # Abstract
                     abstract = descriptors[0]
-                    abstract_text = abstract.text
                     abstract_box = self.findChild(QPlainTextEdit,
                                                   "fgdc_abstract")
                     abstract_box.setPlainText(abstract.text)
@@ -173,7 +172,6 @@ class Descriptor(WizardWidget):
                 try:
                     # Purpose
                     purpose = descriptors[1]
-                    purpose_text = purpose.text
                     purpose_box = self.findChild(QPlainTextEdit,
                                                  "fgdc_purpose")
                     purpose_box.setPlainText(purpose.text)
@@ -183,7 +181,6 @@ class Descriptor(WizardWidget):
                 try:
                     # Supplemental info (optional).
                     supplinf = descriptors[2]
-                    supplinf_text = supplinf.text
                     supplinf_box = self.findChild(QPlainTextEdit,
                                                   "fgdc_supplinf")
                     supplinf_box.setPlainText(supplinf.text)

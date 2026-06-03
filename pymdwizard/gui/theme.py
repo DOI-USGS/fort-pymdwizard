@@ -185,7 +185,7 @@ class Theme(KeywordsRepeater):  #
         keywtax = xml_utils.xml_node(self.which)
 
         # Create and append the thesaurus node (e.g., <themekt>).
-        taxonkt = xml_utils.xml_node(
+        xml_utils.xml_node(
             "{}kt".format(self.which),
             text=self.ui.fgdc_themekt.text(),
             parent_node=keywtax,
@@ -193,7 +193,7 @@ class Theme(KeywordsRepeater):  #
 
         # Create and append individual keyword nodes (e.g., <themkey>).
         for keyword in self.get_keywords():
-            taxonkey = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "{}key".format(self.which), text=keyword, parent_node=keywtax
             )
 

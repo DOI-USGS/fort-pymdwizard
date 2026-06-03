@@ -704,7 +704,7 @@ def check_fname(fname):
     if not os.path.exists(fname):
         try:
             # Attempt to create the file and then remove it.
-            with open(fname, "w") as f:
+            with open(fname, "w"):
                 pass  # Create the file to check for write access.
             os.remove(fname)  # Remove the file after creating it.
             return "good"
@@ -714,7 +714,7 @@ def check_fname(fname):
     else:
         try:
             # Attempt to open the existing file in append mode.
-            with open(fname, "a") as f:
+            with open(fname, "a"):
                 pass  # Check if the file can be opened for writing.
             return "good"
         except Exception:
@@ -843,7 +843,7 @@ def check_pem_file():
     pem_fname = get_pem_fname()
 
     # Set up certificate on system for Metadata Wizard.
-    cert_file = org_cert_setup.cert_setup(pem_fname)
+    org_cert_setup.cert_setup(pem_fname)
 
 
 def requests_pem_get(url, params={}):

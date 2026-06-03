@@ -164,7 +164,6 @@ class SupplInf(WizardWidget):
             if supplinf.tag == "supplinf":
                 try:
                     # Get the text directly from the XML element.
-                    supplinf_text = supplinf.text
 
                     # Find the QPlainTextEdit widget by object name.
                     supplinf_box = self.findChild(

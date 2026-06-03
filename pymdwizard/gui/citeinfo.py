@@ -674,12 +674,12 @@ class Citeinfo(WizardWidget):  #
             )
 
         # Add Publication Date and Title nodes.
-        pubdate = xml_utils.xml_node(
+        xml_utils.xml_node(
             "pubdate",
             text=self.ui.pubdate_widget.get_date(),
             parent_node=citeinfo,
         )
-        title = xml_utils.xml_node(
+        xml_utils.xml_node(
             "title", self.ui.fgdc_title.toPlainText(), parent_node=citeinfo
         )
 

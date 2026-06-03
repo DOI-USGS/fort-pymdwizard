@@ -194,7 +194,7 @@ def get_geographic_extent(layer):
         spatialRef = layer.GetSpatialRef()
         spatialRef.ExportToProj4()
         spatialRef.AutoIdentifyEPSG()
-        spref = spatialRef.GetAuthorityCode(None)
+        spatialRef.GetAuthorityCode(None)
     except:
         pass
 
@@ -494,7 +494,7 @@ def get_params(layer):
 
     # Get spatial reference and extent information from the layer.
     ref = get_ref(layer)
-    projected_extent = get_extent(layer)
+    get_extent(layer)
     geographic_extent = get_geographic_extent(layer)
 
     params = {}
@@ -732,11 +732,11 @@ def geographic(params):
     geograph = xml_node("geograph")
 
     # Create and append latitudinal and longitudinal resolution nodes.
-    latres = xml_node("latres", params["latres"], geograph)
-    longres = xml_node("longres", params["longres"], geograph)
+    xml_node("latres", params["latres"], geograph)
+    xml_node("longres", params["longres"], geograph)
 
     # Create and append geographic unit node.
-    geounit = xml_node("geogunit", params["geogunit"], geograph)
+    xml_node("geogunit", params["geogunit"], geograph)
 
     return geograph
 
@@ -772,7 +772,7 @@ def mapproj(params):
         prj_node = function(params)
 
     # Create the <mapprojn> node with the FGDC name and attach it to the parent.
-    mapprojn = xml_node("mapprojn", text=fgdc_name,
+    xml_node("mapprojn", text=fgdc_name,
                         parent_node=mapproj_node)
     mapproj_node.append(prj_node)
 
@@ -814,17 +814,17 @@ def planar(params):
 
     # Create child nodes within the <planar> structure.
     planci = xml_node("planci", parent_node=planar)
-    plance = xml_node("plance", text=params["plance"], parent_node=planci)
+    xml_node("plance", text=params["plance"], parent_node=planci)
     coordrep = xml_node("coordrep", parent_node=planci)
 
     # Append absolute and ordinate resolution nodes.
-    absres = xml_node("absres", text=params["absres"],
+    xml_node("absres", text=params["absres"],
                       parent_node=coordrep)
-    ordres = xml_node("ordres", text=params["ordres"],
+    xml_node("ordres", text=params["ordres"],
                       parent_node=coordrep)
 
     # Append planar units information.
-    plandu = xml_node("plandu", text=params["plandu"], parent_node=planci)
+    xml_node("plandu", text=params["plandu"], parent_node=planci)
 
     return planar
 
@@ -882,11 +882,11 @@ def albers_conic_equal_area(params):
     albers = xml_node("albers")
 
     # Append the first standard parallel.
-    stdparll = xml_node("stdparll", params["stdparll"], albers)
+    xml_node("stdparll", params["stdparll"], albers)
 
     # Append the second standard parallel if it exists.
     if params["stdparll_2"]:
-        stdparll_2 = xml_node("stdparll", params["stdparll_2"], albers)
+        xml_node("stdparll", params["stdparll_2"], albers)
 
     # Append additional projection parameters to the <albers> node.
     for item in ["longcm", "latprjo", "feast", "fnorth"]:
@@ -919,12 +919,12 @@ def azimuthal_equidistant(params):
 
     # Append the longitude and latitude of the projection center to the
     # <azimequi> node.
-    longcm = xml_node("longcm", params["longcm"], azimequi)
-    latprjo = xml_node("latprjo", params["latprjo"], azimequi)
+    xml_node("longcm", params["longcm"], azimequi)
+    xml_node("latprjo", params["latprjo"], azimequi)
 
     # Append false easting and northing value to the <azimequi> node.
-    feast = xml_node("feast", params["feast"], azimequi)
-    fnorth = xml_node("fnorth", params["fnorth"], azimequi)
+    xml_node("feast", params["feast"], azimequi)
+    xml_node("fnorth", params["fnorth"], azimequi)
 
     return azimequi
 
@@ -955,11 +955,11 @@ def equidistant_conic(params):
     equicon = xml_node("equicon")
 
     # Append the first standard parallel.
-    stdparll = xml_node("stdparll", params["stdparll"], equicon)
+    xml_node("stdparll", params["stdparll"], equicon)
 
     # Append the second standard parallel if it is defined.
     if params["stdparll_2"] != "Unknown":
-        stdparll_2 = xml_node("stdparll", params["stdparll_2"], equicon)
+        xml_node("stdparll", params["stdparll_2"], equicon)
 
     # Append additional projection parameters to the <equicon> node.
     for item in ["longcm", "latprjo", "feast", "fnorth"]:
@@ -987,11 +987,11 @@ def unknown_projection(params):
 
     # Append the first standard parallel if defined.
     if params["stdparll"] != "Unknown":
-        stdparll = xml_node("stdparll", params["stdparll"], mapprojp)
+        xml_node("stdparll", params["stdparll"], mapprojp)
 
     # Append the second standard parallel if defined.
     if params["stdparll_2"] != "Unknown":
-        stdparll_2 = xml_node("stdparll", params["stdparll_2"], mapprojp)
+        xml_node("stdparll", params["stdparll_2"], mapprojp)
 
     # List of additional parameters to be appended to the <mapprojp> node
     projection_keys = [
@@ -1027,14 +1027,14 @@ def equirectangular(params):
     equirect = xml_node("equirect")
 
     # Append the first standard parallel to the <equirect> node.
-    stdparll = xml_node("stdparll", params["stdparll"], equirect)
+    xml_node("stdparll", params["stdparll"], equirect)
 
     # Append the longitude of the central meridian.
-    longcm = xml_node("longcm", params["longcm"], equirect)
+    xml_node("longcm", params["longcm"], equirect)
 
     # Append false easting and false northing values.
-    feast = xml_node("feast", params["feast"], equirect)
-    fnorth = xml_node("fnorth", params["fnorth"], equirect)
+    xml_node("feast", params["feast"], equirect)
+    xml_node("fnorth", params["fnorth"], equirect)
 
     return equirect
 
@@ -1058,16 +1058,16 @@ def general_vertical_near_sided_perspective(params):
     gvnsp = xml_node("gvnsp")
 
     # Append the height of perspective point above surface to the <gvnsp> node.
-    heightpt = xml_node("heightpt", params["heightpt"], gvnsp)
+    xml_node("heightpt", params["heightpt"], gvnsp)
 
     # Append the longitude and latitude of the projection center to the
     # <gvnsp> node.
-    longpc = xml_node("longpc", params["longpc"], gvnsp)
-    latprjc = xml_node("latprjc", params["latprjc"], gvnsp)
+    xml_node("longpc", params["longpc"], gvnsp)
+    xml_node("latprjc", params["latprjc"], gvnsp)
 
     # Append false easting and northing value to the <gvnsp> node.
-    feast = xml_node("feast", params["feast"], gvnsp)
-    fnorth = xml_node("fnorth", params["fnorth"], gvnsp)
+    xml_node("feast", params["feast"], gvnsp)
+    xml_node("fnorth", params["fnorth"], gvnsp)
 
     return gvnsp
 
@@ -1091,12 +1091,12 @@ def gnomonic(params):
 
     # Append the longitude and latitude of the projection center to the
     # <gnomonic> node.
-    longpc = xml_node("longpc", params["longpc"], gnomonic)
-    latprjc = xml_node("latprjc", params["latprjc"], gnomonic)
+    xml_node("longpc", params["longpc"], gnomonic)
+    xml_node("latprjc", params["latprjc"], gnomonic)
 
     # Append false easting and northing value to the <gnomonic> node.
-    feast = xml_node("feast", params["feast"], gnomonic)
-    fnorth = xml_node("fnorth", params["fnorth"], gnomonic)
+    xml_node("feast", params["feast"], gnomonic)
+    xml_node("fnorth", params["fnorth"], gnomonic)
 
     return gnomonic
 
@@ -1121,12 +1121,12 @@ def lambert_azimuthal_equal_area(params):
 
     # Append the longitude and latitude of the projection center to the
     # <lamberta> node.
-    longpc = xml_node("longpc", params["longpc"], lamberta)
-    latprjc = xml_node("latprjc", params["latprjc"], lamberta)
+    xml_node("longpc", params["longpc"], lamberta)
+    xml_node("latprjc", params["latprjc"], lamberta)
 
     # Append false easting and northing value to the <lamberta> node.
-    feast = xml_node("feast", params["feast"], lamberta)
-    fnorth = xml_node("fnorth", params["fnorth"], lamberta)
+    xml_node("feast", params["feast"], lamberta)
+    xml_node("fnorth", params["fnorth"], lamberta)
 
     return lamberta
 
@@ -1157,11 +1157,11 @@ def lambert_conformal_conic(params):
     lambertc = xml_node("lambertc")
 
     # Append the first standard parallel to the <lambertc> node.
-    stdparll = xml_node("stdparll", params["stdparll"], lambertc)
+    xml_node("stdparll", params["stdparll"], lambertc)
 
     # Append the second standard parallel if it is defined.
     if params["stdparll_2"] != "Unknown":
-        stdparll_2 = xml_node("stdparll", params["stdparll_2"], lambertc)
+        xml_node("stdparll", params["stdparll_2"], lambertc)
 
     # Append additional projection parameters to the <lambertc> node.
     for item in ["longcm", "latprjo", "feast", "fnorth"]:
@@ -1188,14 +1188,14 @@ def mercator(params):
     mercator = xml_node("mercator")
 
     # Append the first standard parallel to the <mercator> node.
-    stdparll = xml_node("stdparll", params["stdparll"], mercator)
+    xml_node("stdparll", params["stdparll"], mercator)
 
     # Append the longitude of the central meridian.
-    longcm = xml_node("longcm", params["longcm"], mercator)
+    xml_node("longcm", params["longcm"], mercator)
 
     # Append false easting and northing.
-    feast = xml_node("feast", params["feast"], mercator)
-    fnorth = xml_node("fnorth", params["fnorth"], mercator)
+    xml_node("feast", params["feast"], mercator)
+    xml_node("fnorth", params["fnorth"], mercator)
 
     return mercator
 
@@ -1219,8 +1219,8 @@ def modified_stereograhic_for_alaska(params):
     modsak = xml_node("modsak")
 
     # Append false easting and northing value to the <modsak> node.
-    feast = xml_node("feast", params["feast"], modsak)
-    fnorth = xml_node("fnorth", params["fnorth"], modsak)
+    xml_node("feast", params["feast"], modsak)
+    xml_node("fnorth", params["fnorth"], modsak)
 
     return modsak
 
@@ -1243,11 +1243,11 @@ def miller_cylindrical(params):
     miller = xml_node("miller")
 
     # Append the longitude of the central meridian to the <miller> node.
-    longcm = xml_node("longcm", params["longcm"], miller)
+    xml_node("longcm", params["longcm"], miller)
 
     # Append false easting and northing value to the <miller> node.
-    feast = xml_node("feast", params["feast"], miller)
-    fnorth = xml_node("fnorth", params["fnorth"], miller)
+    xml_node("feast", params["feast"], miller)
+    xml_node("fnorth", params["fnorth"], miller)
 
     return miller
 
@@ -1294,12 +1294,12 @@ def orthographic(params):
 
     # Append the longitude and latitude of the projection center to the
     # <orthogr> node.
-    longpc = xml_node("longpc", params["longpc"], orthogr)
-    latprjc = xml_node("latprjc", params["latprjc"], orthogr)
+    xml_node("longpc", params["longpc"], orthogr)
+    xml_node("latprjc", params["latprjc"], orthogr)
 
     # Append false easting and northing value to the <orthogr> node.
-    feast = xml_node("feast", params["feast"], orthogr)
-    fnorth = xml_node("fnorth", params["fnorth"], orthogr)
+    xml_node("feast", params["feast"], orthogr)
+    xml_node("fnorth", params["fnorth"], orthogr)
 
     return orthogr
 
@@ -1356,13 +1356,13 @@ def polyconic(params):
 
     # Append the longitude and latitude of the projection center to the
     # <polycon> node.
-    longcm = xml_node("longcm", params["longcm"], polycon)
-    latprjo = xml_node("latprjo", params["latprjo"], polycon)
+    xml_node("longcm", params["longcm"], polycon)
+    xml_node("latprjo", params["latprjo"], polycon)
 
     # Append the false easting and northing of the projection center to the
     # <polycon> node.
-    feast = xml_node("feast", params["feast"], polycon)
-    fnorth = xml_node("fnorth", params["fnorth"], polycon)
+    xml_node("feast", params["feast"], polycon)
+    xml_node("fnorth", params["fnorth"], polycon)
 
     return polycon
 
@@ -1385,11 +1385,11 @@ def robinson(params):
     robinson = xml_node("robinson")
 
     # Append the longitude of the projection center to the <robinson> node.
-    longpc = xml_node("longpc", params["longpc"], robinson)
+    xml_node("longpc", params["longpc"], robinson)
 
     # Append false easting and northing value to the <robinson> node.
-    feast = xml_node("feast", params["feast"], robinson)
-    fnorth = xml_node("fnorth", params["fnorth"], robinson)
+    xml_node("feast", params["feast"], robinson)
+    xml_node("fnorth", params["fnorth"], robinson)
 
     return robinson
 
@@ -1412,11 +1412,11 @@ def sinusoidal(params):
     sinusoid = xml_node("sinusoid")
 
     # Append the longitude of the central meridian to the <sinusoid> node.
-    longcm = xml_node("longcm", params["longcm"], sinusoid)
+    xml_node("longcm", params["longcm"], sinusoid)
 
     # Append false easting and northing value to the <sinusoid> node.
-    feast = xml_node("feast", params["feast"], sinusoid)
-    fnorth = xml_node("fnorth", params["fnorth"], sinusoid)
+    xml_node("feast", params["feast"], sinusoid)
+    xml_node("fnorth", params["fnorth"], sinusoid)
 
     return sinusoid
 
@@ -1439,14 +1439,14 @@ def space_oblique_mercator(params):
     spaceobq = xml_node("spaceobq")
 
     # Append the Landsat number to the <spaceobq> node.
-    landsat = xml_node("landsat", params["landsat"], spaceobq)
+    xml_node("landsat", params["landsat"], spaceobq)
 
     # Append the path number to the <spaceobq> node.
-    pathnum = xml_node("pathnum", params["pathnum"], spaceobq)
+    xml_node("pathnum", params["pathnum"], spaceobq)
 
     # Append false easting and northing value to the <spaceobq> node.
-    feast = xml_node("feast", params["feast"], spaceobq)
-    fnorth = xml_node("fnorth", params["fnorth"], spaceobq)
+    xml_node("feast", params["feast"], spaceobq)
+    xml_node("fnorth", params["fnorth"], spaceobq)
 
     return spaceobq
 
@@ -1470,12 +1470,12 @@ def stereographic(params):
 
     # Append the longitude and latitude of the projection center to the
     # <stereo> node.
-    longpc = xml_node("longpc", params["longpc"], stereo)
-    latprjc = xml_node("latprjc", params["latprjc"], stereo)
+    xml_node("longpc", params["longpc"], stereo)
+    xml_node("latprjc", params["latprjc"], stereo)
 
     # Append the false easting and northing value to the <stereo> node.
-    feast = xml_node("feast", params["feast"], stereo)
-    fnorth = xml_node("fnorth", params["fnorth"], stereo)
+    xml_node("feast", params["feast"], stereo)
+    xml_node("fnorth", params["fnorth"], stereo)
 
     return stereo
 
@@ -1504,16 +1504,16 @@ def transverse_mercator(params):
     transmer = xml_node("transmer")
 
     # Append the scale factor at the central meridian to the <transmer> node.
-    sfctrmer = xml_node("sfctrmer", params["sfctrmer"], transmer)
+    xml_node("sfctrmer", params["sfctrmer"], transmer)
 
     # Append the longitude and latitude of the central meridian to the
     # <transmer> node.
-    longcm = xml_node("longcm", params["longcm"], transmer)
-    latprjo = xml_node("latprjo", params["latprjo"], transmer)
+    xml_node("longcm", params["longcm"], transmer)
+    xml_node("latprjo", params["latprjo"], transmer)
 
     # Append the false easting and northing value to the <transmer> node.
-    feast = xml_node("feast", params["feast"], transmer)
-    fnorth = xml_node("fnorth", params["fnorth"], transmer)
+    xml_node("feast", params["feast"], transmer)
+    xml_node("fnorth", params["fnorth"], transmer)
 
     return transmer
 
@@ -1540,11 +1540,11 @@ def van_der_grinten(params):
     vdgrin = xml_node("vdgrin")
 
     # Append the longitude of the central meridian to the <vdgrin> node.
-    longcm = xml_node("longcm", params["longcm"], vdgrin)
+    xml_node("longcm", params["longcm"], vdgrin)
 
     # Append the false easting and northing value to the <vdgrin> node.
-    feast = xml_node("feast", params["feast"], vdgrin)
-    fnorth = xml_node("fnorth", params["fnorth"], vdgrin)
+    xml_node("feast", params["feast"], vdgrin)
+    xml_node("fnorth", params["fnorth"], vdgrin)
 
     return vdgrin
 
@@ -1567,7 +1567,7 @@ def utm(params):
     gridsys = xml_node("gridsys")
 
     # Append a subnode indicating the grid system name.
-    gridsysn = xml_node(
+    xml_node(
         "gridsysn", text="Universal Transverse Mercator",
         parent_node=gridsys
     )
@@ -1576,7 +1576,7 @@ def utm(params):
     utm_node = xml_node("utm", parent_node=gridsys)
 
     # Append the UTM zone to the <utm> node.
-    utmzone = xml_node("utmzone", text=params["utmzone"],
+    xml_node("utmzone", text=params["utmzone"],
                        parent_node=utm_node)
 
     # Create a Transverse Mercator projection node and append it to <utm>.
@@ -1606,13 +1606,13 @@ def spcs(params):
     # Determine the correct system name based on the geographic coordinate
     # system.
     if "1983" in params["geogcs"]:
-        gridsysn = xml_node(
+        xml_node(
             "gridsysn",
             text="State Plane Coordinate System 1983",
             parent_node=gridsys
         )
     else:
-        gridsysn = xml_node(
+        xml_node(
             "gridsysn",
             text="State Plane Coordinate System 1927",
             parent_node=gridsys
@@ -1622,7 +1622,7 @@ def spcs(params):
     spcs_node = xml_node("spcs", parent_node=gridsys)
 
     # Append the SPCS zone to the <spcs> node.
-    utmzone = xml_node("spcszone", text=params["spcszone"],
+    xml_node("spcszone", text=params["spcszone"],
                        parent_node=spcs_node)
 
     # Create map projection node and append it to the <spcs> node.
@@ -1650,7 +1650,7 @@ def arc(params):
     gridsys = xml_node("gridsys")
 
     # Append the grid system name for ARC Coordinate System
-    gridsysn = xml_node(
+    xml_node(
         "gridsysn", text="ARC Coordinate System", parent_node=gridsys
     )
 
@@ -1658,7 +1658,7 @@ def arc(params):
     arc_node = xml_node("arcsys", parent_node=gridsys)
 
     # Append the ARC zone to the <arcsys> node
-    arczone = xml_node("arczone", text=params["arczone"],
+    xml_node("arczone", text=params["arczone"],
                        parent_node=arc_node)
 
     # Create a map projection node and append it to the <arcsys> node
@@ -1964,10 +1964,10 @@ def get_bounding(fname):
     bounding = xml_node("bounding")
 
     # Append bounding coordinates to the <bounding> node.
-    westbc = xml_node("westbc", extent[0], bounding)
-    eastbc = xml_node("eastbc", extent[1], bounding)
-    northbc = xml_node("northbc", extent[2], bounding)
-    southbc = xml_node("southbc", extent[3], bounding)
+    xml_node("westbc", extent[0], bounding)
+    xml_node("eastbc", extent[1], bounding)
+    xml_node("northbc", extent[2], bounding)
+    xml_node("southbc", extent[3], bounding)
 
     return bounding
 
@@ -2101,23 +2101,23 @@ def vector_spdoinfo(layer):
 
     # Create the FGDC element structure.
     spdoinfo = xml_node("spdoinfo")
-    direct = xml_node("direct", text="Vector", parent_node=spdoinfo)
+    xml_node("direct", text="Vector", parent_node=spdoinfo)
 
     ptvctinf = xml_node("ptvctinf", parent_node=spdoinfo)
     sdtsterm = xml_node("sdtsterm", parent_node=ptvctinf)
 
     # Determine the geometry type and create corresponding FGDC element.
     if geo_type in [3, 6, 2003, 3003, 2006, 3006]:
-        sdtstype = xml_node("sdtstype", text="G-polygon",
+        xml_node("sdtstype", text="G-polygon",
                             parent_node=sdtsterm)
     elif geo_type in [2, 5, 2005, 3005]:
-        sdtstype = xml_node("sdtstype", text="String",
+        xml_node("sdtstype", text="String",
                             parent_node=sdtsterm)
     elif geo_type in [1, 4, 2001, 3001, 2004, 3004]:
-        sdtstype = xml_node("sdtstype", text="Entity point",
+        xml_node("sdtstype", text="Entity point",
                             parent_node=sdtsterm)
     else:
-        sdtstype = xml_node("sdtstype", text="Unknown",
+        xml_node("sdtstype", text="Unknown",
                             parent_node=sdtsterm)
 
     # Add point vector count to the FGDC element.
@@ -2149,14 +2149,14 @@ def raster_spdoinfo(data):
 
     # Create the FGDC element structure.
     spdoinfo = xml_node("spdoinfo")
-    direct = xml_node("direct", text="Raster", parent_node=spdoinfo)
+    xml_node("direct", text="Raster", parent_node=spdoinfo)
     rastinfo = xml_node("rastinfo", parent_node=spdoinfo)
 
     # Add raster properties to the FGDC element.
-    rasttype = xml_node("rasttype", text=raster_type, parent_node=rastinfo)
-    rowcount = xml_node("rowcount", text=rows, parent_node=rastinfo)
-    colcount = xml_node("colcount", text=cols, parent_node=rastinfo)
-    vrtcount = xml_node("vrtcount", text=bands, parent_node=rastinfo)
+    xml_node("rasttype", text=raster_type, parent_node=rastinfo)
+    xml_node("rowcount", text=rows, parent_node=rastinfo)
+    xml_node("colcount", text=cols, parent_node=rastinfo)
+    xml_node("vrtcount", text=bands, parent_node=rastinfo)
 
     return spdoinfo
 
@@ -2181,14 +2181,14 @@ def las_spdoinfo(layer):
 
     # Create the root FGDC element
     spdoinfo = xml_node("spdoinfo")
-    direct = xml_node("direct", text="Vector", parent_node=spdoinfo)
+    xml_node("direct", text="Vector", parent_node=spdoinfo)
 
     # Create primary information elements within the FGDC structure
     ptvctinf = xml_node("ptvctinf", parent_node=spdoinfo)
     sdtsterm = xml_node("sdtsterm", parent_node=ptvctinf)
 
     # Specify the type of spatial data as "Point"
-    sdtstype = xml_node("sdtstype", text="Point", parent_node=sdtsterm)
+    xml_node("sdtstype", text="Point", parent_node=sdtsterm)
 
     # Add the point vector count to the FGDC element
     xml_node("ptvctcnt", text=feature_count, parent_node=sdtsterm)

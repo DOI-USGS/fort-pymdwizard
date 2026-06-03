@@ -490,14 +490,14 @@ class ThemeList(WizardWidget):  #
         # --- Process ISO Keywords (if tab is enabled) ---
         if self.ui.theme_tabs.isTabEnabled(0):
             theme = xml_utils.xml_node("theme", parent_node=keywords)
-            themekt = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "themekt", text=self.ui.fgdc_themekt.text(),
                 parent_node=theme
             )
 
             # Add ISO keywords as <themekey>.
             for isokw in self.iso_kws.get_widgets():
-                themekey = xml_utils.xml_node(
+                xml_utils.xml_node(
                     "themekey",
                     text=isokw.ui.fgdc_themekey.currentText(),
                     parent_node=theme,

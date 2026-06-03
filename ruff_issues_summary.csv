@@ -1,0 +1,10 @@
+Issue Type,Code,Count,Priority,Effort,Files Affected
+Unused Variables,F841,150,Medium,Low,"spatial_utils.py (80+), doi_utils.py (6), GUI files (scattered)"
+Bare Except Statements,E722,54,High,Medium,"spdom.py (8), MainWindow.py (5), sb_locator.py (5), spatial_tab.py (3)"
+Module Import Location,E402,17,Low,Low,"UI_*.py files (auto-generated)"
+Type Comparisons,E721,4,Low,Trivial,"fgdc_utils.py, xml_utils.py, test_version.py"
+Star Imports,F403/F405,4,Low,Medium,growingtextedit.py
+None Comparisons,E711,2,Low,Trivial,spatial_utils.py
+Function Redefinition,F811,1,Medium,Low,spref.py
+Boolean Comparison,E712,1,Low,Trivial,sb_locator.py
+Format String Issues,F523,1,Low,Trivial,xml_utils.py

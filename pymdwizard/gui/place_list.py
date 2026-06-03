@@ -158,7 +158,7 @@ class PlaceList(WizardWidget):
 
             if not self.thesauri:
                 # Add a default None thesaurus if none exist.
-                theme_widget = self.add_keyword(
+                self.add_keyword(
                     keyword="", thesaurus="None", locked=False
                 )
         else:

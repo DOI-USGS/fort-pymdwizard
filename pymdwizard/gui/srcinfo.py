@@ -223,14 +223,14 @@ class SRCInfo(WizardWidget):  #
 
         # --- Source Scale Denominator (<srcscale>) ---
         if self.ui.fgdc_srcscale.text():
-            srcscale = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "srcscale",
                 text=self.ui.fgdc_srcscale.text().replace(",", ""),
                 parent_node=srcinfo,
             )
 
         # --- Type of Source Media (<typesrc>) ---
-        typesrc = xml_utils.xml_node(
+        xml_utils.xml_node(
             "typesrc", text=self.ui.fgdc_typesrc.currentText(),
             parent_node=srcinfo
         )

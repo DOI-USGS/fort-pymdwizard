@@ -573,7 +573,7 @@ class WizardWidget(QWidget):
         # Execute the drag.
         # dropAction = drag.exec_(Qt.CopyAction | Qt.MoveAction)
         # dropAction = drag.exec_(Qt.TargetMoveAction)
-        dropAction = drag.exec_()
+        drag.exec_()
         e.ignore()
 
     def setup_dragdrop(self, widget, enable=True, parent=None):

@@ -85,7 +85,7 @@ class EA(WizardWidget):  #
         self.detaileds = []
 
         # Add the first required Detailed tab.
-        detailed = self.add_detailed()
+        self.add_detailed()
 
         # Initialize drag-and-drop features.
         self.setup_dragdrop(self)

@@ -658,7 +658,7 @@ def gen_taxonomy_section(keywords, tsns, include_common_names=False):
     keywtax = xml_utils.xml_node(tag="keywtax")
 
     # Create a taxonkt node with default text "None".
-    taxonkt = xml_utils.xml_node(tag="taxonkt", text="None",
+    xml_utils.xml_node(tag="taxonkt", text="None",
                                  parent_node=keywtax)
 
     # Add each keyword as a taxonkey node.

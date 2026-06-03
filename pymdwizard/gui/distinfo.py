@@ -379,7 +379,7 @@ class DistInfo(WizardWidget):
         # --- Online Distribution (<stdorder>) ---
         if self.ui.radio_online.isChecked():
             # <distliab>
-            liab = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "distliab",
                 text=self.ui.fgdc_distliab.toPlainText(),
                 parent_node=distinfo_node,
@@ -420,13 +420,13 @@ class DistInfo(WizardWidget):
             # Insert all <networkr> nodes from the repeating element.
             for networkr in self.networkr_list.get_widgets():
                 if networkr.text() != "":
-                    networkr_node = xml_utils.xml_node(
+                    xml_utils.xml_node(
                         "networkr", parent_node=networka,
                         text=networkr.text()
                     )
 
             # Fees
-            fees = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "fees", text=self.ui.fgdc_fees.toPlainText(),
                 parent_node=stdorder
             )
@@ -459,12 +459,12 @@ class DistInfo(WizardWidget):
 
         # --- Other Distribution (<custom>) ---
         if self.ui.radio_otherdist.isChecked():
-            liab = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "distliab",
                 text=self.ui.fgdc_distliab.toPlainText(),
                 parent_node=distinfo_node,
             )
-            other = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "custom",
                 text=self.ui.fgdc_custom.toPlainText(),
                 parent_node=distinfo_node,
@@ -472,7 +472,7 @@ class DistInfo(WizardWidget):
 
         # --- Direct Distribution (Just <distliab>) ---
         if self.ui.radio_dist.isChecked():
-            liab = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "distliab",
                 text=self.ui.fgdc_distliab.toPlainText(),
                 parent_node=distinfo_node,

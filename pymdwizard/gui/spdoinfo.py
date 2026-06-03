@@ -269,7 +269,7 @@ class SpdoInfo(WizardWidget):
                     spdoinfo.append(deepcopy(indspref))
 
             # Add <direct> (Spatial object type).
-            direct = xml_utils.xml_node(
+            xml_utils.xml_node(
                 "direct", text=self.ui.fgdc_direct.currentText(),
                 parent_node=spdoinfo
             )

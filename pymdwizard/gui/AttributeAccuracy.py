@@ -126,7 +126,7 @@ class AttributeAccuracy(WizardWidget):
         ).toPlainText()
 
         # Create and append the "attraccr" child node.
-        attraccr = xml_utils.xml_node(
+        xml_utils.xml_node(
             tag="attraccr", text=attraccr_str, parent_node=attracc
         )
 

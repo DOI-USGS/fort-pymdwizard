@@ -429,7 +429,7 @@ class Attr(WizardWidget):
                 self._domain_content[1] = cur_xml
             elif cur_xml.tag == "attr":
                 # For enumerated domains which use the <attr> tag.
-                edoms = getattr(self.domain, "edoms", None)  # retained from original
+                getattr(self.domain, "edoms", None)  # retained from original
                 self._domain_content[0] = cur_xml
 
     def sniff_nodata(self):

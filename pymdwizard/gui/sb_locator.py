@@ -246,7 +246,7 @@ class SBLocator(QWidget):
         """
 
         self.update_content()
-        accessible = self.check_permissions()
+        self.check_permissions()
 
     def check_permissions(self):
         """
@@ -307,7 +307,7 @@ class SBLocator(QWidget):
         if writable:
             # Permission check successful, check for file existence.
             item = sb.get_item(self.hash)
-            title = item['title']
+            item['title']
 
             fname = self.get_fgdc_file()
 

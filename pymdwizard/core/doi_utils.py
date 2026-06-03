@@ -280,14 +280,14 @@ def get_doi_citation(doi):
                 if "https://pubs.usgs.gov/" in url_ref:
                     try:
                         # Series name; set below
-                        series_name = cite_data["container-title"]
+                        cite_data["container-title"]
                     except AttributeError:
-                        series_name = "ERROR"
+                        pass
                     try:
                         # DOI--Not using
-                        url_doi = cite_data["URL"]
+                        cite_data["URL"]
                     except AttributeError:
-                        url_doi = "ERROR"
+                        pass
                     try:
                         # Pub place.
                         url_ref = \
@@ -309,8 +309,8 @@ def get_doi_citation(doi):
     except AttributeError:
         pass
 
-    title = XMLNode(tag="title", parent_node=citeinfo, text=cite_data["title"])
-    geoform = XMLNode(tag="geoform", parent_node=citeinfo,
+    XMLNode(tag="title", parent_node=citeinfo, text=cite_data["title"])
+    XMLNode(tag="geoform", parent_node=citeinfo,
                       text=cite_data["geoform"])
 
     # Add series info if available.
@@ -320,8 +320,8 @@ def get_doi_citation(doi):
     has_issue = "issue" in cite_data and cite_data["issue"]
 
     if has_container and (has_volume or has_issue):
-        serinfo = XMLNode(tag="serinfo", parent_node=citeinfo)
-        sername = XMLNode(
+        XMLNode(tag="serinfo", parent_node=citeinfo)
+        XMLNode(
             tag="sername",
             parent_node=citeinfo.serinfo,
             text=cite_data["container-title"],
@@ -330,7 +330,7 @@ def get_doi_citation(doi):
         if "volume" in cite_data and "issue" in cite_data:
             issue_str = "vol." + " " + str(cite_data["volume"]) + ", issue "
             issue_str += cite_data["issue"]
-            issue = XMLNode(tag="issue", parent_node=citeinfo.serinfo,
+            XMLNode(tag="issue", parent_node=citeinfo.serinfo,
                             text=issue_str)
         elif "volume" in cite_data:
             issue_str = "vol." + " " + str(cite_data["volume"])

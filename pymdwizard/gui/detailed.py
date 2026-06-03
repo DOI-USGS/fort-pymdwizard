@@ -399,7 +399,7 @@ class Detailed(WizardWidget):  #
 
             if self.original_xml is not None:
                 # Reload original XML content if available.
-                original_content = xml_utils.XMLNode(self.original_xml)
+                xml_utils.XMLNode(self.original_xml)
                 self.from_xml(self.original_xml)
             else:
                 self.ui.fgdc_enttypl.setText("{}".format(shortname[:-2]))
@@ -553,19 +553,19 @@ class Detailed(WizardWidget):  #
         enttyp = xml_utils.xml_node("enttyp", parent_node=detailed)
 
         # Create the <enttypl> container node.
-        enttypl = xml_utils.xml_node(
+        xml_utils.xml_node(
             "enttypl", text=self.ui.fgdc_enttypl.text(),
             parent_node=enttyp
         )
 
         # Create the <enttypd> container node.
-        enttypd = xml_utils.xml_node(
+        xml_utils.xml_node(
             "enttypd", text=self.ui.fgdc_enttypd.toPlainText(),
             parent_node=enttyp
         )
 
         # Create the <enttypds> container node.
-        enttypds = xml_utils.xml_node(
+        xml_utils.xml_node(
             "enttypds", text=self.ui.fgdc_enttypds.text(),
             parent_node=enttyp
         )

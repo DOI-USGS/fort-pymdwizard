@@ -254,7 +254,7 @@ class MetaInfo(WizardWidget):
         metainfo_node = xml_utils.xml_node("metainfo")
 
         # Metadata Date (<metd>)
-        metd = xml_utils.xml_node(
+        xml_utils.xml_node(
             "metd",
             text=self.metd.get_date(),
             parent_node=metainfo_node,
@@ -274,12 +274,12 @@ class MetaInfo(WizardWidget):
         metc.append(cntinfo)
 
         # Metadata Standard Name and Version.
-        metstdn = xml_utils.xml_node(
+        xml_utils.xml_node(
             "metstdn",
             text=self.ui.fgdc_metstdn.currentText(),
             parent_node=metainfo_node,
         )
-        metstdv = xml_utils.xml_node(
+        xml_utils.xml_node(
             "metstdv",
             text=self.ui.fgdc_metstdv.currentText(),
             parent_node=metainfo_node,
