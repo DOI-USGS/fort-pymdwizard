@@ -1,10 +1,14 @@
-Issue Type,Code,Count,Priority,Effort,Files Affected
-Unused Variables,F841,150,Medium,Low,"spatial_utils.py (80+), doi_utils.py (6), GUI files (scattered)"
-Bare Except Statements,E722,54,High,Medium,"spdom.py (8), MainWindow.py (5), sb_locator.py (5), spatial_tab.py (3)"
-Module Import Location,E402,17,Low,Low,"UI_*.py files (auto-generated)"
-Type Comparisons,E721,4,Low,Trivial,"fgdc_utils.py, xml_utils.py, test_version.py"
-Star Imports,F403/F405,4,Low,Medium,growingtextedit.py
-None Comparisons,E711,2,Low,Trivial,spatial_utils.py
-Function Redefinition,F811,1,Medium,Low,spref.py
-Boolean Comparison,E712,1,Low,Trivial,sb_locator.py
-Format String Issues,F523,1,Low,Trivial,xml_utils.py
+Issue Type,Code,Count,Priority,Effort,Status
+Bare Except Statements,E722,54,High,Medium (4-6 hrs),REMAINING - Top Priority
+Module Import Location,E402,17,Low,Low,REMAINING - Consider ignoring auto-generated files
+Type Comparisons,E721,4,Low,Trivial (5 min),REMAINING - Quick win
+Star Imports,F403/F405,4,Low,Medium,REMAINING - Optional cleanup
+None Comparisons,E711,2,Low,Trivial (2 min),REMAINING - Quick win
+Function Redefinition,F811,1,Medium,Trivial (5 min),REMAINING - Quick win
+Boolean Comparison,E712,1,Low,Trivial (1 min),REMAINING - Quick win
+Format String Issues,F523,1,Low,Trivial (1 min),REMAINING - Quick win
+Unused Imports,F401,60+,Medium,Low,FIXED ✅ - Commit 1
+Unused Variables,F841,177,Medium,Low,FIXED ✅ - Commit 3
+Not In Syntax,E713,5+,Low,Trivial,FIXED ✅ - Commit 1
+F-string Issues,F541,10+,Low,Trivial,FIXED ✅ - Commit 1
+Bare Excepts (partial),E722,3,High,Medium,FIXED ✅ - Commit 2
