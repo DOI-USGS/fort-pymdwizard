@@ -437,7 +437,7 @@ class MetadataRoot(WizardWidget):
         """
 
         # Check if the passed element is the section itself.
-        just_this_one = type(metadata_element) == etree._Element
+        just_this_one = isinstance(metadata_element, etree._Element)
 
         if just_this_one and metadata_element.tag == section_name:
             section = metadata_element

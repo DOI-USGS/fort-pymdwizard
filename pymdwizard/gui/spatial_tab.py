@@ -30,7 +30,7 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import (utils, xml_utils, spatial_utils)
+    from pymdwizard.core import (utils, spatial_utils)
     from pymdwizard.gui.wiz_widget import WizardWidget
     from pymdwizard.gui.ui_files import UI_spatial_tab
     from pymdwizard.gui import (spref, spdoinfo, spdom)

@@ -32,7 +32,7 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import (utils, xml_utils)
+    from pymdwizard.core import utils
     from pymdwizard.gui.ui_files import UI_sb_locator
 except ImportError as err:
     raise ImportError(err, __file__)

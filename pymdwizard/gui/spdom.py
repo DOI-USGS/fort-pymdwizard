@@ -27,12 +27,11 @@ try:
     import pandas as pd
     from PyQt5.QtWidgets import (QMessageBox, QCompleter)
     from PyQt5.QtCore import (QObject, QStringListModel, QUrl, QDir,
-                              QSettings, pyqtSlot, QTimer)
+                              pyqtSlot, QTimer)
     from PyQt5.QtWebEngineWidgets import (QWebEngineView, QWebEngineSettings,
                                           QWebEnginePage)
     from PyQt5 import QtWebEngineCore
     from PyQt5.QtWebChannel import QWebChannel
-    from PyQt5 import QtCore
 except ImportError as err:
     raise ImportError(err, __file__)
 

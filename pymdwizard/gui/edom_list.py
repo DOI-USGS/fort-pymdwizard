@@ -133,7 +133,7 @@ class EdomList(WizardWidget):  #
             is_empty = (
                     pd.isnull(item_label)
                     or str(item_label) == ""
-                    or (type(item_label) != str and math.isnan(item_label))
+                    or (not isinstance(item_label, str) and math.isnan(item_label))
             )
 
             # Handle empty/null values

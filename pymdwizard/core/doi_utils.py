@@ -25,6 +25,7 @@ from urllib.parse import urlparse
 
 # Non-standard python libraries.
 try:
+    import requests
     from habanero import cn
 except ImportError as err:
     raise ImportError(err, __file__)
