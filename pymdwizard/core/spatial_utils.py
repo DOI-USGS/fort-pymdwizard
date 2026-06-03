@@ -584,7 +584,7 @@ def get_params(layer):
     get_abs_resolution(layer, params)
 
     # SPCS_Zone determination
-    if (params["mapprojn"] != None and
+    if (params["mapprojn"] is not None and
             "stateplane" in params["mapprojn"].lower()):
         parts = params["mapprojn"].split("_")
         params["spcszone"] = str(parts[parts.index("FIPS") + 1])
@@ -592,7 +592,7 @@ def get_params(layer):
         params["spcszone"] = "Unknown"
 
     # ARC_Zone determination.
-    if (params["mapprojn"] != None and
+    if (params["mapprojn"] is not None and
             "_arc_system" in params["mapprojn"].lower()):
         parts = params["mapprojn"].split("_")
         params["arczone"] = str(parts[-1])

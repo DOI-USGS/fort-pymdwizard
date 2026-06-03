@@ -292,9 +292,9 @@ class SBLocator(QWidget):
 
         # Check for inherited write permission.
         if not writable:
-            try: 
-                writable = permissions["write"]["inherited"] == True
-            except: 
+            try:
+                writable = permissions["write"]["inherited"]
+            except:
                 writable = False
 
         if not writable:

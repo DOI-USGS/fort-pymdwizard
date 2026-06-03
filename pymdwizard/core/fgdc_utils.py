@@ -266,7 +266,7 @@ def format_date(date_input):
     """
 
     # Check if the input is a string and parse it to a datetime object.
-    if type(date_input) == str:
+    if isinstance(date_input, str):
         date_input = parser.parse(date_input)
 
     return date_input.strftime("%Y%m%d")

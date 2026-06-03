@@ -13,5 +13,5 @@ def test_parse_init():
                 version = line.split("=")[1].strip()
                 version = version.strip('"')
                 version = version.strip("'")
-    assert type(str(version)) == str
-    assert type(pymdwizard.__version__) == str
+    assert isinstance(str(version), str)
+    assert isinstance(pymdwizard.__version__, str)

@@ -598,7 +598,7 @@ class XMLNode(object):
         elif tag:
             element = xml_node(tag=tag, text=text)
             self.from_xml(element)
-        elif type(element) == str:
+        elif isinstance(element, str):
             self.from_str(element)
 
         # Add this node to the parent node if provided.
@@ -630,9 +630,9 @@ class XMLNode(object):
             )
             result = result.rstrip()
         else:
-            result = "{}<{}>".format("  " * level, self.tag, )
+            result = "{}<{}>".format("  " * level, self.tag)
             for child in self.children:
-                if type(self.__dict__[child.tag]) == XMLNode:
+                if isinstance(self.__dict__[child.tag], XMLNode):
                     child = self.__dict__[child.tag]
                 result += "\n" + child.__str__(level=level + 1)
             result += "\n{}</{}>".format("  " * level, self.tag)
