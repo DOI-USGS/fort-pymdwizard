@@ -634,7 +634,7 @@ class Attr(WizardWidget):
                             )[0]
                             nd_attrdomv = edomv.getparent().getparent()
                             nd_attrdomv.getparent().remove(nd_attrdomv)
-                        except:
+                        except (IndexError, AttributeError):
                             pass
                         break
 

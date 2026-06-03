@@ -168,11 +168,11 @@ def get_doi_citation(doi):
     try:
         # Try CrossRef API
         cite_data = get_doi_citation_crossref(doi)
-    except:
+    except (requests.RequestException, KeyError, ValueError):
         try:
             # Try DataCite API
             cite_data = get_doi_citation_datacite(doi)
-        except:
+        except (requests.RequestException, KeyError, ValueError):
             return None
 
     # Create XMLNode for citation info.

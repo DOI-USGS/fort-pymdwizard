@@ -183,7 +183,7 @@ class ContactInfo(WizardWidget):
                 msg.setWindowTitle("Name Not Found")
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
-        except:
+        except (ConnectionError, TimeoutError, Exception):
             # Show error for connection/unexpected issues.
             msg_text = (
                 "Make sure there is a working Internet connection or "
