@@ -30,13 +30,13 @@ def test_mainwindow_from_xml(qtbot, mock):
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/GenericFGDCTemplate_FGDCtemp.xml"
-    mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No)
-    widget.open_file(test_record_fname)
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
+        widget.open_file(test_record_fname)
 
-    assert (
-        widget.metadata_root.findChild(QPlainTextEdit, "fgdc_logic").toPlainText()
-        == "No formal logical accuracy tests were conducted. testing"
-    )
+        assert (
+            widget.metadata_root.findChild(QPlainTextEdit, "fgdc_logic").toPlainText()
+            == "No formal logical accuracy tests were conducted. testing"
+        )
 
 
 def test_mainwindow_to_xml(qtbot):
@@ -57,12 +57,12 @@ def test_validation(qtbot, mock):
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
-    mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No)
-    mock.patch.object(QMessageBox, "warning", return_value=QMessageBox.Cancel)
-    mock.patch.object(QMessageBox, "information", return_value=QMessageBox.Cancel)
-    widget.open_file(test_record_fname)
-    widget.validate()
-    assert len(widget.error_list.errors) == 1
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No), \
+         mock.patch.object(QMessageBox, "warning", return_value=QMessageBox.Cancel), \
+         mock.patch.object(QMessageBox, "information", return_value=QMessageBox.Cancel):
+        widget.open_file(test_record_fname)
+        widget.validate()
+        assert len(widget.error_list.errors) == 1
     #
     #     # For some reason this part of the test is causing it to hang on TravisCI
     #     mock.patch.object(QMessageBox, 'question',
@@ -87,8 +87,8 @@ def test_misc(qtbot, mock):
     widget = MainWindow.PyMdWizardMainForm()
     qtbot.addWidget(widget)
 
-    mock.patch.object(QMessageBox, "about", return_value=QMessageBox.Ok)
-    widget.about()
+    with mock.patch.object(QMessageBox, "about", return_value=QMessageBox.Ok):
+        widget.about()
 
 
 def test_settings(qtbot, mock):
@@ -101,10 +101,10 @@ def test_settings(qtbot, mock):
 
     widget.get_save_name = lambda: "test_output.xml"
 
-    mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No)
-    widget.new_record()
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
+        widget.new_record()
 
-    md = widget.metadata_root.to_xml()
-    os.remove("test_output.xml")
+        md = widget.metadata_root.to_xml()
+        os.remove("test_output.xml")
 
-    assert md.xpath("idinfo/spdom/bounding/westbc")[0].text == "178.2167"
+        assert md.xpath("idinfo/spdom/bounding/westbc")[0].text == "178.2167"
