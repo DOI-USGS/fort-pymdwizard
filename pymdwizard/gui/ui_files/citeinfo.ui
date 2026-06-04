@@ -174,7 +174,7 @@ subcontrol-position: top left; /* position at the top left*/
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">font: 11pt &quot;Arial&quot;;
+                  <string notr="true">font: 10pt &quot;Arial&quot;;
 color: rgb(50, 50, 50);</string>
                  </property>
                  <property name="inputMethodHints">
@@ -327,25 +327,28 @@ color: rgb(50, 50, 50);</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>50</width>
-            <height>0</height>
+            <width>75</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>16777215</width>
-            <height>50</height>
+            <height>16777215</height>
            </size>
           </property>
           <property name="toolTip">
            <string>Import citation from Active (CrossRef) DOI</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QGroupBox{
+           <string notr="true">QPushButton{
+font: 9pt &quot;Arial&quot;;
+}
+QGroupBox{
     background-color: transparent;
      subcontrol-position: top left; /* position at the top left*/
      padding-top: 20px;
-    font: bold 12px;
+    font: bold 9pt;
     color: rgba(90, 90, 90, 225);
     border: 1px solid gray;
     border-radius: 2px;

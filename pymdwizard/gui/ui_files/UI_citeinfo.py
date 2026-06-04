@@ -112,7 +112,7 @@ class Ui_parent_form(object):
         sizePolicy.setHeightForWidth(self.fgdc_title.sizePolicy().hasHeightForWidth())
         self.fgdc_title.setSizePolicy(sizePolicy)
         self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 54))
-        self.fgdc_title.setStyleSheet('font: 11pt "Arial";\n' "color: rgb(50, 50, 50);")
+        self.fgdc_title.setStyleSheet('font: 10pt "Arial";\n' "color: rgb(50, 50, 50);")
         self.fgdc_title.setInputMethodHints(QtCore.Qt.ImhNone)
         self.fgdc_title.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.fgdc_title.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -188,14 +188,17 @@ class Ui_parent_form(object):
             self.btn_import_doi.sizePolicy().hasHeightForWidth()
         )
         self.btn_import_doi.setSizePolicy(sizePolicy)
-        self.btn_import_doi.setMinimumSize(QtCore.QSize(50, 0))
-        self.btn_import_doi.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.btn_import_doi.setMinimumSize(QtCore.QSize(75, 60))
+        self.btn_import_doi.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.btn_import_doi.setStyleSheet(
+            "QPushButton{\n"
+            'font: 9pt "Arial";\n'
+            "}\n"
             "QGroupBox{\n"
             "    background-color: transparent;\n"
             "     subcontrol-position: top left; /* position at the top left*/\n"
             "     padding-top: 20px;\n"
-            "    font: bold 12px;\n"
+            "    font: bold 9pt;\n"
             "    color: rgba(90, 90, 90, 225);\n"
             "    border: 1px solid gray;\n"
             "    border-radius: 2px;\n"
@@ -227,7 +230,7 @@ class Ui_parent_form(object):
             "}"
         )
         self.btn_import_doi.setObjectName("btn_import_doi")
-        self.first_hbox.addWidget(self.btn_import_doi)
+        self.first_hbox.insertWidget(0, self.btn_import_doi)
         self.verticalLayout_4.addLayout(self.first_hbox)
         self.second_hbox = QtWidgets.QHBoxLayout()
         self.second_hbox.setSpacing(10)
