@@ -111,7 +111,7 @@ class Ui_parent_form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fgdc_title.sizePolicy().hasHeightForWidth())
         self.fgdc_title.setSizePolicy(sizePolicy)
-        self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 54))
+        self.fgdc_title.setMaximumSize(QtCore.QSize(16777215, 30))
         self.fgdc_title.setStyleSheet('font: 10pt "Arial";\n' "color: rgb(50, 50, 50);")
         self.fgdc_title.setInputMethodHints(QtCore.Qt.ImhNone)
         self.fgdc_title.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)

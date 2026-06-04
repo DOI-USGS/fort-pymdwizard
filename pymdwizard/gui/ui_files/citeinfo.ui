@@ -170,7 +170,7 @@ subcontrol-position: top left; /* position at the top left*/
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>27</height>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="styleSheet">

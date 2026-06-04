@@ -86,7 +86,7 @@ class Citeinfo(WizardWidget):  #
         # Initialize components for title widget.
         self.highlighter = Highlighter(self.ui.fgdc_title.document())
         self.ui.fgdc_title.textChanged.connect(self.remove_returns)
-        self.ui.fgdc_title.setMaximumHeight(self.ui.fgdc_geoform.height())
+        self.ui.fgdc_title.setMaximumHeight(30)
 
         # Override mouse move event for single-line behavior.
         self.ui.fgdc_title.mouseMoveEvent = self.mouse_move
