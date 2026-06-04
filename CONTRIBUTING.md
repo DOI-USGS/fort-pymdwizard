@@ -39,7 +39,7 @@ development.
 
 Development Environment
 =======================
-We use the Anaconda distribution system for installation of the development 
+We use the Conda distribution system for installation of the development 
 environment, and recommend setting up a specific environment for this development effort.
 
 Use the file fort-pymdwizard/environment.yml to install requirements in new dev environments.
