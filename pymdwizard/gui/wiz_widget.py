@@ -1043,7 +1043,7 @@ QGroupBox{
      subcontrol-position: top left; /* position at the top left*/
      padding-top: 20px;
     font: bold {fontsizeplus}pt "Arial";
-    color: rgba(90, 90, 90);
+    color: rgba(90, 90, 90, 255);
     border: 1px solid gray;
     border-radius: 2px;
     border-color: rgba(90, 90, 90, 200);
