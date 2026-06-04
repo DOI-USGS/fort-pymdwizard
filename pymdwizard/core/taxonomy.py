@@ -41,8 +41,7 @@ except ImportError as err:
 
 # Global variables of URLs to access the Integrated Taxonomic Information System
 # (ITIS) for handling taxonomic names.
-# IMPT: These are not https (does not work)
-ITIS_BASE_URL = "http://www.itis.gov/ITISWebService/services/ITISService/"
+ITIS_BASE_URL = "https://www.itis.gov/ITISWebService/services/ITISService/"
 NS21 = {"ax21": "http://data.itis_service.itis.usgs.gov/xsd"}
 NS23 = {"ax23": "http://metadata.itis_service.itis.usgs.gov/xsd"}
 
