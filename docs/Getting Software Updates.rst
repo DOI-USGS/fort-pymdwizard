@@ -21,4 +21,4 @@ Updates are made using simple Git commands to **fetch** and **merge** the master
 -  Internet connectivity issues
 -  Firewalls or other security measures
 
-Users with knowledge of Git can troubleshoot these problems directly in the project’s `GitHub <https://github.com/usgs/fort-pymdwizard>`_ repository.
+Users with knowledge of Git can troubleshoot these problems directly in the project’s `GitHub <https://github.com/DOI-USGS/fort-pymdwizard>`_ repository.

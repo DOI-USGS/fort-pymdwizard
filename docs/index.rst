@@ -31,7 +31,7 @@ Users should be advised that information not stored in CSDGM elements (such as c
 elements, or elements belonging to different standards) will be lost upon saving in the 
 Metadata Wizard. Users should also exercise caution with metadata records that contain 
 information in less-used CSDGM elements that are not accessible in the tool. `Effort has 
-been made <https://github.com/usgs/fort-pymdwizard/issues/6>`_ to retain information 
+been made <https://github.com/DOI-USGS/fort-pymdwizard/issues/6>`_ to retain information 
 stored in some of these elements, but no guarantee can be made that information stored in 
 elements not accessible in the tool will be retained.
 
@@ -54,7 +54,6 @@ Installation Methods
    Windows Installation
    Mac Installation
    Installing from Source
-   Installing ArcMap Toolbox
    
 Standard Usage
 ===============

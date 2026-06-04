@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.2.0 (3/26/2026)
+2.2.0 (06/04/2026)
 -----
 Updates to Metadata Wizard:
 --------------
@@ -21,23 +21,13 @@ Updates to Metadata Wizard:
 TODO (Long-term): 
 --------------
 1. pyqt6 is not available on conda-forge (it is available on Anaconda), so not updating at this time.
-2. There are a lot of bare except statements in code that should be addressed.
-3. Add support for accessing data within ESRI FGDB (raster, feature classes/datasets) and geopackages (raster and vector).
+2. Add support for accessing data within ESRI FGDB (raster, feature classes/datasets) and geopackages (raster and vector).
 ----
 
 TODO (Short-term): 
 --------------
-1. Check code with static analyzer
-2. Address the commented out code in jupyterstarter.py. Need to test before cleaning up code.
-3. MainWindow.py: Anaconda is not allowed. Revise line xxx.
+1. Address the commented out code in jupyterstarter.py. Need to test before cleaning up code.
 
-
-FYI:
---------------
-1. Running code from DOS prints STDOUT of:
-  a. QPainter::begin: A paint device can only be painted by one painter at a time. (Seems to be a timing issue for splash, which I have improved and should not affect performance).
-  b. js: Uncaught ReferenceError: xxx (Timing issue with splash screen and main app. This is a lot better now).
-  c. QCssParser::parseColorValue: Specified color with alpha value but no alpha given: 'rgba 90, 90, 90' (I checked every html file, code, and other things but cannot seem to find where alpha is not included. I need change rgb to rgba, but this did not fix the issue (there is some CSS file somewhere that I am missing).
 
 
 

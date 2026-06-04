@@ -29,8 +29,6 @@ File types that are currently supported for populating the Entity and Attribute 
 -  High Dynamic Range Image (.hdr)
 -  ESRI ArcInfo Binary Grid (.adf)
 
-Additional geospatial formats are available when calling the
-MetadataWizard from the `ArcToolbox <../Installing%20ArcMap%20Toolbox.html>`_.
 
 ----------------------------------------------------------------------
 
