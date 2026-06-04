@@ -1428,7 +1428,7 @@ def show_splash(version="2.x.x"):
         )
     numbers["."] = numbers["point"]
 
-    painter = QPainter(splash_pix)
+    painter = QPainter()
     painter.begin(splash_pix)
 
     x, y = 400, 65
