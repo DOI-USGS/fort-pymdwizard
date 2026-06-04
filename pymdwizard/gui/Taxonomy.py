@@ -175,7 +175,7 @@ class Taxonomy(WizardWidget):
             1. Creates an "ItisMainForm" instance, passing the current
                widget's XML content and "from_xml" method for callback.
             2. Positions and shows the new GUI window centered on the
-               same screen as the parent widget.
+               same screen as the main application window.
 
         Notes:
             The search tool uses the current XML content to initialize.
@@ -186,10 +186,13 @@ class Taxonomy(WizardWidget):
             xml=self.to_xml(), fgdc_function=self.from_xml
         )
 
-        # Center the window on the same screen as the parent widget.
-        parent_center = self.frameGeometry().center()
+        # Get the top-level window (main application window)
+        main_window = self.window()
+
+        # Center the ITIS window on the main application window
+        main_window_center = main_window.frameGeometry().center()
         window_rect = self.tax_gui.frameGeometry()
-        window_rect.moveCenter(parent_center)
+        window_rect.moveCenter(main_window_center)
         self.tax_gui.move(window_rect.topLeft())
 
         # Display the new GUI.
