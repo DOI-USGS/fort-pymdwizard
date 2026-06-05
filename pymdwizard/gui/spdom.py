@@ -1044,6 +1044,7 @@ class Spdom(WizardWidget):
             2. Populates fields using utility functions.
             3. Checks coordinates and updates the map (add/remove rect).
             4. Sets "self.in_xml_load" to True.
+            5. Updates the map to reflect the new coordinates.
 
         Notes:
             None
@@ -1064,6 +1065,9 @@ class Spdom(WizardWidget):
             utils.populate_widget(self, bounding_contents)
 
         self.in_xml_load = True
+
+        # Update the map to reflect the new bounding box coordinates
+        self.update_map()
 
 
 def js_callback(result):

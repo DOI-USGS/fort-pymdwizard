@@ -32,6 +32,7 @@ Updates and bug fixes in Metadata Wizard GUI
 18. Fixed Dataset Title field height to display text correctly.
 19. Added gate for in-app updates only if Python ≥ 3.13 (prevents older installs from breaking).
 20. Improved ITIS window positioning to center on main application window and support multi-monitor setups. Updated ITIS web service URL to use HTTPS.
+21. Fixed bounding box map not updating when importing spatial details from a different dataset via 'Browse to dataset' button.
 
 
 
