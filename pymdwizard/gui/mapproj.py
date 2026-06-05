@@ -161,7 +161,6 @@ class MapProj(WizardWidget):
             "annotation": annotation_lookup["stdparll"]["annotation"],
         }
 
-        self.clear_widget()  # TODO: why is this called again ??????????????????????????
         layout = self.ui.mapproj_contents.layout()
 
         # Iterate over required parameters and build the UI.

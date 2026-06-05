@@ -26,9 +26,6 @@ try:
     import habanero
     from PyQt5.QtWidgets import (QMessageBox, QDialog, QPlainTextEdit)
     from PyQt5.QtCore import Qt
-
-    # TODO: Remove this switch here and below.
-    hananero_installed = True
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -252,10 +249,6 @@ class Citeinfo(WizardWidget):  #
 
         # Setup drag-and-drop functionality for the main widget.
         self.setup_dragdrop(self)
-
-        # Hide DOI button if the dependency is not installed.
-        if not hananero_installed:
-            self.ui.btn_import_doi.hide()
 
     def connect_events(self):
         """
