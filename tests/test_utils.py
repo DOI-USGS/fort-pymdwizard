@@ -18,16 +18,27 @@ def test_url_validator():
 
 
 def test_get_usgs_contact_info():
+    # Test with a valid USGS username
+    fgdc_cntinfo = utils.get_usgs_contact_info("mlangseth")
 
-    fgdc_cntinfo = utils.get_usgs_contact_info("talbertc")
-    if "fgdc_error" not in fgdc_cntinfo:
-        assert "fgdc_cntperp" in utils.get_usgs_contact_info("talbertc")
+    # Check that the function returns the expected FGDC structure
+    assert "fgdc_cntperp" in fgdc_cntinfo
+    assert "fgdc_cntper" in fgdc_cntinfo["fgdc_cntperp"]
+    assert "fgdc_cntorg" in fgdc_cntinfo["fgdc_cntperp"]
 
-        bad = utils.get_usgs_contact_info("bad")
-        assert bad["fgdc_cntperp"]["fgdc_cntper"].strip() == ""
+    # Verify the name is populated (People Picker returns "name" field)
+    assert len(fgdc_cntinfo["fgdc_cntperp"]["fgdc_cntper"]) > 0
 
-        cnt_info = utils.get_usgs_contact_info("talbertc", as_dictionary=False)
-        assert list(list(cnt_info)[0])[0].text == "Colin Talbert"
+    # Test with an invalid username - should return empty contact person
+    bad = utils.get_usgs_contact_info("invalidusernamethatdoesnotexist")
+    assert bad["fgdc_cntperp"]["fgdc_cntper"].strip() == ""
+
+    # Test as_dictionary=False (returns XML element)
+    cnt_info = utils.get_usgs_contact_info("mlangseth", as_dictionary=False)
+    assert cnt_info.tag == "cntinfo"
+    # Check that cntperp exists and has cntper child with text
+    cntper_elem = cnt_info.xpath("cntperp/cntper")[0]
+    assert len(cntper_elem.text) > 0
 
 
 def test_url_is_alive():
