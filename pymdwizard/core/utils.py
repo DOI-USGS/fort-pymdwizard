@@ -123,7 +123,11 @@ def get_from_people_picker(email):
                              data=json.dumps(data))
 
     # Return the user's data as a dictionary, or an empty dictionary.
-    return dict(response.json()["data"]["active_directory"][0].items())
+    result = response.json()["data"]["active_directory"]
+    if result:
+        return dict(result[0].items())
+    else:
+        return {}
 
 
 def convert_persondict_to_fgdc(person_dict):
