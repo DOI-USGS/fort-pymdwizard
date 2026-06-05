@@ -94,6 +94,8 @@ def test_misc(qtbot, mocker):
 def test_settings(qtbot, mocker):
 
     settings = qt_api.QtCore.QSettings("USGS_2.2.0", "pymdwizard_2.2.0")
+    # Save original value to restore after test
+    original_template = settings.value("template_fname")
     settings.setValue("template_fname", "tests/data/USGS_ASC_PolarBears_FGDC.xml")
 
     widget = MainWindow.PyMdWizardMainForm()
@@ -108,3 +110,9 @@ def test_settings(qtbot, mocker):
         os.remove("test_output.xml")
 
         assert md.xpath("idinfo/spdom/bounding/westbc")[0].text == "178.2167"
+
+    # Restore original setting
+    if original_template is None:
+        settings.remove("template_fname")
+    else:
+        settings.setValue("template_fname", original_template)
