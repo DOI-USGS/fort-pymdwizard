@@ -3,35 +3,40 @@ Changes
 
 2.2.0 (06/04/2026)
 -----
-Updates to Metadata Wizard:
+
+Updates to associated Python environment (built into the Metadata Wizard installer)
 --------------
-1. Updated lxml library version and associated call (e.g., RestrictedElement removed).
-2. Updated DOI certificate support.
-3. Updated sciencebasepy library and associated code (was using sbpy).
-4. Added inline comments and doc strings to almost every script.
-5. Revised inline comments and code referencing http (instead of https; though these are usually redirected on most serviers) when not specified.
-6. \pymdwizard\gui\spdom.py was not properly migrated to pyQT5, so modifications made to address QWebChannel, QWebEngineView, methods to run java script, and related steps.
-7. Updated all library imports as they were included legacy support for python 2.7.
-8. Many scripts were importing libraries in functions and this was fixed.
-9. Addressed issues with \pymdwizard\gui\spdom.py and centering, rendering of map on spatial tab.
-10. Removed hardcoding of software version found in many scripts.
-11. Updated older methods of string and variable formatting (.format() in 2.7) to F-strings, which is used in Python 3.
-12. Updated all libraries for deployment and created a new yaml file. This should address vulnerabilities. 
+1. Updated Python environment to 3.13.11 to address identified vulnerabilities. Edits to codebase for compatibility with updated Python libraries.
+2. Replaced requirements.txt with environment.yml for package management.
+3. Updated DOI certificate support to improve user connection with APIs (e.g., Crossref API for 'Import from DOI' feature)
 
-TODO (Long-term): 
+Code cleanup
+-------------
+4. Added inline comments and doc strings to most scripts.
+5. Updated library imports as they included legacy support for Python 2.7.
+6. Fixed scripts that were importing libraries in functions.
+7. Removed hardcoding of software version.
+8. Updated older methods of string and variable formatting (.format() in 2.7) to F-strings, which is used in Python 3.
+9. Removed sip import requirements from mdattr.py and MainWindow.py.
+10. Fixed QPainter double-initialization error in MainWindow.py. Fixed Qt runtime errors in wiz_widget.py.
+11. Updated user documentation and scripts to fix broken/outdated URLs and references.
+
+Updates and bug fixes in Metadata Wizard GUI
 --------------
-1. pyqt6 is not available on conda-forge (it is available on Anaconda), so not updating at this time.
-2. Add support for accessing data within ESRI FGDB (raster, feature classes/datasets) and geopackages (raster and vector).
-----
+12. Fixed multiple digform (digital form) elements being deleted on save.
+13. Fixed networkr URLs from all digforms loading into the first digform UI element.
+14. Added formname field to distribution UI and updated GUI label (changed "Format Name:" to "Data Format:").
+15. Updated thesaurus search to improve display of keyword details.
+16. Fixed taxonomy merge bug - handle missing parent taxa in merge_taxons().
+17. Moved 'Import from DOI' button to more visible location in the 'Citation' sections. Fixed button size issue for high-resolution displays.
+18. Fixed Dataset Title field height to display text correctly.
+19. Added gate for in-app updates only if Python ≥ 3.13 (prevents older installs from breaking).
+20. Improved ITIS window positioning to center on main application window and support multi-monitor setups. Updated ITIS web service URL to use HTTPS.
 
-TODO (Short-term): 
---------------
-1. Address the commented out code in jupyterstarter.py. Need to test before cleaning up code.
 
 
 
-
-2.1.1 (6/9/2025)
+2.1.1 (06/09/2025)
 -----
 Updates:
 - Add support for high resolution displays
@@ -40,7 +45,7 @@ Updates:
 - Update associated Python environment to fix vulnerabilities
 - Update uninstall function to remove all directories
 
-2.1.0 (3/10/2025)
+2.1.0 (03/10/2025)
 -----
 Updates:
 -	Make 'networkr' a repeating element
@@ -50,7 +55,7 @@ Updates:
 -	Fix connection with USGS Thesaurus – switch to active endpoint
 -	Add more robust bounding box calculation method
 -	Change basemaps and location names to comply with U.S. Department of the Interior’s SO 3423 and SO 3424
-- Updated associated Python env 
+- Updated associated Python environment 
 
 2.0.8 (8/15/2024)
 -----
@@ -63,7 +68,7 @@ Updates:
 - Fix display of UI element 'Data Status and Update Plans'
 - Remove inappropriate words from place names list
 
-2.0.6 (8/23/2019)
+2.0.6 (08/23/2019)
 -----
 New features:
 - Directly edit a ScienceBase Item's Metadata file directly
@@ -78,7 +83,7 @@ Bug fixes:
 - Null characters in text breaking.
 - Nodata values not getting saved out.
 
-2.0.5 (7/27/2018)
+2.0.5 (07/27/2018)
 -----
 New features:
 - Application settings form to easily change template file, definition source text, max rows read, and font size.
@@ -89,7 +94,7 @@ Bug fixes:
 - Find updates not working on Macs.
 - Minor formatting and other bugs.
 
-2.0.4 (5/7/2018)
+2.0.4 (05/07/2018)
 -----
 
 New features:
@@ -111,7 +116,7 @@ Bug fixes:
 - Fix for citeinfo DOIs not loading correctly.
 
 
-2.0.3 (2/22/2018)
+2.0.3 (02/22/2018)
 -----
 New features:
 - Updates to allow cross platform (Mac) compatibility.
@@ -125,7 +130,7 @@ Bug fixes:
 - Add warning message when opening a file with multiple domain types.
 
 
-2.0.2 (1/25/2018)
+2.0.2 (01/25/2018)
 -----
 New features:
 - Type in a place name in the Description of Geographic Extent to auto-populate bounding Coordinates.
