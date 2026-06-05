@@ -24,8 +24,13 @@ dependencies:
   - requests
   - beautifulsoup4
   - pyyaml
-  - pyqt            
-  - pyqtwebengine  
+  - pyqt
+  - pyqtwebengine
+  # Test dependencies
+  - pytest
+  - pytest-qt
+  - pytest-mock
+  - pytest-cov
   - pip:
       - sciencebasepy
       - pip-system-certs

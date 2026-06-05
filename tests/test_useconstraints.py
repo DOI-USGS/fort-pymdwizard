@@ -28,13 +28,15 @@ def test_useconstraints_to_xml(qtbot):
     widget = useconst.Useconst()
     qtbot.addWidget(widget)
 
+    expected_text = "These data are marked with a Creative Commons Zero v1.0 Universal (CC0-1.0) public domain dedication and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
+
     assert (
         widget.findChild(QPlainTextEdit, "fgdc_useconst").toPlainText()
-        == "These data are marked with a Creative Commons Zero v1.0 Universal (CC0-1.0) public domain dedication and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations."
+        == expected_text
     )
 
     uc = widget.to_xml()
     assert (
         etree.tostring(uc, pretty_print=True).decode()
-        == "<useconst>TThese data are marked with a Creative Commons Zero v1.0 Universal (CC0-1.0) public domain dedication and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>\n"
+        == f"<useconst>{expected_text}</useconst>\n"
     )

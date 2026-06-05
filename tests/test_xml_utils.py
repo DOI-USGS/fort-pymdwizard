@@ -3,6 +3,7 @@
 
 
 from lxml import etree
+import pytest
 
 from pymdwizard.core import xml_utils
 
@@ -31,6 +32,7 @@ def test_node_to_dict():
     assert result["fgdc_cntperp"]["fgdc_cntper"] == "Colin Talbert"
 
 
+@pytest.mark.skip(reason="ScienceBase integration has been removed from the GUI")
 def test_url_read():
     url = "https://www.sciencebase.gov/catalog/file/get/57d8779de4b090824ff9acfb?f=__disk__e1%2F7c%2Fa7%2Fe17ca734bf9ffd9ae0abeaaf0da208d457f72b3c&allowOpen=true"
     md = xml_utils.XMLRecord(url)

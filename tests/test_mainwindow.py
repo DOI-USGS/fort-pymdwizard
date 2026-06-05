@@ -24,13 +24,13 @@ from PyQt5.QtWidgets import QPlainTextEdit
 from pymdwizard.gui import MainWindow
 
 
-def test_mainwindow_from_xml(qtbot, mock):
+def test_mainwindow_from_xml(qtbot, mocker):
 
     widget = MainWindow.PyMdWizardMainForm()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/GenericFGDCTemplate_FGDCtemp.xml"
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
+    with mocker.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
         widget.open_file(test_record_fname)
 
         assert (
@@ -51,15 +51,15 @@ def test_mainwindow_to_xml(qtbot):
     assert dc.xpath("dataqual/logic")[0].text == "this is a test"
 
 
-def test_validation(qtbot, mock):
+def test_validation(qtbot, mocker):
 
     widget = MainWindow.PyMdWizardMainForm()
     qtbot.addWidget(widget)
 
     test_record_fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No), \
-         mock.patch.object(QMessageBox, "warning", return_value=QMessageBox.Cancel), \
-         mock.patch.object(QMessageBox, "information", return_value=QMessageBox.Cancel):
+    with mocker.patch.object(QMessageBox, "question", return_value=QMessageBox.No), \
+         mocker.patch.object(QMessageBox, "warning", return_value=QMessageBox.Cancel), \
+         mocker.patch.object(QMessageBox, "information", return_value=QMessageBox.Cancel):
         widget.open_file(test_record_fname)
         widget.validate()
         assert len(widget.error_list.errors) == 1
@@ -83,15 +83,15 @@ def test_splash(qtbot):
     MainWindow.show_splash("2.1.9")
 
 
-def test_misc(qtbot, mock):
+def test_misc(qtbot, mocker):
     widget = MainWindow.PyMdWizardMainForm()
     qtbot.addWidget(widget)
 
-    with mock.patch.object(QMessageBox, "about", return_value=QMessageBox.Ok):
+    with mocker.patch.object(QMessageBox, "about", return_value=QMessageBox.Ok):
         widget.about()
 
 
-def test_settings(qtbot, mock):
+def test_settings(qtbot, mocker):
 
     settings = qt_api.QtCore.QSettings("USGS_2.2.0", "pymdwizard_2.2.0")
     settings.setValue("template_fname", "tests/data/USGS_ASC_PolarBears_FGDC.xml")
@@ -101,7 +101,7 @@ def test_settings(qtbot, mock):
 
     widget.get_save_name = lambda: "test_output.xml"
 
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
+    with mocker.patch.object(QMessageBox, "question", return_value=QMessageBox.No):
         widget.new_record()
 
         md = widget.metadata_root.to_xml()
