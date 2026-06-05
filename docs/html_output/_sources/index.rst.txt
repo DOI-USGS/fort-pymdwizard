@@ -14,10 +14,10 @@ and appropriately use the data in different contexts. Metadata is crucial to sup
 searchable information about data that otherwise is not directly incorporated within 
 data and therefore undiscoverable. Metadata in its most basic form includes 
 information about the data’s origin, creators, accuracy, availability, and 
-distribution. Metadata is necessary for the appropriate interpretation and reuse of 
+distribution. Metadata is necessary for the appropriate interpretation and reuse of
 the data, and importantly provides the necessary definitions of data content. The
-`Metadata section <https://www2.usgs.gov/datamanagement/describe/metadata.php>`_ 
-of the USGS Data Management website has information on helpful metadata resources, 
+`Metadata section <https://www.usgs.gov/data-management/describe-metadatadocumentation>`_
+of the USGS Data Management website has information on helpful metadata resources,
 as well as best practices for metadata creation.
 
 The Metadata Wizard is designed to better standardize the workflow of metadata creation 
@@ -31,7 +31,7 @@ Users should be advised that information not stored in CSDGM elements (such as c
 elements, or elements belonging to different standards) will be lost upon saving in the 
 Metadata Wizard. Users should also exercise caution with metadata records that contain 
 information in less-used CSDGM elements that are not accessible in the tool. `Effort has 
-been made <https://github.com/usgs/fort-pymdwizard/issues/6>`_ to retain information 
+been made <https://github.com/DOI-USGS/fort-pymdwizard/issues/6>`_ to retain information 
 stored in some of these elements, but no guarantee can be made that information stored in 
 elements not accessible in the tool will be retained.
 
@@ -54,7 +54,6 @@ Installation Methods
    Windows Installation
    Mac Installation
    Installing from Source
-   Installing ArcMap Toolbox
    
 Standard Usage
 ===============

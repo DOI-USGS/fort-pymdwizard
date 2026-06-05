@@ -82,4 +82,4 @@ Mirrored into GitHub:
 Current user documentation:
     See: https://doi-usgs.github.io/fort-pymdwizard/
 Examples of use in other scripts:
-    https://github.com/usgs/fort-pymdwizard/tree/master/examples
+    https://github.com/DOI-USGS/fort-pymdwizard/tree/master/examples

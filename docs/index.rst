@@ -14,10 +14,10 @@ and appropriately use the data in different contexts. Metadata is crucial to sup
 searchable information about data that otherwise is not directly incorporated within 
 data and therefore undiscoverable. Metadata in its most basic form includes 
 information about the data’s origin, creators, accuracy, availability, and 
-distribution. Metadata is necessary for the appropriate interpretation and reuse of 
+distribution. Metadata is necessary for the appropriate interpretation and reuse of
 the data, and importantly provides the necessary definitions of data content. The
-`Metadata section <https://www.usgs.gov/data-management/describe-metadatadocumentation>`_ 
-of the USGS Data Management website has information on helpful metadata resources, 
+`Metadata section <https://www.usgs.gov/data-management/describe-metadatadocumentation>`_
+of the USGS Data Management website has information on helpful metadata resources,
 as well as best practices for metadata creation.
 
 The Metadata Wizard is designed to better standardize the workflow of metadata creation 

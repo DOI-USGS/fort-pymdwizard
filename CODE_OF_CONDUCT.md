@@ -1,9 +1,9 @@
 # Contributor Covenant Code of Conduct
 
 All contributions to- and interactions surrounding- this project will abide by
-the [USGS Code of Scientific Conduct][1].
+the [USGS Fundamental Science Practices][1].
 
-[1]: https://www.doi.gov/sites/doi.gov/files/migrated/scientificintegrity/upload/DOI-Code-of-Scientific-and-Scholarly-Conduct-Poster-December-2014.pdf 
+[1]: https://www.usgs.gov/about/organization/science-support/science-quality-and-integrity/fundamental-science-practices
 
 ## Our Pledge
 
@@ -39,13 +39,13 @@ This Code of Conduct applies both within project spaces and in public spaces whe
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at talbertc@usgs.gov. The project team will review and investigate all complaints, and will respond in a way that it deems appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at <ask-sdm@usgs.gov>. The project team will review and investigate all complaints, and will respond in a way that it deems appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
 
 Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
 ## Attribution
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4, available at [http://contributor-covenant.org/version/1/4][version]
+This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4, available at [https://www.contributor-covenant.org/version/1/4/code-of-conduct/][version]
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+[homepage]: https://www.contributor-covenant.org
+[version]: https://www.contributor-covenant.org/version/1/4/code-of-conduct/

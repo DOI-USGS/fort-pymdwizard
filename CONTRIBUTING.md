@@ -59,7 +59,7 @@ Use the file fort-pymdwizard/environment.yml to install requirements in new dev 
 
 [1]: https://github.com/DOI-USGS/fort-pymdwizard/issues
 [2]: https://www.python.org/dev/peps/pep-0008/
-[3]: https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
+[3]: https://numpydoc.readthedocs.io/en/latest/format.html
 [6]: https://pytest.org
-[7]: https://help.github.com/articles/fork-a-repo/
-[8]: https://help.github.com/articles/about-pull-requests/
+[7]: https://docs.github.com/en/get-started/quickstart/fork-a-repo
+[8]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
