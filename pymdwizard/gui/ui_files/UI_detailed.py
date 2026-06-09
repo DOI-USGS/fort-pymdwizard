@@ -77,6 +77,13 @@ class Ui_fgdc_detailed(object):
         )
         self.verticalLayout.addItem(spacerItem)
         self.verticalLayout_2.addWidget(self.fgdc_enttyp)
+        self.btn_add_attribute = QtWidgets.QPushButton(self.frame)
+        self.btn_add_attribute.setStyleSheet(
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 100, 0, 100), stop:1 rgba(0, 100, 0, 50));\n"
+            ""
+        )
+        self.btn_add_attribute.setObjectName("btn_add_attribute")
+        self.verticalLayout_2.addWidget(self.btn_add_attribute)
         self.btn_remove = QtWidgets.QPushButton(self.frame)
         self.btn_remove.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));\n"
@@ -173,6 +180,8 @@ class Ui_fgdc_detailed(object):
         self.label_3.setText(_translate("fgdc_detailed", "Dataset Description"))
         self.label_4.setText(_translate("fgdc_detailed", "Definition Source"))
         self.fgdc_enttypds.setText(_translate("fgdc_detailed", "Producer defined"))
+        self.btn_add_attribute.setText(_translate("fgdc_detailed", "Add Attribute (Column)"))
+        self.btn_add_attribute.setToolTip(_translate("fgdc_detailed", "Add a new empty attribute (column) to this dataset"))
         self.btn_remove.setText(_translate("fgdc_detailed", "Remove this Detailed"))
         self.label_5.setToolTip(_translate("fgdc_detailed", "Required"))
         self.label_5.setText(

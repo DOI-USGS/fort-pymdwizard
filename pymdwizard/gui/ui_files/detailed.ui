@@ -148,6 +148,20 @@ This section will be autopopulated with appropriate content pulled from the data
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btn_add_attribute">
+        <property name="styleSheet">
+         <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 100, 0, 100), stop:1 rgba(0, 100, 0, 50));
+</string>
+        </property>
+        <property name="text">
+         <string>Add Attribute (Column)</string>
+        </property>
+        <property name="toolTip">
+         <string>Add a new empty attribute (column) to this dataset</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btn_remove">
         <property name="styleSheet">
          <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));

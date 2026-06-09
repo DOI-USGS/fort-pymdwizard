@@ -123,6 +123,7 @@ class Detailed(WizardWidget):  #
 
         # Connect event handlers.
         self.ui.btn_browse.clicked.connect(self.browse)
+        self.ui.btn_add_attribute.clicked.connect(self.add_attribute)
         self.ui.fgdc_enttypl.textChanged.connect(self.update_tooltip)
 
         # Set the default source definition.
@@ -209,6 +210,33 @@ class Detailed(WizardWidget):  #
             self.EA.ui.fgdc_eainfo.setTabToolTip(cur_index, cur_text)
         except Exception:
             pass
+
+    def add_attribute(self):
+        """
+        Description:
+            Adds a new empty attribute (column) via button click.
+            Delegates to the existing context menu functionality.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            None
+
+        Workflow:
+            Uses the same logic as the "Add attribute (column)"
+            context menu option in attributes.py.
+
+        Notes:
+            None
+        """
+        from pymdwizard.gui import mdattr
+
+        # Use the existing add attribute logic from attributes.py contextMenuEvent
+        new_attr = mdattr.Attr(parent=self.attributes)
+        self.attributes.append_attr(new_attr)
+        self.attributes.minimize_children()
+        new_attr.supersize_me()
 
     def populate_from_fname(self, fname):
         """
