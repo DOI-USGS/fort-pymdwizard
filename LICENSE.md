@@ -1,70 +1,67 @@
-## MetadataWizard License
+# License
 
+Unless otherwise noted, this project work is in the public domain in the United States because it is a work of the United States Geological Survey, an agency of the United States Department of Interior. For more information, see the official USGS copyright policy at
+https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits
 
+Additionally, the USGS waives all copyright and related rights in the work
+worldwide through the CC0 1.0 Universal public domain dedication.
 
-CC0 1.0 Universal
+## CC0 1.0 Universal Summary
 
+This is a human-readable summary of the [Legal Code (read the full text)][1].
 
+### No Copyright
 
-This software and associated documentation files are works of The United
-States Department of the Interior (collectively, the "Software") and are in
-the public domain of the United States.
+The person or entity who associated a work with this deed has dedicated the
+work to the public domain by waiving all of his or her rights to the work
+worldwide under copyright law, including all related and neighboring rights,
+to the extent allowed by law.
 
+You can copy, modify, distribute and perform the work, even for commercial
+purposes, all without asking permission.
 
+### Other Information
 
-To the extent possible under applicable law, The United States Department of
-the Interior has dedicated the Software to the public domain worldwide by
-waiving all of its rights to the Software worldwide under copyright law,
-including all related and neighboring rights.
+In no way are the patent or trademark rights of any person affected by CC0,
+nor are the rights that other persons may have in the work or in how the
+work is used, such as publicity or privacy rights.
 
+Unless expressly stated otherwise, the person who associated a work with
+this deed makes no warranties about the work, and disclaims liability for
+all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the
+author or the affirmer.
 
-
-You may use, copy, modify, distribute, and perform the Software, even for
-commercial purposes, without restriction.
-
-
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-UNITED STATES DEPARTMENT OF THE INTERIOR, THE UNITED STATES GOVERNMENT, THE
-AUTHORS, OR THE COPYRIGHT HOLDERS (AS APPLICABLE) BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
-OR OTHER DEALINGS IN THE SOFTWARE
-
-
+[1]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 
 ## Python Libraries, Software Dependencies and Licensing
 
-
-
-The Software includes Python packages
-
-
+The Metadata Wizard installer contains a complete Python environment (see 'environment.yml'). The environment's Python packages have individual licenses, as listed below.
 
 |**Library Name**|**License**|**Description/Use**|
 |-|-|-|
-|Python 3.13.11|Python software foundation license agreement for Python 3.13.11|Many of the Python base packages are used throughout the Metadata Wizard software.|
-|PyQt|General Public License (GPL)|PyQt6 is used for the user interface (UI) development.|
-|lxml|BSD|XML reading, modification, and writing|
-|defusedxml|Python Software Foundation License (PSFL)|XML reading, modification, and writing|
+|Python 3.13|Python software foundation license agreement for Python 3.13|Many of the Python base packages are used throughout the Metadata Wizard software.|
+|PyQt|General Public License (GPL v3)|PyQt5 is used for the user interface (UI) development.|
+|pyqtwebengine|General Public License (GPL v3)|Web engine support for PyQt5 applications.|
+|lxml|BSD-3-Clause|XML reading, modification, and writing|
 |gdal/osgeo|Massachusetts Institute of Technology (MIT)|Geospatial Data Abstract Library used for manipulating geospatial data sets. This includes the GDAL (raster) and ogr (vector) references. Dependencies for this library include libgdal, proj4 and numpy.|
-|requests|Apache Software License (Apache 2.0)|Web service requests|
+|numpy|BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0|Numerical computing and array operations.|
+|requests|Apache-2.0|Web service requests|
 |beautifulsoup4|Massachusetts Institute of Technology (MIT)|HTML parsing|
-|fiona|BSD 3-Clause License|Vector spatial data read and introspection.|
-|rasterio|BSD 3-Clause License|Raster spatial data read and introspection.|
-|leaflet|BSD|Interactive HTML/JavaScript Map generation.|
+|fiona|BSD-3-Clause|Vector spatial data read and introspection.|
+|rasterio|BSD-3-Clause|Raster spatial data read and introspection.|
+|leaflet|BSD 2-Clause License|Interactive HTML/JavaScript Map generation.|
 |habanero|Massachusetts Institute of Technology (MIT)|Obtain citation information from digital object identifiers.|
-|folium|Massachusetts Institute of Technology (MIT)|Used by The GRIT to provide mapping capabilities in the UI and for reports generated by the software.|
-|matplotlib|Berkeley Software Distribution (BSD) based on the Python Software Foundation (PSF) license and Non-BSD compatible licenses (for example, LGPL) for matplotlib toolkits (for example, basemap).|Used by the GRIT to provide mapping capabilities in the UI and for reports generated by the software.|
-|pyproj|Internet Systems Consortium (ISC), functionally equivalent to the BSD-2-Clause and MIT|Used by the GRIT to work with map projections.|
-|docx|Massachusetts Institute of Technology (MIT)|Create Microsoft Word metadata review documents|
-|pandas, geopandas|BSD 3-Clause License|Tabular data reading and manipulation, geospatial data reading and manipulation|
-|jupyterlab|BSD 3-Clause License|Notebook based scripting and automation|
+|folium|Massachusetts Institute of Technology (MIT)|Used to provide mapping capabilities in the UI and for reports generated by the software.|
+|matplotlib|Python Software Foundation License|Used to provide mapping capabilities in the UI and for reports generated by the software.|
+|pyproj|Massachusetts Institute of Technology (MIT)|Used to work with map projections.|
+|python-docx|Massachusetts Institute of Technology (MIT)|Create Microsoft Word metadata review documents|
+|pandas, geopandas|BSD-3-Clause|Tabular data reading and manipulation, geospatial data reading and manipulation|
+|jupyterlab|BSD License|Notebook based scripting and automation|
 |sciencebasepy|This USGS product is considered to be in the U.S. public domain, and is licensed under CC0 1.0. |Included for scripting of USGS ScienceBase interaction|
-|bokeh|Freely Distributable, OSI Approved (New BSD)|Included for scripting of data visualization|
-|seaborn|BSD 3-Clause License|Included for scripting of statistical data visualization|
+|cryptography|Apache-2.0 OR BSD-3-Clause|Cryptographic recipes and primitives for secure communications.|
+|GitPython|BSD-3-Clause|Python library for interacting with Git repositories.|
+|laspy|BSD-2-Clause|Reading and writing LAS/LAZ files for LiDAR data.|
 
 
 

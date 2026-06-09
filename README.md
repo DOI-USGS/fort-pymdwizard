@@ -52,7 +52,11 @@ Kyle D. Enns -- https://orcid.org/0000-0001-7675-697X
 Acknowledgements:
 ----------------
 The Metadata Wizard was developed by the data management team at the USGS Fort Collins Science Center, with support from the USGS Science Analytics and Synthesis (SAS), and the USGS Community for Data Integration (CDI).<br><br>
-Ongoing support provided by the USGS Science Analytics and Synthesis (SAS) branch<br><br>
+Ongoing support provided by the USGS Science Analytics and Synthesis (SAS) branch<br>
+
+Use of Artificial Intelligence:
+----------------
+Claude Code (Claude Sonnet 4.5) was used as an AI pair-programming assistant during application development. All code was reviewed, tested, and validated by the authors.
 
 Disclaimer:
 -----------
