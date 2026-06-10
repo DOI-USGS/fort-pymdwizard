@@ -8,17 +8,14 @@ of the project maintainers for help and encouragement.
 
 Issues
 ======
-Questions and Bugs can be submitted on the GitHub [issues page][1]. Before creating 
-a new issue, please take a moment to search open and closed issues
-and make sure a similar issue does not already exist. If one does exist, you
-can comment on the existing issue to show your support for that issue.
+Questions and Bugs can be submitted on the GitHub [issues page][1].
 
 
 Code Conventions
 ================
 All code is compatible with 3.10+.
 We use [PEP8][2] conventions for all Python code, and recommend running 
-a code checker prior to submitting a pull request.  Black is the recommended
+a code checker prior to submitting a pull request. Black is the recommended
 code formatter.
 
 For docstrings we're using the [numpy format][3]
