@@ -1,4 +1,4 @@
-#VS Code launch file (D. Ignizio added 6/25/24)
+#VS Code launch file
 .vscode
 
 # Byte-compiled / optimized / DLL files
@@ -91,3 +91,6 @@ windows
 #Mac
 .DS_Store
 # environment.yml
+
+# Claude Code personal workspace
+.claude/
