@@ -10,16 +10,16 @@
       "usageType": "openSource",
       "licenses": [
         {
-          "name": "Creative Commons Attribution 4.0 International",
-          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.2.0/LICENSE.md"
+          "name": "Public Domain, CC0-1.0", 
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/blob/main-v2.2/LICENSE.md"
         }
       ]
     },
 
-    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.2.0",
-    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/v2.2.0/fort-pymdwizard-v2.2.0.zip",
-    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/v2.2.0/DISCLAIMER.md",
-    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/v2.2.0",
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/main-v2.2",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/main-v2.2/fort-pymdwizard-main-v2.2.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/blob/main-v2.2/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard.git",
     "vcs": "git",
 
     "laborHours": 0,
@@ -27,8 +27,9 @@
     "tags": [
       "metadata",
       "FGDC",
-      "xml",
-      "BDP"
+      "CSDGM",
+      "BDP",
+      "xml"
     ],
 
     "languages": [
@@ -45,7 +46,7 @@
     },
 
     "date": {
-      "metadataLastUpdated": "2026-06-04"
+      "metadataLastUpdated": "2026-06-11"
     }
   },
     {
