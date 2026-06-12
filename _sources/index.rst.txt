@@ -54,7 +54,6 @@ Installation Methods
    Windows Installation
    Mac Installation
    Installing from Source
-   Installing ArcMap Toolbox
    
 Standard Usage
 ===============
