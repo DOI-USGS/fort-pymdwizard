@@ -11,13 +11,13 @@ Instructions for installing pymdwizard from source are intended for someone with
 
 |
 
-1.  Install `Anaconda <https://www.continuum.io/downloads>`_ or `Miniconda <https://conda.io/miniconda.html>`_.
+1.  Install `Miniforge <https://conda-forge.org/download/>`_.
 
-	 *While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.*
-	  
+	 *Miniforge is a minimal conda installer that uses conda-forge as the default channel.*
+
 |
 
-2.  Open the Anaconda command window.
+2.  Open the Miniforge Prompt (Windows) or terminal (Linux/Mac).
 
 |
 

@@ -36,7 +36,7 @@ The user will be then need to specify what directory would like to open Jupyter 
 will be a project workspace or other folder containing the notebook files (.ipynb) they would like to run or edit.
 The default directory contains example notebooks that are described below. Choose **Browse** to
 to navigate to a specific project folder or specify one of the last 10 directories used from the dropdown box.
-If you have Anaconda installed and have set up environments with specific packages installed,
+If you have Miniforge (or Anaconda/Miniconda) installed and have set up environments with specific packages installed,
 you can choose one from the combobox below to use for this Jupyter session.
 
 Click **Launch** to start Jupyter, which will appear momentarily in your default web browser.
@@ -44,7 +44,7 @@ Click **Launch** to start Jupyter, which will appear momentarily in your default
 .. figure:: ../img/JupyterBrowse.png
 	:alt: Launch Jupyter Browse
 
-	Prompt for choosing where to start the Notebook server and optionally which Anaconda env to use.
+	Prompt for choosing where to start the Notebook server and optionally which conda env to use.
 
 Example Notebooks
 -----------------
