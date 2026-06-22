@@ -37,4 +37,3 @@ dependencies:
       - GitPython
       - python-docx
       - laspy
-prefix: pymdwizard
