@@ -162,7 +162,7 @@ class Detailed(WizardWidget):  #
 
         # Define the file filter string.
         filter = (
-            "data files (*.csv *.txt *.shp *.xls *.xlsm *.xlsx "
+            "data files (*.csv *.txt *.shp *.dbf *.xls *.xlsm *.xlsx "
             "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
             "*.las *.laz)"
         )
@@ -320,6 +320,19 @@ class Detailed(WizardWidget):  #
                 shape_attr.store_current_content()
                 shape_attr.regularsize_me()
 
+        # --- DBF File Handling ---
+        elif ext.lower() == ".dbf":
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname + " Attribute Table")
+            self.ui.fgdc_enttypd.setPlainText(
+                "Table containing attribute information "
+                "associated with the data set."
+            )
+
+            # Open dataset.
+            df = data_io.read_dbf(fname)
+            self.attributes.load_df(df)
+
         # --- Excel File Handling ---
         elif ext.lower() in [".xlsm", ".xlsx", ".xls"]:
             if sheet_name is None:
@@ -460,7 +473,7 @@ class Detailed(WizardWidget):  #
         # --- Unsupported File Format ---
         else:
             msg = (
-                "Can only read '.csv', '.txt', '.shp', '.las.', "
+                "Can only read '.csv', '.txt', '.shp', '.dbf', '.las.', "
                 "raster files, and Excel files here"
             )
             QMessageBox.warning(self, "Unsupported file format", msg)
