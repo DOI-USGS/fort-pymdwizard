@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.2.0 (06/04/2026)
+2.2.0 (07/02/2026)
 -----
 
 Updates to associated Python environment (built into the Metadata Wizard installer)
@@ -33,9 +33,7 @@ Updates and bug fixes in Metadata Wizard GUI
 19. Added gate for in-app updates only if Python ≥ 3.13 (prevents older installs from breaking).
 20. Improved ITIS window positioning to center on main application window and support multi-monitor setups. Updated ITIS web service URL to use HTTPS.
 21. Fixed bounding box map not updating when importing spatial details from a different dataset via 'Browse to dataset' button.
-
-
-
+22. Enabled parsing of .dbf file format in the 'Entity and Attributes' tab. DBF files are the tabular components of shapefiles.
 
 2.1.1 (06/09/2025)
 -----
