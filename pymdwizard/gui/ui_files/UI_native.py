@@ -78,7 +78,7 @@ class Ui_Form(object):
         self.label.setText(
             _translate(
                 "Form",
-                "Describe the computer operating system and software(including version) used to produce this data set, as well as file name and data size.",
+                "Describe the computer operating system and software (including version) used to produce this data set, in addition to file name and data size. Or, reference the software release and files that contain this information.",
             )
         )
 
