@@ -9,13 +9,14 @@ License:            CC0 1.0 Universal
 
 PURPOSE
 ------------------------------------------------------------------------------
-Module contains functionality for direct editing of USGS ScienceBase metadata
-files
+Legacy module placeholder. Direct editing of USGS ScienceBase metadata files
+has been removed from the Metadata Wizard.
 
 
 NOTES
 ------------------------------------------------------------------------------
-None
+The ScienceBase integration functionality was deprecated and removed. This
+stub remains to avoid breaking imports in older code.
 """
 
 # Non-standard python libraries.
@@ -43,15 +44,6 @@ def has_pysb(func):
             PYSBMissing if PYSB is not found.
     """
 
-    try:
-        # import pysb  # Attempt to import the PYSB module  ?????????????????????????????????????
-        import sciencebasepy
-    except ImportError:
-        raise PYSBMissing(
-            "This functionality requires the ScienceBase "
-            "Python package (pysb) which was not found in this "
-            "environment."
-        )
-
-    # Return the original function if PYSB is available.
+    # sciencebasepy is already imported at module level (line 23)
+    # If not available, the module would have failed to load
     return func

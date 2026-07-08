@@ -227,7 +227,7 @@ def clean_error_message(message, fgdc_lookup=None):
     # Check for missing child element errors.
     if "Missing child element" in message:
         clean_message = "The {} is missing the expected element(s) '{}'"
-        clean_message.format(parts[1][:-1], parts[-2])
+        clean_message = clean_message.format(parts[1][:-1], parts[-2])
     # Check for validation pattern errors
     elif (
         r"' is not accepted by the pattern '\s*\S(.|\n|\r)*'" in message

@@ -873,12 +873,12 @@ class PyMdWizardMainForm(QMainWindow):
         elif section == "metainfo":
             parent_section = self.metadata_root.switch_section(5)
 
-            # Clear previous super-highlight safely.
-            if self.last_highlight is not None and qwidget_is_valid(self.last_highlight):
-                try:
-                    self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
-                except RuntimeError:
-                    pass
+        # Clear previous super-highlight safely.
+        if self.last_highlight is not None and qwidget_is_valid(self.last_highlight):
+            try:
+                self.highlight_error(self.last_highlight, self.last_highlight.toolTip())
+            except RuntimeError:
+                pass
 
         widget_lookup = self.metadata_root.make_tree(
             widget=self.metadata_root

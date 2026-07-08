@@ -26,7 +26,6 @@ import math
 
 # Non-standard python libraries.
 try:
-    import numpy as np
     import pandas as pd
 
     # Address warning: Warning 3: Cannot find header.dxf (GDAL_DATA is not

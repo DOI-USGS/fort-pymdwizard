@@ -10,7 +10,7 @@ License:            CC0 1.0 Universal
 PURPOSE
 ------------------------------------------------------------------------------
 Provide a pyqt widget for the FGDC component with a shortname matching this
-files name.
+file's name.
 
 
 NOTES
