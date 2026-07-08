@@ -4,8 +4,8 @@
 The MetadataWizard (pymdwizard) software was developed by the U.S. Geological
 Survey Fort Collins Science Center.
 
-License:            Creative Commons Attribution 4.0 International (CC BY 4.0)
-                    https://creativecommons.org/licenses/by/4.0/
+License:            CC0 1.0 Universal
+                    https://creativecommons.org/publicdomain/zero/1.0/
 
 PURPOSE
 ------------------------------------------------------------------------------
