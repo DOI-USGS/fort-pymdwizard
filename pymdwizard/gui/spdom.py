@@ -283,11 +283,7 @@ class Spdom(WizardWidget):
         # with CONUS defaults before map is loaded.
         self._set_initial_map_bounds()
 
-        # Determine which map file to load based on OS. ?????????????????????????????????????????? TEST MAC AND REVISE (I do not think we need separate files)
-        if platform.system() == "Darwin":
-            map_fname = utils.get_resource_path("leaflet/map_mac.html")
-        else:
-            map_fname = utils.get_resource_path("leaflet/map.html")
+        # Load the interactive map HTML file
         map_fname = utils.get_resource_path("leaflet/map.html")
 
         # Create an instance of the custom page. Disable javascript console
