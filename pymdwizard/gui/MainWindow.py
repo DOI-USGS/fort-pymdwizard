@@ -949,8 +949,9 @@ class PyMdWizardMainForm(QMainWindow):
         ]:
             self.highlight_tab(widget)
 
-        color = "rgb(225, 67, 94)"
-        lw = "border: 3px solid black;" if superhot else "border: 2px solid red;"
+        color = "rgb(255, 205, 210)" if superhot else "rgb(254, 226, 226)"  # Darker pink when clicked
+        lw = "border: 4px solid rgb(185, 28, 28);" if superhot else "border: 2px solid rgb(248, 113, 113);"
+        # Active (superhot): darker background + thick dark red border / Regular: lighter red border
 
         try:
             widget.setToolTip(f"<b>Validation error</b><br/>{error_msg}")
