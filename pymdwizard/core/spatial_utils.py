@@ -809,7 +809,7 @@ def planar(params):
         top_node = None  # Default case if no zone information is found
 
     # Append the determined top node to the <planar> node
-    if top_node:  # Only append if a top_node was determined
+    if top_node is not None:  # Only append if a top_node was determined
         planar.append(top_node)
 
     # Create child nodes within the <planar> structure.
