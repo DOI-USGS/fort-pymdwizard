@@ -548,14 +548,16 @@ def get_layer(fname, feature_class=None):
     """
     if fname.endswith(".shp"):
         driver = ogr.GetDriverByName("ESRI Shapefile")
-        global dataset
         dataset = driver.Open(fname)
-        return dataset.GetLayer()
+        layer = dataset.GetLayer()
+        layer._dataset_ref = dataset  # prevent GC of parent dataset
+        return layer
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
-        global gdb
         gdb = driver.Open(fname, 0)
-        return gdb.GetLayerByName(feature_class)
+        layer = gdb.GetLayerByName(feature_class)
+        layer._dataset_ref = gdb  # prevent GC of parent dataset
+        return layer
     elif fname.endswith(".las") or fname.endswith(".laz"):
         fh = laspy.open(fname)
         return fh
