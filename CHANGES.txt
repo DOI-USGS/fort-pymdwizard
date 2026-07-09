@@ -34,6 +34,8 @@ Updates and bug fixes in Metadata Wizard GUI
 20. Improved ITIS window positioning to center on main application window and support multi-monitor setups. Updated ITIS web service URL to use HTTPS.
 21. Fixed bounding box map not updating when importing spatial details from a different dataset via 'Browse to dataset' button.
 22. Enabled parsing of .dbf file format in the 'Entity and Attributes' tab. DBF files are the tabular components of shapefiles.
+23. Improved validation error highlighting color scheme for better readability and clearer visual feedback when errors are clicked.
+24. Fixed validation error messages that were showing blank placeholders instead of element names.
 
 2.1.1 (06/09/2025)
 -----
