@@ -203,7 +203,7 @@ class WizardWidget(QWidget):
             None
         """
 
-        # Update self.xml appropriately (probably a full reace).
+        # Update self.xml appropriately (probably a full replace).
         print("_from_xml method Must be overridden in subclass")
 
     def make_tree(self, widget):
