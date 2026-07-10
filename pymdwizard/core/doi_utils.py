@@ -26,6 +26,7 @@ from urllib.parse import urlparse
 # Non-standard python libraries.
 try:
     import requests
+    import httpx
     from habanero import cn
 except ImportError as err:
     raise ImportError(err, __file__)
@@ -115,30 +116,59 @@ def get_doi_citation_datacite(doi):
         dict: A dictionary with information pulled from DataCite.
     """
 
-    # Define endpoint.
-    endpoint = "https://api.datacite.org/works"
+    # Define endpoint (updated to DataCite REST API v2 in July 2026).
+    # The legacy /works endpoint was deprecated and returned HTTP 410 Gone.
+    endpoint = "https://api.datacite.org/dois"
 
     # Make a GET request to the DataCite API using the DOI.
     response = utils.requests_pem_get(endpoint + "/" + doi)
 
-    # Load the response JSON and extract citation attributes.
-    cite_data = json.loads(response.text)["data"]["attributes"]
+    # Load the response JSON.
+    response_data = json.loads(response.text)
+    cite_data = response_data["data"]["attributes"]
+    relationships = response_data["data"].get("relationships", {})
 
-    # Standardize key names from API response.
-    if "container-title" not in cite_data:
-        cite_data["container-title"] = cite_data.pop("container_title")
-    if "data-center-id" not in cite_data:
-        cite_data["data-center-id"] = cite_data.pop("data_center_id")
+    # Transform new API format to match expected format for compatibility.
+    # Extract client ID (replaces old data-center-id).
+    client_id = None
+    if "client" in relationships:
+        client_id = relationships["client"]["data"]["id"]
+        cite_data["data-center-id"] = client_id
+
+    # Transform creators to author format.
+    if "creators" in cite_data:
+        cite_data["author"] = [
+            {"literal": creator.get("name", "")}
+            for creator in cite_data["creators"]
+        ]
+
+    # Extract title from titles array.
+    if "titles" in cite_data and cite_data["titles"]:
+        cite_data["title"] = cite_data["titles"][0].get("title", "")
+
+    # Set container-title (empty for most USGS data releases).
+    cite_data["container-title"] = cite_data.get("container", {}).get("title")
 
     # Set publisher and URL fields.
-    cite_data["publisher"] = cite_data["container-title"]
     cite_data["URL"] = "https://doi.org/{}".format(cite_data["doi"])
 
-    # Determine geoform and publication place based on data center ID.
-    if "data-center-id" in cite_data and "usgs" in cite_data["data-center-id"]:
+    # Handle publication date - use publicationYear.
+    if "publicationYear" in cite_data:
+        cite_data["published"] = str(cite_data["publicationYear"])
+
+    # Determine geoform and publication place based on client ID.
+    if client_id and "usgs" in client_id:
         cite_data["container-title"] = None
         cite_data["pubplace"] = "n/a"
-        cite_data["geoform"] = "dataset"
+        # Use resourceType from types if available.
+        types = cite_data.get("types", {})
+        resource_type = types.get("resourceTypeGeneral", "Dataset")
+        if resource_type == "Dataset":
+            cite_data["geoform"] = "dataset"
+        elif resource_type == "Software":
+            cite_data["geoform"] = "application/service"
+        else:
+            cite_data["geoform"] = resource_type.lower()
     else:
         cite_data["geoform"] = "publication"
         cite_data["pubplace"] = "n/a"
@@ -169,11 +199,11 @@ def get_doi_citation(doi):
     try:
         # Try CrossRef API
         cite_data = get_doi_citation_crossref(doi)
-    except (requests.RequestException, KeyError, ValueError):
+    except (requests.RequestException, httpx.HTTPError, KeyError, ValueError):
         try:
             # Try DataCite API
             cite_data = get_doi_citation_datacite(doi)
-        except (requests.RequestException, KeyError, ValueError):
+        except (requests.RequestException, httpx.HTTPError, KeyError, ValueError):
             return None
 
     # Create XMLNode for citation info.
@@ -220,37 +250,48 @@ def get_doi_citation(doi):
     # Handle different publication dates in attempt to define a
     # complete YYYYMMDD for USGS publications.
     if len(pubdate_str) == 4:
-        has_created = \
-            "created" in cite_data and cite_data["created"]["date-parts"]
-        has_registered = \
-            "registered" in cite_data and cite_data["registered"]
+        # Try to get more detailed date from created or registered fields.
+        # Note: DataCite v2 API returns these as ISO 8601 strings, not date-parts.
+        has_created = "created" in cite_data and cite_data["created"]
+        has_registered = "registered" in cite_data and cite_data["registered"]
+
         if has_created:
             try:
-                # USGS Series.
-                pubdate_parts = cite_data.get("created").get("date-parts")[0]
-                pubdate_str = "".join(
-                    ["{:02d}".format(int(part)) for part in pubdate_parts])
-            except AttributeError:
+                created = cite_data.get("created")
+                # Handle both old format (dict with date-parts) and new format (ISO string).
+                if isinstance(created, dict) and "date-parts" in created:
+                    # Old CrossRef format.
+                    pubdate_parts = created.get("date-parts")[0]
+                    pubdate_str = "".join(
+                        ["{:02d}".format(int(part)) for part in pubdate_parts])
+                elif isinstance(created, str):
+                    # New DataCite format: "2015-10-20T19:44:14.000Z"
+                    pubdate_parts = created[:10].split("-")
+                    pubdate_str = "".join(
+                        ["{:02d}".format(int(part)) for part in pubdate_parts])
+            except (AttributeError, TypeError, ValueError):
                 pass
-        if has_registered:
+
+        if has_registered and len(pubdate_str) == 4:
             try:
-                # USGS data/software.
-                pubdate_parts = cite_data.get("registered")
-                pubdate_parts = pubdate_parts[:10].split("-")
-                pubdate_str = "".join(
-                    ["{:02d}".format(int(part)) for part in pubdate_parts])
-            except AttributeError:
+                registered = cite_data.get("registered")
+                # USGS data/software - registered is typically an ISO string.
+                if isinstance(registered, str):
+                    pubdate_parts = registered[:10].split("-")
+                    pubdate_str = "".join(
+                        ["{:02d}".format(int(part)) for part in pubdate_parts])
+            except (AttributeError, TypeError, ValueError):
                 pass
 
     XMLNode(tag="pubdate", parent_node=citeinfo, text=pubdate_str)
 
     # USGS data/software products (pubplace and geoform).
-    # Version--Edition unfortunately not tracked in data/software DOI.
+    # Note: geoform is already set in get_doi_citation_datacite() for DataCite sources.
+    # This section handles additional logic for USGS products.
     has_usgs_prod = \
         "data-center-id" in cite_data and cite_data["data-center-id"]
     if has_usgs_prod:
         data_cntr_id = cite_data["data-center-id"]
-        data_type = cite_data["resource-type-subtype"]
         if data_cntr_id == "usgs.prod":
             try:
                 usgs_url = cite_data["url"]
@@ -260,11 +301,22 @@ def get_doi_citation(doi):
             except AttributeError:
                 cite_data["pubplace"] = "UNKNOWN"
 
-            if data_type == "Dataset":
-                # User may want to change to vector, raster, etc.
-                cite_data["geoform"] = data_type
-            elif data_type == "Software":
-                cite_data["geoform"] = "application/service"
+            # Get resource type from types dict (DataCite v2 format).
+            if "types" in cite_data:
+                types = cite_data["types"]
+                resource_type = types.get("resourceTypeGeneral", "")
+                if resource_type == "Dataset":
+                    # User may want to change to vector, raster, etc.
+                    cite_data["geoform"] = "dataset"
+                elif resource_type == "Software":
+                    cite_data["geoform"] = "application/service"
+            # Fallback to old format if resource-type-subtype exists (CrossRef).
+            elif "resource-type-subtype" in cite_data:
+                data_type = cite_data["resource-type-subtype"]
+                if data_type == "Dataset":
+                    cite_data["geoform"] = data_type
+                elif data_type == "Software":
+                    cite_data["geoform"] = "application/service"
 
     # # Process details for USGS Series publications (pubplace, volume/issue).
     try:

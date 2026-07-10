@@ -142,21 +142,8 @@ def cert_setup(local_cert_file):
     # some point.
     alias_name = "DOIRootCA2"
 
-    if os.path.exists(local_cert_file):
-        resp = requests.get("https://google.com", verify=str(local_cert_file))
-        if resp.status_code != 200:
-            local_cert_file = "DOIRootCA2.pem"
-            # print("SSL error. Check PEM file or internet. Exiting...")
-            # sys.tracebacklimit = 1
-            # raise ValueError()
-        else:
-            os.environ["PIP_CERT"] = local_cert_file
-            os.environ["SSL_CERT_FILE"] = local_cert_file
-            os.environ["GIT_SSL_CAINFO"] = local_cert_file
-            os.environ["REQUESTS_CA_BUNDLE"] = local_cert_file
-            os.environ["CURL_CA_BUNDLE"] = local_cert_file
-            return local_cert_file
-
+    # Check if the DOI cert already exists in resources folder.
+    # If not, extract it from the system certificate store.
     if not os.path.exists(local_cert_file):
         # Use the user's home directory for cross-platform compatibility.
         local_cert_file = os.path.join(os.path.expanduser("~"),
