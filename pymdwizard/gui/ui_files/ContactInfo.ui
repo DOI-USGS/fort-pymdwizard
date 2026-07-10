@@ -1601,7 +1601,7 @@ Short Name: country</string>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>75</width>
+                      <width>100</width>
                       <height>20</height>
                      </size>
                     </property>

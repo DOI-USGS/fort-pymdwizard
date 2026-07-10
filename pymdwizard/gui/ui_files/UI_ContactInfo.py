@@ -751,7 +751,7 @@ class Ui_USGSContactInfoWidget(object):
         sizePolicy.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
         self.label_33.setSizePolicy(sizePolicy)
         self.label_33.setMinimumSize(QtCore.QSize(0, 0))
-        self.label_33.setMaximumSize(QtCore.QSize(75, 20))
+        self.label_33.setMaximumSize(QtCore.QSize(100, 20))
         self.label_33.setStyleSheet("")
         self.label_33.setAlignment(
             QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft
