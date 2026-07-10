@@ -129,7 +129,7 @@ class Ui_Form(object):
         self.fgdc_overview = QtWidgets.QWidget()
         self.fgdc_overview.setObjectName("fgdc_overview")
         self.label = QtWidgets.QLabel(self.fgdc_overview)
-        self.label.setGeometry(QtCore.QRect(30, 30, 111, 16))
+        self.label.setGeometry(QtCore.QRect(30, 30, 150, 16))
         self.label.setObjectName("label")
         self.fgdc_eaover = QtWidgets.QPlainTextEdit(self.fgdc_overview)
         self.fgdc_eaover.setGeometry(QtCore.QRect(30, 50, 571, 192))
