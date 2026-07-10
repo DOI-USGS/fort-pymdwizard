@@ -348,7 +348,7 @@ class Citeinfo(WizardWidget):  #
 
             if citeinfo is None:
                 # DOI not found or invalid.
-                msgbox = QMessageBox(self)
+                msgbox = QMessageBox(self.doi_lookup)
                 utils.set_window_icon(msgbox)
                 msgbox.setIcon(QMessageBox.Warning)
                 msg = "'{}' Not Found on DataCite".format(doi)
@@ -367,7 +367,7 @@ class Citeinfo(WizardWidget):  #
             msg += "from that DOI({}).".format(doi)
             msg += "Check the DOI and/or manually create the citation "
             msg += "for it"
-            QMessageBox.warning(self, "Problem DOI", msg)
+            QMessageBox.warning(self.doi_lookup, "Problem DOI", msg)
         self.cancel()
 
     def cancel(self):
