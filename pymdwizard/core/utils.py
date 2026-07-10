@@ -671,8 +671,8 @@ class PandasModel(QAbstractTableModel):
                 "first" if (self.options["na_values"] == "least") == asc else
                 "last"
             )
-            self.df.sort_values(
-                self.df.columns[column], ascending=asc, inplace=True,
+            self.df = self.df.sort_values(
+                self.df.columns[column], ascending=asc,
                 na_position=na_pos
             )
 

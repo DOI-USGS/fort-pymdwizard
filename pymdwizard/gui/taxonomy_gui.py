@@ -317,7 +317,7 @@ class ItisMainForm(QWidget):
         index = self.selected_items_df.index[selected_indices]
 
         # Drop the selected rows.
-        self.selected_items_df.drop(index, inplace=True)
+        self.selected_items_df = self.selected_items_df.drop(index)
 
         # Notify the model of the change to refresh the table view.
         self.ui.table_include.model().layoutChanged.emit()

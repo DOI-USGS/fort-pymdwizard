@@ -406,7 +406,7 @@ class Taxon(object):
         try:
             # Retrieve and clean rank names.
             self._rank_names = get_rank_names()
-            self._rank_names.drop_duplicates(inplace=True)
+            self._rank_names = self._rank_names.drop_duplicates()
             del self._rank_names["kingdomName"]
             self._rank_names["rankId"] = \
                 pd.to_numeric(self._rank_names["rankId"])
