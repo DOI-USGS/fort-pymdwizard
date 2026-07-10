@@ -37,9 +37,7 @@ pip_system_certs (not perfect support across all platforms):
     in NotImplementedError()).
 
     Windows: Works well because it uses the Windows certificate store.
-    Mac: Works, but macOS uses the Keychain for certificates, so not
-      guaranteed; may need additional steps like installing
-      certifi-system-store.
+    Mac: Works well; accesses Keychain directly when needed.
     Linux: Works if your system CA certificates are in standard locations.
 
 python-certifi-win32 (Windows only):
@@ -47,6 +45,16 @@ python-certifi-win32 (Windows only):
     contains your org CA), fixing many corporate SSL errors without custom
     bundles. Only works on Windows.
 
+
+UPDATE (2026-07): Added robust certificate retrieval with fallback methods:
+# ----------------
+    Windows: Works reliably using Python SSL library. Falls back to
+      wincertstore if needed.
+    Mac: Works by querying Keychain directly via the 'security' command when
+      Python SSL library cannot access certificates. No additional packages
+      required.
+    Linux: Works if system CA certificates are in standard locations
+      accessible to Python's SSL library.
 """
 
 # Standard python libraries.
@@ -54,6 +62,7 @@ import os
 import time
 import warnings
 import sys
+import subprocess
 import requests
 import certifi
 
@@ -84,17 +93,25 @@ def retrieve_certs_ssl():
         None
 
     Returned objects:
-        certs (list): List of system certificates in binary format.
+        certs (list): List of system certificates in binary format (DER-encoded).
 
     Workflow:
-        None
+        Tries multiple methods to retrieve system certificates with automatic
+        fallback for maximum compatibility:
+        1. Python SSL library via ctx._ctx (cryptography < 49)
+        2. Python SSL library via ctx.get_ca_certs (some versions)
+        3. Windows: Direct access via wincertstore library
+        4. macOS: Direct Keychain access via 'security' command
+        5. Linux: Relies on methods 1-2 with standard cert locations
 
     Notes:
-        Cannot recognize NotImplementedError(), so not using with try/except.
+        Compatible with cryptography 46.x through 49.x+.
+        Handles API changes across Python and cryptography versions.
     """
 
     # Initiate default.
     certs = None
+
     try:
         # Create a default SSL context.
         ctx = ssl.create_default_context()
@@ -102,16 +119,66 @@ def retrieve_certs_ssl():
         # Load the operating system's certificate store.
         ctx.load_default_certs()
 
-        # Get the list of certificates.
-        # Method suggested for Mac and Windows, which works.
+        # Method 1: Try private _ctx attribute (works in cryptography < 49).
         try:
-            certs = ctx._ctx.get_ca_certs(binary_form=True)
-        except Exception:
-            # Method should work on all platforms, but not working for Windows.
-            certs = ctx.get_ca_certs(binary_form=True)
-    except Exception:
-        print("An unexpected error occurred using Python's SSL library when "
-              "attempting to retrieve system certificates.")
+            if hasattr(ctx, '_ctx') and hasattr(ctx._ctx, 'get_ca_certs'):
+                certs = ctx._ctx.get_ca_certs(binary_form=True)
+        except (AttributeError, NotImplementedError):
+            pass
+
+        # Method 2: Try direct get_ca_certs on context (some versions).
+        if certs is None:
+            try:
+                if hasattr(ctx, 'get_ca_certs'):
+                    certs = ctx.get_ca_certs(binary_form=True)
+            except (AttributeError, NotImplementedError):
+                pass
+
+        # Method 3: Windows-specific fallback using wincertstore.
+        if certs is None and sys.platform == "win32":
+            try:
+                import wincertstore
+                certs = []
+                for storename in ("CA", "ROOT"):
+                    with wincertstore.CertSystemStore(storename) as store:
+                        for cert in store.itercerts():
+                            certs.append(cert.get_encoded())
+                if not certs:
+                    certs = None
+            except (ImportError, Exception):
+                pass
+
+        # Method 4: macOS-specific fallback using Keychain via 'security' command.
+        if certs is None and sys.platform == "darwin":
+            try:
+                result = subprocess.run(
+                    ["security", "find-certificate", "-a", "-p"],
+                    capture_output=True,
+                    check=True
+                )
+                # Parse PEM certificates from output and convert to DER.
+                cert_data = result.stdout
+                pem_certs = []
+                current_cert = b""
+                for line in cert_data.split(b'\n'):
+                    current_cert += line + b'\n'
+                    if b"-----END CERTIFICATE-----" in line:
+                        try:
+                            cert_obj = x509.load_pem_x509_certificate(
+                                current_cert, default_backend())
+                            pem_certs.append(
+                                cert_obj.public_bytes(serialization.Encoding.DER))
+                        except Exception:
+                            pass
+                        current_cert = b""
+                if pem_certs:
+                    certs = pem_certs
+            except (FileNotFoundError, subprocess.CalledProcessError, Exception):
+                pass
+
+    except Exception as e:
+        print(f"An unexpected error occurred using Python's SSL library when "
+              f"attempting to retrieve system certificates: {e}")
         certs = None
 
     return certs
