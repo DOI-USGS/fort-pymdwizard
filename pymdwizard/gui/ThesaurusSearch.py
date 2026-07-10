@@ -173,13 +173,13 @@ class ThesaurusSearch(QDialog):
         self.thesauri_lookup = {}
         self.thesauri_lookup_r = {}
 
+        # Store place flag before populating dropdown (needed for filtering).
+        self.place = place
+        self.add_term_function = add_term_function
+
         # Load thesaurus codes and names.
         self.populate_thesauri_lookup()
         self.connect_events()
-
-        self.add_term_function = add_term_function
-
-        self.place = place
 
         # Set the window icon using a utility function.
         utils.set_window_icon(self)
@@ -508,8 +508,8 @@ class ThesaurusSearch(QDialog):
     def populate_thesaurus_dropdown(self):
         """
         Description:
-            Populates the thesaurus selection dropdown with all
-            available thesauri names plus the "All" option.
+            Populates the thesaurus selection dropdown with available
+            thesauri names plus the "All" option, filtered by place/theme.
 
         Passed arguments:
             None
@@ -518,11 +518,14 @@ class ThesaurusSearch(QDialog):
             None
 
         Workflow:
-            Clears dropdown, adds "All", adds thesaurus names from
-            lookup, and sets the default selection (code "2").
+            Clears dropdown, adds "All", adds thesaurus names from lookup
+            (alphabetically sorted and filtered by self.place flag), and
+            sets the default selection (code "2" for Theme, code "1" for Place).
 
         Notes:
-            None
+            Filters thesauri same as search results:
+            - Place keywords (place=True): Only thcode == 1
+            - Theme keywords (place=False): All except thcode == 1
         """
 
         # Clear existing items.
@@ -531,13 +534,23 @@ class ThesaurusSearch(QDialog):
         # Add the option to search all thesauri.
         self.ui.thesaurus_dropdown.addItem("All")
 
-        # Add each thesaurus name from the lookup.
-        for name in self.thesauri_lookup.values():
+        # Filter thesauri based on place/theme flag.
+        # Place: Only thcode 1 (Geographic Names). Theme: All except thcode 1.
+        filtered_thesauri = {
+            thcode: name for thcode, name in self.thesauri_lookup.items()
+            if (thcode != 1 and not self.place) or (thcode == 1 and self.place)
+        }
+
+        # Add each filtered thesaurus name (alphabetically sorted).
+        for name in sorted(filtered_thesauri.values()):
             self.ui.thesaurus_dropdown.addItem(name)
 
-        # Set default value to thesaurus code "2" (often "USGS GeoData").
-        if "2" in self.thesauri_lookup:
-            thesaurus_name = self.thesauri_lookup["2"]
+        # Set default value based on context.
+        # Place keywords: Default to thcode 1 (Geographic Names)
+        # Theme keywords: Default to thcode 2 (USGS Thesaurus)
+        default_thcode = 1 if self.place else 2
+        if default_thcode in filtered_thesauri:
+            thesaurus_name = filtered_thesauri[default_thcode]
             index = self.ui.thesaurus_dropdown.findText(thesaurus_name)
             if index != -1:
                 # Check if the item is found and set current index.
