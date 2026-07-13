@@ -28,7 +28,6 @@ try:
     from pymdwizard.gui.ui_files import UI_metainfo
     from pymdwizard.gui.ContactInfo import ContactInfo
     from pymdwizard.gui.fgdc_date import FGDCDate
-    from pymdwizard import __version__
 except ImportError as err:
     raise ImportError(err, __file__)
 

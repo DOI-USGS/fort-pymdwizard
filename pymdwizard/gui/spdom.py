@@ -19,7 +19,6 @@ None
 """
 
 # Standard python libraries.
-import platform
 from copy import deepcopy
 
 # Non-standard python libraries.

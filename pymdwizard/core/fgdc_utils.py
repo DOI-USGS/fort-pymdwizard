@@ -24,7 +24,6 @@ from collections import OrderedDict
 
 # Non-standard python libraries.
 try:
-    from lxml import etree
     import pandas as pd
 except ImportError as err:
     raise ImportError(err, __file__)

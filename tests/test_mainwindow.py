@@ -13,12 +13,6 @@ from pytestqt.qt_compat import qt_api
 
 from PyQt5.QtWidgets import QMessageBox
 
-try:
-    from unittest.mock import Mock
-    from unittest import mock
-except ImportError:
-    pass  # Python 2
-
 from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.gui import MainWindow

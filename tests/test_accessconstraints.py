@@ -5,7 +5,6 @@ import sys
 
 # Non-standard python libraries.
 try:
-    from pytestqt import qtbot
     from lxml import etree
     from PyQt5.QtWidgets import QPlainTextEdit
 except ImportError as err:

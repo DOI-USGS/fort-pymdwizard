@@ -22,10 +22,6 @@ None
 from copy import deepcopy
 
 # Non-standard python libraries.
-try:
-    from PyQt5.QtCore import QPoint
-except ImportError as err:
-    raise ImportError(err, __file__)
 
 # Custom import/libraries.
 try:

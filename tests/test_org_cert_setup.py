@@ -2,9 +2,8 @@
 
 import os
 import sys
-import tempfile
 import pytest
-from unittest.mock import Mock, patch, MagicMock, mock_open
+from unittest.mock import Mock, patch, MagicMock
 from pymdwizard.core import org_cert_setup
 
 

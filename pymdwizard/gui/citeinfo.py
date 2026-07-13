@@ -23,7 +23,6 @@ import sys
 
 # Non-standard python libraries.
 try:
-    import habanero
     from PyQt5.QtWidgets import (QMessageBox, QDialog, QPlainTextEdit)
     from PyQt5.QtCore import Qt
 except ImportError as err:
