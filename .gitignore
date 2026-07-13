@@ -1,3 +1,9 @@
+.bak
+requirements.txt
+.env
+.bat
+environment.yml
+
 #VS Code launch file (D. Ignizio added 6/25/24)
 .vscode
 
@@ -90,4 +96,7 @@ windows
 
 #Mac
 .DS_Store
-# environment.yml
+
+environment.yml
+environment.yml.bak
+run.bat
