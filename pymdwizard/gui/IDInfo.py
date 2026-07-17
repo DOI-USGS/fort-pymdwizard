@@ -319,12 +319,15 @@ class IdInfo(WizardWidget):
 
         # --- PRESERVATION OF ORIGINAL TAGS (browse, secinfo, tool) ---
 
-        # <browse>
+        # <browse> (preserve all, since minOccurs="0" maxOccurs="unbounded")
         if self.original_xml is not None:
-            browse = xml_utils.search_xpath(self.original_xml, "browse")
-            if browse is not None:
-                browse.tail = None
-                idinfo_node.append(deepcopy(browse))
+            browses = xml_utils.search_xpath(
+                self.original_xml, "browse", only_first=False
+            )
+            for browse in browses:
+                browse_copy = deepcopy(browse)
+                browse_copy.tail = None
+                idinfo_node.append(browse_copy)
 
         # <datacred> (if has text)
         datacredit_node = self.datacredit.to_xml()
