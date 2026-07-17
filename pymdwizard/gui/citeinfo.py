@@ -683,12 +683,13 @@ class Citeinfo(WizardWidget):  #
                 parent_node=citeinfo,
             )
 
-        # Add Geoform node.
-        xml_utils.xml_node(
-            "geoform",
-            self.ui.fgdc_geoform.currentText(),
-            parent_node=citeinfo,
-        )
+        # Add Geoform node if text exists.
+        if self.ui.fgdc_geoform.currentText():
+            xml_utils.xml_node(
+                "geoform",
+                self.ui.fgdc_geoform.currentText(),
+                parent_node=citeinfo,
+            )
 
         # Add Series Information (serinfo) if selected.
         if self.ui.radio_seriesyes.isChecked():

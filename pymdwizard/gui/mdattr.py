@@ -23,6 +23,7 @@ None
 # Non-standard python libraries.
 try:
     import numpy as np
+    import pandas as pd
     from PyQt5.QtWidgets import (QMessageBox, QWidget, QMenu, QComboBox,
                                  QLineEdit, QPlainTextEdit)
     from PyQt5.QtCore import (QPropertyAnimation, QSize)
@@ -225,7 +226,7 @@ class Attr(WizardWidget):
                 clean_series = self.series
 
             uniques = clean_series.unique()
-            if np.issubdtype(clean_series.dtype, np.number):
+            if pd.api.types.is_numeric_dtype(clean_series):
                 return 1  # range
             elif len(uniques) < 20:
                 return 0  # enumerated
@@ -316,7 +317,7 @@ class Attr(WizardWidget):
             except Exception:
                 self.domain.ui.fgdc_rdommax.setText("")
 
-            if not np.issubdtype(clean_series.dtype, np.number):
+            if not pd.api.types.is_numeric_dtype(clean_series):
                 msg = (
                     "Caution! The contents of this column are stored in the"
                     ' data source as "text".  The use of a range domain '

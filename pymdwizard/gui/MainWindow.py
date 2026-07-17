@@ -20,49 +20,66 @@ NOTES
 """
 
 # Standard python libraries.
-import sys
-import os
-import tempfile
-import time
 import datetime
+import os
 import shutil
 import subprocess
+import sys
+import tempfile
+import time
 import traceback
 
 # Non-standard python libraries.
 try:
-    from git import Repo
-
     # Cross-platform library that works on Windows, macOS, and Linux.
     import docx
+    from git import Repo
 
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Non-standard python libraries.
 try:
-    from PyQt5.QtWidgets import (QMainWindow, QApplication, QSplashScreen,
-                                 QMessageBox, QAction, QWidget, QFileDialog,
-                                 QDialog, QTabWidget, QGraphicsOpacityEffect,
-                                 QLineEdit, QLabel, QVBoxLayout)
-    from PyQt5.QtCore import (QFile, QFileInfo, Qt, QSettings,
-                              QFileSystemWatcher, QPoint, QSize)
-    from PyQt5.QtGui import (QPainter, QPixmap, QMovie)
+    from PyQt5.QtCore import (
+        QFile,
+        QFileInfo,
+        QFileSystemWatcher,
+        QPoint,
+        QSettings,
+        QSize,
+        Qt,
+    )
+    from PyQt5.QtGui import QMovie, QPainter, QPixmap
+    from PyQt5.QtWidgets import (
+        QAction,
+        QApplication,
+        QDialog,
+        QFileDialog,
+        QGraphicsOpacityEffect,
+        QLabel,
+        QLineEdit,
+        QMainWindow,
+        QMessageBox,
+        QSplashScreen,
+        QTabWidget,
+        QVBoxLayout,
+        QWidget,
+    )
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Custom import/libraries.
 try:
-    from pymdwizard.gui.ui_files import UI_MainWindow
-    from pymdwizard.gui.MetadataRoot import MetadataRoot
-    from pymdwizard.core import (xml_utils, utils, fgdc_utils, review_utils)
-    from pymdwizard.gui.Preview import Preview
-    from pymdwizard.gui.error_list import ErrorList
-    from pymdwizard.gui.wiz_widget import WizardWidget
-    from pymdwizard.gui.jupyterstarter import JupyterStarter
-    from pymdwizard.gui.settings import Settings
-    from pymdwizard.gui.sb_locator import SBLocator
     from pymdwizard import __version__
+    from pymdwizard.core import fgdc_utils, review_utils, utils, xml_utils
+    from pymdwizard.gui.error_list import ErrorList
+    from pymdwizard.gui.jupyterstarter import JupyterStarter
+    from pymdwizard.gui.MetadataRoot import MetadataRoot
+    from pymdwizard.gui.Preview import Preview
+    from pymdwizard.gui.sb_locator import SBLocator
+    from pymdwizard.gui.settings import Settings
+    from pymdwizard.gui.ui_files import UI_MainWindow
+    from pymdwizard.gui.wiz_widget import WizardWidget
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -742,8 +759,6 @@ class PyMdWizardMainForm(QMainWindow):
         Checks the current record against the FGDC schema using XSD validation and highlights errors.
         """
 
-        self.error_list_dialog.show()
-
         if self.metadata_root.schema == "bdp":
             xsl_fname = utils.get_resource_path(
                 "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
@@ -823,19 +838,31 @@ class PyMdWizardMainForm(QMainWindow):
         widget_lookup = self.metadata_root.make_tree(widget=self.metadata_root)
 
         if errors:
-            msg = "There are {} errors in this record".format(error_count)
-            self.statusBar().showMessage(msg, 20000)
-            msg = (
-                "\n\n These errors are highlighted in red in the form below."
-                "\n\n These errors are also listed in the Validation Errors "
-                "Form that just popped up."
-                "\n Clicking each error will take you to the section it is "
-                "contained in."
-                "\n Note that some highlighted errors can be in collapsed "
-                "items, scrolled out of view, or in non-selected tabs."
+            status_msg = "There are {} errors in this record".format(
+                error_count
             )
+            self.statusBar().showMessage(status_msg, 20000)
+
+            plural = "error" if error_count == 1 else "errors"
+            msg = (
+                "<p><b>{count} {plural} found in this record.</b></p>"
+                "<p>Each error is:</p>"
+                "<ul>"
+                "<li>highlighted in <span style='color:red;'>red</span> "
+                "in the form, and</li>"
+                "<li>listed in the Validation Errors window that will "
+                "open once you close this one.</li>"
+                "</ul>"
+                "<p>Click an error in that window to jump to the section "
+                "that contains it.</p>"
+                "<p><i>Note: some highlighted errors may be in collapsed "
+                "items, scrolled out of view, or on a tab that is not "
+                "currently selected.</i></p>"
+            ).format(count=error_count, plural=plural)
             QMessageBox.warning(self, "Validation", msg)
             self.error_list_dialog.show()
+            self.error_list_dialog.raise_()
+            self.error_list_dialog.activateWindow()
         else:
             msg = "Congratulations there were No FGDC Errors!"
             self.statusBar().showMessage(msg, 20000)

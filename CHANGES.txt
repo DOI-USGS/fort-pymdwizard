@@ -36,6 +36,9 @@ Updates and bug fixes in Metadata Wizard GUI
 22. Enabled parsing of .dbf file format in the 'Entity and Attributes' tab. DBF files are the tabular components of shapefiles.
 23. Improved validation error highlighting color scheme for better readability and clearer visual feedback when errors are clicked.
 24. Fixed validation error messages that were showing blank placeholders instead of element names.
+25. Added 'Add Attribute (Column)' button to 'Entity and Attributes' tab for manually creating a new attribute (previously only available on right click).
+26. Updated the thesaurus dropdown to filter by keyword type (place vs. theme) and list thesauri alphabetically.
+27. Updated the validation warning popup to clean up the formatting and make the instructions clearer.
 
 2.1.1 (06/09/2025)
 -----
