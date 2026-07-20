@@ -51,6 +51,43 @@ except ImportError as err:
     raise ImportError(err, __file__)
 
 
+def read_gpkg_attributes(fname, layer=None):
+    """Returns a pandas dataframe of the attributes in a GeoPackage layer,
+
+     replicating including geometry type as a 'Shape' column and an 'FID' column.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+    layer : str, optional
+            The specific layer name within the GeoPackage to read.
+            If None, the first layer is read.
+
+    Returns
+    -------
+        pandas DataFrame
+    """
+    # 1. Read the GeoPackage layer into a GeoDataFrame
+    gdf = gpd.read_file(fname, layer=layer)
+
+    # 2. Extract the geometry type name (e.g., 'Point', 'LineString', 'Polygon')
+    # If the layer is empty, default to "Unknown"
+    geom_type = gdf.geometry.type.iloc[0] if not gdf.empty else "Unknown"
+
+    # 3. Drop the active geometry column to isolate standard attributes
+    df = gdf.drop(columns=[gdf.geometry.name])
+
+    # 4. Insert the geometry type as the "Shape" column at index 0
+    df.insert(0, "Shape", geom_type)
+
+    # 5. Insert an "FID" column at index 0 if it doesn't already exist
+    if "FID" not in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+
+    return df
+
+
 def read_csv(fname, delimiter=","):
     """
     Description:
@@ -358,6 +395,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".gpkg"):
+        return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
         return read_las(fname)
     elif sheet_name:
