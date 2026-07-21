@@ -1029,7 +1029,7 @@ class PyMdWizardMainForm(QMainWindow):
             if hasattr(parent_of_attr, "supersize_me"):
                 parent_of_attr.supersize_me()
 
-            error_msg = "Validation error in hidden contents, click to show"
+            error_msg = "Validation error in hidden contents, click or scroll to show"
             widget_parent.setToolTip(error_msg)
             widget_parent.setStyleSheet(
                 f"""
@@ -1066,7 +1066,7 @@ class PyMdWizardMainForm(QMainWindow):
             except RuntimeError:
                 return
 
-        error_msg = "Validation error in hidden contents, click to show"
+        error_msg = "Validation error in hidden contents, click or scroll to show"
         try:
             widget_parent.setToolTip(error_msg)
             widget_parent.setStyleSheet(
