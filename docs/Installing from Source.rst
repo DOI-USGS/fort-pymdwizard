@@ -28,7 +28,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ cd c:/projects
+        cd c:/projects
 
 |
 
@@ -36,7 +36,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
+        git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
 
 |
 
@@ -44,7 +44,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ cd fort-pymdwizard
+        cd fort-pymdwizard
 
 |
 
@@ -54,7 +54,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ conda env create -f environment.yml
+        conda env create -f environment.yml
 
 
 7. Activate the environment:
@@ -63,7 +63,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ conda activate pymdwizard
+        conda activate pymdwizard
 
 |
 
@@ -71,7 +71,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ conda develop .
+        conda develop .
 
    *Note: Use your full path if the relative path doesn't work, e.g., `conda develop C:/projects/fort-pymdwizard`*
 
@@ -81,6 +81,6 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        $ python pymdwizard/gui/MainWindow.py
+        python pymdwizard/gui/MainWindow.py
 
 
