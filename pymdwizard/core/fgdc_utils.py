@@ -30,7 +30,7 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import (xml_utils, utils)
+    from pymdwizard.core import (xml_utils, utils, thesaurus_utils)
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -147,6 +147,49 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
                      1,
                     )
                 )
+
+    # Validate theme/place keywords against their named USGS controlled
+    # vocabulary, when one is selected (a thesaurus of "None" or blank
+    # means free text, and is not checked).
+    thesauri_lookup = None
+    for which, kt_tag, key_tag in (
+        ("theme", "themekt", "themekey"),
+        ("place", "placekt", "placekey"),
+    ):
+        keyword_xpath = "idinfo/keywords/{}".format(which)
+        keyword_nodes = tree_node.xpath(keyword_xpath)
+        for i, keyword_node in enumerate(keyword_nodes):
+            kt_node = keyword_node.find(kt_tag)
+            if kt_node is None or thesaurus_utils.is_free_text(kt_node.text):
+                continue
+
+            if thesauri_lookup is None:
+                thesauri_lookup = thesaurus_utils.get_thesauri_lookup() or {}
+
+            keywords = [
+                key_node.text
+                for key_node in keyword_node.findall(key_tag)
+            ]
+            invalid = thesaurus_utils.find_invalid_keywords(
+                kt_node.text, keywords, lookup=thesauri_lookup
+            )
+
+            if not invalid:
+                continue
+
+            error_xpath = keyword_xpath
+            if len(keyword_nodes) > 1:
+                error_xpath += "[{}]".format(i + 1)
+
+            errors.append(
+                ("metadata/" + error_xpath,
+                 "The following {} keyword(s) were not found in the "
+                 "'{}' controlled vocabulary: {}".format(
+                     which, kt_node.text, ", ".join(invalid)
+                 ),
+                 1,
+                )
+            )
 
     # Validate the XML against the schema and errors.
     if xmlschema.validate(tree_node) and not errors:
