@@ -203,7 +203,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Add the conda-forge channel:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
 </pre></div>
 </div>
 </div></blockquote>
@@ -214,7 +214,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Install the optional conda developer tools</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install conda-build
 </pre></div>
 </div>
 </div></blockquote>
@@ -225,7 +225,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Create a pymdwizard environment:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
 </pre></div>
 </div>
 </div></blockquote>
@@ -239,7 +239,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><em>(on Windows)</em></div>
 </div>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> activate pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>activate pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -247,7 +247,7 @@ in a subsequent release to support Macs.</p>
 <div class="line"><em>(on Linux, Mac)</em></div>
 </div>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> activate pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> activate pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -258,7 +258,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Install git:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install git
 </pre></div>
 </div>
 </div></blockquote>
@@ -273,7 +273,7 @@ in a subsequent release to support Macs.</p>
 </li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> c:/projects
 </pre></div>
 </div>
 </div></blockquote>
@@ -284,7 +284,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Clone our pymdwizard project:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/DOI-USGS/fort-pymdwizard.git
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/DOI-USGS/fort-pymdwizard.git
 </pre></div>
 </div>
 </div></blockquote>
@@ -295,7 +295,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Navigate to our project folder:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> fort-pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -306,7 +306,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Install the remaining software requirements (library dependencies):</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file requirements.txt
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install --yes --file requirements.txt
 </pre></div>
 </div>
 </div></blockquote>
@@ -317,7 +317,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Add our git folder to the pythonpath:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda develop C:/projects/fort-pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
@@ -328,7 +328,7 @@ in a subsequent release to support Macs.</p>
 <li><p>Launch Metadata Wizard:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>python pymdwizard/gui/MainWindow.py
 </pre></div>
 </div>
 </div></blockquote>
