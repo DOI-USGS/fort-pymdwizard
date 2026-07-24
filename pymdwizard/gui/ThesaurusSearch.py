@@ -55,6 +55,11 @@ except ImportError as err:
 # "https://apps.usgs.gov/thesaurus/term-search.php?thcode="
 THESAURUS_BASE_URL = "https://apps.usgs.gov/thesaurus/"
 
+# thcode 15 (ISO 19115 Topic Category) and thcode 23 (Data Categories for
+# Marine Planning) return HTTP 500 from term-search.php for every search
+# term. Excluded from the dropdown/search until we resolve the service issue.
+BROKEN_THESAURUS_THCODES = {15, 23}
+
 
 class SearchThread(QThread):
     """
@@ -526,6 +531,8 @@ class ThesaurusSearch(QDialog):
             Filters thesauri same as search results:
             - Place keywords (place=True): Only thcode == 1
             - Theme keywords (place=False): All except thcode == 1
+            - Excludes thcodes in BROKEN_THESAURUS_THCODES regardless of
+              place/theme.
         """
 
         # Clear existing items.
@@ -538,7 +545,8 @@ class ThesaurusSearch(QDialog):
         # Place: Only thcode 1 (Geographic Names). Theme: All except thcode 1.
         filtered_thesauri = {
             thcode: name for thcode, name in self.thesauri_lookup.items()
-            if (thcode != 1 and not self.place) or (thcode == 1 and self.place)
+            if thcode not in BROKEN_THESAURUS_THCODES
+            and ((thcode != 1 and not self.place) or (thcode == 1 and self.place))
         }
 
         # Add each filtered thesaurus name (alphabetically sorted).
