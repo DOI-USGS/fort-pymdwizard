@@ -51,6 +51,35 @@ except ImportError as err:
     raise ImportError(err, __file__)
 
 
+def get_gpkg_layer_names(fname):
+    """Returns a list of layer names in a GeoPackage file.
+
+    Uses sqlite3 to query the gpkg_contents table directly, avoiding
+    potential GDAL/fiona crashes with certain GeoPackage configurations.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+
+    Returns
+    -------
+        list of str
+    """
+    import sqlite3
+
+    conn = sqlite3.connect(fname)
+    try:
+        cursor = conn.execute(
+            "SELECT table_name FROM gpkg_contents"
+        )
+        layers = [row[0] for row in cursor.fetchall()]
+    finally:
+        conn.close()
+
+    return layers
+
+
 def read_gpkg_attributes(fname, layer=None):
     """Returns a pandas dataframe of the attributes in a GeoPackage layer,
 
@@ -68,20 +97,49 @@ def read_gpkg_attributes(fname, layer=None):
     -------
         pandas DataFrame
     """
-    # 1. Read the GeoPackage layer into a GeoDataFrame
-    gdf = gpd.read_file(fname, layer=layer)
+    import sqlite3
 
-    # 2. Extract the geometry type name (e.g., 'Point', 'LineString', 'Polygon')
-    # If the layer is empty, default to "Unknown"
-    geom_type = gdf.geometry.type.iloc[0] if not gdf.empty else "Unknown"
+    # If no layer specified, get the first one.
+    if layer is None:
+        layers = get_gpkg_layer_names(fname)
+        if not layers:
+            raise ValueError(f"No layers found in {fname}")
+        layer = layers[0]
 
-    # 3. Drop the active geometry column to isolate standard attributes
-    df = gdf.drop(columns=[gdf.geometry.name])
+    conn = sqlite3.connect(fname)
+    try:
+        # Read the geometry type from gpkg_geometry_columns.
+        cursor = conn.execute(
+            "SELECT geometry_type_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_type = row[0] if row else "Unknown"
 
-    # 4. Insert the geometry type as the "Shape" column at index 0
+        # Read the geometry column name so we can exclude it.
+        cursor = conn.execute(
+            "SELECT column_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_col = row[0] if row else "geom"
+
+        # Read all data from the layer table.
+        df = pd.read_sql_query(f'SELECT * FROM "{layer}"', conn)
+
+        # Drop the geometry column.
+        if geom_col in df.columns:
+            df = df.drop(columns=[geom_col])
+
+    finally:
+        conn.close()
+
+    # Insert the geometry type as the "Shape" column at index 0.
     df.insert(0, "Shape", geom_type)
 
-    # 5. Insert an "FID" column at index 0 if it doesn't already exist
+    # Insert an "FID" column at index 0 if it doesn't already exist.
     if "FID" not in df.columns:
         df.insert(0, "FID", range(df.shape[0]))
 

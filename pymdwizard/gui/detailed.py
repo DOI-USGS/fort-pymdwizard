@@ -367,41 +367,73 @@ class Detailed(WizardWidget):  #
 
         # --- GeoPackage File Handling ---
         elif ext.lower() == ".gpkg":
-            self.clear_widget()
-            self.ui.fgdc_enttypl.setText(shortname + " Attribute Table")
-            self.ui.fgdc_enttypd.setPlainText(
-                "Table containing attribute information associated with the data set."
-            )
+            try:
+                # Determine available layers and prompt user if multiple.
+                layers = data_io.get_gpkg_layer_names(fname)
+                layer_name = None
+                ok = True
 
-            df = data_io.read_data(fname)
-            for col in df.columns:
-                # we need this check to be backward compatible between numpy>2 and pandas
-                if df[col].dtype == 'str':
-                    df[col] = df[col].astype('object')
-            self.attributes.load_df(df)
+                if len(layers) > 1:
+                    layer_name, ok = QInputDialog.getItem(
+                        self,
+                        "Select Layer",
+                        "Pick one of the layers from this GeoPackage",
+                        layers,
+                        0,
+                        False,
+                    )
+                elif len(layers) == 1:
+                    layer_name = layers[0]
 
-            fid_attr = self.attributes.get_attr("FID")
-            if fid_attr is not None:
-                fid_attr.populate_domain_content(3)
-                fid_attr.ui.fgdc_attrdef.setPlainText("Internal feature number.")
-                utils.set_text(fid_attr.ui.fgdc_attrdefs, "OGC")
-                fid_attr.domain.ui.fgdc_udom.setPlainText(
-                    "Sequential unique whole numbers that are automatically generated."
+                if ok and layer_name:
+                    self.clear_widget()
+                    self.ui.fgdc_enttypl.setText(
+                        f"{shortname} ({layer_name}) Attribute Table"
+                    )
+                    self.ui.fgdc_enttypd.setPlainText(
+                        "Table containing attribute information "
+                        "associated with the data set."
+                    )
+
+                    df = data_io.read_gpkg_attributes(fname,
+                                                      layer=layer_name)
+                    for col in df.columns:
+                        # Backward compatible between numpy>2 and pandas.
+                        if df[col].dtype == 'str':
+                            df[col] = df[col].astype('object')
+                    self.attributes.load_df(df)
+
+                    fid_attr = self.attributes.get_attr("FID")
+                    if fid_attr is not None:
+                        fid_attr.populate_domain_content(3)
+                        fid_attr.ui.fgdc_attrdef.setPlainText(
+                            "Internal feature number.")
+                        utils.set_text(fid_attr.ui.fgdc_attrdefs, "OGC")
+                        fid_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Sequential unique whole numbers that are "
+                            "automatically generated."
+                        )
+                        fid_attr.regularsize_me()
+                        fid_attr.supersize_me()
+                    shape_attr = self.attributes.get_attr("Shape")
+                    if shape_attr is not None:
+                        shape_attr.populate_domain_content(3)
+                        shape_attr.ui.fgdc_attrdef.setPlainText(
+                            "Feature geometry.")
+                        utils.set_text(shape_attr.ui.fgdc_attrdefs, "OGC")
+                        shape_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Shape type."
+                        )
+                        shape_attr.store_current_content()
+                        shape_attr.supersize_me()
+                        shape_attr.store_current_content()
+                        shape_attr.regularsize_me()
+            except BaseException:
+                msg = (
+                    f"Cannot read GeoPackage {fname}:\n"
+                    f"{traceback.format_exc()}."
                 )
-                fid_attr.regularsize_me()
-                fid_attr.supersize_me()
-            shape_attr = self.attributes.get_attr("Shape")
-            if shape_attr is not None:
-                shape_attr.populate_domain_content(3)
-                shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
-                utils.set_text(shape_attr.ui.fgdc_attrdefs, "OGC")
-                shape_attr.domain.ui.fgdc_udom.setPlainText(
-                    "Shape type."
-                )
-                shape_attr.store_current_content()
-                shape_attr.supersize_me()
-                shape_attr.store_current_content()
-                shape_attr.regularsize_me()
+                QMessageBox.warning(self, "Data file error", msg)
 
 
         # --- Excel File Handling ---
