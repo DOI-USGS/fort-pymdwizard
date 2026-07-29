@@ -51,6 +51,101 @@ except ImportError as err:
     raise ImportError(err, __file__)
 
 
+def get_gpkg_layer_names(fname):
+    """Returns a list of layer names in a GeoPackage file.
+
+    Uses sqlite3 to query the gpkg_contents table directly, avoiding
+    potential GDAL/fiona crashes with certain GeoPackage configurations.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+
+    Returns
+    -------
+        list of str
+    """
+    import sqlite3
+
+    conn = sqlite3.connect(fname)
+    try:
+        cursor = conn.execute(
+            "SELECT table_name FROM gpkg_contents"
+        )
+        layers = [row[0] for row in cursor.fetchall()]
+    finally:
+        conn.close()
+
+    return layers
+
+
+def read_gpkg_attributes(fname, layer=None):
+    """Returns a pandas dataframe of the attributes in a GeoPackage layer,
+
+     replicating including geometry type as a 'Shape' column and an 'FID' column.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+    layer : str, optional
+            The specific layer name within the GeoPackage to read.
+            If None, the first layer is read.
+
+    Returns
+    -------
+        pandas DataFrame
+    """
+    import sqlite3
+
+    # If no layer specified, get the first one.
+    if layer is None:
+        layers = get_gpkg_layer_names(fname)
+        if not layers:
+            raise ValueError(f"No layers found in {fname}")
+        layer = layers[0]
+
+    conn = sqlite3.connect(fname)
+    try:
+        # Read the geometry type from gpkg_geometry_columns.
+        cursor = conn.execute(
+            "SELECT geometry_type_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_type = row[0] if row else "Unknown"
+
+        # Read the geometry column name so we can exclude it.
+        cursor = conn.execute(
+            "SELECT column_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_col = row[0] if row else "geom"
+
+        # Read all data from the layer table.
+        df = pd.read_sql_query(f'SELECT * FROM "{layer}"', conn)
+
+        # Drop the geometry column.
+        if geom_col in df.columns:
+            df = df.drop(columns=[geom_col])
+
+    finally:
+        conn.close()
+
+    # Insert the geometry type as the "Shape" column at index 0.
+    df.insert(0, "Shape", geom_type)
+
+    # Insert an "FID" column at index 0 if it doesn't already exist.
+    if "FID" not in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+
+    return df
+
+
 def read_csv(fname, delimiter=","):
     """
     Description:
@@ -358,6 +453,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".gpkg"):
+        return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
         return read_las(fname)
     elif sheet_name:
