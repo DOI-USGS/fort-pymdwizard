@@ -1,6 +1,20 @@
 Changes
 =======
 
+2.2.1 (07/30/2026)
+-----
+
+New features
+--------------
+1. Added GeoPackage (.gpkg) file support to the Entity and Attributes tab. Multi-layer GeoPackages prompt the user to select a layer.
+2. Added controlled vocabulary validation: when running FGDC validation, theme and place keywords are checked against their named USGS thesaurus and invalid terms are reported.
+
+Bug fixes
+--------------
+3. Fixed crash when importing multi-layer GeoPackage files.
+4. Fixed SSRF vulnerability in url_is_alive() by restricting requests to http/https schemes and rejecting private/loopback addresses.
+5. Fixed window opening off-screen when a previously connected monitor is no longer available.
+
 2.2.0 (07/02/2026)
 -----
 
