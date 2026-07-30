@@ -221,6 +221,10 @@ class PyMdWizardMainForm(QMainWindow):
         self.resize(self.settings.value("size", QSize(1300, 700)))
         self.move(self.settings.value("pos", QPoint(50, 50)))
 
+        # Ensure the window is visible on a connected screen.
+        if not self._is_position_visible(self.pos()):
+            self.move(QPoint(50, 50))
+
         # Initialize and add the main metadata widget.
         self.metadata_root = MetadataRoot()
         self.ui.centralwidget.layout().addWidget(self.metadata_root)
@@ -253,6 +257,17 @@ class PyMdWizardMainForm(QMainWindow):
         self.error_list_dialog.setWindowTitle("FGDC Validation Errors")
         self.error_list_dialog.setLayout(self.error_list.layout())
         self.error_list_dialog.resize(600, 400)
+
+    @staticmethod
+    def _is_position_visible(pos):
+        """
+        Returns True if the given position is within the bounds of any
+        currently connected screen.
+        """
+        for screen in QApplication.screens():
+            if screen.availableGeometry().contains(pos):
+                return True
+        return False
 
     def connect_events(self):
         """
