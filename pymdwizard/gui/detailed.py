@@ -20,7 +20,6 @@ None
 
 # Standard python libraries.
 import os
-import pickle
 import traceback
 
 # Non-standard python libraries.
@@ -508,19 +507,6 @@ class Detailed(WizardWidget):  #
                 count_attr.ui.fgdc_attrdef.setPlainText(
                     "Number of raster cells with this value."
                 )
-
-        # --- Pickle File Handling ---
-        elif ext.lower() == ".p":
-            p = pickle.load(open(fname, "rb"), encoding="bytes")
-
-            if self.original_xml is not None:
-                # Reload original XML content if available.
-                xml_utils.XMLNode(self.original_xml)
-                self.from_xml(self.original_xml)
-            else:
-                self.ui.fgdc_enttypl.setText("{}".format(shortname[:-2]))
-                self.ui.fgdc_enttypd.setPlainText("Geospatial Dataset")
-                self.attributes.load_pickle(p)
 
         # --- Text File Handling ---
         elif ext.lower() == ".txt":
