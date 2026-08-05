@@ -94,3 +94,6 @@ windows
 
 # Claude Code personal workspace
 .claude/
+
+# Kiro AI workspace
+.kiro/
