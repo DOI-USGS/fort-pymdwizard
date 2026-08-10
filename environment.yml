@@ -24,7 +24,7 @@ dependencies:
   - requests
   - beautifulsoup4
   - pyyaml
-  - pyqt
+  - pyqt=5.15.11
   - pyqtwebengine=5.15.11
   # Test dependencies
   - pytest
