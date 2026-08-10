@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html" />
+    <link rel="next" title="File Management, New, Open, Save, Save as…." href="usage/File Management, New, Open, Save, Save as.....html" />
     <link rel="prev" title="Installing on Mac" href="Mac Installation.html" /> 
 </head>
 
@@ -88,7 +88,6 @@
 <li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Installing on Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mac Installation.html">Installing on Mac</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source (Windows, Linux)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
@@ -176,17 +175,16 @@
             
   <div class="section" id="installing-from-source-windows-linux">
 <h1>Installing from Source (Windows, Linux)<a class="headerlink" href="#installing-from-source-windows-linux" title="Permalink to this headline">¶</a></h1>
-<p>These instructions do not currently work on Mac computers, but will be updated
-in a subsequent release to support Macs.</p>
-<p>Currently the only option for installation on Linux systems is to install the application from source.</p>
-<p>Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python Package installations.</p>
+<p>These instructions are for installing pymdwizard from source on Windows, Linux.</p>
+<p>Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and conda package installations.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic">
-<li><p>Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
+<li><p>Install <a class="reference external" href="https://conda-forge.org/download/">Miniforge</a>.</p>
 <blockquote>
-<div><p><em>While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.</em></p>
+<div><p>Miniforge is a minimal conda installer that uses conda-forge as the default channel.
+Download the appropriate installer for your operating system (Windows, Linux, or Mac) and follow the installation instructions.</p>
 </div></blockquote>
 </li>
 </ol>
@@ -194,79 +192,19 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><p>Open the Anaconda command window.</p></li>
-</ol>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>Add the conda-forge channel:</p></li>
+<li><p>Open the Miniforge command prompt:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
-</pre></div>
-</div>
+<div><ul class="simple">
+<li><p><strong>Windows</strong>: Launch "Miniforge Prompt" from the Start menu</p></li>
+<li><p><strong>Linux/Mac</strong>: Open a terminal (conda will be available in your shell if you selected the option during installation)</p></li>
+</ul>
 </div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p>Install the optional conda developer tools</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install conda-build
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="5">
-<li><p>Create a pymdwizard environment:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="6">
-<li><p>Activate this environment:</p></li>
-</ol>
-<div class="line-block">
-<div class="line"><em>(on Windows)</em></div>
-</div>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>activate pymdwizard
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><em>(on Linux, Mac)</em></div>
-</div>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> activate pymdwizard
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="7">
-<li><p>Install git:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install git
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic" start="8">
-<li><p>Navigate to the directory where the Metadata Wizard will be installed:</p>
+<ol class="arabic" start="3">
+<li><p>Navigate to the directory where you want to install the Metadata Wizard:</p>
 <blockquote>
 <div><p><em>The example directory below could be different depending on operating system or organization</em></p>
 </div></blockquote>
@@ -280,8 +218,8 @@ in a subsequent release to support Macs.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="9">
-<li><p>Clone our pymdwizard project:</p></li>
+<ol class="arabic simple" start="4">
+<li><p>Clone the fort-pymdwizard project:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/DOI-USGS/fort-pymdwizard.git
@@ -291,8 +229,8 @@ in a subsequent release to support Macs.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="10">
-<li><p>Navigate to our project folder:</p></li>
+<ol class="arabic simple" start="5">
+<li><p>Navigate to the project folder:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> fort-pymdwizard
@@ -302,29 +240,43 @@ in a subsequent release to support Macs.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="11">
-<li><p>Install the remaining software requirements (library dependencies):</p></li>
+<ol class="arabic simple" start="6">
+<li><p>Create the pymdwizard conda environment from the environment.yml file:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda install --yes --file requirements.txt
+<div><p>This will create an environment with Python 3.13 and all required dependencies.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda env create -f environment.yml
 </pre></div>
 </div>
 </div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="12">
-<li><p>Add our git folder to the pythonpath:</p></li>
+<ol class="arabic simple" start="7">
+<li><p>Activate the environment:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda develop C:/projects/fort-pymdwizard
+<div><p><em>(Works on all platforms - Windows, Linux, and Mac)</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda activate pymdwizard
 </pre></div>
 </div>
 </div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="13">
+<ol class="arabic simple" start="8">
+<li><p>Add the project folder to the Python path:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span>conda develop .
+</pre></div>
+</div>
+<p><em>Note: Use your full path if the relative path doesn't work, e.g., <cite>conda develop C:/projects/fort-pymdwizard</cite></em></p>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="9">
 <li><p>Launch Metadata Wizard:</p></li>
 </ol>
 <blockquote>
@@ -339,14 +291,14 @@ in a subsequent release to support Macs.</p>
            
           </div>
           <footer>
-  
+
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="ESRI ArcGIS Toolbox (Windows Only)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+
+        <a href="usage/File Management, New, Open, Save, Save as.....html" class="btn btn-neutral float-right" title="File Management, New, Open, Save, Save as...." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+
+
         <a href="Mac Installation.html" class="btn btn-neutral float-left" title="Installing on Mac" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+
     </div>
   
 
