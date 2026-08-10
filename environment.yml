@@ -2,7 +2,7 @@ name: pymdwizard
 channels:
   - conda-forge
 dependencies:
-  - python=3.13 
+  - python=3.13.11 
   - pip
   - cryptography
   - numpy
@@ -10,7 +10,7 @@ dependencies:
   - geopandas
   - git
   - gdal
-  - habanero
+  - habanero=2.4.0
   - matplotlib
   - folium
   - fiona
@@ -25,7 +25,7 @@ dependencies:
   - beautifulsoup4
   - pyyaml
   - pyqt
-  - pyqtwebengine
+  - pyqtwebengine=5.15.11
   # Test dependencies
   - pytest
   - pytest-qt
