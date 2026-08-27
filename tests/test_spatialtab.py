@@ -1,15 +1,3 @@
-from __future__ import print_function
-
-# import sys
-# sys.path.append(r"../..")
-
-import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-
-import sys
-
 
 from pymdwizard.gui import spatial_tab
 

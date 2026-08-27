@@ -1,12 +1,5 @@
-from __future__ import print_function
 
-import sys
-
-sys.path.append(r"../..")
-
-import sys
 from lxml import etree
-
 from PyQt5.QtWidgets import QComboBox
 
 from pymdwizard.gui import Status

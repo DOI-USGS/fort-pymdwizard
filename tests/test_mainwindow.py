@@ -1,19 +1,9 @@
-from __future__ import print_function
-
-import sys
-
-sys.path.append(r"../..")
 
 import os
 import time
 
-
 from pytestqt.qt_compat import qt_api
-
-
-from PyQt5.QtWidgets import QMessageBox
-
-from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QMessageBox, QPlainTextEdit
 
 from pymdwizard.gui import MainWindow
 

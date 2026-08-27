@@ -1,22 +1,8 @@
 
-# Standard python libraries.
-from __future__ import print_function
-import sys
+from lxml import etree
+from PyQt5.QtWidgets import QPlainTextEdit
 
-# Non-standard python libraries.
-try:
-    from lxml import etree
-    from PyQt5.QtWidgets import QPlainTextEdit
-except ImportError as err:
-    raise ImportError(err, __file__)
-
-# Custom import/libraries.
-try:
-    from pymdwizard.gui import accconst
-except ImportError as err:
-    raise ImportError(err, __file__)
-
-sys.path.append(r"../..")
+from pymdwizard.gui import accconst
 
 
 def test_accessconstraints_from_xml(qtbot):
