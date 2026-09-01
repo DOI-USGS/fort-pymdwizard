@@ -776,7 +776,7 @@ class Ui_parent_form(object):
         self.label_44.setText(
             _translate(
                 "parent_form",
-                " Is it a release with an assigned issue number (e.g. USGS Data Series)",
+                " Is it a release with an assigned issue number (e.g. USGS Data Report)",
             )
         )
         self.help_sername.setText(_translate("parent_form", "Series Name"))
