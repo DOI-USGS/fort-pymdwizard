@@ -29,8 +29,6 @@ File types that are currently supported for populating the Entity and Attribute 
 -  High Dynamic Range Image (.hdr)
 -  ESRI ArcInfo Binary Grid (.adf)
 
-Additional geospatial formats are available when calling the
-MetadataWizard from the `ArcToolbox <../Installing%20ArcMap%20Toolbox.html>`_.
 
 ----------------------------------------------------------------------
 
@@ -99,4 +97,5 @@ Changing Default Definition Source Text
 
 When auto-generating an Entity and Attribute from a file the value that is inserted
 into each "Definition Source" element defaults to "Producer defined".  This default text
-can be changed in the application settings form available from the Advanced menu (<../Installing%20ArcMap%20Toolbox.html>`_).
+can be changed in the application settings form available from the Advanced menu
+(see `Settings <../advancedusage/Settings.html>`_).
