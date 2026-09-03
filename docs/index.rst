@@ -62,7 +62,6 @@ Standard Usage
    :maxdepth: 1
 
    usage/File Management, New, Open, Save, Save as....
-   usage/Edit ScienceBase Item metadata
    Getting Software Updates
    usage/Using the Metadata Wizard
    usage/Spatial Content

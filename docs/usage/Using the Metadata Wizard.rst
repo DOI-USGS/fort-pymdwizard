@@ -55,4 +55,4 @@ contact information for USGS users can be populated by clicking the
 **Import USGS Contact** button in a contact section, and entering their
 Active Directory (a directory service developed for Microsoft Windows domain networks) username.
 	
-Other tools include adding keywords from controlled vocabularies, populating a citation section from an active Digital Object Identifier (DOI), generating a taxonomy section from the Integrated Taxonomy Information Service (ITIS), and importing ScienceBase contact information in the Distribution Contact section.  These tools all require internet access to function properly.
+Other tools include adding keywords from controlled vocabularies, populating a citation section from an active Digital Object Identifier (DOI), and generating a taxonomy section from the Integrated Taxonomy Information Service (ITIS).  These tools all require internet access to function properly.
