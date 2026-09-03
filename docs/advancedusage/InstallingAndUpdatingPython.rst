@@ -4,6 +4,7 @@ Installing and Updating Python Packages
 
 The metadataWizard (as installed by the precompiled installers) comes with a complete, self contained Python 3.13 installation.
 By default this will be in:
+
   - Windows: C:\\Users\\<<username>>\\AppData\\Local\\MetadataWizard\\pymdwizard
   - Mac: /Applications/MetadataWizard.app/Contents/Frameworks/pymdwizard/bin/pymdwizard
 
