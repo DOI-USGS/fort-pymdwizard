@@ -22,6 +22,7 @@ None
 try:
     from PyQt5.QtWidgets import QWidget
     from PyQt5.QtCore import QUrl
+    from PyQt5.QtGui import QColor
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -63,6 +64,17 @@ class Preview(QWidget):
         # Assuming UI_Preview is the auto-generated class.
         self.ui = UI_Preview.Ui_Form()
         self.ui.setupUi(self)
+
+        # Force a white page background so the documentation/preview HTML
+        # is not rendered black-on-black when the host OS (e.g. Windows) is
+        # in dark mode. QWebEngineView follows the OS theme for any page that
+        # does not set its own background, which leaves the (black) default
+        # text unreadable and causes repaint flashes during navigation.
+        # QtWebKit's QWebView has no page().setBackgroundColor, so guard it.
+        try:
+            self.ui.webView.page().setBackgroundColor(QColor("white"))
+        except AttributeError:
+            pass
 
         # Store the URL path.
         self.url = url

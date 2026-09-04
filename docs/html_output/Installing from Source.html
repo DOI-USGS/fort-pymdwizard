@@ -1,209 +1,132 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installing from Source (Windows, Linux) &mdash; MetadataWizard 2.2.0 documentation</title>
-  
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=b21de401"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ESRI ArcGIS Toolbox (Windows Only)" href="Installing ArcMap Toolbox.html" />
-    <link rel="prev" title="Installing on Mac" href="Mac Installation.html" /> 
+    <link rel="next" title="File Management, New, Open, Save, Save as…." href="usage/File%20Management%2C%20New%2C%20Open%2C%20Save%2C%20Save%20as.....html" />
+    <link rel="prev" title="Installing on Mac" href="Mac%20Installation.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> MetadataWizard
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            MetadataWizard
           </a>
-
-          
-            
-            
-              <div class="version">
-                2.2.0
-              </div>
-            
-          
-
-          
-<!-- <div role="search">
+<div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
-</div> -->
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Windows Installation.html">Installing on Windows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Mac Installation.html">Installing on Mac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Windows%20Installation.html">Installing on Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Mac%20Installation.html">Installing on Mac</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installing from Source (Windows, Linux)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage/File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting Software Updates.html">Getting Software Updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Using the Metadata Wizard.html">Using the Metadata Wizard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Previewing a Record.html">Previewing a Metadata Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/Validating a Record.html">Validating a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/File%20Management%2C%20New%2C%20Open%2C%20Save%2C%20Save%20as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting%20Software%20Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Using%20the%20Metadata%20Wizard.html">Using the Metadata Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Spatial%20Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/How%20to%20fill%20out%20the%20Entity%20and%20Attribute%20tab.html">Populating the Entity and Attribute Tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Generating%20a%20Taxonomic%20Information%20Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Previewing%20a%20Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/Validating%20a%20Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Metadata%20Review%20Report.html">Making a Metadata Review Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advancedusage/Settings.html">Changing Application Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing Your Template.html">Changing the Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
-<!-- <li class="toctree-l1"><a class="reference internal" href="advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li> -->
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Changing%20Your%20Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Launch%20Jupyter%20for%20Batch%20Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/Include%20Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reporting%20Bugs%20and%20Enhancement%20Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">MetadataWizard</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Installing from Source (Windows, Linux)</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installing from Source (Windows, Linux)</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/Installing from Source.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="installing-from-source-windows-linux">
-<h1>Installing from Source (Windows, Linux)<a class="headerlink" href="#installing-from-source-windows-linux" title="Permalink to this headline">¶</a></h1>
-<p>These instructions do not currently work on Mac computers, but will be updated
-in a subsequent release to support Macs.</p>
-<p>Currently the only option for installation on Linux systems is to install the application from source.</p>
-<p>Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and Python Package installations.</p>
+             
+  <section id="installing-from-source-windows-linux">
+<h1>Installing from Source (Windows, Linux)<a class="headerlink" href="#installing-from-source-windows-linux" title="Link to this heading"></a></h1>
+<p>These instructions are for installing pymdwizard from source on Windows, Linux.</p>
+<p>Instructions for installing pymdwizard from source are intended for someone with a basic familiarity with Python and conda package installations.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic">
-<li><p>Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> or <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a>.</p>
-<blockquote>
-<div><p><em>While the code for the MetadataWizard is  compatible with both Python versions 2 and 3, installing the Python 3 version (64x) is recommended, as 2.7 is being phased out.</em></p>
-</div></blockquote>
+<li><p>Install <a class="reference external" href="https://conda-forge.org/download/">Miniforge</a>.</p>
+<p>Miniforge is a minimal conda installer that uses conda-forge as the default channel.
+Download the appropriate installer for your operating system (Windows, Linux, or Mac) and follow the installation instructions.</p>
 </li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><p>Open the Anaconda command window.</p></li>
+<li><p>Open the Miniforge command prompt:</p>
+<ul class="simple">
+<li><p><strong>Windows</strong>: Launch “Miniforge Prompt” from the Start menu</p></li>
+<li><p><strong>Linux/Mac</strong>: Open a terminal (conda will be available in your shell if you selected the option during installation)</p></li>
+</ul>
+</li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p>Add the conda-forge channel:</p></li>
+<ol class="arabic" start="3">
+<li><p>Navigate to the directory where you want to install the Metadata Wizard:</p>
+<p><em>The example directory below could be different depending on operating system or organization</em></p>
+</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd c:/projects</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -211,10 +134,10 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="4">
-<li><p>Install the optional conda developer tools</p></li>
+<li><p>Clone the fort-pymdwizard project:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install conda-build
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/talbertc-usgs/fort-pymdwizard.git</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -222,43 +145,33 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="5">
-<li><p>Create a pymdwizard environment:</p></li>
+<li><p>Navigate to the project folder:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda create --name pymdwizard <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 <span class="nv">pyqt</span><span class="o">=</span><span class="m">5</span>.6.0*
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd fort-pymdwizard</span>
 </pre></div>
 </div>
 </div></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="6">
-<li><p>Activate this environment:</p></li>
+<ol class="arabic" start="6">
+<li><p>Create the pymdwizard conda environment from the environment.yml file:</p>
+<p>This will create an environment with Python 3.13 and all required dependencies.</p>
+</li>
 </ol>
-<div class="line-block">
-<div class="line"><em>(on Windows)</em></div>
-</div>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> activate pymdwizard
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
 </pre></div>
 </div>
 </div></blockquote>
-<div class="line-block">
-<div class="line"><em>(on Linux, Mac)</em></div>
-</div>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> activate pymdwizard
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="7">
-<li><p>Install git:</p></li>
+<ol class="arabic" start="7">
+<li><p>Activate the environment:</p>
+<p><em>(Works on all platforms - Windows, Linux, and Mac)</em></p>
+</li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install git
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate pymdwizard</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -266,14 +179,29 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic" start="8">
-<li><p>Navigate to the directory where the Metadata Wizard will be installed:</p>
-<blockquote>
-<div><p><em>The example directory below could be different depending on operating system or organization</em></p>
-</div></blockquote>
+<li><p>Add the project folder to the Python path:</p>
+<p>First, find your environment’s site-packages directory:</p>
 </li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> c:/projects
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     python -c &quot;import site; print(site.getsitepackages()[1])&quot;</span>
+
+<span class="go">Then create a ``.pth`` file in that directory containing the full path to the project folder.</span>
+
+<span class="go">**Windows** (from the Miniforge Prompt, in the fort-pymdwizard directory):</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     echo %CD% &gt; %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth</span>
+
+<span class="go">**Linux/Mac**:</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     echo $PWD &gt; $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth</span>
+
+<span class="go">You can verify it worked by running:</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -c &quot;import pymdwizard; print(pymdwizard.__version__)&quot;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -281,105 +209,44 @@ in a subsequent release to support Macs.</p>
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="9">
-<li><p>Clone our pymdwizard project:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="10">
-<li><p>Navigate to our project folder:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> fort-pymdwizard
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="11">
-<li><p>Install the remaining software requirements (library dependencies):</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda install --yes --file environment.yml
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="12">
-<li><p>Add our git folder to the pythonpath:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda develop C:/projects/fort-pymdwizard
-</pre></div>
-</div>
-</div></blockquote>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic simple" start="13">
 <li><p>Launch Metadata Wizard:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python pymdwizard/gui/MainWindow.py
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python pymdwizard/gui/MainWindow.py</span>
 </pre></div>
 </div>
 </div></blockquote>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Installing ArcMap Toolbox.html" class="btn btn-neutral float-right" title="ESRI ArcGIS Toolbox (Windows Only)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="Mac Installation.html" class="btn btn-neutral float-left" title="Installing on Mac" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Mac%20Installation.html" class="btn btn-neutral float-left" title="Installing on Mac" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage/File%20Management%2C%20New%2C%20Open%2C%20Save%2C%20Save%20as.....html" class="btn btn-neutral float-right" title="File Management, New, Open, Save, Save as…." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-
-    </p>
+    <p></p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

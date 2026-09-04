@@ -97,4 +97,5 @@ Changing Default Definition Source Text
 
 When auto-generating an Entity and Attribute from a file the value that is inserted
 into each "Definition Source" element defaults to "Producer defined".  This default text
-can be changed in the application settings form available from the Advanced menu (<../Installing%20ArcMap%20Toolbox.html>`_).
+can be changed in the application settings form available from the Advanced menu
+(see `Settings <../advancedusage/Settings.html>`_).

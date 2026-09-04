@@ -1,99 +1,55 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using the Metadata Wizard &mdash; MetadataWizard 2.2.0 documentation</title>
-  
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=b21de401"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spatial Content" href="Spatial Content.html" />
-    <link rel="prev" title="Getting Software Updates" href="../Getting Software Updates.html" /> 
+    <link rel="next" title="Spatial Content" href="Spatial%20Content.html" />
+    <link rel="prev" title="Getting Software Updates" href="../Getting%20Software%20Updates.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> MetadataWizard
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            MetadataWizard
           </a>
-
-          
-            
-            
-              <div class="version">
-                2.2.0
-              </div>
-            
-          
-
-          
-<!-- <div role="search">
+<div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
-</div> -->
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Windows Installation.html">Installing on Windows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Mac Installation.html">Installing on Mac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing from Source.html">Installing from Source (Windows, Linux)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Installing ArcMap Toolbox.html">ESRI ArcGIS Toolbox (Windows Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Windows%20Installation.html">Installing on Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Mac%20Installation.html">Installing on Mac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installing%20from%20Source.html">Installing from Source (Windows, Linux)</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="File Management, New, Open, Save, Save as.....html">File Management, New, Open, Save, Save as….</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Edit ScienceBase Item metadata.html">Editing existing FGDC metadata record on ScienceBase</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Getting Software Updates.html">Getting Software Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="File%20Management%2C%20New%2C%20Open%2C%20Save%2C%20Save%20as.....html">File Management, New, Open, Save, Save as….</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting%20Software%20Updates.html">Getting Software Updates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Metadata Wizard</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sections">Sections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#filling-out-a-record">Filling Out a Record</a></li>
@@ -102,93 +58,55 @@
 <li class="toctree-l2"><a class="reference internal" href="#using-tools-to-auto-populate-compound-elements">Using Tools to Auto-Populate Compound Elements</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Spatial Content.html">Spatial Content</a></li>
-<li class="toctree-l1"><a class="reference internal" href="How to fill out the Entity and Attribute tab.html">Populating the Entity and Attribute Tab</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Generating a Taxonomic Information Section.html">Generating a Taxonomic Information Section</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Previewing a Record.html">Previewing a Metadata Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Validating a Record.html">Validating a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Spatial%20Content.html">Spatial Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How%20to%20fill%20out%20the%20Entity%20and%20Attribute%20tab.html">Populating the Entity and Attribute Tab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Generating%20a%20Taxonomic%20Information%20Section.html">Generating a Taxonomic Information Section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Previewing%20a%20Record.html">Previewing a Metadata Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Validating%20a%20Record.html">Validating a Metadata Record</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata Review Report.html">Making a Metadata Review Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata%20Review%20Report.html">Making a Metadata Review Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Settings.html">Changing Application Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing Your Template.html">Changing the Template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch Jupyter for Batch Processing.html">Batch Processing Using Jupyter and Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include Sections.html">Include/Exclude Optional Metadata Sections</a></li>
-<!-- <li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li> -->
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Changing%20Your%20Template.html">Changing the Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Launch%20Jupyter%20for%20Batch%20Processing.html">Batch Processing Using Jupyter and Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/Include%20Sections.html">Include/Exclude Optional Metadata Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advancedusage/InstallingAndUpdatingPython.html">Installing and Updating Python Packages</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Reporting Bugs and Enhancement Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Reporting%20Bugs%20and%20Enhancement%20Ideas.html">Reporting Bugs and Enhancement Ideas</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetadataWizard</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-      <li>Using the Metadata Wizard</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using the Metadata Wizard</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="../_sources/usage/Using the Metadata Wizard.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="using-the-metadata-wizard">
-<h1>Using the Metadata Wizard<a class="headerlink" href="#using-the-metadata-wizard" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="using-the-metadata-wizard">
+<h1>Using the Metadata Wizard<a class="headerlink" href="#using-the-metadata-wizard" title="Link to this heading"></a></h1>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="section" id="sections">
-<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<section id="sections">
+<h2>Sections<a class="headerlink" href="#sections" title="Link to this heading"></a></h2>
 <p>The Metadata Wizard uses a series of forms/tabs where the user will enter information about a dataset. These tabs are broken down categorically into sections that roughly correspond to the sections in an FGDC metadata record.</p>
 <ul class="simple">
 <li><p><strong>Identification</strong> : <em>What the data is, who created it, associated publications, when it was created, etc.</em></p></li>
@@ -201,95 +119,78 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="filling-out-a-record">
-<h2>Filling Out a Record<a class="headerlink" href="#filling-out-a-record" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="filling-out-a-record">
+<h2>Filling Out a Record<a class="headerlink" href="#filling-out-a-record" title="Link to this heading"></a></h2>
 <p>Cycle through each of the metadata sections (represented as tabs) by clicking on the blue labels across the top of the application. On each tab, enter appropriate content into the text boxes and select the appropriate information located in dropdown boxes. The content on each tab corresponds to FGDC CSDGM elements, which often have hints below the element titles that help to identify the appropriate content. Items marked with a blue * are required to be filled out.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="expanding-a-collapsed-element">
-<h2>Expanding a Collapsed Element<a class="headerlink" href="#expanding-a-collapsed-element" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-default">
+</section>
+<section id="expanding-a-collapsed-element">
+<h2>Expanding a Collapsed Element<a class="headerlink" href="#expanding-a-collapsed-element" title="Link to this heading"></a></h2>
+<figure class="align-default">
 <img alt="Expanding a hidden element" src="../_images/SeriesYes.png" />
-</div>
+</figure>
 <p>Some compound metadata elements are hidden until the <strong>Yes</strong> radio button is checked. For example, if the data is part of a series the user will want to record the series name and number in the Citation section on the Identification tab. These will not be visible until the user checks the <strong>Yes</strong> button corresponding to the question <strong>Is this dataset part of a series?</strong>. If compound metadata elements are not needed, the user should click the <strong>No</strong> button to help the metadata record pass validation by limiting empty metadata elements. More information on validation is <a class="reference external" href="Validating%20a%20Record.html">here</a>.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="adding-or-removing-items-in-a-list-repeating-elements">
-<h2>Adding or Removing Items in a List (Repeating Elements)<a class="headerlink" href="#adding-or-removing-items-in-a-list-repeating-elements" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-default">
+</section>
+<section id="adding-or-removing-items-in-a-list-repeating-elements">
+<h2>Adding or Removing Items in a List (Repeating Elements)<a class="headerlink" href="#adding-or-removing-items-in-a-list-repeating-elements" title="Link to this heading"></a></h2>
+<figure class="align-default">
 <img alt="Using a helper tool" src="../_images/AddOriginator.png" />
-</div>
+</figure>
 <p>Elements that can be repeated multiple times, for example, authors, keywords, and
 online linkages, have buttons for adding or removing elements.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="using-tools-to-auto-populate-compound-elements">
-<h2>Using Tools to Auto-Populate Compound Elements<a class="headerlink" href="#using-tools-to-auto-populate-compound-elements" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-default">
+</section>
+<section id="using-tools-to-auto-populate-compound-elements">
+<h2>Using Tools to Auto-Populate Compound Elements<a class="headerlink" href="#using-tools-to-auto-populate-compound-elements" title="Link to this heading"></a></h2>
+<figure class="align-default">
 <img alt="Expanding a hidden element" src="../_images/ImportContact.png" />
-</div>
+</figure>
 <p>Some elements contain convenience tools for populating their content
 which are launched by clicking the button in that section. For example,
 contact information for USGS users can be populated by clicking the
 <strong>Import USGS Contact</strong> button in a contact section, and entering their
 Active Directory (a directory service developed for Microsoft Windows domain networks) username.</p>
-<p>Other tools include adding keywords from controlled vocabularies, populating a citation section from an active Digital Object Identifier (DOI), generating a taxonomy section from the Integrated Taxonomy Information Service (ITIS), and importing ScienceBase contact information in the Distribution Contact section.  These tools all require internet access to function properly.</p>
-</div>
-</div>
+<p>Other tools include adding keywords from controlled vocabularies, populating a citation section from an active Digital Object Identifier (DOI), and generating a taxonomy section from the Integrated Taxonomy Information Service (ITIS).  These tools all require internet access to function properly.</p>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Spatial Content.html" class="btn btn-neutral float-right" title="Spatial Content" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../Getting Software Updates.html" class="btn btn-neutral float-left" title="Getting Software Updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Getting%20Software%20Updates.html" class="btn btn-neutral float-left" title="Getting Software Updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Spatial%20Content.html" class="btn btn-neutral float-right" title="Spatial Content" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-
-    </p>
+    <p></p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
