@@ -192,6 +192,34 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
                 )
             )
 
+    from pymdwizard.core.spatial_utils import ns_is_inverted
+
+    # Validate North/South bounding-coordinate ordering. The FGDC schema
+    # constrains each latitude's range but not the ordering relationship
+    # between them, so an inverted record (northbc < southbc) passes schema
+    # validation while being logically invalid. This check is read-only: it
+    # only reads element text and appends to errors, never mutating tree_node.
+    # Non-numeric or missing latitudes are skipped (ns_is_inverted returns
+    # False), and the plain numeric comparison is hemisphere-agnostic.
+    bounding_xpath = "idinfo/spdom/bounding"
+    bounding_nodes = tree_node.xpath(bounding_xpath)
+    for i, bounding in enumerate(bounding_nodes):
+        north_node = bounding.find("northbc")
+        south_node = bounding.find("southbc")
+        north = north_node.text if north_node is not None else None
+        south = south_node.text if south_node is not None else None
+        if ns_is_inverted(north, south):
+            error_xpath = "metadata/" + bounding_xpath
+            if len(bounding_nodes) > 1:
+                error_xpath += "[{}]".format(i + 1)
+            errors.append(
+                (error_xpath,
+                 "The North Bounding Coordinate must be greater than or "
+                 "equal to the South Bounding Coordinate.",
+                 1,
+                )
+            )
+
     # Validate the XML against the schema and errors.
     if xmlschema.validate(tree_node) and not errors:
         return []

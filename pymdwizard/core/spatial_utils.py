@@ -2000,6 +2000,71 @@ def num_sig_digits(f, min_num=4):
         return min_num
 
 
+def ns_is_inverted(north, south):
+    """
+    Description:
+        Determine whether a North/South latitude pair is inverted, meaning the
+        North Bounding Coordinate is numerically less than the South Bounding
+        Coordinate.
+
+        The comparison is a plain numeric ``<``, so negative
+        (Southern-Hemisphere) latitudes are handled identically to positive
+        ones. Non-numeric or missing values (None, empty string, non-castable
+        strings) are treated as "not comparable" and return False, so callers
+        skip the ordering rule rather than raise.
+
+        This helper is pure and PyQt-free.
+
+    Args:
+        north: The North Bounding Coordinate value (may be a float, int, or
+            string).
+        south: The South Bounding Coordinate value (may be a float, int, or
+            string).
+
+    Returns:
+        bool: True only when both values are numeric and north < south;
+            otherwise False.
+    """
+
+    try:
+        n = float(north)
+        s = float(south)
+    except (TypeError, ValueError):
+        return False
+
+    return n < s
+
+
+def ns_ordered(north, south):
+    """
+    Description:
+        Return the North/South latitude pair ordered so the first value is the
+        larger (northern) latitude.
+
+        When the pair is inverted (north < south) the two inputs are returned
+        swapped; when the pair is already ordered (north >= south) or is
+        non-numeric, the inputs are returned unchanged (identity). The multiset
+        of the two values is always preserved.
+
+        This helper is pure and PyQt-free.
+
+    Args:
+        north: The North Bounding Coordinate value (may be a float, int, or
+            string).
+        south: The South Bounding Coordinate value (may be a float, int, or
+            string).
+
+    Returns:
+        tuple: (north, south) with the larger latitude first. Swapped when
+            inverted, unchanged otherwise.
+    """
+
+    if ns_is_inverted(north, south):
+        return south, north
+
+    return north, south
+
+
 def format_bounding(extent):
     """
     Description:

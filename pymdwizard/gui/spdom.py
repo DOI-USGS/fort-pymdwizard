@@ -24,7 +24,7 @@ from copy import deepcopy
 # Non-standard python libraries.
 try:
     import pandas as pd
-    from PyQt5.QtWidgets import (QMessageBox, QCompleter)
+    from PyQt5.QtWidgets import (QMessageBox, QCompleter, QLabel)
     from PyQt5.QtCore import (QObject, QStringListModel, QUrl, QDir,
                               pyqtSlot, QTimer)
     from PyQt5.QtWebEngineWidgets import (QWebEngineView, QWebEngineSettings,
@@ -43,6 +43,13 @@ try:
 except ImportError as err:
     raise ImportError(err, __file__)
 
+
+# QSS applied to the North/South QLineEdits to signal an inverted North/South
+# ordering (North < South) via a distinct border/background. Used by the
+# non-modal inline cue in Spdom._set_ns_cue; cleared by resetting to "".
+NS_ERROR_FIELD_STYLE = (
+    "QLineEdit { border: 1px solid #c0392b; background-color: #fdecea; }"
+)
 
 
 class SslTrustingWebEnginePage(QWebEnginePage):
@@ -278,6 +285,20 @@ class Spdom(WizardWidget):
         self.ui = self.ui_class()
         self.ui.setupUi(self)
 
+        # Add the non-modal North/South order cue label near the coordinate
+        # fields. Added programmatically (not by hand-editing the generated
+        # UI_spdom.py) and starts hidden; shown/hidden by _set_ns_cue().
+        self.ui.ns_order_cue = QLabel(self.ui.fgdc_bounding)
+        self.ui.ns_order_cue.setObjectName("ns_order_cue")
+        self.ui.ns_order_cue.setWordWrap(True)
+        self.ui.ns_order_cue.setStyleSheet("QLabel { color: #c0392b; }")
+        self.ui.ns_order_cue.hide()
+        self.ui.verticalLayout.addWidget(self.ui.ns_order_cue)
+
+        # Tracks whether the North/South inline cue is currently shown so the
+        # handler can cheaply clear a previously shown cue.
+        self._ns_cue_active = False
+
         # CRITICAL FIX 1: Ensure coordinate fields are populated
         # with CONUS defaults before map is loaded.
         self._set_initial_map_bounds()
@@ -509,29 +530,24 @@ class Spdom(WizardWidget):
                 not -90 <= cur_value <= 90:
             msg = ("North and South coordinates must be within -90 "
                    "and 90")
-        # Validate North > South relationship (South field updated).
-        elif cur_name == "fgdc_southbc":
-            try:
-                north = float(self.ui.fgdc_northbc.text())
-                if north <= cur_value:
-                    msg = ("North coordinate must be greater than "
-                           "South coordinate")
-            except ValueError:
-                pass
-        # Validate North > South relationship (North field updated).
-        elif cur_name == "fgdc_northbc":
-            try:
-                south = float(self.ui.fgdc_southbc.text())
-                if south >= cur_value:
-                    msg = ("North coordinate must be greater than "
-                           "South coordinate")
-            except ValueError:
-                pass
 
-        # Show warning if any validation failed.
+        # Show warning for range/format problems (numeric, East/West range,
+        # North/South range). The North/South ORDERING case is handled below
+        # via the non-modal inline cue and never raises a QMessageBox.
         if msg:
             QMessageBox.warning(self, "Problem bounding coordinates",
                                 msg)
+
+        # North/South ordering: drive the non-modal inline cue instead of a
+        # modal dialog. No swap is performed on the manual-entry path; the
+        # typed values are retained. Non-numeric/empty entries make
+        # ns_is_inverted return False, so the cue is cleared rather than
+        # falsely raised. East/West are never touched.
+        if spatial_utils.ns_is_inverted(self.ui.fgdc_northbc.text(),
+                                        self.ui.fgdc_southbc.text()):
+            self._set_ns_cue(True)
+        else:
+            self._set_ns_cue(False)
 
         # Update map extent.
         self.update_map()
@@ -632,21 +648,28 @@ class Spdom(WizardWidget):
         self.ui.fgdc_northbc.setText(f"{lat:.8f}")
         self.ui.fgdc_eastbc.setText(f"{lng:.8f}")
 
+        # Silently correct an inverted North/South drag before any downstream
+        # reconciliation or map refresh. Runs on both the in_xml_load and the
+        # normal-editing paths; East/West untouched, no dialog.
+        self._enforce_ns_order()
+
         if self.in_xml_load:
-            n, e = lat, lng
             try:
-                # Update text after marker moved.
+                # Re-read North/South after the possible swap so format_bounding
+                # sees n - s >= 0 when it computes smallest_dim.
+                n = float(self.ui.fgdc_northbc.text())
+                e = lng
                 s = float(self.ui.fgdc_southbc.text())
                 w = float(self.ui.fgdc_westbc.text())
                 bounds = spatial_utils.format_bounding((w, e, n, s))
 
                 self.ui.fgdc_eastbc.setText(bounds[1])
                 self.ui.fgdc_northbc.setText(bounds[2])
-
-                # Update map.
-                self.update_map()
             except Exception:
                 pass
+
+        # Update map on both paths.
+        self.update_map()
 
     def handle_nw_move(self, lat, lng):
         """
@@ -676,21 +699,28 @@ class Spdom(WizardWidget):
         self.ui.fgdc_northbc.setText(f"{lat:.8f}")
         self.ui.fgdc_westbc.setText(f"{lng:.8f}")
 
+        # Silently correct an inverted North/South drag before any downstream
+        # reconciliation or map refresh. Runs on both the in_xml_load and the
+        # normal-editing paths; East/West untouched, no dialog.
+        self._enforce_ns_order()
+
         if self.in_xml_load:
-            n, w = lat, lng
             try:
-                # Update text after marker moved.
+                # Re-read North/South after the possible swap so format_bounding
+                # sees n - s >= 0 when it computes smallest_dim.
+                n = float(self.ui.fgdc_northbc.text())
+                w = lng
                 s = float(self.ui.fgdc_southbc.text())
                 e = float(self.ui.fgdc_eastbc.text())
                 bounds = spatial_utils.format_bounding((w, e, n, s))
 
                 self.ui.fgdc_westbc.setText(bounds[0])
                 self.ui.fgdc_northbc.setText(bounds[2])
-
-                # Update map.
-                self.update_map()
             except Exception:
                 pass
+
+        # Update map on both paths.
+        self.update_map()
 
     def handle_se_move(self, lat, lng):
         """
@@ -720,21 +750,28 @@ class Spdom(WizardWidget):
         self.ui.fgdc_southbc.setText(f"{lat:.8f}")
         self.ui.fgdc_eastbc.setText(f"{lng:.8f}")
 
+        # Silently correct an inverted North/South drag before any downstream
+        # reconciliation or map refresh. Runs on both the in_xml_load and the
+        # normal-editing paths; East/West untouched, no dialog.
+        self._enforce_ns_order()
+
         if self.in_xml_load:
-            s, e = lat, lng
             try:
-                # Update text after marker moved.
+                # Re-read North/South after the possible swap so format_bounding
+                # sees n - s >= 0 when it computes smallest_dim.
+                s = float(self.ui.fgdc_southbc.text())
+                e = lng
                 n = float(self.ui.fgdc_northbc.text())
                 w = float(self.ui.fgdc_westbc.text())
                 bounds = spatial_utils.format_bounding((w, e, n, s))
 
                 self.ui.fgdc_eastbc.setText(bounds[1])
                 self.ui.fgdc_southbc.setText(bounds[3])
-
-                # Update map.
-                self.update_map()
             except Exception:
                 pass
+
+        # Update map on both paths.
+        self.update_map()
 
     def handle_sw_move(self, lat, lng):
         """
@@ -764,21 +801,115 @@ class Spdom(WizardWidget):
         self.ui.fgdc_southbc.setText(f"{lat:.8f}")
         self.ui.fgdc_westbc.setText(f"{lng:.8f}")
 
+        # Silently correct an inverted North/South drag before any downstream
+        # reconciliation or map refresh. Runs on both the in_xml_load and the
+        # normal-editing paths; East/West untouched, no dialog.
+        self._enforce_ns_order()
+
         if self.in_xml_load:
-            s, w = lat, lng
             try:
-                # Update text after marker moved.
+                # Re-read North/South after the possible swap so format_bounding
+                # sees n - s >= 0 when it computes smallest_dim.
+                s = float(self.ui.fgdc_southbc.text())
+                w = lng
                 n = float(self.ui.fgdc_northbc.text())
                 e = float(self.ui.fgdc_eastbc.text())
                 bounds = spatial_utils.format_bounding((w, e, n, s))
 
                 self.ui.fgdc_westbc.setText(bounds[0])
                 self.ui.fgdc_southbc.setText(bounds[3])
-
-                # Update map.
-                self.update_map()
             except Exception:
                 pass
+
+        # Update map on both paths.
+        self.update_map()
+
+    def _enforce_ns_order(self):
+        """
+        Description:
+            Silently enforce the North/South ordering invariant on the map-drag
+            path by reading the current North and South Bounding Coordinate
+            fields, ordering them via spatial_utils.ns_ordered, and writing the
+            ordered values back only when they differ from the current values.
+
+            Only the North and South fields (fgdc_northbc, fgdc_southbc) are
+            read or written; the East and West Bounding Coordinates are never
+            touched. No dialog is shown.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            bool: True when an inverted pair was swapped in place, otherwise
+                False.
+
+        Workflow:
+            1. Reads the North and South field text.
+            2. Orders the pair using spatial_utils.ns_ordered.
+            3. Writes the ordered values back only when they differ.
+
+        Notes:
+            spatial_utils.ns_ordered returns the inputs unchanged for ordered
+            or non-numeric pairs, so the fields are only rewritten on an actual
+            swap.
+        """
+
+        # Read the current North/South field text (East/West untouched).
+        north_txt = self.ui.fgdc_northbc.text()
+        south_txt = self.ui.fgdc_southbc.text()
+
+        # Order the pair via the pure, PyQt-free core helper.
+        north, south = spatial_utils.ns_ordered(north_txt, south_txt)
+
+        # Only rewrite the fields when the ordered result differs from the
+        # current values (i.e. an inverted pair was swapped).
+        if (north, south) != (north_txt, south_txt):
+            self.ui.fgdc_northbc.setText(str(north))
+            self.ui.fgdc_southbc.setText(str(south))
+            return True
+
+        return False
+
+    def _set_ns_cue(self, active):
+        """
+        Description:
+            Show or hide the non-modal North/South ordering cue. This is the
+            single toggle for the inline cue and never opens a dialog.
+
+        Passed arguments:
+            active (bool): True to indicate an inverted North/South pair
+                (North < South); False to clear the cue.
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. When active, apply NS_ERROR_FIELD_STYLE to the North and South
+               fields and show the status label with the ordering message.
+            2. When inactive, restore the North and South field styling and
+               hide the status label.
+            3. Update the self._ns_cue_active flag.
+
+        Notes:
+            Only the North and South fields (fgdc_northbc, fgdc_southbc) and
+            the ns_order_cue label are touched; East/West are never affected.
+            No QMessageBox is ever shown.
+        """
+
+        if active:
+            # Highlight the North/South fields and show the status label.
+            self.ui.fgdc_northbc.setStyleSheet(NS_ERROR_FIELD_STYLE)
+            self.ui.fgdc_southbc.setStyleSheet(NS_ERROR_FIELD_STYLE)
+            self.ui.ns_order_cue.setText(
+                "North must be greater than or equal to South.")
+            self.ui.ns_order_cue.show()
+        else:
+            # Restore normal styling and hide the status label.
+            self.ui.fgdc_northbc.setStyleSheet("")
+            self.ui.fgdc_southbc.setStyleSheet("")
+            self.ui.ns_order_cue.hide()
+
+        self._ns_cue_active = active
 
     def handle_js_ready(self):
         """Python received: JS Ready. Finalizing map setup."""
