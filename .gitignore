@@ -97,3 +97,12 @@ windows
 
 # Kiro AI workspace
 .kiro/
+
+# Throwaway conda environments created in-repo for verification
+_verifyenv/
+_tmpenv/
+*_verifyenv*.log
+
+# Test-generated artifacts (side effects of running the suite)
+tests/data/*_REVIEW.docx
+tests/**/test_output.xml
