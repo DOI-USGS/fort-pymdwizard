@@ -1,5 +1,6 @@
 
 import os
+import shutil
 import time
 
 from pytestqt.qt_compat import qt_api
@@ -35,32 +36,35 @@ def test_mainwindow_to_xml(qtbot):
     assert dc.xpath("dataqual/logic")[0].text == "this is a test"
 
 
-def test_validation(qtbot, mocker):
+def test_validation(qtbot, mocker, tmp_path):
 
     widget = MainWindow.PyMdWizardMainForm()
     qtbot.addWidget(widget)
 
-    test_record_fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+    # Open a copy in tmp_path so the review doc (written next to the input as
+    # <name>_REVIEW.docx) and any save land in the temp dir, not the repo.
+    test_record_fname = str(tmp_path / "USGS_ASC_PolarBears_FGDC.xml")
+    shutil.copy("tests/data/USGS_ASC_PolarBears_FGDC.xml", test_record_fname)
+
     with mocker.patch.object(QMessageBox, "question", return_value=QMessageBox.No), \
          mocker.patch.object(QMessageBox, "warning", return_value=QMessageBox.Cancel), \
          mocker.patch.object(QMessageBox, "information", return_value=QMessageBox.Cancel):
         widget.open_file(test_record_fname)
         widget.validate()
         assert len(widget.error_list.errors) == 1
-    #
-    #     # For some reason this part of the test is causing it to hang on TravisCI
-    #     mock.patch.object(QMessageBox, 'question',
-    #                       return_value=QMessageBox.No)
-    #     mock.patch.object(QMessageBox, 'information',
-    #                       return_value=QMessageBox.Ok)
-    widget.last_updated = time.time()
-    widget.generate_review_doc()
+
+        # Don't launch Word (or any OS handler) during the test run.
+        mocker.patch.object(os, "startfile", create=True)
+        mocker.patch("pymdwizard.gui.MainWindow.subprocess.call")
+
+        widget.last_updated = time.time()
+        widget.generate_review_doc()
+
+    # The review doc is created alongside the (temp) input, not in tests/data.
+    expected_doc = str(tmp_path / "USGS_ASC_PolarBears_FGDC_REVIEW.docx")
+    assert os.path.exists(expected_doc)
 
 
-#     assert os.path.exists("tests/data/USGS_ASC_PolarBears_FGDC_REVIEW.docx")
-#     os.remove("tests/data/USGS_ASC_PolarBears_FGDC_REVIEW.docx")
-#
-#
 def test_splash(qtbot):
 
     MainWindow.show_splash()

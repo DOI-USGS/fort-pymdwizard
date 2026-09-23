@@ -1,44 +1,20 @@
+"""Smoke test for the FGDCDate widget construction.
+
+Historical note: this file previously held a commented-out from_xml/to_xml
+test for a compound date-range widget (the old MetadataDate.MetadataDate with a
+QStackedWidget and range_date1/range_date2). That widget no longer exists. The
+current date widget is the single-date fgdc_date.FGDCDate, which has a flat
+set_date()/get_date() API and no from_xml/to_xml. Its behavior is covered by
+test_single_date.py; this file just verifies the widget constructs cleanly.
+"""
 
 from pymdwizard.gui import fgdc_date
 
-# def test_metadatadate_from_xml(qtbot):
-#     widget = MetadataDate.MetadataDate()
-#     qtbot.addWidget(widget)
-#
-#     test_record_fname = "tests/data/Onshore_Industrial_Wind_Turbine_Locations_for_the_United_States_through_July2013.xml"
-#     test_record = etree.parse(test_record_fname)
-#     metadatadate = test_record.xpath("idinfo/timeperd")[0]
-#
-#     widget.from_xml(metadatadate)
-#     assert widget.findChild(QDateEdit, "dateEdit_2").date() == '1981'
-#     assert widget.findChild(QDateEdit, "dateEdit_3").date() == '2013'
 
-
-def test_metadata_date_to_xml(qtbot):
+def test_fgdc_date_constructs(qtbot):
+    """FGDCDate instantiates and registers with qtbot without error."""
     widget = fgdc_date.FGDCDate()
     qtbot.addWidget(widget)
 
-
-#     widget.ui.radioButton_2.setChecked(True)
-#     timeWidget = widget.findChild(QStackedWidget, "fgdc_timeinfo")
-#     timeWidget.setCurrentIndex(1)
-#     begdate = "20131219"
-#     enddate = "20140904"
-#     date_edit2 = widget.range_date1.findChild(QLineEdit, "lineEdit")
-#     date_edit2.setText(begdate)
-#     date_edit3 = widget.range_date2.findChild(QLineEdit, "lineEdit")
-#     date_edit3.setText(enddate)
-#
-#     mdDate = widget.to_xml()
-#
-#     assert etree.tostring(mdDate, pretty_print=True).decode()\
-#     == """<timeperd>
-#   <timeinfo>
-#     <rngdates>
-#       <begdate>20131219</begdate>
-#       <enddate>20140904</enddate>
-#     </rngdates>
-#   </timeinfo>
-#   <current></current>
-# </timeperd>
-# """
+    # Sanity: the date input widget is wired up and starts empty.
+    assert widget.get_date() == ""

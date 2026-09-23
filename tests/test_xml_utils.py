@@ -2,10 +2,14 @@
 
 
 
+import shutil
+
 from lxml import etree
 import pytest
 
 from pymdwizard.core import xml_utils
+
+POLARBEARS_FIXTURE = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
 
 xml_str = """<cntinfo>
   <cntperp>
@@ -39,22 +43,28 @@ def test_url_read():
     assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Raster Digital Data Set"
 
 
-def test_open_save():
-    fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+def test_open_save(tmp_path):
+    # Operate on a copy in tmp_path so the committed fixture is never mutated
+    # (save() reserializes the whole file, which otherwise dirties the tree).
+    fname = str(tmp_path / "record.xml")
+    shutil.copy(POLARBEARS_FIXTURE, fname)
+
     md = xml_utils.XMLRecord(fname)
     assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Tabular Digital Data"
     md.metadata.idinfo.citation.citeinfo.geoform.text = "testing"
     md.save()
+
+    # Re-open the saved copy and confirm the edit round-tripped to disk.
     md = xml_utils.XMLRecord(fname)
     new_geoform = md.metadata.idinfo.citation.citeinfo.geoform.text
-    md.metadata.idinfo.citation.citeinfo.geoform.text = "Tabular Digital Data"
-    md.save()
 
     assert new_geoform == "testing"
 
 
 def test_find_replace():
-    fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+    # Read-only test: replace_string mutates the in-memory tree but never
+    # calls save(), so reading directly from the fixture is safe.
+    fname = POLARBEARS_FIXTURE
     md = xml_utils.XMLRecord(fname)
     assert len(md.metadata.find_string("asc", ignorecase=True)) == 7
     assert len(md.metadata.find_string("asc", ignorecase=False)) == 0

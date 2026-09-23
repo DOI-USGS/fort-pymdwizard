@@ -386,3 +386,141 @@ def test_unit_multiple_boundings_indexes_inverted_error():
     xpath = ns_errors[0][0]
     assert "idinfo/spdom/bounding" in xpath
     assert "[2]" in xpath
+
+
+# ===========================================================================
+# Controlled-vocabulary keyword validation (2.2.1)
+# ===========================================================================
+#
+# validate_xml checks theme/place keywords against their named USGS thesaurus
+# and appends a "controlled vocabulary" error per keyword group containing
+# unrecognized terms. These tests patch the thesaurus_utils boundary
+# (get_thesauri_lookup + _term_is_known) so no network access occurs, and
+# filter the returned errors to the controlled-vocabulary message.
+
+from pymdwizard.core import thesaurus_utils
+
+CV_MESSAGE_SUBSTR = "controlled vocabulary"
+
+_CV_LOOKUP = {"USGS Thesaurus": 2, "Common geographic areas": 4}
+
+
+def _keywords_metadata(themekt=None, themekeys=(), placekt=None, placekeys=()):
+    """Build a minimal metadata document with theme and/or place keywords."""
+    blocks = []
+    if themekt is not None:
+        theme = ["    <theme>", "      <themekt>{}</themekt>".format(themekt)]
+        theme += ["      <themekey>{}</themekey>".format(k) for k in themekeys]
+        theme.append("    </theme>")
+        blocks.append("\n".join(theme))
+    if placekt is not None:
+        place = ["    <place>", "      <placekt>{}</placekt>".format(placekt)]
+        place += ["      <placekey>{}</placekey>".format(k) for k in placekeys]
+        place.append("    </place>")
+        blocks.append("\n".join(place))
+    keywords_xml = "\n".join(blocks)
+    return (
+        "<metadata>\n"
+        "  <idinfo>\n"
+        "    <keywords>\n"
+        "{}\n"
+        "    </keywords>\n"
+        "  </idinfo>\n"
+        "</metadata>\n"
+    ).format(keywords_xml)
+
+
+def _cv_errors(xml_str):
+    """Run validate_xml and return only the controlled-vocabulary errors."""
+    errors = fgdc_utils.validate_xml(xml_str)
+    return [e for e in errors if CV_MESSAGE_SUBSTR in e[1]]
+
+
+def test_cv_invalid_theme_keyword_reported(mocker):
+    """An unrecognized theme keyword is reported against its thesaurus."""
+    mocker.patch.object(
+        thesaurus_utils, "get_thesauri_lookup", return_value=dict(_CV_LOOKUP)
+    )
+    mocker.patch.object(
+        thesaurus_utils,
+        "_term_is_known",
+        side_effect=lambda thcode, kw: kw == "biology",
+    )
+
+    xml_str = _keywords_metadata(
+        themekt="USGS Thesaurus", themekeys=["biology", "notarealterm"]
+    )
+    cv_errors = _cv_errors(xml_str)
+
+    assert len(cv_errors) == 1
+    xpath, message, _line = cv_errors[0]
+    assert "idinfo/keywords/theme/themekt" in xpath
+    assert "notarealterm" in message
+    assert "USGS Thesaurus" in message
+    # The recognized keyword is not reported.
+    assert "biology" not in message
+
+
+def test_cv_all_valid_keywords_no_error(mocker):
+    """When every keyword is recognized, no controlled-vocabulary error."""
+    mocker.patch.object(
+        thesaurus_utils, "get_thesauri_lookup", return_value=dict(_CV_LOOKUP)
+    )
+    mocker.patch.object(thesaurus_utils, "_term_is_known", return_value=True)
+
+    xml_str = _keywords_metadata(
+        themekt="USGS Thesaurus", themekeys=["biology", "hydrology"]
+    )
+    assert _cv_errors(xml_str) == []
+
+
+def test_cv_free_text_thesaurus_skipped(mocker):
+    """A free-text themekt ('None') is skipped: no lookup, no error."""
+    lookup = mocker.patch.object(thesaurus_utils, "get_thesauri_lookup")
+    known = mocker.patch.object(thesaurus_utils, "_term_is_known")
+
+    xml_str = _keywords_metadata(
+        themekt="None", themekeys=["whatever", "anything"]
+    )
+    assert _cv_errors(xml_str) == []
+    lookup.assert_not_called()
+    known.assert_not_called()
+
+
+def test_cv_service_unreachable_no_false_positive(mocker):
+    """If the thesaurus service is unreachable (lookup None), no error is
+    reported rather than falsely flagging keywords as invalid."""
+    mocker.patch.object(
+        thesaurus_utils, "get_thesauri_lookup", return_value=None
+    )
+    known = mocker.patch.object(thesaurus_utils, "_term_is_known")
+
+    xml_str = _keywords_metadata(
+        themekt="USGS Thesaurus", themekeys=["biology", "notarealterm"]
+    )
+    assert _cv_errors(xml_str) == []
+    # With no lookup, per-term checks are never attempted.
+    known.assert_not_called()
+
+
+def test_cv_invalid_place_keyword_reported(mocker):
+    """An unrecognized place keyword is reported against its thesaurus."""
+    mocker.patch.object(
+        thesaurus_utils, "get_thesauri_lookup", return_value=dict(_CV_LOOKUP)
+    )
+    mocker.patch.object(
+        thesaurus_utils,
+        "_term_is_known",
+        side_effect=lambda thcode, kw: kw == "Colorado",
+    )
+
+    xml_str = _keywords_metadata(
+        placekt="Common geographic areas",
+        placekeys=["Colorado", "Notaplace"],
+    )
+    cv_errors = _cv_errors(xml_str)
+
+    assert len(cv_errors) == 1
+    xpath, message, _line = cv_errors[0]
+    assert "idinfo/keywords/place/placekt" in xpath
+    assert "Notaplace" in message
