@@ -1,9 +1,17 @@
 name: Build macOS installer
 
-# Manual trigger only. This build clones a fresh copy of fort-pymdwizard from
-# GitHub inside build_installer.py, so it packages whatever is on the chosen
-# branch's remote HEAD -- not necessarily the commit that this workflow runs
-# against. Pick the branch with the `branch` input below.
+# This build clones a fresh copy of fort-pymdwizard from GitHub inside
+# build_installer.py, so it packages whatever is on the chosen branch's remote
+# HEAD -- not necessarily the commit this workflow runs against.
+#
+# Triggers:
+#   - workflow_dispatch: run it by hand (UI button only shows if this file is
+#     on the default branch; otherwise use `gh workflow run
+#     build-macos-installer.yml --ref macos-build`). Pick the branch to
+#     package with the `branch` input.
+#   - push to macos-build, but ONLY when the build inputs change (path filter
+#     below). A push-triggered run has no `branch` input, so it defaults to
+#     main-v2.2 (see the build step's BUILD_BRANCH fallback).
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +19,11 @@ on:
         description: "fort-pymdwizard branch to build from"
         required: true
         default: "main-v2.2"
+  push:
+    branches: [macos-build]
+    paths:
+      - "packaging/macos/**"
+      - ".github/workflows/build-macos-installer.yml"
 
 jobs:
   build:
@@ -35,11 +48,15 @@ jobs:
       - name: Build the .pkg
         # login shell so the conda PATH set up above is present
         shell: bash -el {0}
+        # On a push-triggered run there is no `inputs.branch`, so fall back to
+        # main-v2.2. On a manual run this uses whatever branch you picked.
+        env:
+          BUILD_BRANCH: ${{ github.event.inputs.branch || 'main-v2.2' }}
         run: |
           set -euo pipefail
           conda --version
           python3 packaging/macos/build_installer.py \
-            --branch "${{ github.event.inputs.branch }}" \
+            --branch "$BUILD_BRANCH" \
             --env-yml packaging/macos/environment-pinned.yml \
             --output "MetadataWizard.pkg"
 
