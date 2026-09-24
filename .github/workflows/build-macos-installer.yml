@@ -1,0 +1,53 @@
+name: Build macOS installer
+
+# Manual trigger only. This build clones a fresh copy of fort-pymdwizard from
+# GitHub inside build_installer.py, so it packages whatever is on the chosen
+# branch's remote HEAD -- not necessarily the commit that this workflow runs
+# against. Pick the branch with the `branch` input below.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "fort-pymdwizard branch to build from"
+        required: true
+        default: "main-v2.2"
+
+jobs:
+  build:
+    # A real macOS runner. sips, iconutil, pkgbuild, and Xcode CLT git are
+    # preinstalled on GitHub's macOS images; conda is not (installed below).
+    runs-on: macos-14
+
+    steps:
+      - name: Check out repo (for the build script + pinned env)
+        uses: actions/checkout@v4
+
+      # build_installer.py shells out to `conda`. Install Miniforge and put it
+      # on PATH. `activate-environment: ""` avoids creating a base env we don't
+      # need -- the script builds its own env with `conda env create --prefix`.
+      - name: Set up Miniforge (conda)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          activate-environment: ""
+          auto-activate-base: true
+
+      - name: Build the .pkg
+        # login shell so the conda PATH set up above is present
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          conda --version
+          python3 packaging/macos/build_installer.py \
+            --branch "${{ github.event.inputs.branch }}" \
+            --env-yml packaging/macos/environment-pinned.yml \
+            --output "MetadataWizard.pkg"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MetadataWizard-pkg
+          path: MetadataWizard.pkg
+          if-no-files-found: error
+          # Bump retention as needed; default is 90 days.
+          retention-days: 30

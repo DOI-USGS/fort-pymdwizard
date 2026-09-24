@@ -1,0 +1,59 @@
+# pymdwizard conda environment — based on fort-pymdwizard's environment.yml
+# on the main-v2.2 branch, with a few versions pinned to avoid known problems.
+#
+# Pins and why:
+#   python        - matches the exact interpreter (3.13.11) embedded in the
+#                    currently-installed MetadataWizard.app, so behavior matches.
+#   habanero      - versions >= 2.9.2 switched their internal HTTP client from
+#                    `httpx` to a new `httpx2` package. pymdwizard's doi_utils.py
+#                    only catches `httpx.HTTPError`, so on 2.9.2+ a DOI lookup
+#                    that isn't found on Crossref (e.g. any DataCite-only DOI,
+#                    which includes most USGS data releases) raises an uncaught
+#                    httpx2.HTTPStatusError instead of falling back to DataCite.
+#                    2.4.0 is the last release still built on plain `httpx`.
+#   pyqt/         - pinned to the exact build already verified against this
+#   pyqtwebengine   app (and matching what's bundled in MetadataWizard.app) so an
+#                    unpinned future solve can't jump to a new Qt major version.
+#
+# To build: conda env create -f environment-pinned.yml
+# To update an existing env: conda env update -f environment-pinned.yml --prune
+
+name: pymdwizard
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13.11
+  - pip
+  - cryptography
+  - numpy
+  - pandas
+  - geopandas
+  - git
+  - gdal
+  - habanero=2.4.0
+  - matplotlib
+  - folium
+  - fiona
+  - shapely
+  - pyproj
+  - lxml
+  - openpyxl
+  - jupyterlab
+  - ipywidgets
+  - scikit-learn
+  - requests
+  - beautifulsoup4
+  - pyyaml
+  - pyqt=5.15.11
+  - pyqtwebengine=5.15.11
+  # Test dependencies
+  - pytest
+  - pytest-qt
+  - pytest-mock
+  - pytest-cov
+  - pip:
+      - sciencebasepy
+      - pip-system-certs
+      - GitPython
+      - python-docx
+      - laspy

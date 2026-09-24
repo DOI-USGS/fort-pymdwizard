@@ -1,0 +1,46 @@
+# GitLab CI: build the unsigned macOS .pkg on a macOS runner.
+#
+# IMPORTANT: this requires a macOS runner. On gitlab.com SaaS that means
+# opting into the hosted macOS runners (a paid tier); on self-managed GitLab
+# you must register your own macOS runner (e.g. a Mac mini or an EC2 Mac
+# instance) tagged `saas-macos-medium-m1` or your own tag.
+#
+# Like the GitHub workflow, build_installer.py clones a fresh copy of
+# fort-pymdwizard from GitHub, so it packages the remote HEAD of BUILD_BRANCH,
+# not necessarily this pipeline's commit.
+
+stages:
+  - build
+
+build-macos-installer:
+  stage: build
+  # gitlab.com hosted macOS runner image. Change the tag/image for a
+  # self-managed runner.
+  tags:
+    - saas-macos-medium-m1
+  image: macos-14-xcode-15
+  # Run manually from the pipeline UI rather than on every push.
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: manual
+  variables:
+    BUILD_BRANCH: "main-v2.2"
+  before_script:
+    # macOS runners ship Xcode CLT (git, sips, iconutil, pkgbuild) but not
+    # conda. Install Miniforge and put it on PATH for this job.
+    - curl -L -o miniforge.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh"
+    - bash miniforge.sh -b -p "$HOME/miniforge"
+    - export PATH="$HOME/miniforge/bin:$PATH"
+    - conda --version
+  script:
+    - export PATH="$HOME/miniforge/bin:$PATH"
+    - >
+      python3 packaging/macos/build_installer.py
+      --branch "$BUILD_BRANCH"
+      --env-yml packaging/macos/environment-pinned.yml
+      --output "MetadataWizard.pkg"
+  artifacts:
+    name: "MetadataWizard-pkg"
+    paths:
+      - MetadataWizard.pkg
+    expire_in: 30 days
