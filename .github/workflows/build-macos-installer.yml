@@ -51,7 +51,7 @@ jobs:
         # On a push-triggered run there is no `inputs.branch`, so fall back to
         # main-v2.2. On a manual run this uses whatever branch you picked.
         env:
-          BUILD_BRANCH: ${{ github.event.inputs.branch || 'main-v2.2' }}
+          BUILD_BRANCH: ${{ github.event.inputs.branch || 'release/v2.2.1' }}
         run: |
           set -euo pipefail
           conda --version
