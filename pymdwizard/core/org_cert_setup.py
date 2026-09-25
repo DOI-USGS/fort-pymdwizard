@@ -184,6 +184,63 @@ def retrieve_certs_ssl():
     return certs
 
 
+def _user_cert_dir():
+    """
+    Description:
+        Return a per-user, writable directory for storing generated cert
+        files: ``~/certificates``. Created if it does not exist.
+
+    Returned objects:
+        str: Path to the writable per-user certificate directory.
+    """
+
+    cert_ws = os.path.join(os.path.expanduser("~"), "certificates")
+    os.makedirs(cert_ws, exist_ok=True)
+    return cert_ws
+
+
+def _write_cert_bytes(preferred_path, data):
+    """
+    Description:
+        Write ``data`` to ``preferred_path``. If that write fails because the
+        location is not writable (e.g. macOS /Applications/*.app or a
+        locked-down Windows install dir under Program Files), fall back to a
+        per-user, writable location (``~/certificates``) using the same file
+        name.
+
+        This keeps the existing behavior for installs whose target directory
+        IS writable (unchanged path), and only redirects when a write would
+        otherwise raise PermissionError/OSError.
+
+    Passed arguments:
+        preferred_path (str): The intended output path (may be inside a
+            read-only app bundle / install dir).
+        data (bytes): The bytes to write.
+
+    Returned objects:
+        str: The path actually written to (either ``preferred_path`` or the
+            per-user fallback).
+    """
+
+    try:
+        with open(preferred_path, "wb") as f_out:
+            f_out.write(data)
+        return preferred_path
+    except (PermissionError, OSError) as err:
+        # Preferred location is not writable; redirect to the user's home dir.
+        # os.path.basename is required here: preferred_path is typically an
+        # absolute path, and os.path.join(home, name, <abs path>) would discard
+        # the home prefix and hand back the original unwritable path.
+        fallback_path = os.path.join(
+            _user_cert_dir(), os.path.basename(preferred_path)
+        )
+        print(f"Cert location not writable ({preferred_path}): {err}. "
+              f"Falling back to {fallback_path}.")
+        with open(fallback_path, "wb") as f_out:
+            f_out.write(data)
+        return fallback_path
+
+
 def cert_setup(local_cert_file):
     """
     Description:
@@ -251,12 +308,13 @@ def cert_setup(local_cert_file):
                 except ValueError as e:
                     print(f"Skipping invalid certificate: {e}")
 
-            # Export the certificate to a PEM file if located.
+            # Export the certificate to a PEM file if located. Write via the
+            # helper so a read-only target (macOS app bundle, locked-down
+            # Program Files) transparently falls back to ~/certificates.
             if doi_cert is not None:
                 pem_data = doi_cert.public_bytes(
                     encoding=serialization.Encoding.PEM)
-                with open(local_cert_file, "wb") as pem_file:
-                    pem_file.write(pem_data)
+                local_cert_file = _write_cert_bytes(local_cert_file, pem_data)
             else:
                 print("INVESTIGATE: Did not locate USGS organization "
                       "certificate (may not be on a USGS system or something "
@@ -279,8 +337,9 @@ def cert_setup(local_cert_file):
               open(local_cert_file, "rb") as f_org):
             combined_bytes = f_certifi.read() + f_org.read()
 
-        with open(local_cert_file2, "wb") as f_out:
-            f_out.write(combined_bytes)
+        # Write via the helper so a read-only target transparently falls back
+        # to ~/certificates (same reasoning as the DOI export write above).
+        local_cert_file2 = _write_cert_bytes(local_cert_file2, combined_bytes)
     else:
         print("Certificate file NOT found...")
 
