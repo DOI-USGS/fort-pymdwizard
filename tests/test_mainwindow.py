@@ -6,6 +6,7 @@ import time
 from pytestqt.qt_compat import qt_api
 from PyQt5.QtWidgets import QMessageBox, QPlainTextEdit
 
+from pymdwizard import __version__
 from pymdwizard.gui import MainWindow
 
 
@@ -81,7 +82,9 @@ def test_misc(qtbot, mocker):
 
 def test_settings(qtbot, mocker):
 
-    settings = qt_api.QtCore.QSettings("USGS_2.2.0", "pymdwizard_2.2.0")
+    settings = qt_api.QtCore.QSettings(
+        "USGS_" + __version__, "pymdwizard_" + __version__
+    )
     # Save original value to restore after test
     original_template = settings.value("template_fname")
     settings.setValue("template_fname", "tests/data/USGS_ASC_PolarBears_FGDC.xml")

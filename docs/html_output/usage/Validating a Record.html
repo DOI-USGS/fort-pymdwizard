@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Validating a Metadata Record &mdash; MetadataWizard 2.2.0 documentation</title>
+  <title>Validating a Metadata Record &mdash; MetadataWizard 2.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=b21de401"></script>
+      <script src="../_static/documentation_options.js?v=16656018"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,7 +55,10 @@
 <li class="toctree-l1"><a class="reference internal" href="How%20to%20fill%20out%20the%20Entity%20and%20Attribute%20tab.html">Populating the Entity and Attribute Tab</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Generating%20a%20Taxonomic%20Information%20Section.html">Generating a Taxonomic Information Section</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Previewing%20a%20Record.html">Previewing a Metadata Record</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Validating a Metadata Record</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Validating a Metadata Record</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#controlled-vocabulary-keyword-check">Controlled Vocabulary Keyword Check</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advancedusage/Metadata%20Review%20Report.html">Making a Metadata Review Report</a></li>
@@ -118,12 +121,23 @@ the errors will take the user to the tab/section that contains the error and out
 black. Keep in mind that some errors might be hidden until the user scrolls up or
 down in the application, or selects the appropriate tab.</p>
 <p><img alt="image2" src="../_images/error_screenshot.png" /></p>
+<section id="controlled-vocabulary-keyword-check">
+<h2>Controlled Vocabulary Keyword Check<a class="headerlink" href="#controlled-vocabulary-keyword-check" title="Link to this heading"></a></h2>
+<p>When you run validation, theme and place keywords that cite a named USGS
+controlled vocabulary are also checked against that thesaurus. Any keyword
+that is not a recognized term in its named thesaurus is reported as a
+validation error so it can be corrected or replaced.</p>
+<p>Keywords that use a free-text thesaurus (for example, “None”) are not
+checked. If the thesaurus cannot be reached, or its name is not recognized,
+the check is skipped for those keywords rather than reported as errors, so
+this check requires internet access to run.</p>
 <p>Potential Spelling errors within relevant text boxes will be highlighted in
 red with a yellow background.</p>
 <p><img alt="image3" src="../_images/spelling_highlights.png" /></p>
 <p>This functionality can be turned ON or OFF by clicking the Turn Spelling (ON | OFF)
 item in the validation menu.</p>
 <p><img alt="image4" src="../_images/TurnOnOffSpelling.png" /></p>
+</section>
 </section>
 
 

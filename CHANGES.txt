@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.2.1 (07/30/2026)
+2.2.1 (09/25/2026)
 -----
 
 New features
@@ -15,6 +15,16 @@ Bug fixes
 4. Fixed SSRF vulnerability in url_is_alive() by restricting requests to http/https schemes and rejecting private/loopback addresses. Reported-by: Arpit Jain <arpitjain099@github>
 5. Removed unsafe pickle deserialization (.p file support) from the Entity and Attribute tab, eliminating an arbitrary code execution vulnerability (CWE-502). Reported-by: Arpit Jain <arpitjain099@github>
 6. Fixed window opening off-screen when a previously connected monitor is no longer available.
+7. Fixed a PermissionError when writing DOI certificates on read-only installations.
+8. Flag and auto-correct inverted North/South bounding coordinates.
+9. Fixed "Add keyword" button remaining disabled after a controlled vocabulary search.
+10. Fixed black-on-black help and preview text on dark-mode systems.
+11. Corrected "USGS Data Series" to "USGS Data Report" to match the current USGS product type name.
+
+Other
+--------------
+12. Pinned Python library versions to maintain compatibility.
+13. Updated user documentation and modernized the docs build tooling.
 
 
 2.2.0 (07/02/2026)

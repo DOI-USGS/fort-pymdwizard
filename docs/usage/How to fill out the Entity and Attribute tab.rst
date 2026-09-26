@@ -20,6 +20,8 @@ File types that are currently supported for populating the Entity and Attribute 
 -  Unformatted Texts Documents (.txt)
 -  Excel Spreadsheet (.xls, .xlsx, .xlsm) 
 -  Shapefile (.shp) 
+-  GeoPackage (.gpkg) 
+-  dBASE Table (.dbf) 
 -  GeoTIFF (.tif) 
 -  JPEG (.jpg) 
 -  Bitmap (.bmp) 
@@ -73,6 +75,10 @@ each observation forms a row, and where the rows and columns together form a tab
       each of the columns on the right, by providing a definition of
       what is in that column. For each column also provide the Column
       Contents which will be one of:
+
+    | *Note: When browsing to a GeoPackage (.gpkg) that contains more than
+      one layer, the tool will prompt you to choose which layer to
+      describe.*
 	  
     | 1.  **Enumerated** for categorical or factor data, for which a definition will need to be provided for each unique value in the column (for example, data collected in binary (1 = Yes, 2 = No), or taxonomic abbreviations (URAM = Ursus americanus, or black bear)).
 	  
