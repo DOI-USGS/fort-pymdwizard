@@ -81,10 +81,10 @@ jobs:
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         env:
-          BUILD_FORMAT: ${{ github.event.inputs.format || 'pkg' }}
+          BUILD_FORMAT: ${{ github.event.inputs.format || 'dmg' }}
         with:
-          name: MetadataWizard-${{ github.event.inputs.format || 'pkg' }}
-          path: MetadataWizard.${{ github.event.inputs.format || 'pkg' }}
+          name: MetadataWizard-${{ github.event.inputs.format || 'dmg' }}
+          path: MetadataWizard.${{ github.event.inputs.format || 'dmg' }}
           if-no-files-found: error
           # Bump retention as needed; default is 90 days.
           retention-days: 30
