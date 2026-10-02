@@ -8,6 +8,10 @@
 # Like the GitHub workflow, build_installer.py clones a fresh copy of
 # fort-pymdwizard from GitHub, so it packages the remote HEAD of BUILD_BRANCH,
 # not necessarily this pipeline's commit.
+#
+# Output format is controlled by BUILD_FORMAT ("pkg" or "dmg"). dmg builds
+# additionally need the create-dmg tool, installed via Homebrew in
+# before_script only when BUILD_FORMAT=dmg.
 
 stages:
   - build
@@ -25,6 +29,9 @@ build-macos-installer:
     - when: manual
   variables:
     BUILD_BRANCH: "main-v2.2"
+    # Output format: "pkg" (installer) or "dmg" (drag-to-install disk image).
+    # Override from the pipeline UI (Run pipeline -> Variables) to build a dmg.
+    BUILD_FORMAT: "pkg"
   before_script:
     # macOS runners ship Xcode CLT (git, sips, iconutil, pkgbuild) but not
     # conda. Install Miniforge and put it on PATH for this job.
@@ -32,15 +39,18 @@ build-macos-installer:
     - bash miniforge.sh -b -p "$HOME/miniforge"
     - export PATH="$HOME/miniforge/bin:$PATH"
     - conda --version
+    # create-dmg (via Homebrew) is only needed for dmg builds.
+    - if [ "$BUILD_FORMAT" = "dmg" ]; then brew install create-dmg; fi
   script:
     - export PATH="$HOME/miniforge/bin:$PATH"
     - >
       python3 packaging/macos/build_installer.py
       --branch "$BUILD_BRANCH"
+      --format "$BUILD_FORMAT"
       --env-yml packaging/macos/environment-pinned.yml
-      --output "MetadataWizard.pkg"
+      --output "MetadataWizard.$BUILD_FORMAT"
   artifacts:
-    name: "MetadataWizard-pkg"
+    name: "MetadataWizard-$BUILD_FORMAT"
     paths:
-      - MetadataWizard.pkg
+      - MetadataWizard.$BUILD_FORMAT
     expire_in: 30 days

@@ -8,10 +8,12 @@ name: Build macOS installer
 #   - workflow_dispatch: run it by hand (UI button only shows if this file is
 #     on the default branch; otherwise use `gh workflow run
 #     build-macos-installer.yml --ref macos-build`). Pick the branch to
-#     package with the `branch` input.
+#     package with the `branch` input and the output format (pkg or dmg) with
+#     the `format` input.
 #   - push to macos-build, but ONLY when the build inputs change (path filter
-#     below). A push-triggered run has no `branch` input, so it defaults to
-#     main-v2.2 (see the build step's BUILD_BRANCH fallback).
+#     below). A push-triggered run has no inputs, so it defaults to main-v2.2
+#     and format pkg (see the build step's BUILD_BRANCH/BUILD_FORMAT
+#     fallbacks).
 on:
   workflow_dispatch:
     inputs:
@@ -19,6 +21,14 @@ on:
         description: "fort-pymdwizard branch to build from"
         required: true
         default: "main-v2.2"
+      format:
+        description: "Output format"
+        required: true
+        type: choice
+        default: "pkg"
+        options:
+          - pkg
+          - dmg
   push:
     branches: [macos-build]
     paths:
@@ -45,26 +55,36 @@ jobs:
           activate-environment: ""
           auto-activate-base: true
 
-      - name: Build the .pkg
+      # Only needed for dmg builds. Homebrew is preinstalled on GitHub's
+      # macOS runners. Skipped for pkg builds to save time.
+      - name: Install create-dmg (dmg builds only)
+        if: ${{ (github.event.inputs.format || 'pkg') == 'dmg' }}
+        run: brew install create-dmg
+
+      - name: Build the installer
         # login shell so the conda PATH set up above is present
         shell: bash -el {0}
-        # On a push-triggered run there is no `inputs.branch`, so fall back to
-        # main-v2.2. On a manual run this uses whatever branch you picked.
+        # On a push-triggered run there is no `inputs.*`, so fall back to
+        # main-v2.2 / pkg. On a manual run these use whatever you picked.
         env:
           BUILD_BRANCH: ${{ github.event.inputs.branch || 'main-v2.2' }}
+          BUILD_FORMAT: ${{ github.event.inputs.format || 'pkg' }}
         run: |
           set -euo pipefail
           conda --version
           python3 packaging/macos/build_installer.py \
             --branch "$BUILD_BRANCH" \
+            --format "$BUILD_FORMAT" \
             --env-yml packaging/macos/environment-pinned.yml \
-            --output "MetadataWizard.pkg"
+            --output "MetadataWizard.$BUILD_FORMAT"
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
+        env:
+          BUILD_FORMAT: ${{ github.event.inputs.format || 'pkg' }}
         with:
-          name: MetadataWizard-pkg
-          path: MetadataWizard.pkg
+          name: MetadataWizard-${{ github.event.inputs.format || 'pkg' }}
+          path: MetadataWizard.${{ github.event.inputs.format || 'pkg' }}
           if-no-files-found: error
           # Bump retention as needed; default is 90 days.
           retention-days: 30

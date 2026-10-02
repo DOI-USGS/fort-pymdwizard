@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """
-Build a macOS installer (.pkg) for MetadataWizard from a fort-pymdwizard
+Build a macOS distributable for MetadataWizard from a fort-pymdwizard
 git checkout.
+
+Two output formats are supported via --format:
+  pkg (default) -- a pkgbuild installer that installs the app to
+                   /Applications.
+  dmg           -- a laid-out ("pretty") drag-to-install disk image built
+                   with create-dmg (app icon + /Applications drop target),
+                   compressed read-only (UDZO).
+Both share the same MetadataWizard.app bundle; only the final packaging
+step differs.
 
 STATUS: first draft / sketch. Has not been run end-to-end yet.
 
@@ -103,23 +112,37 @@ def run(cmd, **kw):
     subprocess.run(cmd, check=True, **kw)
 
 
-def preflight():
+def preflight(fmt: str):
     """Fail early, with a clear message, if the OS or any required external
     tool is missing -- rather than crashing partway through the build with a
-    raw subprocess traceback."""
+    raw subprocess traceback.
+
+    `fmt` ("pkg" or "dmg") selects which packaging tool is required, so a dmg
+    build doesn't demand pkgbuild and vice versa.
+    """
     if sys.platform != "darwin":
         sys.exit(
             "This installer build must run on macOS -- it uses sips, "
-            "iconutil, and pkgbuild, which only exist there."
+            "iconutil, and pkgbuild/hdiutil, which only exist there."
         )
 
     # git is referenced by absolute path (GIT); the rest must be on PATH.
+    # These are needed regardless of the output format.
     required = {
         "conda": "Miniforge/conda (needed to build the bundled environment)",
         "sips": "Xcode Command Line Tools (icon conversion)",
         "iconutil": "Xcode Command Line Tools (icon conversion)",
-        "pkgbuild": "Xcode Command Line Tools (installer packaging)",
     }
+    # Format-specific packaging tools.
+    if fmt == "pkg":
+        required["pkgbuild"] = "Xcode Command Line Tools (installer packaging)"
+    else:  # dmg
+        required["hdiutil"] = "macOS (disk image creation)"
+        required["create-dmg"] = (
+            "the create-dmg tool, for a laid-out disk image "
+            "(install with `brew install create-dmg`)"
+        )
+
     missing = [
         f"  - {name}: {why}"
         for name, why in required.items()
@@ -264,6 +287,64 @@ def build_pkg(app: Path, output: Path, version: str):
         str(output),
     ])
     shutil.rmtree(payload)
+    # TODO (signing/notarization): to distribute the .pkg beyond your own
+    # machine, sign it and notarize it here:
+    #   productsign --sign "Developer ID Installer: <name> (<team id>)" \
+    #       <unsigned.pkg> <signed.pkg>
+    #   xcrun notarytool submit <signed.pkg> --keychain-profile <profile> \
+    #       --wait
+    #   xcrun stapler staple <signed.pkg>
+
+
+def build_dmg(app: Path, output: Path, version: str):
+    """Build a laid-out ("pretty") drag-to-install .dmg containing the app
+    bundle and an /Applications alias, using the create-dmg tool.
+
+    create-dmg handles the window geometry, icon positions, and the
+    Applications symlink in one call, and produces a compressed, read-only
+    UDZO image (the standard distribution format). hdiutil, which it drives
+    under the hood, ships with macOS; create-dmg itself is installed via
+    Homebrew (`brew install create-dmg`) and is checked for in preflight().
+    """
+    if output.exists():
+        output.unlink()
+
+    # create-dmg refuses to overwrite and leaves a temp "rw.*.dmg" behind if a
+    # previous run was interrupted; clean those out of the output directory so
+    # reruns are reproducible.
+    for leftover in output.parent.glob("rw.*.dmg"):
+        leftover.unlink()
+
+    cmd = [
+        "create-dmg",
+        "--volname", f"{APP_NAME} {version}",
+        "--window-pos", "200", "120",
+        "--window-size", "600", "400",
+        "--icon-size", "100",
+        # Position the app icon on the left and the /Applications drop target
+        # on the right so the drag gesture reads naturally. create-dmg adds
+        # the Applications link itself when given --app-drop-link.
+        "--icon", f"{APP_NAME}.app", "150", "190",
+        "--app-drop-link", "450", "190",
+        # Icon layout only, no custom background art. Point --background at a
+        # PNG here if/when branded artwork exists.
+        "--hdiutil-quiet",
+    ]
+
+    icns = app / "Contents" / "Resources" / "Ducky.icns"
+    if icns.exists():
+        cmd += ["--volicon", str(icns)]
+
+    cmd += [str(output), str(app)]
+    run(cmd)
+    # TODO (signing/notarization): to distribute the .dmg beyond your own
+    # machine, sign the *app bundle* before building the dmg, then notarize
+    # and staple:
+    #   codesign --deep --force --options runtime \
+    #       --sign "Developer ID Application: <name> (<team id>)" <app>
+    #   (build the dmg)
+    #   xcrun notarytool submit <dmg> --keychain-profile <profile> --wait
+    #   xcrun stapler staple <dmg>
 
 
 def main():
@@ -275,16 +356,25 @@ def main():
              "(see environment-pinned.yml)",
     )
     parser.add_argument(
+        "--format", choices=("pkg", "dmg"), default="pkg",
+        help="Output format: 'pkg' (installer, the default) or 'dmg' "
+             "(laid-out drag-to-install disk image).",
+    )
+    parser.add_argument(
         "--staging", type=Path,
         default=Path(__file__).parent / "staging",
     )
     parser.add_argument(
-        "--output", type=Path,
-        default=Path(__file__).parent / "MetadataWizard.pkg",
+        "--output", type=Path, default=None,
+        help="Output path. Defaults to MetadataWizard.<format> next to "
+             "this script.",
     )
     args = parser.parse_args()
 
-    preflight()
+    if args.output is None:
+        args.output = Path(__file__).parent / f"{APP_NAME}.{args.format}"
+
+    preflight(args.format)
 
     if not args.env_yml.exists():
         sys.exit(f"--env-yml file not found: {args.env_yml}")
@@ -293,13 +383,15 @@ def main():
     app, version = build_app_bundle(args.staging, args.env_yml, args.branch)
     print(f"App bundle built: {app}")
 
-    build_pkg(app, args.output, version)
+    if args.format == "pkg":
+        build_pkg(app, args.output, version)
+    else:
+        build_dmg(app, args.output, version)
     print(f"Installer built: {args.output}")
     print(
-        "\nNOTE: this .pkg is unsigned and unnotarized. Before distributing "
-        "it outside your own machine, add a `productsign --sign <identity>` "
-        "step and notarize with `xcrun notarytool submit` / "
-        "`xcrun stapler staple`."
+        f"\nNOTE: this .{args.format} is unsigned and unnotarized. Before "
+        "distributing it outside your own machine, sign and notarize it "
+        "(see the TODO comments in build_pkg/build_dmg)."
     )
 
 
