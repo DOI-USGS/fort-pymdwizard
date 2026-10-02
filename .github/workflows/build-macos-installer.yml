@@ -58,7 +58,7 @@ jobs:
       # Only needed for dmg builds. Homebrew is preinstalled on GitHub's
       # macOS runners. Skipped for pkg builds to save time.
       - name: Install create-dmg (dmg builds only)
-        if: ${{ (github.event.inputs.format || 'pkg') == 'dmg' }}
+        if: ${{ (github.event.inputs.format || 'dmg') == 'dmg' }}
         run: brew install create-dmg
 
       - name: Build the installer
