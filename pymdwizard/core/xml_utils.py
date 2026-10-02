@@ -17,22 +17,22 @@ None
 """
 
 # Standard python libraries.
-import os
-import collections
-from pathlib import Path
-import unicodedata
 import codecs
+import collections
+import os
+import unicodedata
+from pathlib import Path
 
 # Non-standard python libraries.
 try:
-    from lxml import etree
     import pandas as pd
+    from lxml import etree
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import (fgdc_utils, utils)
+    from pymdwizard.core import fgdc_utils, utils
 except ImportError as err:
     raise ImportError(err, __file__)
 
@@ -1126,3 +1126,123 @@ def split_tag(tag):
         index = 0  # Default index is 0
 
     return fgdc_tag, index
+
+
+def _collect_content_paths(node, base_path="", values=None):
+    """
+    Description:
+        Recursively walks an lxml element and collects every piece of
+        leaf-level content it contains, keyed by its path within the
+        tree. Each path maps to the list of actual content values found
+        at that path, so both how many occur and what they contain are
+        preserved. This is the building block for detecting (and
+        describing) content that is present in one tree but missing from
+        another (see content_diff).
+
+    Args:
+        node (lxml.Element): The element to walk.
+        base_path (str): The path accumulated from ancestors. Callers
+            normally leave this at its default.
+        values (collections.OrderedDict): Accumulator passed through the
+            recursion. Callers normally leave this at its default.
+
+    Returns:
+        collections.OrderedDict: Maps a content "path" to a list of the
+            content strings found at that path. Two kinds of keys are
+            produced:
+              - "a/b/c" -> list of leaf-element text values
+              - "a/b/c/@attr" -> list of attribute values
+            Sibling repeats share a key; the list length is the number of
+            occurrences and the entries are the values themselves, so
+            losing one of three keywords is detected and the lost value can
+            be shown.
+
+    Notes:
+        - Comments and processing instructions are skipped (their .tag is
+          not a string).
+        - Namespaces are stripped via parse_tag so fgdc/bdp records compare
+          cleanly.
+        - Only leaf text is collected; a container element with children
+          contributes through its descendants, not itself.
+    """
+
+    if values is None:
+        values = collections.OrderedDict()
+
+    # Skip comments / processing instructions (non-string tags).
+    if not isinstance(node.tag, str):
+        return values
+
+    tag = parse_tag(node.tag)
+    here = tag if not base_path else base_path + "/" + tag
+
+    # Record attributes as their own paths, with their values.
+    for attr_name, attr_val in node.attrib.items():
+        key = here + "/@" + parse_tag(attr_name)
+        values.setdefault(key, []).append((attr_val or "").strip())
+
+    children = [c for c in node if isinstance(c.tag, str)]
+    if children:
+        for child in children:
+            _collect_content_paths(child, here, values)
+    else:
+        # Leaf: record its text if it carries any non-whitespace content.
+        text = (node.text or "").strip()
+        if text:
+            values.setdefault(here, []).append(text)
+
+    return values
+
+
+def content_diff(original, produced):
+    """
+    Description:
+        Compares two FGDC/CSDGM XML trees and reports leaf content that is
+        present in the original but absent from the produced tree. Intended
+        to flag content silently dropped during a load -> edit -> save round
+        trip through the Metadata Wizard form.
+
+    Args:
+        original (lxml.Element or lxml.ElementTree): The tree as originally
+            loaded from disk.
+        produced (lxml.Element or lxml.ElementTree): The tree the application
+            is about to save.
+
+    Returns:
+        list of tuple: One (path, values) tuple per content path that occurs
+            fewer times in "produced" than in "original". "values" is the list
+            of the actual content strings that were dropped at that path (its
+            length is how many occurrences were lost). The list is sorted by
+            path. An empty list means no leaf content was dropped.
+
+    Notes:
+        This is a content-level check, not a structural/ordering check. It
+        answers "did any text or attribute value disappear" rather than
+        "is the element order identical". It intentionally ignores additions
+        (content the form produced that was not in the original), the tool
+        comment, and pure whitespace/formatting differences. When the same
+        value repeats at a path, the matching produced values are cancelled
+        out first so only genuinely missing values are reported.
+    """
+
+    # Accept either Elements or ElementTrees.
+    if isinstance(original, etree._ElementTree):
+        original = original.getroot()
+    if isinstance(produced, etree._ElementTree):
+        produced = produced.getroot()
+
+    orig_values = _collect_content_paths(original)
+    new_values = _collect_content_paths(produced)
+
+    dropped = []
+    for path, orig_list in orig_values.items():
+        # Cancel out each produced value against an equal original value so
+        # that only values with no counterpart in the output remain.
+        remaining = list(orig_list)
+        for produced_val in new_values.get(path, []):
+            if produced_val in remaining:
+                remaining.remove(produced_val)
+        if remaining:
+            dropped.append((path, remaining))
+
+    return sorted(dropped, key=lambda pair: pair[0])

@@ -4,8 +4,8 @@
 
 import shutil
 
-from lxml import etree
 import pytest
+from lxml import etree
 
 from pymdwizard.core import xml_utils
 
@@ -86,3 +86,102 @@ def test_find_replace():
         == 2
     )
     assert md.metadata.idinfo.descript.abstract.text.count("polar") == 2
+
+
+# ---------------------------------------------------------------------------
+# content_diff: detects leaf content present in the original but dropped from
+# the produced tree (used to warn about content the GUI form cannot represent).
+# ---------------------------------------------------------------------------
+
+
+def _node(xml_string):
+    """Parse an XML string into an lxml element for the diff tests."""
+    return xml_utils.string_to_node(xml_string)
+
+
+def test_content_diff_identical_is_empty():
+    tree = _node(
+        "<metadata><idinfo><descript>"
+        "<abstract>Hello</abstract></descript></idinfo></metadata>"
+    )
+    assert xml_utils.content_diff(tree, tree) == []
+
+
+def test_content_diff_detects_dropped_section():
+    original = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>Hello</abstract></descript></idinfo>"
+        "<spdoinfo><direct>Vector</direct></spdoinfo>"
+        "</metadata>"
+    )
+    # Produced tree lost the entire spdoinfo section.
+    produced = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>Hello</abstract></descript></idinfo>"
+        "</metadata>"
+    )
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/spdoinfo/direct": ["Vector"]}
+
+
+def test_content_diff_reports_specific_lost_repeat():
+    # Three keywords in, two out: the diff should name the one lost value,
+    # not merely report that a keyword went missing.
+    original = _node(
+        "<metadata><idinfo><keywords><theme>"
+        "<themekey>alpha</themekey>"
+        "<themekey>beta</themekey>"
+        "<themekey>gamma</themekey>"
+        "</theme></keywords></idinfo></metadata>"
+    )
+    produced = _node(
+        "<metadata><idinfo><keywords><theme>"
+        "<themekey>alpha</themekey>"
+        "<themekey>beta</themekey>"
+        "</theme></keywords></idinfo></metadata>"
+    )
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {
+        "metadata/idinfo/keywords/theme/themekey": ["gamma"]
+    }
+
+
+def test_content_diff_detects_dropped_attribute():
+    original = _node("<metadata><customext units='meters'>99</customext></metadata>")
+    produced = _node("<metadata><customext>99</customext></metadata>")
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/customext/@units": ["meters"]}
+
+
+def test_content_diff_ignores_additions_and_reordering():
+    original = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>A</abstract><purpose>P</purpose>"
+        "</descript></idinfo></metadata>"
+    )
+    # Same content, reordered, plus an extra element the form added.
+    produced = _node(
+        "<metadata>"
+        "<idinfo><descript><purpose>P</purpose><abstract>A</abstract>"
+        "</descript></idinfo><metainfo><metstdn>FGDC</metstdn></metainfo>"
+        "</metadata>"
+    )
+
+    # Nothing from the original is missing, so no drops are reported even
+    # though order changed and content was added.
+    assert xml_utils.content_diff(original, produced) == []
+
+
+def test_content_diff_accepts_element_trees():
+    # content_diff should accept ElementTree inputs (what fname_to_node
+    # returns), not only Elements.
+    original = etree.ElementTree(
+        _node("<metadata><spdoinfo><direct>Vector</direct></spdoinfo></metadata>")
+    )
+    produced = etree.ElementTree(_node("<metadata></metadata>"))
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/spdoinfo/direct": ["Vector"]}

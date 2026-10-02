@@ -20,6 +20,8 @@ NOTES
 """
 
 # Standard python libraries.
+import codecs
+import collections
 import datetime
 import os
 import shutil
@@ -28,6 +30,7 @@ import sys
 import tempfile
 import time
 import traceback
+from copy import deepcopy
 
 # Non-standard python libraries.
 try:
@@ -174,6 +177,9 @@ class PyMdWizardMainForm(QMainWindow):
                                   "pymdwizard_" + __version__)
         self.cur_fname = ""
         self.file_watcher = None
+        # Snapshot of the XML tree as last loaded from disk, used to warn
+        # about content dropped on save. None when starting from scratch.
+        self.loaded_record = None
 
         # list of buttons for opening recently accessed files.
         self.recent_file_actions = []
@@ -462,6 +468,9 @@ class PyMdWizardMainForm(QMainWindow):
 
         try:
             new_record = xml_utils.fname_to_node(fname)
+            # Keep the tree exactly as loaded so we can detect, on save,
+            # any content the form could not represent and would drop.
+            self.loaded_record = deepcopy(new_record)
             self.metadata_root.from_xml(new_record)
             self.statusBar().showMessage("File loaded", 10000)
         except BaseException:
@@ -550,6 +559,13 @@ class PyMdWizardMainForm(QMainWindow):
             "fort-pymdwizard)".format(__version__)
         )
         xml_contents = self.metadata_root.to_xml()
+
+        # Warn if the form could not represent some of the content that was
+        # loaded from disk; that content would otherwise be dropped silently.
+        if not self.confirm_content_loss(xml_contents, fname):
+            self.statusBar().showMessage("Save cancelled", 2000)
+            return
+
         comment = xml_utils.xml_node(
             tag="", text=tool_comment, index=0, comment=True
         )
@@ -560,6 +576,294 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
+
+    def confirm_content_loss(self, xml_contents, fname):
+        """
+        Description:
+            Compares the XML about to be written against the record that was
+            loaded from disk and, if any leaf content was dropped, asks the
+            user whether to proceed. Offers to keep a copy of the original
+            file so nothing is lost irretrievably.
+
+            This is the Metadata Wizard rebuilding the output purely from
+            form state: anything the form has no field for (and that no widget
+            explicitly preserves) does not make it into xml_contents. This
+            check surfaces that loss instead of letting it happen silently.
+
+        Passed arguments:
+            xml_contents (lxml.etree._Element): The <metadata> tree the
+                application is about to save.
+            fname (str): The destination path being written to.
+
+        Returned objects:
+            bool: True if the save should proceed, False if the user cancelled.
+
+        Workflow:
+            1. If there is no loaded record (new/template record), proceed.
+            2. Diff loaded vs. produced content paths.
+            3. If nothing dropped, proceed silently.
+            4. Otherwise show the dropped paths and ask Save / Save + backup /
+               Cancel.
+
+        Notes:
+            Prototype of "Option A" (diff-and-warn). It does not itself
+            prevent the loss; it makes the loss visible and recoverable.
+        """
+
+        if self.loaded_record is None:
+            return True
+
+        dropped = xml_utils.content_diff(self.loaded_record, xml_contents)
+        if not dropped:
+            return True
+
+        # The dialog shows a grouped, capped preview. Only write the sidecar
+        # manifest when that preview can't show everything (too many
+        # groups/values, or a value had to be shortened); for a short list the
+        # dialog already is the complete record, so a file would be redundant.
+        preview = self._format_dropped_preview(dropped)
+        if self._preview_is_truncated(dropped):
+            sidecar_fname = self._write_dropped_manifest(fname, dropped)
+        else:
+            sidecar_fname = None
+
+        field_count = sum(len(values) for _, values in dropped)
+        header = (
+            "Some content from the file you opened does not fit into the "
+            "Metadata Wizard form and will NOT be included in the saved "
+            "file ({} field{} total):".format(
+                field_count, "" if field_count == 1 else "s"
+            )
+        )
+
+        parts = [header, "", preview]
+        if sidecar_fname is not None:
+            parts.append("")
+            parts.append(
+                "The complete list has been written to:\n  {}".format(
+                    sidecar_fname
+                )
+            )
+        parts.append("")
+        parts.append("How would you like to proceed?")
+        msg = "\n".join(parts)
+
+        box = QMessageBox(self)
+        box.setIcon(QMessageBox.Warning)
+        box.setWindowTitle("Content will be dropped on save")
+        box.setText(msg)
+        save_btn = box.addButton("Save anyway", QMessageBox.AcceptRole)
+        backup_btn = box.addButton(
+            "Save and keep a copy of the original", QMessageBox.AcceptRole
+        )
+        box.addButton(QMessageBox.Cancel)
+        box.setDefaultButton(backup_btn)
+        box.exec_()
+
+        clicked = box.clickedButton()
+        if clicked == backup_btn:
+            self._write_original_backup(fname)
+            return True
+        if clicked == save_btn:
+            return True
+        return False
+
+    @staticmethod
+    def _format_dropped_preview(
+        dropped,
+        max_groups=8,
+        max_values_per_group=4,
+        max_val_len=90,
+    ):
+        """
+        Description:
+            Formats the dropped-content list for inline display in the
+            warning dialog. Leaf paths are grouped by their parent path so
+            related losses (e.g. several keywords, or the fields of one
+            dropped section) read together, and both the number of groups and
+            the number of values shown per group are capped so a noisy record
+            cannot produce an unreadable wall of text.
+
+        Passed arguments:
+            dropped (list of (path, values)): Output of
+                xml_utils.content_diff.
+            max_groups (int): Maximum parent groups to show before collapsing
+                the remainder into an "and N more" line.
+            max_values_per_group (int): Maximum values listed under one group
+                before collapsing the remainder into "+N more".
+            max_val_len (int): Values longer than this are truncated with an
+                ellipsis.
+
+        Returned objects:
+            str: The formatted, indented preview block.
+
+        Notes:
+            Grouping is by parent path (everything up to the last "/"). The
+            leaf tag (or "@attr") is shown with its value under the group.
+        """
+
+        # Group leaves by parent path, preserving first-seen order.
+        groups = collections.OrderedDict()
+        for path, values in dropped:
+            if "/" in path:
+                parent, leaf = path.rsplit("/", 1)
+            else:
+                parent, leaf = "", path
+            group = groups.setdefault(parent, [])
+            for value in values:
+                group.append((leaf, value))
+
+        def shorten(text):
+            collapsed = " ".join(text.split())
+            if len(collapsed) > max_val_len:
+                return collapsed[: max_val_len - 1] + "\u2026"
+            return collapsed
+
+        lines = []
+        for parent, items in list(groups.items())[:max_groups]:
+            lines.append(parent if parent else "(root)")
+            for leaf, value in items[:max_values_per_group]:
+                lines.append("    {}:  {}".format(leaf, shorten(value)))
+            extra = len(items) - max_values_per_group
+            if extra > 0:
+                lines.append("    +{} more".format(extra))
+
+        extra_groups = len(groups) - max_groups
+        if extra_groups > 0:
+            lines.append(
+                "\u2026 and {} more section{}".format(
+                    extra_groups, "" if extra_groups == 1 else "s"
+                )
+            )
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def _preview_is_truncated(
+        dropped,
+        max_groups=8,
+        max_values_per_group=4,
+        max_val_len=90,
+    ):
+        """
+        Description:
+            Reports whether the dialog preview produced by
+            _format_dropped_preview would omit or shorten any content, i.e.
+            whether the dialog alone is NOT a complete record of what was
+            dropped. Used to decide if the sidecar manifest is worth writing.
+
+        Passed arguments:
+            dropped (list of (path, values)): Output of
+                xml_utils.content_diff.
+            max_groups / max_values_per_group / max_val_len: Must match the
+                caps used by _format_dropped_preview so the two stay in sync.
+
+        Returned objects:
+            bool: True if the preview collapses groups, collapses values
+                within a group, or shortens any value; False when the preview
+                shows every path and full value verbatim.
+        """
+
+        groups = collections.OrderedDict()
+        for path, values in dropped:
+            parent = path.rsplit("/", 1)[0] if "/" in path else ""
+            groups.setdefault(parent, 0)
+            groups[parent] += len(values)
+            # Any value that would be shortened means the dialog isn't the
+            # full record.
+            for value in values:
+                if len(" ".join(value.split())) > max_val_len:
+                    return True
+
+        if len(groups) > max_groups:
+            return True
+        if any(count > max_values_per_group for count in groups.values()):
+            return True
+        return False
+
+    def _write_dropped_manifest(self, fname, dropped):
+        """
+        Description:
+            Writes the complete, unabridged list of dropped content to a
+            sidecar text file next to the record being saved, so the user has
+            a full record even though the dialog only previews a subset.
+
+        Passed arguments:
+            fname (str): The record's save path. The manifest is written to
+                fname + ".dropped.txt" in the same directory.
+            dropped (list of (path, values)): Output of
+                xml_utils.content_diff.
+
+        Returned objects:
+            str or None: The manifest path on success, or None if it could
+                not be written (best-effort; never blocks the save).
+
+        Notes:
+            Overwrites any existing manifest from a previous save of the same
+            record, so it always reflects the most recent save.
+        """
+
+        manifest_fname = fname + ".dropped.txt"
+        try:
+            header = (
+                "Content dropped when saving {}\n"
+                "Generated by Metadata Wizard {}.\n"
+                "These values were in the file as opened but could not be "
+                "represented\nby the form, so they are NOT in the saved "
+                "record.\n{}\n\n".format(
+                    os.path.basename(fname), __version__, "=" * 60
+                )
+            )
+            body_lines = []
+            for path, values in dropped:
+                for value in values:
+                    collapsed = " ".join(value.split())
+                    body_lines.append("{}:  {}".format(path, collapsed))
+
+            with codecs.open(manifest_fname, "w", encoding="utf-8") as handle:
+                handle.write(header)
+                handle.write("\n".join(body_lines))
+                handle.write("\n")
+            return manifest_fname
+        except BaseException:
+            # A failed manifest must not stop the user from saving.
+            return None
+
+    def _write_original_backup(self, fname):
+        """
+        Writes the as-loaded XML tree next to the save target as a copy of the
+        original record so the user retains the full original even after a
+        lossy save. The copy keeps the .xml extension (named
+        "<record>.original.xml") so it opens as XML like any other record.
+        Best-effort: failure to back up is reported but does not block the
+        save.
+        """
+
+        backup_fname = self._original_backup_name(fname)
+        try:
+            xml_utils.save_to_file(self.loaded_record, backup_fname)
+            self.statusBar().showMessage(
+                "Copy of original saved to {}".format(backup_fname), 5000
+            )
+        except BaseException:
+            QMessageBox.warning(
+                self,
+                "Could not save copy",
+                "Could not write the copy of the original:\n{}".format(
+                    traceback.format_exc()
+                ),
+            )
+
+    @staticmethod
+    def _original_backup_name(fname):
+        """
+        Builds the path for the backup copy of the original record. Inserts
+        ".original" before the file extension so the copy keeps a usable .xml
+        extension, e.g. "myrecord.xml" -> "myrecord.original.xml".
+        """
+
+        root, ext = os.path.splitext(fname)
+        return "{}.original{}".format(root, ext if ext else ".xml")
 
     def new_record(self):
         """
