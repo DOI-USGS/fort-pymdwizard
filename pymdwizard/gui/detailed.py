@@ -110,7 +110,7 @@ class Detailed(WizardWidget):  #
         else:
             fname, dname = "", ""
 
-        filter = "data files (*.csv *.txt *.shp *.xls *.xlsm *.xlsx "
+        filter = "data files (*.csv *.txt *.shp *.geojson *.gdb *.xls *.xlsm *.xlsx "
         filter += "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
         filter += "*.las *.laz)"
 
@@ -338,7 +338,7 @@ class Detailed(WizardWidget):  #
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
         else:
-            msg = "Can only read '.csv', '.txt', '.shp', '.las.', raster files, and Excel files here"
+            msg = "Can only read '.csv', '.txt', '.shp', '.geojson', '.gdb', '.las', raster files, and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
 
     def clear_widget(self):

@@ -1647,8 +1647,9 @@ def get_spdoinfo(fname, feature_class=None):
         return vector_spdoinfo(layer)
     elif fname.endswith(".geojson"):
         driver = ogr.GetDriverByName("GeoJSON")
-        geojson_ds = driver.Open(fname)
-        layer = geojson_ds.GetLayer()
+        global geojson_dataset
+        geojson_dataset = driver.Open(fname)
+        layer = geojson_dataset.GetLayer()
         return vector_spdoinfo(layer)
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
@@ -1658,11 +1659,6 @@ def get_spdoinfo(fname, feature_class=None):
     elif fname.endswith(".las") or fname.endswith(".laz"):
         layer = laspy.open(fname)
         return las_spdoinfo(layer)
-    elif fname.endswith(".gdb"):
-        driver = ogr.GetDriverByName("OpenFileGDB")
-        gdb = driver.Open(fname, 0)
-        layer = gdb.GetLayerByName(feature_class)
-        return vector_spdoinfo(layer)
     else:
         # it better be a raster
         data = gdal.Open(fname)
