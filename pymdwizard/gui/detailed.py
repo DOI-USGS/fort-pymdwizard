@@ -337,6 +337,24 @@ class Detailed(WizardWidget):  #
 
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
+        elif ext.lower() == ".geojson":
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname + " Feature Collection")
+            self.ui.fgdc_enttypd.setPlainText(
+                "GeoJSON feature collection containing spatial and attribute data."
+            )
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
+        elif ext.lower() == ".gdb":
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname + " Feature Class")
+            self.ui.fgdc_enttypd.setPlainText(
+                "File Geodatabase feature class containing spatial and attribute data."
+            )
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
         else:
             msg = "Can only read '.csv', '.txt', '.shp', '.geojson', '.gdb', '.las', raster files, and Excel files here"
             QMessageBox.warning(self, "Unsupported file format", msg)
