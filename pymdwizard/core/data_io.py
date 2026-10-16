@@ -152,6 +152,56 @@ def read_shp(fname):
     return df
 
 
+def read_geojson(fname):
+    """
+    Returns a pandas dataframe of the features in a GeoJSON file
+     specified as a file path/name
+
+    Parameters
+    ----------
+    fname : str
+            file path/name to the GeoJSON file being returned
+
+    Returns
+    -------
+        pandas dataframe
+    """
+    df = gpd.read_file(fname)
+    c = fiona.open(fname)
+    list(c.schema["properties"].keys())
+
+    df = df[[c for c in df.columns if c != "geometry"]]
+    df.insert(0, "Shape", c.schema["geometry"])
+    if not "FID" in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+    return df
+
+
+def read_gdb(fname):
+    """
+    Returns a pandas dataframe of the features in a File Geodatabase
+     specified as a file path/name
+
+    Parameters
+    ----------
+    fname : str
+            file path/name to the File Geodatabase being returned
+
+    Returns
+    -------
+        pandas dataframe
+    """
+    df = gpd.read_file(fname)
+    c = fiona.open(fname)
+    list(c.schema["properties"].keys())
+
+    df = df[[c for c in df.columns if c != "geometry"]]
+    df.insert(0, "Shape", c.schema["geometry"])
+    if not "FID" in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+    return df
+
+
 def dbfreader(f):
     """Returns an iterator over records in a Xbase DBF file.
     The first row returned contains the field names.
@@ -334,6 +384,10 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".geojson"):
+        return read_geojson(fname)
+    elif fname.lower().endswith(".gdb"):
+        return read_gdb(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
         return read_las(fname)
     elif sheet_name:
