@@ -551,6 +551,11 @@ def get_layer(fname, feature_class=None):
         global dataset
         dataset = driver.Open(fname)
         return dataset.GetLayer()
+    elif fname.endswith(".geojson"):
+        driver = ogr.GetDriverByName("GeoJSON")
+        global geojson_dataset
+        geojson_dataset = driver.Open(fname)
+        return geojson_dataset.GetLayer()
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
         global gdb
@@ -1639,6 +1644,11 @@ def get_spdoinfo(fname, feature_class=None):
         driver = ogr.GetDriverByName("ESRI Shapefile")
         dataset = driver.Open(fname)
         layer = dataset.GetLayer()
+        return vector_spdoinfo(layer)
+    elif fname.endswith(".geojson"):
+        driver = ogr.GetDriverByName("GeoJSON")
+        geojson_ds = driver.Open(fname)
+        layer = geojson_ds.GetLayer()
         return vector_spdoinfo(layer)
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
