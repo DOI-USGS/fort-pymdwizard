@@ -166,6 +166,10 @@ def read_geojson(fname):
     -------
         pandas dataframe
     """
+    if gpd is None:
+        raise ImportError("geopandas and fiona are required to read GeoJSON files. "
+                         "Install them with: pip install geopandas fiona")
+    
     df = gpd.read_file(fname)
     c = fiona.open(fname)
     list(c.schema["properties"].keys())
@@ -191,6 +195,10 @@ def read_gdb(fname):
     -------
         pandas dataframe
     """
+    if gpd is None:
+        raise ImportError("geopandas and fiona are required to read File Geodatabase files. "
+                         "Install them with: pip install geopandas fiona")
+    
     df = gpd.read_file(fname)
     c = fiona.open(fname)
     list(c.schema["properties"].keys())
