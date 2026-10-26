@@ -12,7 +12,8 @@ Two output formats are supported via --format:
 Both share the same MetadataWizard.app bundle; only the final packaging
 step differs.
 
-STATUS: first draft / sketch. Has not been run end-to-end yet.
+STATUS: functional but still in development. Runs end-to-end; not yet
+signed/notarized for distribution outside your own machine.
 
 Layout this produces (mirrors the existing v2.0.7 install and the Windows
 Inno Setup script's conventions):
@@ -56,16 +57,12 @@ import sys
 from pathlib import Path
 
 APP_NAME = "MetadataWizard"
-BUNDLE_ID = "gov.usgs.metadatawizard"  # matches the pkgutil receipt on this
-                                        # machine; the existing Info.plist
-                                        # uses "usgs.metadatawizard" instead
-                                        # -- confirm which is canonical
+BUNDLE_ID = "gov.usgs.metadatawizard"
 ENV_DIRNAME = "pymdwizard"
 REPO_URL = "https://github.com/DOI-USGS/fort-pymdwizard.git"
 DEFAULT_BRANCH = "main-v2.2"
 
-# Real system git, not the git bundled in the app's conda env (that copy is
-# broken -- see fort-pymdwizard-default-branch session notes).
+# Use the system git to ensure consistent behavior across builds.
 GIT = "/usr/bin/git"
 
 LAUNCHER_SCRIPT = """#!/bin/bash
@@ -112,13 +109,18 @@ def run(cmd, **kw):
     subprocess.run(cmd, check=True, **kw)
 
 
-def preflight(fmt: str):
+def preflight(fmt: str, *, build_app: bool = True, package: bool = True):
     """Fail early, with a clear message, if the OS or any required external
     tool is missing -- rather than crashing partway through the build with a
     raw subprocess traceback.
 
     `fmt` ("pkg" or "dmg") selects which packaging tool is required, so a dmg
     build doesn't demand pkgbuild and vice versa.
+
+    `build_app` controls whether the app-build tools (conda, sips, iconutil,
+    git) are checked. Set to False when packaging a pre-built .app via --app.
+    `package` controls whether the packaging tools (pkgbuild / create-dmg)
+    are checked. Set to False when stopping after the .app via --app-only.
     """
     if sys.platform != "darwin":
         sys.exit(
@@ -126,29 +128,31 @@ def preflight(fmt: str):
             "iconutil, and pkgbuild/hdiutil, which only exist there."
         )
 
-    # git is referenced by absolute path (GIT); the rest must be on PATH.
-    # These are needed regardless of the output format.
-    required = {
-        "conda": "Miniforge/conda (needed to build the bundled environment)",
-        "sips": "Xcode Command Line Tools (icon conversion)",
-        "iconutil": "Xcode Command Line Tools (icon conversion)",
-    }
-    # Format-specific packaging tools.
-    if fmt == "pkg":
-        required["pkgbuild"] = "Xcode Command Line Tools (installer packaging)"
-    else:  # dmg
-        required["hdiutil"] = "macOS (disk image creation)"
-        required["create-dmg"] = (
-            "the create-dmg tool, for a laid-out disk image "
-            "(install with `brew install create-dmg`)"
-        )
+    required = {}
+    if build_app:
+        # git is referenced by absolute path (GIT); the rest must be on PATH.
+        required.update({
+            "conda": "Miniforge/conda (needed to build the bundled environment)",
+            "sips": "Xcode Command Line Tools (icon conversion)",
+            "iconutil": "Xcode Command Line Tools (icon conversion)",
+        })
+    if package:
+        # Format-specific packaging tools.
+        if fmt == "pkg":
+            required["pkgbuild"] = "Xcode Command Line Tools (installer packaging)"
+        else:  # dmg
+            required["hdiutil"] = "macOS (disk image creation)"
+            required["create-dmg"] = (
+                "the create-dmg tool, for a laid-out disk image "
+                "(install with `brew install create-dmg`)"
+            )
 
     missing = [
         f"  - {name}: {why}"
         for name, why in required.items()
         if shutil.which(name) is None
     ]
-    if not Path(GIT).exists():
+    if build_app and not Path(GIT).exists():
         missing.append(
             f"  - git: expected at {GIT} "
             f"(install the Xcode Command Line Tools)"
@@ -168,6 +172,15 @@ def get_version(repo: Path) -> str:
     if not match:
         raise ValueError("Could not find __version__ in pymdwizard/__init__.py")
     return match.group(1)
+
+
+def get_version_from_plist(app: Path) -> str:
+    """Read the version string from an existing .app bundle's Info.plist.
+    Used by --app mode so a source checkout isn't needed just to get the version.
+    """
+    with open(app / "Contents" / "Info.plist", "rb") as f:
+        plist = plistlib.load(f)
+    return plist["CFBundleShortVersionString"]
 
 
 def clone_source(contents: Path, branch: str) -> Path:
@@ -351,9 +364,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--branch", default=DEFAULT_BRANCH)
     parser.add_argument(
-        "--env-yml", type=Path, required=True,
+        "--env-yml", type=Path, default=None,
         help="Path to the pinned environment.yml "
-             "(see environment-pinned.yml)",
+             "(see environment-pinned.yml). Required unless --app is given.",
     )
     parser.add_argument(
         "--format", choices=("pkg", "dmg"), default="pkg",
@@ -369,30 +382,66 @@ def main():
         help="Output path. Defaults to MetadataWizard.<format> next to "
              "this script.",
     )
+    parser.add_argument(
+        "--app-only", action="store_true",
+        help="Build and stage the .app bundle but do not package it into a "
+             ".pkg or .dmg. Prints 'APP_PATH=<path>' on stdout so a CI step "
+             "can extract the path, sign the bundle, then call this script "
+             "again with --app to do the packaging.",
+    )
+    parser.add_argument(
+        "--app", type=Path, default=None,
+        help="Path to an already-built (and signed) .app bundle. Skips the "
+             "source checkout and conda env creation and goes straight to "
+             "packaging. Use this after signing the .app produced by --app-only.",
+    )
     args = parser.parse_args()
+
+    if args.app_only and args.app:
+        sys.exit("--app-only and --app are mutually exclusive.")
+    if args.app is None and args.env_yml is None:
+        sys.exit("--env-yml is required when building the app from source "
+                 "(i.e. when --app is not given).")
 
     if args.output is None:
         args.output = Path(__file__).parent / f"{APP_NAME}.{args.format}"
 
-    preflight(args.format)
+    build_app = args.app is None   # False when packaging a pre-built .app
+    package   = not args.app_only  # False when stopping after .app creation
+    preflight(args.format, build_app=build_app, package=package)
 
-    if not args.env_yml.exists():
-        sys.exit(f"--env-yml file not found: {args.env_yml}")
+    if args.app:
+        # Packaging a pre-built (and signed) .app; skip the long build.
+        app = args.app.resolve()
+        if not app.exists():
+            sys.exit(f"--app path does not exist: {app}")
+        version = get_version_from_plist(app)
+        print(f"Using pre-built .app: {app}  (version {version})")
+    else:
+        if not args.env_yml.exists():
+            sys.exit(f"--env-yml file not found: {args.env_yml}")
+        args.staging.mkdir(parents=True, exist_ok=True)
+        app, version = build_app_bundle(args.staging, args.env_yml, args.branch)
+        print(f"App bundle built: {app}")
 
-    args.staging.mkdir(parents=True, exist_ok=True)
-    app, version = build_app_bundle(args.staging, args.env_yml, args.branch)
-    print(f"App bundle built: {app}")
+    if args.app_only:
+        # Print a machine-readable line CI steps can grep/parse for the path.
+        print(f"APP_PATH={app}")
+        return
 
     if args.format == "pkg":
         build_pkg(app, args.output, version)
     else:
         build_dmg(app, args.output, version)
     print(f"Installer built: {args.output}")
-    print(
-        f"\nNOTE: this .{args.format} is unsigned and unnotarized. Before "
-        "distributing it outside your own machine, sign and notarize it "
-        "(see the TODO comments in build_pkg/build_dmg)."
-    )
+    if not args.app:
+        # Only show this reminder for a freshly built, unsigned output.
+        # If --app was provided the caller already signed the bundle.
+        print(
+            f"\nNOTE: this .{args.format} is unsigned and unnotarized. Before "
+            "distributing it outside your own machine, sign and notarize it "
+            "(see the TODO comments in build_pkg/build_dmg)."
+        )
 
 
 if __name__ == "__main__":
