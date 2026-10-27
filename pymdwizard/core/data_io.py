@@ -236,6 +236,38 @@ def read_shp(fname):
     return df
 
 
+def read_geojson(fname):
+    """
+    Description:
+        Returns a pandas DataFrame of the attributes in a GeoJSON file,
+        specified as a file path/name.
+
+    Args:
+        fname (str): Full path to the GeoJSON file to read.
+
+    Returns:
+        df (pandas.DataFrame): A pandas DataFrame containing the attributes.
+    """
+
+    # Read the GeoJSON file into a GeoDataFrame.
+    df = gpd.read_file(fname)
+
+    # Open the GeoJSON file to access its schema.
+    c = fiona.open(fname)
+
+    # Exclude the 'geometry' column from the DataFrame.
+    df = df[[c for c in df.columns if c != "geometry"]]
+
+    # Insert the geometry type at the beginning of the DataFrame.
+    df.insert(0, "Shape", c.schema["geometry"])
+
+    # Add a 'FID' column if it doesn't exist.
+    if "FID" not in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+
+    return df
+
+
 def dbfreader(f):
     """
     Description:
@@ -453,6 +485,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".geojson"):
+        return read_geojson(fname)
     elif fname.lower().endswith(".gpkg"):
         return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):

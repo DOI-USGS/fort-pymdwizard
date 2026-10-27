@@ -162,7 +162,7 @@ class Detailed(WizardWidget):  #
 
         # Define the file filter string.
         filter = (
-            "data files (*.csv *.txt *.shp *.dbf *.xls *.xlsm *.xlsx "
+            "data files (*.csv *.txt *.shp *.geojson *.dbf *.xls *.xlsm *.xlsx "
             "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
             "*.las *.laz *.gpkg)"
         )
@@ -559,11 +559,51 @@ class Detailed(WizardWidget):  #
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
 
+        # --- GeoJSON File Handling ---
+        elif ext.lower() == ".geojson":
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname + " Attribute Table")
+            self.ui.fgdc_enttypd.setPlainText(
+                "Table containing attribute information "
+                "associated with the data set."
+            )
+
+            df = data_io.read_data(fname)
+            for col in df.columns:
+                # Backward compatible between numpy>2 and pandas.
+                if df[col].dtype == 'str':
+                    df[col] = df[col].astype('object')
+            self.attributes.load_df(df)
+
+            # Set defaults for required attributes (FID and Shape).
+            fid_attr = self.attributes.get_attr("FID")
+            if fid_attr is not None:
+                fid_attr.populate_domain_content(3)
+                fid_attr.ui.fgdc_attrdef.setPlainText(
+                    "Internal feature number.")
+                utils.set_text(fid_attr.ui.fgdc_attrdefs, "OGC")
+                fid_attr.domain.ui.fgdc_udom.setPlainText(
+                    "Sequential unique whole numbers that are "
+                    "automatically generated."
+                )
+                fid_attr.regularsize_me()
+                fid_attr.supersize_me()
+            shape_attr = self.attributes.get_attr("Shape")
+            if shape_attr is not None:
+                shape_attr.populate_domain_content(3)
+                shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
+                utils.set_text(shape_attr.ui.fgdc_attrdefs, "OGC")
+                shape_attr.domain.ui.fgdc_udom.setPlainText("Shape type.")
+                shape_attr.store_current_content()
+                shape_attr.supersize_me()
+                shape_attr.store_current_content()
+                shape_attr.regularsize_me()
+
         # --- Unsupported File Format ---
         else:
             msg = (
-                "Can only read '.csv', '.txt', '.shp', '.dbf', '.las.', "
-                "raster files, and Excel files here"
+                "Can only read '.csv', '.txt', '.shp', '.geojson', '.dbf', "
+                "'.gpkg', '.las', raster files, and Excel files here"
             )
             QMessageBox.warning(self, "Unsupported file format", msg)
 
