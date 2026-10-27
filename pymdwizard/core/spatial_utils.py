@@ -656,6 +656,12 @@ def get_layer(fname, feature_class=None):
         layer = dataset.GetLayer()
         layer._dataset_ref = dataset  # prevent GC of parent dataset
         return layer
+    elif fname.endswith(".geojson"):
+        driver = ogr.GetDriverByName("GeoJSON")
+        dataset = driver.Open(fname)
+        layer = dataset.GetLayer()
+        layer._dataset_ref = dataset  # prevent GC of parent dataset
+        return layer
     elif fname.endswith(".gdb"):
         driver = ogr.GetDriverByName("OpenFileGDB")
         gdb = driver.Open(fname, 0)
@@ -2116,6 +2122,13 @@ def get_spdoinfo(fname, feature_class=None):
     # Check if the file is a shapefile.
     if fname.endswith(".shp"):
         driver = ogr.GetDriverByName("ESRI Shapefile")
+        dataset = driver.Open(fname)
+        layer = dataset.GetLayer()
+        return vector_spdoinfo(layer)
+
+    # Check if the file is a GeoJSON file.
+    elif fname.endswith(".geojson"):
+        driver = ogr.GetDriverByName("GeoJSON")
         dataset = driver.Open(fname)
         layer = dataset.GetLayer()
         return vector_spdoinfo(layer)
