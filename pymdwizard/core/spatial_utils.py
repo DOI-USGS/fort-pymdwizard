@@ -2174,7 +2174,9 @@ def vector_spdoinfo(layer):
     # Retrieve geometry type of the first feature.
     for geo in layer:
         geo_ref = geo.GetGeometryRef()
-        geo_type = geo_ref.GetGeometryType()
+        # Flatten to the 2D base type so 3D/measured variants (e.g. GDAL's
+        # 2.5D MultiPolygon, -2147483642) map to the same SDTS term.
+        geo_type = ogr.GT_Flatten(geo_ref.GetGeometryType())
         break
 
     # Create the FGDC element structure.
