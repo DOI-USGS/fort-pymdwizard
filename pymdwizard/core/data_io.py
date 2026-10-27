@@ -249,17 +249,24 @@ def read_geojson(fname):
         df (pandas.DataFrame): A pandas DataFrame containing the attributes.
     """
 
+    # Array-valued properties (e.g. a list of IDs) have no matching OGR
+    # field type, so by default the GeoJSON driver silently drops them.
+    # ARRAY_AS_STRING keeps them as JSON text so they still appear as
+    # attributes.
+    open_options = {"ARRAY_AS_STRING": "YES"}
+
     # Read the GeoJSON file into a GeoDataFrame.
-    df = gpd.read_file(fname)
+    df = gpd.read_file(fname, **open_options)
 
     # Open the GeoJSON file to access its schema.
-    c = fiona.open(fname)
+    with fiona.open(fname, **open_options) as c:
+        geometry_type = c.schema["geometry"]
 
     # Exclude the 'geometry' column from the DataFrame.
-    df = df[[c for c in df.columns if c != "geometry"]]
+    df = df[[col for col in df.columns if col != "geometry"]]
 
     # Insert the geometry type at the beginning of the DataFrame.
-    df.insert(0, "Shape", c.schema["geometry"])
+    df.insert(0, "Shape", geometry_type)
 
     # Add a 'FID' column if it doesn't exist.
     if "FID" not in df.columns:

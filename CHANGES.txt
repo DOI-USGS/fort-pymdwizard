@@ -8,7 +8,7 @@ New features
 --------------
 1. Added GeoPackage (.gpkg) file support to the Entity and Attributes tab. Multi-layer GeoPackages prompt the user to select a layer.
 2. Added controlled vocabulary validation: when running FGDC validation, theme and place keywords are checked against their named USGS thesaurus and invalid terms are reported.
-3. Added GeoJSON (.geojson) file support to the Entity and Attributes tab and the Spatial tab. Contributed-by: vonnonn <vonnonn@github>
+3. Added GeoJSON (.geojson) file support to the Entity and Attributes tab and the Spatial tab. Array-valued properties are kept as text attributes. Contributed-by: vonnonn <vonnonn@github>
 
 Bug fixes
 --------------
@@ -21,11 +21,13 @@ Bug fixes
 10. Fixed "Add keyword" button remaining disabled after a controlled vocabulary search.
 11. Fixed black-on-black help and preview text on dark-mode systems.
 12. Corrected "USGS Data Series" to "USGS Data Report" to match the current USGS product type name.
+13. Fixed SDTS point/vector object type being reported as "Unknown" for 3D or measured (Z/M) vector data.
+14. Fixed crash when opening a date attribute with an enumerated domain in the Entity and Attribute tab.
 
 Other
 --------------
-13. Pinned Python library versions to maintain compatibility.
-14. Updated user documentation and modernized the docs build tooling.
+15. Pinned Python library versions to maintain compatibility.
+16. Updated user documentation and modernized the docs build tooling.
 
 
 2.2.0 (07/02/2026)
