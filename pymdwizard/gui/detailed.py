@@ -162,7 +162,7 @@ class Detailed(WizardWidget):  #
 
         # Define the file filter string.
         filter = (
-            "data files (*.csv *.txt *.shp *.geojson *.dbf *.xls *.xlsm *.xlsx "
+            "data files (*.csv *.txt *.shp *.geojson *.gdb *.dbf *.xls *.xlsm *.xlsx "
             "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
             "*.las *.laz *.gpkg)"
         )
@@ -592,11 +592,24 @@ class Detailed(WizardWidget):  #
                 shape_attr.store_current_content()
                 shape_attr.regularsize_me()
 
+        # --- File Geodatabase Handling ---
+        # Ported from DOI-USGS/fort-pymdwizard#216 (vonnonn).
+        elif ext.lower() == ".gdb":
+            self.clear_widget()
+            self.ui.fgdc_enttypl.setText(shortname + " Feature Class")
+            self.ui.fgdc_enttypd.setPlainText(
+                "File Geodatabase feature class containing spatial and "
+                "attribute data."
+            )
+
+            df = data_io.read_data(fname)
+            self.attributes.load_df(df)
+
         # --- Unsupported File Format ---
         else:
             msg = (
-                "Can only read '.csv', '.txt', '.shp', '.geojson', '.dbf', "
-                "'.gpkg', '.las', raster files, and Excel files here"
+                "Can only read '.csv', '.txt', '.shp', '.geojson', '.gdb', "
+                "'.dbf', '.gpkg', '.las', raster files, and Excel files here"
             )
             QMessageBox.warning(self, "Unsupported file format", msg)
 

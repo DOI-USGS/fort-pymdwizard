@@ -275,6 +275,44 @@ def read_geojson(fname):
     return df
 
 
+def read_gdb(fname):
+    """
+    Description:
+        Returns a pandas DataFrame of the attributes in a File Geodatabase
+        feature class, specified as a file path/name.
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+
+    Returns:
+        df (pandas.DataFrame): A pandas DataFrame containing the attributes.
+
+    Notes:
+        Ported from DOI-USGS/fort-pymdwizard#216 (vonnonn). No layer is
+        passed to the reader, so only the first feature class in the
+        geodatabase is read.
+    """
+
+    # Read the File Geodatabase into a GeoDataFrame.
+    df = gpd.read_file(fname)
+
+    # Open the File Geodatabase to access its schema.
+    with fiona.open(fname) as c:
+        geometry_type = c.schema["geometry"]
+
+    # Exclude the 'geometry' column from the DataFrame.
+    df = df[[col for col in df.columns if col != "geometry"]]
+
+    # Insert the geometry type at the beginning of the DataFrame.
+    df.insert(0, "Shape", geometry_type)
+
+    # Add a 'FID' column if it doesn't exist.
+    if "FID" not in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+
+    return df
+
+
 def dbfreader(f):
     """
     Description:
@@ -494,6 +532,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_shp(fname)
     elif fname.lower().endswith(".geojson"):
         return read_geojson(fname)
+    elif fname.lower().endswith(".gdb"):
+        return read_gdb(fname)
     elif fname.lower().endswith(".gpkg"):
         return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
