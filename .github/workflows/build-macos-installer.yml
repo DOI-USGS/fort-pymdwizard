@@ -58,7 +58,7 @@ jobs:
       # Only needed for dmg builds. Homebrew is preinstalled on GitHub's
       # macOS runners. Skipped for pkg builds to save time.
       - name: Install create-dmg (dmg builds only)
-        if: ${{ (github.event.inputs.format || 'dmg') == 'dmg' }}
+        if: ${{ (github.event.inputs.format || 'pkg') == 'dmg' }}
         run: brew install create-dmg
 
       - name: Build the installer
@@ -68,7 +68,7 @@ jobs:
         # release/v2.2.1 / pkg. On a manual run these use whatever you picked.
         env:
           BUILD_BRANCH: ${{ github.event.inputs.branch || 'release/v2.2.1' }}
-          BUILD_FORMAT: ${{ github.event.inputs.format || 'dmg' }}
+          BUILD_FORMAT: ${{ github.event.inputs.format || 'pkg' }}
         run: |
           set -euo pipefail
           conda --version
@@ -81,10 +81,10 @@ jobs:
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         env:
-          BUILD_FORMAT: ${{ github.event.inputs.format || 'dmg' }}
+          BUILD_FORMAT: ${{ github.event.inputs.format || 'pkg' }}
         with:
-          name: MetadataWizard-${{ github.event.inputs.format || 'dmg' }}
-          path: MetadataWizard.${{ github.event.inputs.format || 'dmg' }}
+          name: MetadataWizard-${{ github.event.inputs.format || 'pkg' }}
+          path: MetadataWizard.${{ github.event.inputs.format || 'pkg' }}
           if-no-files-found: error
           # Bump retention as needed; default is 90 days.
           retention-days: 30
