@@ -268,9 +268,9 @@ def read_geojson(fname):
     # Insert the geometry type at the beginning of the DataFrame.
     df.insert(0, "Shape", geometry_type)
 
-    # Add a 'FID' column if it doesn't exist.
-    if "FID" not in df.columns:
-        df.insert(0, "FID", range(df.shape[0]))
+    # Unlike read_shp, no 'FID' column is added: GeoJSON has no implicit
+    # feature ID, so a generated one would document a field that is not in
+    # the file. Any real ID property in the data is kept as-is.
 
     return df
 
