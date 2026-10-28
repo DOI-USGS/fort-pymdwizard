@@ -562,10 +562,12 @@ class Detailed(WizardWidget):  #
         # --- GeoJSON File Handling ---
         elif ext.lower() == ".geojson":
             self.clear_widget()
-            self.ui.fgdc_enttypl.setText(shortname + " Attribute Table")
+            # GeoJSON is a feature collection, not an attribute table, so
+            # describe the file format (as the CSV/text/LAS branches do).
+            self.ui.fgdc_enttypl.setText(shortname + " Feature Collection")
             self.ui.fgdc_enttypd.setPlainText(
-                "Table containing attribute information "
-                "associated with the data set."
+                "GeoJSON feature collection containing spatial and "
+                "attribute data."
             )
 
             df = data_io.read_data(fname)
@@ -575,24 +577,15 @@ class Detailed(WizardWidget):  #
                     df[col] = df[col].astype('object')
             self.attributes.load_df(df)
 
-            # Set defaults for required attributes (FID and Shape).
-            fid_attr = self.attributes.get_attr("FID")
-            if fid_attr is not None:
-                fid_attr.populate_domain_content(3)
-                fid_attr.ui.fgdc_attrdef.setPlainText(
-                    "Internal feature number.")
-                utils.set_text(fid_attr.ui.fgdc_attrdefs, "OGC")
-                fid_attr.domain.ui.fgdc_udom.setPlainText(
-                    "Sequential unique whole numbers that are "
-                    "automatically generated."
-                )
-                fid_attr.regularsize_me()
-                fid_attr.supersize_me()
+            # Set defaults for the Shape attribute. GeoJSON is an IETF
+            # standard (RFC 7946), not an OGC one. No FID defaults: GeoJSON
+            # has no implicit feature ID, so any FID present is a real
+            # property in the data and is documented like any other field.
             shape_attr = self.attributes.get_attr("Shape")
             if shape_attr is not None:
                 shape_attr.populate_domain_content(3)
                 shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
-                utils.set_text(shape_attr.ui.fgdc_attrdefs, "OGC")
+                utils.set_text(shape_attr.ui.fgdc_attrdefs, "IETF RFC 7946")
                 shape_attr.domain.ui.fgdc_udom.setPlainText("Shape type.")
                 shape_attr.store_current_content()
                 shape_attr.supersize_me()
