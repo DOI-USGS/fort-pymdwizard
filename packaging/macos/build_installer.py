@@ -21,17 +21,16 @@ Inno Setup script's conventions):
     MetadataWizard.app/Contents/
         Info.plist
         MacOS/
-            MetadataWizard   (launcher)
-            pip              (pip wrapper)
+            MetadataWizard      (launcher)
+            pip                 (pip wrapper)
         Resources/
             Ducky.icns
-        Frameworks/
-            pymdwizard/      (conda env, built --prefix directly here)
-        fort-pymdwizard/     (git clone of main-v2.2, .git included so the
-                               app's built-in "check for updates" feature
-                               -- MainWindow.check_for_updates/
-                               update_from_github, which merges from
-                               origin/<active branch> -- works)
+            pymdwizard/         (conda env, built --prefix directly here)
+            fort-pymdwizard/    (git clone of main-v2.2, .git included so the
+                                app's built-in "check for updates" feature
+                                -- MainWindow.check_for_updates/
+                                update_from_github, which merges from
+                                origin/<active branch> -- works)
         docs/
         examples/
 
@@ -84,11 +83,11 @@ cd "${DIR}"/..
 # location ($(pwd) is Contents/ after the cd above), so it works regardless
 # of where the app is installed (staging, /Applications, etc.) -- no build-
 # time path is baked in.
-export PYTHONPATH="$(pwd)/fort-pymdwizard${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$(pwd)/Resources/fort-pymdwizard${PYTHONPATH:+:$PYTHONPATH}"
 # Use an absolute path to the bundled interpreter so we can never silently
 # fall through to a system python (e.g. Homebrew's) if something about the
 # bundle is off.
-exec "$(pwd)/Frameworks/pymdwizard/bin/python" -m pymdwizard.MetadataWizard "$@"
+exec "$(pwd)/Resources/pymdwizard/bin/python" -m pymdwizard.MetadataWizard "$@"
 """
 
 PIP_WRAPPER_SCRIPT = """#!/bin/bash
@@ -100,7 +99,7 @@ export PYTHONNOUSERSITE=1
 
 # change directory into conda environment
 cd "${DIR}"/..
-exec -a "$0" "$(pwd)/Frameworks/pymdwizard/bin/python" -m pip "$@"
+exec -a "$0" "$(pwd)/Resources/pymdwizard/bin/python" -m pip "$@"
 """
 
 
@@ -184,7 +183,9 @@ def get_version_from_plist(app: Path) -> str:
 
 
 def clone_source(contents: Path, branch: str) -> Path:
-    dest = contents / "fort-pymdwizard"
+    resources = contents / "Resources"
+    resources.mkdir(parents=True, exist_ok=True)
+    dest = resources / "fort-pymdwizard"
     if dest.exists():
         shutil.rmtree(dest)
     run([GIT, "clone", "--branch", branch, REPO_URL, str(dest)])
@@ -273,7 +274,7 @@ def build_app_bundle(staging: Path, env_yml: Path, branch: str) -> tuple:
     write_info_plist(contents, version)
     write_launchers(contents / "MacOS")
     build_icon(fort_pymdwizard, contents / "Resources")
-    env_dir = contents / "Frameworks" / ENV_DIRNAME
+    env_dir = contents / "Resources" / ENV_DIRNAME
     build_conda_env(env_yml, env_dir)
     # Note: the cloned fort-pymdwizard checkout is made importable at runtime
     # by the launcher (it puts Contents/fort-pymdwizard on PYTHONPATH), so no
