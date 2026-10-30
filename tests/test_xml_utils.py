@@ -185,3 +185,88 @@ def test_content_diff_accepts_element_trees():
 
     dropped = dict(xml_utils.content_diff(original, produced))
     assert dropped == {"metadata/spdoinfo/direct": ["Vector"]}
+
+
+# ---------------------------------------------------------------------------
+# content_changes: separates content that is gone ("dropped") from content
+# the form kept in a different form ("rewritten"), so genuine losses can be
+# shown first and normalizations treated as a lesser matter.
+# ---------------------------------------------------------------------------
+
+
+def test_content_changes_identical_is_empty():
+    tree = _node("<metadata><metainfo><metstdn>FGDC</metstdn></metainfo></metadata>")
+    assert xml_utils.content_changes(tree, tree) == ([], [])
+
+
+def test_content_changes_replaced_value_is_rewritten_not_dropped():
+    # The metadata standard name is rewritten to its canonical wording by the
+    # form: nothing is lost, so it must not be reported as dropped.
+    original = _node(
+        "<metadata><metainfo><metstdn>FGDC Biological Data Profile of the "
+        "CSDGM</metstdn></metainfo></metadata>"
+    )
+    produced = _node(
+        "<metadata><metainfo><metstdn>FGDC Biological Data Profile of the "
+        "Content Standard for Digital Geospatial Metadata</metstdn>"
+        "</metainfo></metadata>"
+    )
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert dropped == []
+    assert rewritten == [
+        (
+            "metadata/metainfo/metstdn",
+            [
+                (
+                    "FGDC Biological Data Profile of the CSDGM",
+                    "FGDC Biological Data Profile of the Content Standard "
+                    "for Digital Geospatial Metadata",
+                )
+            ],
+        )
+    ]
+
+
+def test_content_changes_missing_value_is_dropped():
+    original = _node(
+        "<metadata><customext units='meters'>99</customext></metadata>"
+    )
+    produced = _node("<metadata></metadata>")
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert rewritten == []
+    assert dict(dropped) == {
+        "metadata/customext": ["99"],
+        "metadata/customext/@units": ["meters"],
+    }
+
+
+def test_content_changes_splits_a_mixed_path():
+    # Two keywords in, one different keyword out: one is rewritten (paired in
+    # order), the unpaired one is dropped.
+    original = _node(
+        "<metadata><theme><themekey>a</themekey><themekey>b</themekey>"
+        "</theme></metadata>"
+    )
+    produced = _node(
+        "<metadata><theme><themekey>c</themekey></theme></metadata>"
+    )
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert rewritten == [("metadata/theme/themekey", [("a", "c")])]
+    assert dropped == [("metadata/theme/themekey", ["b"])]
+
+
+def test_content_diff_still_reports_replaced_values_as_missing():
+    # content_diff keeps its original contract: any original value without an
+    # equal counterpart is "missing", whether or not something replaced it.
+    original = _node("<metadata><a>old</a></metadata>")
+    produced = _node("<metadata><a>new</a></metadata>")
+
+    assert xml_utils.content_diff(original, produced) == [
+        ("metadata/a", ["old"])
+    ]
