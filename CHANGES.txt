@@ -24,6 +24,7 @@ Bug fixes
 13. Corrected "USGS Data Series" to "USGS Data Report" to match the current USGS product type name.
 14. Fixed SDTS point/vector object type being reported as "Unknown" for 3D or measured (Z/M) vector data.
 15. Fixed crash when opening a date attribute with an enumerated domain in the Entity and Attribute tab.
+16. Added an optional Contact Instructions (cntinst) field to the contact form. Existing Contact Instructions were previously removed when a record was opened and saved.
 
 Other
 --------------
