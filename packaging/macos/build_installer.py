@@ -53,6 +53,7 @@ import re
 import shutil
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 APP_NAME = "MetadataWizard"
@@ -200,6 +201,25 @@ def build_conda_env(env_yml: Path, target: Path):
     # build prefix).
     run(["conda", "env", "create", "-f", str(env_yml), "--prefix", str(target)])
 
+def fix_qt_conf(env_dir: Path):
+    """Replace conda's absolute build-time paths in every qt.conf with
+    paths relative to the file's own folder, so the app is relocatable."""
+    found = list(env_dir.rglob("qt.conf"))
+    if not found:
+        found = [env_dir / "bin" / "qt.conf"]   # Qt reads this next to python
+    for conf in found:
+        rel = Path(os.path.relpath(env_dir, conf.parent)).as_posix()
+        conf.write_text(
+            "[Paths]\n"
+            f"Prefix = {rel}\n"
+            "Binaries = bin\n"
+            "Libraries = lib\n"
+            "Headers = include\n"
+            "Plugins = plugins\n"
+            "Translations = translations\n"
+            "Data = .\n"
+        )
+        print(f"Rewrote {conf} (Prefix = {rel})")
 
 def build_icon(repo: Path, resources: Path):
     ico = repo / "pymdwizard" / "resources" / "icons" / "Ducky.ico"
@@ -276,6 +296,7 @@ def build_app_bundle(staging: Path, env_yml: Path, branch: str) -> tuple:
     build_icon(fort_pymdwizard, contents / "Resources")
     env_dir = contents / "Resources" / ENV_DIRNAME
     build_conda_env(env_yml, env_dir)
+    fix_qt_conf(env_dir)
     # Note: the cloned fort-pymdwizard checkout is made importable at runtime
     # by the launcher (it puts Contents/fort-pymdwizard on PYTHONPATH), so no
     # .pth file is written here -- that avoids baking a build-time path that
