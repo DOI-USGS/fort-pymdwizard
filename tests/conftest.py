@@ -167,3 +167,58 @@ def _webengine_teardown():
     yield
     app = QApplication.instance() or QCoreApplication.instance()
     _delete_lingering_webengine_objects(app)
+
+
+# ---------------------------------------------------------------------------
+# File Geodatabase fixture
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def gdb_path(tmp_path):
+    """
+    Build a small File Geodatabase in tmp_path and return its path.
+
+    The geodatabase holds two feature classes so the layer-selection path is
+    exercised:
+        wells: 3 points with 'name' (text) and 'depth' (integer) fields.
+        roads: 1 line with a 'name' (text) field.
+
+    It is generated with GDAL's OpenFileGDB driver (write support needs GDAL
+    3.6 or later) rather than committed, because a .gdb is a folder of binary
+    files.
+    """
+    from osgeo import ogr, osr
+
+    fname = str(tmp_path / "sample.gdb")
+    driver = ogr.GetDriverByName("OpenFileGDB")
+    dataset = driver.CreateDataSource(fname)
+    srs = osr.SpatialReference()
+    srs.ImportFromEPSG(4326)
+
+    wells = dataset.CreateLayer("wells", srs, ogr.wkbPoint)
+    wells.CreateField(ogr.FieldDefn("name", ogr.OFTString))
+    wells.CreateField(ogr.FieldDefn("depth", ogr.OFTInteger))
+    for name, depth, x, y in [
+        ("A", 10, -105.0, 40.0),
+        ("B", 20, -105.1, 40.1),
+        ("C", 30, -105.2, 40.2),
+    ]:
+        feature = ogr.Feature(wells.GetLayerDefn())
+        feature.SetField("name", name)
+        feature.SetField("depth", depth)
+        feature.SetGeometry(ogr.CreateGeometryFromWkt(f"POINT ({x} {y})"))
+        wells.CreateFeature(feature)
+
+    roads = dataset.CreateLayer("roads", srs, ogr.wkbLineString)
+    roads.CreateField(ogr.FieldDefn("name", ogr.OFTString))
+    feature = ogr.Feature(roads.GetLayerDefn())
+    feature.SetField("name", "Main St")
+    feature.SetGeometry(
+        ogr.CreateGeometryFromWkt("LINESTRING (-105 40, -105.1 40.1)")
+    )
+    roads.CreateFeature(feature)
+
+    feature = None
+    dataset = None  # Close the geodatabase so it is flushed to disk.
+    return fname
