@@ -36,6 +36,10 @@ THESAURUS_BASE_URL = "https://apps.usgs.gov/thesaurus/"
 # Thesaurus names that indicate free text rather than a controlled vocabulary.
 FREE_TEXT_THESAURI = {"none"}
 
+# The <themekt> value for the USGS Thesaurus (thcode 2). Records distributed
+# through ScienceBase must include at least one keyword from it.
+USGS_THESAURUS_NAME = "USGS Thesaurus"
+
 # thcode 15 (ISO 19115 Topic Category) and thcode 23 (Data Categories for
 # Marine Planning) return HTTP 500 from term-search.php for every search
 # term. Excluded from search and validation until the service issue is resolved.

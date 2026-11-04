@@ -524,3 +524,219 @@ def test_cv_invalid_place_keyword_reported(mocker):
     xpath, message, _line = cv_errors[0]
     assert "idinfo/keywords/place/placekt" in xpath
     assert "Notaplace" in message
+
+
+# ===========================================================================
+# USGS Thesaurus keyword required for ScienceBase records (2.2.1)
+# ===========================================================================
+#
+# A record with ScienceBase as a distributor is treated as a USGS record and
+# must include at least one recognized USGS Thesaurus theme keyword. These
+# tests patch the same thesaurus_utils boundary as the controlled-vocabulary
+# tests above and filter the returned errors to the USGS keyword message.
+
+from pymdwizard.core import utils, xml_utils
+
+USGS_MESSAGE_SUBSTR = "must include at least one keyword from the USGS Thesaurus"
+
+SCIENCEBASE_ORG = "U.S. Geological Survey - ScienceBase"
+
+
+def _usgs_metadata(themes, distributor=SCIENCEBASE_ORG, email=None,
+                   contact="cntorgp"):
+    """
+    Build a minimal metadata document with theme keyword groups and one
+    distributor contact.
+
+    themes: list of (themekt, [themekeys]) tuples. An empty keyword list
+        writes a single empty <themekey/>, as the form does.
+    distributor: organization name for the distributor, or None for no
+        <distinfo> at all.
+    email: optional distributor email.
+    contact: "cntorgp" or "cntperp", the contact block holding <cntorg>.
+    """
+    theme_blocks = []
+    for themekt, themekeys in themes:
+        lines = ["    <theme>", "      <themekt>{}</themekt>".format(themekt)]
+        if themekeys:
+            lines += ["      <themekey>{}</themekey>".format(k)
+                      for k in themekeys]
+        else:
+            lines.append("      <themekey/>")
+        lines.append("    </theme>")
+        theme_blocks.append("\n".join(lines))
+
+    distinfo = ""
+    if distributor is not None:
+        person = "<cntper>Someone</cntper>" if contact == "cntperp" else ""
+        email_xml = "<cntemail>{}</cntemail>".format(email) if email else ""
+        distinfo = (
+            "  <distinfo><distrib><cntinfo>"
+            "<{c}>{p}<cntorg>{org}</cntorg></{c}>{e}"
+            "</cntinfo></distrib></distinfo>\n"
+        ).format(c=contact, p=person, org=distributor, e=email_xml)
+
+    return (
+        "<metadata>\n"
+        "  <idinfo>\n"
+        "    <keywords>\n"
+        "{}\n"
+        "    </keywords>\n"
+        "  </idinfo>\n"
+        "{}"
+        "</metadata>\n"
+    ).format("\n".join(theme_blocks), distinfo)
+
+
+def _usgs_errors(xml):
+    """Run validate_xml and return only the USGS Thesaurus keyword errors."""
+    errors = fgdc_utils.validate_xml(xml)
+    return [e for e in errors if USGS_MESSAGE_SUBSTR in e[1]]
+
+
+def _patch_thesaurus(mocker, known=lambda thcode, kw: True, lookup=_CV_LOOKUP):
+    """Patch the thesaurus service: lookup result and per-term answer."""
+    mocker.patch.object(
+        thesaurus_utils, "get_thesauri_lookup",
+        return_value=None if lookup is None else dict(lookup),
+    )
+    return mocker.patch.object(
+        thesaurus_utils, "_term_is_known", side_effect=known
+    )
+
+
+# --- When the record counts as a USGS (ScienceBase) record ----------------
+
+def test_is_sciencebase_distributed_by_org():
+    node = xml_utils.string_to_node(_usgs_metadata([]))
+    assert fgdc_utils.is_sciencebase_distributed(node)
+
+
+def test_is_sciencebase_distributed_by_email_case_insensitive():
+    xml = _usgs_metadata([], distributor="Some Other Org",
+                         email="ScienceBase@USGS.gov")
+    node = xml_utils.string_to_node(xml)
+    assert fgdc_utils.is_sciencebase_distributed(node)
+
+
+def test_is_sciencebase_distributed_person_contact():
+    """cntorg inside a person-primary contact (cntperp) also counts."""
+    xml = _usgs_metadata([], contact="cntperp")
+    node = xml_utils.string_to_node(xml)
+    assert fgdc_utils.is_sciencebase_distributed(node)
+
+
+def test_is_sciencebase_distributed_false_for_other_distributor():
+    xml = _usgs_metadata([], distributor="Some Other Org",
+                         email="data@example.org")
+    node = xml_utils.string_to_node(xml)
+    assert not fgdc_utils.is_sciencebase_distributed(node)
+
+
+def test_is_sciencebase_distributed_false_without_distinfo():
+    node = xml_utils.string_to_node(_usgs_metadata([], distributor=None))
+    assert not fgdc_utils.is_sciencebase_distributed(node)
+
+
+# --- Errors reported ------------------------------------------------------
+
+def test_usgs_no_usgs_thesaurus_group_reported(mocker):
+    """No USGS Thesaurus group at all: reported on idinfo/keywords."""
+    _patch_thesaurus(mocker)
+    xml = _usgs_metadata([("None", ["free text"])])
+
+    usgs_errors = _usgs_errors(xml)
+
+    assert len(usgs_errors) == 1
+    assert usgs_errors[0][0] == "metadata/idinfo/keywords"
+
+
+def test_usgs_empty_usgs_thesaurus_group_reported(mocker):
+    """A USGS Thesaurus group with no keywords: reported on its themekt."""
+    _patch_thesaurus(mocker)
+    xml = _usgs_metadata([
+        ("ISO 19115 Topic Category", ["biota"]),
+        ("USGS Thesaurus", []),
+    ])
+
+    usgs_errors = _usgs_errors(xml)
+
+    assert len(usgs_errors) == 1
+    assert usgs_errors[0][0] == "metadata/idinfo/keywords/theme[2]/themekt"
+
+
+def test_usgs_empty_group_reported_when_service_unreachable(mocker):
+    """An empty group needs no web service, so it is still reported."""
+    _patch_thesaurus(mocker, lookup=None)
+    xml = _usgs_metadata([("USGS Thesaurus", [])])
+
+    usgs_errors = _usgs_errors(xml)
+
+    assert len(usgs_errors) == 1
+    assert usgs_errors[0][0] == "metadata/idinfo/keywords/theme/themekt"
+
+
+def test_usgs_new_record_from_template_reported(mocker):
+    """The default template (ScienceBase distributor, empty USGS Thesaurus
+    group) fails the check until a keyword is added."""
+    _patch_thesaurus(mocker)
+    template = xml_utils.fname_to_node(
+        utils.get_resource_path("CSDGM_Template.xml")
+    )
+
+    usgs_errors = _usgs_errors(template)
+
+    assert len(usgs_errors) == 1
+    assert usgs_errors[0][0] == "metadata/idinfo/keywords/theme[1]/themekt"
+
+
+# --- No error -------------------------------------------------------------
+
+def test_usgs_valid_keyword_no_error(mocker):
+    _patch_thesaurus(mocker)
+    xml = _usgs_metadata([("USGS Thesaurus", ["hydrology"])])
+    assert _usgs_errors(xml) == []
+
+
+def test_usgs_one_valid_among_invalid_no_error(mocker):
+    """One recognized term is enough; the invalid one is still reported by
+    the controlled-vocabulary check."""
+    _patch_thesaurus(mocker, known=lambda thcode, kw: kw == "hydrology")
+    xml = _usgs_metadata([("USGS Thesaurus", ["hydrology", "notarealterm"])])
+
+    assert _usgs_errors(xml) == []
+    assert len(_cv_errors(xml)) == 1
+
+
+def test_usgs_all_invalid_left_to_controlled_vocabulary_error(mocker):
+    """If every term is rejected, only the controlled-vocabulary error is
+    reported. It is on the same themekt, and the validation error list
+    shows one error per xpath."""
+    _patch_thesaurus(mocker, known=lambda thcode, kw: False)
+    xml = _usgs_metadata([("USGS Thesaurus", ["notarealterm"])])
+
+    assert _usgs_errors(xml) == []
+    cv_errors = _cv_errors(xml)
+    assert len(cv_errors) == 1
+    assert cv_errors[0][0] == "metadata/idinfo/keywords/theme/themekt"
+
+
+def test_usgs_keywords_unverifiable_no_error(mocker):
+    """Service unreachable with keywords present: no false error."""
+    _patch_thesaurus(mocker, lookup=None)
+    xml = _usgs_metadata([("USGS Thesaurus", ["hydrology"])])
+    assert _usgs_errors(xml) == []
+
+
+def test_usgs_not_checked_for_other_distributor(mocker):
+    """Non-ScienceBase records are not required to use the USGS Thesaurus."""
+    _patch_thesaurus(mocker)
+    xml = _usgs_metadata([("None", ["free text"])],
+                         distributor="Some Other Org")
+    assert _usgs_errors(xml) == []
+
+
+def test_usgs_not_checked_without_distinfo(mocker):
+    _patch_thesaurus(mocker)
+    xml = _usgs_metadata([("None", ["free text"])], distributor=None)
+    assert _usgs_errors(xml) == []
