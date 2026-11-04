@@ -39,6 +39,75 @@ FGDC_XSD_NAME = "FGDC/fgdc-std-001-1998-annotated.xsd"
 BDP_XSD_NAME = "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
 
 
+USGS_KEYWORD_MESSAGE = (
+    "Records distributed through ScienceBase must include at least one "
+    "keyword from the USGS Thesaurus. Use 'Search Controlled Vocabularies' "
+    "to find USGS Thesaurus terms."
+)
+
+
+def is_sciencebase_distributed(tree_node):
+    """
+    Description:
+        Determines whether a record lists ScienceBase as a distributor,
+        which the validator takes to mean the record has USGS authors.
+
+    Args:
+        tree_node (lxml element): The <metadata> element.
+
+    Returns:
+        bool: True if any distributor contact's organization or email
+            contains "sciencebase" (case-insensitive).
+    """
+
+    xpath = (
+        "distinfo/distrib/cntinfo/*/cntorg"
+        " | distinfo/distrib/cntinfo/cntemail"
+    )
+    for node in tree_node.xpath(xpath):
+        if node.text and "sciencebase" in node.text.lower():
+            return True
+
+    return False
+
+
+def _usgs_thesaurus_error(usgs_groups):
+    """
+    Description:
+        Builds the validation error for a ScienceBase record that has no
+        recognized USGS Thesaurus keyword, if there is one to report.
+
+    Args:
+        usgs_groups (list of tuple): One (themekt xpath, non-empty
+            keywords, find_invalid_keywords result) per theme keyword
+            group whose thesaurus is the USGS Thesaurus.
+
+    Returns:
+        tuple or None: An (xpath, message, line) error, or None if the
+            record has a recognized USGS Thesaurus keyword, or if that
+            cannot be confirmed.
+
+    Notes:
+        - No USGS Thesaurus group: reported on idinfo/keywords.
+        - USGS Thesaurus group(s) with no keywords: reported on the first
+          group's themekt. Needs no web service.
+        - Keywords present but none confirmed valid: if any check could
+          not be completed (service unreachable), nothing is reported, to
+          avoid a false error. Otherwise every keyword was rejected, and
+          the controlled-vocabulary error already reported on the same
+          themekt explains it, so nothing more is added.
+    """
+
+    if not usgs_groups:
+        xpath = "metadata/idinfo/keywords"
+        return (xpath, USGS_KEYWORD_MESSAGE, 1)
+
+    if not any(keywords for _xpath, keywords, _invalid in usgs_groups):
+        return (usgs_groups[0][0], USGS_KEYWORD_MESSAGE, 1)
+
+    return None
+
+
 def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
     """
     Description:
@@ -152,6 +221,12 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
     # vocabulary, when one is selected (a thesaurus of "None" or blank
     # means free text, and is not checked).
     thesauri_lookup = None
+
+    # Theme keyword groups whose thesaurus is the USGS Thesaurus, as
+    # (themekt xpath, non-empty keywords, find_invalid_keywords result).
+    # Used by the ScienceBase check below.
+    usgs_groups = []
+
     for which, kt_tag, key_tag in (
         ("theme", "themekt", "themekey"),
         ("place", "placekt", "placekey"),
@@ -174,13 +249,23 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
                 kt_node.text, keywords, lookup=thesauri_lookup
             )
 
-            if not invalid:
-                continue
-
             error_xpath = keyword_xpath
             if len(keyword_nodes) > 1:
                 error_xpath += "[{}]".format(i + 1)
             error_xpath += "/{}".format(kt_tag)
+
+            if (
+                which == "theme"
+                and kt_node.text.strip() == thesaurus_utils.USGS_THESAURUS_NAME
+            ):
+                usgs_groups.append((
+                    "metadata/" + error_xpath,
+                    [k for k in keywords if k and k.strip()],
+                    invalid,
+                ))
+
+            if not invalid:
+                continue
 
             errors.append(
                 ("metadata/" + error_xpath,
@@ -191,6 +276,13 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
                  1,
                 )
             )
+
+    # Records distributed through ScienceBase are treated as USGS records
+    # and must include at least one recognized USGS Thesaurus keyword.
+    if is_sciencebase_distributed(tree_node):
+        usgs_error = _usgs_thesaurus_error(usgs_groups)
+        if usgs_error is not None:
+            errors.append(usgs_error)
 
     from pymdwizard.core.spatial_utils import ns_is_inverted
 
