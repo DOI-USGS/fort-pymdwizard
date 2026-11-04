@@ -573,6 +573,15 @@ class ThemeList(WizardWidget):  #
                     theme = self.add_another()
                     theme.from_xml(theme_xml)
 
+            # Each added tab becomes current, so the last one loaded would
+            # be shown. Show the first keyword list in the record instead.
+            # This must run after loading: changed_thesaurus() labels
+            # whichever tab is current.
+            if self.ui.theme_tabs.isTabEnabled(0):
+                self.ui.theme_tabs.setCurrentIndex(0)
+            elif self.thesauri:
+                self.ui.theme_tabs.setCurrentIndex(1)
+
 
 if __name__ == "__main__":
     """
