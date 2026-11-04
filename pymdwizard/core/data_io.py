@@ -36,6 +36,7 @@ try:
         "Library", "share", "gdal")
     import geopandas as gpd
     import fiona
+    from osgeo import ogr
     import laspy
 
     # IMPORTANT:
@@ -275,6 +276,102 @@ def read_geojson(fname):
     return df
 
 
+def get_gdb_layer_names(fname):
+    """
+    Description:
+        Returns the names of the feature classes and tables in a File
+        Geodatabase.
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+
+    Returns:
+        list of str: Layer names, in the order GDAL reports them.
+    """
+
+    return fiona.listlayers(fname)
+
+
+def get_gdb_oid_column(fname, layer):
+    """
+    Description:
+        Returns the name of a File Geodatabase layer's object ID field
+        (usually "OBJECTID").
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+        layer (str): Name of the feature class or table.
+
+    Returns:
+        str: The object ID field name, or "OBJECTID" if GDAL does not
+            report one.
+
+    Notes:
+        GDAL exposes the object ID as the feature ID rather than as an
+        ordinary field, so it is not among the columns geopandas returns.
+    """
+
+    dataset = ogr.Open(fname)
+    try:
+        lyr = dataset.GetLayerByName(layer) if dataset is not None else None
+        oid_column = lyr.GetFIDColumn() if lyr is not None else ""
+    finally:
+        dataset = None  # Close the geodatabase.
+
+    return oid_column or "OBJECTID"
+
+
+def read_gdb(fname, layer=None):
+    """
+    Description:
+        Returns a pandas DataFrame of the attributes in a File Geodatabase
+        feature class, specified as a file path/name.
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+        layer (str, optional): Name of the feature class to read. If None,
+            the first layer is read.
+
+    Returns:
+        df (pandas.DataFrame): A pandas DataFrame containing the attributes,
+            with the object ID field first, then "Shape".
+
+    Notes:
+        Based on DOI-USGS/fort-pymdwizard#216 (vonnonn). Unlike read_shp,
+        no 'FID' column is generated: the feature class's real object ID
+        (e.g. OBJECTID, numbered from 1) is kept instead, so the attributes
+        match what ArcGIS shows.
+    """
+
+    # If no layer specified, get the first one.
+    if layer is None:
+        layers = get_gdb_layer_names(fname)
+        if not layers:
+            raise ValueError(f"No layers found in {fname}")
+        layer = layers[0]
+
+    # Read the feature class, keeping the object ID as the index.
+    df = gpd.read_file(fname, layer=layer, fid_as_index=True)
+
+    # Open the feature class to access its schema.
+    with fiona.open(fname, layer=layer) as c:
+        geometry_type = c.schema["geometry"]
+
+    # Exclude the 'geometry' column from the DataFrame.
+    df = df[[col for col in df.columns if col != "geometry"]]
+
+    # Insert the geometry type at the beginning of the DataFrame.
+    df.insert(0, "Shape", geometry_type)
+
+    # Restore the object ID as the first column.
+    oid_column = get_gdb_oid_column(fname, layer)
+    if oid_column not in df.columns:
+        df.insert(0, oid_column, df.index.to_numpy())
+    df = df.reset_index(drop=True)
+
+    return df
+
+
 def dbfreader(f):
     """
     Description:
@@ -494,6 +591,8 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_shp(fname)
     elif fname.lower().endswith(".geojson"):
         return read_geojson(fname)
+    elif fname.lower().endswith(".gdb"):
+        return read_gdb(fname)
     elif fname.lower().endswith(".gpkg"):
         return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):

@@ -9,7 +9,8 @@ New features
 1. Added GeoPackage (.gpkg) file support to the Entity and Attributes tab. Multi-layer GeoPackages prompt the user to select a layer.
 2. Added controlled vocabulary validation: when running FGDC validation, theme and place keywords are checked against their named USGS thesaurus and invalid terms are reported.
 3. Added GeoJSON (.geojson) file support to the Entity and Attributes tab and the Spatial tab. Array-valued properties are kept as text attributes. Contributed-by: vonnonn <vonnonn@github>
-4. Added a warning when a record is opened that contains content the form cannot keep as written. The dialog lists what will be removed or reworded and offers to keep a copy of the original; a notice is shown again on save.
+4. Added File Geodatabase (.gdb) support to the Entity and Attributes tab. Open the .gdb folder and select its "gdb" file; geodatabases with multiple feature classes prompt the user to select one. Contributed-by: vonnonn <vonnonn@github>
+5. Added a warning when a record is opened that contains content the form cannot keep as written. The dialog lists what will be removed or reworded and offers to keep a copy of the original; a notice is shown again on save.
 
 Bug fixes
 --------------
