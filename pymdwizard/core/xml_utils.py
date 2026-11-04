@@ -1225,6 +1225,32 @@ def content_diff(original, produced):
         out first so only genuinely missing values are reported.
     """
 
+    unmatched = _unmatched_values(original, produced)
+    dropped = [
+        (path, missing) for path, (missing, _new) in unmatched.items()
+    ]
+    return sorted(dropped, key=lambda pair: pair[0])
+
+
+def _unmatched_values(original, produced):
+    """
+    Description:
+        Shared matching step for content_diff and content_changes. For every
+        content path, cancels each produced value against an equal original
+        value and returns what is left on each side.
+
+    Args:
+        original (lxml.Element or lxml.ElementTree): The tree as loaded.
+        produced (lxml.Element or lxml.ElementTree): The tree to compare.
+
+    Returns:
+        collections.OrderedDict: Maps a path to a (missing, new) tuple, where
+            "missing" is the list of original values with no equal value in
+            "produced", and "new" is the list of produced values with no
+            equal value in "original". Only paths with at least one missing
+            value are included.
+    """
+
     # Accept either Elements or ElementTrees.
     if isinstance(original, etree._ElementTree):
         original = original.getroot()
@@ -1234,15 +1260,61 @@ def content_diff(original, produced):
     orig_values = _collect_content_paths(original)
     new_values = _collect_content_paths(produced)
 
-    dropped = []
+    unmatched = collections.OrderedDict()
     for path, orig_list in orig_values.items():
-        # Cancel out each produced value against an equal original value so
-        # that only values with no counterpart in the output remain.
-        remaining = list(orig_list)
+        missing = list(orig_list)
+        new = []
         for produced_val in new_values.get(path, []):
-            if produced_val in remaining:
-                remaining.remove(produced_val)
-        if remaining:
-            dropped.append((path, remaining))
+            if produced_val in missing:
+                missing.remove(produced_val)
+            else:
+                new.append(produced_val)
+        if missing:
+            unmatched[path] = (missing, new)
 
-    return sorted(dropped, key=lambda pair: pair[0])
+    return unmatched
+
+
+def content_changes(original, produced):
+    """
+    Description:
+        Like content_diff, but separates content that is gone from content
+        the form kept in a different form. Lets the application put genuine
+        losses first and treat normalizations (for example a combo box
+        replacing the metadata standard name with its canonical wording) as
+        a lesser, separate matter.
+
+    Args:
+        original (lxml.Element or lxml.ElementTree): The tree as loaded.
+        produced (lxml.Element or lxml.ElementTree): The tree to compare.
+
+    Returns:
+        tuple: (dropped, rewritten)
+            dropped: list of (path, values) for original values that have no
+                counterpart at that path in "produced".
+            rewritten: list of (path, [(old, new), ...]) for original values
+                that were replaced by a different value at the same path.
+        Both lists are sorted by path.
+
+    Notes:
+        At each path, the leftover original values are paired in order with
+        the leftover produced values. Pairs are "rewritten"; original values
+        left without a partner are "dropped". A value that moved to a
+        different path is reported as dropped, because the tree alone cannot
+        say it moved.
+    """
+
+    dropped = []
+    rewritten = []
+    for path, (missing, new) in _unmatched_values(original, produced).items():
+        pairs = list(zip(missing, new))
+        if pairs:
+            rewritten.append((path, pairs))
+        leftover = missing[len(pairs):]
+        if leftover:
+            dropped.append((path, leftover))
+
+    return (
+        sorted(dropped, key=lambda pair: pair[0]),
+        sorted(rewritten, key=lambda pair: pair[0]),
+    )

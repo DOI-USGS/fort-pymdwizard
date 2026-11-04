@@ -23,6 +23,7 @@ NOTES
 import codecs
 import collections
 import datetime
+import html
 import os
 import shutil
 import subprocess
@@ -75,6 +76,7 @@ except ImportError as err:
 try:
     from pymdwizard import __version__
     from pymdwizard.core import fgdc_utils, review_utils, utils, xml_utils
+    from pymdwizard.gui.content_loss_dialog import ContentLossDialog
     from pymdwizard.gui.error_list import ErrorList
     from pymdwizard.gui.jupyterstarter import JupyterStarter
     from pymdwizard.gui.MetadataRoot import MetadataRoot
@@ -168,6 +170,15 @@ class PyMdWizardMainForm(QMainWindow):
     # Maximum number of files to monitor.
     max_recent_files = 10
 
+    # When a record has this many flagged fields or fewer, the content-loss
+    # dialogs show every value in full and no manifest file is written. Above
+    # it, long values are shortened and the full list goes to a manifest.
+    _FULL_VALUE_MAX_FIELDS = 3
+
+    # FGDC tag -> annotation lookup (resources/FGDC/bdp_lookup), loaded on
+    # first use to give the content-loss dialogs readable field names.
+    _fgdc_lookup = None
+
     def __init__(self, parent=None):
         # Initialize the parent QMainWindow class.
         super(self.__class__, self).__init__()
@@ -177,9 +188,16 @@ class PyMdWizardMainForm(QMainWindow):
                                   "pymdwizard_" + __version__)
         self.cur_fname = ""
         self.file_watcher = None
-        # Snapshot of the XML tree as last loaded from disk, used to warn
-        # about content dropped on save. None when starting from scratch.
-        self.loaded_record = None
+        # Content the form could not keep as written when the current record
+        # was imported (xml_utils.content_changes against an immediate round
+        # trip): import_dropped is gone entirely, import_rewritten was kept
+        # in a different form. Also where the user's copy of the original and
+        # the full-list manifest were written (None if not). These drive the
+        # notice shown on the first save. Reset on each load.
+        self.import_dropped = []
+        self.import_rewritten = []
+        self.import_backup_fname = None
+        self.import_manifest_fname = None
 
         # list of buttons for opening recently accessed files.
         self.recent_file_actions = []
@@ -447,9 +465,14 @@ class PyMdWizardMainForm(QMainWindow):
 
         self.load_file_content(fname)
 
-    def load_file_content(self, fname):
+    def load_file_content(self, fname, check_content_loss=True):
         """
         Performs reading XML, clearing widgets, and populating the metadata form.
+
+        check_content_loss: when True, probe the freshly loaded record for
+        content the form cannot represent and offer to keep a copy of the
+        original. Template loads pass False: a template is not a user's
+        record, and the probe would write backup files next to it.
         """
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -466,11 +489,17 @@ class PyMdWizardMainForm(QMainWindow):
         self.ui.actionDistribution.setChecked(True)
         self.use_distinfo(True)
 
+        # Reset per-load content-loss state before populating.
+        self.import_dropped = []
+        self.import_rewritten = []
+        self.import_backup_fname = None
+        self.import_manifest_fname = None
+
         try:
             new_record = xml_utils.fname_to_node(fname)
-            # Keep the tree exactly as loaded so we can detect, on save,
-            # any content the form could not represent and would drop.
-            self.loaded_record = deepcopy(new_record)
+            # Snapshot the tree exactly as loaded; the widgets may hold
+            # references into new_record, so compare against a copy.
+            original = deepcopy(new_record)
             self.metadata_root.from_xml(new_record)
             self.statusBar().showMessage("File loaded", 10000)
         except BaseException:
@@ -479,7 +508,14 @@ class PyMdWizardMainForm(QMainWindow):
             )
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(self, "Recent Files", msg)
+            return
         QApplication.restoreOverrideCursor()
+
+        # Probe for content the form could not represent while the original
+        # file on disk is still pristine, so the user can decide about a
+        # backup up front with the full picture.
+        if check_content_loss:
+            self.check_content_loss_on_import(fname, original)
 
     def file_updated(self):
         """
@@ -560,9 +596,10 @@ class PyMdWizardMainForm(QMainWindow):
         )
         xml_contents = self.metadata_root.to_xml()
 
-        # Warn if the form could not represent some of the content that was
-        # loaded from disk; that content would otherwise be dropped silently.
-        if not self.confirm_content_loss(xml_contents, fname):
+        # Remind the user, once, if this record contained content the form
+        # cannot represent (found at import), since this write drops it. If
+        # no copy of the original was kept they can still back out here.
+        if not self.notify_content_loss_on_save():
             self.statusBar().showMessage("Save cancelled", 2000)
             return
 
@@ -577,96 +614,416 @@ class PyMdWizardMainForm(QMainWindow):
         self.set_current_file(fname)
         self.statusBar().showMessage("File saved", 2000)
 
-    def confirm_content_loss(self, xml_contents, fname):
+    def check_content_loss_on_import(self, fname, original):
         """
         Description:
-            Compares the XML about to be written against the record that was
-            loaded from disk and, if any leaf content was dropped, asks the
-            user whether to proceed. Offers to keep a copy of the original
-            file so nothing is lost irretrievably.
+            Runs a round-trip probe right after a record is loaded and, if the
+            form cannot represent some of its content, tells the user up front
+            and offers to keep a copy of the original immediately, while the
+            file on disk is still pristine.
 
-            This is the Metadata Wizard rebuilding the output purely from
-            form state: anything the form has no field for (and that no widget
-            explicitly preserves) does not make it into xml_contents. This
-            check surfaces that loss instead of letting it happen silently.
+            The Metadata Wizard rebuilds its output purely from form state, so
+            anything the form has no field for (and that no widget explicitly
+            preserves) would be dropped the next time the record is saved.
+            Detecting that at import gives the user the full picture at the
+            best possible moment to make a backup: before any edits, against
+            the untouched original.
 
         Passed arguments:
-            xml_contents (lxml.etree._Element): The <metadata> tree the
-                application is about to save.
-            fname (str): The destination path being written to.
+            fname (str): The path the record was loaded from.
+            original (lxml tree or element): The record exactly as parsed,
+                before the form was populated.
 
         Returned objects:
-            bool: True if the save should proceed, False if the user cancelled.
+            None. Side effects: sets self.import_dropped,
+            self.import_backup_fname and self.import_manifest_fname, and may
+            write a copy of the original and/or a dropped-content manifest.
 
         Workflow:
-            1. If there is no loaded record (new/template record), proceed.
-            2. Diff loaded vs. produced content paths.
-            3. If nothing dropped, proceed silently.
-            4. Otherwise show the dropped paths and ask Save / Save + backup /
-               Cancel.
+            1. Probe: run metadata_root.to_xml() now and diff it against the
+               original. Because no edits have happened yet, every difference
+               is content the form cannot hold.
+            2. If nothing is dropped, do nothing.
+            3. Otherwise show the dialog with Keep a copy / Continue without a
+               copy, and record the outcome for the save-time notice.
 
         Notes:
-            Prototype of "Option A" (diff-and-warn). It does not itself
-            prevent the loss; it makes the loss visible and recoverable.
+            A failure in the probe itself must never stop a file from
+            opening, so it is caught and reported in the status bar only.
+            The save-time notice reuses self.import_dropped rather than
+            re-diffing at save, because by then the user's own edits would
+            show up as "dropped".
         """
 
-        if self.loaded_record is None:
-            return True
-
-        dropped = xml_utils.content_diff(self.loaded_record, xml_contents)
-        if not dropped:
-            return True
-
-        # The dialog shows a grouped, capped preview. Only write the sidecar
-        # manifest when that preview can't show everything (too many
-        # groups/values, or a value had to be shortened); for a short list the
-        # dialog already is the complete record, so a file would be redundant.
-        preview = self._format_dropped_preview(dropped)
-        if self._preview_is_truncated(dropped):
-            sidecar_fname = self._write_dropped_manifest(fname, dropped)
-        else:
-            sidecar_fname = None
-
-        field_count = sum(len(values) for _, values in dropped)
-        header = (
-            "Some content from the file you opened does not fit into the "
-            "Metadata Wizard form and will NOT be included in the saved "
-            "file ({} field{} total):".format(
-                field_count, "" if field_count == 1 else "s"
+        try:
+            produced = self.metadata_root.to_xml()
+            dropped, rewritten = xml_utils.content_changes(original, produced)
+        except Exception:
+            self.statusBar().showMessage(
+                "File loaded (could not check for content the form "
+                "cannot hold)",
+                10000,
             )
+            return
+
+        self.import_dropped = dropped
+        self.import_rewritten = rewritten
+        if not dropped and not rewritten:
+            return
+
+        # Write the full manifest when the dialog preview can't show
+        # everything; for a short list the dialog is the complete record.
+        if self._preview_is_truncated(dropped, rewritten):
+            self.import_manifest_fname = self._write_dropped_manifest(
+                fname, dropped, rewritten
+            )
+
+        backup_name = os.path.basename(
+            self._unique_path(self._original_backup_name(fname))
+        )
+        msg = self._dropped_content_message(
+            dropped,
+            rewritten,
+            self.import_manifest_fname,
+            intro=(
+                "Some of this record's content doesn't fit into the Metadata "
+                "Wizard form. Saving the record will {action} the following."
+            ),
+            closing=(
+                "Keep a copy of the original now (recommended). It will be "
+                "saved next to the record as:"
+            ),
+            closing_emphasis=backup_name,
         )
 
-        parts = [header, "", preview]
-        if sidecar_fname is not None:
-            parts.append("")
+        dialog = ContentLossDialog(
+            self,
+            title="Some content will not fit in the form",
+            html_text=msg,
+            buttons=[
+                ("Keep a copy of the original", "keep"),
+                ("Continue without a copy", "continue"),
+            ],
+            default_key="keep",
+            warning=bool(dropped),
+        )
+        dialog.exec_()
+
+        # Closing the dialog without choosing (Esc, window close) keeps no
+        # copy, the same as "Continue without a copy"; the save-time notice
+        # still offers Cancel in that case.
+        if dialog.clicked_key == "keep":
+            self.import_backup_fname = self._write_original_backup(fname)
+
+    def notify_content_loss_on_save(self):
+        """
+        Description:
+            Save-time reminder, shown once per imported record, that this
+            save will not carry over content the form could not represent.
+            The decision and the backup offer happen at import in
+            check_content_loss_on_import; this reminds the user at the moment
+            the write actually happens.
+
+            If a copy of the original was kept, the notice is informational
+            (OK only). If no copy was kept, this save permanently removes the
+            content from the file, so the notice also offers Cancel.
+
+        Passed arguments:
+            None.
+
+        Returned objects:
+            bool: True if the save should proceed, False if the user
+            cancelled it.
+
+        Workflow:
+            1. If nothing was flagged at import, proceed.
+            2. Show the notice, saying whether a copy of the original was
+               kept (and where).
+            3. If the user cancelled, keep the flagged content so the notice
+               appears again on the next save attempt.
+            4. Otherwise clear it: once written, the file on disk no longer
+               contains it, so later saves have nothing new to report.
+
+        Notes:
+            This deliberately uses the result stored at import instead of
+            diffing the form against the original now. By save time the user
+            may have edited or deleted fields, and a diff then would report
+            those intentional edits as "dropped content".
+        """
+
+        dropped = self.import_dropped
+        rewritten = self.import_rewritten
+        if not dropped and not rewritten:
+            return True
+
+        # Cancel is only worth offering when content would be lost for good:
+        # something is dropped and no copy of the original exists. Rewritten
+        # values are kept in another form, so they never gate the save.
+        can_cancel = bool(dropped) and not self.import_backup_fname
+        closing_emphasis = None
+        if can_cancel:
+            closing = (
+                "No copy of the original was kept, so the removed content "
+                "will no longer be in this file after saving. Cancel and "
+                "use Save As to write a new file if you want to leave the "
+                "original untouched."
+            )
+        elif self.import_backup_fname:
+            closing = (
+                "A copy of the original was saved next to the record when "
+                "you opened it:"
+            )
+            closing_emphasis = os.path.basename(self.import_backup_fname)
+        else:
+            closing = "Nothing is lost; the values above are kept as shown."
+
+        manifest = self.import_manifest_fname
+        if manifest and not os.path.exists(manifest):
+            manifest = None
+
+        msg = self._dropped_content_message(
+            dropped,
+            rewritten,
+            manifest,
+            intro="This save will {action} the following from the original.",
+            closing=closing,
+            closing_emphasis=closing_emphasis,
+        )
+
+        if can_cancel:
+            # Default to the safe choice: Enter, Esc and closing the window
+            # must not destroy data.
+            buttons = [("Save anyway", "save"), ("Cancel", "cancel")]
+            default_key = "cancel"
+        else:
+            buttons = [("OK", "ok")]
+            default_key = "ok"
+
+        dialog = ContentLossDialog(
+            self,
+            title="Content not included in saved file",
+            html_text=msg,
+            buttons=buttons,
+            default_key=default_key,
+            warning=can_cancel,
+        )
+        dialog.exec_()
+
+        if can_cancel and dialog.clicked_key != "save":
+            return False
+
+        self.import_dropped = []
+        self.import_rewritten = []
+        return True
+
+    # Inline styles for the content-loss dialogs (Qt rich text, a subset of
+    # HTML/CSS). Each affected field is one bullet in a <ul>: its label, the
+    # XML path, then the value, separated by <br/> inside the same <li>, so
+    # wrapped lines stay aligned under the bullet text.
+    #
+    # Every block sets its bottom margin to 0. Qt gives <p> and <li> default
+    # bottom margins, which otherwise open uneven gaps. Spacing is controlled
+    # only by margin-top: large between sections, smaller between bullets.
+    _MUTED = "color:#6b6b6b;"
+    _INTRO_STYLE = "margin-top:0px; margin-bottom:0px;"
+    _SECTION_STYLE = "margin-top:16px; margin-bottom:0px;"
+    _LIST_STYLE = "margin-top:2px; margin-bottom:0px;"
+    _BULLET_STYLE = "margin-top:8px; margin-bottom:0px;"
+    _MORE_STYLE = "margin-top:8px; margin-bottom:0px;" + _MUTED
+    _EMPHASIS_STYLE = "margin-top:4px; margin-bottom:0px; margin-left:14px;"
+
+    @staticmethod
+    def _dropped_content_message(
+        dropped,
+        rewritten,
+        sidecar_fname,
+        intro,
+        closing,
+        closing_emphasis=None,
+    ):
+        """
+        Description:
+            Builds the rich-text (HTML) body shared by the import and save
+            content-loss dialogs: an intro line, then the content that will
+            be removed, then the content that will be reworded, an optional
+            pointer to the full manifest file, and a closing line.
+
+        Passed arguments:
+            dropped / rewritten: The two outputs of xml_utils.content_changes.
+            sidecar_fname (str or None): The manifest file, if one was
+                written. Only its name is shown, since it sits in the same
+                folder as the file that was opened.
+            intro (str): Opening plain text. May contain "{action}", which
+                becomes a bold "remove", "reword" or "remove or reword" to
+                match what is actually listed.
+            closing (str): Closing plain text.
+            closing_emphasis (str or None): Optional text, such as a file
+                name, shown bold on its own indented line after the closing.
+
+        Returned objects:
+            str: Qt rich text (HTML) for ContentLossDialog.
+
+        Notes:
+            All text is HTML-escaped, because record values can contain "<"
+            and "&". Removed content always comes first and gets its own
+            heading and count, because it is the part the user can lose.
+            Reworded values follow under a separate, shorter section so they
+            can't bury it. A section with nothing in it is omitted. Values are
+            shown in full when only a few fields are listed (see
+            _FULL_VALUE_MAX_FIELDS).
+        """
+
+        cls = PyMdWizardMainForm
+
+        def plural(count):
+            return "" if count == 1 else "s"
+
+        dropped_count = sum(len(values) for _, values in dropped)
+        rewritten_count = sum(len(pairs) for _, pairs in rewritten)
+
+        if dropped and rewritten:
+            action = "remove or reword"
+        elif dropped:
+            action = "remove"
+        else:
+            action = "reword"
+
+        show_full = (
+            dropped_count + rewritten_count <= cls._FULL_VALUE_MAX_FIELDS
+        )
+        max_val_len = None if show_full else 90
+
+        intro_html = html.escape(intro).format(
+            action="<b>{}</b>".format(action)
+        )
+        parts = [
+            '<p style="{}">{}</p>'.format(cls._INTRO_STYLE, intro_html)
+        ]
+
+        if dropped:
             parts.append(
-                "The complete list has been written to:\n  {}".format(
-                    sidecar_fname
+                '<p style="{}"><b>Will be removed ({} field{})</b></p>'.format(
+                    cls._SECTION_STYLE, dropped_count, plural(dropped_count)
                 )
             )
-        parts.append("")
-        parts.append("How would you like to proceed?")
-        msg = "\n".join(parts)
+            parts.append(
+                cls._format_dropped_preview(dropped, max_val_len=max_val_len)
+            )
 
-        box = QMessageBox(self)
-        box.setIcon(QMessageBox.Warning)
-        box.setWindowTitle("Content will be dropped on save")
-        box.setText(msg)
-        save_btn = box.addButton("Save anyway", QMessageBox.AcceptRole)
-        backup_btn = box.addButton(
-            "Save and keep a copy of the original", QMessageBox.AcceptRole
+        if rewritten:
+            parts.append(
+                '<p style="{}"><b>Will be reworded ({} field{})</b></p>'.format(
+                    cls._SECTION_STYLE, rewritten_count, plural(rewritten_count)
+                )
+            )
+            parts.append(
+                cls._format_rewritten_preview(
+                    rewritten, max_val_len=max_val_len
+                )
+            )
+
+        if sidecar_fname is not None:
+            parts.append(
+                '<p style="{}">The complete list is in <b>{}</b>, in the same '
+                "folder as the file you opened.</p>".format(
+                    cls._SECTION_STYLE,
+                    html.escape(os.path.basename(sidecar_fname)),
+                )
+            )
+
+        parts.append(
+            '<p style="{}">{}</p>'.format(
+                cls._SECTION_STYLE, html.escape(closing)
+            )
         )
-        box.addButton(QMessageBox.Cancel)
-        box.setDefaultButton(backup_btn)
-        box.exec_()
+        if closing_emphasis:
+            parts.append(
+                '<p style="{}"><b>{}</b></p>'.format(
+                    cls._EMPHASIS_STYLE, html.escape(closing_emphasis)
+                )
+            )
+        return "\n".join(parts)
 
-        clicked = box.clickedButton()
-        if clicked == backup_btn:
-            self._write_original_backup(fname)
-            return True
-        if clicked == save_btn:
-            return True
-        return False
+    @staticmethod
+    def _field_label(tag):
+        """
+        Description:
+            Returns an HTML label for a leaf tag: its readable FGDC name in
+            bold with the tag in gray, e.g. "Contact Instructions (cntinst)".
+            Falls back to the bold tag alone when the tag has no readable
+            name, such as attributes ("@units") or non-standard elements.
+
+        Notes:
+            Names come from resources/FGDC/bdp_lookup, the same table the
+            review document uses. It is loaded once; if it can't be loaded,
+            every label falls back to the tag.
+        """
+
+        cls = PyMdWizardMainForm
+        if cls._fgdc_lookup is None:
+            try:
+                cls._fgdc_lookup = fgdc_utils.get_fgdc_lookup()
+            except Exception:
+                cls._fgdc_lookup = {}
+
+        long_name = None
+        if not tag.startswith("@"):
+            entry = cls._fgdc_lookup.get(tag)
+            if isinstance(entry, dict):
+                long_name = entry.get("long_name")
+
+        if long_name and long_name != tag:
+            return '<b>{}</b> <span style="{}">({})</span>'.format(
+                html.escape(long_name), cls._MUTED, html.escape(tag)
+            )
+        return "<b>{}</b>".format(html.escape(tag))
+
+    @staticmethod
+    def _path_label(path):
+        """
+        Returns the full XML path of a field as gray text at the normal font
+        size, e.g. "metainfo/metc/cntinfo/cntinst", for use on its own line
+        inside a bullet. The leading "metadata/" is dropped.
+        """
+
+        return '<span style="{}">{}</span>'.format(
+            PyMdWizardMainForm._MUTED,
+            html.escape(PyMdWizardMainForm._display_path(path)),
+        )
+
+    @staticmethod
+    def _bullet(lines_html):
+        """
+        Returns one <li> whose lines (already HTML) are separated by line
+        breaks, so they share the bullet's indent.
+        """
+
+        return '<li style="{}">{}</li>'.format(
+            PyMdWizardMainForm._BULLET_STYLE, "<br/>".join(lines_html)
+        )
+
+    @staticmethod
+    def _bullet_list(items_html):
+        """Wraps <li> items in a bulleted list."""
+
+        return '<ul style="{}">{}</ul>'.format(
+            PyMdWizardMainForm._LIST_STYLE, "".join(items_html)
+        )
+
+    @staticmethod
+    def _display_path(path):
+        """
+        Shortens a content path for display by dropping the leading
+        "metadata/" that every path starts with. The root element itself
+        reads "(top level)".
+        """
+
+        root = "metadata"
+        if path == root or path == "":
+            return "(top level)"
+        if path.startswith(root + "/"):
+            return path[len(root) + 1:]
+        return path
 
     @staticmethod
     def _format_dropped_preview(
@@ -691,15 +1048,18 @@ class PyMdWizardMainForm(QMainWindow):
                 the remainder into an "and N more" line.
             max_values_per_group (int): Maximum values listed under one group
                 before collapsing the remainder into "+N more".
-            max_val_len (int): Values longer than this are truncated with an
-                ellipsis.
+            max_val_len (int or None): Values longer than this are truncated
+                with an ellipsis. None shows every value in full.
 
         Returned objects:
-            str: The formatted, indented preview block.
+            str: A bulleted list as HTML (values escaped).
 
         Notes:
-            Grouping is by parent path (everything up to the last "/"). The
-            leaf tag (or "@attr") is shown with its value under the group.
+            Each value is one bullet: the field name (see _field_label), the
+            full XML path of the field, then the value. Fields are still
+            grouped by parent path (everything up to the last "/") so related
+            losses sit together and the caps apply per group. The leading
+            "metadata/" is dropped from paths.
         """
 
         # Group leaves by parent path, preserving first-seen order.
@@ -713,56 +1073,161 @@ class PyMdWizardMainForm(QMainWindow):
             for value in values:
                 group.append((leaf, value))
 
+        cls = PyMdWizardMainForm
+
         def shorten(text):
             collapsed = " ".join(text.split())
-            if len(collapsed) > max_val_len:
-                return collapsed[: max_val_len - 1] + "\u2026"
-            return collapsed
+            if max_val_len is not None and len(collapsed) > max_val_len:
+                collapsed = collapsed[: max_val_len - 1] + "\u2026"
+            return html.escape(collapsed)
 
-        lines = []
+        items_html = []
         for parent, items in list(groups.items())[:max_groups]:
-            lines.append(parent if parent else "(root)")
             for leaf, value in items[:max_values_per_group]:
-                lines.append("    {}:  {}".format(leaf, shorten(value)))
+                full_path = parent + "/" + leaf if parent else leaf
+                items_html.append(
+                    cls._bullet(
+                        [
+                            cls._field_label(leaf),
+                            cls._path_label(full_path),
+                            shorten(value),
+                        ]
+                    )
+                )
             extra = len(items) - max_values_per_group
             if extra > 0:
-                lines.append("    +{} more".format(extra))
+                items_html.append(
+                    '<li style="{}">+{} more in {}</li>'.format(
+                        cls._MORE_STYLE,
+                        extra,
+                        html.escape(cls._display_path(parent)),
+                    )
+                )
 
         extra_groups = len(groups) - max_groups
         if extra_groups > 0:
-            lines.append(
-                "\u2026 and {} more section{}".format(
-                    extra_groups, "" if extra_groups == 1 else "s"
+            items_html.append(
+                '<li style="{}">\u2026 and {} more section{}</li>'.format(
+                    cls._MORE_STYLE,
+                    extra_groups,
+                    "" if extra_groups == 1 else "s",
                 )
             )
 
-        return "\n".join(lines)
+        return cls._bullet_list(items_html)
+
+    @staticmethod
+    def _format_rewritten_preview(rewritten, max_items=3, max_val_len=90):
+        """
+        Description:
+            Formats values the form kept in a different form, as was/now
+            pairs. Kept deliberately short (few items) because rewritten
+            values are the lesser concern next to dropped content.
+
+        Passed arguments:
+            rewritten (list of (path, [(old, new), ...])): Rewritten output
+                of xml_utils.content_changes.
+            max_items (int): Pairs to show before collapsing the rest into
+                "+N more".
+            max_val_len (int or None): Values longer than this are truncated
+                with an ellipsis. None shows every value in full.
+
+        Returned objects:
+            str: A bulleted list as HTML (values escaped). Each bullet is the
+                field name, the full XML path of the field, then the was/now
+                pair.
+        """
+
+        cls = PyMdWizardMainForm
+
+        def shorten(text):
+            collapsed = " ".join(text.split())
+            if max_val_len is not None and len(collapsed) > max_val_len:
+                collapsed = collapsed[: max_val_len - 1] + "\u2026"
+            return html.escape(collapsed)
+
+        items = [
+            (path, old, new) for path, pairs in rewritten for old, new in pairs
+        ]
+
+        items_html = []
+        for path, old, new in items[:max_items]:
+            leaf = path.rsplit("/", 1)[-1]
+            items_html.append(
+                cls._bullet(
+                    [
+                        cls._field_label(leaf),
+                        cls._path_label(path),
+                        '<span style="{}">was:</span> {}'.format(
+                            cls._MUTED, shorten(old)
+                        ),
+                        '<span style="{}">now:</span> {}'.format(
+                            cls._MUTED, shorten(new)
+                        ),
+                    ]
+                )
+            )
+
+        extra = len(items) - max_items
+        if extra > 0:
+            items_html.append(
+                '<li style="{}">+{} more</li>'.format(cls._MORE_STYLE, extra)
+            )
+
+        return cls._bullet_list(items_html)
 
     @staticmethod
     def _preview_is_truncated(
         dropped,
+        rewritten=(),
         max_groups=8,
         max_values_per_group=4,
         max_val_len=90,
+        max_rewritten=3,
     ):
         """
         Description:
             Reports whether the dialog preview produced by
-            _format_dropped_preview would omit or shorten any content, i.e.
-            whether the dialog alone is NOT a complete record of what was
-            dropped. Used to decide if the sidecar manifest is worth writing.
+            _format_dropped_preview and _format_rewritten_preview would omit
+            or shorten any content, i.e. whether the dialog alone is NOT a
+            complete record. Used to decide if the sidecar manifest is worth
+            writing.
 
         Passed arguments:
-            dropped (list of (path, values)): Output of
-                xml_utils.content_diff.
-            max_groups / max_values_per_group / max_val_len: Must match the
-                caps used by _format_dropped_preview so the two stay in sync.
+            dropped (list of (path, values)): Dropped output of
+                xml_utils.content_changes.
+            rewritten (list of (path, [(old, new), ...])): Rewritten output
+                of xml_utils.content_changes.
+            max_groups / max_values_per_group / max_val_len / max_rewritten:
+                Must match the caps used by the two preview formatters so
+                they stay in sync.
 
         Returned objects:
-            bool: True if the preview collapses groups, collapses values
-                within a group, or shortens any value; False when the preview
-                shows every path and full value verbatim.
+            bool: True if either preview collapses items or shortens a
+                value; False when the dialog shows every path and full value
+                verbatim.
+
+        Notes:
+            A short list (see _FULL_VALUE_MAX_FIELDS) is always shown in
+            full, so it is never truncated regardless of value length.
         """
+
+        total = sum(len(values) for _path, values in dropped) + sum(
+            len(pairs) for _path, pairs in rewritten
+        )
+        if total <= PyMdWizardMainForm._FULL_VALUE_MAX_FIELDS:
+            return False
+
+        rewritten_count = 0
+        for _path, pairs in rewritten:
+            rewritten_count += len(pairs)
+            for old, new in pairs:
+                if max(
+                    len(" ".join(old.split())), len(" ".join(new.split()))
+                ) > max_val_len:
+                    return True
+        if rewritten_count > max_rewritten:
+            return True
 
         groups = collections.OrderedDict()
         for path, values in dropped:
@@ -781,44 +1246,67 @@ class PyMdWizardMainForm(QMainWindow):
             return True
         return False
 
-    def _write_dropped_manifest(self, fname, dropped):
+    def _write_dropped_manifest(self, fname, dropped, rewritten=()):
         """
         Description:
-            Writes the complete, unabridged list of dropped content to a
-            sidecar text file next to the record being saved, so the user has
+            Writes the complete, unabridged list of dropped and rewritten
+            content to a sidecar text file next to the record, so the user has
             a full record even though the dialog only previews a subset.
 
         Passed arguments:
-            fname (str): The record's save path. The manifest is written to
-                fname + ".dropped.txt" in the same directory.
-            dropped (list of (path, values)): Output of
-                xml_utils.content_diff.
+            fname (str): The record's path. The manifest is written in the
+                same directory, named like the record with its extension
+                replaced: "myrecord.xml" -> "myrecord.dropped.txt".
+            dropped (list of (path, values)): Dropped output of
+                xml_utils.content_changes.
+            rewritten (list of (path, [(old, new), ...])): Rewritten output
+                of xml_utils.content_changes.
 
         Returned objects:
             str or None: The manifest path on success, or None if it could
                 not be written (best-effort; never blocks the save).
 
         Notes:
-            Overwrites any existing manifest from a previous save of the same
-            record, so it always reflects the most recent save.
+            Overwrites any existing manifest from a previous import of the
+            same record, so it always reflects the most recent one.
         """
 
-        manifest_fname = fname + ".dropped.txt"
+        manifest_fname = os.path.splitext(fname)[0] + ".dropped.txt"
         try:
             header = (
-                "Content dropped when saving {}\n"
+                "Content the form does not keep as written: {}\n"
                 "Generated by Metadata Wizard {}.\n"
-                "These values were in the file as opened but could not be "
-                "represented\nby the form, so they are NOT in the saved "
-                "record.\n{}\n\n".format(
+                "{}\n\n".format(
                     os.path.basename(fname), __version__, "=" * 60
                 )
             )
             body_lines = []
-            for path, values in dropped:
-                for value in values:
-                    collapsed = " ".join(value.split())
-                    body_lines.append("{}:  {}".format(path, collapsed))
+            if dropped:
+                body_lines.append(
+                    "WILL BE REMOVED: in the file as opened, but the form "
+                    "cannot represent it,\nso it is NOT in a record saved "
+                    "from the form."
+                )
+                for path, values in dropped:
+                    for value in values:
+                        collapsed = " ".join(value.split())
+                        body_lines.append("{}:  {}".format(path, collapsed))
+            if rewritten:
+                if body_lines:
+                    body_lines.append("")
+                body_lines.append(
+                    "WILL BE REWORDED: kept, but the form words it "
+                    "differently."
+                )
+                for path, pairs in rewritten:
+                    for old, new in pairs:
+                        body_lines.append(path)
+                        body_lines.append(
+                            "    was:  {}".format(" ".join(old.split()))
+                        )
+                        body_lines.append(
+                            "    now:  {}".format(" ".join(new.split()))
+                        )
 
             with codecs.open(manifest_fname, "w", encoding="utf-8") as handle:
                 handle.write(header)
@@ -831,21 +1319,30 @@ class PyMdWizardMainForm(QMainWindow):
 
     def _write_original_backup(self, fname):
         """
-        Writes the as-loaded XML tree next to the save target as a copy of the
-        original record so the user retains the full original even after a
-        lossy save. The copy keeps the .xml extension (named
-        "<record>.original.xml") so it opens as XML like any other record.
-        Best-effort: failure to back up is reported but does not block the
-        save.
+        Description:
+            Copies the record file exactly as it is on disk to
+            "<record>.original.xml" next to it, so the user keeps the full
+            original even after the Wizard rewrites the record on save. The
+            copy is byte-for-byte, and keeps an .xml extension so it opens like
+            any other record.
+
+        Passed arguments:
+            fname (str): The record file that was just opened.
+
+        Returned objects:
+            str or None: The path of the copy, or None if it could not be
+                written (reported to the user; never blocks opening).
+
+        Notes:
+            Never overwrites an existing copy. If the file was reopened after
+            a lossy save, the first copy is the true original and must
+            survive; the new copy gets a numbered name instead.
         """
 
-        backup_fname = self._original_backup_name(fname)
+        backup_fname = self._unique_path(self._original_backup_name(fname))
         try:
-            xml_utils.save_to_file(self.loaded_record, backup_fname)
-            self.statusBar().showMessage(
-                "Copy of original saved to {}".format(backup_fname), 5000
-            )
-        except BaseException:
+            shutil.copyfile(fname, backup_fname)
+        except OSError:
             QMessageBox.warning(
                 self,
                 "Could not save copy",
@@ -853,6 +1350,28 @@ class PyMdWizardMainForm(QMainWindow):
                     traceback.format_exc()
                 ),
             )
+            return None
+
+        self.statusBar().showMessage(
+            "Copy of original saved to {}".format(backup_fname), 5000
+        )
+        return backup_fname
+
+    @staticmethod
+    def _unique_path(path):
+        """
+        Returns path if nothing exists there, otherwise the first free
+        "<root>-2<ext>", "<root>-3<ext>", ... so existing files are never
+        overwritten.
+        """
+
+        if not os.path.exists(path):
+            return path
+        root, ext = os.path.splitext(path)
+        number = 2
+        while os.path.exists("{}-{}{}".format(root, number, ext)):
+            number += 1
+        return "{}-{}{}".format(root, number, ext)
 
     @staticmethod
     def _original_backup_name(fname):
@@ -921,7 +1440,7 @@ class PyMdWizardMainForm(QMainWindow):
             QMessageBox.warning(self, "Template file missing", msg)
             template_fname = utils.get_resource_path("CSDGM_Template.xml")
 
-        self.load_file_content(template_fname)
+        self.load_file_content(template_fname, check_content_loss=False)
         self.cur_fname = ""
 
         today = fgdc_utils.format_date(datetime.datetime.now())
