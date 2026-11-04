@@ -186,6 +186,12 @@ class ThemeList(WizardWidget):  #
                 self.changed_thesaurus
             )
 
+            # The tab's "Search USGS Thesaurus" button opens the same
+            # search dialog, which defaults to the USGS Thesaurus.
+            theme_widget.btn_search_usgs.clicked.connect(
+                self.search_controlled
+            )
+
             # Add the new widget as a new tab.
             self.ui.theme_tabs.addTab(theme_widget, tab_label)
 
