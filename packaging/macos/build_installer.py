@@ -85,6 +85,13 @@ cd "${DIR}"/..
 # of where the app is installed (staging, /Applications, etc.) -- no build-
 # time path is baked in.
 export PYTHONPATH="$(pwd)/Resources/fort-pymdwizard${PYTHONPATH:+:$PYTHONPATH}"
+# Tell GitPython (used by the in-app update check) to use the git bundled in
+# the conda env. Without this, GitPython searches PATH, finds Apple's
+# /usr/bin/git placeholder, and on a Mac without the Command Line Tools that
+# placeholder pops up an "install developer tools" dialog at every launch.
+# Only GitPython reads this variable; PATH is left unchanged so the bundled
+# python/pip never shadow any other Python install.
+export GIT_PYTHON_GIT_EXECUTABLE="$(pwd)/Resources/pymdwizard/bin/git"
 # Use an absolute path to the bundled interpreter so we can never silently
 # fall through to a system python (e.g. Homebrew's) if something about the
 # bundle is off.
