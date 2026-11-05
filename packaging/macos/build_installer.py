@@ -270,6 +270,13 @@ def write_info_plist(contents: Path, version: str):
         "NSPrincipalClass": "NSApplication",
         "NSHighResolutionCapable": True,
         "LSMinimumSystemVersion": "10.9.0",
+        # The bundle's executable is a shell script, so macOS can't tell
+        # which CPU the app is built for. Without this key, an unsigned
+        # script-launched app on Apple silicon is started under Rosetta
+        # (Intel mode); anything it runs, such as /usr/bin/git, then also
+        # starts as Intel code and can fail. This key tells macOS to run
+        # the app natively.
+        "LSRequiresNativeExecution": True,
     }
     with open(contents / "Info.plist", "wb") as f:
         plistlib.dump(plist, f)
