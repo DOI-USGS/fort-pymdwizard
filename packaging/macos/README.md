@@ -36,7 +36,7 @@ in-app "check for updates" feature.
 Two configs are provided at the repo root:
 
 - `.github/workflows/build-macos-installer.yml` — GitHub Actions. Uses a
-  GitHub-hosted `macos-14` runner (no Mac hardware needed). Run it from the
+  GitHub-hosted `macos-15` runner (no Mac hardware needed). Run it from the
   Actions tab via "Run workflow", selecting the `macos-build` branch, then
   pick the fort-pymdwizard branch to package and the **Output format** (`pkg`
   or `dmg`) from the dropdowns. The result is uploaded as the
