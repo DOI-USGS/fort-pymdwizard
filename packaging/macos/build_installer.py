@@ -21,17 +21,16 @@ Inno Setup script's conventions):
     MetadataWizard.app/Contents/
         Info.plist
         MacOS/
-            MetadataWizard   (launcher)
-            pip              (pip wrapper)
+            MetadataWizard      (launcher)
+            pip                 (pip wrapper)
         Resources/
             Ducky.icns
-        Frameworks/
-            pymdwizard/      (conda env, built --prefix directly here)
-        fort-pymdwizard/     (git clone of main-v2.2, .git included so the
-                               app's built-in "check for updates" feature
-                               -- MainWindow.check_for_updates/
-                               update_from_github, which merges from
-                               origin/<active branch> -- works)
+            pymdwizard/         (conda env, built --prefix directly here)
+            fort-pymdwizard/    (git clone of main-v2.2, .git included so the
+                                app's built-in "check for updates" feature
+                                -- MainWindow.check_for_updates/
+                                update_from_github, which merges from
+                                origin/<active branch> -- works)
         docs/
         examples/
 
@@ -54,6 +53,7 @@ import re
 import shutil
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 APP_NAME = "MetadataWizard"
@@ -84,11 +84,18 @@ cd "${DIR}"/..
 # location ($(pwd) is Contents/ after the cd above), so it works regardless
 # of where the app is installed (staging, /Applications, etc.) -- no build-
 # time path is baked in.
-export PYTHONPATH="$(pwd)/fort-pymdwizard${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$(pwd)/Resources/fort-pymdwizard${PYTHONPATH:+:$PYTHONPATH}"
+# Tell GitPython (used by the in-app update check) to use the git bundled in
+# the conda env. Without this, GitPython searches PATH, finds Apple's
+# /usr/bin/git placeholder, and on a Mac without the Command Line Tools that
+# placeholder pops up an "install developer tools" dialog at every launch.
+# Only GitPython reads this variable; PATH is left unchanged so the bundled
+# python/pip never shadow any other Python install.
+export GIT_PYTHON_GIT_EXECUTABLE="$(pwd)/Resources/pymdwizard/bin/git"
 # Use an absolute path to the bundled interpreter so we can never silently
 # fall through to a system python (e.g. Homebrew's) if something about the
 # bundle is off.
-exec "$(pwd)/Frameworks/pymdwizard/bin/python" -m pymdwizard.MetadataWizard "$@"
+exec "$(pwd)/Resources/pymdwizard/bin/python" -m pymdwizard.MetadataWizard "$@"
 """
 
 PIP_WRAPPER_SCRIPT = """#!/bin/bash
@@ -100,7 +107,7 @@ export PYTHONNOUSERSITE=1
 
 # change directory into conda environment
 cd "${DIR}"/..
-exec -a "$0" "$(pwd)/Frameworks/pymdwizard/bin/python" -m pip "$@"
+exec -a "$0" "$(pwd)/Resources/pymdwizard/bin/python" -m pip "$@"
 """
 
 
@@ -184,7 +191,9 @@ def get_version_from_plist(app: Path) -> str:
 
 
 def clone_source(contents: Path, branch: str) -> Path:
-    dest = contents / "fort-pymdwizard"
+    resources = contents / "Resources"
+    resources.mkdir(parents=True, exist_ok=True)
+    dest = resources / "fort-pymdwizard"
     if dest.exists():
         shutil.rmtree(dest)
     run([GIT, "clone", "--branch", branch, REPO_URL, str(dest)])
@@ -199,6 +208,25 @@ def build_conda_env(env_yml: Path, target: Path):
     # build prefix).
     run(["conda", "env", "create", "-f", str(env_yml), "--prefix", str(target)])
 
+def fix_qt_conf(env_dir: Path):
+    """Replace conda's absolute build-time paths in every qt.conf with
+    paths relative to the file's own folder, so the app is relocatable."""
+    found = list(env_dir.rglob("qt.conf"))
+    if not found:
+        found = [env_dir / "bin" / "qt.conf"]   # Qt reads this next to python
+    for conf in found:
+        rel = Path(os.path.relpath(env_dir, conf.parent)).as_posix()
+        conf.write_text(
+            "[Paths]\n"
+            f"Prefix = {rel}\n"
+            "Binaries = bin\n"
+            "Libraries = lib\n"
+            "Headers = include\n"
+            "Plugins = plugins\n"
+            "Translations = translations\n"
+            "Data = .\n"
+        )
+        print(f"Rewrote {conf} (Prefix = {rel})")
 
 def build_icon(repo: Path, resources: Path):
     ico = repo / "pymdwizard" / "resources" / "icons" / "Ducky.ico"
@@ -242,6 +270,13 @@ def write_info_plist(contents: Path, version: str):
         "NSPrincipalClass": "NSApplication",
         "NSHighResolutionCapable": True,
         "LSMinimumSystemVersion": "10.9.0",
+        # The bundle's executable is a shell script, so macOS can't tell
+        # which CPU the app is built for. Without this key, an unsigned
+        # script-launched app on Apple silicon is started under Rosetta
+        # (Intel mode); anything it runs, such as /usr/bin/git, then also
+        # starts as Intel code and can fail. This key tells macOS to run
+        # the app natively.
+        "LSRequiresNativeExecution": True,
     }
     with open(contents / "Info.plist", "wb") as f:
         plistlib.dump(plist, f)
@@ -273,8 +308,9 @@ def build_app_bundle(staging: Path, env_yml: Path, branch: str) -> tuple:
     write_info_plist(contents, version)
     write_launchers(contents / "MacOS")
     build_icon(fort_pymdwizard, contents / "Resources")
-    env_dir = contents / "Frameworks" / ENV_DIRNAME
+    env_dir = contents / "Resources" / ENV_DIRNAME
     build_conda_env(env_yml, env_dir)
+    fix_qt_conf(env_dir)
     # Note: the cloned fort-pymdwizard checkout is made importable at runtime
     # by the launcher (it puts Contents/fort-pymdwizard on PYTHONPATH), so no
     # .pth file is written here -- that avoids baking a build-time path that
