@@ -39,7 +39,7 @@ jobs:
   build:
     # A real macOS runner. sips, iconutil, pkgbuild, and Xcode CLT git are
     # preinstalled on GitHub's macOS images; conda is not (installed below).
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Check out repo (for the build script + pinned env)
