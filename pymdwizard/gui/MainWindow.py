@@ -37,7 +37,11 @@ from copy import deepcopy
 try:
     # Cross-platform library that works on Windows, macOS, and Linux.
     import docx
-    from git import Repo
+    # GitPython ("from git import Repo") is imported inside
+    # check_for_updates/update_from_github instead of here. Importing it
+    # runs `git version`, and if git is missing or broken that raises
+    # ImportError, which would stop the Wizard from starting. Updates are
+    # optional, so a git problem should only affect the update check.
 
 except ImportError as err:
     raise ImportError(err, __file__)
@@ -2193,6 +2197,11 @@ class PyMdWizardMainForm(QMainWindow):
         QApplication.processEvents()
 
         try:
+            # Imported here, not at module level, so a missing or broken git
+            # is reported by the except block below instead of preventing
+            # the Wizard from starting.
+            from git import Repo
+
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
             current_branch = repo.active_branch.name
@@ -2242,6 +2251,9 @@ class PyMdWizardMainForm(QMainWindow):
         """
 
         try:
+            # See check_for_updates for why this import is here.
+            from git import Repo
+
             install_dir = utils.get_install_dname("pymdwizard")
             repo = Repo(install_dir)
             current_branch = repo.active_branch.name
