@@ -45,6 +45,17 @@ the check is skipped for those keywords rather than reported as errors, so
 this check requires internet access to run.
 
 
+USGS Thesaurus Keyword for ScienceBase Records
+----------------------------------------------
+
+If a record lists ScienceBase as a distributor, validation also requires at
+least one keyword from the USGS Thesaurus. If none is found, an error is
+reported. Use the **Search USGS Thesaurus** button on the USGS Thesaurus tab
+of the theme keywords section to find terms.
+
+Spelling Check
+--------------
+
 Potential Spelling errors within relevant text boxes will be highlighted in
 red with a yellow background.
 

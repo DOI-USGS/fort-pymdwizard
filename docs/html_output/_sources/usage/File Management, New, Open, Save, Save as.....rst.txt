@@ -16,6 +16,8 @@ Open
 
 To modify or extend an existing record, click **File -> Open** and browse to a local .xml file. An XML file can also be opened in the application via drag-and-drop.
 
+If the record contains content the Metadata Wizard cannot import or keep as written, a warning lists what will be removed or reworded and offers to keep a copy of the original file. A notice is shown again when you save.
+
 Save
 ----
 

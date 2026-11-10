@@ -21,6 +21,9 @@ File types that are currently supported for populating the Entity and Attribute 
 -  Excel Spreadsheet (.xls, .xlsx, .xlsm) 
 -  Shapefile (.shp) 
 -  GeoPackage (.gpkg) 
+-  GeoJSON (.geojson)
+-  File Geodatabase (.gdb)
+-  LAS and LAZ Point Cloud (.las, .laz)
 -  dBASE Table (.dbf) 
 -  GeoTIFF (.tif) 
 -  JPEG (.jpg) 
@@ -79,6 +82,11 @@ each observation forms a row, and where the rows and columns together form a tab
     | *Note: When browsing to a GeoPackage (.gpkg) that contains more than
       one layer, the tool will prompt you to choose which layer to
       describe.*
+
+    | *Note: To describe a File Geodatabase (.gdb), open the .gdb folder
+      and select the file named "gdb". If the geodatabase contains more
+      than one feature class, the tool will prompt you to choose which
+      one to describe.*
 	  
     | 1.  **Enumerated** for categorical or factor data, for which a definition will need to be provided for each unique value in the column (for example, data collected in binary (1 = Yes, 2 = No), or taxonomic abbreviations (URAM = Ursus americanus, or black bear)).
 	  
