@@ -38,7 +38,7 @@ This project is modeled off of the original [Metadata Wizard](https://github.com
 Recommended Citation:
 ----------------
 
-Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.2.1, September 2026): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
+Talbert, C.B., Ignizio, D.A., Norkin, T., O'Donnell, M.S., and Enns, K.D., 2017, Metadata Wizard (ver. 2.2.1, November 2026): U.S. Geological Survey software release, https://doi.org/10.5066/F7V9870D.
 
 Authors:
 ----------------
@@ -56,7 +56,7 @@ Ongoing support provided by the USGS Science Analytics and Synthesis (SAS) branc
 
 Use of Artificial Intelligence:
 ----------------
-Claude Code (Claude Sonnet 4.5) was used as an AI pair-programming assistant during application development. All code was reviewed, tested, and validated by the authors.
+Claude Code (Claude Sonnet 4.5 - 5.5) was used as an AI pair-programming assistant during application development. All code was reviewed, tested, and validated by the authors.
 
 Disclaimer:
 -----------
