@@ -2,20 +2,28 @@ name: pymdwizard
 channels:
   - conda-forge
 dependencies:
-  - python=3.13 
+  - python=3.13.11 
   - pip
   - cryptography
-  - numpy
-  - pandas
+  # Pin the BLAS backend to OpenBLAS. Without this the solver may select the
+  # MKL build of numpy, whose Intel-OpenMP threading layer fails to load on
+  # Windows (delay-load DLL error 0xc06d007f on the first BLAS call, e.g.
+  # numpy matmul / any pandas import). OpenBLAS has no Intel-OpenMP dependency.
+  - libblas=*=*openblas
+  # numpy/pandas/gdal carry native BLAS/geospatial libraries, so pin their
+  # major.minor to avoid a solver jump silently changing the native backend
+  # (the class of drift that introduced the MKL/OpenMP breakage).
+  - numpy=2.4
+  - pandas=2.3
+  - gdal=3.10
   - geopandas
   - git
-  - gdal
-  - habanero
-  - matplotlib
-  - folium
   - fiona
   - shapely
   - pyproj
+  - habanero=2.4.0
+  - matplotlib
+  - folium
   - lxml
   - openpyxl
   - jupyterlab
@@ -24,8 +32,8 @@ dependencies:
   - requests
   - beautifulsoup4
   - pyyaml
-  - pyqt
-  - pyqtwebengine
+  - pyqt=5.15.11
+  - pyqtwebengine=5.15.11
   # Test dependencies
   - pytest
   - pytest-qt
@@ -37,3 +45,7 @@ dependencies:
       - GitPython
       - python-docx
       - laspy
+      # Documentation build
+      - sphinx>=7,<8
+      - sphinx-rtd-theme>=2,<4
+      - numpydoc>=1.6

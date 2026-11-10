@@ -3,6 +3,57 @@
     "name": "Metadata Wizard",
     "organization": "U.S. Geological Survey",
     "description": "Tool for editing and validating FGDC metadata records.",
+    "version": "2.2.1",
+    "status": "Production",
+
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Public Domain, CC0-1.0", 
+          "URL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/main-v2.2/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/tree/main-v2.2",
+    "downloadURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/archive/main-v2.2/fort-pymdwizard-main-v2.2.zip",
+    "disclaimerURL": "https://code.usgs.gov/usgs/fort-pymdwizard/-/raw/main-v2.2/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/usgs/fort-pymdwizard.git",
+    "vcs": "git",
+
+    "laborHours": 0,
+
+    "tags": [
+      "metadata",
+      "FGDC",
+      "CSDGM",
+      "BDP",
+      "xml",
+      "usg-artificial-intelligence"
+    ],
+
+    "languages": [
+      "Python",
+      "JavaScript",
+      "XML",
+      "RST",
+      "HTML"
+    ],
+
+    "contact": {
+      "name": "Tamar Norkin",
+      "email": "ask-sdm@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2026-09-25"
+    }
+  },
+    {
+    "name": "Metadata Wizard",
+    "organization": "U.S. Geological Survey",
+    "description": "Tool for editing and validating FGDC metadata records.",
     "version": "2.2.0",
     "status": "Production",
 

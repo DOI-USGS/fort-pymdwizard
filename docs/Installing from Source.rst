@@ -69,11 +69,31 @@ Instructions for installing pymdwizard from source are intended for someone with
 
 8. Add the project folder to the Python path:
 
+   First, find your environment's site-packages directory:
+
   .. code-block:: console
 
-        conda develop .
+        python -c "import site; print(site.getsitepackages()[1])"
 
-   *Note: Use your full path if the relative path doesn't work, e.g., `conda develop C:/projects/fort-pymdwizard`*
+   Then create a ``.pth`` file in that directory containing the full path to the project folder.
+
+   **Windows** (from the Miniforge Prompt, in the fort-pymdwizard directory):
+
+  .. code-block:: console
+
+        echo %CD% > %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth
+
+   **Linux/Mac**:
+
+  .. code-block:: console
+
+        echo $PWD > $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth
+
+   You can verify it worked by running:
+
+  .. code-block:: console
+
+        python -c "import pymdwizard; print(pymdwizard.__version__)"
 
 |
 

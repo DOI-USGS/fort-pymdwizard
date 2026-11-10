@@ -364,6 +364,13 @@ class ContactInfo(WizardWidget):
             except Exception:
                 pass
 
+        # Add Contact Instructions. Optional, and last in the FGDC sequence
+        # (after hours, which this form does not edit), so write it only when
+        # there is text.
+        cntinst_str = self.ui.fgdc_cntinst.text().strip()
+        if cntinst_str:
+            xml_node("cntinst", cntinst_str, cntinfo)
+
         return cntinfo
 
     def from_xml(self, contact_information):

@@ -2,10 +2,14 @@
 
 
 
-from lxml import etree
+import shutil
+
 import pytest
+from lxml import etree
 
 from pymdwizard.core import xml_utils
+
+POLARBEARS_FIXTURE = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
 
 xml_str = """<cntinfo>
   <cntperp>
@@ -39,22 +43,28 @@ def test_url_read():
     assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Raster Digital Data Set"
 
 
-def test_open_save():
-    fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+def test_open_save(tmp_path):
+    # Operate on a copy in tmp_path so the committed fixture is never mutated
+    # (save() reserializes the whole file, which otherwise dirties the tree).
+    fname = str(tmp_path / "record.xml")
+    shutil.copy(POLARBEARS_FIXTURE, fname)
+
     md = xml_utils.XMLRecord(fname)
     assert md.metadata.idinfo.citation.citeinfo.geoform.text == "Tabular Digital Data"
     md.metadata.idinfo.citation.citeinfo.geoform.text = "testing"
     md.save()
+
+    # Re-open the saved copy and confirm the edit round-tripped to disk.
     md = xml_utils.XMLRecord(fname)
     new_geoform = md.metadata.idinfo.citation.citeinfo.geoform.text
-    md.metadata.idinfo.citation.citeinfo.geoform.text = "Tabular Digital Data"
-    md.save()
 
     assert new_geoform == "testing"
 
 
 def test_find_replace():
-    fname = "tests/data/USGS_ASC_PolarBears_FGDC.xml"
+    # Read-only test: replace_string mutates the in-memory tree but never
+    # calls save(), so reading directly from the fixture is safe.
+    fname = POLARBEARS_FIXTURE
     md = xml_utils.XMLRecord(fname)
     assert len(md.metadata.find_string("asc", ignorecase=True)) == 7
     assert len(md.metadata.find_string("asc", ignorecase=False)) == 0
@@ -76,3 +86,187 @@ def test_find_replace():
         == 2
     )
     assert md.metadata.idinfo.descript.abstract.text.count("polar") == 2
+
+
+# ---------------------------------------------------------------------------
+# content_diff: detects leaf content present in the original but dropped from
+# the produced tree (used to warn about content the GUI form cannot represent).
+# ---------------------------------------------------------------------------
+
+
+def _node(xml_string):
+    """Parse an XML string into an lxml element for the diff tests."""
+    return xml_utils.string_to_node(xml_string)
+
+
+def test_content_diff_identical_is_empty():
+    tree = _node(
+        "<metadata><idinfo><descript>"
+        "<abstract>Hello</abstract></descript></idinfo></metadata>"
+    )
+    assert xml_utils.content_diff(tree, tree) == []
+
+
+def test_content_diff_detects_dropped_section():
+    original = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>Hello</abstract></descript></idinfo>"
+        "<spdoinfo><direct>Vector</direct></spdoinfo>"
+        "</metadata>"
+    )
+    # Produced tree lost the entire spdoinfo section.
+    produced = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>Hello</abstract></descript></idinfo>"
+        "</metadata>"
+    )
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/spdoinfo/direct": ["Vector"]}
+
+
+def test_content_diff_reports_specific_lost_repeat():
+    # Three keywords in, two out: the diff should name the one lost value,
+    # not merely report that a keyword went missing.
+    original = _node(
+        "<metadata><idinfo><keywords><theme>"
+        "<themekey>alpha</themekey>"
+        "<themekey>beta</themekey>"
+        "<themekey>gamma</themekey>"
+        "</theme></keywords></idinfo></metadata>"
+    )
+    produced = _node(
+        "<metadata><idinfo><keywords><theme>"
+        "<themekey>alpha</themekey>"
+        "<themekey>beta</themekey>"
+        "</theme></keywords></idinfo></metadata>"
+    )
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {
+        "metadata/idinfo/keywords/theme/themekey": ["gamma"]
+    }
+
+
+def test_content_diff_detects_dropped_attribute():
+    original = _node("<metadata><customext units='meters'>99</customext></metadata>")
+    produced = _node("<metadata><customext>99</customext></metadata>")
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/customext/@units": ["meters"]}
+
+
+def test_content_diff_ignores_additions_and_reordering():
+    original = _node(
+        "<metadata>"
+        "<idinfo><descript><abstract>A</abstract><purpose>P</purpose>"
+        "</descript></idinfo></metadata>"
+    )
+    # Same content, reordered, plus an extra element the form added.
+    produced = _node(
+        "<metadata>"
+        "<idinfo><descript><purpose>P</purpose><abstract>A</abstract>"
+        "</descript></idinfo><metainfo><metstdn>FGDC</metstdn></metainfo>"
+        "</metadata>"
+    )
+
+    # Nothing from the original is missing, so no drops are reported even
+    # though order changed and content was added.
+    assert xml_utils.content_diff(original, produced) == []
+
+
+def test_content_diff_accepts_element_trees():
+    # content_diff should accept ElementTree inputs (what fname_to_node
+    # returns), not only Elements.
+    original = etree.ElementTree(
+        _node("<metadata><spdoinfo><direct>Vector</direct></spdoinfo></metadata>")
+    )
+    produced = etree.ElementTree(_node("<metadata></metadata>"))
+
+    dropped = dict(xml_utils.content_diff(original, produced))
+    assert dropped == {"metadata/spdoinfo/direct": ["Vector"]}
+
+
+# ---------------------------------------------------------------------------
+# content_changes: separates content that is gone ("dropped") from content
+# the form kept in a different form ("rewritten"), so genuine losses can be
+# shown first and normalizations treated as a lesser matter.
+# ---------------------------------------------------------------------------
+
+
+def test_content_changes_identical_is_empty():
+    tree = _node("<metadata><metainfo><metstdn>FGDC</metstdn></metainfo></metadata>")
+    assert xml_utils.content_changes(tree, tree) == ([], [])
+
+
+def test_content_changes_replaced_value_is_rewritten_not_dropped():
+    # The metadata standard name is rewritten to its canonical wording by the
+    # form: nothing is lost, so it must not be reported as dropped.
+    original = _node(
+        "<metadata><metainfo><metstdn>FGDC Biological Data Profile of the "
+        "CSDGM</metstdn></metainfo></metadata>"
+    )
+    produced = _node(
+        "<metadata><metainfo><metstdn>FGDC Biological Data Profile of the "
+        "Content Standard for Digital Geospatial Metadata</metstdn>"
+        "</metainfo></metadata>"
+    )
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert dropped == []
+    assert rewritten == [
+        (
+            "metadata/metainfo/metstdn",
+            [
+                (
+                    "FGDC Biological Data Profile of the CSDGM",
+                    "FGDC Biological Data Profile of the Content Standard "
+                    "for Digital Geospatial Metadata",
+                )
+            ],
+        )
+    ]
+
+
+def test_content_changes_missing_value_is_dropped():
+    original = _node(
+        "<metadata><customext units='meters'>99</customext></metadata>"
+    )
+    produced = _node("<metadata></metadata>")
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert rewritten == []
+    assert dict(dropped) == {
+        "metadata/customext": ["99"],
+        "metadata/customext/@units": ["meters"],
+    }
+
+
+def test_content_changes_splits_a_mixed_path():
+    # Two keywords in, one different keyword out: one is rewritten (paired in
+    # order), the unpaired one is dropped.
+    original = _node(
+        "<metadata><theme><themekey>a</themekey><themekey>b</themekey>"
+        "</theme></metadata>"
+    )
+    produced = _node(
+        "<metadata><theme><themekey>c</themekey></theme></metadata>"
+    )
+
+    dropped, rewritten = xml_utils.content_changes(original, produced)
+
+    assert rewritten == [("metadata/theme/themekey", [("a", "c")])]
+    assert dropped == [("metadata/theme/themekey", ["b"])]
+
+
+def test_content_diff_still_reports_replaced_values_as_missing():
+    # content_diff keeps its original contract: any original value without an
+    # equal counterpart is "missing", whether or not something replaced it.
+    original = _node("<metadata><a>old</a></metadata>")
+    produced = _node("<metadata><a>new</a></metadata>")
+
+    assert xml_utils.content_diff(original, produced) == [
+        ("metadata/a", ["old"])
+    ]

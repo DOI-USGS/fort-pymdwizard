@@ -798,7 +798,7 @@ DOI</string>
               <string notr="true">font: italic;</string>
              </property>
              <property name="text">
-              <string> Is it a release with an assigned issue number (e.g. USGS Data Series)</string>
+              <string> Is it a release with an assigned issue number (e.g. USGS Data Report)</string>
              </property>
             </widget>
            </item>

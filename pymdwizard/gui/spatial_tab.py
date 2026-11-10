@@ -175,7 +175,7 @@ class SpatialTab(WizardWidget):
             self,
             fname,
             dname,
-            filter=("Spatial files (*.shp *.tif *.jpg *.bmp *.img "
+            filter=("Spatial files (*.shp *.geojson *.tif *.jpg *.bmp *.img "
                     "*.jp2 *.png *.grd *.las *.laz)"),
         )
 

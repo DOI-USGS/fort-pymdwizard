@@ -25,6 +25,8 @@ import platform
 import datetime
 import traceback
 import json
+import socket
+import ipaddress
 import urllib.request
 from urllib.parse import urlparse
 import requests
@@ -902,13 +904,44 @@ def get_setting(which, default=None):
     return settings.value(which, default)
 
 
-def url_is_alive(url):
+def _is_private_host(hostname):
     """
     Description:
-        Checks if a given URL is reachable.
+        Determines whether a hostname resolves to a private, loopback,
+        or link-local IP address.
+
+    Args:
+        hostname (str): The hostname or IP address to check.
+
+    Returns:
+        bool: True if the host resolves to a non-routable address,
+            False otherwise.
+    """
+    try:
+        addr_infos = socket.getaddrinfo(hostname, None)
+    except socket.gaierror:
+        # If DNS resolution fails, treat as unreachable rather than allowing
+        # the request to proceed.
+        return True
+
+    for family, _, _, _, sockaddr in addr_infos:
+        ip = ipaddress.ip_address(sockaddr[0])
+        if ip.is_private or ip.is_loopback or ip.is_link_local:
+            return True
+    return False
+
+
+def url_is_alive(url, timeout=10):
+    """
+    Description:
+        Checks if a given URL is reachable. Only http and https schemes are
+        permitted. Requests to private, loopback, and link-local addresses
+        are rejected to prevent Server-Side Request Forgery (SSRF).
 
     Args:
         url (str): The URL to check for reachability.
+        timeout (int, optional): Maximum seconds to wait for a response;
+            defaults to 10.
 
     Returns:
         bool: True if the URL is reachable, False otherwise.
@@ -917,6 +950,20 @@ def url_is_alive(url):
     # Prefix the URL with 'https://' if it starts with 'www'.
     if url.startswith("www"):
         url = "https://" + url
+
+    # Parse the URL and reject non-http(s) schemes to prevent file:// and
+    # other protocol abuse.
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        return False
+
+    # Reject URLs without a valid hostname.
+    if not parsed.hostname:
+        return False
+
+    # Resolve the hostname and reject private/loopback/link-local addresses.
+    if _is_private_host(parsed.hostname):
+        return False
 
     # Create a request to perform a HEAD request.
     try:
@@ -928,7 +975,7 @@ def url_is_alive(url):
 
     # Attempt to open the URL and return True if successful.
     try:
-        urllib.request.urlopen(request)
+        urllib.request.urlopen(request, timeout=timeout)
         return True
     except Exception:
         # Return False if URL is not reachable.

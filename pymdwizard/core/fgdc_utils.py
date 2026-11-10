@@ -30,13 +30,82 @@ except ImportError as err:
 
 # Custom import/libraries.
 try:
-    from pymdwizard.core import (xml_utils, utils)
+    from pymdwizard.core import (xml_utils, utils, thesaurus_utils)
 except ImportError as err:
     raise ImportError(err, __file__)
 
 # Global variables defining XML Schema Definition file for metadata standards.
 FGDC_XSD_NAME = "FGDC/fgdc-std-001-1998-annotated.xsd"
 BDP_XSD_NAME = "FGDC/BDPfgdc-std-001-1998-annotated.xsd"
+
+
+USGS_KEYWORD_MESSAGE = (
+    "Records distributed through ScienceBase must include at least one "
+    "keyword from the USGS Thesaurus. Use 'Search Controlled Vocabularies' "
+    "to find USGS Thesaurus terms."
+)
+
+
+def is_sciencebase_distributed(tree_node):
+    """
+    Description:
+        Determines whether a record lists ScienceBase as a distributor,
+        which the validator takes to mean the record has USGS authors.
+
+    Args:
+        tree_node (lxml element): The <metadata> element.
+
+    Returns:
+        bool: True if any distributor contact's organization or email
+            contains "sciencebase" (case-insensitive).
+    """
+
+    xpath = (
+        "distinfo/distrib/cntinfo/*/cntorg"
+        " | distinfo/distrib/cntinfo/cntemail"
+    )
+    for node in tree_node.xpath(xpath):
+        if node.text and "sciencebase" in node.text.lower():
+            return True
+
+    return False
+
+
+def _usgs_thesaurus_error(usgs_groups):
+    """
+    Description:
+        Builds the validation error for a ScienceBase record that has no
+        recognized USGS Thesaurus keyword, if there is one to report.
+
+    Args:
+        usgs_groups (list of tuple): One (themekt xpath, non-empty
+            keywords, find_invalid_keywords result) per theme keyword
+            group whose thesaurus is the USGS Thesaurus.
+
+    Returns:
+        tuple or None: An (xpath, message, line) error, or None if the
+            record has a recognized USGS Thesaurus keyword, or if that
+            cannot be confirmed.
+
+    Notes:
+        - No USGS Thesaurus group: reported on idinfo/keywords.
+        - USGS Thesaurus group(s) with no keywords: reported on the first
+          group's themekt. Needs no web service.
+        - Keywords present but none confirmed valid: if any check could
+          not be completed (service unreachable), nothing is reported, to
+          avoid a false error. Otherwise every keyword was rejected, and
+          the controlled-vocabulary error already reported on the same
+          themekt explains it, so nothing more is added.
+    """
+
+    if not usgs_groups:
+        xpath = "metadata/idinfo/keywords"
+        return (xpath, USGS_KEYWORD_MESSAGE, 1)
+
+    if not any(keywords for _xpath, keywords, _invalid in usgs_groups):
+        return (usgs_groups[0][0], USGS_KEYWORD_MESSAGE, 1)
+
+    return None
 
 
 def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
@@ -147,6 +216,101 @@ def validate_xml(xml, xsl_fname="fgdc", as_dataframe=False):
                      1,
                     )
                 )
+
+    # Validate theme/place keywords against their named USGS controlled
+    # vocabulary, when one is selected (a thesaurus of "None" or blank
+    # means free text, and is not checked).
+    thesauri_lookup = None
+
+    # Theme keyword groups whose thesaurus is the USGS Thesaurus, as
+    # (themekt xpath, non-empty keywords, find_invalid_keywords result).
+    # Used by the ScienceBase check below.
+    usgs_groups = []
+
+    for which, kt_tag, key_tag in (
+        ("theme", "themekt", "themekey"),
+        ("place", "placekt", "placekey"),
+    ):
+        keyword_xpath = "idinfo/keywords/{}".format(which)
+        keyword_nodes = tree_node.xpath(keyword_xpath)
+        for i, keyword_node in enumerate(keyword_nodes):
+            kt_node = keyword_node.find(kt_tag)
+            if kt_node is None or thesaurus_utils.is_free_text(kt_node.text):
+                continue
+
+            if thesauri_lookup is None:
+                thesauri_lookup = thesaurus_utils.get_thesauri_lookup() or {}
+
+            keywords = [
+                key_node.text
+                for key_node in keyword_node.findall(key_tag)
+            ]
+            invalid = thesaurus_utils.find_invalid_keywords(
+                kt_node.text, keywords, lookup=thesauri_lookup
+            )
+
+            error_xpath = keyword_xpath
+            if len(keyword_nodes) > 1:
+                error_xpath += "[{}]".format(i + 1)
+            error_xpath += "/{}".format(kt_tag)
+
+            if (
+                which == "theme"
+                and kt_node.text.strip() == thesaurus_utils.USGS_THESAURUS_NAME
+            ):
+                usgs_groups.append((
+                    "metadata/" + error_xpath,
+                    [k for k in keywords if k and k.strip()],
+                    invalid,
+                ))
+
+            if not invalid:
+                continue
+
+            errors.append(
+                ("metadata/" + error_xpath,
+                 "The following {} keyword(s) were not found in the "
+                 "'{}' controlled vocabulary: {}".format(
+                     which, kt_node.text, ", ".join(invalid)
+                 ),
+                 1,
+                )
+            )
+
+    # Records distributed through ScienceBase are treated as USGS records
+    # and must include at least one recognized USGS Thesaurus keyword.
+    if is_sciencebase_distributed(tree_node):
+        usgs_error = _usgs_thesaurus_error(usgs_groups)
+        if usgs_error is not None:
+            errors.append(usgs_error)
+
+    from pymdwizard.core.spatial_utils import ns_is_inverted
+
+    # Validate North/South bounding-coordinate ordering. The FGDC schema
+    # constrains each latitude's range but not the ordering relationship
+    # between them, so an inverted record (northbc < southbc) passes schema
+    # validation while being logically invalid. This check is read-only: it
+    # only reads element text and appends to errors, never mutating tree_node.
+    # Non-numeric or missing latitudes are skipped (ns_is_inverted returns
+    # False), and the plain numeric comparison is hemisphere-agnostic.
+    bounding_xpath = "idinfo/spdom/bounding"
+    bounding_nodes = tree_node.xpath(bounding_xpath)
+    for i, bounding in enumerate(bounding_nodes):
+        north_node = bounding.find("northbc")
+        south_node = bounding.find("southbc")
+        north = north_node.text if north_node is not None else None
+        south = south_node.text if south_node is not None else None
+        if ns_is_inverted(north, south):
+            error_xpath = "metadata/" + bounding_xpath
+            if len(bounding_nodes) > 1:
+                error_xpath += "[{}]".format(i + 1)
+            errors.append(
+                (error_xpath,
+                 "The North Bounding Coordinate must be greater than or "
+                 "equal to the South Bounding Coordinate.",
+                 1,
+                )
+            )
 
     # Validate the XML against the schema and errors.
     if xmlschema.validate(tree_node) and not errors:

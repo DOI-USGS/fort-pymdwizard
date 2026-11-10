@@ -20,7 +20,6 @@ None
 
 # Standard python libraries.
 import os
-import pickle
 import traceback
 
 # Non-standard python libraries.
@@ -163,9 +162,14 @@ class Detailed(WizardWidget):  #
 
         # Define the file filter string.
         filter = (
-            "data files (*.csv *.txt *.shp *.dbf *.xls *.xlsm *.xlsx "
+            "data files (*.csv *.txt *.shp *.geojson *.dbf *.xls *.xlsm *.xlsx "
             "*.tif *.grd *.png *.img *.jpg *.hdr *.bmp *.adf "
-            "*.las *.laz)"
+            "*.las *.laz *.gpkg gdb);;"
+            # A .gdb is a folder, which a file dialog can't select, so the
+            # user opens it and picks the 'gdb' file (or any .gdbtable)
+            # inside. populate_from_fname() then uses the parent folder.
+            "File Geodatabase - open the .gdb folder and select gdb "
+            "(gdb *.gdbtable)"
         )
 
         # Open file dialog.
@@ -270,7 +274,14 @@ class Detailed(WizardWidget):  #
         else:
             sheet_name = None
 
-        shortname = os.path.split(fname)[1]
+        # A file picked inside a File Geodatabase (e.g. its 'gdb' file)
+        # stands for the geodatabase folder itself.
+        parent_dname = os.path.dirname(os.path.normpath(fname))
+        if (parent_dname.lower().endswith(".gdb")
+                and not os.path.isdir(fname)):
+            fname = parent_dname
+
+        shortname = os.path.split(os.path.normpath(fname))[1]
         ext = os.path.splitext(shortname)[1]
 
         self.ui.fgdc_enttypds.setText(default_def_source)
@@ -322,6 +333,10 @@ class Detailed(WizardWidget):  #
 
             # Open dataset.
             df = data_io.read_data(fname)
+            for col in df.columns:
+                # we need this check to be backward compatible between numpy>2 and pandas
+                if df[col].dtype == 'str':
+                    df[col] = df[col].astype('object')
             self.attributes.load_df(df)
 
             # Set defaults for required ESRI attributes (FID and Shape).
@@ -360,6 +375,77 @@ class Detailed(WizardWidget):  #
             # Open dataset.
             df = data_io.read_dbf(fname)
             self.attributes.load_df(df)
+
+        # --- GeoPackage File Handling ---
+        elif ext.lower() == ".gpkg":
+            try:
+                # Determine available layers and prompt user if multiple.
+                layers = data_io.get_gpkg_layer_names(fname)
+                layer_name = None
+                ok = True
+
+                if len(layers) > 1:
+                    layer_name, ok = QInputDialog.getItem(
+                        self,
+                        "Select Layer",
+                        "Pick one of the layers from this GeoPackage",
+                        layers,
+                        0,
+                        False,
+                    )
+                elif len(layers) == 1:
+                    layer_name = layers[0]
+
+                if ok and layer_name:
+                    self.clear_widget()
+                    self.ui.fgdc_enttypl.setText(
+                        f"{shortname} ({layer_name}) Attribute Table"
+                    )
+                    self.ui.fgdc_enttypd.setPlainText(
+                        "Table containing attribute information "
+                        "associated with the data set."
+                    )
+
+                    df = data_io.read_gpkg_attributes(fname,
+                                                      layer=layer_name)
+                    for col in df.columns:
+                        # Backward compatible between numpy>2 and pandas.
+                        if df[col].dtype == 'str':
+                            df[col] = df[col].astype('object')
+                    self.attributes.load_df(df)
+
+                    fid_attr = self.attributes.get_attr("FID")
+                    if fid_attr is not None:
+                        fid_attr.populate_domain_content(3)
+                        fid_attr.ui.fgdc_attrdef.setPlainText(
+                            "Internal feature number.")
+                        utils.set_text(fid_attr.ui.fgdc_attrdefs, "OGC")
+                        fid_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Sequential unique whole numbers that are "
+                            "automatically generated."
+                        )
+                        fid_attr.regularsize_me()
+                        fid_attr.supersize_me()
+                    shape_attr = self.attributes.get_attr("Shape")
+                    if shape_attr is not None:
+                        shape_attr.populate_domain_content(3)
+                        shape_attr.ui.fgdc_attrdef.setPlainText(
+                            "Feature geometry.")
+                        utils.set_text(shape_attr.ui.fgdc_attrdefs, "OGC")
+                        shape_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Shape type."
+                        )
+                        shape_attr.store_current_content()
+                        shape_attr.supersize_me()
+                        shape_attr.store_current_content()
+                        shape_attr.regularsize_me()
+            except BaseException:
+                msg = (
+                    f"Cannot read GeoPackage {fname}:\n"
+                    f"{traceback.format_exc()}."
+                )
+                QMessageBox.warning(self, "Data file error", msg)
+
 
         # --- Excel File Handling ---
         elif ext.lower() in [".xlsm", ".xlsx", ".xls"]:
@@ -434,19 +520,6 @@ class Detailed(WizardWidget):  #
                     "Number of raster cells with this value."
                 )
 
-        # --- Pickle File Handling ---
-        elif ext.lower() == ".p":
-            p = pickle.load(open(fname, "rb"), encoding="bytes")
-
-            if self.original_xml is not None:
-                # Reload original XML content if available.
-                xml_utils.XMLNode(self.original_xml)
-                self.from_xml(self.original_xml)
-            else:
-                self.ui.fgdc_enttypl.setText("{}".format(shortname[:-2]))
-                self.ui.fgdc_enttypd.setPlainText("Geospatial Dataset")
-                self.attributes.load_pickle(p)
-
         # --- Text File Handling ---
         elif ext.lower() == ".txt":
             if sheet_name is None:
@@ -498,11 +571,118 @@ class Detailed(WizardWidget):  #
             df = data_io.read_data(fname)
             self.attributes.load_df(df)
 
+        # --- GeoJSON File Handling ---
+        elif ext.lower() == ".geojson":
+            self.clear_widget()
+            # GeoJSON is a feature collection, not an attribute table, so
+            # describe the file format (as the CSV/text/LAS branches do).
+            self.ui.fgdc_enttypl.setText(shortname + " Feature Collection")
+            self.ui.fgdc_enttypd.setPlainText(
+                "GeoJSON feature collection containing spatial and "
+                "attribute data."
+            )
+
+            df = data_io.read_data(fname)
+            for col in df.columns:
+                # Backward compatible between numpy>2 and pandas.
+                if df[col].dtype == 'str':
+                    df[col] = df[col].astype('object')
+            self.attributes.load_df(df)
+
+            # Set defaults for the Shape attribute. GeoJSON is an IETF
+            # standard (RFC 7946), not an OGC one. No FID defaults: GeoJSON
+            # has no implicit feature ID, so any FID present is a real
+            # property in the data and is documented like any other field.
+            shape_attr = self.attributes.get_attr("Shape")
+            if shape_attr is not None:
+                shape_attr.populate_domain_content(3)
+                shape_attr.ui.fgdc_attrdef.setPlainText("Feature geometry.")
+                utils.set_text(shape_attr.ui.fgdc_attrdefs, "IETF RFC 7946")
+                shape_attr.domain.ui.fgdc_udom.setPlainText("Shape type.")
+                shape_attr.store_current_content()
+                shape_attr.supersize_me()
+                shape_attr.store_current_content()
+                shape_attr.regularsize_me()
+
+        # --- File Geodatabase Handling ---
+        # Based on DOI-USGS/fort-pymdwizard#216 (vonnonn). Mirrors the
+        # GeoPackage layer prompt above.
+        elif ext.lower() == ".gdb":
+            try:
+                # Determine available feature classes and prompt if multiple.
+                layers = data_io.get_gdb_layer_names(fname)
+                layer_name = None
+                ok = True
+
+                if len(layers) > 1:
+                    layer_name, ok = QInputDialog.getItem(
+                        self,
+                        "Select Feature Class",
+                        "Pick one of the feature classes from this "
+                        "File Geodatabase",
+                        layers,
+                        0,
+                        False,
+                    )
+                elif len(layers) == 1:
+                    layer_name = layers[0]
+
+                if ok and layer_name:
+                    self.clear_widget()
+                    self.ui.fgdc_enttypl.setText(
+                        f"{shortname} ({layer_name}) Feature Class"
+                    )
+                    self.ui.fgdc_enttypd.setPlainText(
+                        "File Geodatabase feature class containing spatial "
+                        "and attribute data."
+                    )
+
+                    df = data_io.read_gdb(fname, layer=layer_name)
+                    for col in df.columns:
+                        # Backward compatible between numpy>2 and pandas.
+                        if df[col].dtype == 'str':
+                            df[col] = df[col].astype('object')
+                    self.attributes.load_df(df)
+
+                    # Set defaults for the Esri object ID and Shape. read_gdb
+                    # puts the object ID field (usually OBJECTID) first.
+                    oid_attr = self.attributes.get_attr(df.columns[0])
+                    if oid_attr is not None and df.columns[0] != "Shape":
+                        oid_attr.populate_domain_content(3)
+                        oid_attr.ui.fgdc_attrdef.setPlainText(
+                            "Internal feature number.")
+                        utils.set_text(oid_attr.ui.fgdc_attrdefs, "ESRI")
+                        oid_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Sequential unique whole numbers that are "
+                            "automatically generated."
+                        )
+                        oid_attr.regularsize_me()
+                        oid_attr.supersize_me()
+                    shape_attr = self.attributes.get_attr("Shape")
+                    if shape_attr is not None:
+                        shape_attr.populate_domain_content(3)
+                        shape_attr.ui.fgdc_attrdef.setPlainText(
+                            "Feature geometry.")
+                        utils.set_text(shape_attr.ui.fgdc_attrdefs, "ESRI")
+                        shape_attr.domain.ui.fgdc_udom.setPlainText(
+                            "Shape type."
+                        )
+                        shape_attr.store_current_content()
+                        shape_attr.supersize_me()
+                        shape_attr.store_current_content()
+                        shape_attr.regularsize_me()
+            except BaseException:
+                msg = (
+                    f"Cannot read File Geodatabase {fname}:\n"
+                    f"{traceback.format_exc()}."
+                )
+                QMessageBox.warning(self, "Data file error", msg)
+
         # --- Unsupported File Format ---
         else:
             msg = (
-                "Can only read '.csv', '.txt', '.shp', '.dbf', '.las.', "
-                "raster files, and Excel files here"
+                "Can only read '.csv', '.txt', '.shp', '.geojson', '.gdb', "
+                "'.dbf', '.gpkg', '.las', raster files, and Excel files here"
             )
             QMessageBox.warning(self, "Unsupported file format", msg)
 

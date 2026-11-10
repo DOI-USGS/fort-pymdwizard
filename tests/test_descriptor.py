@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
-
-import sys
-
-sys.path.append(r"../..")
 
 from lxml import etree
-
 from PyQt5.QtWidgets import QPlainTextEdit
 
 from pymdwizard.gui import Descriptor

@@ -132,8 +132,10 @@ class KeywordsRepeater(WizardWidget):
     def lock(self):
         """
         Description:
-            Locks the widget fields, preventing editing of the thesaurus
-            field and disabling the "Add keyword" button.
+            Locks the thesaurus name field, preventing editing when the
+            thesaurus was added from a controlled vocabulary search.
+            The "Add keyword" button remains enabled so users can still
+            manually add keywords to the thesaurus.
 
         Passed arguments:
             None
@@ -142,8 +144,7 @@ class KeywordsRepeater(WizardWidget):
             None
 
         Workflow:
-            Sets the thesaurus field to read-only and disables the add
-            button in the repeating element.
+            Sets the thesaurus field to read-only.
 
         Notes:
             None
@@ -151,9 +152,6 @@ class KeywordsRepeater(WizardWidget):
 
         # Set thesaurus field to read-only.
         self.ui.fgdc_themekt.setReadOnly(True)
-
-        # Disable the "Add keyword" button.
-        self.keywords.ui.addAnother.setEnabled(False)
 
     def get_keywords(self):
         """

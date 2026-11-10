@@ -18,9 +18,6 @@ NOTES
 None
 """
 
-# Standard python libraries.
-import math
-
 # Non-standard python libraries.
 try:
     import pandas as pd
@@ -130,11 +127,9 @@ class EdomList(WizardWidget):  #
 
         # Iterate over unique values to create an Edom for each.
         for item_label in items:
-            is_empty = (
-                    pd.isnull(item_label)
-                    or str(item_label) == ""
-                    or (not isinstance(item_label, str) and math.isnan(item_label))
-            )
+            # pd.isnull covers None, NaN and NaT, and (unlike math.isnan)
+            # accepts any type, e.g. Timestamps from date columns.
+            is_empty = pd.isnull(item_label) or str(item_label) == ""
 
             # Handle empty/null values
             if is_empty:

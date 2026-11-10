@@ -31,6 +31,20 @@ down in the application, or selects the appropriate tab.
 
 |image2|
 
+Controlled Vocabulary Keyword Check
+-----------------------------------
+
+When you run validation, theme and place keywords that cite a named USGS
+controlled vocabulary are also checked against that thesaurus. Any keyword
+that is not a recognized term in its named thesaurus is reported as a
+validation error so it can be corrected or replaced.
+
+Keywords that use a free-text thesaurus (for example, "None") are not
+checked. If the thesaurus cannot be reached, or its name is not recognized,
+the check is skipped for those keywords rather than reported as errors, so
+this check requires internet access to run.
+
+
 Potential Spelling errors within relevant text boxes will be highlighted in
 red with a yellow background.
 

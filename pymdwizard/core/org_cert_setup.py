@@ -150,31 +150,7 @@ def retrieve_certs_ssl():
 
         # Method 4: macOS-specific fallback using Keychain via 'security' command.
         if certs is None and sys.platform == "darwin":
-            try:
-                result = subprocess.run(
-                    ["security", "find-certificate", "-a", "-p"],
-                    capture_output=True,
-                    check=True
-                )
-                # Parse PEM certificates from output and convert to DER.
-                cert_data = result.stdout
-                pem_certs = []
-                current_cert = b""
-                for line in cert_data.split(b'\n'):
-                    current_cert += line + b'\n'
-                    if b"-----END CERTIFICATE-----" in line:
-                        try:
-                            cert_obj = x509.load_pem_x509_certificate(
-                                current_cert, default_backend())
-                            pem_certs.append(
-                                cert_obj.public_bytes(serialization.Encoding.DER))
-                        except Exception:
-                            pass
-                        current_cert = b""
-                if pem_certs:
-                    certs = pem_certs
-            except (FileNotFoundError, subprocess.CalledProcessError, Exception):
-                pass
+            certs = retrieve_certs_macos_keychain()
 
     except Exception as e:
         print(f"An unexpected error occurred using Python's SSL library when "
@@ -182,6 +158,157 @@ def retrieve_certs_ssl():
         certs = None
 
     return certs
+
+
+def retrieve_certs_macos_keychain(common_name=None):
+    """
+    Description:
+        Read certificates from the macOS Keychain using the 'security'
+        command.
+
+    Passed arguments:
+        common_name (str, optional): Only return certificates whose name
+            contains this text (passed to 'security find-certificate -c').
+            If None, return every certificate in the Keychain search list.
+
+    Returned objects:
+        certs (list or None): Certificates in binary format (DER-encoded),
+            or None if none were found or the command failed.
+
+    Notes:
+        macOS only. On other platforms the 'security' command does not
+        exist and this returns None.
+    """
+
+    cmd = ["security", "find-certificate", "-a", "-p"]
+    if common_name:
+        cmd[3:3] = ["-c", common_name]
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except (FileNotFoundError, subprocess.CalledProcessError, Exception):
+        return None
+
+    # Parse PEM certificates from output and convert to DER.
+    pem_certs = []
+    current_cert = b""
+    for line in result.stdout.split(b'\n'):
+        current_cert += line + b'\n'
+        if b"-----END CERTIFICATE-----" in line:
+            try:
+                cert_obj = x509.load_pem_x509_certificate(
+                    current_cert, default_backend())
+                pem_certs.append(
+                    cert_obj.public_bytes(serialization.Encoding.DER))
+            except Exception:
+                pass
+            current_cert = b""
+
+    return pem_certs or None
+
+
+def _find_cert_by_common_name(certs, common_name):
+    """
+    Description:
+        Return the first certificate whose common name (CN) matches
+        ``common_name``.
+
+    Passed arguments:
+        certs (list or None): Certificates in binary format (DER-encoded).
+        common_name (str): The common name to look for.
+
+    Returned objects:
+        x509.Certificate or None: The matching certificate, if any.
+    """
+
+    for cert in certs or []:
+        try:
+            certificate = x509.load_der_x509_certificate(
+                cert, default_backend())
+            common_names = certificate.subject.get_attributes_for_oid(
+                x509.NameOID.COMMON_NAME)
+            if common_names and common_names[0].value == common_name:
+                return certificate
+        except ValueError as e:
+            print(f"Skipping invalid certificate: {e}")
+
+    return None
+
+
+def _saved_cert_path(file_name):
+    """
+    Description:
+        Return where ``_write_cert_bytes`` saves ``file_name`` when the
+        preferred location is not writable: ``~/certificates/<file_name>``.
+        Unlike ``_user_cert_dir``, this does not create the folder.
+
+    Passed arguments:
+        file_name (str): Path or name of the certificate file. Only the
+            file name part is used.
+
+    Returned objects:
+        str: Path of the per-user saved copy (it may not exist).
+    """
+
+    return os.path.join(os.path.expanduser("~"), "certificates",
+                        os.path.basename(file_name))
+
+
+def _user_cert_dir():
+    """
+    Description:
+        Return a per-user, writable directory for storing generated cert
+        files: ``~/certificates``. Created if it does not exist.
+
+    Returned objects:
+        str: Path to the writable per-user certificate directory.
+    """
+
+    cert_ws = os.path.join(os.path.expanduser("~"), "certificates")
+    os.makedirs(cert_ws, exist_ok=True)
+    return cert_ws
+
+
+def _write_cert_bytes(preferred_path, data):
+    """
+    Description:
+        Write ``data`` to ``preferred_path``. If that write fails because the
+        location is not writable (e.g. macOS /Applications/*.app or a
+        locked-down Windows install dir under Program Files), fall back to a
+        per-user, writable location (``~/certificates``) using the same file
+        name.
+
+        This keeps the existing behavior for installs whose target directory
+        IS writable (unchanged path), and only redirects when a write would
+        otherwise raise PermissionError/OSError.
+
+    Passed arguments:
+        preferred_path (str): The intended output path (may be inside a
+            read-only app bundle / install dir).
+        data (bytes): The bytes to write.
+
+    Returned objects:
+        str: The path actually written to (either ``preferred_path`` or the
+            per-user fallback).
+    """
+
+    try:
+        with open(preferred_path, "wb") as f_out:
+            f_out.write(data)
+        return preferred_path
+    except (PermissionError, OSError) as err:
+        # Preferred location is not writable; redirect to the user's home dir.
+        # os.path.basename is required here: preferred_path is typically an
+        # absolute path, and os.path.join(home, name, <abs path>) would discard
+        # the home prefix and hand back the original unwritable path.
+        fallback_path = os.path.join(
+            _user_cert_dir(), os.path.basename(preferred_path)
+        )
+        print(f"Cert location not writable ({preferred_path}): {err}. "
+              f"Falling back to {fallback_path}.")
+        with open(fallback_path, "wb") as f_out:
+            f_out.write(data)
+        return fallback_path
 
 
 def cert_setup(local_cert_file):
@@ -209,6 +336,16 @@ def cert_setup(local_cert_file):
     # some point.
     alias_name = "DOIRootCA2"
 
+    # macOS: if the DOI cert isn't in the resources folder, look for the copy
+    # that an earlier launch saved to ~/certificates because the app bundle
+    # in /Applications isn't writable. Limited to macOS so Windows installs,
+    # which store the cert in their own resources folder, behave exactly as
+    # before.
+    if not os.path.exists(local_cert_file) and sys.platform == "darwin":
+        saved_copy = _saved_cert_path(local_cert_file)
+        if os.path.exists(saved_copy):
+            local_cert_file = saved_copy
+
     # Check if the DOI cert already exists in resources folder.
     # If not, extract it from the system certificate store.
     if not os.path.exists(local_cert_file):
@@ -219,48 +356,30 @@ def cert_setup(local_cert_file):
         if not os.path.exists(cert_ws):
             os.makedirs(cert_ws)
 
-        # Try using ssl installed with Python to obtain system certificates.
-        certs = retrieve_certs_ssl()
+        # Try using ssl installed with Python to obtain system certificates,
+        # then look for the USGS organizational cert among them. It will not
+        # exist or be required if the user is not on a USGS system.
+        doi_cert = _find_cert_by_common_name(retrieve_certs_ssl(), alias_name)
 
-        # If certs identified using ssl, try to export USGS organizational cert,
-        # which will not exist or be required if user not on a USGS system.
-        if certs is not None:
-            # Initiate object.
-            doi_cert = None
+        # On macOS, Python's list usually doesn't include certs that IT
+        # installed in the Keychain, and retrieve_certs_ssl() only falls back
+        # to the Keychain when that list is empty. Search the Keychain for
+        # the DOI cert by name before giving up.
+        if doi_cert is None and sys.platform == "darwin":
+            doi_cert = _find_cert_by_common_name(
+                retrieve_certs_macos_keychain(alias_name), alias_name)
 
-            # Iterate over each certificate in the list.
-            for cert in certs:
-                try:
-                    # Load the certificate from DER format.
-                    certificate = \
-                        x509.load_der_x509_certificate(cert, default_backend())
-
-                    # Extract the common names (CN) from the certificate's
-                    # subject.
-                    common_names = certificate.subject.get_attributes_for_oid(
-                        x509.NameOID.COMMON_NAME)
-
-                    # QAQC: Keep
-                    # print(common_names)
-
-                    # Check if the common names list is not empty and the first
-                    # common name matches the alias name.
-                    if common_names and common_names[0].value == alias_name:
-                        # Assign the matching certificate to doi_cert.
-                        doi_cert = certificate
-                except ValueError as e:
-                    print(f"Skipping invalid certificate: {e}")
-
-            # Export the certificate to a PEM file if located.
-            if doi_cert is not None:
-                pem_data = doi_cert.public_bytes(
-                    encoding=serialization.Encoding.PEM)
-                with open(local_cert_file, "wb") as pem_file:
-                    pem_file.write(pem_data)
-            else:
-                print("INVESTIGATE: Did not locate USGS organization "
-                      "certificate (may not be on a USGS system or something "
-                      "changed).")
+        # Export the certificate to a PEM file if located. Write via the
+        # helper so a read-only target (macOS app bundle, locked-down
+        # Program Files) transparently falls back to ~/certificates.
+        if doi_cert is not None:
+            pem_data = doi_cert.public_bytes(
+                encoding=serialization.Encoding.PEM)
+            local_cert_file = _write_cert_bytes(local_cert_file, pem_data)
+        else:
+            print("INVESTIGATE: Did not locate USGS organization "
+                  "certificate (may not be on a USGS system or something "
+                  "changed).")
 
     # Add organizational cert to certifi cert list installed with certifi
     # library.
@@ -279,8 +398,9 @@ def cert_setup(local_cert_file):
               open(local_cert_file, "rb") as f_org):
             combined_bytes = f_certifi.read() + f_org.read()
 
-        with open(local_cert_file2, "wb") as f_out:
-            f_out.write(combined_bytes)
+        # Write via the helper so a read-only target transparently falls back
+        # to ~/certificates (same reasoning as the DOI export write above).
+        local_cert_file2 = _write_cert_bytes(local_cert_file2, combined_bytes)
     else:
         print("Certificate file NOT found...")
 

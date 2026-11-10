@@ -36,6 +36,7 @@ try:
         "Library", "share", "gdal")
     import geopandas as gpd
     import fiona
+    from osgeo import ogr
     import laspy
 
     # IMPORTANT:
@@ -49,6 +50,101 @@ try:
     from pymdwizard.core import utils
 except ImportError as err:
     raise ImportError(err, __file__)
+
+
+def get_gpkg_layer_names(fname):
+    """Returns a list of layer names in a GeoPackage file.
+
+    Uses sqlite3 to query the gpkg_contents table directly, avoiding
+    potential GDAL/fiona crashes with certain GeoPackage configurations.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+
+    Returns
+    -------
+        list of str
+    """
+    import sqlite3
+
+    conn = sqlite3.connect(fname)
+    try:
+        cursor = conn.execute(
+            "SELECT table_name FROM gpkg_contents"
+        )
+        layers = [row[0] for row in cursor.fetchall()]
+    finally:
+        conn.close()
+
+    return layers
+
+
+def read_gpkg_attributes(fname, layer=None):
+    """Returns a pandas dataframe of the attributes in a GeoPackage layer,
+
+     replicating including geometry type as a 'Shape' column and an 'FID' column.
+
+    Parameters
+    ----------
+    fname : str
+            File path to the .gpkg file.
+    layer : str, optional
+            The specific layer name within the GeoPackage to read.
+            If None, the first layer is read.
+
+    Returns
+    -------
+        pandas DataFrame
+    """
+    import sqlite3
+
+    # If no layer specified, get the first one.
+    if layer is None:
+        layers = get_gpkg_layer_names(fname)
+        if not layers:
+            raise ValueError(f"No layers found in {fname}")
+        layer = layers[0]
+
+    conn = sqlite3.connect(fname)
+    try:
+        # Read the geometry type from gpkg_geometry_columns.
+        cursor = conn.execute(
+            "SELECT geometry_type_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_type = row[0] if row else "Unknown"
+
+        # Read the geometry column name so we can exclude it.
+        cursor = conn.execute(
+            "SELECT column_name FROM gpkg_geometry_columns "
+            "WHERE table_name = ?",
+            (layer,)
+        )
+        row = cursor.fetchone()
+        geom_col = row[0] if row else "geom"
+
+        # Read all data from the layer table.
+        df = pd.read_sql_query(f'SELECT * FROM "{layer}"', conn)
+
+        # Drop the geometry column.
+        if geom_col in df.columns:
+            df = df.drop(columns=[geom_col])
+
+    finally:
+        conn.close()
+
+    # Insert the geometry type as the "Shape" column at index 0.
+    df.insert(0, "Shape", geom_type)
+
+    # Insert an "FID" column at index 0 if it doesn't already exist.
+    if "FID" not in df.columns:
+        df.insert(0, "FID", range(df.shape[0]))
+
+    return df
 
 
 def read_csv(fname, delimiter=","):
@@ -137,6 +233,141 @@ def read_shp(fname):
     # Add a 'FID' column if it doesn't exist.
     if "FID" not in df.columns:
         df.insert(0, "FID", range(df.shape[0]))
+
+    return df
+
+
+def read_geojson(fname):
+    """
+    Description:
+        Returns a pandas DataFrame of the attributes in a GeoJSON file,
+        specified as a file path/name.
+
+    Args:
+        fname (str): Full path to the GeoJSON file to read.
+
+    Returns:
+        df (pandas.DataFrame): A pandas DataFrame containing the attributes.
+    """
+
+    # Array-valued properties (e.g. a list of IDs) have no matching OGR
+    # field type, so by default the GeoJSON driver silently drops them.
+    # ARRAY_AS_STRING keeps them as JSON text so they still appear as
+    # attributes.
+    open_options = {"ARRAY_AS_STRING": "YES"}
+
+    # Read the GeoJSON file into a GeoDataFrame.
+    df = gpd.read_file(fname, **open_options)
+
+    # Open the GeoJSON file to access its schema.
+    with fiona.open(fname, **open_options) as c:
+        geometry_type = c.schema["geometry"]
+
+    # Exclude the 'geometry' column from the DataFrame.
+    df = df[[col for col in df.columns if col != "geometry"]]
+
+    # Insert the geometry type at the beginning of the DataFrame.
+    df.insert(0, "Shape", geometry_type)
+
+    # Unlike read_shp, no 'FID' column is added: GeoJSON has no implicit
+    # feature ID, so a generated one would document a field that is not in
+    # the file. Any real ID property in the data is kept as-is.
+
+    return df
+
+
+def get_gdb_layer_names(fname):
+    """
+    Description:
+        Returns the names of the feature classes and tables in a File
+        Geodatabase.
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+
+    Returns:
+        list of str: Layer names, in the order GDAL reports them.
+    """
+
+    return fiona.listlayers(fname)
+
+
+def get_gdb_oid_column(fname, layer):
+    """
+    Description:
+        Returns the name of a File Geodatabase layer's object ID field
+        (usually "OBJECTID").
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+        layer (str): Name of the feature class or table.
+
+    Returns:
+        str: The object ID field name, or "OBJECTID" if GDAL does not
+            report one.
+
+    Notes:
+        GDAL exposes the object ID as the feature ID rather than as an
+        ordinary field, so it is not among the columns geopandas returns.
+    """
+
+    dataset = ogr.Open(fname)
+    try:
+        lyr = dataset.GetLayerByName(layer) if dataset is not None else None
+        oid_column = lyr.GetFIDColumn() if lyr is not None else ""
+    finally:
+        dataset = None  # Close the geodatabase.
+
+    return oid_column or "OBJECTID"
+
+
+def read_gdb(fname, layer=None):
+    """
+    Description:
+        Returns a pandas DataFrame of the attributes in a File Geodatabase
+        feature class, specified as a file path/name.
+
+    Args:
+        fname (str): Full path to the File Geodatabase (.gdb) folder.
+        layer (str, optional): Name of the feature class to read. If None,
+            the first layer is read.
+
+    Returns:
+        df (pandas.DataFrame): A pandas DataFrame containing the attributes,
+            with the object ID field first, then "Shape".
+
+    Notes:
+        Based on DOI-USGS/fort-pymdwizard#216 (vonnonn). Unlike read_shp,
+        no 'FID' column is generated: the feature class's real object ID
+        (e.g. OBJECTID, numbered from 1) is kept instead, so the attributes
+        match what ArcGIS shows.
+    """
+
+    # If no layer specified, get the first one.
+    if layer is None:
+        layers = get_gdb_layer_names(fname)
+        if not layers:
+            raise ValueError(f"No layers found in {fname}")
+        layer = layers[0]
+
+    # Read the feature class, keeping the object ID as the index.
+    df = gpd.read_file(fname, layer=layer, fid_as_index=True)
+
+    # Open the feature class to access its schema.
+    with fiona.open(fname, layer=layer) as c:
+        geometry_type = c.schema["geometry"]
+
+    # Exclude the 'geometry' column from the DataFrame.
+    df = df[[col for col in df.columns if col != "geometry"]]
+
+    # Insert the geometry type at the beginning of the DataFrame.
+    df.insert(0, "Shape", geometry_type)
+
+    # Restore the object ID as the first column.
+    oid_column = get_gdb_oid_column(fname, layer)
+    if oid_column not in df.columns:
+        df.insert(0, oid_column, df.index.to_numpy())
+    df = df.reset_index(drop=True)
 
     return df
 
@@ -358,6 +589,12 @@ def read_data(fname, sheet_name="", delimiter=","):
         return read_csv(fname, delimiter)
     elif fname.lower().endswith(".shp"):
         return read_shp(fname)
+    elif fname.lower().endswith(".geojson"):
+        return read_geojson(fname)
+    elif fname.lower().endswith(".gdb"):
+        return read_gdb(fname)
+    elif fname.lower().endswith(".gpkg"):
+        return read_gpkg_attributes(fname)
     elif fname.lower().endswith(".las") or fname.lower().endswith(".laz"):
         return read_las(fname)
     elif sheet_name:

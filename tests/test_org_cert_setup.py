@@ -7,6 +7,24 @@ from unittest.mock import Mock, patch, MagicMock
 from pymdwizard.core import org_cert_setup
 
 
+@pytest.fixture
+def isolated_cert_env(tmp_path):
+    """Keep cert_setup() tests away from this computer's real certificates.
+
+    cert_setup() looks for a saved copy in ~/certificates and, on macOS,
+    searches the Keychain. It also sets SSL_CERT_FILE and similar variables
+    in os.environ. Point the home folder at an empty temporary folder, make
+    the Keychain search find nothing, and restore os.environ afterwards, so
+    results don't depend on (or change) the machine running the tests.
+    """
+    home = tmp_path / "home"
+    home.mkdir()
+    with patch.dict(os.environ, {"HOME": str(home), "USERPROFILE": str(home)}), \
+         patch("pymdwizard.core.org_cert_setup.retrieve_certs_macos_keychain",
+               return_value=None):
+        yield home
+
+
 class TestRetrieveCertsSsl:
     """Tests for retrieve_certs_ssl() function."""
 
@@ -159,6 +177,7 @@ class TestRetrieveCertsSsl:
             assert result is None
 
 
+@pytest.mark.usefixtures("isolated_cert_env")
 class TestCertSetup:
     """Tests for cert_setup() function."""
 
@@ -340,6 +359,7 @@ class TestIntegration:
             # DER-encoded certs should be binary data
             assert all(len(cert) > 0 for cert in result)
 
+    @pytest.mark.usefixtures("isolated_cert_env")
     def test_cert_setup_creates_valid_pem_file(self, tmp_path):
         """Test that cert_setup creates a valid PEM file structure."""
         cert_file = tmp_path / "test_cert.pem"
