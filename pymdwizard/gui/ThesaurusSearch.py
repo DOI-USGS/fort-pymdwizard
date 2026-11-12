@@ -49,7 +49,7 @@ except ImportError as err:
 # "https://apps.usgs.gov/thesaurus/term.php?thcode=15&text=ISO 19115
 #         Topic Category"
 # "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json&thcode={}"
-# "https://apps.usgs.gov/thesaurus/about/thesaurus-full.php?thcode="
+# "https://apps.usgs.gov/thesaurus/thesaurus-full.php?thcode="
 # "https://apps.usgs.gov/thesaurus/term.php?thcode="
 # "https://apps.usgs.gov/thesaurus/thesaurus.php?format=json"
 # "https://apps.usgs.gov/thesaurus/term-search.php?thcode="
@@ -356,7 +356,7 @@ class ThesaurusSearch(QDialog):
                 f'<b><font size="5" face="arial">{thname}</font></b><br>'
             )
             uri = (
-                THESAURUS_BASE_URL + "about/thesaurus-full.php?thcode={thcode}"
+                THESAURUS_BASE_URL + f"thesaurus-full.php?thcode={thcode}"
             )
             if uri:
                 details_msg += (
