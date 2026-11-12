@@ -139,6 +139,7 @@ class Ui_place_keywords(object):
         self.label_search_term_5.setFont(font)
         self.label_search_term_5.setTextFormat(QtCore.Qt.RichText)
         self.label_search_term_5.setWordWrap(True)
+        self.label_search_term_5.setOpenExternalLinks(True)
         self.label_search_term_5.setObjectName("label_search_term_5")
         self.verticalLayout.addWidget(self.label_search_term_5)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
@@ -243,7 +244,7 @@ class Ui_place_keywords(object):
         self.label_search_term_5.setText(
             _translate(
                 "place_keywords",
-                '<html><head/><body><p><span style=" font-style:italic;">We recommend to use keywords from a controlled vocabulary where possible -&gt;</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (use the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available <a href="https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names">here</a>)</span></p></body></html>',
             )
         )
         self.btn_add_thesaurus.setText(

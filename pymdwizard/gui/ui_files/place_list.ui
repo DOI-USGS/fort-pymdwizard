@@ -247,12 +247,15 @@ color: rgb(50, 50, 50);
                  </font>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;We recommend to use keywords from a controlled vocabulary where possible -&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (use the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available &lt;a href=&quot;https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names&quot;&gt;here&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
                 </property>
                 <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="openExternalLinks">
                  <bool>true</bool>
                 </property>
                </widget>
