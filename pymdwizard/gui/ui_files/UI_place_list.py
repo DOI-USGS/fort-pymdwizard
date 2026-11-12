@@ -36,10 +36,9 @@ class Ui_place_keywords(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.help_place.sizePolicy().hasHeightForWidth())
         self.help_place.setSizePolicy(sizePolicy)
-        self.help_place.setStyleSheet("QGroupBox{ font: 11pt } ")
         self.help_place.setObjectName("help_place")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.help_place)
-        self.verticalLayout_9.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout_9.setContentsMargins(3, 9, 3, 3)
         self.verticalLayout_9.setSpacing(6)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.keywords = QtWidgets.QWidget(self.help_place)
@@ -54,7 +53,7 @@ class Ui_place_keywords(object):
         self.main_layout.setSpacing(0)
         self.main_layout.setObjectName("main_layout")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setContentsMargins(6, -1, 6, -1)
+        self.horizontalLayout_4.setContentsMargins(9, -1, 6, -1)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label = QtWidgets.QLabel(self.keywords)
         self.label.setMinimumSize(QtCore.QSize(0, 20))
@@ -118,7 +117,8 @@ class Ui_place_keywords(object):
         self.widget.setSizePolicy(sizePolicy)
         self.widget.setObjectName("widget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(0, 4, 0, 0)
+        self.verticalLayout.setSpacing(8)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_search_term_5 = QtWidgets.QLabel(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(
@@ -140,6 +140,7 @@ class Ui_place_keywords(object):
         self.label_search_term_5.setTextFormat(QtCore.Qt.RichText)
         self.label_search_term_5.setWordWrap(True)
         self.label_search_term_5.setOpenExternalLinks(True)
+        self.label_search_term_5.setIndent(8)
         self.label_search_term_5.setObjectName("label_search_term_5")
         self.verticalLayout.addWidget(self.label_search_term_5)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
@@ -231,7 +232,7 @@ class Ui_place_keywords(object):
         _translate = QtCore.QCoreApplication.translate
         place_keywords.setWindowTitle(_translate("place_keywords", "ITIS Search"))
         self.help_place.setTitle(
-            _translate("place_keywords", "Place Keywords (Grouped by Thesaurus):  ")
+            _translate("place_keywords", "Place Keywords")
         )
         self.label.setText(
             _translate(
@@ -244,7 +245,7 @@ class Ui_place_keywords(object):
         self.label_search_term_5.setText(
             _translate(
                 "place_keywords",
-                '<html><head/><body><p><span style=" font-style:italic;">We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (use the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available <a href="https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names">here</a>)</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic;">We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (click the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available <a href="https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names">here</a>)</span></p></body></html>',
             )
         )
         self.btn_add_thesaurus.setText(

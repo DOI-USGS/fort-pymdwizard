@@ -64,7 +64,7 @@ color: rgb(60, 60, 60);</string>
        <number>3</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>9</number>
       </property>
       <property name="rightMargin">
        <number>3</number>
@@ -97,6 +97,9 @@ color: rgb(60, 60, 60);</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
+        </property>
+        <property name="indent">
+         <number>10</number>
         </property>
        </widget>
       </item>

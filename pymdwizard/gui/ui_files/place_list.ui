@@ -48,11 +48,8 @@ color: rgb(50, 50, 50);
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QGroupBox{ font: 11pt } </string>
-     </property>
      <property name="title">
-      <string>Place Keywords (Grouped by Thesaurus):  </string>
+      <string>Place Keywords</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <property name="spacing">
@@ -62,7 +59,7 @@ color: rgb(50, 50, 50);
        <number>3</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>9</number>
       </property>
       <property name="rightMargin">
        <number>3</number>
@@ -102,7 +99,7 @@ color: rgb(50, 50, 50);
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <property name="leftMargin">
-              <number>6</number>
+              <number>9</number>
              </property>
              <property name="rightMargin">
               <number>6</number>
@@ -223,8 +220,11 @@ color: rgb(50, 50, 50);
               </sizepolicy>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
+              <property name="spacing">
+               <number>8</number>
+              </property>
               <property name="topMargin">
-               <number>0</number>
+               <number>4</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
@@ -247,7 +247,7 @@ color: rgb(50, 50, 50);
                  </font>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (use the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available &lt;a href=&quot;https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names&quot;&gt;here&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (click the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available &lt;a href=&quot;https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names&quot;&gt;here&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -257,6 +257,9 @@ color: rgb(50, 50, 50);
                 </property>
                 <property name="openExternalLinks">
                  <bool>true</bool>
+                </property>
+                <property name="indent">
+                 <number>8</number>
                 </property>
                </widget>
               </item>
