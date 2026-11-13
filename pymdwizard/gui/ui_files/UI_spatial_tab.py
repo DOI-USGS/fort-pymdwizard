@@ -70,16 +70,12 @@ class Ui_spatial_tab(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget1.sizePolicy().hasHeightForWidth())
         self.widget1.setSizePolicy(sizePolicy)
-        self.widget1.setMinimumSize(QtCore.QSize(100, 0))
         self.widget1.setObjectName("widget1")
-        self.layoutWidget = QtWidgets.QWidget(self.widget1)
-        self.layoutWidget.setGeometry(QtCore.QRect(3, 1, 110, 22))
-        self.layoutWidget.setObjectName("layoutWidget")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget1)
         self.horizontalLayout_3.setContentsMargins(5, 0, 5, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_4 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_4 = QtWidgets.QLabel(self.widget1)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
         )
@@ -104,7 +100,7 @@ class Ui_spatial_tab(object):
         self.label_4.setIndent(0)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
-        self.label_3 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_3 = QtWidgets.QLabel(self.widget1)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
         )
@@ -112,7 +108,6 @@ class Ui_spatial_tab(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setMinimumSize(QtCore.QSize(79, 0))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
