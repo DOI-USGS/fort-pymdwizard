@@ -245,7 +245,7 @@ class Ui_place_keywords(object):
         self.label_search_term_5.setText(
             _translate(
                 "place_keywords",
-                '<html><head/><body><p><span style=" font-style:italic;">We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (click the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available <a href="https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names">here</a>)</span></p></body></html>',
+                '<html><head/><body><p style=" margin-top:0px; margin-bottom:0px;"><span style=" font-style:italic;">We recommend using keywords from a controlled vocabulary such as Common Geographic Areas (click the Search Controlled Vocabularies button) or the Geographic Names Information System (GNIS, available <a href="https://edits.nationalmap.gov/apps/gaz-domestic/public/search/names">here</a>).</span></p><p style=" margin-top:6px; margin-bottom:0px;"><span style=" font-style:italic;">Note: if you are using a Thesaurus, change thesaurus name from None.</span></p></body></html>',
             )
         )
         self.btn_add_thesaurus.setText(
