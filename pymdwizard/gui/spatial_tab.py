@@ -83,7 +83,7 @@ class SpatialTab(WizardWidget):
 
         # Call the base class constructor.
         super(self.__class__, self).__init__()
-        self.schema = "bdp"
+        self.schema = "fgdc"
 
         # Store reference to the root widget.
         self.root_widget = root_widget

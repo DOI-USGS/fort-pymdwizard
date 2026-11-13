@@ -143,7 +143,7 @@
         <cntvoice/>
       </cntinfo>
     </metc>
-    <metstdn>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</metstdn>
-    <metstdv>FGDC-STD-001.1-1999</metstdv>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
   </metainfo>
 </metadata>

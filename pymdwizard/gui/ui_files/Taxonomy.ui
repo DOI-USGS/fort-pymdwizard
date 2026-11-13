@@ -127,6 +127,22 @@
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label_bdp_note">
+          <property name="styleSheet">
+           <string notr="true">font: italic 8pt;</string>
+          </property>
+          <property name="text">
+           <string>Selecting 'Yes' changes the metadata standard to the FGDC Biological Data Profile (BDP).</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="indent">
+           <number>6</number>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QWidget" name="widget_contents" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">

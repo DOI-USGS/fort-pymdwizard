@@ -21,6 +21,12 @@ None
 # Standard python libraries.
 from copy import deepcopy
 
+# Non-standard python libraries.
+try:
+    from PyQt5.QtWidgets import QMessageBox
+except ImportError as err:
+    raise ImportError(err, __file__)
+
 # Custom import/libraries.
 try:
     from pymdwizard.core import (utils, xml_utils)
@@ -128,73 +134,166 @@ class MetaInfo(WizardWidget):
             None
         """
 
-        # Connect signals for Metadata Standard Name/Version sync.
-        self.ui.fgdc_metstdn.currentTextChanged.connect(self.update_metstdv)
-        self.ui.fgdc_metstdv.currentIndexChanged.connect(self.update_metstdn)
+        # Connect signals for Metadata Standard Name/Version choices. The
+        # "activated" signal is emitted only when the user picks a value,
+        # not when the code sets one.
+        self.ui.fgdc_metstdn.activated.connect(self.name_chosen)
+        self.ui.fgdc_metstdv.activated.connect(self.version_chosen)
 
         # Connect button to pull contact from IdInfo section.
         self.ui.button_use_dataset.clicked.connect(self.pull_datasetcontact)
 
-    def update_metstdn(self):
+    @staticmethod
+    def schema_from_name(name):
         """
         Description:
-            Updates the Metadata Standard Name combobox index and triggers
-            a schema switch in the root widget based on the selected
-            **Metadata Standard Version**.
+            Returns the schema that a Metadata Standard Name belongs to.
 
         Passed arguments:
-            None
+            name (str): The Metadata Standard Name text.
 
         Returned objects:
-            None
+            str: "bdp" if the name is the Biological Data Profile,
+                otherwise "fgdc".
 
         Workflow:
-            Checks the current version text and sets the corresponding
-            name and schema.
+            Looks for "biological" or "bdp" in the lower-cased name.
 
         Notes:
             None
         """
 
-        if self.ui.fgdc_metstdv.currentText() == "FGDC-STD-001-1998":
-            # FGDC Content Standard for Digital Geospatial Metadata.
-            self.ui.fgdc_metstdn.setCurrentIndex(0)
-            self.root_widget.switch_schema("fgdc")
-        elif self.ui.fgdc_metstdv.currentText() == "FGDC-STD-001.1-1999":
-            # Biological Data Profile.
-            self.ui.fgdc_metstdn.setCurrentIndex(1)
-            self.root_widget.switch_schema("bdp")
+        name = name.lower()
+        if "biological" in name or "bdp" in name:
+            return "bdp"
+        return "fgdc"
 
-    def update_metstdv(self):
+    def name_chosen(self, index=None):
         """
         Description:
-            Updates the Metadata Standard Version combobox index and
-            triggers a schema switch in the root widget based on the
-            selected Metadata Standard Name.
+            Applies the schema for a Metadata Standard Name picked by
+            the user.
 
         Passed arguments:
-            None
+            index (int): Index of the chosen item (unused).
 
         Returned objects:
             None
 
         Workflow:
-            Checks the current name text for biological or "bdp" and
-            sets the corresponding version and schema.
+            Works out the schema from the name text and passes it to
+            "apply_chosen_schema".
 
         Notes:
             None
         """
 
-        current_name = self.ui.fgdc_metstdn.currentText().lower()
-        if "biological" in current_name or "bdp" in current_name:
-            # Set to Biological Data Profile version.
-            self.ui.fgdc_metstdv.setCurrentIndex(1)
-            self.root_widget.switch_schema("bdp")
-        else:
-            # Set to FGDC CSDGM version.
-            self.ui.fgdc_metstdv.setCurrentIndex(0)
-            self.root_widget.switch_schema("fgdc")
+        self.apply_chosen_schema(
+            self.schema_from_name(self.ui.fgdc_metstdn.currentText())
+        )
+
+    def version_chosen(self, index=None):
+        """
+        Description:
+            Applies the schema for a Metadata Standard Version picked by
+            the user.
+
+        Passed arguments:
+            index (int): Index of the chosen item (unused).
+
+        Returned objects:
+            None
+
+        Workflow:
+            Maps "FGDC-STD-001-1998" to FGDC and "FGDC-STD-001.1-1999"
+            to BDP and passes it to "apply_chosen_schema". Any other
+            (typed) version leaves the schema unchanged.
+
+        Notes:
+            None
+        """
+
+        version = self.ui.fgdc_metstdv.currentText()
+        if version == "FGDC-STD-001-1998":
+            self.apply_chosen_schema("fgdc")
+        elif version == "FGDC-STD-001.1-1999":
+            self.apply_chosen_schema("bdp")
+
+    def apply_chosen_schema(self, schema):
+        """
+        Description:
+            Switches the record to the schema the user picked in the
+            Metadata Standard Name or Version box.
+
+        Passed arguments:
+            schema (str): "fgdc" or "bdp".
+
+        Returned objects:
+            None
+
+        Workflow:
+            1. If switching to plain FGDC while Taxonomy is "Yes" or the
+               Geographic Description has text, asks for confirmation
+               because plain FGDC cannot store them. If declined, the
+               boxes go back to the current standard.
+            2. Switches the schema (an explicit choice) and syncs the
+               Name and Version boxes.
+            3. After a confirmed switch to FGDC, sets Taxonomy to "No".
+
+        Notes:
+            None
+        """
+
+        root = self.root_widget
+        if schema == "fgdc" and root.has_bdp_only_content():
+            msg = (
+                "The plain FGDC standard does not include Taxonomy or a "
+                "Geographic Description. If you switch to it, they will be "
+                "left out of the saved file.\n\nSwitch anyway?"
+            )
+            answer = QMessageBox.question(
+                self,
+                "Switch metadata standard?",
+                msg,
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No,
+            )
+            if answer != QMessageBox.Yes:
+                self.show_schema(root.schema)
+                return
+
+        root.set_schema(schema, explicit=True)
+
+        if schema == "fgdc":
+            # Taxonomy is not saved under plain FGDC, so don't leave it
+            # set to "Yes". Its entries are kept if it is set back to "Yes".
+            root.idinfo.taxonomy.ui.rbtn_no.setChecked(True)
+
+    def show_schema(self, schema):
+        """
+        Description:
+            Sets the Metadata Standard Name and Version boxes to the
+            standard for a schema, without triggering a schema switch.
+
+        Passed arguments:
+            schema (str): "fgdc" or "bdp".
+
+        Returned objects:
+            None
+
+        Workflow:
+            Selects item 1 (BDP) or item 0 (FGDC) in both boxes with
+            their signals blocked.
+
+        Notes:
+            None
+        """
+
+        index = 1 if schema == "bdp" else 0
+        for combo in (self.ui.fgdc_metstdn, self.ui.fgdc_metstdv):
+            combo.blockSignals(True)
+            combo.setCurrentIndex(index)
+            combo.blockSignals(False)
 
     def pull_datasetcontact(self):
         """
@@ -352,12 +451,11 @@ class MetaInfo(WizardWidget):
             )
             if standard:
                 self.ui.fgdc_metstdn.setCurrentText(standard)
-                # Switch wizard content to reflect the standard
-                if ("biological" in standard.lower() or
-                        "bdp" in standard.lower()):
-                    self.root_widget.switch_schema("bdp")
-                else:
-                    self.root_widget.switch_schema("fgdc")
+                # Switch wizard content to reflect the standard. A record
+                # that declares BDP keeps it even without taxonomy.
+                schema = self.schema_from_name(standard)
+                self.root_widget.bdp_by_choice = schema == "bdp"
+                self.root_widget.switch_schema(schema)
 
             # Load Metadata Standard Version.
             metstdv = xml_utils.get_text_content(xml_metainfo, "metstdv")

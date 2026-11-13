@@ -223,7 +223,7 @@ class Spdom(WizardWidget):
         self.valid = True
 
         # Initialize metadata schema.
-        self.schema = "bdp"
+        self.schema = "fgdc"
         self.root_widget = root_widget
 
         # Internal flags for controlling map and XML loading state.

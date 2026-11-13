@@ -65,6 +65,12 @@ class Ui_Taxonomy(object):
         self.rbtn_no.setObjectName("rbtn_no")
         self.horizontalLayout.addWidget(self.rbtn_no)
         self.main_layout.addLayout(self.horizontalLayout)
+        self.label_bdp_note = QtWidgets.QLabel(self.fgdc_taxonomy)
+        self.label_bdp_note.setStyleSheet("font: italic 8pt;")
+        self.label_bdp_note.setWordWrap(True)
+        self.label_bdp_note.setIndent(6)
+        self.label_bdp_note.setObjectName("label_bdp_note")
+        self.main_layout.addWidget(self.label_bdp_note)
         self.widget_contents = QtWidgets.QWidget(self.fgdc_taxonomy)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
@@ -154,6 +160,12 @@ class Ui_Taxonomy(object):
             _translate(
                 "Taxonomy",
                 "Does this record contain biological data about particular species or other  taxons?",
+            )
+        )
+        self.label_bdp_note.setText(
+            _translate(
+                "Taxonomy",
+                "Selecting 'Yes' changes the metadata standard to the FGDC Biological Data Profile (BDP).",
             )
         )
         self.rbtn_yes.setText(_translate("Taxonomy", "Yes"))
