@@ -50,10 +50,12 @@ class Ui_Form(object):
         self.label_5.setObjectName("label_5")
         self.verticalLayout_4.addWidget(self.label_5)
         self.label_2 = QtWidgets.QLabel(self.tab_instructions)
+        self.label_2.setMaximumSize(QtCore.QSize(700, 16777215))
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_4.addWidget(self.label_2)
         self.label_4 = QtWidgets.QLabel(self.tab_instructions)
+        self.label_4.setMaximumSize(QtCore.QSize(700, 16777215))
         self.label_4.setObjectName("label_4")
         self.verticalLayout_4.addWidget(self.label_4)
         spacerItem = QtWidgets.QSpacerItem(
@@ -160,9 +162,9 @@ class Ui_Form(object):
         self.label_2.setText(
             _translate(
                 "Form",
-                "If this record describes a CSV, Shapefile, or other tabular or spatial dataset you need to fill out a Detailed section. Use the 'Browse to Dataset' button on a detailed tab  to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. \n"
+                "If this record describes a CSV, Shapefile, or other tabular or spatial dataset that contains attributes, you need to fill out a Detailed section. Use the 'Browse to Dataset' button on a Detailed tab to autopopulate this section with the column labels and values. Then provide a definition for each column (attribute) and its values.\n"
                 "\n"
-                "If this record describes multiple files or sheets, one Detailed section should be created for each, see below.",
+                "If this record describes multiple files or sheets, create one Detailed section for each (see below).",
             )
         )
         self.label_4.setText(
@@ -175,16 +177,16 @@ class Ui_Form(object):
         self.label_34.setText(
             _translate(
                 "Form",
-                "In some cases more than one Detailed section is required.  This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel Workbook, or a data bundle consisting of multiple files.",
+                "In some cases, more than one Detailed section is required. This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel workbook, or a data bundle consisting of multiple files.",
             )
         )
         self.label_35.setText(
             _translate(
                 "Form",
-                "Use the button below to add additional Detailed sections.  These can be removed from their respective tab, using the 'Remove this Detailed' Button",
+                "To add an additional Detailed section, click 'Add Detailed section' below or click the '+' tab in the tab list on the left. To remove one, click 'Remove this Detailed' on its tab, or right-click its tab and choose 'Remove this Detailed'.",
             )
         )
-        self.btn_add_detailed.setText(_translate("Form", "Add Detailed"))
+        self.btn_add_detailed.setText(_translate("Form", "Add Detailed section"))
         self.fgdc_eainfo.setTabText(
             self.fgdc_eainfo.indexOf(self.tab_instructions),
             _translate("Form", "Instructions"),

@@ -18,6 +18,14 @@ NOTES
 None
 """
 
+# Non-standard python libraries.
+try:
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtWidgets import (QMenu, QProxyStyle, QStyle, QTabBar,
+                                 QWidget)
+except ImportError as err:
+    raise ImportError(err, __file__)
+
 # Custom import/libraries.
 try:
     from pymdwizard.core import (utils, xml_utils)
@@ -27,6 +35,37 @@ try:
     from pymdwizard.gui.ui_files.spellinghighlighter import Highlighter
 except ImportError as err:
     raise ImportError(err, __file__)
+
+
+# Tab text colors for the "+" (add Detailed) and Overview tabs.
+ADD_TAB_COLOR = QColor(0, 110, 0)
+OVERVIEW_TAB_COLOR = QColor(110, 70, 150)
+
+# Extra thickness (pixels) added to each tab on the left-hand tab strip.
+TAB_EXTRA_THICKNESS = 8
+
+
+class WiderTabStyle(QProxyStyle):
+    """
+    Description:
+        Makes the tabs on a vertical (West) tab bar thicker, leaving
+        fonts and everything else in the base style unchanged.
+
+    Notes:
+        A style is used instead of a stylesheet because
+        "MainWindow.highlight_tab" and "clear_validation" replace and
+        clear the tab widget's stylesheet.
+    """
+
+    def sizeFromContents(self, contents_type, option, size, widget=None):
+        size = super().sizeFromContents(contents_type, option, size, widget)
+        if contents_type == QStyle.CT_TabBarTab and option.shape in (
+            QTabBar.RoundedWest,
+            QTabBar.TriangularWest,
+        ):
+            # For vertical tabs the width is the tab's thickness.
+            size.setWidth(size.width() + TAB_EXTRA_THICKNESS)
+        return size
 
 
 class EA(WizardWidget):  #
@@ -84,6 +123,28 @@ class EA(WizardWidget):  #
         # List to hold references to Detailed widgets.
         self.detaileds = []
 
+        # Make the left-hand tabs a bit thicker so they are easier to see.
+        # A reference is kept because Qt does not own the style.
+        tab_bar = self.ui.fgdc_eainfo.tabBar()
+        self._tab_style = WiderTabStyle()
+        tab_bar.setStyle(self._tab_style)
+
+        # Tab order is: Instructions, Detailed tab(s), "+", Overview.
+        # The "+" tab holds an empty placeholder page. Selecting it adds
+        # a new Detailed tab (see "on_tab_changed").
+        self.add_tab = QWidget()
+        self.add_tab.setObjectName("tab_add_detailed")
+        self.ui.fgdc_eainfo.insertTab(1, self.add_tab, "+")
+        self.ui.fgdc_eainfo.setTabToolTip(1, "Add another Detailed section")
+        self.ui.fgdc_eainfo.tabBar().setTabTextColor(1, ADD_TAB_COLOR)
+
+        # Color the Overview tab text to show it is a different kind of
+        # tab than the Detailed ones.
+        overview_index = self.ui.fgdc_eainfo.indexOf(self.ui.fgdc_overview)
+        self.ui.fgdc_eainfo.tabBar().setTabTextColor(
+            overview_index, OVERVIEW_TAB_COLOR
+        )
+
         # Add the first required Detailed tab.
         self.add_detailed()
 
@@ -117,6 +178,35 @@ class EA(WizardWidget):  #
         # Connect the button to add a new Detailed tab.
         self.ui.btn_add_detailed.clicked.connect(self.add_detailed)
 
+        # Selecting the "+" tab adds a new Detailed tab.
+        self.ui.fgdc_eainfo.currentChanged.connect(self.on_tab_changed)
+
+    def on_tab_changed(self, index):
+        """
+        Description:
+            Adds a new "Detailed" tab when the "+" tab is selected.
+
+        Passed arguments:
+            index (int): Index of the newly selected tab.
+
+        Returned objects:
+            None
+
+        Workflow:
+            If the selected tab is the "+" placeholder, creates a new
+            Detailed tab and selects it, so the empty placeholder page
+            is never left on screen.
+
+        Notes:
+            Code that removes tabs blocks this signal while it works,
+            so Qt moving the selection onto the "+" tab does not add a
+            tab.
+        """
+
+        if self.ui.fgdc_eainfo.widget(index) is self.add_tab:
+            new_detailed = self.add_detailed()
+            self.ui.fgdc_eainfo.setCurrentWidget(new_detailed)
+
     def remove_detailed(self):
         """
         Description:
@@ -138,15 +228,104 @@ class EA(WizardWidget):  #
             The first "Detailed" widget cannot be removed.
         """
 
-        # Get the index of the current tab.
-        cur_index = self.ui.fgdc_eainfo.currentIndex()
+        self.remove_detailed_at(self.ui.fgdc_eainfo.currentIndex())
 
-        # Remove the tab from the QTabWidget.
-        self.ui.fgdc_eainfo.removeTab(cur_index)
+    def remove_detailed_at(self, index):
+        """
+        Description:
+            Removes the "Detailed" tab at the given tab index.
+
+        Passed arguments:
+            index (int): Tab index of the Detailed tab to remove.
+
+        Returned objects:
+            None
+
+        Workflow:
+            Removes the tab and its entry in the "detaileds" list. If
+            the removed tab was the selected one, selects a neighboring
+            Detailed tab (Instructions if none are left).
+
+        Notes:
+            Used by the "Remove this Detailed" button (current tab) and
+            the tab bar right-click menu (any tab).
+        """
+
+        was_current = index == self.ui.fgdc_eainfo.currentIndex()
+
+        # Remove the tab from the QTabWidget. Signals are blocked because
+        # Qt may move the selection onto the "+" tab, which would add a tab.
+        self.ui.fgdc_eainfo.blockSignals(True)
+        self.ui.fgdc_eainfo.removeTab(index)
+        self.ui.fgdc_eainfo.blockSignals(False)
 
         # Remove the widget instance from the internal list.
         # Note: Index is -1 because the first tab (index 0) is reserved.
-        del self.detaileds[cur_index - 1]
+        del self.detaileds[index - 1]
+
+        # If the selected tab was removed, select the previous Detailed tab
+        # (or the next one if the first was removed). Fall back to
+        # Instructions if none are left.
+        if was_current:
+            if self.detaileds:
+                self.ui.fgdc_eainfo.setCurrentIndex(max(index - 1, 1))
+            else:
+                self.ui.fgdc_eainfo.setCurrentIndex(0)
+
+    def contextMenuEvent(self, event):
+        """
+        Description:
+            Shows a menu specific to the tab label that was right-clicked.
+
+        Passed arguments:
+            event (QContextMenuEvent): The context menu event.
+
+        Returned objects:
+            None
+
+        Workflow:
+            - Detailed tab label: menu with "Remove this Detailed",
+              which removes that tab (not necessarily the selected one).
+            - Overview tab label: menu with "Clear Overview", which
+              clears only the two overview text fields.
+            - Instructions and "+" tab labels: no menu.
+            - Anywhere else: the standard WizardWidget menu.
+
+        Notes:
+            Without this, right-clicking a tab label reaches the
+            standard menu, whose "Clear content" clears the whole
+            Entity and Attribute section, including every Detailed tab.
+        """
+
+        tab_bar = self.ui.fgdc_eainfo.tabBar()
+        index = tab_bar.tabAt(tab_bar.mapFrom(self, event.pos()))
+
+        # Not on a tab label: use the standard menu.
+        if index < 0:
+            WizardWidget.contextMenuEvent(self, event)
+            return
+
+        tab = self.ui.fgdc_eainfo.widget(index)
+        if tab in self.detaileds:
+            action_text = "Remove this Detailed"
+        elif tab is self.ui.fgdc_overview:
+            action_text = "Clear Overview"
+        else:
+            # Instructions and "+" tabs: no menu.
+            event.accept()
+            return
+
+        self.in_context = True
+        menu = QMenu(self)
+        tab_action = menu.addAction(action_text)
+        action = menu.exec_(event.globalPos())
+        if action == tab_action:
+            if tab is self.ui.fgdc_overview:
+                utils.set_text(self.ui.fgdc_eaover, "")
+                utils.set_text(self.ui.fgdc_eadetcit, "")
+            else:
+                self.remove_detailed_at(index)
+        self.in_context = False
 
     def add_detailed(self):
         """
@@ -161,8 +340,9 @@ class EA(WizardWidget):  #
 
         Workflow:
             Creates a new "Detailed" widget, passes the "remove_detailed"
-            function, inserts the new widget before the last tab (which
-            is the Add button), and appends it to the internal list.
+            function, inserts the new widget just before the "+" tab
+            (after the last Detailed tab), and appends it to the
+            internal list.
 
         Notes:
             None
@@ -171,9 +351,10 @@ class EA(WizardWidget):  #
         # Instantiate a new Detailed widget.
         new_detailed = Detailed(remove_function=self.remove_detailed,
                                 parent=self)
-        # Insert the new tab before the last tab (the Add button).
+        # Insert the new tab after the last Detailed tab, before the "+" tab.
+        # Tab 0 is Instructions, so Detailed tab n sits at index n + 1.
         self.ui.fgdc_eainfo.insertTab(
-            self.ui.fgdc_eainfo.count() - 1, new_detailed, "Detailed"
+            len(self.detaileds) + 1, new_detailed, "Detailed"
         )
 
         # Store the new widget instance.
@@ -195,21 +376,36 @@ class EA(WizardWidget):  #
         Workflow:
             Clears the content of the first "Detailed" tab, removes all
             subsequent "Detailed" tabs, and clears the overview text
-            fields.
+            fields. If every Detailed tab was removed, adds a blank one
+            first.
 
         Notes:
-            None
+            Users can remove every Detailed tab, but this method and
+            "from_xml" need at least one to exist.
         """
+
+        # Users can remove all Detailed tabs; restore one so there is
+        # always a first Detailed widget to clear and populate.
+        if not self.detaileds:
+            self.add_detailed()
 
         # Clear the content of the first Detailed widget.
         self.detaileds[0].clear_widget()
 
-        # Remove all extra Detailed tabs (from end to 1).
+        # Remove all extra Detailed tabs (from end to 1). Signals are
+        # blocked because Qt may move the selection onto the "+" tab,
+        # which would add a tab.
+        self.ui.fgdc_eainfo.blockSignals(True)
         for i in range(len(self.detaileds), 1, -1):
             self.ui.fgdc_eainfo.removeTab(i)
 
             # Remove from the internal list.
             del self.detaileds[i - 1]
+        self.ui.fgdc_eainfo.blockSignals(False)
+
+        # Don't leave the empty "+" placeholder page showing.
+        if self.ui.fgdc_eainfo.currentWidget() is self.add_tab:
+            self.ui.fgdc_eainfo.setCurrentIndex(1)
 
         # Clear the overview text fields.
         utils.set_text(self.ui.fgdc_eaover, "")
@@ -352,7 +548,9 @@ class EA(WizardWidget):  #
                         utils.set_text(self.ui.fgdc_eadetcit, eadetcit[0].text)
 
                     # Switch to the overview tab after populating.
-                    self.ui.fgdc_eainfo.setCurrentIndex(2)
+                    self.ui.fgdc_eainfo.setCurrentWidget(
+                        self.ui.fgdc_overview
+                    )
 
                 # Parse and populate detailed sections.
                 detailed = eainfo.xpath("detailed")

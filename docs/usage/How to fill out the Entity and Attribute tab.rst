@@ -103,7 +103,14 @@ Multiple Tabular Datasets
 The data consists of multiple distinct tabular datasets, for example,
 several CSVs that contain related data or multiple sheets in an Excel workbook.
 
-    Click the **Add Detailed** button at the bottom of the Instructions tab.
+    Create one Detailed section for each dataset. To add another Detailed section,
+    click the **+** tab in the tab list on the left side of the Entity and
+    Attribute tab (it sits after the last Detailed tab and above the Overview tab),
+    or click the **Add Detailed section** button at the bottom of the Instructions tab.
+    Then fill out the new Detailed tab as described for a single tabular dataset above.
+
+    To remove a Detailed section, click **Remove this Detailed** on its tab, or
+    right-click its tab in the tab list and choose **Remove this Detailed**.
 
 
 Changing Default Definition Source Text
