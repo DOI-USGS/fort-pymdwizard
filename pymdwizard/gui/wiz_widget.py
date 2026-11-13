@@ -1024,6 +1024,10 @@ QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QRadioButton {
 font: {fontsize}pt "Arial";
 color: rgb(50, 50, 50);
 }
+QPushButton {
+font: {fontsize}pt "Arial";
+padding: 4px 10px;
+}
 
 QGroupBox:Hover {
     border-color: rgba(90, 90, 90, 240);
@@ -1060,6 +1064,10 @@ color: rgb(90, 90, 90);
 QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QRadioButton {
 font: {fontsize}pt "Arial";
 color: rgb(50, 50, 50);
+}
+QPushButton {
+font: {fontsize}pt "Arial";
+padding: 4px 10px;
 }
 
 .QFrame {

@@ -67,7 +67,7 @@ class Ui_USGSContactInfoWidget(object):
         sizePolicy.setHeightForWidth(self.btn_import_contact.sizePolicy().hasHeightForWidth())
         self.btn_import_contact.setSizePolicy(sizePolicy)
         self.btn_import_contact.setMinimumSize(QtCore.QSize(140, 0))
-        self.btn_import_contact.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.btn_import_contact.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.btn_import_contact.setObjectName("btn_import_contact")
         self.horizontalLayout_17.addWidget(self.btn_import_contact)
         self.verticalLayout_7.addLayout(self.horizontalLayout_17)
