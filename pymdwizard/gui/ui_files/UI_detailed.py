@@ -15,15 +15,19 @@ class Ui_fgdc_detailed(object):
         fgdc_detailed.resize(1221, 794)
         self.horizontalLayout = QtWidgets.QHBoxLayout(fgdc_detailed)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.frame = QtWidgets.QFrame(fgdc_detailed)
+        self.splitter = QtWidgets.QSplitter(fgdc_detailed)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setChildrenCollapsible(False)
+        self.splitter.setObjectName("splitter")
+        self.frame = QtWidgets.QFrame(self.splitter)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.frame.setMinimumSize(QtCore.QSize(200, 0))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -84,6 +88,10 @@ class Ui_fgdc_detailed(object):
         )
         self.btn_add_attribute.setObjectName("btn_add_attribute")
         self.verticalLayout_2.addWidget(self.btn_add_attribute)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        )
+        self.verticalLayout_2.addItem(spacerItem1)
         self.btn_remove = QtWidgets.QPushButton(self.frame)
         self.btn_remove.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(150, 0, 0, 100), stop:1 rgba(147, 0, 0, 50));\n"
@@ -91,8 +99,16 @@ class Ui_fgdc_detailed(object):
         )
         self.btn_remove.setObjectName("btn_remove")
         self.verticalLayout_2.addWidget(self.btn_remove)
-        self.horizontalLayout.addWidget(self.frame)
-        self.attribute_frame = QtWidgets.QFrame(fgdc_detailed)
+        self.attribute_frame = QtWidgets.QFrame(self.splitter)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred
+        )
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.attribute_frame.sizePolicy().hasHeightForWidth()
+        )
+        self.attribute_frame.setSizePolicy(sizePolicy)
         self.attribute_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.attribute_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.attribute_frame.setObjectName("attribute_frame")
@@ -152,13 +168,13 @@ class Ui_fgdc_detailed(object):
         self.next.setAutoRepeatDelay(0)
         self.next.setObjectName("next")
         self.horizontalLayout_2.addWidget(self.next)
-        spacerItem1 = QtWidgets.QSpacerItem(
+        spacerItem2 = QtWidgets.QSpacerItem(
             40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
-        self.horizontalLayout_2.addItem(spacerItem1)
+        self.horizontalLayout_2.addItem(spacerItem2)
         self.verticalLayout_4.addWidget(self.displayed_widget)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
-        self.horizontalLayout.addWidget(self.attribute_frame)
+        self.horizontalLayout.addWidget(self.splitter)
 
         self.retranslateUi(fgdc_detailed)
         QtCore.QMetaObject.connectSlotsByName(fgdc_detailed)
