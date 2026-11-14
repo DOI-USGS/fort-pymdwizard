@@ -89,7 +89,7 @@
          <string>Required</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide information about the individual who wrote the metadata for the dataset.  This is usually YOUR information&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide information about the individual who wrote the metadata for the dataset. This is usually YOUR information.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
@@ -352,7 +352,7 @@
                        <string notr="true">font: italic;</string>
                       </property>
                       <property name="text">
-                       <string>Who wrote the metadata?  Alternatively, who can be contacted for questions pertaining to the metadata?</string>
+                       <string>Who wrote the metadata? Alternatively, who can be contacted for questions pertaining to the metadata?</string>
                       </property>
                       <property name="wordWrap">
                        <bool>true</bool>
@@ -482,7 +482,7 @@
                        <string notr="true">font: italic;</string>
                       </property>
                       <property name="text">
-                       <string>You probably won't have a need to change this value</string>
+                       <string>You probably won't have a need to change this value.</string>
                       </property>
                       <property name="wordWrap">
                        <bool>true</bool>

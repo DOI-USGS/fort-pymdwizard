@@ -32,7 +32,7 @@
       <item>
        <widget class="QRadioButton" name="radio_sourceno_2">
         <property name="text">
-         <string>No Sources were used.  The dataset represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)</string>
+         <string>No Sources were used. The dataset represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)</string>
         </property>
         <property name="checked">
          <bool>true</bool>

@@ -62,7 +62,7 @@ class Ui_Form(object):
         self.label.setText(
             _translate(
                 "Form",
-                'How accurate are the values in the dataset relative to "true" values?   Were any tests performed to assess the accuracy of values?   Please describe any methods used to ensure quality / accuracy in the data.  See help for more info.',
+                'How accurate are the values in the dataset relative to "true" values? Were any tests performed to assess the accuracy of values? Please describe any methods used to ensure quality / accuracy in the data. See help for more info.',
             )
         )
         self.fgdc_attraccr.setPlainText(

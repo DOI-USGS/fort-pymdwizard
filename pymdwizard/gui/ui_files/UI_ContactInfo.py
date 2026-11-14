@@ -761,12 +761,12 @@ class Ui_USGSContactInfoWidget(object):
 "Short Name: address"))
         self.label_20.setToolTip(_translate("USGSContactInfoWidget", "Required"))
         self.label_20.setText(_translate("USGSContactInfoWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#55aaff;\">*</span></p></body></html>"))
-        self.label_21.setText(_translate("USGSContactInfoWidget", "Address 2 (if Applicable)"))
+        self.label_21.setText(_translate("USGSContactInfoWidget", "Address 2 (if applicable)"))
         self.fgdc_address2.setToolTip(_translate("USGSContactInfoWidget", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"
 "Short Name: address"))
-        self.label_22.setText(_translate("USGSContactInfoWidget", "Address 3 (if Applicable) "))
+        self.label_22.setText(_translate("USGSContactInfoWidget", "Address 3 (if applicable)"))
         self.fgdc_address3.setToolTip(_translate("USGSContactInfoWidget", "Address -- an address line for the address.\n"
 "Type: text\n"
 "Domain: free text\n"

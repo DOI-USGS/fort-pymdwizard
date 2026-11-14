@@ -206,16 +206,16 @@ class Ui_Form(object):
         self.label_34.setText(
             _translate(
                 "Form",
-                "List any data sources used in this step.  These can be listed in sources section below.",
+                "List any data sources used in this step. These can be listed in the sources section below.",
             )
         )
         self.lbl_dataset_title_2.setText(
-            _translate("Form", "Source Produced Citation Abbreviation (s)")
+            _translate("Form", "Source Produced Citation Abbreviation(s)")
         )
         self.label_35.setText(
             _translate(
                 "Form",
-                "List data produced from this step that was used in a subsequent step.  These must also be added to the source inputs below. ",
+                "List data produced from this step that was used in a subsequent step. These must also be added to the source inputs below. ",
             )
         )
 

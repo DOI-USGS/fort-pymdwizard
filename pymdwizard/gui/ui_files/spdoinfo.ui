@@ -148,7 +148,7 @@
          <string notr="true">font: italic;</string>
         </property>
         <property name="text">
-         <string>Shapefile, Geotif, Geodatabase feature class, etc</string>
+         <string>Shapefile, GeoTIFF, geodatabase feature class, etc.</string>
         </property>
        </widget>
       </item>

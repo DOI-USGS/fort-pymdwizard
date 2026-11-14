@@ -79,7 +79,7 @@
            <string>Required</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide Spatial Information about the dataset&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;Provide spatial information about the dataset.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="textFormat">
            <enum>Qt::RichText</enum>
@@ -243,7 +243,7 @@
            <string notr="true">font: italic 8pt;</string>
           </property>
           <property name="text">
-           <string>If you have access to the dataset (*.shp, *.tif, etc) click below to browse to the dataset.  This section will be autopopulated with appropriate content pulled from the dataset.</string>
+           <string>If you have access to the data (*.shp, *.tif, etc.), click below to browse to the data file. This section will be autopopulated with appropriate content pulled from the dataset.</string>
           </property>
           <property name="textFormat">
            <enum>Qt::PlainText</enum>

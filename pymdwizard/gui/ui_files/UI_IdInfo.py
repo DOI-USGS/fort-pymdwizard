@@ -249,7 +249,7 @@ class Ui_fgdc_idinfo(object):
         self.label_5.setText(
             _translate(
                 "fgdc_idinfo",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">Provide general Information about the dataset.</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">Provide general information about the dataset.</span></p></body></html>',
             )
         )
         self.label_4.setToolTip(_translate("fgdc_idinfo", "Required"))

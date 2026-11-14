@@ -107,7 +107,7 @@ class Ui_Form(object):
         self.label_2.setText(
             _translate(
                 "Form",
-                "Why were the data collected?  What is an appropriate use of the data?",
+                "Why were the data collected? What is an appropriate use of the data?",
             )
         )
         self.label_6.setToolTip(_translate("Form", "Required"))

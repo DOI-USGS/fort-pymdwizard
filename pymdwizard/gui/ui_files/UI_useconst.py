@@ -79,7 +79,7 @@ class Ui_Form(object):
         self.label.setText(
             _translate(
                 "Form",
-                "Describe any restrictions or legal prerequisites for USING the dataset.  Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the dataset.",
+                "Describe any restrictions or legal prerequisites for USING the dataset. Use Constraints may include restrictions applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on using the dataset.",
             )
         )
         self.fgdc_useconst.setPlainText(

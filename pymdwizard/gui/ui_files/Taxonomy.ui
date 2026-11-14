@@ -81,7 +81,7 @@
              <string notr="true">font: italic;</string>
             </property>
             <property name="text">
-             <string>Does this record contain biological data about particular species or other  taxons?</string>
+             <string>Does this record contain biological data about particular species or other taxa?</string>
             </property>
            </widget>
           </item>

@@ -81,7 +81,7 @@
            <string notr="true">font: italic;</string>
           </property>
           <property name="text">
-           <string>Why were the data collected?  What is an appropriate use of the data?</string>
+           <string>Why were the data collected? What is an appropriate use of the data?</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>

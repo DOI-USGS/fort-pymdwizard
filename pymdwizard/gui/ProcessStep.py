@@ -122,7 +122,7 @@ class ProcessStep(WizardWidget):  #
         self.srcprod_list = RepeatingElement(
             add_text="Add another",
             remove_text="Remove last",
-            widget_kwargs={"label": "Source produced:",
+            widget_kwargs={"label": "Source produced",
                            "line_name": "fgdc_srcprod"},
         )
         self.srcprod_list.add_another()

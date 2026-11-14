@@ -247,7 +247,7 @@ This section will be autopopulated with appropriate content pulled from the data
          <string>Required</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;These represent the columns in your dataset.  Click below in each one and provide a definition for the column and a description for the column contents.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#55aaff;&quot;&gt;These represent the columns in your dataset. Click below in each one and provide a definition for the column and a description for the column contents.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>

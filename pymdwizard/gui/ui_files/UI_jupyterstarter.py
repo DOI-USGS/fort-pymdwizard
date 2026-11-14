@@ -185,14 +185,14 @@ class Ui_Form(object):
         self.label_35.setText(
             _translate(
                 "Form",
-                "This is instance of Python you want to run Jupyter with.  In addition to the Python version that was installed with the MetadataWizard any available Conda Envs are listed",
+                "This is the instance of Python you want to run Jupyter with. In addition to the Python version that was installed with the MetadataWizard, any available Conda environments are listed.",
             )
         )
-        self.label_55.setText(_translate("Form", "Use JupyterLab ?"))
+        self.label_55.setText(_translate("Form", "Use JupyterLab?"))
         self.label_37.setText(
             _translate(
                 "Form",
-                "<html><head/><body><p>Use the new JupyterLab interface instead of the tradional notebook. </p><p>If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. </p></body></html>",
+                "<html><head/><body><p>Use the new JupyterLab interface instead of the traditional notebook. </p><p>If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. </p></body></html>",
             )
         )
         self.usejupyterlab.setText(_translate("Form", "Use JupyterLab"))

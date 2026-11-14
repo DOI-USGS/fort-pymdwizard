@@ -365,7 +365,7 @@ class Ui_fgdc_spref(object):
         fgdc_spref.setWindowTitle(_translate("fgdc_spref", "Form"))
         self.label_13.setText(
             _translate(
-                "fgdc_spref", "Is there a datum or projection used in this Dataset? "
+                "fgdc_spref", "Is there a datum or projection used in this dataset?"
             )
         )
         self.rbtn_yes.setText(_translate("fgdc_spref", "Yes"))
@@ -432,7 +432,7 @@ class Ui_fgdc_spref(object):
             1, _translate("fgdc_spref", "Geodetic Reference System 1980")
         )
         self.fgdc_ellips.setItemText(2, _translate("fgdc_spref", "WGS_1984"))
-        self.label_9.setText(_translate("fgdc_spref", "Elipsoid Name"))
+        self.label_9.setText(_translate("fgdc_spref", "Ellipsoid Name"))
         self.label_10.setText(_translate("fgdc_spref", "Semi-major Axis"))
         self.fgdc_semiaxis.setText(_translate("fgdc_spref", "6378137.000000"))
         self.label_11.setText(_translate("fgdc_spref", "Denominator Flattening Ratio"))

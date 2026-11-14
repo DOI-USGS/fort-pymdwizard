@@ -448,7 +448,7 @@ class Ui_fgdc_distinfo(object):
         self.radio_distno.setText(
             _translate(
                 "fgdc_distinfo",
-                "Dataset is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information.",
+                "Dataset is for internal use only and will NOT be shared or distributed. The metadata record does not need distribution information.",
             )
         )
         self.label.setText(_translate("fgdc_distinfo", "OR"))
@@ -484,12 +484,12 @@ class Ui_fgdc_distinfo(object):
         self.radio_dist.setText(
             _translate(
                 "fgdc_distinfo",
-                "The dataset is not available online.  Interested parties should contact the distributor for details on \n"
-                "acquiring the data. (Provide 'Distributor Contact' information.",
+                "The dataset is not available online. Interested parties should contact the distributor for details on \n"
+                "acquiring the data. (Provide 'Distributor Contact' information.)",
             )
         )
         self.radio_otherdist.setText(
-            _translate("fgdc_distinfo", "Other Distribution method. (Describe below)")
+            _translate("fgdc_distinfo", "Other distribution method (describe below).")
         )
         self.groupBox.setTitle(_translate("fgdc_distinfo", "Distribution Liability"))
         self.label_10.setText(

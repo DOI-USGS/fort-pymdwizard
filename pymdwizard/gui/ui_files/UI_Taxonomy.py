@@ -153,7 +153,7 @@ class Ui_Taxonomy(object):
         self.label_3.setText(
             _translate(
                 "Taxonomy",
-                "Does this record contain biological data about particular species or other  taxons?",
+                "Does this record contain biological data about particular species or other taxa?",
             )
         )
         self.rbtn_yes.setText(_translate("Taxonomy", "Yes"))

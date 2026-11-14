@@ -124,7 +124,7 @@ class Ui_Form(object):
         self.label_3.setText(
             _translate(
                 "Form",
-                "Why were the data collected?  What is an appropriate use of the data?",
+                "Why were the data collected? What is an appropriate use of the data?",
             )
         )
         self.label_4.setText(_translate("Form", "Supplemental Information"))
