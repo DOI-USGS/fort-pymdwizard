@@ -320,7 +320,7 @@ class Attr(WizardWidget):
             if not pd.api.types.is_numeric_dtype(clean_series):
                 msg = (
                     "Caution! The contents of this column are stored in the"
-                    ' data source as "text".  The use of a range domain '
+                    ' data source as "text". The use of a range domain '
                     "type on text columns might give unexpected results, "
                     "especially for columns that contain date information."
                 )
@@ -481,7 +481,7 @@ class Attr(WizardWidget):
         insert_after.setStatusTip("insert an empty attribute (column) after this one")
 
         delete_action = menu.addAction(QIcon("delete.png"), "&Delete")
-        delete_action.setStatusTip("Delete this atttribute (column)")
+        delete_action.setStatusTip("Delete this attribute (column)")
 
         if hasattr(clicked_widget, "help_text") and clicked_widget.help_text:
             menu.addSeparator()

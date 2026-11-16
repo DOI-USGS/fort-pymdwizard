@@ -571,7 +571,7 @@ color: rgb(50, 50, 50);
             <string notr="true">font: italic;</string>
            </property>
            <property name="text">
-            <string>One or both of  Altitude and Depth must be open and filled.</string>
+            <string>One or both of Altitude and Depth must be open and filled.</string>
            </property>
           </widget>
          </item>

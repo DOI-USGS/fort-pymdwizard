@@ -255,7 +255,7 @@
                  </font>
                 </property>
                 <property name="toolTip">
-                 <string>List of taxons to include in the taxonomy section</string>
+                 <string>List of taxa to include in the taxonomy section</string>
                 </property>
                 <property name="text">
                  <string>Items to include:</string>

@@ -532,7 +532,7 @@ class PyMdWizardMainForm(QMainWindow):
 
         if time.time() - self.last_updated >= 4:
             msg = (
-                "The file you are editing has been changed on disk.  "
+                "The file you are editing has been changed on disk. "
                 "Would you like to reload this File?"
             )
             self.last_updated = time.time()

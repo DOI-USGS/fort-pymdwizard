@@ -280,7 +280,7 @@ class Ui_attribute_widget(object):
             3, _translate("attribute_widget", "Unrepresentable (None of the above)")
         )
         self.label_49.setText(
-            _translate("attribute_widget", "Is there a NoData (NaN, etc) Value?")
+            _translate("attribute_widget", "Is there a NoData (NaN, etc.) Value?")
         )
         self.rbtn_nodata_yes.setText(_translate("attribute_widget", "Yes"))
         self.rbtn_nodata_no.setText(_translate("attribute_widget", "No"))

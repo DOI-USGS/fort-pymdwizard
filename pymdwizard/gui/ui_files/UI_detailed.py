@@ -39,7 +39,7 @@ class Ui_fgdc_detailed(object):
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.fgdc_enttyp)
-        self.label.setStyleSheet("font: italic 8pt;")
+        self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
@@ -203,7 +203,7 @@ class Ui_fgdc_detailed(object):
         self.label_5.setText(
             _translate(
                 "fgdc_detailed",
-                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">These represent the columns in your dataset.  Click below in each one and provide a definition for the column and a description for the column contents.</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">These represent the columns in your dataset. Click below in each one and provide a definition for the column and a description for the column contents.</span></p></body></html>',
             )
         )
         self.displayed_label.setText(

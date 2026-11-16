@@ -345,7 +345,7 @@
               <string notr="true">font: bold;</string>
              </property>
              <property name="text">
-              <string>Is there a NoData (NaN, etc) Value?</string>
+              <string>Is there a NoData (NaN, etc.) Value?</string>
              </property>
             </widget>
            </item>

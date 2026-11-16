@@ -324,7 +324,7 @@ class Ui_fgdc_metainfo(object):
         self.label_5.setText(
             _translate(
                 "fgdc_metainfo",
-                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Provide information about the individual who wrote the metadata for the dataset.  This is usually YOUR information</span></p><p><br/></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Provide information about the individual who wrote the metadata for the dataset. This is usually YOUR information.</span></p><p><br/></p></body></html>',
             )
         )
         self.label_4.setToolTip(_translate("fgdc_metainfo", "Required"))
@@ -338,14 +338,14 @@ class Ui_fgdc_metainfo(object):
         self.label_3.setText(
             _translate(
                 "fgdc_metainfo",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )
         self.fgdc_metc.setTitle(_translate("fgdc_metainfo", "Metadata Contact"))
         self.label_2.setText(
             _translate(
                 "fgdc_metainfo",
-                "Who wrote the metadata?  Alternatively, who can be contacted for questions pertaining to the metadata?",
+                "Who wrote the metadata? Alternatively, who can be contacted for questions pertaining to the metadata?",
             )
         )
         self.label_6.setText(
@@ -362,7 +362,7 @@ class Ui_fgdc_metainfo(object):
         )
         self.label_9.setText(
             _translate(
-                "fgdc_metainfo", "You probably won't have a need to change this value"
+                "fgdc_metainfo", "You probably won't have a need to change this value."
             )
         )
         self.fgdc_metstdv.setItemText(

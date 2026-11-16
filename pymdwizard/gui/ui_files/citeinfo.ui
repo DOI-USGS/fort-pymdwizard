@@ -153,7 +153,7 @@ subcontrol-position: top left; /* position at the top left*/
                 <string notr="true">font: italic;</string>
                </property>
                <property name="text">
-                <string>A good title includes 'What', 'Where', and 'When'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)</string>
+                <string>A good title includes 'What', 'Where', and 'When'. (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)</string>
                </property>
               </widget>
              </item>
@@ -417,7 +417,7 @@ DOI</string>
               <string notr="true">font: bold;</string>
              </property>
              <property name="text">
-              <string>Dataset Author/ Originator</string>
+              <string>Dataset Author/Originator</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

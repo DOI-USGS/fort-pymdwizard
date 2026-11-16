@@ -57,7 +57,7 @@ class Ui_Form(object):
         self.label.setText(
             _translate(
                 "Form",
-                "Does the actual data match up with the details you have provided about it?   Do all values fall within expected ranges?   Have you checked for data duplication/omission?   Were topology tests conducted to ensure the integrity of geospatial data?   See help for more info.",
+                "Does the actual data match up with the details you have provided about it? Do all values fall within expected ranges? Have you checked for data duplication/omission? Were topology tests conducted to ensure the integrity of geospatial data? See help for more info.",
             )
         )
         self.fgdc_logic.setPlainText(

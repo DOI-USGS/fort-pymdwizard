@@ -155,7 +155,7 @@
            <string notr="true">font: italic;</string>
           </property>
           <property name="text">
-           <string>This is instance of Python you want to run Jupyter with.  In addition to the Python version that was installed with the MetadataWizard any available Conda Envs are listed</string>
+           <string>This is the instance of Python you want to run Jupyter with. In addition to the Python version that was installed with the MetadataWizard, any available Conda environments are listed.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -222,7 +222,7 @@
            <string notr="true">font: bold;</string>
           </property>
           <property name="text">
-           <string>Use JupyterLab ?</string>
+           <string>Use JupyterLab?</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -241,7 +241,7 @@
            <string notr="true">font: italic;</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the new JupyterLab interface instead of the tradional notebook. &lt;/p&gt;&lt;p&gt;If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the new JupyterLab interface instead of the traditional notebook. &lt;/p&gt;&lt;p&gt;If this is greyed out, JupyterLab is not installed. Download and Reinstall the latest version of the MetadataWizard to obtain it. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>

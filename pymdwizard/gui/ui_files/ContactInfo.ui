@@ -1087,7 +1087,7 @@ Short Name: address</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>Address 2 (if Applicable)</string>
+                 <string>Address 2 (if applicable)</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -1172,7 +1172,7 @@ Short Name: address</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>Address 3 (if Applicable) </string>
+                 <string>Address 3 (if applicable)</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>

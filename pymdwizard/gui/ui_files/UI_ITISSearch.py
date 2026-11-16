@@ -205,7 +205,7 @@ class Ui_ItisSearchWidget(object):
         self.button_add_taxon.setText(_translate("ItisSearchWidget", "Add Selection"))
         self.label_include_item.setToolTip(
             _translate(
-                "ItisSearchWidget", "List of taxons to include in the taxonomy section"
+                "ItisSearchWidget", "List of taxa to include in the taxonomy section"
             )
         )
         self.label_include_item.setText(

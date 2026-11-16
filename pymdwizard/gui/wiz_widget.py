@@ -925,10 +925,11 @@ class WizardWidget(QWidget):
             None
         """
 
-        # Load user settings.
-        fontsize_i = utils.get_setting("fontsize", 9)
-        fontsize = str(fontsize_i)
-        fontsizeplus = str(fontsize_i + 3)
+        # Load user settings. The Font Size setting is in Windows points;
+        # platform_font_pt() scales it on macOS so text is the same size.
+        fontsize_i = int(utils.get_setting("fontsize", 9))
+        fontsize = str(platform_font_pt(fontsize_i))
+        fontsizeplus = str(platform_font_pt(fontsize_i + 3))
         fontfamily = utils.get_setting("fontfamily", "Arial")
 
         # Format normal style.
@@ -1077,6 +1078,49 @@ padding: 4px 10px;
     border-color: rgba(90, 90, 90, 75);
 }
 """
+
+# Qt treats a font point as 96/72 px on Windows but as 1 px on macOS, so the
+# same point size draws about 25% smaller on a Mac. Point sizes are scaled
+# on macOS so text matches the Windows size the layouts were designed for.
+MAC_FONT_SCALE = 96 / 72
+
+
+def platform_font_pt(points):
+    """
+    Description:
+        Converts a point size chosen for Windows into the point size that
+        draws at the same size on the current platform.
+
+    Passed arguments:
+        points (int or str): Point size as used on Windows (for example
+            the Font Size setting).
+
+    Returned objects:
+        int: The same size on Windows/Linux; scaled by 96/72 and rounded
+            on macOS (9 -> 12, 13 -> 17).
+
+    Workflow:
+        Multiplies by MAC_FONT_SCALE when sys.platform is "darwin".
+
+    Notes:
+        Only affects sizes passed through this function. Sizes written
+        directly into rich text or set with QFont in code are unchanged.
+    """
+
+    points = int(points)
+    if sys.platform == "darwin":
+        return int(round(points * MAC_FONT_SCALE))
+    return points
+
+
+# On macOS, any box property (padding, border, background) in a QPushButton
+# rule makes Qt stop drawing native buttons and draw flat ones instead, so
+# keep only the font rule there. Done here rather than in set_stylesheet()
+# because some widgets (e.g. jupyterstarter) apply NORMAL_STYLE directly.
+BUTTON_PADDING = "padding: 4px 10px;\n"
+if sys.platform == "darwin":
+    NORMAL_STYLE = NORMAL_STYLE.replace(BUTTON_PADDING, "")
+    FOCUS_STYLE = FOCUS_STYLE.replace(BUTTON_PADDING, "")
 
 ERROR_STYLE = """"""
 

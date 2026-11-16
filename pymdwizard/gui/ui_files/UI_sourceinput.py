@@ -96,7 +96,7 @@ class Ui_Form(object):
         self.radio_sourceno_2.setText(
             _translate(
                 "Form",
-                "No Sources were used.  The dataset represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)",
+                "No Sources were used. The dataset represents 100% original content, derived first-hand (e.g. field collection, lab experiments, etc.)",
             )
         )
         self.label.setText(_translate("Form", "OR"))

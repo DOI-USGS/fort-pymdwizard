@@ -529,7 +529,7 @@ class Ui_spatial_domain_widget(object):
         self.label_2.setText(
             _translate(
                 "spatial_domain_widget",
-                "Shapefile, Geotif, Geodatabase feature class, etc",
+                "Shapefile, GeoTIFF, geodatabase feature class, etc.",
             )
         )
         self.label_33.setText(

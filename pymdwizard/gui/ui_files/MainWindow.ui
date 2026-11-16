@@ -394,7 +394,7 @@
     <string>Generate Review Doc</string>
    </property>
    <property name="toolTip">
-    <string>Generate a review documnet (.docx format) of current record</string>
+    <string>Generate a review document (.docx format) of current record</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>

@@ -308,7 +308,7 @@ class Ui_MainWindow(object):
         self.generate_review.setToolTip(
             _translate(
                 "MainWindow",
-                "Generate a review documnet (.docx format) of current record",
+                "Generate a review document (.docx format) of current record",
             )
         )
         self.generate_review.setShortcut(_translate("MainWindow", "Ctrl+G"))

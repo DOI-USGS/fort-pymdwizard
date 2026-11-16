@@ -712,7 +712,7 @@ class Ui_parent_form(object):
         self.label_34.setText(
             _translate(
                 "parent_form",
-                "A good title includes 'What', 'Where', and 'When'.  (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)",
+                "A good title includes 'What', 'Where', and 'When'. (Example: Point Locations of Wind Turbines in Colorado, Derived from 2010 NAIP Imagery)",
             )
         )
         self.label_5.setToolTip(_translate("parent_form", "Required"))
@@ -732,7 +732,7 @@ class Ui_parent_form(object):
         self.btn_import_doi.setText(
             _translate("parent_form", "Import \n" "from \n" "DOI")
         )
-        self.label_47.setText(_translate("parent_form", "Dataset Author/ Originator"))
+        self.label_47.setText(_translate("parent_form", "Dataset Author/Originator"))
         self.label_53.setText(_translate("parent_form", "Dataset Format"))
         self.label_36.setText(
             _translate(
