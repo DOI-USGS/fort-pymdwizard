@@ -63,7 +63,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="styleSheet">
-            <string notr="true">font: italic 8pt;</string>
+            <string notr="true">font: italic;</string>
            </property>
            <property name="text">
             <string>If you have access to the dataset being documented in this metadata record browse to it by clicking the button below.

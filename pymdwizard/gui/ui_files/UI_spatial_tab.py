@@ -129,7 +129,7 @@ class Ui_spatial_tab(object):
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.label = QtWidgets.QLabel(self.widget)
-        self.label.setStyleSheet("font: italic 8pt;")
+        self.label.setStyleSheet("font: italic;")
         self.label.setTextFormat(QtCore.Qt.PlainText)
         self.label.setWordWrap(False)
         self.label.setObjectName("label")
@@ -241,7 +241,7 @@ class Ui_spatial_tab(object):
         self.label_3.setText(
             _translate(
                 "spatial_tab",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )
         self.label.setText(

@@ -39,7 +39,7 @@ class Ui_fgdc_detailed(object):
         self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.fgdc_enttyp)
-        self.label.setStyleSheet("font: italic 8pt;")
+        self.label.setStyleSheet("font: italic;")
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)

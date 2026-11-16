@@ -214,6 +214,6 @@ class Ui_fgdc_dataqual(object):
         self.label_3.setText(
             _translate(
                 "fgdc_dataqual",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )

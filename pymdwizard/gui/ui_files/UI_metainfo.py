@@ -338,7 +338,7 @@ class Ui_fgdc_metainfo(object):
         self.label_3.setText(
             _translate(
                 "fgdc_metainfo",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )
         self.fgdc_metc.setTitle(_translate("fgdc_metainfo", "Metadata Contact"))
