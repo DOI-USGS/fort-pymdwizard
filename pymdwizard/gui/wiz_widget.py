@@ -1078,6 +1078,15 @@ padding: 4px 10px;
 }
 """
 
+# On macOS, any box property (padding, border, background) in a QPushButton
+# rule makes Qt stop drawing native buttons and draw flat ones instead, so
+# keep only the font rule there. Done here rather than in set_stylesheet()
+# because some widgets (e.g. jupyterstarter) apply NORMAL_STYLE directly.
+BUTTON_PADDING = "padding: 4px 10px;\n"
+if sys.platform == "darwin":
+    NORMAL_STYLE = NORMAL_STYLE.replace(BUTTON_PADDING, "")
+    FOCUS_STYLE = FOCUS_STYLE.replace(BUTTON_PADDING, "")
+
 ERROR_STYLE = """"""
 
 ERROR_FOCUS_STYLE = """"""
