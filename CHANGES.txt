@@ -15,30 +15,31 @@ New features
 7. Added an optional Contact Instructions (cntinst) field to the contact form. Existing Contact Instructions were previously removed when a record was opened and saved.
 8. Added a "+" tab to the Entity and Attribute tab for adding Detailed sections without returning to the Instructions tab. Right-clicking a Detailed tab label removes that section; right-clicking Overview clears it.
 9. The Dataset panel on each Detailed tab can now be widened by dragging.
+10. New records default to the FGDC Content Standard for Digital Geospatial Metadata instead of the Biological Data Profile (BDP). Selecting "Yes" in the Taxonomy section switches the record to BDP.
 
 Bug fixes
 --------------
-10. Fixed SSRF vulnerability in url_is_alive() by restricting requests to http/https schemes and rejecting private/loopback addresses. Reported by Arpit Jain (https://github.com/arpitjain099)
-11. Removed unsafe pickle deserialization (.p file support) from the Entity and Attribute tab, eliminating an arbitrary code execution vulnerability (CWE-502). Reported by Arpit Jain (https://github.com/arpitjain099)
-12. Fixed window opening off-screen when a previously connected monitor is no longer available.
-13. Fixed a PermissionError when writing DOI certificates on read-only installations.
-14. Flag and auto-correct inverted North/South bounding coordinates.
-15. Fixed "Add keyword" button remaining disabled after a controlled vocabulary search.
-16. Fixed black-on-black help and preview text on dark-mode systems.
-17. Corrected "USGS Data Series" to "USGS Data Report" to match the current USGS product type name.
-18. Fixed SDTS point/vector object type being reported as "Unknown" for 3D or measured (Z/M) vector data.
-19. Fixed crash when opening a date attribute with an enumerated domain in the Entity and Attribute tab.
-20. Fixed a crash when opening or clearing a record after all Detailed sections had been removed.
-21. Fixed the Place Keywords search dialog opening off-screen.
-22. Fixed the thesaurus page link in the Thesaurus Search details pane.
-23. Fixed buttons being drawn flat and text appearing about 25% smaller on macOS.
+11. Fixed SSRF vulnerability in url_is_alive() by restricting requests to http/https schemes and rejecting private/loopback addresses. Reported by Arpit Jain (https://github.com/arpitjain099)
+12. Removed unsafe pickle deserialization (.p file support) from the Entity and Attribute tab, eliminating an arbitrary code execution vulnerability (CWE-502). Reported by Arpit Jain (https://github.com/arpitjain099)
+13. Fixed window opening off-screen when a previously connected monitor is no longer available.
+14. Fixed a PermissionError when writing DOI certificates on read-only installations.
+15. Flag and auto-correct inverted North/South bounding coordinates.
+16. Fixed "Add keyword" button remaining disabled after a controlled vocabulary search.
+17. Fixed black-on-black help and preview text on dark-mode systems.
+18. Corrected "USGS Data Series" to "USGS Data Report" to match the current USGS product type name.
+19. Fixed SDTS point/vector object type being reported as "Unknown" for 3D or measured (Z/M) vector data.
+20. Fixed crash when opening a date attribute with an enumerated domain in the Entity and Attribute tab.
+21. Fixed a crash when opening or clearing a record after all Detailed sections had been removed.
+22. Fixed the Place Keywords search dialog opening off-screen.
+23. Fixed the thesaurus page link in the Thesaurus Search details pane.
+24. Fixed buttons being drawn flat and text appearing about 25% smaller on macOS.
 
 Other
 --------------
-24. Pinned Python library versions to maintain compatibility.
-25. Updated user documentation and modernized the docs build tooling.
-26. Updated the Place Keywords recommendation to name Common Geographic Areas and GNIS (with a link to the GNIS search).
-27. Button text now follows the Font Size setting.
+25. Pinned Python library versions to maintain compatibility.
+26. Updated user documentation and modernized the docs build tooling.
+27. Updated the Place Keywords recommendation to name Common Geographic Areas and GNIS (with a link to the GNIS search).
+28. Button text now follows the Font Size setting.
 
 2.2.0 (07/02/2026)
 -----

@@ -313,8 +313,8 @@ class Ui_fgdc_metainfo(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(fgdc_metainfo)
-        self.fgdc_metstdv.setCurrentIndex(1)
-        self.fgdc_metstdn.setCurrentIndex(1)
+        self.fgdc_metstdv.setCurrentIndex(0)
+        self.fgdc_metstdn.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(fgdc_metainfo)
 
     def retranslateUi(self, fgdc_metainfo):
@@ -390,7 +390,7 @@ class Ui_fgdc_metainfo(object):
         self.fgdc_metstdn.setCurrentText(
             _translate(
                 "fgdc_metainfo",
-                "FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata",
+                "FGDC Content Standard for Digital Geospatial Metadata",
             )
         )
         self.fgdc_metstdn.setItemText(

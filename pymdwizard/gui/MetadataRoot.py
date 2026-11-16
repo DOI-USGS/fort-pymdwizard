@@ -74,8 +74,18 @@ class MetadataRoot(WizardWidget):
     ui_class = UI_MetadataRoot.Ui_metadata_root
 
     def __init__(self, parent=None):
-        # Default to BDP (Biological Data Profile) schema.
-        self.schema = "bdp"
+        # Default to the plain FGDC schema. The Biological Data Profile (BDP)
+        # is used when the author includes taxonomy or chooses it by hand.
+        self.schema = "fgdc"
+
+        # True when BDP was chosen explicitly (the metadata standard boxes,
+        # or a loaded record that declares BDP) rather than switched on
+        # automatically because taxonomy was included.
+        self.bdp_by_choice = False
+
+        # True while a record is being loaded, so that populating the
+        # widgets does not trigger automatic schema switches.
+        self._loading = False
 
         # Call the constructor of the base class (QWidget/WizardWidget).
         super(self.__class__, self).__init__(parent=parent)
@@ -85,6 +95,9 @@ class MetadataRoot(WizardWidget):
         self.use_spatial = True
         self.use_eainfo = True
         self.use_distinfo = True
+
+        # Show or hide the schema-specific fields to match the default.
+        self.switch_schema(self.schema)
 
     def build_ui(self):
         """
@@ -279,6 +292,93 @@ class MetadataRoot(WizardWidget):
         self.idinfo.switch_schema(schema)
         self.spatial_tab.switch_schema(schema)
 
+    def set_schema(self, schema, explicit=False):
+        """
+        Description:
+            Switches the schema and updates the Metadata Standard Name
+            and Version boxes on the Metadata Reference tab to match.
+
+        Passed arguments:
+            schema (str): "fgdc" or "bdp".
+            explicit (bool): True if the author chose this schema
+                directly (so it should not be undone automatically).
+                False if it was switched on automatically, for example
+                because taxonomy was included.
+
+        Returned objects:
+            None
+
+        Workflow:
+            Records whether BDP was an explicit choice, propagates the
+            schema to the child widgets, and syncs the standard boxes.
+
+        Notes:
+            Use "switch_schema" to change only the child widgets.
+        """
+
+        self.bdp_by_choice = explicit and schema == "bdp"
+        self.switch_schema(schema)
+        self.metainfo.show_schema(schema)
+
+    def has_bdp_only_content(self):
+        """
+        Description:
+            Checks whether the form holds content that only the
+            Biological Data Profile (BDP) can store.
+
+        Passed arguments:
+            None
+
+        Returned objects:
+            bool: True if Taxonomy is included ("Yes") or the Geographic
+                Description has text.
+
+        Workflow:
+            Checks the Taxonomy "Yes" button and the Geographic
+            Description field.
+
+        Notes:
+            Plain FGDC has no <taxonomy> or <descgeog> element.
+        """
+
+        if self.idinfo.taxonomy.has_content():
+            return True
+        descgeog = self.spatial_tab.spdom.ui.fgdc_descgeog.text()
+        return bool(descgeog.strip())
+
+    def taxonomy_changed(self, included):
+        """
+        Description:
+            Keeps the schema in step with the Taxonomy Yes/No choice.
+
+        Passed arguments:
+            included (bool): True if Taxonomy was set to "Yes".
+
+        Returned objects:
+            None
+
+        Workflow:
+            "Yes" switches to BDP automatically. "No" switches back to
+            plain FGDC, unless BDP was chosen explicitly or other
+            BDP-only content (Geographic Description) remains.
+
+        Notes:
+            Ignored while a record is loading.
+        """
+
+        if self._loading:
+            return
+
+        if included:
+            if self.schema != "bdp":
+                self.set_schema("bdp", explicit=False)
+        elif (
+            self.schema == "bdp"
+            and not self.bdp_by_choice
+            and not self.has_bdp_only_content()
+        ):
+            self.set_schema("fgdc")
+
     def use_section(self, which, value):
         """
         Description:
@@ -383,38 +483,57 @@ class MetadataRoot(WizardWidget):
             None
 
         Workflow:
-            Calls "populate_section" for each top-level section widget.
+            1. For a full record, starts from the plain FGDC schema.
+            2. Calls "populate_section" for each top-level section
+               widget. The record's <metstdn> sets the schema.
+            3. If the record holds BDP-only content (taxonomy or a
+               geographic description) but does not declare BDP,
+               switches to BDP so that content is not dropped on save.
 
         Notes:
-            None
+            Automatic schema switches are suppressed while loading.
         """
 
-        # Load content into all top-level sections.
-        self.populate_section(
-            metadata_element, "spdoinfo", self.spatial_tab.spdoinfo
-        )
+        self._loading = True
+        try:
+            # A full record decides its own schema; don't inherit the
+            # previous record's.
+            if not isinstance(metadata_element, etree._Element):
+                self.bdp_by_choice = False
+                self.set_schema("fgdc")
 
-        self.populate_section(
-            metadata_element, "spref", self.spatial_tab.spref
-        )
+            # Load content into all top-level sections.
+            self.populate_section(
+                metadata_element, "spdoinfo", self.spatial_tab.spdoinfo
+            )
 
-        self.populate_section(metadata_element, "idinfo",
-                              self.idinfo)
+            self.populate_section(
+                metadata_element, "spref", self.spatial_tab.spref
+            )
 
-        self.populate_section(
-            metadata_element, "dataqual", self.dataqual
-        )
+            self.populate_section(metadata_element, "idinfo",
+                                  self.idinfo)
 
-        self.populate_section(metadata_element, "eainfo",
-                              self.eainfo)
+            self.populate_section(
+                metadata_element, "dataqual", self.dataqual
+            )
 
-        self.populate_section(
-            metadata_element, "distinfo", self.distinfo
-        )
+            self.populate_section(metadata_element, "eainfo",
+                                  self.eainfo)
 
-        self.populate_section(
-            metadata_element, "metainfo", self.metainfo
-        )
+            self.populate_section(
+                metadata_element, "distinfo", self.distinfo
+            )
+
+            self.populate_section(
+                metadata_element, "metainfo", self.metainfo
+            )
+        finally:
+            self._loading = False
+
+        # A record that holds BDP-only content must be BDP.
+        if self.schema != "bdp" and self.has_bdp_only_content():
+            self.set_schema("bdp", explicit=False)
 
     def populate_section(self, metadata_element, section_name, widget):
         """

@@ -87,7 +87,7 @@ class IdInfo(WizardWidget):
     def __init__(self, root_widget=None, parent=None):
         # Initialize the parent class.
         super(self.__class__, self).__init__(parent=parent)
-        self.schema = "bdp"
+        self.schema = "fgdc"
         self.root_widget = root_widget
 
         # Store reference to the scroll area.
@@ -123,6 +123,8 @@ class IdInfo(WizardWidget):
         # Initialize all child widgets for point of contact.
         self.ptcontac = ContactInfoPointOfContact(parent=self)
         self.taxonomy = Taxonomy(parent=self)
+        # Including taxonomy switches the record to the BDP schema.
+        self.taxonomy.ui.rbtn_yes.toggled.connect(self.taxonomy_toggled)
         self.keywords = Keywords(parent=self)
         self.accconst = Accconst(parent=self)
         self.useconst = Useconst(parent=self)
@@ -197,7 +199,7 @@ class IdInfo(WizardWidget):
     def switch_schema(self, schema):
         """
         Description:
-            Hides or shows sections based on the active metadata schema.
+            Records the active metadata schema.
 
         Passed arguments:
             schema (str): The current metadata schema name.
@@ -206,18 +208,40 @@ class IdInfo(WizardWidget):
             None
 
         Workflow:
-            If schema is "bdp", show the "Taxonomy" widget; otherwise,
-            hide it.
+            Stores the schema, which decides whether <taxonomy> is
+            written by "to_xml".
+
+        Notes:
+            The Taxonomy widget is always visible. Choosing "Yes" in it
+            switches the record to the BDP schema (see
+            "MetadataRoot.taxonomy_changed").
+        """
+
+        self.schema = schema
+
+    def taxonomy_toggled(self, included):
+        """
+        Description:
+            Passes a change of the Taxonomy Yes/No choice to the root
+            widget, which switches the schema to match.
+
+        Passed arguments:
+            included (bool): True if "Yes" was selected.
+
+        Returned objects:
+            None
+
+        Workflow:
+            Calls "MetadataRoot.taxonomy_changed" when a root widget
+            exists.
 
         Notes:
             None
         """
 
-        self.schema = schema
-        if schema == "bdp":
-            self.taxonomy.show()
-        else:
-            self.taxonomy.hide()
+        root_widget = getattr(self, "root_widget", None)
+        if root_widget is not None:
+            root_widget.taxonomy_changed(included)
 
     def clear_widget(self):
         """
