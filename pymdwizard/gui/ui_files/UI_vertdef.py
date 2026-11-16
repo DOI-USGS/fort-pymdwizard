@@ -549,7 +549,7 @@ class Ui_Form(object):
         )
         self.label_40.setText(
             _translate(
-                "Form", "One or both of  Altitude and Depth must be open and filled."
+                "Form", "One or both of Altitude and Depth must be open and filled."
             )
         )
         self.fgdc_depthsys.setTitle(

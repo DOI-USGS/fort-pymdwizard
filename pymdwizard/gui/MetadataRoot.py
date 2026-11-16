@@ -31,7 +31,7 @@ except ImportError as err:
 # Custom import/libraries.
 try:
     from pymdwizard.core import (utils, xml_utils)
-    from pymdwizard.gui.wiz_widget import WizardWidget
+    from pymdwizard.gui.wiz_widget import WizardWidget, platform_font_pt
     from pymdwizard.gui.ui_files import UI_MetadataRoot
     from pymdwizard.gui.IDInfo import IdInfo
     from pymdwizard.gui.spatial_tab import SpatialTab
@@ -110,6 +110,14 @@ class MetadataRoot(WizardWidget):
 
         self.ui = self.ui_class()
         self.ui.setupUi(self)
+
+        # The section tabs (Identification, Data Quality, ...) have their
+        # own stylesheet with a fixed 13 pt font. Scale it like the Font
+        # Size setting so the tabs are the same size on macOS as on Windows.
+        tab_style = self.ui.frame.styleSheet()
+        self.ui.frame.setStyleSheet(
+            tab_style.replace("13pt", "%dpt" % platform_font_pt(13))
+        )
 
         # Enable drag and drop functionality.
         self.setup_dragdrop(self, enable=True)

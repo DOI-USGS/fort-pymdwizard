@@ -110,6 +110,13 @@ class Detailed(WizardWidget):  #
         self.ui = UI_detailed.Ui_fgdc_detailed()
         self.ui.setupUi(self)
 
+        # The dataset panel starts at 260 px wide; the user can drag the
+        # splitter handle to widen it. Extra window width goes to the
+        # attributes panel.
+        self.ui.splitter.setSizes([260, 1000])
+        self.ui.splitter.setStretchFactor(0, 0)
+        self.ui.splitter.setStretchFactor(1, 1)
+
         # Hide internal widget (original code).
         self.ui.displayed_widget.hide()
 

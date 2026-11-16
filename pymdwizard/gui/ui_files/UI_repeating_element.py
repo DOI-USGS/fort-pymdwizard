@@ -37,7 +37,7 @@ class Ui_Form(object):
         self.button_widget.setObjectName("button_widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.button_widget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 2)
-        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.italic_label = QtWidgets.QLabel(self.button_widget)
         sizePolicy = QtWidgets.QSizePolicy(

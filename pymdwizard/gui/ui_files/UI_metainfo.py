@@ -65,16 +65,12 @@ class Ui_fgdc_metainfo(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget1.sizePolicy().hasHeightForWidth())
         self.widget1.setSizePolicy(sizePolicy)
-        self.widget1.setMinimumSize(QtCore.QSize(100, 0))
         self.widget1.setObjectName("widget1")
-        self.layoutWidget = QtWidgets.QWidget(self.widget1)
-        self.layoutWidget.setGeometry(QtCore.QRect(3, 1, 110, 22))
-        self.layoutWidget.setObjectName("layoutWidget")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget1)
         self.horizontalLayout_3.setContentsMargins(5, 0, 5, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_4 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_4 = QtWidgets.QLabel(self.widget1)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
         )
@@ -99,7 +95,7 @@ class Ui_fgdc_metainfo(object):
         self.label_4.setIndent(0)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
-        self.label_3 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_3 = QtWidgets.QLabel(self.widget1)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum
         )
@@ -107,7 +103,6 @@ class Ui_fgdc_metainfo(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setMinimumSize(QtCore.QSize(79, 0))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -329,7 +324,7 @@ class Ui_fgdc_metainfo(object):
         self.label_5.setText(
             _translate(
                 "fgdc_metainfo",
-                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Provide information about the individual who wrote the metadata for the dataset.  This is usually YOUR information</span></p><p><br/></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Provide information about the individual who wrote the metadata for the dataset. This is usually YOUR information.</span></p><p><br/></p></body></html>',
             )
         )
         self.label_4.setToolTip(_translate("fgdc_metainfo", "Required"))
@@ -343,14 +338,14 @@ class Ui_fgdc_metainfo(object):
         self.label_3.setText(
             _translate(
                 "fgdc_metainfo",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )
         self.fgdc_metc.setTitle(_translate("fgdc_metainfo", "Metadata Contact"))
         self.label_2.setText(
             _translate(
                 "fgdc_metainfo",
-                "Who wrote the metadata?  Alternatively, who can be contacted for questions pertaining to the metadata?",
+                "Who wrote the metadata? Alternatively, who can be contacted for questions pertaining to the metadata?",
             )
         )
         self.label_6.setText(
@@ -367,7 +362,7 @@ class Ui_fgdc_metainfo(object):
         )
         self.label_9.setText(
             _translate(
-                "fgdc_metainfo", "You probably won't have a need to change this value"
+                "fgdc_metainfo", "You probably won't have a need to change this value."
             )
         )
         self.fgdc_metstdv.setItemText(

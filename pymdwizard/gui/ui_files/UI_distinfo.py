@@ -105,7 +105,6 @@ class Ui_fgdc_distinfo(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setMinimumSize(QtCore.QSize(79, 0))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -443,13 +442,13 @@ class Ui_fgdc_distinfo(object):
         self.label_3.setText(
             _translate(
                 "fgdc_distinfo",
-                '<html><head/><body><p><span style=" font-size:9pt; font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">= Required</span></p></body></html>',
             )
         )
         self.radio_distno.setText(
             _translate(
                 "fgdc_distinfo",
-                "Dataset is for internal use only and will NOT be shared or distributed.  The metadata record does not need distribution information.",
+                "Dataset is for internal use only and will NOT be shared or distributed. The metadata record does not need distribution information.",
             )
         )
         self.label.setText(_translate("fgdc_distinfo", "OR"))
@@ -485,12 +484,12 @@ class Ui_fgdc_distinfo(object):
         self.radio_dist.setText(
             _translate(
                 "fgdc_distinfo",
-                "The dataset is not available online.  Interested parties should contact the distributor for details on \n"
-                "acquiring the data. (Provide 'Distributor Contact' information.",
+                "The dataset is not available online. Interested parties should contact the distributor for details on \n"
+                "acquiring the data. (Provide 'Distributor Contact' information.)",
             )
         )
         self.radio_otherdist.setText(
-            _translate("fgdc_distinfo", "Other Distribution method. (Describe below)")
+            _translate("fgdc_distinfo", "Other distribution method (describe below).")
         )
         self.groupBox.setTitle(_translate("fgdc_distinfo", "Distribution Liability"))
         self.label_10.setText(

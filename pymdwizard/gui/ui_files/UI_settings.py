@@ -347,7 +347,7 @@ class Ui_Form(object):
         self.label_12.setText(
             _translate(
                 "Form",
-                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Change the font size or font used in the Wizard to improve readibility.</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-style:italic; color:#55aaff;">Change the font size or font used in the Wizard to improve readability.</span></p></body></html>',
             )
         )
         self.label_11.setText(_translate("Form", "Font"))

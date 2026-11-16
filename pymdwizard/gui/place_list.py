@@ -18,12 +18,6 @@ NOTES
 None
 """
 
-# Non-standard python libraries.
-try:
-    from PyQt5.QtCore import QPoint
-except ImportError as err:
-    raise ImportError(err, __file__)
-
 # Custom import/libraries.
 try:
     from pymdwizard.core import (utils, xml_utils)
@@ -347,10 +341,12 @@ class PlaceList(WizardWidget):
         Workflow:
             1. Creates an instance of "ThesaurusSearch".
             2. Configures it to add keywords via self.add_keyword.
-            3. Positions and shows the search window.
+            3. Shows the search window.
 
         Notes:
-            The search is specifically for place keywords.
+            The search is specifically for place keywords. The window is
+            not moved explicitly, so Qt centers it over its parent window
+            (the same as the Theme keywords search).
         """
 
         self.thesaurus_search = ThesaurusSearch.ThesaurusSearch(
@@ -358,10 +354,6 @@ class PlaceList(WizardWidget):
         )
 
         self.thesaurus_search.setWindowTitle("Place Keyword Thesaurus Search")
-
-        # Move the search window relative to this widget.
-        fg = self.frameGeometry()
-        self.thesaurus_search.move(fg.topRight() - QPoint(150, -25))
 
         self.thesaurus_search.show()
 

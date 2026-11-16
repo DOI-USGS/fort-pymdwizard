@@ -108,10 +108,16 @@
        </item>
        <item>
         <widget class="QLabel" name="label_2">
+         <property name="maximumSize">
+          <size>
+           <width>700</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
-          <string>If this record describes a CSV, Shapefile, or other tabular or spatial dataset you need to fill out a Detailed section. Use the 'Browse to Dataset' button on a detailed tab  to autopopulate this section with the column labels and values. Then provide definitions for each column (attribute) and values. 
+          <string>If this record describes a CSV, Shapefile, or other tabular or spatial dataset that contains attributes, you need to fill out a Detailed section. Use the 'Browse to Dataset' button on a Detailed tab to autopopulate this section with the column labels and values. Then provide a definition for each column (attribute) and its values.
 
-If this record describes multiple files or sheets, one Detailed section should be created for each, see below.</string>
+If this record describes multiple files or sheets, create one Detailed section for each (see below).</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -120,6 +126,12 @@ If this record describes multiple files or sheets, one Detailed section should b
        </item>
        <item>
         <widget class="QLabel" name="label_4">
+         <property name="maximumSize">
+          <size>
+           <width>700</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
           <string>Use both the Overview and one or more Detailed sections if that provides more clarity to data users.</string>
          </property>
@@ -179,7 +191,7 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
                 <string notr="true">font: italic;</string>
                </property>
                <property name="text">
-                <string>In some cases more than one Detailed section is required.  This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel Workbook, or a data bundle consisting of multiple files.</string>
+                <string>In some cases, more than one Detailed section is required. This could be the case if the metadata record is describing multiple CSV files, multiple worksheets in an Excel workbook, or a data bundle consisting of multiple files.</string>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -198,7 +210,7 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
                 <string notr="true">font: italic;</string>
                </property>
                <property name="text">
-                <string>Use the button below to add additional Detailed sections.  These can be removed from their respective tab, using the 'Remove this Detailed' Button</string>
+                <string>To add an additional Detailed section, click 'Add Detailed section' below or click the '+' tab in the tab list on the left. To remove one, click 'Remove this Detailed' on its tab, or right-click its tab and choose 'Remove this Detailed'.</string>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -223,7 +235,7 @@ background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #c
                <item>
                 <widget class="QPushButton" name="btn_add_detailed">
                  <property name="text">
-                  <string>Add Detailed</string>
+                  <string>Add Detailed section</string>
                  </property>
                 </widget>
                </item>

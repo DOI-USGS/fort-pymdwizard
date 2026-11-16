@@ -223,7 +223,7 @@ class Citeinfo(WizardWidget):  #
             add_text="Add online link",
             remove_text="Remove last",
             italic_text="Is there a link to the data or the agency "
-                        "that produced it? if so, provide the URL(s) ",
+                        "that produced it? If so, provide the URL(s).",
             widget_kwargs={"label": "Link", "line_name": "fgdc_onlink"},
         )
         self.onlink_list.add_another()

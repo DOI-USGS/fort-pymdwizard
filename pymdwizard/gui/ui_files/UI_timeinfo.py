@@ -245,7 +245,7 @@ class Ui_Form(object):
         self.label_3.setText(
             _translate(
                 "Form",
-                "Select one of 'Single Date', 'Date Range', or 'Multiple Dates'.",
+                "Select one of 'Single', 'Range', or 'Multiple'.",
             )
         )
         self.label_9.setToolTip(_translate("Form", "Required"))
