@@ -66,7 +66,7 @@ class Ui_Taxonomy(object):
         self.horizontalLayout.addWidget(self.rbtn_no)
         self.main_layout.addLayout(self.horizontalLayout)
         self.label_bdp_note = QtWidgets.QLabel(self.fgdc_taxonomy)
-        self.label_bdp_note.setStyleSheet("font: italic 8pt;")
+        self.label_bdp_note.setStyleSheet("font: italic;")
         self.label_bdp_note.setWordWrap(True)
         self.label_bdp_note.setIndent(6)
         self.label_bdp_note.setObjectName("label_bdp_note")
@@ -165,7 +165,7 @@ class Ui_Taxonomy(object):
         self.label_bdp_note.setText(
             _translate(
                 "Taxonomy",
-                "Selecting 'Yes' changes the metadata standard to the FGDC Biological Data Profile (BDP).",
+                "Note: Selecting 'Yes' changes the metadata standard to the FGDC Biological Data Profile (BDP).",
             )
         )
         self.rbtn_yes.setText(_translate("Taxonomy", "Yes"))
