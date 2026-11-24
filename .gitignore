@@ -95,8 +95,11 @@ windows
 # Claude Code personal workspace
 .claude/
 
-# Kiro AI workspace
-.kiro/
+# Kiro AI workspace: share specs and steering (team documents), keep
+# settings (may hold MCP credentials) and hooks local.
+.kiro/*
+!.kiro/specs/
+!.kiro/steering/
 
 # Throwaway conda environments created in-repo for verification
 _verifyenv/
