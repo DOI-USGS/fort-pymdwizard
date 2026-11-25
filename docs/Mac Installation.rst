@@ -8,5 +8,7 @@ Installing on Mac
 
 **Installation may require elevated (administrative) privileges.** After installation the MetadataWizard can be launched from the duck icon (|duck|) in the user’s applications.
 
+**"Data Access Blocked" notification:** If you have Google Chrome installed, macOS may show this message when you open the Metadata Wizard. This is expected and doesn't affect the Wizard. You can leave the access blocked.
+
 .. |duck| image:: img/duck.png
    :width: 18pt
