@@ -15,7 +15,7 @@ The application is configured to automatically look for updates whenever it is o
 
 |  **Technical note:**
 
-Updates are made using simple Git commands to **fetch** and **merge** the master branch from this GitHub repository. The commands to execute this operation are stored in a file called “update\_wizard.bat” in the application’s install folder. Other issues that might prevent this update from working include:
+Updates are made using simple Git commands to **fetch** and **merge** the main-v2.2 branch from this GitHub repository. The commands to execute this operation are stored in a file called “update\_wizard.bat” in the application’s install folder. Other issues that might prevent this update from working include:
 
 -  Edited or otherwise changed files in the local installation directory (merge conflict)
 -  Internet connectivity issues
