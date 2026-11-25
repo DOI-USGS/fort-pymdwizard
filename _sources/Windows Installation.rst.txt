@@ -2,7 +2,7 @@
 Installing on Windows
 =====================
 
-Download a copy of the latest Windows installer (``MetadataWizard-v2.2.1.exe``) from
+Download a copy of the latest Windows installer (**MetadataWizard-v2.2.1.exe**) from
 `the releases page <https://github.com/DOI-USGS/fort-pymdwizard/releases>`_.
 
 Once the download is complete, double click on the downloaded .exe file to begin the installation.
