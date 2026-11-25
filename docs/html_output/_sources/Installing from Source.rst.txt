@@ -36,7 +36,7 @@ Instructions for installing pymdwizard from source are intended for someone with
 
   .. code-block:: console
 
-        git clone https://github.com/talbertc-usgs/fort-pymdwizard.git
+        git clone https://github.com/DOI-USGS/fort-pymdwizard.git
 
 |
 
@@ -71,29 +71,29 @@ Instructions for installing pymdwizard from source are intended for someone with
 
    First, find your environment's site-packages directory:
 
-  .. code-block:: console
+   .. code-block:: console
 
-        python -c "import site; print(site.getsitepackages()[1])"
+      python -c "import site; print(site.getsitepackages()[1])"
 
    Then create a ``.pth`` file in that directory containing the full path to the project folder.
 
    **Windows** (from the Miniforge Prompt, in the fort-pymdwizard directory):
 
-  .. code-block:: console
+   .. code-block:: console
 
-        echo %CD% > %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth
+      echo %CD% > %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth
 
    **Linux/Mac**:
 
-  .. code-block:: console
+   .. code-block:: console
 
-        echo $PWD > $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth
+      echo $PWD > $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth
 
    You can verify it worked by running:
 
-  .. code-block:: console
+   .. code-block:: console
 
-        python -c "import pymdwizard; print(pymdwizard.__version__)"
+      python -c "import pymdwizard; print(pymdwizard.__version__)"
 
 |
 

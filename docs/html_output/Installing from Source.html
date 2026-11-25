@@ -137,7 +137,7 @@ Download the appropriate installer for your operating system (Windows, Linux, or
 <li><p>Clone the fort-pymdwizard project:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/talbertc-usgs/fort-pymdwizard.git</span>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/DOI-USGS/fort-pymdwizard.git</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -181,30 +181,24 @@ Download the appropriate installer for your operating system (Windows, Linux, or
 <ol class="arabic" start="8">
 <li><p>Add the project folder to the Python path:</p>
 <p>First, find your environment’s site-packages directory:</p>
-</li>
-</ol>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     python -c &quot;import site; print(site.getsitepackages()[1])&quot;</span>
-
-<span class="go">Then create a ``.pth`` file in that directory containing the full path to the project folder.</span>
-
-<span class="go">**Windows** (from the Miniforge Prompt, in the fort-pymdwizard directory):</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -c &quot;import site; print(site.getsitepackages()[1])&quot;</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     echo %CD% &gt; %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth</span>
-
-<span class="go">**Linux/Mac**:</span>
+<p>Then create a <code class="docutils literal notranslate"><span class="pre">.pth</span></code> file in that directory containing the full path to the project folder.</p>
+<p><strong>Windows</strong> (from the Miniforge Prompt, in the fort-pymdwizard directory):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo %CD% &gt; %CONDA_PREFIX%\Lib\site-packages\pymdwizard.pth</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     echo $PWD &gt; $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth</span>
-
-<span class="go">You can verify it worked by running:</span>
+<p><strong>Linux/Mac</strong>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo $PWD &gt; $CONDA_PREFIX/lib/python3.13/site-packages/pymdwizard.pth</span>
 </pre></div>
 </div>
+<p>You can verify it worked by running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -c &quot;import pymdwizard; print(pymdwizard.__version__)&quot;</span>
 </pre></div>
 </div>
-</div></blockquote>
+</li>
+</ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
