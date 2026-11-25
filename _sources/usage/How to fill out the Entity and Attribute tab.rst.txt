@@ -20,14 +20,20 @@ File types that are currently supported for populating the Entity and Attribute 
 -  Unformatted Texts Documents (.txt)
 -  Excel Spreadsheet (.xls, .xlsx, .xlsm) 
 -  Shapefile (.shp) 
+-  GeoPackage (.gpkg) 
+-  GeoJSON (.geojson)
+-  File Geodatabase (.gdb)
+-  LAS and LAZ Point Cloud (.las, .laz)
+-  dBASE Table (.dbf) 
 -  GeoTIFF (.tif) 
 -  JPEG (.jpg) 
 -  Bitmap (.bmp) 
 -  Disk Image File (.img) 
 -  Portable Network Graphics (.png)
--  ASCII Grid (.grd)
+-  ASCII Grid (.grd) 
 -  High Dynamic Range Image (.hdr)
 -  ESRI ArcInfo Binary Grid (.adf)
+
 
 ----------------------------------------------------------------------
 
@@ -72,6 +78,15 @@ each observation forms a row, and where the rows and columns together form a tab
       each of the columns on the right, by providing a definition of
       what is in that column. For each column also provide the Column
       Contents which will be one of:
+
+    | *Note: When browsing to a GeoPackage (.gpkg) that contains more than
+      one layer, the tool will prompt you to choose which layer to
+      describe.*
+
+    | *Note: To describe a File Geodatabase (.gdb), open the .gdb folder
+      and select the file named "gdb". If the geodatabase contains more
+      than one feature class, the tool will prompt you to choose which
+      one to describe.*
 	  
     | 1.  **Enumerated** for categorical or factor data, for which a definition will need to be provided for each unique value in the column (for example, data collected in binary (1 = Yes, 2 = No), or taxonomic abbreviations (URAM = Ursus americanus, or black bear)).
 	  
@@ -88,7 +103,14 @@ Multiple Tabular Datasets
 The data consists of multiple distinct tabular datasets, for example,
 several CSVs that contain related data or multiple sheets in an Excel workbook.
 
-    Click the **Add Detailed** button at the bottom of the Instructions tab.
+    Create one Detailed section for each dataset. To add another Detailed section,
+    click the **+** tab in the tab list on the left side of the Entity and
+    Attribute tab (it sits after the last Detailed tab and above the Overview tab),
+    or click the **Add Detailed section** button at the bottom of the Instructions tab.
+    Then fill out the new Detailed tab as described for a single tabular dataset above.
+
+    To remove a Detailed section, click **Remove this Detailed** on its tab, or
+    right-click its tab in the tab list and choose **Remove this Detailed**.
 
 
 Changing Default Definition Source Text
@@ -96,4 +118,5 @@ Changing Default Definition Source Text
 
 When auto-generating an Entity and Attribute from a file the value that is inserted
 into each "Definition Source" element defaults to "Producer defined".  This default text
-can be changed in the application settings form available from the Advanced menu.
+can be changed in the application settings form available from the Advanced menu
+(see `Settings <../advancedusage/Settings.html>`_).
