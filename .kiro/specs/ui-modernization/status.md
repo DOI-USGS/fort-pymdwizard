@@ -2,11 +2,12 @@
 
 Read this file first when resuming. It records decisions made while planning, the phase order, open questions and the next step. The requirements are in `requirements.md` in this folder.
 
-Last updated: 2026-11-20.
+Last updated: 2026-11-25.
 
 ## Where things stand
 
-- **Spec stage:** requirements drafted, not yet approved. No design document or task list yet. No application code changed.
+- **Spec stage:** requirements approved 2026-11-25 (with corrections to 5.5, 5.7, 7.5, 7.6 and 10.1 after reading the code). `design.md` and `tasks.md` drafted, awaiting review. No application code changed.
+- **Baseline (2026-11-25):** full test suite on this branch: 224 passed, 11 skipped, 0 failed (3m38s). pyuic regeneration check: 36 of 69 `UI_*.py` files identical after normalization, 33 differ. Details are in `design.md` section 3.7.
 - **Branch:** `feature/ui-modernization`, created from `main-v2.2` at `a7c09c9` and pushed to GitLab.
 - **Commits on the branch:**
   - `767edc4` Track Kiro specs and steering files, keep other .kiro files local
@@ -36,7 +37,7 @@ Last updated: 2026-11-20.
 - Optional sections appear in the sidebar. The Advanced → Optional Sections menu entries stay.
 - **Each section stays one scrolling page of cards.** A **jump bar** at the top scrolls to a card and doesn't hide or move content. This was option (b).
 - **No "Overview" page.** The mockup's pill row and Overview page were new navigation levels, and they're dropped.
-- **Identification is too long and may be split into two pages.** See open questions.
+- **Identification stays one page for now** (decided 2026-11-25), with cards and a jump bar. The split into two pages is deferred, and the draft grouping is kept under "Deferred" below.
 
 ### Spec files
 - Only `.kiro/specs/` and `.kiro/steering/` are committed. `.kiro/settings/` (which may hold MCP credentials) and `.kiro/hooks/` stay ignored.
@@ -61,7 +62,7 @@ Each item is a separate merge request into `feature/ui-modernization`. Infrastru
    - 4a: a regeneration script, committed with regeneration only.
    - 4b: remove the Arial and MS Shell Dlg 2 font pins.
    - 4c: relax min/max sizes, one section per merge request.
-5. **Sidebar navigation** (Requirement 5), plus the Identification split if one is decided (Requirement 6).
+5. **Sidebar navigation** (Requirement 5). Identification is one entry (Requirement 6).
 6. **Cards and jump bar,** one section per merge request. Order: Identification, Metadata Reference, Distribution, Data Quality, Spatial, Entity and Attribute.
 7. **Validation experience:** inline messages, Problems panel, status bar (Requirements 8 and 10).
 8. **Toolbar** with SVG icons (Requirement 9).
@@ -70,15 +71,26 @@ Each item is a separate merge request into `feature/ui-modernization`. Infrastru
 
 Process for each merge request: branch from `feature/ui-modernization`, add tests, run the full suite, take before and after screenshots (Windows, plus macOS for visual changes), update `CHANGES.txt`, and include screenshots in the merge request description.
 
+## Deferred
+
+**Identification split.** Decided 2026-11-25 to keep Identification as one page and revisit later. The draft grouping, if the split is taken up:
+- "Description": Citation, Abstract, Purpose, Supplemental Information, Keywords, Status, Time Period of Content, Taxonomy.
+- "Access and Contact": Point of Contact, Access Constraints, Use Constraints, Data Set Credit, Native Data Set Environment, Cross Reference.
+
+The 14 widget groups are listed in `pymdwizard/gui/IDInfo.py`. The split only changes where widgets are displayed. The XML output must not change.
+
 ## Open questions
 
-1. **How to split Identification (Requirement 6).** Undecided. The draft in `requirements.md` is one option:
-   - "Description": Citation, Abstract, Purpose, Supplemental Information, Keywords, Status, Time Period of Content, Taxonomy.
-   - "Access and Contact": Point of Contact, Access Constraints, Use Constraints, Data Set Credit, Native Data Set Environment, Cross Reference.
+None. All decisions listed in `design.md` section 7 are settled.
 
-   Keeping Identification as one page with a jump bar is also acceptable. The 14 widget groups are listed in `pymdwizard/gui/IDInfo.py`. The split only changes where widgets are displayed. The XML output must not change.
-2. Review and approve the rest of `requirements.md`.
+Resolved (2026-11-25):
+- Settings names: `QSettings("USGS", "pymdwizard")`.
+- The settings migration checks versions 2.2.1, 2.2.0, 2.1.1, 2.1.0 and 2.0.8, taken from the release tags.
+- Icon set: Lucide.
+- `apply_opacity_effect` is removed from `highlight_error`. The look of the new highlighting is reviewed after it is built.
+- Inline messages for fields with no room below them appear at the top of the card.
+- Ctrl+A conflict: Save as becomes Ctrl+Shift+S and About loses its shortcut, fixed in an early merge request.
 
 ## Next step
 
-Settle the Identification question and approve `requirements.md`. Then write `design.md`, then `tasks.md`. No code changes before the requirements are approved.
+`tasks.md` is drafted. Review it, then start phase 0. Phase 0 items still to do: the GitHub Actions workflow, baseline screenshots, a timing of `to_xml()` on the sample records, and a comparison of the CI environment with the installer environment.

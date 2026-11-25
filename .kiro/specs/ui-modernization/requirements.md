@@ -13,7 +13,7 @@ Constraints:
 
 - **Wizard:** the Metadata Wizard desktop application.
 - **Section:** a top-level part of the record that currently has its own tab: Identification, Data Quality, Spatial, Entity and Attribute, Distribution, Metadata Reference.
-- **Page:** what the sidebar shows when an entry is selected. Every section is one page, except Identification, which becomes two (Requirement 6).
+- **Page:** what the sidebar shows when an entry is selected. Every section is one page, including Identification (Requirement 6).
 - **Card:** a visually separated block on a page that holds one existing widget group, such as Citation or Point of Contact.
 - **Jump bar:** a row of buttons at the top of a page that scrolls the page to a card. It does not hide or move content.
 - **Theme:** the central stylesheet plus its color, spacing and font tokens.
@@ -76,24 +76,22 @@ Constraints:
 2. WHEN the user selects a sidebar entry, THE Wizard SHALL show that page in the main area.
 3. WHEN validation has run, each sidebar entry SHALL show the number of errors and warnings on its page. WHEN a page has no problems, its entry SHALL show a completed indicator.
 4. Each status indicator SHALL combine an icon or count with color, and SHALL NOT rely on color alone.
-5. THE user SHALL be able to move between entries with the arrow keys, and to open page *n* with Ctrl+*n*.
+5. THE user SHALL be able to move between entries with the arrow keys, and to open the *n*th entry with Ctrl+*n* for *n* = 1 to 6 (the number keys, not the letter N, which is File → New).
 6. Each sidebar entry SHALL expose an accessible name that includes its status, for example "Identification, 1 error".
-7. WHEN an optional section is enabled (Taxonomy, Cross reference, and the other entries in Advanced → Optional Sections), THE sidebar SHALL reflect it. The existing menu entries SHALL remain.
+7. WHEN an optional section is shown or hidden through Advanced → Include Sections (Data Quality, Spatial, Entity and Attribute, Distribution), THE sidebar SHALL show or hide its entry to match. The existing menu entries SHALL remain. Taxonomy and Cross reference are not optional sections: they are always part of Identification.
 8. THE Wizard SHALL NOT provide a setting for the previous tab layout.
 
-### Requirement 6: Identification split into two pages
+### Requirement 6: Identification stays one page
 
-**User story:** As a user, I want the long Identification section split into two pages grouped by purpose, so that each page is easier to work through.
+**User story:** As a user, I want Identification to remain a single page for now, so that the redesign doesn't also change where I find these fields.
 
 **Acceptance criteria**
-1. THE sidebar SHALL show Identification as a group heading with two pages under it:
-   - **Description:** Citation, Abstract, Purpose, Supplemental Information, Keywords, Status, Time Period of Content.
-   - **Access and Contact:** Point of Contact, Access Constraints, Use Constraints, Data Set Credit, Native Data Set Environment, Cross Reference.
-2. Taxonomy, when enabled, SHALL appear on the Description page after Keywords.
-3. THE split SHALL change only where widgets are displayed. The XML the Wizard reads and writes SHALL be identical to the output before the split, for the same input.
-4. Every widget currently in Identification SHALL appear on exactly one of the two pages.
+1. THE sidebar SHALL show Identification as one entry that opens one page containing every widget currently in Identification.
+2. THE Identification page SHALL use cards and a jump bar (Requirement 7) to make its length easier to navigate.
+3. Taxonomy, when enabled, SHALL appear after Keywords, as it does now.
+4. THE page layout code SHALL NOT assume Identification is a single page in a way that prevents a later split. A split would be a separate change to where widgets are displayed, and the XML the Wizard reads and writes would stay identical.
 
-> **Undecided.** The split above is a draft. Whether to split Identification at all, and how, is still open. Keeping it as one page with a jump bar (Requirement 7) is an acceptable outcome. See `status.md`.
+> **Deferred.** Splitting Identification into "Description" and "Access and Contact" pages was considered and postponed. The draft grouping is recorded in `status.md`.
 
 ### Requirement 7: Card layout and jump bar
 
@@ -101,11 +99,12 @@ Constraints:
 
 **Acceptance criteria**
 1. Each widget group that is currently a group box SHALL be shown as a card. A card has a background, a header, and no border nested inside another border.
-2. THE pages SHALL keep their current content and order, apart from the Identification split in Requirement 6.
+2. THE pages SHALL keep their current content and order.
 3. WHEN a page has more than three cards, THE Wizard SHALL show a jump bar listing those cards in page order.
 4. WHEN the user activates a jump bar button, THE page SHALL scroll so that the card is at the top. The jump bar SHALL highlight the card currently in view.
-5. Cards that already collapse (Point of Contact, Process Contact) SHALL keep that behavior and use one shared expand/collapse control.
-6. THE layout SHALL remain usable at a window size of 1300×700 and at 100% and 150% display scaling, without content clipping.
+5. Cards whose contents are shown or hidden by a Yes/No choice (Point of Contact, Process Contact, and the other widgets that do this) SHALL keep that behavior unchanged, including the rule that the choice decides whether the element is written to the XML. THE attribute widget's expand and collapse animation SHALL also keep working. No new collapse control is added.
+6. Entity and Attribute is a tab widget with one tab per entity, not a scrolling page of cards. It SHALL keep its tab layout, restyled by the theme, and Requirement 7.3 SHALL NOT apply to it.
+7. THE layout SHALL remain usable at a window size of 1300×700 and at 100% and 150% display scaling, without content clipping.
 
 ### Requirement 8: Inline validation messages and Problems panel
 
@@ -133,7 +132,7 @@ Constraints:
 **User story:** As a user, I want save state and problem counts always visible.
 
 **Acceptance criteria**
-1. THE status bar SHALL show whether the record has unsaved changes, and the time of the last save.
+1. THE status bar SHALL show whether the record has unsaved changes, and the time of the last save. The Wizard has no unsaved-changes tracking today (it compares the form to the file on disk only when closing), so this requires new tracking.
 2. WHEN validation has run, THE status bar SHALL show error and warning counts. Clicking them SHALL toggle the Problems panel.
 3. Existing temporary status messages SHALL continue to appear.
 
